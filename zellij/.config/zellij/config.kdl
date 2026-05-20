@@ -10,7 +10,12 @@ keybinds {
         bind "Alt =" { Resize "Increase"; }
         bind "Alt -" { Resize "Decrease"; }
         bind "Alt [" { PreviousSwapLayout; }
-        bind "Alt ]" { NextSwapLayout; }
+        bind "Alt /" {
+            Run "bash" "-c" "~/dotfiles/scripts/zj-help.sh" {
+                floating true
+                close_on_exit false
+            }
+        }
     }
 }
 
