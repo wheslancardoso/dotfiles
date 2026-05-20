@@ -1,0 +1,12 @@
+# Ignorar arquivos de sistema e temporários
+.DS_Store
+*.swp
+*~
+.netrwhist
+
+# Ignorar pastas de cache se houver
+.cache/
+
+# Ignorar arquivos sensíveis (exemplo)
+.env*
+!.env.example
