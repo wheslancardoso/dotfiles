@@ -1,0 +1,15 @@
+# Atalhos inteligentes para extração e compactação de arquivos
+#
+# Atalhos de extração/compactação:
+#   a, e → Extrair arquivo(s) selecionado(s) (detecta formato automaticamente)
+#   a, c → Compactar arquivo(s) selecionado(s) (menu interativo de formatos)
+
+[[mgr.prepend_keymap]]
+on   = [ "a", "e" ]
+run  = 'shell -- $HOME/.config/yazi/scripts/arquivo.sh extrair %s'
+desc = "Extrair arquivo(s)"
+
+[[mgr.prepend_keymap]]
+on   = [ "a", "c" ]
+run  = 'shell -- $HOME/.config/yazi/scripts/arquivo.sh compactar %s'
+desc = "Compactar arquivo(s)"

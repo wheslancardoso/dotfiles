@@ -1,0 +1,5 @@
+[user]
+	name = wheslancardoso
+	email = wheslancardoso1@gmail.com
+[credential]
+	helper = libsecret

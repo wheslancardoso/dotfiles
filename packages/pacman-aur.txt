@@ -1,0 +1,7 @@
+android-studio
+antigravity
+google-chrome
+gtk-engine-murrine
+ttf-victor-mono
+wallust
+xdg-desktop-portal-termfilechooser-hunkyburrito-git

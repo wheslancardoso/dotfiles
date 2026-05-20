@@ -1,0 +1,9 @@
+[opener]
+open = [
+	{ run = "zathura \"$@\"", block = true, desc = "Open with Zathura" }
+]
+
+[open]
+rules = [
+	{ mime = "application/pdf", use = "open" }
+]

@@ -1,0 +1,30 @@
+# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  #
+# /* wallust template - colors-alacritty.toml */
+
+[colors.primary]
+background = '#1E1A1D'
+foreground = '#FDF7FA'
+
+[colors.normal]
+black   = '#454144'
+red     = '#1F0F1D'
+green   = '#281027'
+yellow  = '#2E112D'
+blue    = '#6A1D6C'
+magenta = '#88238C'
+cyan    = '#BBAEB5'
+white   = '#F4EBF0'
+
+[colors.bright]
+black   = '#AAA4A8'
+red     = '#291426'
+green   = '#351634'
+yellow  = '#3D173C'
+blue    = '#8D2690'
+magenta = '#B52EBA'
+cyan    = '#F9E8F1'
+white   = '#F4EBF0'
+
+[colors.cursor]
+text   = '#1E1A1D'
+cursor = '#998697'
