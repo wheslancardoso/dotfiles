@@ -1,10 +1,10 @@
-# ⌨️ Yazi Keymap - Ultimate Power User Edition (Emergency Fix)
+# ⌨️ Yazi Keymap - Ultimate Power User Edition (Plugin Edition)
 
-# --- Substituindo a Ajuda Nativa pelo nosso Guia ---
+# --- Ajuda via Plugin Personalizado ---
 [[manager.prepend_keymap]]
-on   = [ "?" ]
-run  = 'shell "/home/lan/dotfiles/scripts/yazi-help.sh" --block'
-desc = "Ver Guia de Atalhos Personalizado"
+on   = [ "<F10>" ]
+run  = "plugin custom-help"
+desc = "Ver Guia de Atalhos Completo"
 
 # --- Compressão e Extração (ouch) ---
 [[manager.prepend_keymap]]
