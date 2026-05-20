@@ -193,6 +193,7 @@ slurp
 smartmontools
 snapper
 sof-firmware
+starship
 stow
 sudo
 swappy

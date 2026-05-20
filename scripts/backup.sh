@@ -80,6 +80,7 @@ step_backup_configs() {
         qt5ct
         qt6ct
         zellij
+        starship.toml
     )
 
     for f in "${folders[@]}"; do
