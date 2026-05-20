@@ -1,9 +1,23 @@
-# 🚀 Super Zsh Config - Antigravity Edition
+# 🚀 Super Zsh Config - Ultimate Antigravity Edition
 
-# Path do Oh My Zsh
+# --- Path & Environment ---
 export ZSH="$HOME/.oh-my-zsh"
+export EDITOR="nvim"
+export VISUAL="nvim"
 
-# Plugins
+# Adicionando binários locais ao PATH
+export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+
+# Android SDK
+if [ -d "$HOME/Android/Sdk" ]; then
+    export ANDROID_HOME="$HOME/Android/Sdk"
+    export PATH="$PATH:$ANDROID_HOME/emulator"
+    export PATH="$PATH:$ANDROID_HOME/platform-tools"
+    export PATH="$PATH:$ANDROID_HOME/cmdline-tools/latest/bin"
+    export PATH="$PATH:$ANDROID_HOME/build-tools"
+fi
+
+# --- Plugins (Oh My Zsh) ---
 plugins=(
     git
     archlinux
@@ -17,11 +31,12 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-# 🌟 Starship Prompt
+# --- Prompt & Navegação ---
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 
-# 🎨 Aliases Modernos
+# --- Aliases de Produtividade ---
+# Modern Tools
 if command -v eza &> /dev/null; then
     alias ls='eza --icons --group-directories-first'
     alias ll='eza -lbh --icons --group-directories-first'
@@ -31,18 +46,22 @@ fi
 
 if command -v bat &> /dev/null; then
     alias cat='bat --style=plain --paging=never'
-    alias dog='bat' # Versão completa com line numbers
+    alias dog='bat'
 fi
 
-# 🔍 FZF Enhancements
-export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --border --color='hl:#76c1ff,hl+:#76c1ff'"
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-source <(fzf --zsh)
+# Git
+alias lg='lazygit'
+alias gs='git status'
+alias gp='git push'
+alias gl='git log --oneline --graph --decorate'
 
-# ⌨️ Vi Mode
-export KEYTIMEOUT=1
+# Docker
+alias dc='docker-compose'
+alias dps='docker ps'
+alias dimg='docker images'
 
-# 📂 Yazi Wrapper
+# --- Utilitários ---
+# Yazi CWD Wrapper
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
 	yazi "$@" --cwd-file="$tmp"
@@ -52,17 +71,19 @@ function y() {
 	rm -f -- "$tmp"
 }
 
-# 🛠️ Mise & Dev
+# Mise (SDK Manager)
 eval "$(mise activate zsh)"
-export ANDROID_HOME=$HOME/Android/Sdk
-export PATH=$PATH:$ANDROID_HOME/emulator
-export PATH=$PATH:$ANDROID_HOME/platform-tools
 
-# Custom Bin Path
-export PATH="/home/lan/.local/bin:$PATH"
-
-# 🔑 Keyring
+# Keyring
 if [ -z "$SSH_AUTH_SOCK" ]; then
     eval $(gnome-keyring-daemon --start --components=secrets,pkcs11)
     export SSH_AUTH_SOCK
 fi
+
+# --- Vi Mode Settings ---
+export KEYTIMEOUT=1
+# Bindings para busca no histórico com setas ou j/k
+bindkey '^[[A' zsh-history-substring-search-up
+bindkey '^[[B' zsh-history-substring-search-down
+bindkey -M vicmd 'k' zsh-history-substring-search-up
+bindkey -M vicmd 'j' zsh-history-substring-search-down
