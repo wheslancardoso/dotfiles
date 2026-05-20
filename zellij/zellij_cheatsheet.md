@@ -1,37 +1,48 @@
-# ⌨️ Zellij Cheat Sheet (Vim-Style)
+# ⌨️ Guia Definitivo: Zellij (Vim-Style)
 
-Este guia contém os atalhos configurados para o seu ambiente.
+Este é o seu manual rápido para dominar o terminal.
 
-## 🧭 Navegação Básica (Modo Normal)
-*   **Alt + h**: Foco na esquerda (ou aba anterior)
-*   **Alt + l**: Foco na direita (ou próxima aba)
-*   **Alt + j**: Foco abaixo
-*   **Alt + k**: Foco acima
+## 🧭 Navegação (Modo Normal)
+*   **Alt + h/j/k/l**: Mover o foco entre janelas (estilo Vim).
+*   **Alt + [ / ]**: Alternar entre layouts de tela.
+*   **Alt + /**: Abrir este guia de ajuda.
 
-## 🪟 Gerenciamento de Panes (Divisões)
-*   **Ctrl + p** depois de:
-    *   **n**: Novo pane
-    *   **d**: Novo pane abaixo (Down)
-    *   **r**: Novo pane na direita (Right)
-    *   **x**: Fechar pane atual
-    *   **f**: Tela cheia (Toggle Fullscreen)
-    *   **z**: Esconder/Mostrar bordas (Toggle Frames)
+## 🚀 Sessões (O Coração da Persistência)
+*   **No Terminal:**
+    *   `zellij -s [nome]`: Inicia uma nova sessão com nome.
+    *   `zellij ls`: Lista todas as sessões ativas.
+    *   `zellij attach [nome]`: Volta para uma sessão.
+    *   `zellij delete-session [nome]`: Encerra uma sessão específica.
+*   **Dentro do Zellij:**
+    *   **Ctrl + o** -> **d**: **Detach** (Sai e deixa tudo rodando em background).
+    *   **Ctrl + o** -> **w**: Gerenciador de sessões visual.
 
-## 📑 Gerenciamento de Tabs (Abas)
-*   **Ctrl + t** depois de:
-    *   **n**: Nova aba
-    *   **x**: Fechar aba
-    *   **r**: Renomear aba
+## 🪟 Panes (Divisões de Tela)
+*   **Ctrl + p** seguido de:
+    *   **n**: Novo pane.
+    *   **d**: Novo pane abaixo.
+    *   **r**: Novo pane na direita.
+    *   **x**: Fechar pane atual.
+    *   **f**: Alternar tela cheia.
+    *   **w**: Alternar modo flutuante (Janelas sobrepostas).
+    *   **e**: Transformar pane flutuante em fixo (e vice-versa).
 
-## 🔄 Sessões e Persistência
-*   **Ctrl + o** depois de:
-    *   **d**: Detach (Sai mantendo tudo rodando)
-*   **zellij ls**: Lista sessões ativas
-*   **zellij attach [nome]**: Volta para uma sessão
+## 📑 Tabs (Abas)
+*   **Ctrl + t** seguido de:
+    *   **n**: Nova aba.
+    *   **x**: Fechar aba.
+    *   **r**: Renomear aba.
+    *   **s**: Sincronizar abas (O que você digita em uma, sai em todas).
 
-## 📏 Redimensionamento
-*   **Alt + =**: Aumenta o tamanho do pane
-*   **Alt + -**: Diminui o tamanho do pane
+## 🔍 Scroll e Busca
+*   **Ctrl + s** seguido de:
+    *   **s**: Iniciar busca por texto.
+    *   **j/k**: Scroll linha a linha.
+    *   **Ctrl + f/b**: Page Up / Page Down.
+
+## 🛠️ Extras
+*   **Ctrl + g**: Modo **LOCKED** (Bloqueia todos os atalhos para evitar acidentes).
+*   **Ctrl + q**: Sair do Zellij (Encerra a sessão e todos os processos).
 
 ---
-*Dica: Pressione **Ctrl + g** para entrar no modo **LOCKED** (protege contra atalhos acidentais).*
+*Dica: Use **Ctrl + h** para o modo MOVE e reposicionar suas janelas livremente.*

@@ -13,7 +13,7 @@ keybinds {
         bind "Alt /" {
             Run "bash" "-c" "~/dotfiles/scripts/zj-help.sh" {
                 floating true
-                close_on_exit false
+                close_on_exit true
             }
         }
     }
