@@ -1,5 +1,5 @@
 return {
 	entry = function()
-		ya.manager_emit("shell", { block = true, confirm = true, "/home/lan/dotfiles/scripts/yazi-help.sh" })
+		ya.notify({ title = "AJUDA", content = "O ATALHO ESTÁ FUNCIONANDO!", timeout = 5, level = "info" })
 	end,
 }

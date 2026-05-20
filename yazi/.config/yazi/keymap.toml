@@ -1,22 +1,6 @@
-# ⌨️ Yazi Keymap - Absolute Control Edition
+# Yazi Keymap Diagnostic
 
 [manager]
 prepend_keymap = [
-	# Guia de Atalhos Personalizado
-	{ on = [ "<F10>" ], run = 'shell "/home/lan/dotfiles/scripts/yazi-help.sh" --block', desc = "Ver Guia de Atalhos" },
-	
-	# Compressão e Extração (ouch)
-	{ on = [ "a", "e" ], run = 'shell "ouch decompress \"$@\"" --block --confirm', desc = "Extrair arquivos com ouch" },
-	{ on = [ "a", "c" ], run = 'shell "ouch compress \"$@\" \"${1##*/}.zip\"" --block --confirm', desc = "Compactar arquivos para .zip com ouch" },
-	
-	# Criação e Gestão
-	{ on = [ "a", "i" ], run = "create", desc = "Criar novo arquivo" },
-	{ on = [ "a", "d" ], run = "create --dir", desc = "Criar novo diretório" },
-	{ on = [ "d", "d" ], run = "remove --trash", desc = "Mover para a lixeira" },
-	{ on = [ "D" ],     run = "remove", desc = "Deletar permanentemente" },
-	
-	# Utilitários
-	{ on = [ "y" ],     run = 'shell "echo -n \"$@\" | wl-copy" --confirm', desc = "Copiar caminho do arquivo" },
-	{ on = [ "T" ],     run = 'shell "$SHELL" --block', desc = "Abrir terminal aqui" },
-	{ on = [ "f" ],     run = "filter", desc = "Filtrar arquivos (busca rápida)" },
+	{ on = "<F12>", run = "plugin custom-help", desc = "Teste de Notificação" },
 ]
