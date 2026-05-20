@@ -2,7 +2,7 @@
 
 # --- Compressão e Extração (ouch) ---
 [[manager.prepend_keymap]]
-on   = [ "<C-h>" ]
+on   = [ "<F2>" ]
 run  = 'shell "$HOME/dotfiles/scripts/yazi-help.sh" --block'
 desc = "Ver Guia de Atalhos"
 

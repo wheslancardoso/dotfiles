@@ -20,7 +20,7 @@
 - `a` + `c`      : **Compactar** para .zip
 
 ## 🛠️ Utilitários
-- `Ctrl + h`      : Ver este Guia
+- `F2`            : Ver este Guia
 - `y`            : Copiar Caminho (Copy Path)
 - `T`            : Abrir Terminal nesta pasta
 - `.`            : Mostrar/Ocultar arquivos ocultos
