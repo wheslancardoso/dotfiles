@@ -1,5 +1,6 @@
-# ⌨️ Yazi Keymap - Antigravity Edition
+# ⌨️ Yazi Keymap - Ultimate Power User Edition
 
+# --- Compressão e Extração (ouch) ---
 [[manager.prepend_keymap]]
 on   = [ "a", "e" ]
 run  = 'shell "ouch decompress \"$@\"" --block --confirm'
@@ -10,6 +11,28 @@ on   = [ "a", "c" ]
 run  = 'shell "ouch compress \"$@\" \"${1##*/}.zip\"" --block --confirm'
 desc = "Compactar arquivos para .zip com ouch"
 
+# --- Criação e Gestão ---
+[[manager.prepend_keymap]]
+on   = [ "a", "i" ]
+run  = "create"
+desc = "Criar novo arquivo"
+
+[[manager.prepend_keymap]]
+on   = [ "a", "d" ]
+run  = "create --dir"
+desc = "Criar novo diretório"
+
+[[manager.prepend_keymap]]
+on   = [ "d", "d" ]
+run  = "remove --trash"
+desc = "Mover para a lixeira"
+
+[[manager.prepend_keymap]]
+on   = [ "D" ]
+run  = "remove"
+desc = "Deletar permanentemente"
+
+# --- Utilitários ---
 [[manager.prepend_keymap]]
 on   = [ "y" ]
 run  = 'shell "echo -n \"$@\" | wl-copy" --confirm'
@@ -19,3 +42,8 @@ desc = "Copiar caminho do arquivo"
 on   = [ "T" ]
 run  = 'shell "$SHELL" --block'
 desc = "Abrir terminal aqui"
+
+[[manager.prepend_keymap]]
+on   = [ "f" ]
+run  = "filter"
+desc = "Filtrar arquivos (busca rápida)"
