@@ -28,7 +28,7 @@ edit = [
 
 [open]
 rules = [
-	{ name = "*/", use = [ "open", "edit" ] },
+	{ mime = "inode/directory", use = [ "open", "edit" ] },
 	{ mime = "text/*", use = [ "edit", "open" ] },
 	{ mime = "image/*", use = [ "open" ] },
 	{ mime = "video/*", use = [ "open" ] },
