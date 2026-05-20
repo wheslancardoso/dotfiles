@@ -19,6 +19,7 @@ source $ZSH/oh-my-zsh.sh
 
 # 🌟 Starship Prompt
 eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"
 
 # 🎨 Aliases Modernos
 if command -v eza &> /dev/null; then

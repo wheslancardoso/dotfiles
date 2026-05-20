@@ -78,6 +78,8 @@ Este script irá:
 - **Notificações**: SwayNC
 - **SDK Management**: Mise
 - **Terminal Multiplexer**: Zellij (Vim-style)
+- **Fast Navigation**: Zoxide (z)
+- **Quick Manuals**: Tldr
 
 ---
 
