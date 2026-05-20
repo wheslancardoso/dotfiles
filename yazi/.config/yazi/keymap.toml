@@ -1,15 +1,21 @@
-# Atalhos inteligentes para extração e compactação de arquivos
-#
-# Atalhos de extração/compactação:
-#   a, e → Extrair arquivo(s) selecionado(s) (detecta formato automaticamente)
-#   a, c → Compactar arquivo(s) selecionado(s) (menu interativo de formatos)
+# ⌨️ Yazi Keymap - Antigravity Edition
 
-[[mgr.prepend_keymap]]
+[[manager.prepend_keymap]]
 on   = [ "a", "e" ]
-run  = 'shell -- $HOME/.config/yazi/scripts/arquivo.sh extrair %s'
-desc = "Extrair arquivo(s)"
+run  = 'shell "ouch decompress \"$@\"" --block --confirm'
+desc = "Extrair arquivos com ouch"
 
-[[mgr.prepend_keymap]]
+[[manager.prepend_keymap]]
 on   = [ "a", "c" ]
-run  = 'shell -- $HOME/.config/yazi/scripts/arquivo.sh compactar %s'
-desc = "Compactar arquivo(s)"
+run  = 'shell "ouch compress \"$@\" \"${1##*/}.zip\"" --block --confirm'
+desc = "Compactar arquivos para .zip com ouch"
+
+[[manager.prepend_keymap]]
+on   = [ "y" ]
+run  = 'shell "echo -n \"$@\" | wl-copy" --confirm'
+desc = "Copiar caminho do arquivo"
+
+[[manager.prepend_keymap]]
+on   = [ "T" ]
+run  = 'shell "$SHELL" --block'
+desc = "Abrir terminal aqui"

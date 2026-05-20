@@ -155,6 +155,7 @@ opencl-nvidia
 openssh
 os-prober
 otf-font-awesome
+ouch
 pacman-contrib
 pamixer
 paru
