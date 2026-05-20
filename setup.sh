@@ -59,4 +59,14 @@ if [[ "$DEV_CONF" =~ ^[Ss]$ ]]; then
     bash "$DOTFILES_DIR/scripts/dev-setup.sh"
 fi
 
-ok "Configuração finalizada! Reinicie sua sessão."
+# --- Configuração de Sudo sem Senha ---
+echo -e "\n[?] Deseja configurar o sudo para não pedir senha para o seu usuário? (s/n)"
+read -r response
+if [[ "$response" =~ ^([sS][iI]|[sS])$ ]]; then
+    echo -e "[INFO] Configurando sudo NOPASSWD..."
+    echo "$USER ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/$USER-nopasswd
+    sudo chmod 440 /etc/sudoers.d/$USER-nopasswd
+    echo -e "[OK] Sudo configurado com sucesso!"
+fi
+
+echo -e "\n[OK] Setup concluído! Reinicie o terminal para ver as mudanças."
