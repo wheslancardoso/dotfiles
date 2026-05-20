@@ -70,4 +70,28 @@ GDK_BACKEND=$BACKEND yad \
 " ALT E" "Rofi Emoticons" "Emoticon" \
 " H" "Launch this Quick Cheat Sheet" "" \
 "" "" "" \
+"── YAZI ──" "── ATALHOS DO YAZI ──" "──────────" \
+"j / k" "Mover para baixo / cima" "(Navegação Básica)" \
+"h / l" "Voltar pasta / Entrar na pasta" "(Navegação Básica)" \
+"Enter" "Abrir arquivo (app padrão)" "(Navegação Básica)" \
+"q" "Sair do Yazi" "(Navegação Básica)" \
+"" "" "" \
+"r" "Renomear" "(Gestão de Arquivos)" \
+"R" "Bulk Rename (Editar lista no Neovim)" "(Gestão de Arquivos)" \
+"a + i" "Criar novo Arquivo (Insert)" "(Gestão de Arquivos)" \
+"a + d" "Criar novo Diretório" "(Gestão de Arquivos)" \
+"d + d" "Mover para a Lixeira (Trash)" "(Gestão de Arquivos)" \
+"D" "Deletar permanentemente" "(Gestão de Arquivos)" \
+"f" "Filtrar arquivos (Busca rápida)" "(Gestão de Arquivos)" \
+"" "" "" \
+"a + e" "Extrair (detecta formato auto)" "(Compressão e Extração)" \
+"a + c" "Compactar para .zip" "(Compressão e Extração)" \
+"" "" "" \
+"F10" "Ver este Guia" "(Utilitários)" \
+"y" "Copiar Caminho (Copy Path)" "(Utilitários)" \
+"T" "Abrir Terminal nesta pasta" "(Utilitários)" \
+"." "Mostrar/Ocultar arquivos ocultos" "(Utilitários)" \
+"v" "Seleção visual (como no Vim)" "(Utilitários)" \
+"Space" "Selecionar arquivo individual" "(Utilitários)" \
+"" "" "" \
 "More tips:" "https://github.com/JaKooLit/Hyprland-Dots/wiki" ""\
