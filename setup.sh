@@ -59,6 +59,10 @@ if [[ "$DEV_CONF" =~ ^[Ss]$ ]]; then
     bash "$DOTFILES_DIR/scripts/dev-setup.sh"
 fi
 
+# --- Configurações de Apps Padrão ---
+echo -e "[INFO] Definindo Yazi como gerenciador de arquivos padrão..."
+xdg-mime default yazi.desktop inode/directory
+
 # --- Configuração de Sudo sem Senha ---
 echo -e "\n[?] Deseja configurar o sudo para não pedir senha para o seu usuário? (s/n)"
 read -r response
