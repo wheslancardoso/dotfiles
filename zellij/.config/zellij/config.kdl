@@ -1,0 +1,46 @@
+// Zellij Config - Modern Terminal Multiplexer
+// Style: Vim-like navigation
+
+keybinds {
+    normal {
+        bind "Alt h" { MoveFocusOrTab "Left"; }
+        bind "Alt l" { MoveFocusOrTab "Right"; }
+        bind "Alt j" { MoveFocus "Down"; }
+        bind "Alt k" { MoveFocus "Up"; }
+        bind "Alt =" { Resize "Increase"; }
+        bind "Alt -" { Resize "Decrease"; }
+        bind "Alt [" { PreviousSwapLayout; }
+        bind "Alt ]" { NextSwapLayout; }
+    }
+}
+
+// UI & Aesthetics
+theme "catppuccin-mocha"
+default_layout "compact"
+mouse_mode true
+copy_on_select true
+pane_frames false // Cleaner look, style "Vim"
+
+// Plugins
+plugins {
+    tab-bar { path "tab-bar"; }
+    status-bar { path "status-bar"; }
+    strider { path "strider"; }
+    compact-bar { path "compact-bar"; }
+}
+
+themes {
+    catppuccin-mocha {
+        bg "#585b70"
+        fg "#cdd6f4"
+        red "#f38ba8"
+        green "#a6e3a1"
+        blue "#89b4fa"
+        yellow "#f9e2af"
+        magenta "#f5c2e7"
+        orange "#fab387"
+        cyan "#89dceb"
+        black "#181825"
+        white "#cdd6f4"
+    }
+}

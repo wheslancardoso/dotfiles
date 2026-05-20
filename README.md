@@ -77,6 +77,7 @@ Este script irá:
 - **Launcher**: Rofi
 - **Notificações**: SwayNC
 - **SDK Management**: Mise
+- **Terminal Multiplexer**: Zellij (Vim-style)
 
 ---
 

@@ -79,6 +79,7 @@ step_backup_configs() {
         mise
         qt5ct
         qt6ct
+        zellij
     )
 
     for f in "${folders[@]}"; do
