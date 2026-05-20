@@ -1,11 +1,12 @@
-# ⌨️ Yazi Keymap - Ultimate Power User Edition
+# ⌨️ Yazi Keymap - Ultimate Power User Edition (Fix Edition)
 
-# --- Compressão e Extração (ouch) ---
+# --- Ajuda / Cheatsheet ---
 [[manager.prepend_keymap]]
-on   = [ ",", "h" ]
-run  = 'shell "$HOME/dotfiles/scripts/yazi-help.sh" --block'
+on   = [ "H" ]
+run  = 'shell "/home/lan/dotfiles/scripts/yazi-help.sh" --block'
 desc = "Ver Guia de Atalhos"
 
+# --- Compressão e Extração (ouch) ---
 [[manager.prepend_keymap]]
 on   = [ "a", "e" ]
 run  = 'shell "ouch decompress \"$@\"" --block --confirm'
