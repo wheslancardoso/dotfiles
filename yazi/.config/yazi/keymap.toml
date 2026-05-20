@@ -2,6 +2,11 @@
 
 # --- Compressão e Extração (ouch) ---
 [[manager.prepend_keymap]]
+on   = [ "<A-/>" ]
+run  = 'shell "$HOME/dotfiles/scripts/yazi-help.sh" --block'
+desc = "Ver Guia de Atalhos"
+
+[[manager.prepend_keymap]]
 on   = [ "a", "e" ]
 run  = 'shell "ouch decompress \"$@\"" --block --confirm'
 desc = "Extrair arquivos com ouch"
