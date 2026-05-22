@@ -1,7 +1,12 @@
 android-studio
 antigravity
+flutter-bin
+geocode-glib-2
+geocode-glib-common
 google-chrome
 gtk-engine-murrine
+jack
 ttf-victor-mono
+unionfs-fuse
 wallust
 xdg-desktop-portal-termfilechooser-hunkyburrito-git
