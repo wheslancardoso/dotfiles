@@ -128,6 +128,7 @@ apply_dotfiles() {
     # Garantir que o diretório ~/.config existe antes do stow
     mkdir -p "$HOME/.config"
 
+    shopt -s dotglob
     for dir in */; do
         dir=${dir%/}
         if [[ "$dir" != "scripts" && "$dir" != "packages" && "$dir" != ".git" ]]; then
@@ -135,6 +136,7 @@ apply_dotfiles() {
             stow -t "$HOME" "$dir" --adopt # --adopt pega o que já existe no sistema caso haja conflito
         fi
     done
+    shopt -u dotglob
     
     # Reverte possíveis modificações no dotfiles caso o --adopt tenha pego arquivos locais indesejados
     git restore . 2>/dev/null
