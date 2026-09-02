@@ -248,3 +248,4 @@ zathura
 zathura-pdf-mupdf
 zellij
 zoxide
+scrcpy

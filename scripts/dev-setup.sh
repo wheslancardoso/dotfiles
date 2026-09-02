@@ -25,7 +25,8 @@ info "Instalando ferramentas base e compiladores..."
 sudo pacman -S --needed --noconfirm \
     base-devel git gcc make cmake unzip curl \
     ripgrep fd lazygit btop jq bat \
-    zoxide tealdeer stow
+    zoxide tealdeer stow neovim python-pip \
+    zellij scrcpy
 
 # --- 3. Docker (Instalação e Permissões Zero-Touch) ---
 info "Configurando Docker (sem necessidade de sudo posterior)..."
@@ -34,8 +35,8 @@ if ! command -v docker &> /dev/null; then
 fi
 
 # Habilitar e iniciar serviços
-sudo systemctl enable --now docker.service
-sudo systemctl enable --now docker.socket
+sudo systemctl enable --now docker.service 2>/dev/null || true
+sudo systemctl enable --now docker.socket 2>/dev/null || true
 
 # Adicionar usuário ao grupo docker se ainda não estiver
 if ! groups $USER | grep &>/dev/null "\bdocker\b"; then
@@ -68,7 +69,14 @@ git config --global core.editor "nvim"
 git config --global init.defaultBranch main
 git config --global color.ui true
 
-# --- 6. Verificação de Caminhos (Android SDK) ---
+# --- 6. Suíte de Organização e Dependências ---
+info "Configurando dependências do Organizador Master..."
+if [ -f "$DOTFILES_DIR/scripts/organizador/requirements.txt" ]; then
+    pip install --user -r "$DOTFILES_DIR/scripts/organizador/requirements.txt" 2>/dev/null || true
+    ok "Dependências do organizador configuradas."
+fi
+
+# --- 7. Verificação de Caminhos (Android SDK) ---
 if [ -d "$HOME/Android/Sdk" ]; then
     ok "Android SDK detectado em ~/Android/Sdk"
 else
@@ -79,8 +87,10 @@ fi
 echo -e "\n"
 ok "Setup de Desenvolvimento finalizado!"
 echo -e "${YELLOW}------------------------------------------------------------${NC}"
-echo -e "Próximos passos sugeridos:"
-echo -e "1. Faça Logout e Login para ativar as permissões do Docker."
-echo -e "2. Use 'lg' para abrir o Lazygit em qualquer repositório."
-echo -e "3. Use 'z [pasta]' para navegar rapidamente entre projetos."
+echo -e "Próximos passos e atalhos:"
+echo -e "1. ${BLUE}nvim${NC}                 : Abre o LazyVim com LSP (Java, TS, Python, etc.)"
+echo -e "2. ${BLUE}zellij --layout vibe${NC} : Inicia sessão Vibe Coding (LazyVim + Antigravity CLI)"
+echo -e "3. ${BLUE}scrcpy${NC}               : Espelha celular Android como janela leve no Hyprland"
+echo -e "4. ${BLUE}python3 ~/dotfiles/scripts/organizador/main.py --all${NC} : Organiza Desktop e Downloads"
+echo -e "5. Faça Logout e Login para ativar as permissões do Docker."
 echo -e "${YELLOW}------------------------------------------------------------${NC}"

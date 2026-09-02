@@ -1,0 +1,128 @@
+# ==============================================================================
+#  GLAZEWM CONFIGURATION — CATPPUCCIN MOCHA / HYPRLAND STYLE
+#  Customizado para paridade total de navegação com Hyprland e atalhos Vim (hjkl)
+# ==============================================================================
+
+general:
+  # Espaçamento (Gaps) entre janelas
+  gaps:
+    inner_gap: "8px"
+    outer_gap: "8px"
+
+  # Cores das bordas (Paleta Catppuccin Mocha)
+  focused_border:
+    color: "#cba6f7"   # Lilás/Mauve Catppuccin
+    width: "2px"
+
+  unfocused_border:
+    color: "#313244"
+    width: "1px"
+
+# Regras automáticas de janelas flutuantes (Popups, Diálogos, etc.)
+window_rules:
+  - command: "set floating"
+    match_process_name:
+      - "/Taskmgr/"
+      - "/SystemSettings/"
+      - "/CalculatorApp/"
+      - "/Flow.Launcher/"
+      - "/AnyDesk/"
+      - "/Lightshot/"
+      - "/Flameshot/"
+      - "/steam/"
+
+  - command: "set floating"
+    match_class_name:
+      - "/#32770/"   # Diálogos comuns do Windows ("Salvar Como", "Abrir Arquivo")
+      - "/OperationStatusWindow/"
+
+# Binds de Teclado (Baseados no seu Hyprland)
+keybindings:
+  # --- Foco entre janelas (Estilo Vim: hjkl) ---
+  - command: "focus left"
+    bindings: ["alt+h", "alt+left"]
+  - command: "focus right"
+    bindings: ["alt+l", "alt+right"]
+  - command: "focus up"
+    bindings: ["alt+k", "alt+up"]
+  - command: "focus down"
+    bindings: ["alt+j", "alt+down"]
+
+  # --- Mover janelas de posição ---
+  - command: "move left"
+    bindings: ["alt+shift+h", "alt+shift+left"]
+  - command: "move right"
+    bindings: ["alt+shift+l", "alt+shift+right"]
+  - command: "move up"
+    bindings: ["alt+shift+k", "alt+shift+up"]
+  - command: "move down"
+    bindings: ["alt+shift+j", "alt+shift+down"]
+
+  # --- Redimensionar janelas ---
+  - command: "resize width +2%"
+    binding: "alt+ctrl+l"
+  - command: "resize width -2%"
+    binding: "alt+ctrl+h"
+  - command: "resize height +2%"
+    binding: "alt+ctrl+j"
+  - command: "resize height -2%"
+    binding: "alt+ctrl+k"
+
+  # --- Controle da Janela Ativa ---
+  - command: "close"
+    binding: "alt+shift+q"
+  - command: "toggle-fullscreen"
+    binding: "alt+f"
+  - command: "toggle-floating"
+    bindings: ["alt+shift+space", "alt+v"]
+  - command: "toggle-tiling-direction"
+    binding: "alt+s"
+
+  # --- Workspaces (1 a 9) ---
+  - command: "focus workspace 1"
+    binding: "alt+1"
+  - command: "focus workspace 2"
+    binding: "alt+2"
+  - command: "focus workspace 3"
+    binding: "alt+3"
+  - command: "focus workspace 4"
+    binding: "alt+4"
+  - command: "focus workspace 5"
+    binding: "alt+5"
+  - command: "focus workspace 6"
+    binding: "alt+6"
+  - command: "focus workspace 7"
+    binding: "alt+7"
+  - command: "focus workspace 8"
+    binding: "alt+8"
+  - command: "focus workspace 9"
+    binding: "alt+9"
+
+  - command: "move to workspace 1"
+    binding: "alt+shift+1"
+  - command: "move to workspace 2"
+    binding: "alt+shift+2"
+  - command: "move to workspace 3"
+    binding: "alt+shift+3"
+  - command: "move to workspace 4"
+    binding: "alt+shift+4"
+  - command: "move to workspace 5"
+    binding: "alt+shift+5"
+  - command: "move to workspace 6"
+    binding: "alt+shift+6"
+  - command: "move to workspace 7"
+    binding: "alt+shift+7"
+  - command: "move to workspace 8"
+    binding: "alt+shift+8"
+  - command: "move to workspace 9"
+    binding: "alt+shift+9"
+
+  # --- Lançadores Rápidos ---
+  - command: "exec wt"
+    binding: "alt+enter"              # Abre Windows Terminal
+  - command: "exec wt yazi"
+    binding: "alt+shift+e"            # Abre Yazi direto no Terminal
+  - command: "toggle-pause"
+    binding: "alt+p"                  # Pausa Tiling temporariamente para Jogos/Vídeos
+  - command: "reload-config"
+    binding: "alt+shift+r"            # Recarrega configurações

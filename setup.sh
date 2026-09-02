@@ -131,7 +131,7 @@ apply_dotfiles() {
     shopt -s dotglob
     for dir in */; do
         dir=${dir%/}
-        if [[ "$dir" != "scripts" && "$dir" != "packages" && "$dir" != ".git" ]]; then
+        if [[ "$dir" != "scripts" && "$dir" != "packages" && "$dir" != "docs" && "$dir" != "windows" && "$dir" != ".git" ]]; then
             info "Linkando $dir..."
             stow -t "$HOME" "$dir" --adopt # --adopt pega o que já existe no sistema caso haja conflito
         fi
@@ -173,7 +173,7 @@ setup_shell
 setup_extras
 
 printf "\n"
-read -p "Deseja configurar o ambiente de desenvolvimento agora? (Docker, Mise, etc) [s/N] " DEV_CONF
+read -p "Deseja configurar o ambiente de desenvolvimento agora? (Docker, Mise, Neovim/LazyVim) [s/N] " DEV_CONF
 if [[ "$DEV_CONF" =~ ^[Ss]$ ]]; then
     if [ -f "$DOTFILES_DIR/scripts/dev-setup.sh" ]; then
         bash "$DOTFILES_DIR/scripts/dev-setup.sh"
@@ -182,7 +182,11 @@ if [[ "$DEV_CONF" =~ ^[Ss]$ ]]; then
     fi
 fi
 
-echo -e "\n${GREEN}===============================================${NC}"
-echo -e "${GREEN}     SETUP CONCLUÍDO COM SUCESSO! 🚀           ${NC}"
-echo -e "${GREEN}===============================================${NC}"
-echo -e "Por favor, reinicie a sessão ou o computador para aplicar todas as mudanças (especialmente os grupos e o novo shell)."
+echo -e "\n${GREEN}=====================================================${NC}"
+echo -e "${GREEN}     SETUP CONCLUÍDO COM SUCESSO! 🚀                 ${NC}"
+echo -e "${GREEN}=====================================================${NC}"
+echo -e "Dicas de comandos rápidos:"
+echo -e "  - ${BLUE}nvim${NC}                 : Abre o LazyVim com LSP e temas"
+echo -e "  - ${BLUE}zellij --layout vibe${NC} : Inicia Vibe Coding (LazyVim + Antigravity CLI)"
+echo -e "  - ${BLUE}organizar${NC}            : Executa a suíte de organização de arquivos"
+echo -e "Por favor, reinicie a sessão ou o computador para aplicar todas as mudanças."

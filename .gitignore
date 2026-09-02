@@ -6,7 +6,12 @@
 
 # Ignorar pastas de cache se houver
 .cache/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
 
 # Ignorar arquivos sensíveis (exemplo)
 .env*
 !.env.example
+

@@ -1,0 +1,132 @@
+{
+  "versao_config": "2.0.0",
+  "descricao": "Regras de classificação e organização automática de arquivos para PC e Google Drive",
+  "diretorios_mestre": {
+    "00_inbox": "00_Inbox_Triagem",
+    "01_pessoal": "01_Pessoal_e_Vida",
+    "02_estudos": "02_Estudos_e_Concursos",
+    "03_wfix": "03_Profissional_WFIX",
+    "04_dev": "04_Desenvolvimento_e_Codigo",
+    "05_design": "05_Design_Midia_e_Criacao",
+    "06_backups": "06_Backups_ISOs_e_Sistemas"
+  },
+  "subpastas_padrao": {
+    "01_Pessoal_e_Vida": [
+      "01.1_Identidade_e_Documentos",
+      "01.2_Carreira_e_Curriculos",
+      "01.3_Frequencia_e_Viagens",
+      "01.4_clareza",
+      "01.5_Financas_e_Contas"
+    ],
+    "02_Estudos_e_Concursos": [
+      "02.1_TCE-GO",
+      "02.2_Senador_Canedo",
+      "02.3_Cursos_e_Certificacoes",
+      "02.4_Biblioteca_e_Ebooks"
+    ],
+    "03_Profissional_WFIX": [
+      "03.1_IA_Prompts_e_SOPs",
+      "03.2_Automacoes_n8n",
+      "03.3_Historico_e_Casos",
+      "03.4_Clientes_e_Whats",
+      "03.5_Aulas_e_Treinamentos"
+    ],
+    "04_Desenvolvimento_e_Codigo": [
+      "04.1_Projetos_Web_e_Apps",
+      "04.2_Extensoes_e_Plugins",
+      "04.3_Scripts_e_Automacoes"
+    ],
+    "05_Design_Midia_e_Criacao": [
+      "05.1_Artes_e_Cartazes",
+      "05.2_Audios_e_Vozes",
+      "05.3_Letras_e_Composicoes"
+    ],
+    "06_Backups_ISOs_e_Sistemas": [
+      "06.1_Imagens_e_Snapshots",
+      "06.2_Maquinas_Virtuais_WSL",
+      "06.3_Instaladores_e_ISOs"
+    ]
+  },
+  "regras_palavras_chave": [
+    {
+      "termos": ["tce", "tce-go", "tribunal de contas", "posse tce", "protocolo de guerra"],
+      "destino": "02_Estudos_e_Concursos/02.1_TCE-GO"
+    },
+    {
+      "termos": ["senador canedo", "camara senador", "edital 001", "cronograma senador"],
+      "destino": "02_Estudos_e_Concursos/02.2_Senador_Canedo"
+    },
+    {
+      "termos": ["slide", "slides", "materialatividade", "zachman", "togaf", "dama", "dmbok", "eda", "olap", "etl", "lakehouse"],
+      "destino": "02_Estudos_e_Concursos/02.3_Cursos_e_Certificacoes"
+    },
+    {
+      "termos": ["curriculo", "currículo", "curriculum", "resume", "cv.pdf"],
+      "destino": "01_Pessoal_e_Vida/01.2_Carreira_e_Curriculos"
+    },
+    {
+      "termos": ["certificado", "comprovante", "comprovante_endereco", "declaracao", "rg", "cpf"],
+      "destino": "01_Pessoal_e_Vida/01.1_Identidade_e_Documentos"
+    },
+    {
+      "termos": ["frequencia", "frequência", "sfr", "viagem", "viagens", "diaria", "ponto"],
+      "destino": "01_Pessoal_e_Vida/01.3_Frequencia_e_Viagens"
+    },
+    {
+      "termos": ["n8n", "fluxo", "webhook", "blocos_intencao", "blocos_fluxo"],
+      "destino": "03_Profissional_WFIX/03.2_Automacoes_n8n"
+    },
+    {
+      "termos": ["atendimento", "playbook", "guia atendimento", "engenheiro de seguranca", "ia para atendimento", "chatgpt-", "conversas_ia", "prompts"],
+      "destino": "03_Profissional_WFIX/03.1_IA_Prompts_e_SOPs"
+    },
+    {
+      "termos": ["atendimento_aula", "negociacao_aula", "treinamento", "gravacao_aula"],
+      "destino": "03_Profissional_WFIX/03.5_Aulas_e_Treinamentos"
+    },
+    {
+      "termos": ["conversa do whatsapp", "cliente", "transcricao"],
+      "destino": "03_Profissional_WFIX/03.4_Clientes_e_Whats"
+    },
+    {
+      "termos": ["cartaz", "palestra", "aniversario", "aniversário", "cavalete", "elevador", "ouvidoria", "convite", "post instagram", "agosto lilas", "agosto lilás"],
+      "destino": "05_Design_Midia_e_Criacao/05.1_Artes_e_Cartazes"
+    },
+    {
+      "termos": ["carl johnson", "king von", "whatsapp ptt", "whatsapp audio", "slowed", "voz", "sample", "soundtrack"],
+      "destino": "05_Design_Midia_e_Criacao/05.2_Audios_e_Vozes"
+    },
+    {
+      "termos": [".mrimgx", "backup-codes", "snapshot", "backup"],
+      "destino": "06_Backups_ISOs_e_Sistemas/06.1_Imagens_e_Snapshots"
+    },
+    {
+      "termos": ["arch.exe", "ext4.vhdx", "rootfs.tar.gz", "wsl", "vbox", "virtualbox"],
+      "destino": "06_Backups_ISOs_e_Sistemas/06.2_Maquinas_Virtuais_WSL"
+    }
+  ],
+  "regras_extensoes": {
+    ".epub": "02_Estudos_e_Concursos/02.4_Biblioteca_e_Ebooks",
+    ".mobi": "02_Estudos_e_Concursos/02.4_Biblioteca_e_Ebooks",
+    ".iso": "06_Backups_ISOs_e_Sistemas/06.3_Instaladores_e_ISOs",
+    ".exe": "06_Backups_ISOs_e_Sistemas/06.3_Instaladores_e_ISOs",
+    ".msi": "06_Backups_ISOs_e_Sistemas/06.3_Instaladores_e_ISOs",
+    ".apk": "06_Backups_ISOs_e_Sistemas/06.3_Instaladores_e_ISOs",
+    ".ps1": "04_Desenvolvimento_e_Codigo/04.3_Scripts_e_Automacoes",
+    ".sh": "04_Desenvolvimento_e_Codigo/04.3_Scripts_e_Automacoes",
+    ".py": "04_Desenvolvimento_e_Codigo/04.3_Scripts_e_Automacoes",
+    ".mp3": "05_Design_Midia_e_Criacao/05.2_Audios_e_Vozes",
+    ".ogg": "05_Design_Midia_e_Criacao/05.2_Audios_e_Vozes",
+    ".wav": "05_Design_Midia_e_Criacao/05.2_Audios_e_Vozes",
+    ".flac": "05_Design_Midia_e_Criacao/05.2_Audios_e_Vozes"
+  },
+  "arquivos_ignorados": [
+    "desktop.ini",
+    "Thumbs.db",
+    ".git",
+    ".gitignore",
+    "node_modules",
+    "__pycache__",
+    ".venv"
+  ]
+}

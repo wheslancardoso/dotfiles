@@ -49,11 +49,28 @@ if command -v bat &> /dev/null; then
     alias dog='bat'
 fi
 
-# Git
+# Git & Dev
 alias lg='lazygit'
+alias ld='lazydocker'
 alias gs='git status'
 alias gp='git push'
 alias gl='git log --oneline --graph --decorate'
+alias vim='nvim'
+
+# 👑 Vim King & Ajuda Interativa
+alias vk='$HOME/dotfiles/scripts/vim-king.sh'
+alias vim-king='$HOME/dotfiles/scripts/vim-king.sh'
+
+# 🚀 Vibe Coding & Layouts Zellij
+alias vibe='zellij --layout vibe'
+alias fullstack='zellij --layout fullstack'
+alias mobile='zellij --layout mobile'
+
+# 📱 Mobile Dev (scrcpy sem lag)
+alias scrcpy-dev='scrcpy --always-on-top --window-title "Mobile Emulator Device"'
+
+# 🧹 Organizador Master
+alias organizar='python3 ~/dotfiles/scripts/organizador/main.py'
 
 # Docker
 alias dc='docker-compose'

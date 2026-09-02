@@ -1,0 +1,4 @@
+# Organizador Master usa exclusivamente a biblioteca padrão do Python 3 (zero dependências obrigatórias).
+# Dependências opcionais para formatação rica no terminal:
+# rich>=13.0.0
+# colorama>=0.4.6

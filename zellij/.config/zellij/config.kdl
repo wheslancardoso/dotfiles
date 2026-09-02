@@ -11,6 +11,12 @@ keybinds {
         bind "Alt -" { Resize "Decrease"; }
         bind "Alt [" { PreviousSwapLayout; }
         bind "Alt /" {
+            Run "bash" "-c" "~/dotfiles/scripts/vim-king.sh" {
+                floating true
+                close_on_exit true
+            }
+        }
+        bind "Alt ?" {
             Run "bash" "-c" "~/dotfiles/scripts/zj-help.sh" {
                 floating true
                 close_on_exit true
