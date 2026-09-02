@@ -58,6 +58,7 @@ $categories = [ordered]@{
         @{ Name = "ImageGlass (Visualizador Fotos)"; Id = "DuongDieuPhap.ImageGlass" }
     )
     "Mídia, Streaming & Torrents" = @(
+        @{ Name = "OBS Studio (Gravação & Stream)";  Id = "OBSProject.OBSStudio" },
         @{ Name = "PotPlayer (Player Vídeo Leve)";   Id = "Daum.PotPlayer" },
         @{ Name = "VLC Media Player";                Id = "VideoLAN.VLC" },
         @{ Name = "mpv (Player Minimalista)";        Id = "shinchiro.mpv" },
@@ -65,9 +66,15 @@ $categories = [ordered]@{
         @{ Name = "Spotify";                         Id = "Spotify.Spotify" },
         @{ Name = "qBittorrent";                     Id = "qBittorrent.qBittorrent" }
     )
-    "Comunicação" = @(
+    "Comunicação & Chat" = @(
+        @{ Name = "Vesktop (Discord Otimizado)";     Id = "Vencord.Vesktop" },
         @{ Name = "Discord";                         Id = "Discord.Discord" },
         @{ Name = "Kotatogram / Telegram Desktop";   Id = "Telegram.TelegramDesktop" }
+    )
+    "Jogos & Gerenciamento de Saves" = @(
+        @{ Name = "Steam";                           Id = "Valve.Steam" },
+        @{ Name = "Heroic Games Launcher";           Id = "HeroicGamesLauncher.HeroicGamesLauncher" },
+        @{ Name = "Ludusavi (Backup de Saves)";      Id = "mtkennerly.ludusavi" }
     )
     "Desenvolvimento & Banco de Dados" = @(
         @{ Name = "Windows Terminal";                Id = "Microsoft.WindowsTerminal" },
@@ -79,9 +86,10 @@ $categories = [ordered]@{
         @{ Name = "Bruno (API Client / Postman)";    Id = "Usebruno.Bruno" }
     )
     "Virtualização & Hardware" = @(
+        @{ Name = "NVIDIA App (Drivers & Otimização)"; Id = "Nvidia.App" },
+        @{ Name = "AMD Software: Adrenalin Edition"; Id = "AdvancedMicroDevices.AMDSoftwareAdrenalinEdition" },
         @{ Name = "Oracle VirtualBox";               Id = "Oracle.VirtualBox" },
-        @{ Name = "VMware Workstation Pro (Free)";   Id = "VMware.WorkstationPro" },
-        @{ Name = "AMD Software: Adrenalin Edition"; Id = "AdvancedMicroDevices.AMDSoftwareAdrenalinEdition" }
+        @{ Name = "VMware Workstation Pro (Free)";   Id = "VMware.WorkstationPro" }
     )
 }
 

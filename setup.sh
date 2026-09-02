@@ -20,8 +20,20 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 info "Iniciando instalação e configuração do sistema..."
 
-# 1. Atualizar o sistema base
+# 1. Habilitar multilib e atualizar o sistema base
+enable_multilib() {
+    info "Verificando repositório multilib (necessário para Steam/Wine/Nvidia 32-bit)..."
+    if [ -f /etc/pacman.conf ] && ! grep -q "^\[multilib\]" /etc/pacman.conf; then
+        sudo sed -i '/\[multilib\]/,/Include/s/^#//' /etc/pacman.conf
+        sudo pacman -Sy
+        ok "Repositório multilib ativado."
+    else
+        ok "Multilib já está ativo ou configurado."
+    fi
+}
+
 update_system() {
+    enable_multilib
     info "Atualizando o sistema..."
     sudo pacman -Syu --noconfirm
     ok "Sistema atualizado."
@@ -54,7 +66,7 @@ install_packages() {
 # 4. Configurar grupos de usuário
 setup_groups() {
     info "Adicionando usuário aos grupos necessários..."
-    for group in wheel audio input lp storage video users rfkill docker adbusers nopasswdlogin; do
+    for group in wheel audio input lp storage video users rfkill docker adbusers nopasswdlogin gamemode; do
         if getent group "$group" >/dev/null; then
             sudo gpasswd -a "$USER" "$group" >/dev/null
         else
@@ -88,6 +100,7 @@ setup_services() {
     info "Habilitando serviços de usuário..."
     local usr_services=(
         "pipewire.service"
+        "pipewire-pulse.service"
         "wireplumber.service"
         "xdg-user-dirs.service"
     )
@@ -185,8 +198,12 @@ fi
 echo -e "\n${GREEN}=====================================================${NC}"
 echo -e "${GREEN}     SETUP CONCLUÍDO COM SUCESSO! 🚀                 ${NC}"
 echo -e "${GREEN}=====================================================${NC}"
-echo -e "Dicas de comandos rápidos:"
+echo -e "Dicas de comandos e apps configurados:"
 echo -e "  - ${BLUE}nvim${NC}                 : Abre o LazyVim com LSP e temas"
 echo -e "  - ${BLUE}zellij --layout vibe${NC} : Inicia Vibe Coding (LazyVim + Antigravity CLI)"
 echo -e "  - ${BLUE}organizar${NC}            : Executa a suíte de organização de arquivos"
+echo -e "  - ${BLUE}lutris / heroic${NC}      : Gerenciadores de Jogos & FitGirl Repacks (Proton-GE)"
+echo -e "  - ${BLUE}vesktop${NC}              : Discord com compartilhamento de tela e áudio no Wayland"
+echo -e "  - ${BLUE}easyeffects${NC}          : Filtro de ruído por IA para microfone (PipeWire)"
+echo -e "  - ${BLUE}obs${NC}                  : OBS Studio com gravação NVENC (NVIDIA RTX 5060)"
 echo -e "Por favor, reinicie a sessão ou o computador para aplicar todas as mudanças."

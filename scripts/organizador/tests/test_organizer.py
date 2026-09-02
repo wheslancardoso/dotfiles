@@ -5,9 +5,13 @@ Execução: python -m unittest discover tests
 
 import json
 import shutil
+import sys
 import tempfile
 import unittest
 from pathlib import Path
+
+# Adiciona o diretório raiz do organizador ao sys.path para importação de src
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from src.core import FileOrganizerEngine
 from src.history import HistoryManager

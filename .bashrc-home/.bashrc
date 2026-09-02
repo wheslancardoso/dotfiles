@@ -1,14 +1,87 @@
 #
-# ~/.bashrc
+# ~/.bashrc - Super Bash Config (Antigravity & Power User Edition)
 #
 
-# If not running interactively, don't do anything
+# Se não estiver em sessão interativa, encerra
 [[ $- != *i* ]] && return
 
-alias ls='ls --color=auto'
-alias grep='grep --color=auto'
-PS1='[\u@\h \W]\$ '
+# --- Path & Environment ---
+export EDITOR="nvim"
+export VISUAL="nvim"
+export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 
+# Android SDK
+if [ -d "$HOME/Android/Sdk" ]; then
+    export ANDROID_HOME="$HOME/Android/Sdk"
+    export PATH="$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/build-tools"
+fi
 
-# Added by Antigravity CLI installer
-export PATH="/home/lan/.local/bin:$PATH"
+# --- Prompt & Navegação ---
+if command -v starship &> /dev/null; then
+    eval "$(starship init bash)"
+else
+    PS1='[\u@\h \W]\$ '
+fi
+
+if command -v zoxide &> /dev/null; then
+    eval "$(zoxide init bash)"
+fi
+
+if command -v mise &> /dev/null; then
+    eval "$(mise activate bash)"
+fi
+
+# --- Aliases de Produtividade ---
+# Ferramentas Modernas
+if command -v eza &> /dev/null; then
+    alias ls='eza --icons --group-directories-first'
+    alias ll='eza -lbh --icons --group-directories-first'
+    alias la='eza -labh --icons --group-directories-first'
+    alias lt='eza --tree --icons --group-directories-first'
+else
+    alias ls='ls --color=auto'
+    alias ll='ls -la'
+fi
+
+if command -v bat &> /dev/null; then
+    alias cat='bat --style=plain --paging=never'
+    alias dog='bat'
+fi
+
+# Git & Dev
+alias vim='nvim'
+alias lg='lazygit'
+alias ld='lazydocker'
+alias gs='git status'
+alias gp='git push'
+alias gl='git log --oneline --graph --decorate'
+
+# 👑 Vim King & Ajuda Interativa
+alias vk='$HOME/dotfiles/scripts/vim-king.sh'
+alias vim-king='$HOME/dotfiles/scripts/vim-king.sh'
+
+# 🚀 Vibe Coding & Layouts Zellij
+alias vibe='zellij --layout vibe'
+alias fullstack='zellij --layout fullstack'
+alias mobile='zellij --layout mobile'
+
+# 📱 Mobile Dev
+alias scrcpy-dev='scrcpy --always-on-top --window-title "Mobile Emulator Device"'
+
+# 🧹 Organizador Master
+alias organizar='python3 ~/dotfiles/scripts/organizador/main.py'
+
+# Docker
+alias dc='docker-compose'
+alias dps='docker ps'
+alias dimg='docker images'
+
+# Yazi CWD Wrapper
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}

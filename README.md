@@ -12,6 +12,7 @@
 ## ✨ Destaques do Ecossistema
 
 - 🚀 **Setup One-Shot (`setup.sh`)**: Instalação e replicação completa de todo o sistema operacional, pacotes e configurações com um único comando.
+- 🎮 **Gaming & Streaming Elite**: Suporte total a **FitGirl Repacks** e Steam com **Lutris/Heroic (Proton-GE)**, **GameMode**, **MangoHud**, **Vesktop** (Discord com áudio/stream no Wayland), **OBS Studio NVENC** e cancelamento de ruído no mic via IA (**EasyEffects**).
 - 💻 **Vibe Coding Suite (`vibe`)**: Integração de **LazyVim** (LSP Java, TypeScript, Python, Go, Rust), **Antigravity CLI (`agy`)** e layout dinâmico no **Zellij**.
 - 🧹 **Organizador Master Integrado**: Classificação automática de arquivos em taxonomia mestre ordinal (`00_` a `06_`), histórico com rollback (`--undo`), padronização de datas ISO e calculadora de partições.
 - 📦 **GNU Stow Modular**: Gerenciamento limpo e transparente de dotfiles via links simbólicos automáticos.
@@ -31,6 +32,7 @@
 │   └── pacman-aur.txt
 ├── docs/                            # 📚 Hub Central de Guias ([Ver Portal INDEX.md](./docs/INDEX.md))
 │   ├── INDEX.md                     # 🧭 Portal Mestre de Navegação de toda a Documentação
+│   ├── GUIA_GAMING_STREAMING_LINUX.md # 🎮 Gaming, FitGirl Repacks, RTX 5060, Vesktop & Áudio IA
 │   ├── GUIA_POWERUSER_DEV.md        # ⚡ Guia Power User (Zero microatritos, Dadbod SQL, Kulala REST, Surround)
 │   ├── GUIA_FULLSTACK_WORKFLOWS.md  # 🚀 Workflows Práticos (Java Spring, React/Next, Mobile, Python, Rust, Go)
 │   ├── GUIA_ATALHOS_E_KEYBINDS_MESTRE.md # ⌨️ Cheat Sheet Mestre (Hyprland, Zellij, Yazi, Neovim, Shell)

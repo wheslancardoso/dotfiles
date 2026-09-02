@@ -4,9 +4,15 @@ flutter-bin
 geocode-glib-2
 geocode-glib-common
 google-chrome
+gpu-screen-recorder
+gpu-screen-recorder-gtk
 gtk-engine-murrine
+heroic-games-launcher-bin
 jack
+ludusavi-bin
+protonup-qt
 ttf-victor-mono
 unionfs-fuse
+vesktop-bin
 wallust
 xdg-desktop-portal-termfilechooser-hunkyburrito-git

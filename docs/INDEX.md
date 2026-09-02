@@ -15,8 +15,9 @@
 │   ├── [GUIA_LAZYVIM_ANTIGRAVITY.md](./GUIA_LAZYVIM_ANTIGRAVITY.md) # Vibe Coding (Neovim + Antigravity CLI + Zellij)
 │   └── [GUIA_ATALHOS_E_KEYBINDS_MESTRE.md](./GUIA_ATALHOS_E_KEYBINDS_MESTRE.md) # Cheat sheet geral de atalhos
 │
-├── 🛠️ SETUP DE MÁQUINA & BACKUPS
+├── 🛠️ SETUP DE MÁQUINA, JOGOS & BACKUPS
 │   ├── [GUIA_SETUP_PC.md](./GUIA_SETUP_PC.md)                     # Guia automatizado pós-formatação (Linux & Windows)
+│   ├── [GUIA_GAMING_STREAMING_LINUX.md](./GUIA_GAMING_STREAMING_LINUX.md) # 🎮 Gaming, FitGirl Repacks, RTX 5060, Vesktop & Áudio IA
 │   └── [GUIA_BACKUP_PRE_FORMATACAO.md](./GUIA_BACKUP_PRE_FORMATACAO.md) # Checklist seguro de backup (SSH, saves, configs)
 │
 ├── 🧹 ORGANIZAÇÃO & TAXONOMIA DE ARQUIVOS
@@ -45,11 +46,12 @@
 
 ---
 
-### 🛠️ 2. Setup de Sistema & Backups
+### 🛠️ 2. Setup de Sistema, Jogos & Backups
 
 | Documento | Foco Principal | Quando Consultar? |
 |---|---|---|
 | [**GUIA_SETUP_PC.md**](./GUIA_SETUP_PC.md) | Instalação em lote de softwares, debloat e particionamento | Ao formatar um computador novo (Linux ou Windows) |
+| [**GUIA_GAMING_STREAMING_LINUX.md**](./GUIA_GAMING_STREAMING_LINUX.md) | Jogos FitGirl, Proton-GE, RTX 5060, Vesktop e Áudio IA | Para jogar e fazer streaming em alto nível no Arch + Hyprland |
 | [**GUIA_BACKUP_PRE_FORMATACAO.md**](./GUIA_BACKUP_PRE_FORMATACAO.md) | Coleta de chaves SSH, saves de jogos (Ludusavi) e perfis | Antes de formatar qualquer disco |
 
 ---
