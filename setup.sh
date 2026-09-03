@@ -87,6 +87,7 @@ setup_services() {
         "ufw.service"
         "systemd-timesyncd.service"
         "avahi-daemon.service"
+        "ananicy-cpp.service"
     )
 
     for svc in "${sys_services[@]}"; do

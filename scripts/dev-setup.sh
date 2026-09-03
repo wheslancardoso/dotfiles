@@ -49,10 +49,14 @@ fi
 
 # --- 4. SDK Management (Mise) ---
 info "Sincronizando linguagens e runtimes com o Mise..."
+if ! command -v mise &> /dev/null; then
+    info "Instalando Mise (asdf replacement em Rust)..."
+    curl -fsSL https://mise.run | sh
+    export PATH="$HOME/.local/bin:$PATH"
+fi
+
 if command -v mise &> /dev/null; then
-    # Garante que o diretório de config existe no backup
     mkdir -p ~/.config/mise
-    # Tenta instalar tudo o que estiver no arquivo de config
     if [ -f "$HOME/.config/mise/config.toml" ]; then
         mise install -y
         ok "Runtimes do Mise instaladas com sucesso."
@@ -60,7 +64,7 @@ if command -v mise &> /dev/null; then
         warn "Arquivo config.toml do Mise não encontrado. Pulando instalação automática."
     fi
 else
-    warn "Mise não instalado. Por favor, instale o Mise para gerenciar SDKs."
+    warn "Não foi possível inicializar o Mise nesta sessão."
 fi
 
 # --- 5. Configuração do Git ---
@@ -77,10 +81,18 @@ if [ -f "$DOTFILES_DIR/scripts/organizador/requirements.txt" ]; then
 fi
 
 # --- 7. Verificação de Caminhos (Android SDK) ---
-if [ -d "$HOME/Android/Sdk" ]; then
-    ok "Android SDK detectado em ~/Android/Sdk"
+ANDROID_DIR=""
+for p in "$HOME/android/sdk" "$HOME/Android/Sdk"; do
+    if [ -d "$p" ]; then
+        ANDROID_DIR="$p"
+        break
+    fi
+done
+
+if [ -n "$ANDROID_DIR" ]; then
+    ok "Android SDK detectado em $ANDROID_DIR"
 else
-    warn "Android SDK não encontrado. Se precisar dele, instale em ~/Android/Sdk para automação do PATH."
+    warn "Android SDK não encontrado. Se precisar dele, instale em ~/android/sdk para automação do PATH."
 fi
 
 # --- Finalização ---

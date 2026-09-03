@@ -8,14 +8,17 @@ export VISUAL="nvim"
 # Adicionando binários locais ao PATH
 export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 
-# Android SDK
-if [ -d "$HOME/Android/Sdk" ]; then
-    export ANDROID_HOME="$HOME/Android/Sdk"
-    export PATH="$PATH:$ANDROID_HOME/emulator"
-    export PATH="$PATH:$ANDROID_HOME/platform-tools"
-    export PATH="$PATH:$ANDROID_HOME/cmdline-tools/latest/bin"
-    export PATH="$PATH:$ANDROID_HOME/build-tools"
-fi
+# Android SDK (suporte a lowercase e uppercase)
+for p in "$HOME/android/sdk" "$HOME/Android/Sdk"; do
+    if [ -d "$p" ]; then
+        export ANDROID_HOME="$p"
+        export PATH="$PATH:$ANDROID_HOME/emulator"
+        export PATH="$PATH:$ANDROID_HOME/platform-tools"
+        export PATH="$PATH:$ANDROID_HOME/cmdline-tools/latest/bin"
+        export PATH="$PATH:$ANDROID_HOME/build-tools"
+        break
+    fi
+done
 
 # --- Plugins (Oh My Zsh) ---
 plugins=(

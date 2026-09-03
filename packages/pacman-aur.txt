@@ -1,3 +1,5 @@
+ananicy-cpp
+ananicy-rules-cachyos-git
 android-studio
 antigravity
 flutter-bin
@@ -9,7 +11,9 @@ gpu-screen-recorder-gtk
 gtk-engine-murrine
 heroic-games-launcher-bin
 jack
+lazydocker-bin
 ludusavi-bin
+mise-bin
 protonup-qt
 ttf-victor-mono
 unionfs-fuse
