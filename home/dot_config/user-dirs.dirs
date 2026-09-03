@@ -1,5 +1,5 @@
 # Diretórios XDG do usuário — LOWERCASE power user style
-# Este arquivo é gerenciado pelo dotfiles e linkado via GNU Stow.
+# Este arquivo é gerenciado pelo dotfiles e linkado via Chezmoi.
 # O user-dirs.conf desabilita o auto-update para não reverter.
 
 XDG_DESKTOP_DIR="$HOME/desktop"

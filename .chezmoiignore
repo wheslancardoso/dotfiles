@@ -1,0 +1,11 @@
+README.md
+setup.sh
+.chezmoiroot
+.chezmoiignore
+Arch-Hyprland-main/**
+docs/**
+packages/**
+scripts/**
+windows/**
+.git/**
+.gitignore

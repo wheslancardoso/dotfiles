@@ -134,33 +134,35 @@ setup_shell() {
     ok "Shell configurado."
 }
 
-# 7. Aplicar dotfiles com stow
+# 7. Aplicar dotfiles com Chezmoi
 apply_dotfiles() {
-    info "Aplicando dotfiles com GNU Stow..."
+    info "Aplicando dotfiles com Chezmoi..."
     cd "$DOTFILES_DIR" || erro "Diretório $DOTFILES_DIR não encontrado!"
     
-    # Garantir que o diretório ~/.config existe antes do stow
+    # Garantir que o diretório ~/.config existe
     mkdir -p "$HOME/.config"
 
-    shopt -s dotglob
-    for dir in */; do
-        dir=${dir%/}
-        case "$dir" in
-            scripts|packages|docs|windows|.git|.github|Arch-Hyprland*|Hyprland-Dots*|.gemini|tests)
-                continue
-                ;;
-            *)
-                info "Linkando $dir..."
-                stow -t "$HOME" "$dir" --adopt # --adopt sincroniza caso já existam arquivos no sistema
-                ;;
-        esac
-    done
-    shopt -u dotglob
+    # Instalar chezmoi caso não exista
+    if ! command -v chezmoi &>/dev/null; then
+        info "Chezmoi não encontrado no PATH. Instalando Chezmoi..."
+        if command -v pacman &>/dev/null; then
+            sudo pacman -S --needed chezmoi --noconfirm
+        else
+            mkdir -p "$HOME/.local/bin"
+            sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
+            export PATH="$HOME/.local/bin:$PATH"
+        fi
+    fi
+
+    # Garantir o link de ~/.local/share/chezmoi para o repositório
+    mkdir -p "$HOME/.local/share"
+    ln -sfn "$DOTFILES_DIR" "$HOME/.local/share/chezmoi"
+
+    # Inicializar e aplicar no modo symlink (preserva hot-reload no Hyprland/LazyVim)
+    info "Inicializando e aplicando dotfiles via Chezmoi (modo symlink)..."
+    chezmoi init --source "$DOTFILES_DIR" --apply --mode symlink --force
     
-    # Reverte possíveis modificações no dotfiles caso o --adopt tenha pego arquivos locais indesejados
-    git restore . 2>/dev/null
-    
-    ok "Dotfiles aplicados com sucesso."
+    ok "Dotfiles aplicados com sucesso via Chezmoi."
 }
 
 # 8. Diretórios Home em lowercase (power user style)

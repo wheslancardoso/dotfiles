@@ -15,7 +15,7 @@
 - 🎮 **Gaming & Streaming Elite**: Suporte total a **FitGirl Repacks** e Steam com **Lutris/Heroic (Proton-GE)**, **GameMode**, **MangoHud**, **Vesktop** (Discord com áudio/stream no Wayland), **OBS Studio NVENC** e cancelamento de ruído no mic via IA (**EasyEffects**).
 - 💻 **Vibe Coding Suite (`vibe`)**: Integração de **LazyVim** (LSP Java, TypeScript, Python, Go, Rust), **Antigravity CLI (`agy`)** e layout dinâmico no **Zellij**.
 - 🧹 **Organizador Master Integrado**: Classificação automática de arquivos em taxonomia mestre ordinal (`00_` a `06_`), histórico com rollback (`--undo`), padronização de datas ISO e calculadora de partições.
-- 📦 **GNU Stow Modular**: Gerenciamento limpo e transparente de dotfiles via links simbólicos automáticos.
+- 📦 **Chezmoi Standard + Symlinks**: Gerenciamento de dotfiles de última geração com suporte nativo a segredos (Bitwarden CLI), templates e modo symlink para hot-reload instantâneo no Hyprland e LazyVim.
 - 📱 **Mobile & Dev Ready**: Suporte a React Native, Flutter e espelhamento em tempo real com **scrcpy** (zero lag, sem emulador pesado).
 - 📚 **Hub Completo de Documentação**: Guias mestres pós-formatação, backups, busca instantânea e organização na nuvem.
 
@@ -25,7 +25,10 @@
 
 ```text
 ~/dotfiles/
-├── setup.sh                         # Instalador mestre da máquina
+├── .chezmoiroot                     # 🧭 Aponta o Chezmoi para a pasta home/
+├── .chezmoi.toml.tmpl               # ⚙️ Configuração mestre do Chezmoi (symlinks + Bitwarden)
+├── .chezmoiignore                   # 🛡️ Proteção de arquivos fora do escopo de dotfiles
+├── setup.sh                         # Instalador mestre da máquina (Chezmoi + Pacotes)
 ├── README.md                        # Documentação e guia mestre
 ├── packages/                        # Listas de pacotes para replicação nativa e AUR
 │   ├── pacman-native.txt
@@ -46,7 +49,7 @@
 │   ├── ARCHITECTURE_ORGANIZADOR.md  # 📐 Arquitetura do motor Python do organizador
 │   └── favoritos_organizados.html   # 🌐 Backup curado de favoritos de navegação
 ├── scripts/                         # ⚡ Automações e utilitários
-│   ├── backup.sh                    # Backup e sincronização dos dotfiles
+│   ├── backup.sh                    # Backup e sincronização dos dotfiles via Chezmoi
 │   ├── dev-setup.sh                 # Provisionamento de linguagens, Docker e SDKs
 │   ├── yazi-float.sh / yazi-help.sh # Integração Yazi no terminal
 │   ├── zj-help.sh                   # Guia rápido do Zellij
@@ -55,15 +58,16 @@
 │       ├── requirements.txt
 │       ├── src/                     # Core, classificador, renamer, taxonomia
 │       └── config/                  # Regras de extensão e taxonomia
-├── nvim/                            # 💻 Configuração do LazyVim (Stow)
-│   └── .config/nvim/
-├── zellij/                          # 🪟 Configuração e layouts (Vibe Coding)
-│   └── .config/zellij/
-├── windows/                         # 🪟 Suíte de Automação para Windows 10/11 & GlazeWM
-│   ├── README.md                    # Guia de setup pós-formatação no Windows
-│   ├── glazewm/config.yaml          # Configuração Tiling Window Manager estilo Hyprland
-│   └── scripts/                     # Scripts .bat e .ps1 (Winget, Debloat, Ativação MAS, Backup)
-└── [módulos stow]...                # hypr, waybar, yazi, kitty, ghostty, mise, etc.
+├── home/                            # 🏠 Raiz gerenciada pelo Chezmoi
+│   ├── dot_config/                  # ⚙️ Mapeia para ~/.config (nvim, hypr, waybar, yazi, zellij, etc.)
+│   ├── dot_zshrc                    # 🐚 Configuração do Zsh
+│   ├── dot_gitconfig                # 🐙 Git com helper store e dados de autor
+│   ├── dot_bashrc                   # 🐚 Fallback Bash
+│   ├── dot_ideavimrc                # ⌨️ Atalhos Vim para IDEs JetBrains
+│   ├── pictures/wallpapers/         # 🖼️ Coleção de wallpapers integrada
+│   └── run_once_after_10-setup-git-credentials.sh.tmpl # 🔐 Hook de automação de credenciais Git + Bitwarden
+├── Arch-Hyprland-main/              # 🚀 Instalador mestre autônomo do Arch Linux
+└── windows/                         # 🪟 Suíte de Automação para Windows 10/11 & GlazeWM
 ```
 
 ---
@@ -96,6 +100,24 @@ zellij --layout vibe
 
 # Ou abra o Neovim puro
 nvim
+```
+
+### 3. Gestão Diária com Chezmoi (Power User)
+```bash
+# Aplicar ou recarregar todos os dotfiles
+chezmoi apply
+
+# Ver divergências entre seus arquivos e o repositório
+chezmoi diff
+
+# Puxar novidades do Git e reaplicar tudo de uma vez
+chezmoi update
+
+# Entrar rapidamente na pasta dos dotfiles
+chezmoi cd
+
+# Adicionar uma nova pasta ou arquivo ao repositório
+chezmoi add ~/.config/novo-app
 ```
 
 ---

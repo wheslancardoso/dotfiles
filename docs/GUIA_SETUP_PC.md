@@ -34,7 +34,7 @@ chmod +x install-master.sh
 3. 🎮 **Drivers NVIDIA RTX & 32-bit**: Instala `nvidia-dkms`, `nvidia-settings`, `nvidia-utils`, `lib32-nvidia-utils`, `lib32-libva-nvidia-driver` e `egl-wayland`, configurando `modeset=1 fbdev=1` no GRUB/systemd-boot e gerando o initramfs com `mkinitcpio`.
 4. 🔊 **PipeWire de Baixa Latência**: Instala e ativa `pipewire`, `pipewire-pulse` e `wireplumber` (com correção de escopo de loop do instalador upstream).
 5. 🪟 **Hyprland & Ecossistema Wayland**: Instala Hyprland, Waybar, SDDM com tema animado, SwayNC, Wallust, Awww (sucessor oficial do `swww`), Rofi e XDPH.
-6. 🔗 **Integração Nativa via GNU Stow**: Conecta diretamente o seu repositório `~/dotfiles`, provisionando instantaneamente LazyVim, Zellij (layout vibe), Yazi, EasyEffects e regras de janela.
+6. 🔗 **Integração Nativa via Chezmoi (Modo Symlink & Bitwarden)**: Conecta diretamente o seu repositório `~/dotfiles`, provisionando instantaneamente LazyVim, Zellij (layout vibe), Yazi, EasyEffects e regras de janela.
 
 ---
 
