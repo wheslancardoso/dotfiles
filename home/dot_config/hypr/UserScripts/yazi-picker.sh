@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # 🗂️ Wrapper do Yazi para xdg-desktop-portal-termfilechooser
-# Quando o navegador (ou qualquer app) pedir um file dialog via portal,
-# abre o Yazi em janela flutuante do Kitty com a class "yazi_picker".
-# O Hyprland reconhece essa class e aplica float + center automaticamente.
+# Quando o navegador (ou qualquer app) pedir um file dialog via portal (upload/download),
+# abre o Yazi em janela flutuante com a class "yazi_picker" e título "yazi-float".
+# O Hyprland intercepta e aplica float + center + stayfocused automaticamente.
 
 set -euo pipefail
 
@@ -11,7 +11,7 @@ set -euo pipefail
 #   $2 = directory (0 ou 1)
 #   $3 = save (0 ou 1)
 #   $4 = path (diretório inicial sugerido)
-#   $5 = out (arquivo onde o yazi deve escrever o resultado)
+#   $5 = out (arquivo onde o yazi deve escrever o caminho escolhido)
 
 multiple="${1:-0}"
 directory="${2:-0}"
@@ -33,5 +33,13 @@ fi
 # Adiciona o diretório inicial
 yazi_args+=("$path")
 
-# Lança o Kitty com class especial para Hyprland float rule
-exec kitty --class yazi_picker --title "Selecionar Arquivo" -e yazi "${yazi_args[@]}"
+# Prioriza Alacritty (preferido do usuário), com fallback para Kitty, Ghostty ou shell padrão
+if command -v alacritty &>/dev/null; then
+    exec alacritty --class yazi_picker,yazi_picker --title "yazi-float" -e yazi "${yazi_args[@]}"
+elif command -v kitty &>/dev/null; then
+    exec kitty --class yazi_picker --title "yazi-float" -e yazi "${yazi_args[@]}"
+elif command -v ghostty &>/dev/null; then
+    exec ghostty --class=yazi_picker --title="yazi-float" -e yazi "${yazi_args[@]}"
+else
+    exec yazi "${yazi_args[@]}"
+fi
