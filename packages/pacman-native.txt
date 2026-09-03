@@ -22,6 +22,7 @@ bluez-libs
 bluez-obex
 bluez-utils
 brightnessctl
+bitwarden-cli
 btop
 btrfs-assistant
 btrfs-progs
@@ -44,6 +45,7 @@ cachyos-zsh-config
 calf
 cantarell-fonts
 cava
+chezmoi
 chwd
 cliphist
 copyq
