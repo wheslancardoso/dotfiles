@@ -2,6 +2,7 @@ ananicy-cpp
 ananicy-rules-cachyos-git
 android-studio
 antigravity
+curlie-bin
 flutter-bin
 geocode-glib-2
 geocode-glib-common
@@ -12,6 +13,7 @@ gtk-engine-murrine
 heroic-games-launcher-bin
 jack
 lazydocker-bin
+lazysql-bin
 ludusavi-bin
 mise-bin
 protonup-qt

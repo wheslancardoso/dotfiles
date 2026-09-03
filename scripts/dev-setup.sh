@@ -24,8 +24,9 @@ info "Iniciando provisão do ambiente de desenvolvimento..."
 info "Instalando ferramentas base e compiladores..."
 sudo pacman -S --needed --noconfirm \
     base-devel git gcc make cmake unzip curl \
-    ripgrep fd lazygit btop jq bat \
-    zoxide tealdeer stow neovim python-pip \
+    ripgrep fd lazygit btop jq bat eza \
+    zoxide tealdeer chezmoi neovim python-pip \
+    git-delta dust procs xh tokei hyperfine atuin \
     zellij scrcpy
 
 # --- 3. Docker (Instalação e Permissões Zero-Touch) ---
