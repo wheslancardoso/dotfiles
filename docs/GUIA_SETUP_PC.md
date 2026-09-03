@@ -4,6 +4,40 @@
 
 ---
 
+## 🌌 Como Executar no Arch Linux (Setup One-Shot Hyprland + Vibe Coding)
+
+### Método 1: Clonar o Dotfiles e Rodar o Setup (Recomendado)
+Caso já tenha o Arch Linux básico instalado:
+```bash
+git clone https://github.com/wheslancardoso/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+chmod +x setup.sh
+./setup.sh
+```
+> O `setup.sh` detecta automaticamente se o Hyprland e seus componentes já estão presentes. Se não estiverem, oferece a inicialização imediata do instalador base com o **Preset Mestre**.
+
+---
+
+### Método 2: Instalação One-Shot do Arch-Hyprland (Máquina Recém-Formatada)
+Se você acabou de instalar o Arch Linux mínimo e quer subir todo o ecossistema com **NVIDIA RTX**, **SDDM**, **Hyprland** e **Dotfiles** sem responder a dezenas de caixas de diálogo:
+
+```bash
+git clone https://github.com/wheslancardoso/dotfiles.git ~/dotfiles
+cd ~/dotfiles/Arch-Hyprland-main
+chmod +x install-master.sh
+./install-master.sh
+```
+
+#### O que o instalador mestre faz de forma 100% automatizada?
+1. 🚀 **Pacman com Multilib & Aceleração**: Ativa o repositório `[multilib]` (indispensável para **Steam**, **Wine**, **Proton-GE** e **FitGirl Repacks**), downloads paralelos e visual `ILoveCandy`.
+2. 📦 **AUR Helper (Yay)**: Instala e configura o `yay` sem interrupções manuais.
+3. 🎮 **Drivers NVIDIA RTX & 32-bit**: Instala `nvidia-dkms`, `nvidia-settings`, `nvidia-utils`, `lib32-nvidia-utils`, `lib32-libva-nvidia-driver` e `egl-wayland`, configurando `modeset=1 fbdev=1` no GRUB/systemd-boot e gerando o initramfs com `mkinitcpio`.
+4. 🔊 **PipeWire de Baixa Latência**: Instala e ativa `pipewire`, `pipewire-pulse` e `wireplumber` (com correção de escopo de loop do instalador upstream).
+5. 🪟 **Hyprland & Ecossistema Wayland**: Instala Hyprland, Waybar, SDDM com tema animado, SwayNC, Wallust, Awww (sucessor oficial do `swww`), Rofi e XDPH.
+6. 🔗 **Integração Nativa via GNU Stow**: Conecta diretamente o seu repositório `~/dotfiles`, provisionando instantaneamente LazyVim, Zellij (layout vibe), Yazi, EasyEffects e regras de janela.
+
+---
+
 ## ⚡ Como Executar no Windows
 
 ### Método 1: Pelo Script Incluso no Projeto (Recomendado)

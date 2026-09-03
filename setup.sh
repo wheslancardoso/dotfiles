@@ -144,10 +144,15 @@ apply_dotfiles() {
     shopt -s dotglob
     for dir in */; do
         dir=${dir%/}
-        if [[ "$dir" != "scripts" && "$dir" != "packages" && "$dir" != "docs" && "$dir" != "windows" && "$dir" != ".git" ]]; then
-            info "Linkando $dir..."
-            stow -t "$HOME" "$dir" --adopt # --adopt pega o que já existe no sistema caso haja conflito
-        fi
+        case "$dir" in
+            scripts|packages|docs|windows|.git|.github|Arch-Hyprland*|Hyprland-Dots*|.gemini|tests)
+                continue
+                ;;
+            *)
+                info "Linkando $dir..."
+                stow -t "$HOME" "$dir" --adopt # --adopt sincroniza caso já existam arquivos no sistema
+                ;;
+        esac
     done
     shopt -u dotglob
     
@@ -175,9 +180,25 @@ setup_extras() {
     fi
 }
 
+# 9. Verificação do Hyprland
+check_hyprland_install() {
+    if ! command -v hyprland &> /dev/null && ! command -v Hyprland &> /dev/null; then
+        warn "Hyprland não foi detectado no sistema."
+        if [ -f "$DOTFILES_DIR/Arch-Hyprland-main/install-master.sh" ]; then
+            echo -e "\n[?] Deseja executar a instalação base do Arch-Hyprland (drivers, Hyprland, SDDM, áudio) agora? [s/N]"
+            read -r response
+            if [[ "$response" =~ ^[Ss]$ ]]; then
+                info "Iniciando instalador Arch-Hyprland Master..."
+                bash "$DOTFILES_DIR/Arch-Hyprland-main/install-master.sh"
+            fi
+        fi
+    fi
+}
+
 # Execução principal
 update_system
 install_yay
+check_hyprland_install
 install_packages
 setup_groups
 setup_services

@@ -71,6 +71,17 @@
 ## 🚀 Instalação e Inicialização
 
 ### 1. Clonar e Instalar o Sistema
+
+#### 🌟 Opção A: Máquina Recém-Formatada (Arch Base -> Hyprland + NVIDIA + Dotfiles)
+Instala o ecossistema completo sem prompts manuais:
+```bash
+git clone https://github.com/wheslancardoso/dotfiles.git ~/dotfiles
+cd ~/dotfiles/Arch-Hyprland-main
+chmod +x install-master.sh
+./install-master.sh
+```
+
+#### ⚡ Opção B: Sistema com Arch já Instalado (Sincronização de Dotfiles & Pacotes)
 ```bash
 git clone https://github.com/wheslancardoso/dotfiles.git ~/dotfiles
 cd ~/dotfiles
