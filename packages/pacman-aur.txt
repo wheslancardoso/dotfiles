@@ -11,6 +11,7 @@ gpu-screen-recorder
 gpu-screen-recorder-gtk
 gtk-engine-murrine
 heroic-games-launcher-bin
+hypr-dynamic-cursors-git
 jack
 lazydocker-bin
 lazysql-bin
