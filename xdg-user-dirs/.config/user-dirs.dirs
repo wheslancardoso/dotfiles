@@ -1,0 +1,12 @@
+# Diretórios XDG do usuário — LOWERCASE power user style
+# Este arquivo é gerenciado pelo dotfiles e linkado via GNU Stow.
+# O user-dirs.conf desabilita o auto-update para não reverter.
+
+XDG_DESKTOP_DIR="$HOME/desktop"
+XDG_DOWNLOAD_DIR="$HOME/downloads"
+XDG_TEMPLATES_DIR="$HOME/templates"
+XDG_PUBLICSHARE_DIR="$HOME/public"
+XDG_DOCUMENTS_DIR="$HOME/documents"
+XDG_MUSIC_DIR="$HOME/music"
+XDG_PICTURES_DIR="$HOME/pictures"
+XDG_VIDEOS_DIR="$HOME/videos"

@@ -1,0 +1,3 @@
+[filechooser]
+cmd=$HOME/.config/hypr/UserScripts/yazi-picker.sh
+default_dir=$HOME/downloads

@@ -162,12 +162,67 @@ apply_dotfiles() {
     ok "Dotfiles aplicados com sucesso."
 }
 
-# 8. Configurações extras
+# 8. Diretórios Home em lowercase (power user style)
+setup_lowercase_dirs() {
+    info "Configurando diretórios Home em lowercase..."
+
+    local dirs=(desktop downloads documents pictures videos music templates public)
+    for d in "${dirs[@]}"; do
+        mkdir -p "$HOME/$d"
+    done
+
+    # Migra conteúdo de pastas com inicial maiúscula, se existirem
+    local -A migration=(
+        [Desktop]=desktop
+        [Downloads]=downloads
+        [Documents]=documents
+        [Pictures]=pictures
+        [Videos]=videos
+        [Music]=music
+        [Templates]=templates
+        [Public]=public
+    )
+
+    for upper in "${!migration[@]}"; do
+        lower="${migration[$upper]}"
+        if [ -d "$HOME/$upper" ] && [ "$upper" != "$lower" ]; then
+            # Move o conteúdo e remove a pasta uppercase
+            if [ "$(ls -A "$HOME/$upper" 2>/dev/null)" ]; then
+                info "Migrando conteúdo de ~/$upper para ~/$lower..."
+                cp -rn "$HOME/$upper/"* "$HOME/$lower/" 2>/dev/null || true
+                cp -rn "$HOME/$upper/".* "$HOME/$lower/" 2>/dev/null || true
+            fi
+            rm -rf "$HOME/$upper"
+            info "Removido ~/$upper (agora é ~/$lower)"
+        fi
+    done
+
+    ok "Diretórios Home em lowercase configurados."
+}
+
+# 9. Configurações extras
 setup_extras() {
     info "Configurando apps padrão..."
     if command -v yazi &> /dev/null; then
         xdg-mime default yazi.desktop inode/directory
         ok "Yazi definido como gerenciador de arquivos padrão."
+    fi
+
+    # Configura Firefox para usar XDG portal (Yazi como file picker)
+    info "Configurando navegadores para usar Yazi como file picker..."
+    for profile_dir in "$HOME"/.mozilla/firefox/*.default* "$HOME"/.mozilla/firefox/*.default-release*; do
+        if [ -d "$profile_dir" ]; then
+            if ! grep -q "widget.use-xdg-desktop-portal.file-picker" "$profile_dir/user.js" 2>/dev/null; then
+                echo 'user_pref("widget.use-xdg-desktop-portal.file-picker", 1);' >> "$profile_dir/user.js"
+                ok "Firefox configurado para usar XDG portal file picker."
+            fi
+        fi
+    done
+
+    # Variável de ambiente para apps GTK usarem o portal
+    if ! grep -q "GTK_USE_PORTAL" "$HOME/.config/hypr/UserConfigs/ENVariables.conf" 2>/dev/null; then
+        echo 'env = GTK_USE_PORTAL,1' >> "$HOME/.config/hypr/UserConfigs/ENVariables.conf"
+        ok "GTK_USE_PORTAL habilitado para file dialogs."
     fi
 
     echo -e "\n[?] Deseja configurar o sudo para não pedir senha para o seu usuário? (s/n)"
@@ -203,6 +258,7 @@ install_packages
 setup_groups
 setup_services
 apply_dotfiles
+setup_lowercase_dirs
 setup_shell
 setup_extras
 
