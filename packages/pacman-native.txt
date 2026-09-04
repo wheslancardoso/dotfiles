@@ -85,6 +85,9 @@ git
 git-delta
 github-cli
 glances
+gnome-calculator
+gnome-calendar
+gnome-clocks
 gnome-keyring
 gnome-system-monitor
 grim

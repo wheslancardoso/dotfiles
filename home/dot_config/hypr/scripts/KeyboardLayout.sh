@@ -93,7 +93,15 @@ current_layout=${layout_mapping[$layout_index]}
 current_variant=${variant_mapping[$layout_index]}
 
 if [[ "$1" == "status" ]]; then
-  echo "$current_layout${current_variant:+($current_variant)}"
+  if [[ "$current_layout" == "us" && "$current_variant" == "intl" ]]; then
+    echo "US-INTL"
+  elif [[ "$current_layout" == "br" ]]; then
+    echo "PT-BR"
+  elif [[ "$current_layout" == "us" ]]; then
+    echo "US-DEV"
+  else
+    echo "$current_layout"
+  fi
 elif [[ "$1" == "switch" ]]; then
   echo "Current layout: $current_layout($current_variant)"
 
@@ -111,8 +119,18 @@ elif [[ "$1" == "switch" ]]; then
     echo "Layout change failed." >&2
     exit 1
   else
-    notify-send -u low -i "$notif_icon" " kb_layout: $new_layout${new_variant:+($new_variant)}"
-    echo "Layout change notification sent."
+    label=""
+    if [[ "$new_layout" == "us" && "$new_variant" == "intl" ]]; then
+      label="🇺🇸 US Internacional (com acentos / dead keys)"
+    elif [[ "$new_layout" == "br" ]]; then
+      label="🇧🇷 Português ABNT2 (com Ç físico)"
+    elif [[ "$new_layout" == "us" ]]; then
+      label="⚡ US Programador (sem acentos / código rápido)"
+    else
+      label="$new_layout${new_variant:+($new_variant)}"
+    fi
+    notify-send -a "Teclado" -u low -i "input-keyboard" -h string:x-canonical-private-synchronous:kb_layout "⌨️ Layout do Teclado" "$label"
+    echo "Layout change notification sent: $label"
   fi
 else
   echo "Usage: $0 {status|switch}"
