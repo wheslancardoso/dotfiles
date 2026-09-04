@@ -179,6 +179,26 @@ alias dc='docker-compose'
 alias dps='docker ps'
 alias dimg='docker images'
 
+# 🗄️ Database Power Tools & Clients
+alias dbeaver='dbeaver >/dev/null 2>&1 &'
+alias db='dbeaver >/dev/null 2>&1 &'
+alias lsql='lazysql'
+alias bruno='bruno >/dev/null 2>&1 &'
+alias api='bruno >/dev/null 2>&1 &'
+alias db-up='docker compose -f ~/dotfiles/dev/databases/docker-compose.yml up -d'
+alias db-down='docker compose -f ~/dotfiles/dev/databases/docker-compose.yml down'
+alias db-status='docker compose -f ~/dotfiles/dev/databases/docker-compose.yml ps'
+alias db-logs='docker compose -f ~/dotfiles/dev/databases/docker-compose.yml logs -f'
+alias db-reset='docker compose -f ~/dotfiles/dev/databases/docker-compose.yml down -v'
+
+# ⚡ Mise (SDK & Runtime Manager) Power Aliases
+alias m='mise'
+alias mi='mise install'
+alias mu='mise use'
+alias mls='mise list'
+alias mout='mise outdated'
+alias mup='mise upgrade'
+
 # Rede e Diagnóstico Rápido
 alias ports='ss -tulpn | grep LISTEN'
 alias myip='curl -s ifconfig.me && echo ""'

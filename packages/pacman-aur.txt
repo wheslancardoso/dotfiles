@@ -2,6 +2,7 @@ ananicy-cpp
 ananicy-rules-cachyos-git
 android-studio
 antigravity
+bruno-bin
 curlie-bin
 flutter-bin
 geocode-glib-2

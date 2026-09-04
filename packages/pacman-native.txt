@@ -147,6 +147,7 @@ lvm2
 man-db
 man-pages
 mangohud
+mariadb-clients
 mdadm
 meld
 mercurial
@@ -213,6 +214,7 @@ qt6-virtualkeyboard
 qt6ct
 quickshell
 rebuild-detector
+redis
 reflector
 ripgrep
 rofi
@@ -225,6 +227,7 @@ slurp
 smartmontools
 snapper
 sof-firmware
+sqlite
 starship
 steam
 stow

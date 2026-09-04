@@ -1,3 +1,12 @@
 [tools]
+node = "lts"
+pnpm = "latest"
+bun = "latest"
+python = "3.12"
+go = "latest"
 java = "openjdk-17"
-node = "20"
+
+[settings]
+experimental = true
+legacy_version_file = true
+idiomatic_version_file = true

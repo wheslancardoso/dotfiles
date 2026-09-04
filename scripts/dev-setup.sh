@@ -27,7 +27,7 @@ sudo pacman -S --needed --noconfirm \
     ripgrep fd lazygit btop jq bat eza \
     zoxide tealdeer chezmoi neovim python-pip \
     git-delta dust procs xh tokei hyperfine atuin \
-    zellij scrcpy
+    zellij scrcpy dbeaver sqlite mariadb-clients redis
 
 # --- 3. Docker (Instalação e Permissões Zero-Touch) ---
 info "Configurando Docker (sem necessidade de sudo posterior)..."
@@ -57,10 +57,14 @@ if ! command -v mise &> /dev/null; then
 fi
 
 if command -v mise &> /dev/null; then
-    mkdir -p ~/.config/mise
+    mkdir -p "$HOME/.config/mise"
+    if [ ! -f "$HOME/.config/mise/config.toml" ] && [ -f "$DOTFILES_DIR/home/dot_config/mise/config.toml" ]; then
+        cp "$DOTFILES_DIR/home/dot_config/mise/config.toml" "$HOME/.config/mise/config.toml"
+    fi
     if [ -f "$HOME/.config/mise/config.toml" ]; then
-        mise install -y
-        ok "Runtimes do Mise instaladas com sucesso."
+        info "Instalando ferramentas configuradas no Mise (Node LTS, Bun, Pnpm, Python, Go, Java)..."
+        mise install -y || warn "Algumas runtimes do mise podem requerer conexão ativa para download."
+        ok "Runtimes do Mise sincronizadas com sucesso."
     else
         warn "Arquivo config.toml do Mise não encontrado. Pulando instalação automática."
     fi

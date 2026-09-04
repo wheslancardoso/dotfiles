@@ -1,0 +1,68 @@
+# 🐘 Dev Database Suite - Zero Configuration Poweruser Stack
+# Para iniciar tudo em background: db-up (ou docker compose up -d)
+# Para parar tudo: db-down (ou docker compose down)
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: dev_postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-dev}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: dev_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  mysql:
+    image: mariadb:11
+    container_name: dev_mariadb
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MARIADB_DATABASE: ${MYSQL_DATABASE:-dev}
+      MARIADB_USER: ${MYSQL_USER:-dev}
+      MARIADB_PASSWORD: ${MYSQL_PASSWORD:-dev}
+    volumes:
+      - mysqldata:/var/lib/mysql
+
+  mongo:
+    image: mongo:7
+    container_name: dev_mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-root}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-root}
+    volumes:
+      - mongodata:/data/db
+
+volumes:
+  pgdata:
+  redisdata:
+  mysqldata:
+  mongodata:
