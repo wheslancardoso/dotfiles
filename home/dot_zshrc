@@ -4,6 +4,7 @@
 export ZSH="$HOME/.oh-my-zsh"
 export EDITOR="nvim"
 export VISUAL="nvim"
+export MANPAGER="nvim +Man!"
 
 # Adicionando binários locais ao PATH
 export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
