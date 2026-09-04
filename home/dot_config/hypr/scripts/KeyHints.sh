@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# 📋 KooL & Antigravity Master Quick Cheat Sheet
+# Atalho: SUPER + SHIFT + H ou SUPER + /
 
-# GDK BACKEND. Change to either wayland or x11 if having issues
 BACKEND=wayland
 
-# Check if rofi or yad is running and kill them if they are
+# Fecha instâncias anteriores de rofi ou yad se estiverem abertas
 if pidof rofi > /dev/null; then
   pkill rofi
 fi
@@ -13,92 +13,81 @@ if pidof yad > /dev/null; then
   pkill yad
 fi
 
-# Launch yad with calculated width and height
+# Abre a janela YAD com todos os atalhos e utilitários
 GDK_BACKEND=$BACKEND yad \
     --center \
-    --title="KooL Quick Cheat Sheet" \
+    --title="KooL Quick Cheat Sheet - Guia de Atalhos" \
     --no-buttons \
     --list \
-    --column=Key: \
-    --column=Description: \
-    --column=Command: \
+    --width=920 \
+    --height=700 \
+    --column="Atalho": \
+    --column="Descrição": \
+    --column="Comando / Ação": \
     --timeout-indicator=bottom \
-"ESC" "close this app" "" " = " "SUPER KEY (Windows Key Button)" "(SUPER KEY)" \
-" SHIFT K" "Searchable Keybinds" "(Search all Keybinds via rofi)" \
-" SHIFT E" "KooL Hyprland Settings Menu" "" \
+"ESC" "Fechar este guia" "Sair" \
+" = " "Tecla SUPER (Tecla Windows)" "(SUPER / MOD)" \
+" SHIFT H ou  /" "Abrir este Cheat Sheet" "KeyHints.sh" \
 "" "" "" \
-" enter" "Terminal" "(kitty)" \
-" SHIFT enter" "DropDown Terminal" " Q to close" \
-" B" "Launch Browser" "(Default browser)" \
-" A" "Desktop Overview" "(AGS - if opted to install)" \
-" D" "Application Launcher" "(rofi-wayland)" \
-" E" "Open File Manager" "(Thunar)" \
-" S" "Google Search using rofi" "(rofi)" \
-" T" "Global theme switcher" "(rofi)" \
-" Q" "close active window" "(not kill)" \
-" Shift Q " "kills an active window" "(kill)" \
-" ALT mouse scroll up/down   " "Desktop Zoom" "Desktop Magnifier" \
-" Alt V" "Clipboard Manager" "(cliphist)" \
-" W" "Choose wallpaper" "(Wallpaper Menu)" \
-" Shift W" "Choose wallpaper effects" "(imagemagick + awww)" \
-"CTRL ALT W" "Random wallpaper" "(via awww)" \
-" CTRL ALT B" "Hide/UnHide Waybar" "waybar" \
-" CTRL B" "Choose waybar styles" "(waybar styles)" \
-" ALT B" "Choose waybar layout" "(waybar layout)" \
-" ALT R" "Reload Waybar swaync Rofi" "CHECK NOTIFICATION FIRST!!!" \
-" SHIFT N" "Launch Notification Panel" "swaync Notification Center" \
-" Print" "screenshot" "(grim)" \
-" Shift Print" "screenshot region" "(grim + slurp)" \
-" Shift S" "screenshot region" "(swappy)" \
-" CTRL Print" "screenshot timer 5 secs " "(grim)" \
-" CTRL SHIFT Print" "screenshot timer 10 secs " "(grim)" \
-"ALT Print" "Screenshot active window" "active window only" \
-"CTRL ALT P" "power-menu" "(wlogout)" \
-"CTRL ALT L" "screen lock" "(hyprlock)" \
-"CTRL ALT Del" "Hyprland Exit" "(NOTE: Hyprland Will exit immediately)" \
-" SHIFT F" "Fullscreen" "Toggles to full screen" \
-" CTL F" "Fake Fullscreen" "Toggles to fake full screen" \
-" ALT L" "Toggle Dwindle | Master Layout" "Hyprland Layout" \
-" SPACEBAR" "Toggle float" "single window" \
-" ALT SPACEBAR" "Toggle all windows to float" "all windows" \
-" ALT O" "Toggle Blur" "normal or less blur" \
-" CTRL O" "Toggle Opaque ON or OFF" "on active window only" \
-" Shift A" "Animations Menu" "Choose Animations via rofi" \
-" CTRL R" "Rofi Themes Menu" "Choose Rofi Themes via rofi" \
-" CTRL Shift R" "Rofi Themes Menu v2" "Choose Rofi Themes via Theme Selector (modified)" \
-" SHIFT G" "Gamemode! All animations OFF or ON" "toggle" \
-" ALT E" "Rofi Emoticons" "Emoticon" \
-" H" "Launch this Quick Cheat Sheet" "" \
+"── SUPERPODERES ──" "── RECURSOS DO SEU RICE ──" "────────────────────" \
+" SHIFT R ou  ALT R" "Gravação de Tela (MP4/GIF com áudio)" "screen-record.sh" \
+" SHIFT A ou  ALT A" "Alternar Saída de Som (Caixa <-> Fone)" "audio-switch.sh" \
+" SHIFT T" "Screen OCR (Copiar texto de qualquer imagem)" "ocr-screen.sh" \
+" SHIFT P" "Conta-gotas de Cor Hex direto pro clipboard" "hyprpicker" \
+" C" "Calculadora + Conversão de Moedas ao vivo" "gnome-calculator" \
+" ALT C" "Calculadora Científica / Financeira" "qalculate-gtk" \
+" SPACE" "Trocar Teclado (US-Intl / PT-BR / US-Dev)" "KeyboardLayout.sh" \
+"ALT V ou  V" "Área de Transferência com busca e histórico" "CopyQ" \
+" Tab" "Seletor Visual de Janelas abertas" "Rofi Window Switcher" \
+" ~ (til) ou  U" "Terminal Dropdown Suspenso (Quake Style)" "Scratchpad Terminal" \
+" E" "Explorador de Arquivos Yazi (Modo Tiling)" "open-yazi-tiled.sh" \
+" SHIFT E" "Explorador de Arquivos Yazi (Flutuante)" "open-yazi.sh" \
 "" "" "" \
-"── YAZI ──" "── ATALHOS DO YAZI ──" "──────────" \
-"j / k" "Mover para baixo / cima" "(Navegação Básica)" \
-"h / l" "Voltar pasta / Entrar na pasta" "(Navegação Básica)" \
-"Enter" "Abrir arquivo (app padrão)" "(Navegação Básica)" \
-"z" "Pulo inteligente (zoxide)" "(Navegação Básica)" \
-"q" "Sair do Yazi" "(Navegação Básica)" \
+"── NAVEGAÇÃO VIM ──" "── VIM NAVIGATION (SEM MOUSE) ──" "────────────────────" \
+" H / J / K / L" "Mover FOCO entre janelas (Esq, Baixo, Cima, Dir)" "movefocus l/d/u/r" \
+" CTRL H / J / K / L" "Mover POSIÇÃO da janela no grid tiling" "movewindow l/d/u/r" \
+" ALT H / J / K / L" "Redimensionar Janela ativamente" "resizeactive" \
+" + Botão Esquerdo" "Arrastar para mover qualquer janela" "movewindow (mouse)" \
+" + Botão Direito" "Arrastar para redimensionar qualquer janela" "resizewindow (mouse)" \
+" + Botão Meio" "Alternar entre flutuante e ladrilhado" "togglefloating (mouse)" \
 "" "" "" \
-"r" "Renomear" "(Gestão de Arquivos)" \
-"R" "Bulk Rename (Editar lista no Neovim)" "(Gestão de Arquivos)" \
-"ctrl + r" "Smart Bulk Rename (Interface inteligente)" "(Gestão de Arquivos)" \
-"a + i" "Criar novo Arquivo (Insert)" "(Gestão de Arquivos)" \
-"a + d" "Criar novo Diretório" "(Gestão de Arquivos)" \
-"y" "Copiar (yank) arquivo(s)" "(Gestão de Arquivos)" \
-"x" "Recortar (cut) arquivo(s)" "(Gestão de Arquivos)" \
-"p" "Colar arquivo(s)" "(Gestão de Arquivos)" \
-"d + d" "Mover para a Lixeira (Trash)" "(Gestão de Arquivos)" \
-"D" "Deletar permanentemente" "(Gestão de Arquivos)" \
-"f" "Filtrar arquivos (Busca rápida)" "(Gestão de Arquivos)" \
-"f + g" "Buscar conteúdo (fzf + ripgrep)" "(Gestão de Arquivos)" \
+"── JANELAS & WORKSPACES ──" "── GERENCIAMENTO HYPRLAND ──" "────────────────────" \
+" Q" "Fechar janela ativa" "killactive" \
+" F" "Tela cheia total (Fullscreen)" "fullscreen 0" \
+" SHIFT F" "Tela cheia mantendo Waybar (Fake Fullscreen)" "fullscreen 1" \
+" SHIFT SPACE" "Alternar janela entre flutuante e ladrilhado" "togglefloating" \
+" 1 a 9" "Mudar para Área de Trabalho (Workspace)" "workspace 1..9" \
+" SHIFT 1 a 9" "Mover janela para Área de Trabalho" "movetoworkspace 1..9" \
+" D" "Menu de Aplicativos principal" "Rofi Launcher" \
+" Return (Enter)" "Abrir Terminal principal" "Kitty Terminal" \
+" B" "Abrir Navegador Web" "Browser" \
+" Shift S" "Print de área da tela para edição" "grim + slurp + swappy" \
+" Shift G" "Ativar/Desativar Modo Gamer (GameMode)" "gamemode" \
+"CTRL ALT L" "Bloquear Tela com senha" "hyprlock" \
+" M" "Menu de Saída / Desligar / Suspender" "wlogout" \
 "" "" "" \
-"a + e" "Extrair (detecta formato auto)" "(Compressão e Extração)" \
-"a + c" "Compactar para .zip" "(Compressão e Extração)" \
+"── DEV & MANUTENÇÃO ──" "── COMANDOS DO TERMINAL ZSH ──" "────────────────────" \
+"clean-system" "Faxina geral (órfãos, caches pacman, logs 7d)" "Terminal" \
+"pacup" "Atualização completa do sistema e AUR" "Terminal" \
+"db-up / db-down" "Subir/Parar suíte Docker (Postgres, Redis, Mongo)" "Docker Compose" \
+"lsql" "LazySQL: Cliente de banco no terminal" "CLI" \
+"dbeaver / db" "DBeaver: Cliente gráfico universal de banco" "GUI" \
+"bruno / api" "Bruno: Testador e client de APIs / REST" "GUI" \
+"vibe" "Ambiente Vibe Coding (LazyVim + Antigravity CLI)" "Zellij" \
+"organizar" "Suíte Organizador Master de Arquivos" "Python" \
+"m / mi / mu" "Gerenciador de Runtimes Mise (Node, Bun, Go, Java)" "Mise" \
 "" "" "" \
-"F10" "Ver este Guia" "(Utilitários)" \
-"Y" "Copiar Caminho para clipboard" "(Utilitários)" \
-". + s" "Calcular tamanho da pasta" "(Utilitários)" \
-"T" "Abrir Terminal nesta pasta" "(Utilitários)" \
-"." "Mostrar/Ocultar arquivos ocultos" "(Utilitários)" \
-"v" "Seleção visual (como no Vim)" "(Utilitários)" \
-"Space" "Selecionar arquivo individual" "(Utilitários)" \
-"" "" "" \
-"More tips:" "https://github.com/JaKooLit/Hyprland-Dots/wiki" ""\
+"── NAVEGAÇÃO YAZI ──" "── ATALHOS DO EXPLORADOR YAZI ──" "────────────────────" \
+"h / l" "Voltar pasta / Entrar na pasta ou arquivo" "Yazi" \
+"j / k" "Mover cursor para baixo / cima" "Yazi" \
+"Space" "Selecionar/Desselecionar arquivo atual" "Yazi" \
+"v" "Seleção visual contínua (estilo Vim)" "Yazi" \
+"y / x / p" "Copiar / Recortar / Colar arquivos" "Yazi" \
+"d + d" "Enviar para Lixeira (Trash)" "Yazi" \
+"D" "Deletar permanentemente (sem lixeira)" "Yazi" \
+"r / R" "Renomear simples / Bulk Rename no Neovim" "Yazi" \
+"f / f + g" "Filtro rápido / Busca de conteúdo (fzf + rg)" "Yazi" \
+"z" "Pulo inteligente para pastas recentes (zoxide)" "Yazi" \
+"T" "Abrir terminal Kitty nesta pasta" "Yazi" \
+"Y" "Copiar caminho absoluto do arquivo pro clipboard" "Yazi" \
+"q" "Fechar Yazi" "Yazi"
