@@ -14,7 +14,7 @@ wallpaper="$HOME/pictures/wallpapers/Night_City.png"
 [ ! -f "$wallpaper" ] && wallpaper=$HOME/.config/hypr/wallpaper_effects/.wallpaper_current
 
 waybar_config="$HOME/.config/waybar/configs/[TOP] Default"
-waybar_style="$HOME/.config/waybar/style/[Wallust] Chroma Edge.css"
+waybar_style="$HOME/.config/waybar/style/[WALLUST] ML4W-modern.css"
 kvantum_theme="catppuccin-mocha-blue"
 color_scheme="prefer-dark"
 gtk_theme="Flat-Remix-GTK-Blue-Dark"

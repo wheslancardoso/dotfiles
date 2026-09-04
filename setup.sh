@@ -260,8 +260,8 @@ setup_default_theme_and_wallpaper() {
     if [ -f "$HOME/.config/waybar/configs/[TOP] Default" ]; then
         ln -sf "$HOME/.config/waybar/configs/[TOP] Default" "$HOME/.config/waybar/config"
     fi
-    if [ -f "$HOME/.config/waybar/style/[Wallust] Chroma Edge.css" ]; then
-        ln -sf "$HOME/.config/waybar/style/[Wallust] Chroma Edge.css" "$HOME/.config/waybar/style.css"
+    if [ -f "$HOME/.config/waybar/style/[WALLUST] ML4W-modern.css" ]; then
+        ln -sf "$HOME/.config/waybar/style/[WALLUST] ML4W-modern.css" "$HOME/.config/waybar/style.css"
     fi
 
     # Executar Wallust se disponível para pré-gerar paletas de cores
