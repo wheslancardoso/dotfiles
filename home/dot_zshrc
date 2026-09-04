@@ -229,9 +229,12 @@ if command -v mise &> /dev/null; then
     eval "$(mise activate zsh)"
 fi
 
-# Keyring
-if [ -z "$SSH_AUTH_SOCK" ] && command -v gnome-keyring-daemon &> /dev/null; then
-    eval $(gnome-keyring-daemon --start --components=secrets,pkcs11)
+# Keyring & Secrets Integration
+export GNOME_KEYRING_CONTROL="${GNOME_KEYRING_CONTROL:-$XDG_RUNTIME_DIR/keyring}"
+if [ -z "$SSH_AUTH_SOCK" ] && [ -S "$XDG_RUNTIME_DIR/keyring/ssh" ]; then
+    export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/keyring/ssh"
+elif [ -z "$SSH_AUTH_SOCK" ] && command -v gnome-keyring-daemon &> /dev/null; then
+    eval $(gnome-keyring-daemon --start --components=secrets,ssh,pkcs11 2>/dev/null)
     export SSH_AUTH_SOCK
 fi
 

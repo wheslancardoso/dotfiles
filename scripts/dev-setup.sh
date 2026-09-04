@@ -17,8 +17,15 @@ ok() { echo -e "${GREEN}[OK] $1${NC}"; }
 warn() { echo -e "${YELLOW}[WARN] $1${NC}"; }
 error() { echo -e "${RED}[ERROR] $1${NC}"; }
 
-# --- 1. Verificação de Ambiente ---
+# --- 1. Verificação de Ambiente & Sudo NOPASSWD ---
 info "Iniciando provisão do ambiente de desenvolvimento..."
+if [ ! -f "/etc/sudoers.d/99-$USER-nopasswd" ]; then
+    info "Configurando sudo sem senha (NOPASSWD) para $USER..."
+    echo "$USER ALL=(ALL:ALL) NOPASSWD: ALL" | sudo tee "/etc/sudoers.d/99-$USER-nopasswd" >/dev/null
+    sudo chmod 440 "/etc/sudoers.d/99-$USER-nopasswd"
+    sudo visudo -cf "/etc/sudoers.d/99-$USER-nopasswd" >/dev/null 2>&1 || sudo rm -f "/etc/sudoers.d/99-$USER-nopasswd"
+fi
+
 
 # --- 2. Ferramentas de Sistema e Compiladores ---
 info "Instalando ferramentas base e compiladores..."

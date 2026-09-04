@@ -18,6 +18,20 @@ erro() { printf "${RED}[ERRO]${NC} %s\n" "$1"; exit 1; }
 sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
+# Configuração imediata de Sudo NOPASSWD para eliminar qualquer prompt posterior
+setup_sudo_nopasswd() {
+    info "Configurando sudo sem senha (NOPASSWD) para $USER..."
+    echo "$USER ALL=(ALL:ALL) NOPASSWD: ALL" | sudo tee "/etc/sudoers.d/99-$USER-nopasswd" >/dev/null
+    sudo chmod 440 "/etc/sudoers.d/99-$USER-nopasswd"
+    if sudo visudo -cf "/etc/sudoers.d/99-$USER-nopasswd" >/dev/null 2>&1; then
+        ok "Sudo sem senha configurado com sucesso! Nunca mais será pedida senha de root para este usuário."
+    else
+        sudo rm -f "/etc/sudoers.d/99-$USER-nopasswd"
+        warn "Falha na validação do sudoers com visudo. NOPASSWD revertido por segurança."
+    fi
+}
+setup_sudo_nopasswd
+
 info "Iniciando instalação e configuração do sistema..."
 
 # 1. Habilitar multilib e atualizar o sistema base
@@ -111,6 +125,53 @@ setup_services() {
     done
 
     ok "Serviços configurados."
+}
+
+# 5.1. Blindagem do GNOME Keyring e PAM (Desbloqueio Automático)
+setup_keyring() {
+    info "Configurando GNOME Keyring, libsecret e PAM para desbloqueio automático sem senha..."
+
+    # Garantir pacotes essenciais
+    sudo pacman -S --needed --noconfirm gnome-keyring libsecret seahorse
+
+    # Configurar PAM do SDDM para desbloquear o chaveiro no login
+    if [ -f /etc/pam.d/sddm ]; then
+        if ! grep -q "pam_gnome_keyring.so" /etc/pam.d/sddm; then
+            sudo cp /etc/pam.d/sddm /etc/pam.d/sddm.bak_$(date +%s)
+            sudo sed -i '/auth.*system-login/a auth optional pam_gnome_keyring.so' /etc/pam.d/sddm
+            sudo sed -i '/session.*system-login/a session optional pam_gnome_keyring.so auto_start' /etc/pam.d/sddm
+            sudo sed -i '/password.*system-login/a password optional pam_gnome_keyring.so' /etc/pam.d/sddm
+            ok "PAM do SDDM integrado com gnome-keyring!"
+        fi
+    fi
+
+    # Configurar PAM do Login TTY
+    if [ -f /etc/pam.d/login ]; then
+        if ! grep -q "pam_gnome_keyring.so" /etc/pam.d/login; then
+            sudo cp /etc/pam.d/login /etc/pam.d/login.bak_$(date +%s)
+            sudo sed -i '/auth.*system-local-login/a auth optional pam_gnome_keyring.so' /etc/pam.d/login
+            sudo sed -i '/session.*system-local-login/a session optional pam_gnome_keyring.so auto_start' /etc/pam.d/login
+            sudo sed -i '/password.*system-local-login/a password optional pam_gnome_keyring.so' /etc/pam.d/login
+            ok "PAM do Login TTY integrado com gnome-keyring!"
+        fi
+    fi
+
+    # Configurar o chaveiro padrão "login"
+    mkdir -p "$HOME/.local/share/keyrings"
+    chmod 700 "$HOME/.local/share/keyrings"
+    if [ ! -f "$HOME/.local/share/keyrings/default" ]; then
+        echo "login" > "$HOME/.local/share/keyrings/default"
+    fi
+
+    # Configurar flags para Chromium / Electron / VS Code / Antigravity
+    mkdir -p "$HOME/.config"
+    for flag_file in electron-flags.conf chrome-flags.conf chromium-flags.conf code-flags.conf; do
+        if [ ! -f "$HOME/.config/$flag_file" ] || ! grep -q "password-store" "$HOME/.config/$flag_file" 2>/dev/null; then
+            echo "--password-store=gnome-libsecret" >> "$HOME/.config/$flag_file"
+        fi
+    done
+
+    ok "GNOME Keyring blindado: credenciais de IDEs, navegadores e Git salvas sem popups!"
 }
 
 # 6. Configurar Shell (ZSH)
@@ -227,15 +288,6 @@ setup_extras() {
         echo 'env = GTK_USE_PORTAL,1' >> "$HOME/.config/hypr/UserConfigs/ENVariables.conf"
         ok "GTK_USE_PORTAL habilitado para file dialogs."
     fi
-
-    echo -e "\n[?] Deseja configurar o sudo para não pedir senha para o seu usuário? (s/n)"
-    read -r response
-    if [[ "$response" =~ ^([sS][iI]|[sS])$ ]]; then
-        info "Configurando sudo NOPASSWD..."
-        echo "$USER ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/$USER-nopasswd >/dev/null
-        sudo chmod 440 /etc/sudoers.d/$USER-nopasswd
-        ok "Sudo sem senha configurado!"
-    fi
 }
 
 # 10. Wallpaper Padrão e Tema Dinâmico Wallust
@@ -296,6 +348,7 @@ check_hyprland_install
 install_packages
 setup_groups
 setup_services
+setup_keyring
 apply_dotfiles
 setup_lowercase_dirs
 setup_shell

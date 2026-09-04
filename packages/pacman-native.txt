@@ -128,6 +128,7 @@ lib32-vulkan-icd-loader
 libdvdcss
 libgsf
 libopenraw
+libsecret
 libspng
 libva-nvidia-driver
 limine
@@ -226,6 +227,7 @@ rsync
 s-nail
 scrcpy
 sddm
+seahorse
 sg3_utils
 slurp
 smartmontools
