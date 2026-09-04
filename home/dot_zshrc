@@ -200,6 +200,10 @@ alias mls='mise list'
 alias mout='mise outdated'
 alias mup='mise upgrade'
 
+# 🧹 Manutenção & Otimização do Arch (Faxina Inteligente)
+alias clean-system='$HOME/dotfiles/scripts/clean-system.sh'
+alias pacup='sudo pacman -Syu && yay -Sua'
+
 # Rede e Diagnóstico Rápido
 alias ports='ss -tulpn | grep LISTEN'
 alias myip='curl -s ifconfig.me && echo ""'

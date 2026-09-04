@@ -267,6 +267,7 @@ tumbler
 ufw
 ufw-extras
 umockdev
+udiskie
 unrar
 unzip
 upower
@@ -277,6 +278,7 @@ vkd3d
 vlc-plugins-all
 vulkan-icd-loader
 waybar
+wf-recorder
 wget
 which
 wine-staging

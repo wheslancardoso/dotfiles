@@ -34,7 +34,21 @@ setup_sudo_nopasswd
 
 info "Iniciando instalação e configuração do sistema..."
 
-# 1. Habilitar multilib e atualizar o sistema base
+# 1. Otimizações de desempenho e visual do Pacman & Multilib
+setup_pacman_turbo() {
+    info "Configurando Pacman Turbo (10 downloads simultâneos, cores e animação ILoveCandy)..."
+    if [ -f /etc/pacman.conf ]; then
+        sudo sed -i 's/^#Color/Color/' /etc/pacman.conf
+        sudo sed -i 's/^#VerbosePkgLists/VerbosePkgLists/' /etc/pacman.conf
+        sudo sed -i 's/^#ParallelDownloads.*/ParallelDownloads = 10/' /etc/pacman.conf
+        sudo sed -i 's/^ParallelDownloads = .*/ParallelDownloads = 10/' /etc/pacman.conf
+        if ! grep -q "ILoveCandy" /etc/pacman.conf; then
+            sudo sed -i '/^Color/a ILoveCandy' /etc/pacman.conf
+        fi
+        ok "Pacman Turbo configurado com sucesso!"
+    fi
+}
+
 enable_multilib() {
     info "Verificando repositório multilib (necessário para Steam/Wine/Nvidia 32-bit)..."
     if [ -f /etc/pacman.conf ] && ! grep -q "^\[multilib\]" /etc/pacman.conf; then
@@ -47,6 +61,7 @@ enable_multilib() {
 }
 
 update_system() {
+    setup_pacman_turbo
     enable_multilib
     info "Atualizando o sistema..."
     sudo pacman -Syu --noconfirm
@@ -102,6 +117,8 @@ setup_services() {
         "systemd-timesyncd.service"
         "avahi-daemon.service"
         "ananicy-cpp.service"
+        "paccache.timer"
+        "power-profiles-daemon.service"
     )
 
     for svc in "${sys_services[@]}"; do
