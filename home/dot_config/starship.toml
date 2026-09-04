@@ -25,17 +25,19 @@ truncation_length = 3
 truncation_symbol = "…/"
 
 [directory.substitutions]
-"Documents" = "󰈙 "
-"Downloads" = " "
-"Music" = " "
-"Pictures" = " "
-"documents" = "󰈙 "
-"downloads" = " "
-"music" = " "
-"pictures" = " "
-"desktop" = " "
-"videos" = "󰕧 "
+"Documents" = "📄 "
+"Downloads" = "📥 "
+"Music" = "🎵 "
+"Pictures" = "🖼️ "
+"documents" = "📄 "
+"downloads" = "📥 "
+"music" = "🎵 "
+"pictures" = "🖼️ "
+"desktop" = "🖥️ "
+"videos" = "🎬 "
 "dotfiles" = "⚙️ "
+"workspace" = "💻 "
+"dev" = "💻 "
 
 [git_branch]
 symbol = ""
@@ -68,5 +70,5 @@ style = "bg:#2E1A5E"
 format = "[[  $time ](fg:#ffffff bg:#2E1A5E)]($style)"
 
 [character]
-success_symbol = "[╰─󰄬](bold green) "
-error_symbol = "[╰─󰅙](bold red) "
+success_symbol = "[╰─❯](bold green) "
+error_symbol = "[╰─❯](bold red) "
