@@ -77,6 +77,8 @@ fi
 ln -sf "$wallpaper_path" "$rofi_link" || true
 mkdir -p "$(dirname "$wallpaper_current")"
 cp -f "$wallpaper_path" "$wallpaper_current" || true
+mkdir -p "$HOME/.cache"
+echo "$wallpaper_path" > "$HOME/.cache/current_wallpaper" || true
 
 # Ensure Ghostty directory exists so Wallust can write target even if Ghostty isn't installed
 mkdir -p "$HOME/.config/ghostty" || true
