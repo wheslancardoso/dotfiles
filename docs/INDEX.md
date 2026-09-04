@@ -20,6 +20,9 @@
 │   ├── [GUIA_GAMING_STREAMING_LINUX.md](./GUIA_GAMING_STREAMING_LINUX.md) # 🎮 Gaming, FitGirl Repacks, RTX 5060, Vesktop & Áudio IA
 │   └── [GUIA_BACKUP_PRE_FORMATACAO.md](./GUIA_BACKUP_PRE_FORMATACAO.md) # Checklist seguro de backup (SSH, saves, configs)
 │
+├── 🏢 SUPORTE CORPORATIVO & ACTIVE DIRECTORY
+│   └── [GUIA_ENTERPRISE_AD_SUPORTE.md](./GUIA_ENTERPRISE_AD_SUPORTE.md) # Active Directory, Remmina RDP/VNC, MicroSIP, VM Windows 11 KVM
+│
 ├── 🧹 ORGANIZAÇÃO & TAXONOMIA DE ARQUIVOS
 │   ├── [TAXONOMIA_MESTRE.md](./TAXONOMIA_MESTRE.md)               # Hierarquia ordinal das pastas 00_ a 06_
 │   ├── [GUIA_NOMENCLATURA.md](./GUIA_NOMENCLATURA.md)             # Padrão ouro para nomes de arquivos (Datas ISO)
@@ -56,7 +59,15 @@
 
 ---
 
-### 🧹 3. Organização & Taxonomia
+### 🏢 3. Suporte Corporativo & Active Directory
+
+| Documento | Foco Principal | Quando Consultar? |
+|---|---|---|
+| [**GUIA_ENTERPRISE_AD_SUPORTE.md**](./GUIA_ENTERPRISE_AD_SUPORTE.md) | Domínio Windows AD, Remmina RDP/VNC, MicroSIP e VM Win11 KVM | Ao operar em rede corporativa ou atendimento de suporte |
+
+---
+
+### 🧹 4. Organização & Taxonomia
 
 | Documento | Foco Principal | Quando Consultar? |
 |---|---|---|
