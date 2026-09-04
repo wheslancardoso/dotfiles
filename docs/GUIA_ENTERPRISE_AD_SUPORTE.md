@@ -73,33 +73,67 @@ O **MicroSIP** é o softphone mais leve e confiável do suporte técnico. Ele ro
 
 ## 🌐 4. Integrando o Arch Linux no Active Directory (Domínio da Empresa)
 
-Se a sua empresa exige que seu computador faça parte do domínio Windows para acessar recursos internos:
+Se a sua empresa exige que seu computador faça parte do domínio Windows para acessar recursos internos ou autenticar seu usuário no login:
 
-### Passo 1: Testar descoberta do domínio
-```bash
-realm discover empresa.local
-```
-*(Ele mostrará se o controlador de domínio Windows Server foi localizado via DNS).*
+### 🚀 Método 1: Assistente 100% Interativo (Recomendado)
+Criamos um script que faz tudo para você (DNS, descoberta, join, ajuste do SSSD, criação de `/home` e sudo):
 
-### Passo 2: Ingressar no Domínio
 ```bash
-sudo realm join --user=seu_usuario_admin empresa.local
+~/dotfiles/scripts/join-domain.sh
 ```
-Digite a senha do administrador do domínio. O comando configurará automaticamente o Kerberos e o SSSD.
-
-### Passo 3: Permitir Login de Usuários do AD
-Edite `/etc/sssd/sssd.conf` para garantir que o formato de login seja simples:
-```ini
-use_fully_qualified_names = False
-fallback_homedir = /home/%u@%d
-```
-Reinicie o serviço:
-```bash
-sudo systemctl restart sssd
-```
-Agora você pode logar em qualquer terminal ou TTY usando seu usuário do domínio corporativo.
+O assistente vai pedir:
+1. O nome do domínio (ex: `empresa.local`);
+2. O IP do Domain Controller para ajustar o DNS caso necessário;
+3. O usuário com permissão de join (ex: `Administrator`);
+4. Se deseja conceder `sudo` para o grupo `Domain Admins`;
+5. O seu login para testar a resolução instantânea do AD!
 
 ---
+
+### 🛠️ Método 2: Passo a Passo Manual
+
+#### Passo 1: Apontar o DNS para o DC do Windows
+O Active Directory requer que o DNS resolva os registros SRV do domínio:
+```bash
+# Apontar DNS da conexão ativa via NetworkManager:
+nmcli connection modify "Sua-Conexao" ipv4.dns "192.168.1.10" ipv4.dns-search "empresa.local"
+nmcli connection up "Sua-Conexao"
+```
+
+#### Passo 2: Sincronizar Relógio (Essencial para Kerberos)
+Diferenças maiores que 5 minutos travam o Kerberos:
+```bash
+sudo timedatectl set-ntp true
+```
+
+#### Passo 3: Descobrir e Ingressar no Domínio
+```bash
+realm discover empresa.local
+sudo realm join --user=Administrator empresa.local
+```
+
+#### Passo 4: Otimizar SSSD para Login Curto (`/etc/sssd/sssd.conf`)
+Para logar com `joao` em vez de `joao@empresa.local`:
+```ini
+[domain/empresa.local]
+use_fully_qualified_names = False
+fallback_homedir = /home/%u
+```
+Reinicie o SSSD: `sudo systemctl restart sssd`
+
+#### Passo 5: Criar `/home` Automaticamente no Primeiro Login
+Adicione ao final de `/etc/pam.d/system-auth`:
+```text
+session optional pam_mkhomedir.so skel=/etc/skel umask=077
+```
+
+#### Passo 6: Dar Permissão de Sudo aos Administradores do AD
+Crie o arquivo `/etc/sudoers.d/99-domain-admins`:
+```text
+%Domain\ Admins ALL=(ALL:ALL) ALL
+```
+Teste com: `id seu_usuario` e `su - seu_usuario`. Pronto! No SDDM ou no TTY, digite seu usuário e senha de rede.
+
 
 ## 📂 5. Pastas Compartilhadas do Windows (`\\servidor\compartilhamento`)
 

@@ -86,8 +86,17 @@ install_ad() {
     info "Instalando ferramentas de integração com Active Directory..."
     sudo pacman -S --needed --noconfirm realmd sssd krb5 adcli bind-tools nmap traceroute
     ok "Ferramentas de AD e Kerberos instaladas."
-    echo -e "${YELLOW}Para ingressar em um domínio da empresa, use:${NC}"
-    echo -e "  sudo realm join --user=SEU_USUARIO_ADMIN dominio.empresa.local"
+    echo ""
+    read -rp "Deseja iniciar o assistente interativo de ingresso no Domínio agora? (S/n): " START_WIZARD
+    if [[ ! "$START_WIZARD" =~ ^[nN]$ ]]; then
+        SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+        if [ -f "$SCRIPT_DIR/join-domain.sh" ]; then
+            bash "$SCRIPT_DIR/join-domain.sh"
+        fi
+    else
+        echo -e "${YELLOW}Você pode rodar o assistente a qualquer momento com:${NC}"
+        echo -e "  ~/dotfiles/scripts/join-domain.sh"
+    fi
 }
 
 install_kvm() {
