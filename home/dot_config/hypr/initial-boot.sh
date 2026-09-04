@@ -9,8 +9,12 @@
 
 # Variables
 scriptsDir=$HOME/.config/hypr/scripts
-wallpaper=$HOME/.config/hypr/wallpaper_effects/.wallpaper_current
-waybar_style="$HOME/.config/waybar/style/[Extra] Neon Circuit.css"
+wallpaper="$HOME/pictures/wallpapers/Night_City.png"
+[ ! -f "$wallpaper" ] && wallpaper="$HOME/Pictures/wallpapers/Night_City.png"
+[ ! -f "$wallpaper" ] && wallpaper=$HOME/.config/hypr/wallpaper_effects/.wallpaper_current
+
+waybar_config="$HOME/.config/waybar/configs/[TOP] Default"
+waybar_style="$HOME/.config/waybar/style/[Wallust] Chroma Edge.css"
 kvantum_theme="catppuccin-mocha-blue"
 color_scheme="prefer-dark"
 gtk_theme="Flat-Remix-GTK-Blue-Dark"
@@ -49,11 +53,11 @@ if [ ! -f "$HOME/.config/hypr/.initial_startup_done" ]; then
     # initiate kvantum theme
     kvantummanager --set "$kvantum_theme" > /dev/null 2>&1 &
 
-	# waybar style
-	#if [ -L "$HOME/.config/waybar/config" ]; then
-    ##    	ln -sf "$waybar_style" "$HOME/.config/waybar/style.css"
-    #   	"$scriptsDir/Refresh.sh" > /dev/null 2>&1 & 
-	#fi
+	# waybar layout & style
+	mkdir -p "$HOME/.config/waybar"
+	ln -sf "$waybar_config" "$HOME/.config/waybar/config"
+	ln -sf "$waybar_style" "$HOME/.config/waybar/style.css"
+	"$scriptsDir/Refresh.sh" > /dev/null 2>&1 &
 
 
     # Create a marker file to indicate that the script has been executed.

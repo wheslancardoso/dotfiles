@@ -1,6 +1,6 @@
 /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
-// ### TOP Simple ## //
 
+// ### DEFAULT - Top ### //
 {
 "include": [
   "$HOME/.config/waybar/Modules",
@@ -9,35 +9,51 @@
   "$HOME/.config/waybar/ModulesGroups",
   "$HOME/.config/waybar/UserModules",
   ],
-"layer": "top", 
-"position": "top", 
+"layer": "top",
 //"mode": "dock",
 "exclusive": true,
 "passthrough": false,
-"gtk-layer-shell": true,
-"margin-left": 6,
-"margin-right": 6,
-"margin-top": 2,
+"position": "top",
+"spacing": 3,
+"fixed-center": true,
+"ipc": true,
+"margin-top": 3,
+"margin-left": 8,
+"margin-right": 8,
 
-"modules-left": [	
-	"idle_inhibitor", 
-	"group/mobo_drawer",
-	"hyprland/workspaces#rw",
-	"tray",
-	"mpris", 
+"modules-left": [
+	"custom/separator#blank",
+	"custom/cava_mviz",
+	"custom/separator#blank",
+	"custom/playerctl",
+	"custom/separator#blank_2",
+	"hyprland/window",
 	],
-    
+
 "modules-center": [
-	"clock#2",
+	"group/app_drawer",
+	"custom/separator#blank",
 	"group/notify",
+	"custom/separator#dot-line",
+	"hyprland/workspaces#rw",
+	"clock",
+	"custom/separator#dot-line",
+	"custom/weather",
+	"custom/separator#dot-line",
+	"idle_inhibitor",	
+	"custom/hint",	
 	],
-    
+
 "modules-right": [
-	"hyprland/window",  
-	"battery",
- 	"group/audio", 
+	"tray",
+	"network#speed",
+	"custom/separator#dot-line",
+	"group/mobo_drawer",
+	"custom/separator#line",  
+	"group/audio",
+	"custom/separator#dot-line", 
 	"custom/nightlight",
-	"custom/power",
+	"custom/separator#dot-line", 
+	"group/status",
 	],
 }
-

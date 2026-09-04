@@ -30,7 +30,7 @@
 	hunk-header-decoration-style = yellow box
 
 [merge]
-	conflictstyle = zdiff3
+	conflictstyle = diff3
 
 [diff]
 	colorMoved = default

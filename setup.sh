@@ -238,7 +238,43 @@ setup_extras() {
     fi
 }
 
-# 9. Verificação do Hyprland
+# 10. Wallpaper Padrão e Tema Dinâmico Wallust
+setup_default_theme_and_wallpaper() {
+    info "Configurando Night_City.png como wallpaper padrão e Waybar Poweruser..."
+
+    local default_wp="$DOTFILES_DIR/home/pictures/wallpapers/Night_City.png"
+    local target_wp="$HOME/pictures/wallpapers/Night_City.png"
+
+    mkdir -p "$HOME/pictures/wallpapers"
+    mkdir -p "$HOME/.config/hypr/wallpaper_effects"
+    mkdir -p "$HOME/.cache"
+
+    if [ -f "$default_wp" ]; then
+        cp -f "$default_wp" "$target_wp"
+        cp -f "$default_wp" "$HOME/.config/hypr/wallpaper_effects/.wallpaper_current"
+        echo "$target_wp" > "$HOME/.cache/current_wallpaper"
+    fi
+
+    # Layout e Estilo da Waybar (Poweruser + Wallust)
+    mkdir -p "$HOME/.config/waybar"
+    if [ -f "$HOME/.config/waybar/configs/[TOP] Default" ]; then
+        ln -sf "$HOME/.config/waybar/configs/[TOP] Default" "$HOME/.config/waybar/config"
+    fi
+    if [ -f "$HOME/.config/waybar/style/[Wallust] Chroma Edge.css" ]; then
+        ln -sf "$HOME/.config/waybar/style/[Wallust] Chroma Edge.css" "$HOME/.config/waybar/style.css"
+    fi
+
+    # Executar Wallust se disponível para pré-gerar paletas de cores
+    if command -v wallust &>/dev/null && [ -f "$target_wp" ]; then
+        info "Executando Wallust para extrair paleta de cores neon do Night_City.png..."
+        wallust run -s "$target_wp" >/dev/null 2>&1 || true
+        ok "Paleta Wallust gerada com sucesso."
+    fi
+
+    ok "Wallpaper Night_City e Waybar Poweruser configurados."
+}
+
+# 11. Verificação do Hyprland
 check_hyprland_install() {
     if ! command -v hyprland &> /dev/null && ! command -v Hyprland &> /dev/null; then
         warn "Hyprland não foi detectado no sistema."
@@ -264,6 +300,7 @@ apply_dotfiles
 setup_lowercase_dirs
 setup_shell
 setup_extras
+setup_default_theme_and_wallpaper
 
 printf "\n"
 read -p "Deseja configurar o ambiente de desenvolvimento agora? (Docker, Mise, Neovim/LazyVim) [s/N] " DEV_CONF
