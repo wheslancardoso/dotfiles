@@ -19,6 +19,8 @@ lazysql-bin
 ludusavi-bin
 mise-bin
 protonup-qt
+quickemu
+quickgui-bin
 ttf-victor-mono
 unionfs-fuse
 vesktop-bin
