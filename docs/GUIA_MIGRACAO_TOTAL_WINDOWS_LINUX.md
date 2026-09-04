@@ -133,7 +133,42 @@ Antes de ligar uma máquina virtual inteira que consome 4 GB de RAM e 30 GB de d
 
 ---
 
-## 📋 8. Checklist de Desapego para Máquinas Pessoais
+## 🛡️ 8. A Bateria de Antiatritos: O Que Torna Esse Linux Superior ao Windows
+
+Muitos usuários desistem do Linux por pequenos atritos que nunca foram corrigidos em tutoriais genéricos da internet. No seu repositório, cada um desses problemas foi cirurgicamente eliminado:
+
+### 💤 1. Suspensão Sem Acordar Sozinho (O Bug do Wakeup Espúrio)
+* **O Problema:** Você manda o PC suspender, as luzes apagam por 2 segundos e ele liga sozinho imediatamente.
+* **A Causa:** Pacotes de broadcast na rede local (Wake-on-LAN), vibrações ou poeira no sensor de mouses de alto DPI (Logitech/Razer) e controladores ACPI USB (`XHC`/`GLAN`) disparando interrupções.
+* **A Solução:**
+  - `disable-wol.conf` desativa o Wake-on-LAN no NetworkManager;
+  - Regras udev em `90-disable-spurious-mouse-wakeup.rules` desativam o gatilho de acordar no mouse (o PC só acorda ao pressionar uma tecla no teclado ou botão power);
+  - Serviço `disable-spurious-acpi-wakeup.service` desativa gatilhos de rede e PCI express no `/proc/acpi/wakeup`;
+  - Ferramenta `fix-suspend` no terminal para diagnosticar e testar suspensão limpa a qualquer momento.
+
+### ⚡ 2. Blindagem de VRAM na NVIDIA RTX (`PreserveVideoMemoryAllocations`)
+* **O Problema:** No Wayland/Hyprland com placas NVIDIA, ao acordar da suspensão as janelas ficam com telas pretas ou o Hyprland fecha.
+* **A Solução:** `NVreg_PreserveVideoMemoryAllocations=1` ativo com `nvidia-suspend.service` e `nvidia-resume.service` salva a VRAM em `/var/tmp` antes de dormir e restaura em 1 segundo.
+
+### 🛑 3. Desligamento Instantâneo (Fim do "A stop job is running...")
+* **O Problema:** O systemd espera 90 a 120 segundos por processos zumbis ao desligar ou reiniciar.
+* **A Solução:** `DefaultTimeoutStopSec=10s` garante desligamento em no máximo 10 segundos, sempre.
+
+### 🚀 4. Limites de Kernel para Devs & Gamers (Zero ENOSPC no Vite/Docker)
+* **O Problema:** Erro `ENOSPC: System limit for number of file watchers reached` em projetos Next.js/React e travamentos em jogos Unreal Engine 5.
+* **A Solução:** `fs.inotify.max_user_watches = 524288` e `vm.max_map_count = 2147483642` em `/etc/sysctl.d/99-anti-friction-limits.conf`.
+
+### 🧊 5. ZRAM Swap Ultra-rápido com Compressão ZSTD
+* **O Problema:** Se a memória RAM encher, o Linux tradicional congela o mouse e a interface por minutos antes de matar processos (OOM freeze).
+* **A Solução:** Swap comprimido em tempo real na própria RAM via algoritmo `zstd`, com latência zero e preservando o SSD.
+
+### 🎧 6. Bluetooth Instantâneo
+* **O Problema:** Bluetooth desligado no boot ou fones demorando 10 segundos para parear.
+* **A Solução:** `AutoEnable=true` e `FastConnectable=true` no `/etc/bluetooth/main.conf`.
+
+---
+
+## 📋 9. Checklist de Desapego para Máquinas Pessoais
 
 Ao formatar seu PC pessoal ou notebook para ter **100% Arch Linux**:
 
@@ -148,7 +183,8 @@ Ao formatar seu PC pessoal ou notebook para ter **100% Arch Linux**:
    - Dê boot no pendrive do Arch;
    - Clone seu repositório: `git clone https://github.com/wheslancardoso/dotfiles.git ~/dotfiles`;
    - Execute `./setup.sh`;
-   - Ao reiniciar, você entra direto no seu ambiente neon cyberpunk com todos os atalhos, automount de pendrives, calculadoras e ferramentas de dev prontas para uso.
+   - Ao reiniciar, você entra direto no seu ambiente neon cyberpunk com todos os atalhos, automount de pendrives, calculadoras, antiatritos e ferramentas de dev prontas para uso.
 
 Você estará rodando uma máquina de elite, estável e livre de qualquer dependência da Microsoft.
+
 

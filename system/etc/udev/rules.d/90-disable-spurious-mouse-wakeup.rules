@@ -1,0 +1,9 @@
+# ==============================================================================
+# 🛑 Anti-Wakeup Espúrio: Evita que o PC acorde sozinho da suspensão
+# Leves toques na mesa ou poeira no sensor óptico do mouse não devem acordar o PC.
+# O computador deve ser acordado por teclado ou botão power.
+# ==============================================================================
+ACTION=="add", SUBSYSTEM=="input", ATTR{name}=="*Mouse*", ATTR{power/wakeup}="disabled"
+ACTION=="add", SUBSYSTEM=="input", ATTR{name}=="*mouse*", ATTR{power/wakeup}="disabled"
+ACTION=="add", SUBSYSTEM=="input", ATTR{name}=="*Razer*", ATTR{power/wakeup}="disabled"
+ACTION=="add", SUBSYSTEM=="input", ATTR{name}=="*Logitech G*", ATTR{power/wakeup}="disabled"

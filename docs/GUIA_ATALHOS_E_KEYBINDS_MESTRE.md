@@ -175,7 +175,9 @@
 | `cat [arquivo]` | Leitura de arquivo com realce de sintaxe (**Bat**) |
 | `y` | Abre o **Yazi** e muda o diretório do terminal ao sair |
 | `fix-pendrive` | Desbloqueia e repara pen-drives NTFS (dirty-bit) e FAT32 |
+| `fix-suspend` | Diagnóstico e proteção para o PC nunca acordar sozinho |
 | `clean-system` | Faxina geral de caches, logs antigos e pacotes órfãos |
 | `pacup` | Atualiza o sistema completo (Pacman + AUR) |
 | `trash-empty` | Esvazia a lixeira do sistema de forma segura |
+
 

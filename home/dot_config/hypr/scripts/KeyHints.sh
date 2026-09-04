@@ -47,8 +47,10 @@ GDK_BACKEND=$BACKEND yad \
 " E" "Explorador de Arquivos Yazi (Modo Tiling)" "open-yazi-tiled.sh" \
 " SHIFT E" "Explorador de Arquivos Yazi (Flutuante)" "open-yazi.sh" \
 "fix-pendrive" "Destravar & Reparar Pen-drive (Terminal)" "fix-pendrive.sh" \
+"fix-suspend" "Blindagem e Diagnóstico de Suspensão" "fix-suspend.sh" \
 "clean-system" "Faxina Inteligente do Arch (Terminal)" "clean-system.sh" \
 "" "" "" \
+
 
 "── APLICATIVOS BÁSICOS ──" "── ATALHOS DO HYPRLAND ──" "────────────────────────" \
 " enter" "Abrir Terminal" "(kitty)" \

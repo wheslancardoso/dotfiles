@@ -1,0 +1,11 @@
+[Unit]
+Description=Desativa gatilhos espurios de wakeup no ACPI (evita PC acordar sozinho)
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/disable-spurious-acpi-wakeup.sh
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target

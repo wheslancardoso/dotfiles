@@ -334,6 +334,105 @@ setup_extras() {
     ok "Associações padrão configuradas."
 }
 
+# 9.1. Blindagem de Antiatritos do Sistema (Suspensão, Wakeup Espúrio, Desligamento Rápido, ZRAM, Kernel)
+setup_anti_friction() {
+    info "Aplicando blindagem de antiatritos do sistema..."
+
+    local sys_src="$DOTFILES_DIR/system/etc"
+
+    # 1. NVIDIA Suspensão & VRAM Preservation (evita tela preta ou crash do Hyprland ao acordar)
+    if [ -d "$sys_src/modprobe.d" ]; then
+        sudo mkdir -p /etc/modprobe.d
+        sudo cp -f "$sys_src/modprobe.d/nvidia-power-management.conf" /etc/modprobe.d/
+        for svc in nvidia-suspend.service nvidia-hibernate.service nvidia-resume.service; do
+            if systemctl list-unit-files "$svc" >/dev/null 2>&1; then
+                sudo systemctl enable "$svc" 2>/dev/null || true
+            fi
+        done
+        ok "NVIDIA VRAM preservation e serviços de suspensão configurados!"
+    fi
+
+    # 2. Desligamento Instantâneo (Timeout de 10s no Systemd em vez de 90s-120s)
+    if [ -d "$sys_src/systemd/system.conf.d" ]; then
+        sudo mkdir -p /etc/systemd/system.conf.d /etc/systemd/user.conf.d
+        sudo cp -f "$sys_src/systemd/system.conf.d/timeout.conf" /etc/systemd/system.conf.d/
+        sudo cp -f "$sys_src/systemd/user.conf.d/timeout.conf" /etc/systemd/user.conf.d/
+        ok "Timeout de encerramento rápido (10s) configurado!"
+    fi
+
+    # 3. ZRAM Swap Ultra-rápido com Compressão ZSTD (Zero travamento de RAM / OOM freeze)
+    if [ -f "$sys_src/systemd/zram-generator.conf" ]; then
+        sudo mkdir -p /etc/systemd
+        sudo cp -f "$sys_src/systemd/zram-generator.conf" /etc/systemd/
+        if systemctl list-unit-files "systemd-zram-setup@zram0.service" >/dev/null 2>&1; then
+            sudo systemctl enable "systemd-zram-setup@zram0.service" 2>/dev/null || true
+        fi
+        ok "ZRAM Swap comprimido (zstd) configurado!"
+    fi
+
+    # 4. Limites de Kernel para Desenvolvedores e Gamers (Zero ENOSPC no Vite/Docker, max_map_count alto)
+    if [ -f "$sys_src/sysctl.d/99-anti-friction-limits.conf" ]; then
+        sudo mkdir -p /etc/sysctl.d
+        sudo cp -f "$sys_src/sysctl.d/99-anti-friction-limits.conf" /etc/sysctl.d/
+        sudo sysctl --system >/dev/null 2>&1 || true
+        ok "Limites de kernel (inotify 524288, max_map_count, BBR) aplicados!"
+    fi
+
+    # 5. Bluetooth: AutoEnable e Conexão Instantânea FastConnectable
+    if [ -f "$sys_src/bluetooth/main.conf" ]; then
+        sudo mkdir -p /etc/bluetooth
+        sudo cp -f "$sys_src/bluetooth/main.conf" /etc/bluetooth/
+        ok "Bluetooth AutoEnable e FastConnectable ativados!"
+    fi
+
+    # 6. Desativar Wake-on-LAN no NetworkManager (evita que pacotes de rede acordem o PC da suspensão)
+    if [ -f "$sys_src/NetworkManager/conf.d/disable-wol.conf" ]; then
+        sudo mkdir -p /etc/NetworkManager/conf.d
+        sudo cp -f "$sys_src/NetworkManager/conf.d/disable-wol.conf" /etc/NetworkManager/conf.d/
+        ok "Wake-on-LAN desativado no NetworkManager!"
+    fi
+
+    # 7. Regras Udev Anti-Wakeup Espúrio (movimentos acidentais ou poeira no sensor do mouse)
+    if [ -f "$sys_src/udev/rules.d/90-disable-spurious-mouse-wakeup.rules" ]; then
+        sudo mkdir -p /etc/udev/rules.d
+        sudo cp -f "$sys_src/udev/rules.d/90-disable-spurious-mouse-wakeup.rules" /etc/udev/rules.d/
+        sudo udevadm control --reload-rules 2>/dev/null || true
+        ok "Regras udev anti-wakeup espúrio no mouse instaladas!"
+    fi
+
+    # 8. Script e Serviço para desativar gatilhos espúrios em /proc/acpi/wakeup (GLAN, XHC)
+    if [ -f "$DOTFILES_DIR/scripts/disable-spurious-acpi-wakeup.sh" ]; then
+        sudo cp -f "$DOTFILES_DIR/scripts/disable-spurious-acpi-wakeup.sh" /usr/local/bin/
+        sudo chmod +x /usr/local/bin/disable-spurious-acpi-wakeup.sh
+        if [ -f "$sys_src/systemd/system/disable-spurious-acpi-wakeup.service" ]; then
+            sudo cp -f "$sys_src/systemd/system/disable-spurious-acpi-wakeup.service" /etc/systemd/system/
+            sudo systemctl daemon-reload 2>/dev/null || true
+            sudo systemctl enable disable-spurious-acpi-wakeup.service 2>/dev/null || true
+        fi
+        ok "Serviço anti-wakeup espúrio do ACPI habilitado!"
+    fi
+
+    # 9. Limite de tamanho de logs no SSD (Journald 500MB)
+    if [ -f "$sys_src/systemd/journald.conf.d/size-limit.conf" ]; then
+        sudo mkdir -p /etc/systemd/journald.conf.d
+        sudo cp -f "$sys_src/systemd/journald.conf.d/size-limit.conf" /etc/systemd/journald.conf.d/
+        ok "Limite de tamanho do Journald (500MB) configurado!"
+    fi
+
+    # 10. Servidores NTP brasileiros de baixa latência e ajuste do relógio RTC
+    if [ -f "$sys_src/systemd/timesyncd.conf.d/ntp-brasil.conf" ]; then
+        sudo mkdir -p /etc/systemd/timesyncd.conf.d
+        sudo cp -f "$sys_src/systemd/timesyncd.conf.d/ntp-brasil.conf" /etc/systemd/timesyncd.conf.d/
+        sudo timedatectl set-local-rtc 0 --adjust-system-clock 2>/dev/null || true
+        sudo timedatectl set-ntp true 2>/dev/null || true
+        ok "Relógio NTP e timesyncd configurados!"
+    fi
+
+    ok "Todos os antiatritos do sistema foram aplicados com sucesso!"
+}
+
+
+
 
 # 10. Wallpaper Padrão e Tema Dinâmico Wallust
 setup_default_theme_and_wallpaper() {
@@ -398,7 +497,9 @@ apply_dotfiles
 setup_lowercase_dirs
 setup_shell
 setup_extras
+setup_anti_friction
 setup_default_theme_and_wallpaper
+
 
 printf "\n"
 read -p "Deseja configurar o ambiente de desenvolvimento agora? (Docker, Mise, Neovim/LazyVim) [s/N] " DEV_CONF
@@ -431,5 +532,7 @@ echo -e "  - ${BLUE}onlyoffice${NC}           : Suíte de escritório compatíve
 echo -e "  - ${BLUE}kdeconnect${NC}           : Conexão sem fio com celular (clipboard compartilhado e arquivos)"
 echo -e "  - ${BLUE}gparted / baobab${NC}     : Formatador visual de discos e analisador gráfico de espaço"
 echo -e "  - ${BLUE}quickgui${NC}             : Interface gráfica para rodar Windows 11 em VM KVM com 1 clique"
+echo -e "  - ${BLUE}fix-suspend${NC}          : Diagnóstico e proteção para o PC nunca acordar sozinho"
 echo -e "Por favor, reinicie a sessão ou o computador para aplicar todas as mudanças."
+
 

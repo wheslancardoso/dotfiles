@@ -216,6 +216,10 @@ alias trash-restore='trash-restore'
 # ⏰ Sincronização Forçada do Relógio NTP
 alias sync-clock='sudo timedatectl set-ntp true && sudo systemctl restart systemd-timesyncd && date'
 
+# 💤 Diagnóstico & Proteção de Suspensão (Zero Wakeup Espúrio)
+alias fix-suspend='$HOME/dotfiles/scripts/fix-suspend.sh'
+
+
 # Rede e Diagnóstico Rápido
 alias ports='ss -tulpn | grep LISTEN'
 alias myip='curl -s ifconfig.me && echo ""'
