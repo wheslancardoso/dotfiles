@@ -174,10 +174,16 @@
 | `ll` / `la` / `lt` | Listagem rica de arquivos com ícones (**Eza**) |
 | `cat [arquivo]` | Leitura de arquivo com realce de sintaxe (**Bat**) |
 | `y` | Abre o **Yazi** e muda o diretório do terminal ao sair |
+| `pacup` / `safe-update` | Atualização blindada (chaveiro PGP atualizado antes e snapshot Btrfs) |
+| `fix-pacman` | Destrava o banco de dados `/var/lib/pacman/db.lck` com segurança |
+| `fix-keys` | Repara e atualiza as chaves PGP oficiais do Arch Linux |
+| `fix-mirrors` | Ranqueia os mirrors mais rápidos do Brasil e América do Sul |
+| `fix-audio` | Reinicia PipeWire e WirePlumber em caso de estalos ou falha |
 | `fix-pendrive` | Desbloqueia e repara pen-drives NTFS (dirty-bit) e FAT32 |
 | `fix-suspend` | Diagnóstico e proteção para o PC nunca acordar sozinho |
 | `clean-system` | Faxina geral de caches, logs antigos e pacotes órfãos |
-| `pacup` | Atualiza o sistema completo (Pacman + AUR) |
 | `trash-empty` | Esvazia a lixeira do sistema de forma segura |
+| `perf` / `quiet` | Alterna entre performance máxima e silêncio das ventoinhas |
+
 
 

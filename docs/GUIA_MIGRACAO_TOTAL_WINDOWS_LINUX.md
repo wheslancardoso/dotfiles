@@ -166,7 +166,32 @@ Muitos usuários desistem do Linux por pequenos atritos que nunca foram corrigid
 * **O Problema:** Bluetooth desligado no boot ou fones demorando 10 segundos para parear.
 * **A Solução:** `AutoEnable=true` e `FastConnectable=true` no `/etc/bluetooth/main.conf`.
 
+### 🛡️ 7. Atualização Blindada (Fim do "Fiquei 2 Semanas Sem Atualizar e Quebrou")
+* **O Problema Clássico do Arch:** Ficar alguns dias sem atualizar e, ao rodar `pacman -Syu`, o sistema quebra com `invalid or corrupted package (PGP signature)` porque as chaves de segurança dos desenvolvedores expiraram antes do pacote ser baixado. Ou pior: o kernel atualiza, mas a compilação do driver NVIDIA não roda antes do reboot, gerando tela preta.
+* **A Solução:**
+  - **Hook do Pacman para NVIDIA (`95-nvidia.hook`)**: Roda automaticamente o `mkinitcpio -P` sempre que o kernel ou a NVIDIA forem atualizados, garantindo que o boot e o driver de vídeo estejam 100% sincronizados.
+  - **Script `safe-update` (alias `pacup`)**:
+    1. Cria um snapshot Btrfs pré-atualização para rollback instantâneo;
+    2. Atualiza o chaveiro oficial (`archlinux-keyring`) **ANTES** de qualquer pacote, eliminando 100% dos erros de PGP;
+    3. Atualiza pacotes nativos e AUR com segurança;
+    4. Avisa se uma reinicialização for recomendada por troca de versão de kernel.
+
+### 🛠️ 8. Ferramentas de Auto-Cura (Zero Pânico no Terminal)
+* **`fix-pacman`**: Se a internet cair ou o terminal fechar e o Pacman travar com erro de `db.lck`, rode `fix-pacman` para destravar e limpar pacotes parciais corrompidos (`.part`) com segurança.
+* **`fix-keys`**: Se alguma chave de segurança PGP corromper, re-inicializa e popula as chaves oficiais em 1 comando.
+* **`fix-mirrors`**: Testa e ranqueia automaticamente os mirrors mais velozes e atualizados do Brasil e América do Sul.
+* **`fix-audio`**: Reinicia o PipeWire e WirePlumber na hora se algum fone ou microfone tiver estalos.
+
+### 🌐 9. Aceleração GPU por Hardware & Wayland Nativo nos Navegadores
+* **O Problema:** Google Chrome, VS Code, Spotify e Discord rodando via XWayland com fontes levemente borradas e vídeos 4K consumindo 70% de CPU.
+* **A Solução:** Configurados `chrome-flags.conf`, `code-flags.conf` e `electron-flags.conf` com `--ozone-platform-hint=auto` e decodificação NVDEC por hardware na GPU RTX 5060 (0% de CPU ao assistir vídeos em 4K e fontes perfeitamente nítidas).
+
+### 💾 10. Preservação do SSD (Coredumps Desativados)
+* **O Problema:** Crashes de jogos pesados gravam dumps gigantescos da memória RAM no SSD (`/var/lib/systemd/coredump/`), consumindo dezenas de gigabytes sem você saber.
+* **A Solução:** `disable.conf` no coredump desativa memory dumps desnecessários, poupando espaço e vida útil do SSD.
+
 ---
+
 
 ## 📋 9. Checklist de Desapego para Máquinas Pessoais
 

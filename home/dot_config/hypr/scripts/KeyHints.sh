@@ -48,8 +48,13 @@ GDK_BACKEND=$BACKEND yad \
 " SHIFT E" "Explorador de Arquivos Yazi (Flutuante)" "open-yazi.sh" \
 "fix-pendrive" "Destravar & Reparar Pen-drive (Terminal)" "fix-pendrive.sh" \
 "fix-suspend" "Blindagem e Diagnóstico de Suspensão" "fix-suspend.sh" \
+"safe-update" "Atualização Blindada (Chaveiro + Pacotes)" "safe-update.sh" \
+"fix-pacman" "Destravar db.lck do Pacman" "fix-pacman.sh" \
+"fix-keys" "Reparar Chaves PGP do Arch" "fix-keys.sh" \
+"fix-audio" "Reiniciar Servidor de Áudio PipeWire" "fix-audio.sh" \
 "clean-system" "Faxina Inteligente do Arch (Terminal)" "clean-system.sh" \
 "" "" "" \
+
 
 
 "── APLICATIVOS BÁSICOS ──" "── ATALHOS DO HYPRLAND ──" "────────────────────────" \

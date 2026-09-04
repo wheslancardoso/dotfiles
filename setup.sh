@@ -428,8 +428,38 @@ setup_anti_friction() {
         ok "Relógio NTP e timesyncd configurados!"
     fi
 
+    # 11. Pacman Hooks de Estabilidade (NVIDIA mkinitcpio auto-sync & paccache)
+    if [ -d "$sys_src/pacman.d/hooks" ]; then
+        sudo mkdir -p /etc/pacman.d/hooks
+        sudo cp -f "$sys_src/pacman.d/hooks/"*.hook /etc/pacman.d/hooks/
+        ok "Pacman hooks de estabilidade de boot (NVIDIA mkinitcpio) instalados!"
+    fi
+
+    # 12. Desativar coredumps no SSD (evita gigabytes desperdiçados em crashes de apps/jogos)
+    if [ -d "$sys_src/systemd/coredump.conf.d" ]; then
+        sudo mkdir -p /etc/systemd/coredump.conf.d
+        sudo cp -f "$sys_src/systemd/coredump.conf.d/disable.conf" /etc/systemd/coredump.conf.d/
+        ok "Coredumps desativados para preservar SSD!"
+    fi
+
+    # 13. Áudio Bluetooth de alta fidelidade em chamadas (WirePlumber)
+    if [ -d "$sys_src/wireplumber/wireplumber.conf.d" ]; then
+        sudo mkdir -p /etc/wireplumber/wireplumber.conf.d
+        sudo cp -f "$sys_src/wireplumber/wireplumber.conf.d/"*.conf /etc/wireplumber/wireplumber.conf.d/
+        ok "WirePlumber configurado para manter áudio de alta resolução!"
+    fi
+
+    # 14. Flags de aceleração GPU por hardware e Wayland nativo para navegadores e apps Electron
+    for f in chrome-flags.conf chromium-flags.conf electron-flags.conf code-flags.conf; do
+        if [ -f "$DOTFILES_DIR/home/dot_config/$f" ]; then
+            cp -f "$DOTFILES_DIR/home/dot_config/$f" "$HOME/.config/$f"
+        fi
+    done
+    ok "Flags de aceleração por hardware e Wayland nativo aplicadas!"
+
     ok "Todos os antiatritos do sistema foram aplicados com sucesso!"
 }
+
 
 
 
@@ -533,6 +563,11 @@ echo -e "  - ${BLUE}kdeconnect${NC}           : Conexão sem fio com celular (cl
 echo -e "  - ${BLUE}gparted / baobab${NC}     : Formatador visual de discos e analisador gráfico de espaço"
 echo -e "  - ${BLUE}quickgui${NC}             : Interface gráfica para rodar Windows 11 em VM KVM com 1 clique"
 echo -e "  - ${BLUE}fix-suspend${NC}          : Diagnóstico e proteção para o PC nunca acordar sozinho"
+echo -e "  - ${BLUE}pacup / safe-update${NC}  : Atualização blindada (atualiza chaveiro PGP antes e previne quebras)"
+echo -e "  - ${BLUE}fix-pacman / fix-keys${NC}: Destrava db.lck e repara chaves PGP corrompidas"
+echo -e "  - ${BLUE}fix-mirrors / fix-audio${NC}: Ranquear mirrors mais rápidos do Brasil e reiniciar áudio"
+echo -e "  - ${BLUE}perf / balanced / quiet${NC}: Alterna perfil de energia da CPU/GPU e ruído de ventoinhas"
 echo -e "Por favor, reinicie a sessão ou o computador para aplicar todas as mudanças."
+
 
 

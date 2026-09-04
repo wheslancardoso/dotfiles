@@ -200,9 +200,16 @@ alias mls='mise list'
 alias mout='mise outdated'
 alias mup='mise upgrade'
 
-# 🧹 Manutenção & Otimização do Arch (Faxina Inteligente)
+# 🧹 Manutenção & Otimização do Arch (Safe Update & Auto-Cura)
 alias clean-system='$HOME/dotfiles/scripts/clean-system.sh'
-alias pacup='sudo pacman -Syu && yay -Sua'
+alias pacup='$HOME/dotfiles/scripts/safe-update.sh'
+alias safe-update='$HOME/dotfiles/scripts/safe-update.sh'
+
+# 🛠️ Ferramentas de Auto-Cura (Zero Dor de Cabeça no Arch)
+alias fix-pacman='$HOME/dotfiles/scripts/fix-pacman.sh'
+alias fix-keys='$HOME/dotfiles/scripts/fix-keys.sh'
+alias fix-mirrors='$HOME/dotfiles/scripts/fix-mirrors.sh'
+alias fix-audio='$HOME/dotfiles/scripts/fix-audio.sh'
 
 # 💾 Pen-drives & Dispositivos Removíveis (Zero Dor de Cabeça)
 alias fix-pendrive='$HOME/dotfiles/scripts/fix-pendrive.sh'
@@ -218,6 +225,13 @@ alias sync-clock='sudo timedatectl set-ntp true && sudo systemctl restart system
 
 # 💤 Diagnóstico & Proteção de Suspensão (Zero Wakeup Espúrio)
 alias fix-suspend='$HOME/dotfiles/scripts/fix-suspend.sh'
+
+# 🎛️ Modos de Energia & Silêncio (power-profiles-daemon)
+alias perf='powerprofilesctl set performance 2>/dev/null && notify-send -u low -i preferences-system-power "Energia" "Modo Performance Máxima Ativado" || true'
+alias balanced='powerprofilesctl set balanced 2>/dev/null && notify-send -u low -i preferences-system-power "Energia" "Modo Equilibrado Ativado" || true'
+alias quiet='powerprofilesctl set power-saver 2>/dev/null && notify-send -u low -i preferences-system-power "Energia" "Modo Silêncio Ativado" || true'
+alias saver='powerprofilesctl set power-saver 2>/dev/null && notify-send -u low -i preferences-system-power "Energia" "Modo Economia Ativado" || true'
+
 
 
 # Rede e Diagnóstico Rápido
