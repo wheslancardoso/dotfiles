@@ -30,7 +30,7 @@ return {
   -- 🔀 Split & Join: Transforma arrays/objetos de linha única em multi-linha (e vice-versa)
   -- Atalho: gS
   {
-    "echasnovski/mini.splitjoin",
+    "nvim-mini/mini.splitjoin",
     event = "VeryLazy",
     config = function()
       require("mini.splitjoin").setup()
@@ -40,7 +40,7 @@ return {
   -- 📏 Align: Alinhamento instantâneo de código por '=', ':', ',' etc.
   -- Atalho: ga
   {
-    "echasnovski/mini.align",
+    "nvim-mini/mini.align",
     event = "VeryLazy",
     config = function()
       require("mini.align").setup()

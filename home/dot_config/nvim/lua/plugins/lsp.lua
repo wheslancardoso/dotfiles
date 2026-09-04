@@ -1,7 +1,7 @@
 return {
   -- Mason para gerenciamento automatizado de LSPs, linters e formatadores
   {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
       vim.list_extend(opts.ensure_installed, {

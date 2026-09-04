@@ -34,11 +34,9 @@ require("lazy").setup({
 
     -- 🎨 Interface & Estética do Sistema
     { import = "lazyvim.plugins.extras.util.dot" },
-    { import = "lazyvim.plugins.extras.ui.noice" },
     { import = "lazyvim.plugins.extras.ui.edgy" },
 
     -- ⚡ Produtividade, Navegação & Debug
-    { import = "lazyvim.plugins.extras.editor.flash" },
     { import = "lazyvim.plugins.extras.editor.harpoon2" },
     { import = "lazyvim.plugins.extras.dap.core" },
     { import = "lazyvim.plugins.extras.dap.nlua" },

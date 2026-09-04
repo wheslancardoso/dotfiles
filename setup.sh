@@ -34,6 +34,16 @@ setup_sudo_nopasswd
 
 info "Iniciando instalação e configuração do sistema..."
 
+# Detecção de ambiente: Ubuntu / Debian / WSL
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    if [ "${ID:-}" = "ubuntu" ] || [ "${ID:-}" = "debian" ] || [ -n "${WSL_DISTRO_NAME:-}" ]; then
+        info "Sistema Ubuntu/Debian/WSL detectado (${PRETTY_NAME:-WSL})."
+        info "Executando o setup dedicado de desenvolvimento para Ubuntu/WSL..."
+        exec "$DOTFILES_DIR/scripts/setup-ubuntu-wsl.sh" "$@"
+    fi
+fi
+
 # 1. Otimizações de desempenho e visual do Pacman & Multilib
 setup_pacman_turbo() {
     info "Configurando Pacman Turbo (10 downloads simultâneos, cores e animação ILoveCandy)..."
