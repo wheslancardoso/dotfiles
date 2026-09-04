@@ -29,6 +29,13 @@ truncation_symbol = "…/"
 "Downloads" = " "
 "Music" = " "
 "Pictures" = " "
+"documents" = "󰈙 "
+"downloads" = " "
+"music" = " "
+"pictures" = " "
+"desktop" = " "
+"videos" = "󰕧 "
+"dotfiles" = "⚙️ "
 
 [git_branch]
 symbol = ""

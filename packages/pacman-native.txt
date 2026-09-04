@@ -102,6 +102,7 @@ hypridle
 hyprland
 hyprlock
 hyprpolkitagent
+hyprpicker
 inetutils
 iptables
 iwd
@@ -237,6 +238,9 @@ swaybg
 swaync
 sysfsutils
 tealdeer
+tesseract
+tesseract-data-eng
+tesseract-data-por
 texinfo
 thunar
 thunar-archive-plugin
