@@ -25,16 +25,31 @@ open = [
 edit = [
 	{ run = '${EDITOR:-vi} "$@"', block = true, desc = "Edit" },
 ]
+pdf = [
+	{ run = 'okular "$@"', orphan = true, desc = "Okular (PDF & Anotações)" },
+	{ run = 'zathura "$@"', orphan = true, desc = "Zathura (Vim PDF Rápido)" },
+]
+video = [
+	{ run = 'celluloid "$@"', orphan = true, desc = "Celluloid (MPV Moderno)" },
+	{ run = 'mpv "$@"', orphan = true, desc = "MPV" },
+]
+office = [
+	{ run = 'onlyoffice-desktopeditors "$@"', orphan = true, desc = "OnlyOffice" },
+]
 
 [open]
 rules = [
 	{ mime = "inode/directory", use = [ "open", "edit" ] },
 	{ mime = "text/*", use = [ "edit", "open" ] },
 	{ mime = "image/*", use = [ "open" ] },
-	{ mime = "video/*", use = [ "open" ] },
-	{ mime = "audio/*", use = [ "open" ] },
-	{ mime = "application/pdf", use = [ "open" ] },
+	{ mime = "video/*", use = [ "video", "open" ] },
+	{ mime = "audio/*", use = [ "video", "open" ] },
+	{ mime = "application/pdf", use = [ "pdf", "open" ] },
+	{ mime = "application/vnd.openxmlformats-officedocument.*", use = [ "office", "open" ] },
+	{ mime = "application/msword", use = [ "office", "open" ] },
+	{ mime = "application/vnd.ms-*", use = [ "office", "open" ] },
 ]
+
 
 [flavor]
 use = "catppuccin-mocha"

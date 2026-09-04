@@ -10,6 +10,7 @@ android-udev
 atuin
 awesome-terminal-fonts
 awww
+baobab
 base
 base-devel
 bash-completion
@@ -46,6 +47,7 @@ cachyos-zsh-config
 calf
 cantarell-fonts
 cava
+celluloid
 chezmoi
 chwd
 cliphist
@@ -76,6 +78,7 @@ fastfetch
 fd
 ffmpegthumbnailer
 firefox
+flatpak
 fsarchiver
 fzf
 gamemode
@@ -90,6 +93,7 @@ gnome-calendar
 gnome-clocks
 gnome-keyring
 gnome-system-monitor
+gparted
 grim
 gst-libav
 gst-plugin-pipewire
@@ -104,13 +108,14 @@ hyperfine
 hypridle
 hyprland
 hyprlock
-hyprpolkitagent
 hyprpicker
+hyprpolkitagent
 inetutils
 iptables
 iwd
 jfsutils
 jq
+kdeconnect
 kitty
 kvantum
 lazygit
@@ -179,6 +184,7 @@ noto-fonts-cjk
 noto-fonts-emoji
 npm
 nss-mdns
+ntfs-3g
 nvidia-settings
 nvidia-utils
 nvtop
@@ -186,6 +192,7 @@ nwg-displays
 nwg-look
 obs-studio
 octopi
+okular
 opencl-nvidia
 openssh
 os-prober
@@ -213,6 +220,7 @@ python-packaging
 python-pyquery
 python-requests
 qalculate-gtk
+qbittorrent
 qt5-quickcontrols2
 qt5ct
 qt6-virtualkeyboard
@@ -234,6 +242,7 @@ smartmontools
 snapper
 sof-firmware
 sqlite
+sshfs
 starship
 steam
 stow
@@ -264,10 +273,11 @@ ttf-nerd-fonts-symbols
 ttf-nerd-fonts-symbols-common
 ttf-opensans
 tumbler
+udiskie
+udisks2
 ufw
 ufw-extras
 umockdev
-udiskie
 unrar
 unzip
 upower

@@ -204,6 +204,18 @@ alias mup='mise upgrade'
 alias clean-system='$HOME/dotfiles/scripts/clean-system.sh'
 alias pacup='sudo pacman -Syu && yay -Sua'
 
+# 💾 Pen-drives & Dispositivos Removíveis (Zero Dor de Cabeça)
+alias fix-pendrive='$HOME/dotfiles/scripts/fix-pendrive.sh'
+alias fix-ntfs='$HOME/dotfiles/scripts/fix-pendrive.sh'
+
+# 🗑️ Lixeira no Terminal (trash-cli)
+alias trash-list='trash-list'
+alias trash-empty='trash-empty'
+alias trash-restore='trash-restore'
+
+# ⏰ Sincronização Forçada do Relógio NTP
+alias sync-clock='sudo timedatectl set-ntp true && sudo systemctl restart systemd-timesyncd && date'
+
 # Rede e Diagnóstico Rápido
 alias ports='ss -tulpn | grep LISTEN'
 alias myip='curl -s ifconfig.me && echo ""'
@@ -213,6 +225,7 @@ alias speed='curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/maste
 cheat() {
     curl -s "https://cheat.sh/$1"
 }
+
 
 # --- Utilitários ---
 # Yazi CWD Wrapper

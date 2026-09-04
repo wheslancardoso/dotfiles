@@ -141,8 +141,16 @@ setup_services() {
         systemctl --user enable "$svc" 2>/dev/null || warn "Falha ao habilitar $svc para o usuário."
     done
 
+    # Regras de Firewall UFW para KDE Connect (descoberta na rede local Wi-Fi)
+    if command -v ufw >/dev/null 2>&1; then
+        info "Configurando regras do UFW para KDE Connect (portas 1714-1764 UDP/TCP)..."
+        sudo ufw allow 1714:1764/udp comment 'KDE Connect' >/dev/null 2>&1 || true
+        sudo ufw allow 1714:1764/tcp comment 'KDE Connect' >/dev/null 2>&1 || true
+    fi
+
     ok "Serviços configurados."
 }
+
 
 # 5.1. Blindagem do GNOME Keyring e PAM (Desbloqueio Automático)
 setup_keyring() {
@@ -305,7 +313,27 @@ setup_extras() {
         echo 'env = GTK_USE_PORTAL,1' >> "$HOME/.config/hypr/UserConfigs/ENVariables.conf"
         ok "GTK_USE_PORTAL habilitado para file dialogs."
     fi
+
+    # Associações de Aplicativos Padrão (PDF, Vídeo, Documentos)
+    info "Configurando associações padrão de arquivos (PDF, Vídeos, Documentos)..."
+    if command -v okular &>/dev/null; then
+        xdg-mime default org.kde.okular.desktop application/pdf
+    elif command -v zathura &>/dev/null; then
+        xdg-mime default org.pwmt.zathura.desktop application/pdf
+    fi
+
+    if command -v celluloid &>/dev/null; then
+        xdg-mime default io.github.celluloid_player.Celluloid.desktop video/mp4 video/mkv video/x-matroska video/quicktime video/webm video/x-msvideo
+    elif command -v mpv &>/dev/null; then
+        xdg-mime default mpv.desktop video/mp4 video/mkv video/x-matroska video/quicktime video/webm video/x-msvideo
+    fi
+
+    if command -v onlyoffice-desktopeditors &>/dev/null; then
+        xdg-mime default onlyoffice-desktopeditors.desktop application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document application/vnd.ms-excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet application/vnd.ms-powerpoint application/vnd.openxmlformats-officedocument.presentationml.presentation
+    fi
+    ok "Associações padrão configuradas."
 }
+
 
 # 10. Wallpaper Padrão e Tema Dinâmico Wallust
 setup_default_theme_and_wallpaper() {
@@ -397,4 +425,11 @@ echo -e "  - ${BLUE}lutris / heroic${NC}      : Gerenciadores de Jogos & FitGirl
 echo -e "  - ${BLUE}vesktop${NC}              : Discord com compartilhamento de tela e áudio no Wayland"
 echo -e "  - ${BLUE}easyeffects${NC}          : Filtro de ruído por IA para microfone (PipeWire)"
 echo -e "  - ${BLUE}obs${NC}                  : OBS Studio com gravação NVENC (NVIDIA RTX 5060)"
+echo -e "  - ${BLUE}fix-pendrive${NC}         : Desbloqueia e repara pen-drives NTFS/FAT32/exFAT instantaneamente"
+echo -e "  - ${BLUE}okular / celluloid${NC}   : Melhor leitor de PDF e melhor reprodutor de vídeo"
+echo -e "  - ${BLUE}onlyoffice${NC}           : Suíte de escritório compatível 100% com Word, Excel e PowerPoint"
+echo -e "  - ${BLUE}kdeconnect${NC}           : Conexão sem fio com celular (clipboard compartilhado e arquivos)"
+echo -e "  - ${BLUE}gparted / baobab${NC}     : Formatador visual de discos e analisador gráfico de espaço"
+echo -e "  - ${BLUE}quickgui${NC}             : Interface gráfica para rodar Windows 11 em VM KVM com 1 clique"
 echo -e "Por favor, reinicie a sessão ou o computador para aplicar todas as mudanças."
+

@@ -46,7 +46,10 @@ GDK_BACKEND=$BACKEND yad \
 " ~ (til) ou  U" "Terminal Dropdown Suspenso (Quake Style)" "scratchpad-term.sh" \
 " E" "Explorador de Arquivos Yazi (Modo Tiling)" "open-yazi-tiled.sh" \
 " SHIFT E" "Explorador de Arquivos Yazi (Flutuante)" "open-yazi.sh" \
+"fix-pendrive" "Destravar & Reparar Pen-drive (Terminal)" "fix-pendrive.sh" \
+"clean-system" "Faxina Inteligente do Arch (Terminal)" "clean-system.sh" \
 "" "" "" \
+
 "── APLICATIVOS BÁSICOS ──" "── ATALHOS DO HYPRLAND ──" "────────────────────────" \
 " enter" "Abrir Terminal" "(kitty)" \
 " SHIFT enter" "DropDown Terminal Alternativo" " Q para fechar" \

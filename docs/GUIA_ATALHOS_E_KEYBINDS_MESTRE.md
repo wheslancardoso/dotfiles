@@ -28,8 +28,12 @@
 | `Super + Shift + A` | Alternar saída de áudio (Caixas de Som <-> Fone/Headset) |
 | `Super + C` | Calculadora flutuante com conversão de moedas ao vivo |
 | `Super + Space` | Alternar layout de teclado (US-Intl, PT-BR ABNT2, US-Dev) |
+| `Super + H` | **Cheat Sheet Mestre** com todos os atalhos do sistema e do Yazi |
+| `Super + Shift + M` | Gerenciador de Monitores e Projeção (**nwg-displays**) |
+| `Alt + V` | Gerenciador e histórico da área de transferência (**CopyQ**) |
 | `Super + L` | Bloquear tela (**Hyprlock**) |
 | `Super + M` | Menu de saída / Desligar / Reiniciar (**Wlogout**) |
+
 
 
 ---
@@ -170,3 +174,8 @@
 | `ll` / `la` / `lt` | Listagem rica de arquivos com ícones (**Eza**) |
 | `cat [arquivo]` | Leitura de arquivo com realce de sintaxe (**Bat**) |
 | `y` | Abre o **Yazi** e muda o diretório do terminal ao sair |
+| `fix-pendrive` | Desbloqueia e repara pen-drives NTFS (dirty-bit) e FAT32 |
+| `clean-system` | Faxina geral de caches, logs antigos e pacotes órfãos |
+| `pacup` | Atualiza o sistema completo (Pacman + AUR) |
+| `trash-empty` | Esvazia a lixeira do sistema de forma segura |
+

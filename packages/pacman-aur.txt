@@ -18,9 +18,11 @@ lazydocker-bin
 lazysql-bin
 ludusavi-bin
 mise-bin
+onlyoffice-bin
 protonup-qt
 quickemu
 quickgui-bin
+ttf-ms-win11-auto
 ttf-victor-mono
 unionfs-fuse
 vesktop-bin
