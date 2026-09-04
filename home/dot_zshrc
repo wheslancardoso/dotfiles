@@ -239,3 +239,8 @@ bindkey '^[[A' zsh-history-substring-search-up 2>/dev/null || true
 bindkey '^[[B' zsh-history-substring-search-down 2>/dev/null || true
 bindkey -M vicmd 'k' zsh-history-substring-search-up 2>/dev/null || true
 bindkey -M vicmd 'j' zsh-history-substring-search-down 2>/dev/null || true
+
+# 🏎️ Fastfetch (Arch/Hyprland Poweruser Header em sessões interativas)
+if [[ -o interactive ]] && command -v fastfetch &>/dev/null && [ -z "$VIMRUNTIME" ] && [ -z "$ZELLIJ" ] && [ "$TERM_PROGRAM" != "vscode" ]; then
+    fastfetch
+fi
