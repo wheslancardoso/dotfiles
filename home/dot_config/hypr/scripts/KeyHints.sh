@@ -33,6 +33,9 @@ GDK_BACKEND=$BACKEND yad \
 " SHIFT E" "Menu de Configurações KooL Hyprland" "Kool_Quick_Settings.sh" \
 "" "" "" \
 "── SUPERPODERES DO SEU RICE ──" "── FERRAMENTAS INTEGRADAS ──" "────────────────────────" \
+" M" "Spotify Dropdown Scratchpad (Flutuante)" "spotify-toggle.sh" \
+" ALT B" "Bluetooth Rápido (Ligar/Desligar/Fones)" "rofi-bluetooth.sh" \
+" ALT W" "Wi-Fi Rápido (Conectar redes sem janelas)" "rofi-wifi.sh" \
 " SHIFT R ou  ALT R" "Gravação de Tela (MP4/GIF com áudio)" "screen-record.sh" \
 " SHIFT A ou  ALT A" "Alternar Saída de Som (Caixa <-> Fone)" "audio-switch.sh" \
 " SHIFT T" "Screen OCR (Copiar texto de qualquer imagem)" "ocr-screen.sh" \
@@ -48,13 +51,13 @@ GDK_BACKEND=$BACKEND yad \
 " SHIFT E" "Explorador de Arquivos Yazi (Flutuante)" "open-yazi.sh" \
 " SHIFT D" "Upload Rápido de Documentos (CNH, RG, Comprovantes)" "open-acesso-rapido.sh" \
 " ALT S" "Sincronizar Saves de Jogos na Nuvem" "sync-ludusavi.sh" \
+"cleanup" "Faxina Inteligente do Arch (Órfãos/Cache)" "sys-maintenance.sh" \
+"sys-update" "Atualização Completa e Segura do Sistema" "sys-maintenance.sh" \
 "fix-pendrive" "Destravar & Reparar Pen-drive (Terminal)" "fix-pendrive.sh" \
 "fix-suspend" "Blindagem e Diagnóstico de Suspensão" "fix-suspend.sh" \
-"safe-update" "Atualização Blindada (Chaveiro + Pacotes)" "safe-update.sh" \
 "fix-pacman" "Destravar db.lck do Pacman" "fix-pacman.sh" \
 "fix-keys" "Reparar Chaves PGP do Arch" "fix-keys.sh" \
 "fix-audio" "Reiniciar Servidor de Áudio PipeWire" "fix-audio.sh" \
-"clean-system" "Faxina Inteligente do Arch (Terminal)" "clean-system.sh" \
 "" "" "" \
 
 

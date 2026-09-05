@@ -45,3 +45,7 @@ function y
     end
     rm -f -- "$tmp"
 end
+
+# Manutenção do Sistema Arch Linux
+alias cleanup="bash $HOME/dotfiles/scripts/sys-maintenance.sh cleanup"
+alias sys-update="bash $HOME/dotfiles/scripts/sys-maintenance.sh update"

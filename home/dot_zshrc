@@ -259,6 +259,10 @@ function y() {
 # Scratchpad Dropdown Terminal Shortcut
 alias sp='$HOME/.config/hypr/scripts/scratchpad-term.sh'
 
+# Manutenção do Sistema Arch Linux
+alias cleanup='bash $HOME/dotfiles/scripts/sys-maintenance.sh cleanup'
+alias sys-update='bash $HOME/dotfiles/scripts/sys-maintenance.sh update'
+
 # Mise (SDK Manager)
 if command -v mise &> /dev/null; then
     eval "$(mise activate zsh)"

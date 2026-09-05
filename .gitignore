@@ -19,3 +19,15 @@ __pycache__/
 *.token*
 *.key*
 
+# Ignorar wallpapers pesados locais não rastreados (armazenados em nuvem/disco local)
+home/pictures/wallpapers/*
+!home/pictures/wallpapers/Dynamic-Wallpapers/
+home/pictures/wallpapers/Dynamic-Wallpapers/Dark/*
+home/pictures/wallpapers/Dynamic-Wallpapers/Light/*
+!home/pictures/wallpapers/Balcony-ja.png
+!home/pictures/wallpapers/Lofi - Anime Girl2.png
+!home/pictures/wallpapers/Night monochrome.jpg
+!home/pictures/wallpapers/Night_City.png
+!home/pictures/wallpapers/Northern Lights3.png
+!home/pictures/wallpapers/Dynamic-Wallpapers/Dark/Beach-Dark.png
+!home/pictures/wallpapers/Dynamic-Wallpapers/Light/Beach_light.png

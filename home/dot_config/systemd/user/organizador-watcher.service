@@ -4,7 +4,7 @@ After=default.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python3 %h/dotfiles/scripts/organizador/main.py --watch %h/downloads
+ExecStart=/usr/bin/python3 %h/dotfiles/scripts/organizador/main.py --watch /mnt/dados/00_Inbox --dest /mnt/dados
 Restart=always
 RestartSec=5
 StandardOutput=journal
