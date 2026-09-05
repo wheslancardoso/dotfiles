@@ -34,7 +34,8 @@
 | `Super + H` ou `Super + /` | **Cheat Sheet Mestre** com todos os atalhos do sistema (KeyHints HUD) |
 | `Super + Shift + D` | **Upload Rápido de Documentos** (Acesso Rápido - CNH, RG, Comprovantes em janela flutuante) |
 | `Super + Alt + S` | **Sincronização de Saves de Jogos** (Ludusavi Cloud Backup com notificação nativa) |
-| `Super + Alt + D` | **Download Rápido de Mídia/Spotify** (YouTube, Spotify, Twitter via yt-dlp/spotDL ou comando `dl`) |
+| `Super + Alt + D` | **Menu Media Downloader** (Rofi interativo para YouTube, Spotify, cortes, GIFs, etc.) |
+| `Super + Ctrl + D` | **Baixar Tocando Agora** (Captura imediata da faixa/vídeo ativa via MPRIS / Spotify / Navegador) |
 | `Super + Shift + M` | Gerenciador de Monitores e Projeção (**nwg-displays**) |
 | `Super + M` | **Spotify Dropdown Scratchpad** (Desce janela flutuante com blur Catppuccin e esconde ao apertar de novo) |
 | `Super + Ctrl + Space` | Play / Pause do Spotify em segundo plano |
@@ -108,6 +109,8 @@
 | `M` + `o` | **Organizar Tudo** (`organizar --all` do Organizador Master) |
 | `M` + `d` | **Doctor Diagnóstico** (`organizar --doctor`) |
 | `M` + `s` | **Backup Saves de Jogos** (`sync-ludusavi.sh backup`) |
+| `M` + `y` | **Download de Mídia/Spotify** direto nesta pasta (`yt-dlp` / `spotdl`) |
+| `M` + `l` | **Enviar via LocalSend** (AirDrop P2P celular/PC) |
 | `M` + `g` | **Abrir Lazygit** na pasta atual |
 | `M` + `t` | **Abrir Terminal** na pasta atual |
 

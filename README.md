@@ -49,6 +49,7 @@
 │   ├── ARCHITECTURE_ORGANIZADOR.md  # 📐 Arquitetura do motor Python do organizador
 │   └── favoritos_organizados.html   # 🌐 Backup curado de favoritos de navegação
 ├── scripts/                         # ⚡ Automações e utilitários
+│   ├── media-download.sh            # 📥 Media Downloader Universal Apex (YouTube, Spotify, MPRIS, GIFs)
 │   ├── backup.sh                    # Backup e sincronização dos dotfiles via Chezmoi
 │   ├── dev-setup.sh                 # Provisionamento de linguagens, Docker e SDKs
 │   ├── yazi-float.sh / yazi-help.sh # Integração Yazi no terminal
