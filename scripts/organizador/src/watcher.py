@@ -108,8 +108,12 @@ class DirectoryWatcher:
     def start(self, once: bool = False) -> None:
         """Inicia o loop de monitoramento."""
         if not self.watch_dir.exists():
-            log_error(f"Diretório para monitorar não existe: {self.watch_dir}")
-            return
+            try:
+                self.watch_dir.mkdir(parents=True, exist_ok=True)
+                log_info(f"Diretório de monitoramento criado: {self.watch_dir}")
+            except Exception as e:
+                log_error(f"Diretório para monitorar não existe e não pôde ser criado: {self.watch_dir} ({e})")
+                return
 
         print(f"\n{Colors.BOLD}{Colors.HEADER}===================================================={Colors.END}")
         print(f"{Colors.BOLD}{Colors.HEADER}   ORGANIZADOR MASTER — MODO WATCHER EM TEMPO REAL   {Colors.END}")
