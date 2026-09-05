@@ -14,9 +14,10 @@ class TaxonomyManager:
         self.diretorios_mestre = config.get("diretorios_mestre", {})
         self.subpastas_padrao = config.get("subpastas_padrao", {})
 
-    def scaffold(self, dry_run: bool = False) -> List[Path]:
+    def scaffold(self, dry_run: bool = False, create_gitkeep: bool = True) -> List[Path]:
         """
         Cria idempotentemente toda a árvore de diretórios numerada 00..06.
+        Garante que subpastas vazias contenham .gitkeep para persistência na nuvem e no git.
         Retorna a lista de caminhos de diretórios criados/garantidos.
         """
         created_paths: List[Path] = []
@@ -42,6 +43,11 @@ class TaxonomyManager:
                     else:
                         sub_path.mkdir(parents=True, exist_ok=True)
                         log_info(f"Subpasta criada: {sub_path}")
+                if not dry_run and create_gitkeep:
+                    # Se a pasta não possui nenhum arquivo ou subpasta, adiciona .gitkeep
+                    has_files = any(sub_path.iterdir())
+                    if not has_files:
+                        (sub_path / ".gitkeep").touch()
                 created_paths.append(sub_path)
 
         return created_paths

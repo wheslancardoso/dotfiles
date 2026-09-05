@@ -15,7 +15,7 @@
       "01.1_Identidade_e_Documentos",
       "01.2_Carreira_e_Curriculos",
       "01.3_Frequencia_e_Viagens",
-      "01.4_clareza",
+      "01.4_Clareza_e_Desenvolvimento_Pessoal",
       "01.5_Financas_e_Contas"
     ],
     "02_Estudos_e_Concursos": [
@@ -26,8 +26,8 @@
     ],
     "03_Profissional_WFIX": [
       "03.1_IA_Prompts_e_SOPs",
-      "03.2_Automacoes_n8n",
-      "03.3_Historico_e_Casos",
+      "03.2_Automacoes_e_n8n",
+      "03.3_WFIX_Empresa",
       "03.4_Clientes_e_Whats",
       "03.5_Aulas_e_Treinamentos"
     ],
@@ -37,14 +37,15 @@
       "04.3_Scripts_e_Automacoes"
     ],
     "05_Design_Midia_e_Criacao": [
-      "05.1_Artes_e_Cartazes",
-      "05.2_Audios_e_Vozes",
-      "05.3_Letras_e_Composicoes"
+      "05.1_Artes_e_Wallpapers",
+      "05.2_Audios_e_Midias",
+      "05.3_Letras_e_Composicoes",
+      "05.4_Filmes_e_Series"
     ],
     "06_Backups_ISOs_e_Sistemas": [
-      "06.1_Imagens_e_Snapshots",
-      "06.2_Maquinas_Virtuais_WSL",
-      "06.3_Instaladores_e_ISOs"
+      "06.1_Instaladores_e_APKs",
+      "06.2_Backups_e_Snapshots",
+      "06.3_ISOs_e_Boot"
     ]
   },
   "regras_palavras_chave": [
@@ -74,7 +75,7 @@
     },
     {
       "termos": ["n8n", "fluxo", "webhook", "blocos_intencao", "blocos_fluxo"],
-      "destino": "03_Profissional_WFIX/03.2_Automacoes_n8n"
+      "destino": "03_Profissional_WFIX/03.2_Automacoes_e_n8n"
     },
     {
       "termos": ["atendimento", "playbook", "guia atendimento", "engenheiro de seguranca", "ia para atendimento", "chatgpt-", "conversas_ia", "prompts"],
@@ -90,39 +91,90 @@
     },
     {
       "termos": ["cartaz", "palestra", "aniversario", "aniversário", "cavalete", "elevador", "ouvidoria", "convite", "post instagram", "agosto lilas", "agosto lilás"],
-      "destino": "05_Design_Midia_e_Criacao/05.1_Artes_e_Cartazes"
+      "destino": "05_Design_Midia_e_Criacao/05.1_Artes_e_Wallpapers"
     },
     {
       "termos": ["carl johnson", "king von", "whatsapp ptt", "whatsapp audio", "slowed", "voz", "sample", "soundtrack"],
-      "destino": "05_Design_Midia_e_Criacao/05.2_Audios_e_Vozes"
+      "destino": "05_Design_Midia_e_Criacao/05.2_Audios_e_Midias"
     },
     {
       "termos": [".mrimgx", "backup-codes", "snapshot", "backup"],
-      "destino": "06_Backups_ISOs_e_Sistemas/06.1_Imagens_e_Snapshots"
+      "destino": "06_Backups_ISOs_e_Sistemas/06.2_Backups_e_Snapshots"
     },
     {
-      "termos": ["arch.exe", "ext4.vhdx", "rootfs.tar.gz", "wsl", "vbox", "virtualbox"],
-      "destino": "06_Backups_ISOs_e_Sistemas/06.2_Maquinas_Virtuais_WSL"
+      "termos": ["linux essentials", "senai", "cabeamento", "servicos de rede", "redes topologia", "dns", "camada de rede", "camada de aplicacao"],
+      "destino": "02_Estudos_e_Concursos/02.3_Cursos_e_Certificacoes"
+    },
+    {
+      "termos": ["tcc", "artigo cientifico", "artigo científico", "minhas financas"],
+      "destino": "02_Estudos_e_Concursos/02.3_Cursos_e_Certificacoes/ADS_TCC"
+    },
+    {
+      "termos": ["fresh news", "freshnews", "redacao agentica", "redação agêntica", "blueprint", "database camaleao"],
+      "destino": "03_Profissional_WFIX/03.1_IA_Prompts_e_SOPs/Fresh_News"
+    },
+    {
+      "termos": ["finance ia", "mixtape252", "satori", "noise overlay", "wtech", "dynamic-water"],
+      "destino": "04_Desenvolvimento_e_Codigo/04.1_Projetos_Web_e_Apps"
+    },
+    {
+      "termos": ["sap02", "sap3", "planilha_de_custos", "extrato", "fatura", "imposto de renda", "nuconta"],
+      "destino": "01_Pessoal_e_Vida/01.5_Financas_e_Contas"
+    },
+    {
+      "termos": ["personalidade", "clareza", "homem exemplar", "habitos", "hábitos", "pilares milenares", "jornada de wheslan", "estilo"],
+      "destino": "01_Pessoal_e_Vida/01.4_Clareza_e_Desenvolvimento_Pessoal"
+    },
+    {
+      "termos": ["driver booster", "aida 64", "aida64", "crystaldisk", "hdtune", "hwmonitor", "hwinfo", "occt", "throttlestop", "treesize", "dism++", "dismplusplus", "revo uninstaller", "ccleaner", "winaero", "startallback"],
+      "destino": "06_Backups_ISOs_e_Sistemas/06.1_Instaladores_e_APKs/Ferramentas_TI"
+    },
+    {
+      "termos": ["epson", "resetter", "almofadas", "l3210", "l3250", "l4260", "l4261", "l4267", "spooler"],
+      "destino": "06_Backups_ISOs_e_Sistemas/06.1_Instaladores_e_APKs/Ferramentas_TI/05_Impressoras_e_Resets"
+    },
+    {
+      "termos": ["cnh", "carteira de habilitacao", "carteira nacional", "comprovante_endereco", "comprovante de endereco", "comprovante_residencia", "comprovante de residencia", "titulo_eleitor", "titulo de eleitor", "cartao_sus", "cartao do sus", "reservista"],
+      "destino": "01_Pessoal_e_Vida/01.1_Identidade_e_Documentos/01_Acesso_Rapido_Dia_a_Dia"
+    },
+    {
+      "termos": ["checklist", "checklists", "minhas metas", "metas 2026", "metas 2025", "watchlist", "lista de compras", "rotina diaria", "rastreador de habitos", "planejamento semanal"],
+      "destino": "01_Pessoal_e_Vida/01.4_Clareza_e_Desenvolvimento_Pessoal/Listas_e_Metas"
+    },
+    {
+      "termos": ["1080p", "720p", "2160p", "4k", "bluray", "webrip", "web-dl", "x264", "x265", "hevc", "dublado", "legendado", "filme", "temporada", "season 1", "season 2", "s01e", "s02e", "yify"],
+      "destino": "05_Design_Midia_e_Criacao/05.4_Filmes_e_Series"
     }
   ],
   "regras_extensoes": {
     ".epub": "02_Estudos_e_Concursos/02.4_Biblioteca_e_Ebooks",
     ".mobi": "02_Estudos_e_Concursos/02.4_Biblioteca_e_Ebooks",
-    ".iso": "06_Backups_ISOs_e_Sistemas/06.3_Instaladores_e_ISOs",
-    ".exe": "06_Backups_ISOs_e_Sistemas/06.3_Instaladores_e_ISOs",
-    ".msi": "06_Backups_ISOs_e_Sistemas/06.3_Instaladores_e_ISOs",
-    ".apk": "06_Backups_ISOs_e_Sistemas/06.3_Instaladores_e_ISOs",
+    ".iso": "06_Backups_ISOs_e_Sistemas/06.3_ISOs_e_Boot",
+    ".exe": "06_Backups_ISOs_e_Sistemas/06.1_Instaladores_e_APKs",
+    ".msi": "06_Backups_ISOs_e_Sistemas/06.1_Instaladores_e_APKs",
+    ".apk": "06_Backups_ISOs_e_Sistemas/06.1_Instaladores_e_APKs",
+    ".deb": "06_Backups_ISOs_e_Sistemas/06.1_Instaladores_e_APKs",
+    ".pkt": "02_Estudos_e_Concursos/02.3_Cursos_e_Certificacoes/Redes",
+    ".sql": "04_Desenvolvimento_e_Codigo/04.3_Scripts_e_Automacoes",
+    ".pst": "06_Backups_ISOs_e_Sistemas/06.2_Backups_e_Snapshots",
     ".ps1": "04_Desenvolvimento_e_Codigo/04.3_Scripts_e_Automacoes",
     ".sh": "04_Desenvolvimento_e_Codigo/04.3_Scripts_e_Automacoes",
     ".py": "04_Desenvolvimento_e_Codigo/04.3_Scripts_e_Automacoes",
-    ".mp3": "05_Design_Midia_e_Criacao/05.2_Audios_e_Vozes",
-    ".ogg": "05_Design_Midia_e_Criacao/05.2_Audios_e_Vozes",
-    ".wav": "05_Design_Midia_e_Criacao/05.2_Audios_e_Vozes",
-    ".flac": "05_Design_Midia_e_Criacao/05.2_Audios_e_Vozes"
+    ".mp3": "05_Design_Midia_e_Criacao/05.2_Audios_e_Midias",
+    ".ogg": "05_Design_Midia_e_Criacao/05.2_Audios_e_Midias",
+    ".wav": "05_Design_Midia_e_Criacao/05.2_Audios_e_Midias",
+    ".flac": "05_Design_Midia_e_Criacao/05.2_Audios_e_Midias",
+    ".mkv": "05_Design_Midia_e_Criacao/05.4_Filmes_e_Series",
+    ".avi": "05_Design_Midia_e_Criacao/05.4_Filmes_e_Series",
+    ".mov": "05_Design_Midia_e_Criacao/05.4_Filmes_e_Series",
+    ".srt": "05_Design_Midia_e_Criacao/05.4_Filmes_e_Series"
   },
   "arquivos_ignorados": [
     "desktop.ini",
     "Thumbs.db",
+    ".DS_Store",
+    ":Zone.Identifier",
+    ":SmartScreen",
     ".git",
     ".gitignore",
     "node_modules",

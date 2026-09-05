@@ -7,11 +7,14 @@ import sys
 from pathlib import Path
 
 from .core import FileOrganizerEngine
+from .dedup import HashDeduplicator
+from .doctor import SystemDoctor
 from .history import HistoryManager
 from .partition_calc import PartitionCalculator
 from .renamer import AutoNamer
 from .taxonomy import TaxonomyManager
 from .utils import Colors, log_error, log_info, log_success, log_warning
+from .watcher import DirectoryWatcher
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -47,6 +50,10 @@ Exemplos de Uso:
     parser.add_argument("--sanitize", type=str, help="Sanitiza nomes de arquivos (remove ' (1)', espaços) no diretório informado")
     parser.add_argument("--calc-disk", type=float, help="Calcula a divisão ótima de partições C: e D: para o tamanho de disco informado em GB (ex: 256, 480, 512, 1000, 2000)")
     parser.add_argument("--recursive", action="store_true", help="Aplica a operação de forma recursiva em subpastas")
+    parser.add_argument("--audit", "--doctor", action="store_true", dest="doctor", help="Auditoria e diagnóstico de saúde da taxonomia mestre")
+    parser.add_argument("--dedup", type=str, metavar="DIR", help="Localiza duplicatas exatas por hash criptográfico SHA-256 no diretório")
+    parser.add_argument("--quarantine-dir", type=str, metavar="DIR", help="Diretório de quarentena para onde enviar cópias de duplicatas do --dedup")
+    parser.add_argument("--watch", type=str, metavar="DIR", help="Inicia daemon de monitoramento contínuo em tempo real no diretório")
 
     return parser
 
@@ -124,6 +131,36 @@ def run_cli():
         print(f" Arquivos Inalterados  : {stats['inalterados']}")
         print(f" Erros                 : {stats['erros']}")
         print(f"{Colors.BOLD}{Colors.GREEN}===================================================={Colors.END}\n")
+        return
+
+    # Comando: --audit / --doctor
+    if args.doctor:
+        target = Path(args.dest).resolve() if args.dest else (Path(args.drive).resolve() if args.drive else project_root.parent)
+        log_info(f"Executando auditoria completa em: {target}")
+        audit_data = SystemDoctor.audit(target)
+        print(SystemDoctor.format_report(audit_data))
+        return
+
+    # Comando: --dedup
+    if args.dedup:
+        target = Path(args.dedup).resolve()
+        log_info(f"Varrendo duplicatas por hash SHA-256 em: {target} (recursivo={args.recursive})")
+        duplicates = HashDeduplicator.scan_directory(target, recursive=args.recursive)
+        print(HashDeduplicator.format_report(duplicates, target))
+
+        if args.quarantine_dir and duplicates:
+            q_dir = Path(args.quarantine_dir).resolve()
+            count = HashDeduplicator.quarantine_duplicates(duplicates, q_dir, dry_run=args.dry_run)
+            log_success(f"Total de {count} cópias movidas para a quarentena em: {q_dir}")
+        return
+
+    # Comando: --watch
+    if args.watch:
+        watch_target = Path(args.watch).resolve()
+        dest_root = Path(args.dest).resolve() if args.dest else (Path.home() / "Documents")
+        engine = FileOrganizerEngine(config_path=config_path, custom_dest_root=dest_root, history_manager=history_mgr)
+        watcher = DirectoryWatcher(watch_dir=watch_target, engine=engine, auto_namer=AutoNamer())
+        watcher.start()
         return
 
     dest_root = Path(args.dest).resolve() if args.dest else (Path.home() / "Documents")

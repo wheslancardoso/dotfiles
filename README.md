@@ -128,23 +128,32 @@ O organizador classifica e mantém sua pasta `~/Documents` e nuvens em perfeito 
 
 | Pasta | Conteúdo |
 |---|---|
-| `00_Inbox_Triagem` | Arquivos soltos recém-baixados |
-| `01_Pessoal_e_Vida` | Documentos pessoais, RG, CPF, finanças, currículos |
-| `02_Estudos_e_Concursos` | TCE-GO, editais, apostilas, cursos, ebooks |
-| `03_Profissional_WFIX` | Automações, playbooks, WhatsApp, clientes |
-| `04_Desenvolvimento_e_Codigo` | Projetos, scripts Python, Shell, repositórios |
-| `05_Design_Midia_e_Criacao` | Artes, áudios, gravações, designs |
-| `06_Backups_ISOs_e_Sistemas` | Snapshots, VMs, instaladores, imagens |
+| `00_Inbox_Triagem` | Arquivos soltos recém-baixados / entrada de triagem |
+| `01_Pessoal_e_Vida` | Documentos pessoais, CNH/RG (Acesso Rápido), saúde, finanças |
+| `02_Profissional_e_Carreira` | Empresas, clientes, projetos, consultorias e portfólio |
+| `03_Estudos_e_Conhecimento` | Cursos, certificações, livros/ebooks, concursos, notas |
+| `04_Desenvolvimento_e_Codigo` | Repositórios git, scripts, automações, APIs, dotfiles |
+| `05_Midias_e_Criatividade` | Fotos, vídeos, músicas, design, áudios, filmes & séries |
+| `06_Sistemas_e_Backups` | Snapshots, VMs, instaladores/APKs, ISOs e configurações |
 
 ### Comandos Rápidos do Organizador:
 ```bash
+# Diagnóstico e pontuação de conformidade (Score 100/100 Padrão Ouro)
+python3 ~/dotfiles/scripts/organizador/main.py --doctor
+
 # Executar organização completa (Desktop + Downloads)
 python3 ~/dotfiles/scripts/organizador/main.py --all
 
 # Simular movimentação sem alterar arquivos
 python3 ~/dotfiles/scripts/organizador/main.py --all --dry-run
 
-# Desfazer a última organização (Rollback)
+# Localizar arquivos duplicados por hash SHA-256
+python3 ~/dotfiles/scripts/organizador/main.py --dedup ~/Downloads
+
+# Monitoramento em tempo real (daemon em segundo plano)
+python3 ~/dotfiles/scripts/organizador/main.py --watch ~/Downloads
+
+# Desfazer a última organização (Rollback atômico)
 python3 ~/dotfiles/scripts/organizador/main.py --undo
 
 # Padronizar nomes com data ISO (YYYY-MM-DD_)
@@ -152,6 +161,9 @@ python3 ~/dotfiles/scripts/organizador/main.py --auto-date ~/Downloads
 
 # Calcular divisão ótima de SSD para dual-boot / partições
 python3 ~/dotfiles/scripts/organizador/main.py --calc-disk 480
+
+# Vincular pastas locais à partição separada de Dados (/mnt/dados)
+bash ~/dotfiles/scripts/organizador/vincular_linux.sh
 ```
 
 ---

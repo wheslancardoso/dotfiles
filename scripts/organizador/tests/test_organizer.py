@@ -4,16 +4,21 @@ Execução: python -m unittest discover tests
 """
 
 import json
+import os
 import shutil
 import sys
 import tempfile
 import unittest
 from pathlib import Path
 
-# Adiciona o diretório raiz do organizador ao sys.path para importação de src
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+# Garante que o diretório raiz do projeto esteja no sys.path
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.core import FileOrganizerEngine
+from src.dedup import HashDeduplicator
+from src.doctor import SystemDoctor
 from src.history import HistoryManager
 from src.partition_calc import PartitionCalculator
 from src.renamer import AutoNamer
@@ -170,6 +175,33 @@ class TestOrganizadorMaster(unittest.TestCase):
         res128 = PartitionCalculator.calculate(128)
         self.assertEqual(res128["d_gb"], 0)
 
+    def test_hash_deduplicator(self):
+        dedup_dir = self.test_dir / "dedup_test"
+        dedup_dir.mkdir()
+        file1 = dedup_dir / "original.txt"
+        file2 = dedup_dir / "copia_com_outro_nome.txt"
+        file1.write_text("conteudo criptografico identico 12345")
+        file2.write_text("conteudo criptografico identico 12345")
+
+        dups = HashDeduplicator.scan_directory(dedup_dir)
+        self.assertEqual(len(dups), 1)
+        h = list(dups.keys())[0]
+        self.assertEqual(len(dups[h]), 2)
+
+    def test_system_doctor(self):
+        audit = SystemDoctor.audit(self.test_dir)
+        self.assertIn("score", audit)
+        self.assertIn("grade", audit)
+        self.assertGreaterEqual(audit["score"], 0)
+
+    def test_deep_content_sniffing(self):
+        generic_file = self.test_dir / "Documento_sem_titulo.txt"
+        generic_file.write_text("Este documento trata sobre o edital tce-go concurso 2026.")
+        dest = self.engine.classify_file(generic_file)
+        self.assertIsNotNone(dest)
+        self.assertTrue("02.1_TCE-GO" in str(dest))
+
 
 if __name__ == "__main__":
     unittest.main()
+

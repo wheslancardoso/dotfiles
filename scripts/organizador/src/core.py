@@ -3,7 +3,9 @@ Motor central de classificação, roteamento e movimentação de arquivos.
 """
 
 import json
+import re
 import shutil
+import zipfile
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
@@ -56,15 +58,34 @@ class FileOrganizerEngine:
             return True
         return False
 
+    def sniff_file_content(self, file_path: Path, max_bytes: int = 16384) -> str:
+        """Lê trecho inicial de texto ou documento docx para identificação semântica profunda."""
+        ext = file_path.suffix.lower()
+        content = ""
+        try:
+            if ext in [".txt", ".md", ".json", ".csv", ".html"]:
+                with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+                    content = f.read(max_bytes)
+            elif ext == ".docx":
+                if zipfile.is_zipfile(file_path):
+                    with zipfile.ZipFile(file_path, "r") as z:
+                        if "word/document.xml" in z.namelist():
+                            xml_bytes = z.read("word/document.xml")[:max_bytes]
+                            xml_text = xml_bytes.decode("utf-8", errors="ignore")
+                            content = re.sub(r"<[^>]+>", " ", xml_text)
+        except Exception:
+            pass
+        return normalize_text(content)
+
     def classify_file(self, file_path: Path) -> Optional[Path]:
         """
-        Classifica um arquivo com base nas regras de palavras-chave e extensões.
+        Classifica um arquivo com base nas regras de palavras-chave, deep content sniffing e extensões.
         Retorna o caminho de destino absoluto correspondente na taxonomia.
         """
         name_normalized = normalize_text(file_path.name)
         ext = file_path.suffix.lower()
 
-        # 1. Checagem por palavras-chave (prioridade mais alta)
+        # 1. Checagem por palavras-chave no nome do arquivo (prioridade mais alta)
         for rule in self.keyword_rules:
             terms = rule.get("termos", [])
             dest_rel = rule.get("destino", "")
@@ -73,12 +94,25 @@ class FileOrganizerEngine:
                 if term_normalized in name_normalized:
                     return self.dest_root / dest_rel
 
-        # 2. Checagem por extensão
+        # 2. Deep Content Sniffing: se o nome for genérico ou for documento de texto/docx, inspeciona o interior
+        is_generic = any(g in name_normalized for g in ["sem titulo", "sem nome", "documento", "apresentacao", "arquivo", "ticket", "novo"])
+        if is_generic or ext in [".docx", ".txt", ".md"]:
+            content_snippet = self.sniff_file_content(file_path)
+            if content_snippet:
+                for rule in self.keyword_rules:
+                    terms = rule.get("termos", [])
+                    dest_rel = rule.get("destino", "")
+                    for term in terms:
+                        term_normalized = normalize_text(term)
+                        if len(term_normalized) > 3 and term_normalized in content_snippet:
+                            return self.dest_root / dest_rel
+
+        # 3. Checagem por extensão
         if ext in self.extension_rules:
             dest_rel = self.extension_rules[ext]
             return self.dest_root / dest_rel
 
-        # 3. Fallback inteligente: se for documento solto não identificado, envia para 00_Inbox_Triagem
+        # 4. Fallback inteligente: se for documento solto não identificado, envia para 00_Inbox_Triagem
         if ext in [".pdf", ".docx", ".xlsx", ".txt", ".md", ".json", ".zip", ".rar", ".7z", ".csv", ".pptx"]:
             return self.dest_root / "00_Inbox_Triagem"
 
