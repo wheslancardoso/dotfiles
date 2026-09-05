@@ -551,6 +551,14 @@ if [[ "$DEV_CONF" =~ ^[Ss]$ ]]; then
     fi
 fi
 
+printf "\n"
+read -p "Deseja vincular sua partição de dados (/mnt/dados) com a Taxonomia Mestre (Organizador)? [s/N] " VINC_CONF
+if [[ "$VINC_CONF" =~ ^[Ss]$ ]]; then
+    if [ -f "$DOTFILES_DIR/scripts/organizador/vincular_linux.sh" ]; then
+        bash "$DOTFILES_DIR/scripts/organizador/vincular_linux.sh"
+    fi
+fi
+
 echo -e "\n${GREEN}=====================================================${NC}"
 echo -e "${GREEN}     SETUP CONCLUÍDO COM SUCESSO! 🚀                 ${NC}"
 echo -e "${GREEN}=====================================================${NC}"

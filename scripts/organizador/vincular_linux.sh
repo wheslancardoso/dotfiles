@@ -20,8 +20,25 @@ echo -e "\n${BOLD}${CYAN}======================================================$
 echo -e "${BOLD}${CYAN}   ORGANIZADOR MASTER — VINCULAÇÃO TRANSPARENTE LINUX  ${RESET}"
 echo -e "${BOLD}${CYAN}======================================================${RESET}\n"
 
-# 1. Detectar ou solicitar o caminho da Taxonomia Mestre
-DEFAULT_DATA_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+# 1. Detectar caminhos prováveis da partição de dados
+POSSIBLE_DIRS=(
+    "/mnt/dados"
+    "/mnt/dados/drive-organizacao"
+    "$HOME/drive-organizacao"
+    "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+)
+
+DEFAULT_DATA_DIR=""
+for p in "${POSSIBLE_DIRS[@]}"; do
+    if [[ -d "$p/01_Pessoal_e_Vida" ]]; then
+        DEFAULT_DATA_DIR="$p"
+        break
+    fi
+done
+
+if [[ -z "$DEFAULT_DATA_DIR" ]]; then
+    DEFAULT_DATA_DIR="/mnt/dados"
+fi
 
 echo -e "Onde está localizada a raiz da Taxonomia Mestre (00_ a 06_)?"
 echo -e "Diretório sugerido detectado: ${BOLD}${GREEN}${DEFAULT_DATA_DIR}${RESET}"
@@ -38,22 +55,30 @@ fi
 echo -e "\n${GREEN}[OK] Raiz de dados válida confirmada: ${DATA_DIR}${RESET}\n"
 
 # 2. Mapeamento de Symlinks para $HOME
-# (Cria links simbólicos limpos para acesso imediato pelos apps e gerenciadores de arquivo)
-
+# Compatível tanto com lowercase power-user quanto com XDG tradicional
 declare -A LINKS=(
+    ["$HOME/downloads"]="$DATA_DIR/00_Inbox_Triagem"
     ["$HOME/Downloads"]="$DATA_DIR/00_Inbox_Triagem"
+    ["$HOME/documents"]="$DATA_DIR/01_Pessoal_e_Vida"
     ["$HOME/Documentos"]="$DATA_DIR/01_Pessoal_e_Vida"
-    ["$HOME/Estudos"]="$DATA_DIR/02_Estudos_e_Concursos"
-    ["$HOME/WFIX"]="$DATA_DIR/03_Profissional_WFIX"
+    ["$HOME/carreira"]="$DATA_DIR/02_Profissional_e_Carreira"
+    ["$HOME/estudos"]="$DATA_DIR/03_Estudos_e_Conhecimento"
+    ["$HOME/projects"]="$DATA_DIR/04_Desenvolvimento_e_Codigo"
     ["$HOME/Projetos"]="$DATA_DIR/04_Desenvolvimento_e_Codigo"
-    ["$HOME/Imagens"]="$DATA_DIR/05_Design_Midia_e_Criacao"
-    ["$HOME/Backups"]="$DATA_DIR/06_Backups_ISOs_e_Sistemas"
+    ["$HOME/pictures"]="$DATA_DIR/05_Midias_e_Criatividade"
+    ["$HOME/Imagens"]="$DATA_DIR/05_Midias_e_Criatividade"
+    ["$HOME/videos"]="$DATA_DIR/05_Midias_e_Criatividade/05.3_Videos_e_Gravacoes"
+    ["$HOME/music"]="$DATA_DIR/05_Midias_e_Criatividade/05.2_Audios_e_Midias"
+    ["$HOME/backups"]="$DATA_DIR/06_Backups_ISOs_e_Sistemas"
 )
 
 echo -e "${BOLD}Vinculando pastas na sua \$HOME ($HOME)...${RESET}"
 
 for LINK_PATH in "${!LINKS[@]}"; do
     TARGET_DIR="${LINKS[$LINK_PATH]}"
+
+    # Garante que a pasta alvo existe
+    mkdir -p "$TARGET_DIR"
 
     # Se já existir como link simbólico
     if [[ -L "$LINK_PATH" ]]; then
@@ -77,7 +102,9 @@ done
 if command -v xdg-user-dirs-update &>/dev/null; then
     xdg-user-dirs-update --set DOWNLOAD "$DATA_DIR/00_Inbox_Triagem" 2>/dev/null || true
     xdg-user-dirs-update --set DOCUMENTS "$DATA_DIR/01_Pessoal_e_Vida" 2>/dev/null || true
-    xdg-user-dirs-update --set PICTURES "$DATA_DIR/05_Design_Midia_e_Criacao" 2>/dev/null || true
+    xdg-user-dirs-update --set PICTURES "$DATA_DIR/05_Midias_e_Criatividade" 2>/dev/null || true
+    xdg-user-dirs-update --set VIDEOS "$DATA_DIR/05_Midias_e_Criatividade/05.3_Videos_e_Gravacoes" 2>/dev/null || true
+    xdg-user-dirs-update --set MUSIC "$DATA_DIR/05_Midias_e_Criatividade/05.2_Audios_e_Midias" 2>/dev/null || true
     echo -e "\n${GREEN}[SUCESSO] XDG User Dirs atualizados para apontar nativamente para a Taxonomia Mestre!${RESET}"
 fi
 
@@ -86,4 +113,5 @@ echo -e "${BOLD}${GREEN}   SISTEMA VINCULADO COM SUCESSO!                     ${
 echo -e "${BOLD}${GREEN}======================================================${RESET}"
 echo -e "Agora, qualquer download do navegador cai em: ${CYAN}00_Inbox_Triagem${RESET}"
 echo -e "Seus documentos pessoais abrem direto em:     ${CYAN}01_Pessoal_e_Vida${RESET}"
-echo -e "Seus projetos de código abrem em:            ${CYAN}04_Desenvolvimento_e_Codigo${RESET}\n"
+echo -e "Seus projetos de código abrem em:            ${CYAN}04_Desenvolvimento_e_Codigo${RESET}"
+echo -e "Suas mídias e fotos abrem em:                ${CYAN}05_Midias_e_Criatividade${RESET}\n"
