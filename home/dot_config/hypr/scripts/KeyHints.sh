@@ -53,6 +53,7 @@ GDK_BACKEND=$BACKEND yad \
 " SHIFT D" "Upload Rápido de Documentos (CNH, RG, Comprovantes)" "open-acesso-rapido.sh" \
 " ALT S" "Sincronizar Saves de Jogos na Nuvem" "sync-ludusavi.sh" \
 " ALT D" "Download Vídeo/Spotify (yt-dlp + spotdl)" "media-download.sh" \
+" CTRL D" "Baixar o que está tocando agora (MPRIS)" "media-download.sh --now" \
 "cleanup" "Faxina Inteligente do Arch (Órfãos/Cache)" "sys-maintenance.sh" \
 "sys-update" "Atualização Completa e Segura do Sistema" "sys-maintenance.sh" \
 "dl [url]" "Download Mídia/Spotify no Terminal" "media-download.sh" \

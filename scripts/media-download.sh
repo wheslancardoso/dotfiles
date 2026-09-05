@@ -1,36 +1,78 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# 📥 MEDIA DOWNLOADER POWER-USER — O Download Manager Definitivo no Terminal
+# 📥 MEDIA DOWNLOADER SUITE DEFINITIVO (APEX V2) — HYPRLAND & TERMINAL
 # ==============================================================================
-# Motor: yt-dlp + spotdl + aria2c (16 conexões multi-threaded aceleradas) + ffmpeg
-# Suporte: YouTube, Spotify, Twitter/X, Instagram, TikTok, Reddit, Twitch, Vimeo e +1.800 sites
+# Motores: yt-dlp + spotdl + gallery-dl + aria2c + ffmpeg + playerctl + ripdrag
+# Suporte: YouTube, Spotify, Twitter/X, Instagram, TikTok, Reddit, Twitch, Vimeo,
+#          sites privados/adultos, álbuns de fotos e mais de 1.800 plataformas.
 # ==============================================================================
 
 set -eo pipefail
 
-# Diretórios Canônicos de Destino
+# ------------------------------------------------------------------------------
+# DIRETÓRIOS CANÔNICOS DE DESTINO
+# ------------------------------------------------------------------------------
 if [ -d "/mnt/dados/05_Midias_Design_e_Criacao" ]; then
     DEFAULT_DEST_VIDEO="/mnt/dados/05_Midias_Design_e_Criacao/Videos/Downloads"
     DEFAULT_DEST_AUDIO="/mnt/dados/05_Midias_Design_e_Criacao/Musicas_e_Audios/Downloads"
+    DEFAULT_DEST_IMAGE="/mnt/dados/05_Midias_Design_e_Criacao/Imagens/Downloads"
+    DEFAULT_DEST_PRIVATE="/mnt/dados/01_Pessoal_e_Vida/.privado"
+elif [ -d "$HOME/drive-organizacao/05_Design_Midia_e_Criacao" ]; then
+    DEFAULT_DEST_VIDEO="$HOME/drive-organizacao/05_Design_Midia_e_Criacao/05.4_Filmes_e_Series"
+    DEFAULT_DEST_AUDIO="$HOME/drive-organizacao/05_Design_Midia_e_Criacao/05.2_Audios_e_Midias"
+    DEFAULT_DEST_IMAGE="$HOME/drive-organizacao/05_Design_Midia_e_Criacao/05.1_Artes_e_Wallpapers"
+    DEFAULT_DEST_PRIVATE="$HOME/drive-organizacao/01_Pessoal_e_Vida/.privado"
 else
     DEFAULT_DEST_VIDEO="$HOME/Videos/Downloads"
     DEFAULT_DEST_AUDIO="$HOME/Music/Downloads"
+    DEFAULT_DEST_IMAGE="$HOME/Pictures/Downloads"
+    DEFAULT_DEST_PRIVATE="$HOME/.privado"
 fi
 
-CUSTOM_DIR=""
+STATE_DIR="$HOME/.local/state/media-downloader"
+HISTORY_FILE="$STATE_DIR/history.log"
+mkdir -p "$STATE_DIR"
 
-# Cores Catppuccin Mocha para Terminal
+CUSTOM_DIR=""
+CUSTOM_CLIP=""
+COMPRESS_TARGET=""
+MAKE_GIF=false
+SPLIT_CHAPTERS=false
+SYNC_PLAYLIST=false
+STUDY_SPEED=""
+COOKIES_BROWSER=""
+SUB_ONLY=false
+THUMB_ONLY=false
+FORCE_PRIVATE=false
+
+# ------------------------------------------------------------------------------
+# CORES CATPPUCCIN MOCHA PARA TERMINAL
+# ------------------------------------------------------------------------------
 MAUVE='\033[38;2;203;166;247m'
 BLUE='\033[38;2;137;180;250m'
 GREEN='\033[38;2;166;227;161m'
 PEACH='\033[38;2;250;179;135m'
 RED='\033[38;2;243;139;168m'
+YELLOW='\033[38;2;249;226;175m'
+TEAL='\033[38;2;148;226;213m'
 TEXT='\033[38;2;205;214;244m'
 SUBTEXT='\033[38;2;166;173;200m'
 BOLD='\033[1m'
 NC='\033[0m'
 
-# Função para obter URL do Clipboard
+# ------------------------------------------------------------------------------
+# UTILITÁRIOS & HELPERS
+# ------------------------------------------------------------------------------
+log_history() {
+    local title="$1"
+    local url="$2"
+    local dest_path="$3"
+    local type="$4"
+    local date_str
+    date_str=$(date '+%Y-%m-%d %H:%M:%S')
+    echo -e "${date_str}\t${type}\t${title}\t${url}\t${dest_path}" >> "$HISTORY_FILE"
+}
+
 get_clipboard_url() {
     local clip=""
     if command -v wl-paste >/dev/null 2>&1; then
@@ -43,33 +85,82 @@ get_clipboard_url() {
     fi
 }
 
-# Aceleração multi-conexão via aria2c (estilo IDM / AB Download Manager)
+get_now_playing_info() {
+    if ! command -v playerctl >/dev/null 2>&1; then
+        return 1
+    fi
+
+    local url=""
+    url=$(playerctl metadata --format '{{xesam:url}}' 2>/dev/null || true)
+
+    if [[ "$url" =~ ^https?:// ]]; then
+        echo "$url"
+        return 0
+    fi
+
+    local artist title
+    artist=$(playerctl metadata --format '{{xesam:artist}}' 2>/dev/null || true)
+    title=$(playerctl metadata --format '{{xesam:title}}' 2>/dev/null || true)
+
+    if [ -n "$title" ]; then
+        if [ -n "$artist" ]; then
+            echo "ytsearch1:${artist} - ${title}"
+        else
+            echo "ytsearch1:${title}"
+        fi
+        return 0
+    fi
+
+    return 1
+}
+
+is_sensitive_domain() {
+    local url="$1"
+    local pattern="(xvideos\.com|pornhub\.com|erome\.com|spankbang\.com|redgifs\.com|rule34|gelbooru|danbooru|e-hentai|nhentai|onlyfans|fansly|coomer|kemono|eporner|beeg|youporn|chaturbate|stripchat|xhamster)"
+    if echo "$url" | grep -qiE "$pattern"; then
+        return 0
+    fi
+    return 1
+}
+
+is_gallery_domain() {
+    local url="$1"
+    local pattern="(artstation\.com/artwork|pinterest\.com/pin|imgur\.com/a/)"
+    if echo "$url" | grep -qiE "$pattern"; then
+        return 0
+    fi
+    return 1
+}
+
 get_downloader_args() {
     if command -v aria2c >/dev/null 2>&1; then
         echo "--downloader aria2c --downloader-args 'aria2c:-c -j 16 -x 16 -s 16 -k 1M --quiet=true'"
     fi
 }
 
-# Notificação interativa com botões de ação (Assistir/Ouvir / Abrir Pasta)
 notify_completion() {
     local title="$1"
     local dest_dir="$2"
+    local target_file="${3:-}"
+
+    if [ -z "$target_file" ]; then
+        target_file=$(find "$dest_dir" -maxdepth 2 -type f \( -name "*.mp3" -o -name "*.flac" -o -name "*.m4a" -o -name "*.mp4" -o -name "*.mkv" -o -name "*.webm" -o -name "*.gif" -o -name "*.png" -o -name "*.jpg" \) -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -1 | cut -f2- -d" ")
+    fi
 
     if command -v notify-send >/dev/null 2>&1; then
         local action
         action=$(notify-send -a "Media Downloader" \
-            -t 12000 \
-            -A "play=▶️ Assistir / Ouvir Agora" \
+            -t 15000 \
+            -A "play=▶️ Assistir / Ouvir" \
             -A "folder=📂 Abrir Pasta" \
+            -A "drag=🚀 Arrastar (ripdrag)" \
             "✅ Download Concluído!" \
             "$title") || true
 
         case "$action" in
             play)
-                local latest_file
-                latest_file=$(find "$dest_dir" -type f \( -name "*.mp3" -o -name "*.flac" -o -name "*.m4a" -o -name "*.mp4" -o -name "*.mkv" -o -name "*.webm" \) -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -1 | cut -f2- -d" ")
-                if [ -n "$latest_file" ]; then
-                    xdg-open "$latest_file" &
+                if [ -n "$target_file" ] && [ -f "$target_file" ]; then
+                    xdg-open "$target_file" &
                 else
                     xdg-open "$dest_dir" &
                 fi
@@ -77,110 +168,130 @@ notify_completion() {
             folder)
                 xdg-open "$dest_dir" &
                 ;;
+            drag)
+                if command -v ripdrag >/dev/null 2>&1 && [ -n "$target_file" ] && [ -f "$target_file" ]; then
+                    ripdrag -x "$target_file" &
+                else
+                    xdg-open "$dest_dir" &
+                fi
+                ;;
         esac
     fi
 }
 
 # ------------------------------------------------------------------------------
-# MODO ROFI (Executado via SUPER + ALT + D)
+# PROCESSAMENTO FFmpeg (COMPRESSÃO, GIF, ESTUDO)
 # ------------------------------------------------------------------------------
-run_rofi_mode() {
-    local url=""
-    local clip_url
-    clip_url=$(get_clipboard_url)
+compress_video() {
+    local input_file="$1"
+    local target_mb="${2:-10}"
+    local output_file="${input_file%.*}_${target_mb}MB.mp4"
 
-    if [ -n "$clip_url" ]; then
-        url="$clip_url"
+    if ! command -v ffmpeg >/dev/null 2>&1; then
+        return 0
+    fi
+
+    echo -e "${PEACH}🗜️ Comprimindo vídeo para caber em ${target_mb}MB (Discord/WhatsApp)...${NC}"
+    local duration
+    duration=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$input_file" 2>/dev/null || echo "60")
+    duration=${duration%.*}
+    [ "$duration" -le 0 ] && duration=60
+
+    local target_kbits=$(( (target_mb * 8192) / duration ))
+    local video_bitrate=$(( target_kbits - 128 ))
+    [ "$video_bitrate" -lt 150 ] && video_bitrate=150
+
+    ffmpeg -y -i "$input_file" \
+        -c:v libx264 -preset veryfast -b:v "${video_bitrate}k" \
+        -vf "scale='min(1280,iw)':-2" \
+        -c:a aac -b:a 128k \
+        -movflags +faststart \
+        "$output_file" >/dev/null 2>&1 || true
+
+    if [ -f "$output_file" ]; then
+        echo -e "${GREEN}✔ Vídeo comprimido criado:${NC} $(basename "$output_file")"
+        echo "$output_file"
     else
-        url=$(rofi -dmenu -p "Cole a URL da Mídia" -theme-str 'entry { placeholder: "https://..."; }' </dev/null || true)
+        echo "$input_file"
+    fi
+}
+
+create_gif_from_video() {
+    local input_file="$1"
+    local output_gif="${input_file%.*}.gif"
+
+    if ! command -v ffmpeg >/dev/null 2>&1; then
+        return 0
     fi
 
-    if [ -z "$url" ] || [[ ! "$url" =~ ^https?:// ]]; then
-        notify-send -u low "Download Cancelado" "Nenhuma URL válida fornecida."
-        exit 0
+    echo -e "${MAUVE}🎞️ Gerando GIF animado fluido em alta fidelidade...${NC}"
+    local palette="/tmp/palette_$$.png"
+    ffmpeg -y -i "$input_file" -vf "fps=15,scale='min(480,iw)':-1:flags=lanczos,palettegen" "$palette" >/dev/null 2>&1 || true
+    ffmpeg -y -i "$input_file" -i "$palette" -lavfi "fps=15,scale='min(480,iw)':-1:flags=lanczos [x]; [x][1:v] paletteuse" "$output_gif" >/dev/null 2>&1 || true
+    rm -f "$palette"
+
+    if [ -f "$output_gif" ]; then
+        echo -e "${GREEN}✔ GIF gerado com sucesso:${NC} $(basename "$output_gif")"
+        echo "$output_gif"
+    fi
+}
+
+apply_study_filters() {
+    local input_audio="$1"
+    local speed="${2:-1.5}"
+    local output_study="${input_audio%.*}_${speed}x.mp3"
+
+    if ! command -v ffmpeg >/dev/null 2>&1; then
+        return 0
     fi
 
-    local dest_v="${CUSTOM_DIR:-$DEFAULT_DEST_VIDEO}"
-    local dest_a="${CUSTOM_DIR:-$DEFAULT_DEST_AUDIO}"
-    mkdir -p "$dest_v" "$dest_a"
+    echo -e "${TEAL}⏩ Aplicando Modo Estudo (Remoção de silêncio + Aceleração ${speed}x com tom original)...${NC}"
+    ffmpeg -y -i "$input_audio" \
+        -af "silenceremove=stop_periods=-1:stop_duration=0.5:stop_threshold=-40dB,atempo=${speed}" \
+        -c:a libmp3lame -q:a 2 \
+        "$output_study" >/dev/null 2>&1 || true
 
-    # Roteador específico para Spotify
-    if [[ "$url" =~ (open\.spotify\.com|spotify:) ]]; then
-        if ! command -v spotdl >/dev/null 2>&1; then
-            notify-send -u critical -a "Media Downloader" "spotDL Não Encontrado" "Para baixar do Spotify, instale no terminal: yay -S spotdl"
-            exit 1
-        fi
-
-        local sp_choice
-        sp_choice=$(printf "🎵 MP3 320kbps (Capa Oficial + Tags + Letras .lrc)\n💎 FLAC Lossless (Qualidade Máxima sem Compressão)\n⚡ M4A AAC (Stream Nativo Rápido)" | rofi -dmenu -i -p "Formato Spotify" || true)
-
-        if [ -z "$sp_choice" ]; then
-            exit 0
-        fi
-
-        notify-send -u normal -a "Media Downloader" "🎵 Baixando do Spotify..." "Buscando metadados oficiais e áudio 320kbps..."
-
-        case "$sp_choice" in
-            *"MP3 320kbps"*)
-                download_spotify "$url" "mp3" "$dest_a" "rofi"
-                ;;
-            *"FLAC"*)
-                download_spotify "$url" "flac" "$dest_a" "rofi"
-                ;;
-            *"M4A"*)
-                download_spotify "$url" "m4a" "$dest_a" "rofi"
-                ;;
-        esac
-        exit 0
+    if [ -f "$output_study" ]; then
+        echo -e "${GREEN}✔ Áudio acelerado para estudos pronto:${NC} $(basename "$output_study")"
+        echo "$output_study"
     fi
-
-    local choice
-    choice=$(printf "🎥 Vídeo MP4 (1080p/4K com Áudio & Legendas)\n🎵 Áudio MP3 (320kbps + Capa & Tags)\n⚡ Vídeo Leve (720p Rápido)" | rofi -dmenu -i -p "Formato de Download" || true)
-
-    if [ -z "$choice" ]; then
-        exit 0
-    fi
-
-    notify-send -u normal -a "Media Downloader" "📥 Download Iniciado..." "Conectando e baixando em segundo plano..."
-
-    case "$choice" in
-        *"Vídeo MP4"*)
-            download_video "$url" "best" "$dest_v" "rofi"
-            ;;
-        *"Áudio MP3"*)
-            download_audio "$url" "$dest_a" "rofi"
-            ;;
-        *"Vídeo Leve"*)
-            download_video "$url" "720" "$dest_v" "rofi"
-            ;;
-    esac
 }
 
 # ------------------------------------------------------------------------------
-# FUNÇÕES DE DOWNLOAD (YT-DLP)
+# MOTOR DE DOWNLOAD (VÍDEO / YT-DLP)
 # ------------------------------------------------------------------------------
 download_video() {
     local url="$1"
-    local quality="$2"
+    local quality="${2:-best}"
     local dest="$3"
-    local mode="${4:-cli}"
+    local clip_range="${4:-$CUSTOM_CLIP}"
     local dl_args
     dl_args=$(get_downloader_args)
-
-    local format_str="bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b"
-    if [ "$quality" == "720" ]; then
-        format_str="bv*[height<=720][ext=mp4]+ba[ext=m4a]/b[height<=720] / bv*[height<=720]+ba/b"
-    fi
 
     mkdir -p "$dest"
     cd "$dest"
 
-    # Template inteligente: se for playlist, cria subpasta dedicada e numera 01 - ...
+    local format_str="bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b"
+    if [ "$quality" == "720" ]; then
+        format_str="bv*[height<=720][ext=mp4]+ba[ext=m4a]/b[height<=720] / bv*[height<=720]+ba/b"
+    elif [ "$quality" == "1080" ]; then
+        format_str="bv*[height<=1080][ext=mp4]+ba[ext=m4a]/b[height<=1080] / bv*[height<=1080]+ba/b"
+    fi
+
+    local extra_flags=()
+    [ -n "$clip_range" ] && extra_flags+=(--download-sections "*${clip_range}" --force-keyframes-at-cuts)
+    [ "$SPLIT_CHAPTERS" = true ] && extra_flags+=(--split-chapters -o "chapter:%(title)s/%(section_number)02d - %(section_title)s.%(ext)s")
+    [ "$SYNC_PLAYLIST" = true ] && extra_flags+=(--download-archive "$dest/.download_archive.txt")
+    [ -n "$COOKIES_BROWSER" ] && extra_flags+=(--cookies-from-browser "$COOKIES_BROWSER")
+    [ "$SUB_ONLY" = true ] && extra_flags+=(--skip-download --write-auto-subs --sub-lang 'pt,en' --convert-subs srt)
+    [ "$THUMB_ONLY" = true ] && extra_flags+=(--skip-download --write-thumbnail --convert-thumbnails png)
+
     local output_tpl="%(title)s [%(id)s].%(ext)s"
-    if [[ "$url" =~ list= ]]; then
+    if [[ "$url" =~ list= ]] && [ "$SPLIT_CHAPTERS" = false ]; then
         output_tpl="%(playlist_title,playlist)s/%(playlist_index)02d - %(title)s.%(ext)s"
     fi
 
+    echo -e "${BLUE}⬇️ Baixando vídeo com aceleração multi-thread...${NC}"
     eval yt-dlp \
         $dl_args \
         -f "'$format_str'" \
@@ -194,29 +305,56 @@ download_video() {
         -o "'$output_tpl'" \
         --windows-filenames \
         --no-mtime \
-        "'$url'"
+        "${extra_flags[@]}" \
+        "'$url'" || true
+
+    local latest_file
+    latest_file=$(find "$dest" -maxdepth 2 -type f -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -1 | cut -f2- -d" ")
+    local final_target="$latest_file"
+
+    if [ "$MAKE_GIF" = true ] && [ -n "$latest_file" ] && [ -f "$latest_file" ]; then
+        local gif_path
+        gif_path=$(create_gif_from_video "$latest_file")
+        [ -n "$gif_path" ] && final_target="$gif_path"
+    fi
+
+    if [ -n "$COMPRESS_TARGET" ] && [ -n "$latest_file" ] && [ -f "$latest_file" ]; then
+        local comp_path
+        comp_path=$(compress_video "$latest_file" "$COMPRESS_TARGET")
+        [ -n "$comp_path" ] && final_target="$comp_path"
+    fi
 
     local title
-    title=$(yt-dlp --get-title "$url" 2>/dev/null | head -n1 || echo "Vídeo")
-
-    notify_completion "$title" "$dest"
+    title=$(yt-dlp --get-title "$url" 2>/dev/null | head -n1 || echo "Vídeo Concluído")
+    log_history "$title" "$url" "$final_target" "VIDEO"
+    notify_completion "$title" "$dest" "$final_target"
 }
 
+# ------------------------------------------------------------------------------
+# MOTOR DE DOWNLOAD (ÁUDIO / YT-DLP)
+# ------------------------------------------------------------------------------
 download_audio() {
     local url="$1"
     local dest="$2"
-    local mode="${3:-cli}"
+    local clip_range="${3:-$CUSTOM_CLIP}"
     local dl_args
     dl_args=$(get_downloader_args)
 
     mkdir -p "$dest"
     cd "$dest"
 
+    local extra_flags=()
+    [ -n "$clip_range" ] && extra_flags+=(--download-sections "*${clip_range}" --force-keyframes-at-cuts)
+    [ "$SPLIT_CHAPTERS" = true ] && extra_flags+=(--split-chapters -o "chapter:%(title)s/%(section_number)02d - %(section_title)s.%(ext)s")
+    [ "$SYNC_PLAYLIST" = true ] && extra_flags+=(--download-archive "$dest/.download_archive.txt")
+    [ -n "$COOKIES_BROWSER" ] && extra_flags+=(--cookies-from-browser "$COOKIES_BROWSER")
+
     local output_tpl="%(title)s [%(id)s].%(ext)s"
-    if [[ "$url" =~ list= ]]; then
+    if [[ "$url" =~ list= ]] && [ "$SPLIT_CHAPTERS" = false ]; then
         output_tpl="%(playlist_title,playlist)s/%(playlist_index)02d - %(title)s.%(ext)s"
     fi
 
+    echo -e "${BLUE}⬇️ Extraindo áudio de alta fidelidade (MP3 320kbps)...${NC}"
     eval yt-dlp \
         $dl_args \
         -x \
@@ -227,16 +365,27 @@ download_audio() {
         -o "'$output_tpl'" \
         --windows-filenames \
         --no-mtime \
-        "'$url'"
+        "${extra_flags[@]}" \
+        "'$url'" || true
+
+    local latest_file
+    latest_file=$(find "$dest" -maxdepth 2 -type f \( -name "*.mp3" -o -name "*.flac" -o -name "*.m4a" \) -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -1 | cut -f2- -d" ")
+    local final_target="$latest_file"
+
+    if [ -n "$STUDY_SPEED" ] && [ -n "$latest_file" ] && [ -f "$latest_file" ]; then
+        local study_path
+        study_path=$(apply_study_filters "$latest_file" "$STUDY_SPEED")
+        [ -n "$study_path" ] && final_target="$study_path"
+    fi
 
     local title
-    title=$(yt-dlp --get-title "$url" 2>/dev/null | head -n1 || echo "Áudio")
-
-    notify_completion "$title" "$dest"
+    title=$(yt-dlp --get-title "$url" 2>/dev/null | head -n1 || echo "Áudio Concluído")
+    log_history "$title" "$url" "$final_target" "AUDIO"
+    notify_completion "$title" "$dest" "$final_target"
 }
 
 # ------------------------------------------------------------------------------
-# FUNÇÃO DE DOWNLOAD (SPOTIFY VIA SPOTDL)
+# MOTOR DE DOWNLOAD (SPOTIFY / SPOTDL)
 # ------------------------------------------------------------------------------
 download_spotify() {
     local url="$1"
@@ -247,11 +396,6 @@ download_spotify() {
     mkdir -p "$dest"
     cd "$dest"
 
-    # Template inteligente de organização:
-    # Se for álbum: cria subpasta com nome do Álbum e numera as faixas
-    # Se for playlist: cria subpasta com nome da Playlist e numera as faixas
-    # Se for discografia de artista: cria pasta Artista/Álbum/faixas
-    # Se for faixa única: salva diretamente na pasta raiz de músicas
     local output_tpl="{artist} - {title}.{output-ext}"
     if [[ "$url" =~ /album/ ]]; then
         output_tpl="{album}/{track-number} - {artist} - {title}.{output-ext}"
@@ -262,10 +406,9 @@ download_spotify() {
     fi
 
     local bitrate_flag="--bitrate 320k"
-    if [ "$format" == "flac" ]; then
-        bitrate_flag="--bitrate disable"
-    fi
+    [ "$format" == "flac" ] && bitrate_flag="--bitrate disable"
 
+    echo -e "${GREEN}🎵 Baixando do Spotify via spotDL (${format^^} + Capa + Letras .lrc)...${NC}"
     if [ "$mode" == "rofi" ]; then
         spotdl download "$url" \
             --format "$format" \
@@ -279,194 +422,364 @@ download_spotify() {
             $bitrate_flag \
             --output "$output_tpl" \
             --sponsor-block \
-            --generate-lrc
+            --generate-lrc || true
     fi
 
-    notify_completion "Spotify: Música/Álbum Baixado" "$dest"
+    local latest_file
+    latest_file=$(find "$dest" -maxdepth 2 -type f \( -name "*.mp3" -o -name "*.flac" -o -name "*.m4a" \) -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -1 | cut -f2- -d" ")
+    log_history "Spotify Download" "$url" "$latest_file" "SPOTIFY"
+    notify_completion "Música/Álbum do Spotify Baixado" "$dest" "$latest_file"
 }
 
 # ------------------------------------------------------------------------------
-# MODO INTERATIVO DE TERMINAL (CLI)
+# MOTOR DE DOWNLOAD DE GALERIAS DE FOTOS (GALLERY-DL)
 # ------------------------------------------------------------------------------
-run_cli_mode() {
+download_gallery() {
     local url="$1"
-    local dest_v="${CUSTOM_DIR:-$DEFAULT_DEST_VIDEO}"
-    local dest_a="${CUSTOM_DIR:-$DEFAULT_DEST_AUDIO}"
+    local dest="$2"
 
-    clear
-    echo -e "${MAUVE}${BOLD}╭───────────────────────────────────────────────────────────────╮${NC}"
-    echo -e "${MAUVE}${BOLD}│    📥 MEDIA DOWNLOADER POWER-USER (yt-dlp + spotdl + aria2)   │${NC}"
-    echo -e "${MAUVE}${BOLD}╰───────────────────────────────────────────────────────────────╯${NC}"
-    echo ""
+    mkdir -p "$dest"
+    cd "$dest"
 
-    if [ -z "$url" ]; then
-        local clip_url
-        clip_url=$(get_clipboard_url)
-        if [ -n "$clip_url" ]; then
-            echo -e "${BLUE}📋 URL detectada na Área de Transferência:${NC}"
-            echo -e "   ${TEXT}${clip_url}${NC}"
-            echo ""
-            read -rp "Pressione [Enter] para usar esta URL ou digite outra: " input_url
-            url="${input_url:-$clip_url}"
+    if command -v gallery-dl >/dev/null 2>&1; then
+        echo -e "${PEACH}📸 Baixando galeria de imagens em resolução máxima com gallery-dl...${NC}"
+        gallery-dl --directory "$dest" "$url" || true
+    else
+        echo -e "${YELLOW}⚠️ gallery-dl não encontrado. Tentando baixar via yt-dlp...${NC}"
+        yt-dlp --write-thumbnail --skip-download -o "$dest/%(title)s/%(playlist_index)02d.%(ext)s" "$url" || true
+    fi
+
+    local latest_file
+    latest_file=$(find "$dest" -maxdepth 2 -type f \( -name "*.jpg" -o -name "*.png" -o -name "*.webp" \) -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -1 | cut -f2- -d" ")
+    log_history "Galeria de Fotos" "$url" "$dest" "GALLERY"
+    notify_completion "Galeria de Imagens Baixada" "$dest" "$latest_file"
+}
+
+# ------------------------------------------------------------------------------
+# VISUALIZADOR DE HISTÓRICO (FZF / ROFI)
+# ------------------------------------------------------------------------------
+view_history() {
+    local mode="${1:-cli}"
+    if [ ! -f "$HISTORY_FILE" ] || [ ! -s "$HISTORY_FILE" ]; then
+        if [ "$mode" == "rofi" ]; then
+            notify-send "Histórico Vazio" "Nenhum download registrado ainda."
         else
-            echo -e "${PEACH}Cole ou digite a URL do vídeo/áudio:${NC}"
-            read -rp "URL: " url
+            echo -e "${YELLOW}Nenhum download no histórico ainda.${NC}"
         fi
+        return 0
     fi
 
-    if [ -z "$url" ] || [[ ! "$url" =~ ^https?:// ]]; then
-        echo -e "\n${RED}❌ URL inválida ou vazia.${NC}"
-        exit 1
-    fi
-
-    # Roteamento especial para links do Spotify
-    if [[ "$url" =~ (open\.spotify\.com|spotify:) ]]; then
-        echo -e "${GREEN}${BOLD}🎧 Link do Spotify Detectado!${NC}"
-        echo -e "${SUBTEXT}O spotDL vai extrair metadados oficiais, capa em alta resolução e letras sincronizadas (.lrc).${NC}"
-        echo ""
-
-        if ! command -v spotdl >/dev/null 2>&1; then
-            echo -e "${PEACH}⚠️ 'spotdl' não está instalado no sistema.${NC}"
-            echo -e "O spotdl é o motor que baixa músicas, álbuns e playlists do Spotify com capas e tags em 320kbps."
-            echo ""
-            read -rp "Deseja instalar agora via yay (AUR)? [s/N]: " inst_opt
-            if [[ "$inst_opt" =~ ^[sSyY] ]]; then
-                if command -v yay >/dev/null 2>&1; then
-                    yay -S --needed spotdl
-                elif command -v paru >/dev/null 2>&1; then
-                    paru -S --needed spotdl
-                elif command -v pipx >/dev/null 2>&1; then
-                    pipx install spotdl
-                else
-                    echo -e "${RED}Instale manualmente com: yay -S spotdl (ou pipx install spotdl)${NC}"
-                    exit 1
-                fi
-            else
-                exit 0
+    if [ "$mode" == "rofi" ]; then
+        local sel
+        sel=$(tac "$HISTORY_FILE" | awk -F'\t' '{print $1 " | [" $2 "] " $3 " -> " $5}' | rofi -dmenu -i -p "Histórico de Downloads" -l 15 || true)
+        if [ -n "$sel" ]; then
+            local file_path
+            file_path=$(echo "$sel" | awk -F' -> ' '{print $2}')
+            if [ -n "$file_path" ] && [ -e "$file_path" ]; then
+                xdg-open "$file_path" &
             fi
         fi
+    else
+        if command -v fzf >/dev/null 2>&1; then
+            local sel
+            sel=$(tac "$HISTORY_FILE" | fzf --delimiter='\t' --with-nth=1,2,3 \
+                --preview='echo -e "Data: {1}\nTipo: {2}\nTítulo: {3}\nURL: {4}\nArquivo: {5}"' \
+                --header="ENTER: Abrir Mídia | CTRL-Y: Copiar Caminho | CTRL-O: Abrir Pasta" \
+                --bind="ctrl-y:execute-silent(echo -n {5} | wl-copy || echo -n {5} | xclip -selection clipboard)+abort" \
+                --bind="ctrl-o:execute(xdg-open \$(dirname {5}))+abort" || true)
 
-        local dest_target="${CUSTOM_DIR:-$dest_a}"
-        echo -e "${BLUE}📂 Pasta de Destino:${NC} ${dest_target}"
-        echo ""
-        echo -e "${BOLD}Escolha o Formato de Áudio:${NC}"
-        echo -e "  ${BLUE}[1]${NC} 🎵 MP3 320kbps (Capa Oficial + Tags ID3 + Letras .lrc) [Padrão]"
-        echo -e "  ${GREEN}[2]${NC} 💎 FLAC Lossless (Áudio Estúdio sem perdas)"
-        echo -e "  ${PEACH}[3]${NC} ⚡ M4A AAC (Stream Nativo Rápido)"
-        echo -e "  ${RED}[q]${NC} Cancelar"
-        echo ""
-        read -rp "Opção [1-3, padrão: 1]: " sp_opt
-        sp_opt="${sp_opt:-1}"
+            if [ -n "$sel" ]; then
+                local file_path
+                file_path=$(echo "$sel" | cut -f5)
+                if [ -n "$file_path" ] && [ -e "$file_path" ]; then
+                    xdg-open "$file_path" &
+                fi
+            fi
+        else
+            echo -e "${BOLD}Últimos 15 downloads:${NC}"
+            tail -n 15 "$HISTORY_FILE" | awk -F'\t' '{printf "%s | %-8s | %s\n", $1, $2, $3}'
+        fi
+    fi
+}
 
-        case "$sp_opt" in
-            1)
-                echo -e "\n${BLUE}🚀 Baixando do Spotify em MP3 320kbps com capa e letras...${NC}\n"
-                download_spotify "$url" "mp3" "$dest_target" "cli"
-                ;;
-            2)
-                echo -e "\n${GREEN}💎 Baixando do Spotify em FLAC Lossless...${NC}\n"
-                download_spotify "$url" "flac" "$dest_target" "cli"
-                ;;
-            3)
-                echo -e "\n${PEACH}⚡ Baixando do Spotify em M4A AAC...${NC}\n"
-                download_spotify "$url" "m4a" "$dest_target" "cli"
-                ;;
-            q|Q)
-                echo -e "\n${RED}Cancelado.${NC}"
+# ------------------------------------------------------------------------------
+# MODO ROFI (SUPER + ALT + D OU MENU INTERATIVO)
+# ------------------------------------------------------------------------------
+run_rofi_mode() {
+    local url=""
+    local clip_url
+    clip_url=$(get_clipboard_url)
+
+    local now_option="🎧 Baixar o que está Tocando Agora (MPRIS / Spotify)"
+    local hist_option="📜 Ver Histórico de Downloads"
+    local clip_option="📋 Colar URL do Clipboard ($clip_url)"
+    local manual_option="✏️ Digitar URL Manualmente"
+
+    local first_choice
+    first_choice=$(printf "%s\n%s\n%s\n%s" "$now_option" "$clip_option" "$manual_option" "$hist_option" | rofi -dmenu -i -p "Media Downloader" -l 4 || true)
+
+    case "$first_choice" in
+        *"Tocando Agora"*)
+            local now_url
+            now_url=$(get_now_playing_info || true)
+            if [ -z "$now_url" ]; then
+                notify-send -u low "Nenhuma Mídia Ativa" "Não foi detectada nenhuma música ou vídeo tocando no momento."
                 exit 0
-                ;;
-            *)
-                echo -e "\n${RED}Opção inválida.${NC}"
-                exit 1
-                ;;
-        esac
+            fi
+            url="$now_url"
+            ;;
+        *"Histórico"*)
+            view_history "rofi"
+            exit 0
+            ;;
+        *"Clipboard"*)
+            url="$clip_url"
+            ;;
+        *"Manualmente"*)
+            url=$(rofi -dmenu -p "Cole a URL" -theme-str 'entry { placeholder: "https://..."; }' </dev/null || true)
+            ;;
+        *)
+            exit 0
+            ;;
+    esac
 
-        echo ""
-        echo -e "${GREEN}${BOLD}✔ Mídia do Spotify baixada com sucesso!${NC}"
+    if [ -z "$url" ]; then
         exit 0
     fi
 
-    echo ""
-    echo -e "${SUBTEXT}🔍 Conectando e obtendo metadados oficiais...${NC}"
-    local info_title
-    info_title=$(yt-dlp --get-title "$url" 2>/dev/null | head -n1 || echo "Mídia Online")
-    echo -e "${GREEN}🎬 Título:${NC} ${BOLD}${info_title}${NC}"
+    local dest_v="$DEFAULT_DEST_VIDEO"
+    local dest_a="$DEFAULT_DEST_AUDIO"
+    local dest_i="$DEFAULT_DEST_IMAGE"
 
-    if [ -n "$CUSTOM_DIR" ]; then
-        echo -e "${BLUE}📂 Pasta de Destino:${NC} ${CUSTOM_DIR}"
+    if is_sensitive_domain "$url" || [ "$FORCE_PRIVATE" = true ]; then
+        dest_v="$DEFAULT_DEST_PRIVATE/Videos_e_Cenas"
+        dest_a="$DEFAULT_DEST_PRIVATE/Audios"
+        dest_i="$DEFAULT_DEST_PRIVATE/Imagens"
+        mkdir -p "$dest_v" "$dest_a" "$dest_i"
     fi
 
-    # Detecção de Playlist
-    if [[ "$url" =~ list= ]]; then
-        echo -e "\n${PEACH}⚡ URL de Playlist detectada!${NC}"
-        echo -e "Deseja baixar a playlist inteira ou apenas o vídeo atual?"
-        echo -e "  ${BLUE}[1]${NC} 📂 Playlist Completa (Vídeos numerados ordenadamente)"
-        echo -e "  ${GREEN}[2]${NC} 🎬 Apenas este vídeo único"
-        read -rp "Opção [1/2, padrão: 1]: " pl_opt
-        if [ "$pl_opt" == "2" ]; then
-            url="${url%%&list=*}"
-        fi
+    if [[ "$url" =~ (open\.spotify\.com|spotify:) ]]; then
+        local sp_choice
+        sp_choice=$(printf "🎵 MP3 320kbps (Capa + Tags + Letras)\n💎 FLAC Lossless (Qualidade Máxima)\n⚡ M4A AAC (Stream Rápido)" | rofi -dmenu -i -p "Formato Spotify" -l 3 || true)
+        case "$sp_choice" in
+            *"MP3"*) download_spotify "$url" "mp3" "$dest_a" "rofi" ;;
+            *"FLAC"*) download_spotify "$url" "flac" "$dest_a" "rofi" ;;
+            *"M4A"*) download_spotify "$url" "m4a" "$dest_a" "rofi" ;;
+        esac
+        exit 0
     fi
 
-    echo ""
-    echo -e "${BOLD}Escolha o Formato de Download:${NC}"
-    echo -e "  ${BLUE}[1]${NC} 🎥 Melhor Qualidade MP4 (1080p/2K/4K + Legendas pt/en)"
-    echo -e "  ${GREEN}[2]${NC} 🎵 Apenas Áudio MP3 (320kbps + Capa + Tags ID3)"
-    echo -e "  ${PEACH}[3]${NC} ⚡ Rápido e Leve (720p balanceado)"
-    echo -e "  ${RED}[q]${NC} Cancelar"
-    echo ""
-    read -rp "Opção [1-3, padrão: 1]: " opt
-    opt="${opt:-1}"
+    local choice
+    choice=$(printf "🎥 Vídeo Completo (1080p/4K MP4)\n🎵 Áudio MP3 (320kbps + Capa & Tags)\n⚡ Vídeo Leve (720p Rápido)\n✂️ Cortar Trecho de Vídeo (Clip)\n🗜️ Comprimir para Discord / WhatsApp (<10MB)\n🎞️ Gerar GIF Animado\n📸 Galeria de Fotos / Imagens\n📝 Baixar Apenas Legendas (.srt)\n🖼️ Baixar Apenas Capa / Thumbnail" | rofi -dmenu -i -p "Escolha o Formato" -l 9 || true)
 
-    case "$opt" in
-        1)
-            echo -e "\n${BLUE}🚀 Baixando com 16 conexões paralelas e legendas...${NC}\n"
-            download_video "$url" "best" "$dest_v" "cli"
+    case "$choice" in
+        *"Vídeo Completo"*)
+            download_video "$url" "best" "$dest_v"
             ;;
-        2)
-            echo -e "\n${GREEN}🎵 Extraindo áudio em MP3 320kbps com capa...${NC}\n"
-            download_audio "$url" "$dest_a" "cli"
+        *"Áudio MP3"*)
+            download_audio "$url" "$dest_a"
             ;;
-        3)
-            echo -e "\n${PEACH}⚡ Baixando vídeo leve 720p...${NC}\n"
-            download_video "$url" "720" "$dest_v" "cli"
+        *"Vídeo Leve"*)
+            download_video "$url" "720" "$dest_v"
             ;;
-        q|Q)
-            echo -e "\n${RED}Cancelado.${NC}"
-            exit 0
+        *"Cortar Trecho"*)
+            local clip_time
+            clip_time=$(rofi -dmenu -p "Minutagem (ex: 01:20-02:40)" -theme-str 'entry { placeholder: "MM:SS-MM:SS"; }' </dev/null || true)
+            if [ -n "$clip_time" ]; then
+                download_video "$url" "best" "$dest_v" "$clip_time"
+            fi
             ;;
-        *)
-            echo -e "\n${RED}Opção inválida.${NC}"
-            exit 1
+        *"Comprimir"*)
+            COMPRESS_TARGET="10"
+            download_video "$url" "720" "$dest_v"
+            ;;
+        *"GIF Animado"*)
+            local clip_time
+            clip_time=$(rofi -dmenu -p "Minutagem do GIF (ex: 00:05-00:15)" -theme-str 'entry { placeholder: "MM:SS-MM:SS"; }' </dev/null || true)
+            MAKE_GIF=true
+            download_video "$url" "720" "$dest_v" "$clip_time"
+            ;;
+        *"Galeria de Fotos"*)
+            download_gallery "$url" "$dest_i"
+            ;;
+        *"Apenas Legendas"*)
+            SUB_ONLY=true
+            download_video "$url" "best" "$dest_v"
+            ;;
+        *"Apenas Capa"*)
+            THUMB_ONLY=true
+            download_video "$url" "best" "$dest_i"
             ;;
     esac
-
-    echo ""
-    echo -e "${GREEN}${BOLD}✔ Operação concluída com sucesso!${NC}"
 }
 
 # ------------------------------------------------------------------------------
-# ROTEADOR DE PARÂMETROS
+# MODO CLI & PROCESSAMENTO DE ARGUMENTOS
 # ------------------------------------------------------------------------------
-while [[ $# -gt 0 ]]; do
-    case "$1" in
-        --rofi)
-            MODE="rofi"
-            shift
-            ;;
-        --dir)
-            CUSTOM_DIR="$2"
-            shift 2
-            ;;
-        *)
-            TARGET_URL="$1"
-            shift
-            ;;
-    esac
-done
+show_help() {
+    echo -e "${MAUVE}${BOLD}📥 MEDIA DOWNLOADER SUITE (APEX V2)${NC}"
+    echo -e "${SUBTEXT}Uso:${NC} dl [opções] [URL ou termo de busca]"
+    echo ""
+    echo -e "${BOLD}Opções Principais:${NC}"
+    echo -e "  ${BLUE}dl${NC}                          Auto-detecta URL do clipboard e pergunta interativamente"
+    echo -e "  ${BLUE}dl <url>${NC}                    Download padrão (Vídeo MP4 ou Spotify com tags)"
+    echo -e "  ${BLUE}dl -n, --now${NC}                Baixa instantaneamente o que está tocando agora (MPRIS)"
+    echo -e "  ${BLUE}dl -a, --audio <url>${NC}        Extrai apenas o áudio em MP3 320k de alta qualidade"
+    echo -e "  ${BLUE}dl -p, --private <url>${NC}      Roteamento seguro direto para a pasta .privado"
+    echo -e "  ${BLUE}dl -c, --clip START-END${NC}     Corta trecho cirúrgico do vídeo (ex: -c 01:20-02:40)"
+    echo -e "  ${BLUE}dl -z, --compress [MB]${NC}      Comprime para caber no Discord/Zap (padrão: 10MB)"
+    echo -e "  ${BLUE}dl -g, --gif [START-END]${NC}    Gera GIF animado fluido de alta fidelidade"
+    echo -e "  ${BLUE}dl --split-chapters${NC}         Divide álbuns e shows do YouTube em faixas numeradas"
+    echo -e "  ${BLUE}dl --sync <url>${NC}             Sincroniza playlist baixando apenas faixas novas"
+    echo -e "  ${BLUE}dl --study [1.25|1.5]${NC}       Remove silêncios e acelera áudios para estudo"
+    echo -e "  ${BLUE}dl --cookies [navegador]${NC}    Usa cookies do Brave/Chrome para vídeos 18+ ou privados"
+    echo -e "  ${BLUE}dl --gallery <url>${NC}          Baixa álbuns e carrosséis de fotos (Instagram/Twitter)"
+    echo -e "  ${BLUE}dl --sub-only <url>${NC}         Baixa apenas as legendas / transcrições (.srt)"
+    echo -e "  ${BLUE}dl --thumb <url>${NC}            Baixa apenas a capa / thumbnail oficial em 4K"
+    echo -e "  ${BLUE}dl -h, --history${NC}            Abre o histórico interativo de downloads com FZF"
+    echo -e "  ${BLUE}dl --rofi${NC}                   Abre o menu visual Rofi (SUPER + ALT + D)"
+    echo ""
+}
 
-if [ "$MODE" == "rofi" ]; then
-    run_rofi_mode
-else
-    run_cli_mode "$TARGET_URL"
-fi
+main() {
+    local target_url=""
+    local mode="video"
+
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            --help)
+                show_help
+                exit 0
+                ;;
+            --rofi)
+                run_rofi_mode
+                exit 0
+                ;;
+            -h|--history)
+                view_history "cli"
+                exit 0
+                ;;
+            -n|--now)
+                local now_url
+                now_url=$(get_now_playing_info || true)
+                if [ -z "$now_url" ]; then
+                    echo -e "${RED}❌ Nenhuma mídia ativa encontrada no playerctl.${NC}"
+                    exit 1
+                fi
+                echo -e "${GREEN}🎵 Detectado via MPRIS:${NC} $now_url"
+                target_url="$now_url"
+                shift
+                ;;
+            -a|--audio)
+                mode="audio"
+                shift
+                ;;
+            -p|--private)
+                FORCE_PRIVATE=true
+                shift
+                ;;
+            -c|--clip)
+                CUSTOM_CLIP="$2"
+                shift 2
+                ;;
+            -z|--compress)
+                COMPRESS_TARGET="${2:-10}"
+                shift
+                [[ "$1" =~ ^[0-9]+$ ]] && shift
+                ;;
+            -g|--gif)
+                MAKE_GIF=true
+                if [[ "$2" =~ ^[0-9]+:[0-9]+ ]]; then
+                    CUSTOM_CLIP="$2"
+                    shift 2
+                else
+                    shift
+                fi
+                ;;
+            --split-chapters)
+                SPLIT_CHAPTERS=true
+                shift
+                ;;
+            --sync)
+                SYNC_PLAYLIST=true
+                shift
+                ;;
+            --study)
+                mode="audio"
+                STUDY_SPEED="${2:-1.5}"
+                shift
+                [[ "$1" =~ ^[0-9] ]] && shift
+                ;;
+            --cookies)
+                COOKIES_BROWSER="${2:-brave}"
+                shift 2
+                ;;
+            --gallery)
+                mode="gallery"
+                shift
+                ;;
+            --sub-only)
+                SUB_ONLY=true
+                shift
+                ;;
+            --thumb)
+                THUMB_ONLY=true
+                shift
+                ;;
+            *)
+                if [ -z "$target_url" ]; then
+                    target_url="$1"
+                fi
+                shift
+                ;;
+        esac
+    done
+
+    # Auto-Clipboard quando executado 'dl' sem URL
+    if [ -z "$target_url" ]; then
+        local clip_url
+        clip_url=$(get_clipboard_url)
+        if [ -n "$clip_url" ]; then
+            echo -e "${TEAL}📋 URL detectada na área de transferência:${NC}"
+            echo -e "   ${BOLD}$clip_url${NC}"
+            echo ""
+            read -rp "Pressione [ENTER] para baixar esta URL ou digite outra (q para sair): " user_input
+            if [ -z "$user_input" ]; then
+                target_url="$clip_url"
+            elif [ "$user_input" == "q" ] || [ "$user_input" == "Q" ]; then
+                exit 0
+            else
+                target_url="$user_input"
+            fi
+        else
+            show_help
+            exit 0
+        fi
+    fi
+
+    # Definir destinos
+    local dest_v="$DEFAULT_DEST_VIDEO"
+    local dest_a="$DEFAULT_DEST_AUDIO"
+    local dest_i="$DEFAULT_DEST_IMAGE"
+
+    if is_sensitive_domain "$target_url" || [ "$FORCE_PRIVATE" = true ]; then
+        echo -e "${PEACH}🔒 Modo Furtivo Ativado: Roteando diretamente para .privado...${NC}"
+        dest_v="$DEFAULT_DEST_PRIVATE/Videos_e_Cenas"
+        dest_a="$DEFAULT_DEST_PRIVATE/Audios"
+        dest_i="$DEFAULT_DEST_PRIVATE/Imagens"
+        mkdir -p "$dest_v" "$dest_a" "$dest_i"
+    fi
+
+    # Execução
+    if [[ "$target_url" =~ (open\.spotify\.com|spotify:) ]]; then
+        download_spotify "$target_url" "mp3" "$dest_a" "cli"
+    elif [ "$mode" == "gallery" ] || is_gallery_domain "$target_url"; then
+        download_gallery "$target_url" "$dest_i"
+    elif [ "$mode" == "audio" ]; then
+        download_audio "$target_url" "$dest_a" "$CUSTOM_CLIP"
+    else
+        download_video "$target_url" "best" "$dest_v" "$CUSTOM_CLIP"
+    fi
+}
+
+main "$@"

@@ -1,12 +1,12 @@
-# 📥 GUIA DO MEDIA DOWNLOADER UNIVERSAL POWER-USER
-### O Gerenciador Definitivo de Mídia no Terminal & Hyprland (yt-dlp + spotDL + aria2c)
+# 📥 GUIA DO MEDIA DOWNLOADER SUITE DEFINITIVO (APEX V2)
+### O Gerenciador Definitivo de Mídia no Terminal & Hyprland (yt-dlp + spotDL + gallery-dl + aria2c + ffmpeg + playerctl + ripdrag)
 
 > **Chega de anúncios, teasers cortados, vídeos sem áudio ou arquivos soltos bagunçando seu disco.**  
-> Este guia documenta como baixar vídeos, músicas, álbuns e playlists completas de qualquer site da internet (YouTube, Spotify, Twitter/X, TikTok, Reddit, Instagram e mais de 1.800 plataformas) com qualidade máxima, capas em alta definição e organização de pastas impecável.
+> Este guia documenta como baixar vídeos, músicas, álbuns, playlists completas, carrosséis de fotos e clipes cirúrgicos de qualquer site da internet com qualidade máxima, capas em alta definição e organização impecável.
 
 ---
 
-## ⚡ 1. Os 3 Modos de Disparo (Zero Fricção)
+## ⚡ 1. Os 4 Modos de Disparo (Zero Fricção)
 
 O sistema foi arquitetado para você nunca precisar abrir páginas de conversores cheias de vírus ou programas pesados.
 
@@ -16,127 +16,132 @@ O sistema foi arquitetado para você nunca precisar abrir páginas de conversore
                          │    Mídia / Vídeo / Música   │
                          └──────────────┬──────────────┘
                                         │
-             ┌──────────────────────────┼──────────────────────────┐
-             ▼                          ▼                          ▼
-     [ 1. ATALHO GLOBAL ]       [ 2. TERMINAL RÁPIDO ]      [ 3. DENTRO DO YAZI ]
-       SUPER + ALT + D                Comando: dl                 Tecla: M y
-    Abre o popup do Rofi na       Detecta o clipboard e       Salva direto na pasta
-      tela sem abrir janelas.       mostra barra colorida.      em que você está agora.
+             ┌──────────────────────────┼──────────────────────────┬──────────────────────────┐
+             ▼                          ▼                          ▼                          ▼
+     [ 1. ATALHO GLOBAL ]       [ 2. TOCANDO AGORA ]       [ 3. TERMINAL RÁPIDO ]      [ 4. DENTRO DO YAZI ]
+       SUPER + ALT + D            SUPER + CTRL + D               Comando: dl                 Tecla: M y
+    Abre o popup do Rofi na    Baixa o que está tocando    Detecta o clipboard e       Salva direto na pasta
+      tela sem abrir janelas.    no Spotify ou Browser.      mostra menu interativo.     em que você está agora.
 ```
 
 ### Modo 1: Atalho Global no Desktop (`SUPER + ALT + D`)
-1. Copie o link do vídeo ou da música no seu navegador ou app (`Ctrl + C`).
-2. Pressione **`SUPER + ALT + D`** em qualquer lugar da tela.
-3. Se for um link de **Vídeo** (YouTube, TikTok, Twitter, etc.):
-   - `🎥 Vídeo MP4`: Máxima resolução (1080p/2K/4K) com legendas embutidas.
-   - `🎵 Áudio MP3`: Extrai apenas a faixa sonora em 320kbps com capa.
-   - `⚡ Vídeo Leve`: 720p rápido para compartilhamento no WhatsApp/Discord.
-4. Se for um link do **Spotify**:
-   - `🎵 MP3 320kbps`: Qualidade de estúdio com capa HD e letras sincronizadas.
-   - `💎 FLAC Lossless`: Áudio sem perdas de compressão.
-   - `⚡ M4A AAC`: Formato original direto do stream.
-5. O download roda em segundo plano. Quando terminar, uma notificação surge com os botões:
-   - **`[ ▶️ Assistir / Ouvir Agora ]`**: Abre a mídia no player padrão na hora.
-   - **`[ 📂 Abrir Pasta ]`**: Abre a pasta onde o arquivo foi guardado.
+1. Pressione **`SUPER + ALT + D`** em qualquer lugar da tela.
+2. O menu Rofi oferece opções completas:
+   - `🎥 Vídeo Completo (1080p/4K MP4)`: Máxima resolução com legendas embutidas.
+   - `🎵 Áudio MP3 (320kbps)`: Faixa sonora em alta fidelidade com capa oficial.
+   - `🎧 Baixar o que está Tocando Agora`: Captura o player ativo via MPRIS.
+   - `⚡ Vídeo Leve`: 720p rápido.
+   - `✂️ Cortar Trecho de Vídeo (Clip)`: Pede o início e fim (ex: `01:20-02:40`) e baixa só aquele trecho.
+   - `🗜️ Comprimir para Discord / WhatsApp`: Reduz automaticamente para caber em <10MB.
+   - `🎞️ Gerar GIF Animado`: Gera um GIF fluido a 15-30fps com paleta inteligente.
+   - `📸 Galeria de Fotos / Imagens`: Baixa álbuns inteiros com `gallery-dl`.
+   - `📝 Baixar Apenas Legendas (.srt)`: Extrai as legendas para estudo ou IA.
+   - `🖼️ Baixar Apenas Capa / Thumbnail`: Salva a imagem oficial em 4K.
+   - `📜 Ver Histórico de Downloads`: Busca rápida de tudo que você já baixou.
 
 ---
 
-### Modo 2: Terminal Ultrarrápido (`dl`)
-Se você já está com o terminal aberto, use o comando alias **`dl`**:
+### Modo 2: Baixar o Que Está Tocando Agora (`SUPER + CTRL + D` ou `dl --now`)
+- Está ouvindo uma música no Spotify ou assistindo a um vídeo no Brave/Firefox?
+- Pressione **`SUPER + CTRL + D`** no teclado ou digite `dl --now` no terminal.
+- O script consulta a interface MPRIS via `playerctl`, identifica o que está tocando e faz o download completo em segundo plano com tags e capa oficial!
+
+---
+
+### Modo 3: Terminal Ultrarrápido (`dl`)
+O comando alias **`dl`** aceita flags e argumentos avançados:
 
 ```bash
-# Se já copiou o link, digite apenas:
+# Se copiou um link, digite apenas 'dl' e dê Enter para confirmar:
 dl
 
-# Ou passe a URL diretamente como argumento:
+# Baixar vídeo padrão em qualidade máxima:
 dl "https://www.youtube.com/watch?v=..."
-dl "https://open.spotify.com/playlist/..."
-```
 
-- Ele lê automaticamente o link da sua área de transferência se você não passar argumentos.
-- Exibe o título oficial do vídeo/música capturado direto da API.
-- Apresenta barra de progresso interativa colorida em Catppuccin Mocha.
+# Extrair apenas o áudio MP3 320k:
+dl -a "https://www.youtube.com/watch?v=..."
+
+# Baixar direto para a pasta .privado (modo furtivo):
+dl -p "https://..."
+
+# Cortar apenas um trecho sem baixar o vídeo inteiro de gigabytes:
+dl -c 01:30-02:45 "https://www.youtube.com/watch?v=..."
+
+# Gerar GIF animado a partir de um trecho:
+dl -g 00:15-00:25 "https://www.youtube.com/watch?v=..."
+
+# Comprimir vídeo para Discord/WhatsApp (<10MB ou <25MB):
+dl -z 10 "https://..."
+dl -z 25 "https://..."
+
+# Modo Estudo (Remove silêncios e acelera em 1.5x mantendo afinação de voz):
+dl --study 1.5 "https://www.youtube.com/watch?v=..."
+
+# Dividir álbuns/shows do YouTube por capítulos em faixas numeradas:
+dl --split-chapters "https://www.youtube.com/watch?v=..."
+
+# Sincronizar playlist (baixa somente as músicas novas sem duplicatas):
+dl --sync "https://www.youtube.com/playlist?list=..."
+
+# Usar cookies do navegador para vídeos restritos (18+):
+dl --cookies brave "https://www.youtube.com/watch?v=..."
+
+# Baixar carrossel de fotos (Instagram / Twitter / Reddit):
+dl --gallery "https://www.instagram.com/p/..."
+
+# Ver histórico de downloads com busca fuzzy (FZF):
+dl -h
+```
 
 ---
 
-### Modo 3: Direto na Pasta Atual do Yazi (`M y`)
-Se você está organizando seus arquivos no Yazi e quer baixar um arquivo exatamente na pasta em que está navegando (por exemplo, dentro de `/mnt/dados/01_Faculdade/Trabalho`):
-
+### Modo 4: Direto na Pasta Atual do Yazi (`M y`)
 1. Navegue até a pasta desejada no Yazi.
-2. Copie o link no navegador.
+2. Copie o link da mídia.
 3. Pressione as teclas **`M`** e depois **`y`** (Media/Yazi).
 4. O download será salvo **diretamente dentro dessa pasta**, sem passar pela pasta genérica de Downloads!
 
 ---
 
-## 🌐 2. Compatibilidade & Plataformas Suportadas
+## 🚀 2. Notificação Interativa com "Arrastar" (ripdrag)
 
-O motor utiliza **`yt-dlp`** (com mais de 1.800 extratores nativos dedicados) e **`spotdl`** (para o ecossistema Spotify).
+Ao concluir qualquer download, uma notificação surge com 3 botões:
+- **`[ ▶️ Assistir / Ouvir ]`**: Reproduz imediatamente a mídia no app padrão.
+- **`[ 📂 Abrir Pasta ]`**: Abre a pasta de destino no explorador de arquivos.
+- **`[ 🚀 Arrastar (ripdrag) ]`**: Abre uma caixinha flutuante do `ripdrag` para você arrastar o arquivo com o mouse e soltar no Discord, WhatsApp Web ou Telegram sem sequer abrir pastas!
 
-| Plataforma | Suporte | O que ele baixa? |
+---
+
+## 🌐 3. Compatibilidade Universal de Plataformas
+
+| Plataforma | Suporte | Recursos Especiais |
 |---|---|---|
-| **YouTube** | Vídeos, Shorts, Playlists, Músicas | 1080p, 4K, 60fps, legendas pt/en, capítulos |
-| **Spotify** | Músicas, Álbuns, Playlists, Artistas | MP3 320kbps, tags oficiais, capa 3000px, letras `.lrc` |
-| **Twitter / X** | Vídeos e GIFs de tweets | Melhor qualidade MP4 direta |
+| **YouTube** | Vídeos, Shorts, Playlists, Músicas | 1080p, 4K, 60fps, legendas, split de capítulos, cortes |
+| **Spotify** | Músicas, Álbuns, Playlists, Artistas | MP3 320k, FLAC, capa 3000px, letras sincronizadas `.lrc` |
+| **Twitter / X** | Vídeos, GIFs e carrosséis de fotos | Extração via yt-dlp e gallery-dl |
+| **Instagram** | Reels, Vídeos e Carrosséis de Fotos | Baixa todos os posts e fotos em resolução nativa |
+| **Reddit** | Vídeos com áudio e posts de imagens | Junta canais de áudio/vídeo e baixa galerias |
 | **TikTok** | Vídeos avulsos e perfis | MP4 sem marca d'água |
-| **Instagram** | Reels, Vídeos e Stories | MP4 de alta resolução |
-| **Reddit** | Vídeos com áudio | Junta os canais separados de áudio e vídeo |
-| **Twitch** | Clipes e VODs completos | Stream gravado sem travamentos |
-| **Sites Adultos** | XVideos, Pornhub, SpankBang, etc. | Vídeo principal 1080p (ignora previews/anúncios) |
-| **Vimeo, Dailymotion** | Vídeos hospedados | Melhor resolução nativa |
+| **Twitch** | Clipes e transmissões | Stream gravado sem perdas |
+| **Sites Adultos** | XVideos, Pornhub, SpankBang, etc. | Roteamento furtivo automático para `.privado` |
+| **Álbuns de Fotos** | ArtStation, Pinterest, Imgur | Baixa a coleção inteira em alta resolução com gallery-dl |
 
 ---
 
-## 📁 3. Organização Automática das Pastas
+## 📁 4. Organização Inteligente de Pastas
 
-O script respeita estritamente a hierarquia do seu disco de dados:
+O Media Downloader respeita sua hierarquia de diretórios:
 
-```
-/mnt/dados/05_Midias_Design_e_Criacao/
-│
-├── Videos/Downloads/
-│   ├── Tutorial de Hyprland [dQw4w9WgXcQ].mp4
-│   │
-│   └── 📁 Nome da Playlist do YouTube/         <-- Playlists ganham subpasta própria!
-│       ├── 01 - Aula de Abertura.mp4
-│       ├── 02 - Estrutura de Pastas.mp4
-│       └── 03 - Conclusão.mp4
-│
-└── Musicas_e_Audios/Downloads/
-    ├── Daft Punk - Get Lucky.mp3
-    ├── Daft Punk - Get Lucky.lrc                <-- Letras sincronizadas para Karaokê
-    │
-    ├── 📁 Nome do Álbum/                       <-- Álbuns criam subpasta organizada!
-    │   ├── 01 - Artista - Faixa 1.mp3
-    │   ├── 02 - Artista - Faixa 2.mp3
-    │   └── ...
-    │
-    └── 📁 Nome da Playlist Spotify/            <-- Playlists inteiras organizadas!
-        ├── 01 - Artista A - Música 1.mp3
-        └── 02 - Artista B - Música 2.mp3
-```
+- **Vídeos Públicos**: `05_Midias_Design_e_Criacao/Videos/Downloads/` (ou `05.4_Filmes_e_Series/`)
+- **Músicas & Áudios**: `05_Midias_Design_e_Criacao/Musicas_e_Audios/Downloads/` (ou `05.2_Audios_e_Midias/`)
+- **Imagens & Fotos**: `05_Midias_Design_e_Criacao/Imagens/Downloads/` (ou `05.1_Artes_e_Wallpapers/`)
+- **Privados / Ocultos**: `01_Pessoal_e_Vida/.privado/` (com escudo anti-vazamento)
+- **Histórico**: `~/.local/state/media-downloader/history.log`
 
 ---
 
-## 🛡️ 4. Por que a Qualidade é Muito Superior?
+## ⏪ 5. Como Cancelar ou Desfazer
 
-1. **Aceleração com 16 Conexões (`aria2c`)**:
-   - Diferente do navegador que baixa usando uma única conexão lenta, o `aria2c` divide o arquivo em 16 pedaços e baixa tudo em paralelo, saturando sua internet na velocidade máxima.
-2. **Capas HD Embutidas Dentro do Arquivo**:
-   - Não cria arquivos soltos `.jpg` ou `.png`. A imagem da capa é injetada diretamente nos metadados ID3 do MP3 ou container do MP4.
-3. **Legendas e Capítulos Embutidos**:
-   - Vídeos do YouTube vêm com legendas em PT/EN embutidas e capítulos de tempo gravados para você navegar com setas no reprodutor de vídeo.
-4. **Sem Nomes Quebrados**:
-   - Sanitização de caracteres proibidos (`:`, `?`, `*`, `|`, `/`, `\`) que protege seu sistema de arquivos de erros de leitura.
-
----
-
-## ⏪ 5. Como Cancelar ou Desfazer Ações
-
-* **Para cancelar um download antes de terminar**:
-  - No terminal (`dl` ou `M y`): Pressione **`q`** ou dê **`Ctrl + C`**. Ele aborta na hora sem deixar arquivos corrompidos.
-* **Para apagar um arquivo que acabou de ser baixado**:
-  - No **Yazi**: Vá até o arquivo e tecle **`d`** (move para lixeira) ou **`D`** (apaga de vez).
-  - *(Dica: Pressione **`u`** no Yazi para dar **Undo** em operações de renomear ou mover).*
-* **Para gerenciar o atalho `M y` do Yazi**:
-  - Ele fica registrado na linha 57 do arquivo `~/.config/yazi/keymap.toml`. Se um dia quiser desativar essa tecla dentro do gerenciador, basta comentar essa linha.
+* **Cancelar download em andamento**: Pressione **`Ctrl + C`** no terminal. O script encerra sem deixar arquivos temporários corrompidos.
+* **Apagar mídia recente**: No Yazi, selecione o arquivo e pressione **`d`** (lixeira) ou **`D`** (apagar permanente).
+* **Histórico**: Digite `dl -h` para pesquisar seus downloads passados, abrir arquivos com `[Enter]` ou copiar o caminho absoluto com `[Ctrl + Y]`.
