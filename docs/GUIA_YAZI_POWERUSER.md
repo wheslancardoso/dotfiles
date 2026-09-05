@@ -131,6 +131,7 @@ Operações do sistema acionadas de dentro do Yazi:
 | `M` `s` | **Backup de Saves** | Executa `sync-ludusavi.sh backup` sincronizando todos os saves de jogos para o Google Drive. |
 | `M` `g` | **Abrir Lazygit** | Abre a interface do Lazygit na pasta atual para commits e push rápidos. |
 | `M` `l` | **Enviar via LocalSend** | Dispara os arquivos selecionados direto para o seu celular ou outro PC via AirDrop local! |
+| `M` `y` | **Baixar Mídia Aqui** | Baixa o vídeo/áudio da URL copiada direto para a pasta atual no Yazi (`yt-dlp`). |
 | `M` `t` | **Abrir Terminal** | Abre uma nova janela do terminal exatamente no diretório selecionado. |
 | `<F12>` | **Status / Verificação** | Emite notificação de integridade confirmando que as configurações estão ativas. |
 
