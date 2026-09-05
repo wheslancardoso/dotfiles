@@ -45,7 +45,8 @@
     "06_Backups_ISOs_e_Sistemas": [
       "06.1_Instaladores_e_APKs",
       "06.2_Backups_e_Snapshots",
-      "06.3_ISOs_e_Boot"
+      "06.3_ISOs_e_Boot",
+      "06.4_Games_e_Emuladores"
     ]
   },
   "regras_palavras_chave": [
@@ -144,6 +145,18 @@
     {
       "termos": ["1080p", "720p", "2160p", "4k", "bluray", "webrip", "web-dl", "x264", "x265", "hevc", "dublado", "legendado", "filme", "temporada", "season 1", "season 2", "s01e", "s02e", "yify"],
       "destino": "05_Design_Midia_e_Criacao/05.4_Filmes_e_Series"
+    },
+    {
+      "termos": ["ludusavi", "savegame", "gamesave", "savestate", "lupisave"],
+      "destino": "06_Backups_ISOs_e_Sistemas/06.4_Games_e_Emuladores/01_Saves_e_Backups/Ludusavi_Backups"
+    },
+    {
+      "termos": ["pcsx2", "mcd001", "mcd002", "scph-", "scph10000", "scph39001", "scph77000"],
+      "destino": "06_Backups_ISOs_e_Sistemas/06.4_Games_e_Emuladores/03_Emuladores/PCSX2_PlayStation_2"
+    },
+    {
+      "termos": ["yuzu", "ryujinx", "sudachi", "prod.keys", "title.keys", "switch mod", "switch save"],
+      "destino": "06_Backups_ISOs_e_Sistemas/06.4_Games_e_Emuladores/03_Emuladores/Nintendo_Switch"
     }
   ],
   "regras_extensoes": {
@@ -167,7 +180,11 @@
     ".mkv": "05_Design_Midia_e_Criacao/05.4_Filmes_e_Series",
     ".avi": "05_Design_Midia_e_Criacao/05.4_Filmes_e_Series",
     ".mov": "05_Design_Midia_e_Criacao/05.4_Filmes_e_Series",
-    ".srt": "05_Design_Midia_e_Criacao/05.4_Filmes_e_Series"
+    ".srt": "05_Design_Midia_e_Criacao/05.4_Filmes_e_Series",
+    ".nsp": "06_Backups_ISOs_e_Sistemas/06.4_Games_e_Emuladores/04_ROMs_e_ISOs",
+    ".xci": "06_Backups_ISOs_e_Sistemas/06.4_Games_e_Emuladores/04_ROMs_e_ISOs",
+    ".chd": "06_Backups_ISOs_e_Sistemas/06.4_Games_e_Emuladores/04_ROMs_e_ISOs",
+    ".cso": "06_Backups_ISOs_e_Sistemas/06.4_Games_e_Emuladores/04_ROMs_e_ISOs"
   },
   "arquivos_ignorados": [
     "desktop.ini",

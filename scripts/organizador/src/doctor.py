@@ -60,9 +60,11 @@ class SystemDoctor:
             if ":Zone.Identifier" in name or ":SmartScreen" in name or name in ["Thumbs.db", ".DS_Store", "desktop.ini"]:
                 results["noise_metadata_files"].append(str(item.relative_to(root_dir)))
 
-            # Nomenclatura com artefatos de download
-            if cls.ARTIFACTS_REGEX.search(name):
-                results["naming_artifacts"].append(str(item.relative_to(root_dir)))
+            # Nomenclatura com artefatos de download (ignora saves de jogos para preservar integridade de carregamento)
+            rel_path_str = str(item.relative_to(root_dir))
+            is_game_save = "06.4_Games_e_Emuladores" in rel_path_str or "Ludusavi" in rel_path_str
+            if not is_game_save and cls.ARTIFACTS_REGEX.search(name):
+                results["naming_artifacts"].append(rel_path_str)
 
         # 3. Distribuição por pastas numeradas da taxonomia mestre
         for master in sorted(root_dir.iterdir()):
