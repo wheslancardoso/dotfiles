@@ -33,3 +33,4 @@ ripdrag-git
 spotify
 spicetify-cli
 spotify-player
+spotdl

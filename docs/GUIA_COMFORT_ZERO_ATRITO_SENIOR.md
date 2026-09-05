@@ -60,7 +60,7 @@ Tudo que mexe com conexão de hardware usa **`Super + Alt`** + **a primeira letr
 - `Super + Alt + M` = **M**icrophone Mute (Silenciar mic de qualquer lugar)
 - `Super + Alt + S` = **S**aves de Jogos (Backup em nuvem com Ludusavi)
 - `Super + Alt + R` = **R**ecord (Gravação de tela)
-- `Super + Alt + D` = **D**ownload de vídeo/áudio da URL (yt-dlp acelerado com 16 conexões)
+- `Super + Alt + D` = **D**ownload de mídias (YouTube, Spotify, Twitter, TikTok com 16 conexões e spotDL)
 
 > **💡 Regra de Ouro**: Precisa mexer em qualquer hardware ou conexão? É sempre `Super + Alt` + Primeira Letra! Zero confusão mental.
 
@@ -84,6 +84,18 @@ Ações avançadas de tela e ferramentas auxiliares:
   - **Letras sincronizadas** estilo Apple Music Karaoke (`Lyrics-Plus`).
   - **Tela cheia cinematográfica** com álbum em blur pulsante (`F11`).
 - **Terminal Spotify (`spotify-player`)**: Cliente em Rust que consome menos de 30MB de RAM e roda no terminal com visualizador de áudio e letras.
+- **📥 Download Direto do Spotify com spotDL (Sim, dá sim!)**:
+  - O motor integrado `media-download.sh` agora reconhece links do Spotify automaticamente!
+  - **Como funciona**: Extrai metadados oficiais diretamente da API do Spotify (título exato, artistas, ano, gênero, número de faixa, capa oficial em altíssima resolução) e sincroniza com áudio 320kbps MP3 (ou FLAC / M4A) + letras `.lrc`.
+  - **Músicas, Álbuns e Playlists**:
+    - Se for **música única**: salva como `{artista} - {título}.mp3`.
+    - Se for **álbum**: cria a pasta `{Álbum}/` e numera as faixas organizadamente.
+    - Se for **playlist**: cria a pasta `{Playlist}/` e baixa todas as faixas ordenadas.
+  - **3 Formas de Acionar**:
+    1. **Atalho Global**: `SUPER + ALT + D` (Detecta link na clipboard e pergunta formato via Rofi).
+    2. **Terminal Instantâneo**: Digite `dl` no Zsh/Bash/Fish.
+    3. **Direto no Yazi**: Aperte `M y` dentro de qualquer pasta no gerenciador de arquivos.
+  - **Notificação Interativa**: Ao finalizar, exibe notificação com botões `[ ▶️ Ouvir Agora ]` e `[ 📂 Abrir Pasta ]`.
 
 ---
 

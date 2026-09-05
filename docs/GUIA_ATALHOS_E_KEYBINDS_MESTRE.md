@@ -34,7 +34,7 @@
 | `Super + H` ou `Super + /` | **Cheat Sheet Mestre** com todos os atalhos do sistema (KeyHints HUD) |
 | `Super + Shift + D` | **Upload Rápido de Documentos** (Acesso Rápido - CNH, RG, Comprovantes em janela flutuante) |
 | `Super + Alt + S` | **Sincronização de Saves de Jogos** (Ludusavi Cloud Backup com notificação nativa) |
-| `Super + Alt + D` | **Download Rápido de Vídeo/Áudio da URL** (yt-dlp + aria2c 16 conexões ou comando `dl`) |
+| `Super + Alt + D` | **Download Rápido de Mídia/Spotify** (YouTube, Spotify, Twitter via yt-dlp/spotDL ou comando `dl`) |
 | `Super + Shift + M` | Gerenciador de Monitores e Projeção (**nwg-displays**) |
 | `Super + M` | **Spotify Dropdown Scratchpad** (Desce janela flutuante com blur Catppuccin e esconde ao apertar de novo) |
 | `Super + Ctrl + Space` | Play / Pause do Spotify em segundo plano |

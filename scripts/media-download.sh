@@ -2,8 +2,8 @@
 # ==============================================================================
 # 📥 MEDIA DOWNLOADER POWER-USER — O Download Manager Definitivo no Terminal
 # ==============================================================================
-# Motor: yt-dlp + aria2c (16 conexões multi-threaded aceleradas) + ffmpeg
-# Suporte: YouTube, Twitter/X, Instagram, TikTok, Reddit, Twitch, Vimeo e +1.800 sites
+# Motor: yt-dlp + spotdl + aria2c (16 conexões multi-threaded aceleradas) + ffmpeg
+# Suporte: YouTube, Spotify, Twitter/X, Instagram, TikTok, Reddit, Twitch, Vimeo e +1.800 sites
 # ==============================================================================
 
 set -eo pipefail
@@ -50,7 +50,7 @@ get_downloader_args() {
     fi
 }
 
-# Notificação interativa com botões de ação (Assistir / Abrir Pasta)
+# Notificação interativa com botões de ação (Assistir/Ouvir / Abrir Pasta)
 notify_completion() {
     local title="$1"
     local dest_dir="$2"
@@ -59,7 +59,7 @@ notify_completion() {
         local action
         action=$(notify-send -a "Media Downloader" \
             -t 12000 \
-            -A "play=▶️ Assistir Agora" \
+            -A "play=▶️ Assistir / Ouvir Agora" \
             -A "folder=📂 Abrir Pasta" \
             "✅ Download Concluído!" \
             "$title") || true
@@ -67,7 +67,7 @@ notify_completion() {
         case "$action" in
             play)
                 local latest_file
-                latest_file=$(find "$dest_dir" -maxdepth 1 -type f -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -1 | cut -f2- -d" ")
+                latest_file=$(find "$dest_dir" -type f \( -name "*.mp3" -o -name "*.flac" -o -name "*.m4a" -o -name "*.mp4" -o -name "*.mkv" -o -name "*.webm" \) -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -1 | cut -f2- -d" ")
                 if [ -n "$latest_file" ]; then
                     xdg-open "$latest_file" &
                 else
@@ -92,7 +92,7 @@ run_rofi_mode() {
     if [ -n "$clip_url" ]; then
         url="$clip_url"
     else
-        url=$(rofi -dmenu -p "Cole a URL do Vídeo" -theme-str 'entry { placeholder: "https://..."; }' </dev/null || true)
+        url=$(rofi -dmenu -p "Cole a URL da Mídia" -theme-str 'entry { placeholder: "https://..."; }' </dev/null || true)
     fi
 
     if [ -z "$url" ] || [[ ! "$url" =~ ^https?:// ]]; then
@@ -103,6 +103,36 @@ run_rofi_mode() {
     local dest_v="${CUSTOM_DIR:-$DEFAULT_DEST_VIDEO}"
     local dest_a="${CUSTOM_DIR:-$DEFAULT_DEST_AUDIO}"
     mkdir -p "$dest_v" "$dest_a"
+
+    # Roteador específico para Spotify
+    if [[ "$url" =~ (open\.spotify\.com|spotify:) ]]; then
+        if ! command -v spotdl >/dev/null 2>&1; then
+            notify-send -u critical -a "Media Downloader" "spotDL Não Encontrado" "Para baixar do Spotify, instale no terminal: yay -S spotdl"
+            exit 1
+        fi
+
+        local sp_choice
+        sp_choice=$(printf "🎵 MP3 320kbps (Capa Oficial + Tags + Letras .lrc)\n💎 FLAC Lossless (Qualidade Máxima sem Compressão)\n⚡ M4A AAC (Stream Nativo Rápido)" | rofi -dmenu -i -p "Formato Spotify" || true)
+
+        if [ -z "$sp_choice" ]; then
+            exit 0
+        fi
+
+        notify-send -u normal -a "Media Downloader" "🎵 Baixando do Spotify..." "Buscando metadados oficiais e áudio 320kbps..."
+
+        case "$sp_choice" in
+            *"MP3 320kbps"*)
+                download_spotify "$url" "mp3" "$dest_a" "rofi"
+                ;;
+            *"FLAC"*)
+                download_spotify "$url" "flac" "$dest_a" "rofi"
+                ;;
+            *"M4A"*)
+                download_spotify "$url" "m4a" "$dest_a" "rofi"
+                ;;
+        esac
+        exit 0
+    fi
 
     local choice
     choice=$(printf "🎥 Vídeo MP4 (1080p/4K com Áudio & Legendas)\n🎵 Áudio MP3 (320kbps + Capa & Tags)\n⚡ Vídeo Leve (720p Rápido)" | rofi -dmenu -i -p "Formato de Download" || true)
@@ -206,6 +236,53 @@ download_audio() {
 }
 
 # ------------------------------------------------------------------------------
+# FUNÇÃO DE DOWNLOAD (SPOTIFY VIA SPOTDL)
+# ------------------------------------------------------------------------------
+download_spotify() {
+    local url="$1"
+    local format="${2:-mp3}"
+    local dest="$3"
+    local mode="${4:-cli}"
+
+    mkdir -p "$dest"
+    cd "$dest"
+
+    # Template inteligente de organização:
+    # Se for álbum: cria subpasta com nome do Álbum e numera as faixas
+    # Se for playlist: cria subpasta com nome da Playlist e numera as faixas
+    # Se for faixa única: salva diretamente na pasta raiz de músicas
+    local output_tpl="{artist} - {title}.{output-ext}"
+    if [[ "$url" =~ /album/ ]]; then
+        output_tpl="{album}/{track-number} - {artist} - {title}.{output-ext}"
+    elif [[ "$url" =~ /playlist/ ]]; then
+        output_tpl="{playlist}/{track-number} - {artist} - {title}.{output-ext}"
+    fi
+
+    local bitrate_flag="--bitrate 320k"
+    if [ "$format" == "flac" ]; then
+        bitrate_flag="--bitrate disable"
+    fi
+
+    if [ "$mode" == "rofi" ]; then
+        spotdl download "$url" \
+            --format "$format" \
+            $bitrate_flag \
+            --output "$output_tpl" \
+            --sponsor-block \
+            --generate-lrc >/dev/null 2>&1 || true
+    else
+        spotdl download "$url" \
+            --format "$format" \
+            $bitrate_flag \
+            --output "$output_tpl" \
+            --sponsor-block \
+            --generate-lrc
+    fi
+
+    notify_completion "Spotify: Música/Álbum Baixado" "$dest"
+}
+
+# ------------------------------------------------------------------------------
 # MODO INTERATIVO DE TERMINAL (CLI)
 # ------------------------------------------------------------------------------
 run_cli_mode() {
@@ -215,7 +292,7 @@ run_cli_mode() {
 
     clear
     echo -e "${MAUVE}${BOLD}╭───────────────────────────────────────────────────────────────╮${NC}"
-    echo -e "${MAUVE}${BOLD}│       📥 MEDIA DOWNLOADER POWER-USER (yt-dlp + aria2c)       │${NC}"
+    echo -e "${MAUVE}${BOLD}│    📥 MEDIA DOWNLOADER POWER-USER (yt-dlp + spotdl + aria2)   │${NC}"
     echo -e "${MAUVE}${BOLD}╰───────────────────────────────────────────────────────────────╯${NC}"
     echo ""
 
@@ -237,6 +314,73 @@ run_cli_mode() {
     if [ -z "$url" ] || [[ ! "$url" =~ ^https?:// ]]; then
         echo -e "\n${RED}❌ URL inválida ou vazia.${NC}"
         exit 1
+    fi
+
+    # Roteamento especial para links do Spotify
+    if [[ "$url" =~ (open\.spotify\.com|spotify:) ]]; then
+        echo -e "${GREEN}${BOLD}🎧 Link do Spotify Detectado!${NC}"
+        echo -e "${SUBTEXT}O spotDL vai extrair metadados oficiais, capa em alta resolução e letras sincronizadas (.lrc).${NC}"
+        echo ""
+
+        if ! command -v spotdl >/dev/null 2>&1; then
+            echo -e "${PEACH}⚠️ 'spotdl' não está instalado no sistema.${NC}"
+            echo -e "O spotdl é o motor que baixa músicas, álbuns e playlists do Spotify com capas e tags em 320kbps."
+            echo ""
+            read -rp "Deseja instalar agora via yay (AUR)? [s/N]: " inst_opt
+            if [[ "$inst_opt" =~ ^[sSyY] ]]; then
+                if command -v yay >/dev/null 2>&1; then
+                    yay -S --needed spotdl
+                elif command -v paru >/dev/null 2>&1; then
+                    paru -S --needed spotdl
+                elif command -v pipx >/dev/null 2>&1; then
+                    pipx install spotdl
+                else
+                    echo -e "${RED}Instale manualmente com: yay -S spotdl (ou pipx install spotdl)${NC}"
+                    exit 1
+                fi
+            else
+                exit 0
+            fi
+        fi
+
+        local dest_target="${CUSTOM_DIR:-$dest_a}"
+        echo -e "${BLUE}📂 Pasta de Destino:${NC} ${dest_target}"
+        echo ""
+        echo -e "${BOLD}Escolha o Formato de Áudio:${NC}"
+        echo -e "  ${BLUE}[1]${NC} 🎵 MP3 320kbps (Capa Oficial + Tags ID3 + Letras .lrc) [Padrão]"
+        echo -e "  ${GREEN}[2]${NC} 💎 FLAC Lossless (Áudio Estúdio sem perdas)"
+        echo -e "  ${PEACH}[3]${NC} ⚡ M4A AAC (Stream Nativo Rápido)"
+        echo -e "  ${RED}[q]${NC} Cancelar"
+        echo ""
+        read -rp "Opção [1-3, padrão: 1]: " sp_opt
+        sp_opt="${sp_opt:-1}"
+
+        case "$sp_opt" in
+            1)
+                echo -e "\n${BLUE}🚀 Baixando do Spotify em MP3 320kbps com capa e letras...${NC}\n"
+                download_spotify "$url" "mp3" "$dest_target" "cli"
+                ;;
+            2)
+                echo -e "\n${GREEN}💎 Baixando do Spotify em FLAC Lossless...${NC}\n"
+                download_spotify "$url" "flac" "$dest_target" "cli"
+                ;;
+            3)
+                echo -e "\n${PEACH}⚡ Baixando do Spotify em M4A AAC...${NC}\n"
+                download_spotify "$url" "m4a" "$dest_target" "cli"
+                ;;
+            q|Q)
+                echo -e "\n${RED}Cancelado.${NC}"
+                exit 0
+                ;;
+            *)
+                echo -e "\n${RED}Opção inválida.${NC}"
+                exit 1
+                ;;
+        esac
+
+        echo ""
+        echo -e "${GREEN}${BOLD}✔ Mídia do Spotify baixada com sucesso!${NC}"
+        exit 0
     fi
 
     echo ""
