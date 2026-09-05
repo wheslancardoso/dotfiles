@@ -129,6 +129,16 @@ shotactive() {
     notify_view "active"
 }
 
+shotflameshot() {
+	if command -v flameshot >/dev/null 2>&1; then
+		pkill -x flameshot || true
+		env XDG_CURRENT_DESKTOP=sway QT_QPA_PLATFORM=wayland flameshot gui
+	else
+		notify-send -u normal -i "${iDIR}/picture.png" "Flameshot" "Flameshot não encontrado. Usando Swappy como fallback..."
+		shotswappy
+	fi
+}
+
 shotswappy() {
 	tmpfile=$(mktemp)
 	grim -g "$(slurp)" - >"$tmpfile" 
@@ -156,10 +166,12 @@ elif [[ "$1" == "--area" ]]; then
 	shotarea
 elif [[ "$1" == "--active" ]]; then
 	shotactive
+elif [[ "$1" == "--flameshot" ]]; then
+	shotflameshot
 elif [[ "$1" == "--swappy" ]]; then
-	shotswappy
+	shotflameshot
 else
-	echo -e "Available Options : --now --in5 --in10 --win --area --active --swappy"
+	echo -e "Available Options : --now --in5 --in10 --win --area --active --flameshot --swappy"
 fi
 
 exit 0

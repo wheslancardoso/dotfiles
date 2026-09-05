@@ -79,6 +79,7 @@ fd
 ffmpegthumbnailer
 firefox
 flatpak
+flameshot
 fsarchiver
 fzf
 gamemode

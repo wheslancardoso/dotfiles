@@ -100,7 +100,7 @@ GDK_BACKEND=$BACKEND yad \
 "── CAPTURAS DE TELA (PRINTS) ──" "── SCREENSHOTS ──" "────────────────────────" \
 " Print" "Capturar tela inteira" "(grim)" \
 " Shift Print" "Capturar região selecionada" "(grim + slurp)" \
-" Shift S" "Capturar região e editar" "(swappy)" \
+" Shift S ou Print" "Capturar região e editar com anotações" "(flameshot)" \
 " CTRL Print" "Captura com timer de 5 segundos" "(grim)" \
 " CTRL SHIFT Print" "Captura com timer de 10 segundos" "(grim)" \
 "ALT Print" "Capturar apenas a janela ativa" "active window" \

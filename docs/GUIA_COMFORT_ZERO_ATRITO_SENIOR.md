@@ -18,7 +18,7 @@
 | `Super + Alt + M` | 🎙️ **Microfone** | Silenciar / Ativar o Microfone globalmente (**Mic Mute Toggle**) com OSD. |
 | `Super + Alt + S` | 🎮 **Jogos** | Sincroniza e faz backup na nuvem de todos os seus saves de jogos via Ludusavi. |
 | `Super + Alt + R` | 🎥 **Gravação** | Inicia/para gravação da tela em MP4 de alta qualidade ou GIF animado. |
-| `Super + Shift + S` | ✂️ **Screenshot** | Captura de região com anotações e setas estilo Windows Snipping Tool (Swappy). |
+| `Super + Shift + S` ou `Print` | ✂️ **Screenshot** | Captura de região com anotações, setas e blur via **Flameshot** (com fallback). |
 | `Super + Shift + T` | 🔍 **OCR** | Seleciona qualquer área da tela e copia o texto de imagens/vídeos para o clipboard. |
 | `Super + Shift + P` | 🎨 **Cor** | Conta-gotas (Color Picker): clica em qualquer pixel da tela e copia o código HEX. |
 | `Super + Shift + N` | 🔔 **Notificações**| Central SwayNC com histórico, controle de volume e botão **Não Perturbe (DND)**. |
@@ -63,7 +63,7 @@ Tudo que mexe com conexão de hardware usa **`Super + Alt`** + **a primeira letr
 
 ### 📸 Andar 3 — `SUPER + SHIFT + [Letra]` (Captura & Utilitários Visuais)
 Ações avançadas de tela e ferramentas auxiliares:
-- `Super + Shift + S` = **S**creenshot com ferramenta de corte e setas (Swappy)
+- `Super + Shift + S` ou `Print` = **S**creenshot com corte, setas, desfoque e anotações (**Flameshot**)
 - `Super + Shift + P` = Color **P**icker (Conta-gotas de cor)
 - `Super + Shift + T` = **T**ext OCR (Copiar texto de qualquer imagem/vídeo)
 - `Super + Shift + N` = **N**otificações & Central de Controle (SwayNC)

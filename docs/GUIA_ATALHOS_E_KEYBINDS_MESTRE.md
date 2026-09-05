@@ -20,8 +20,7 @@
 | `Super + H / J / K / L` | Mover foco entre janelas (Esquerda, Abaixo, Acima, Direita) |
 | `Super + Shift + H / J / K / L` | Mover janela de posição no layout tiling |
 | `Super + 1` a `9` | Mudar para a Área de Trabalho (Workspace) correspondente |
-| `Super + Shift + 1` a `9` | Mover janela atual para a Workspace correspondente |
-| `Super + Shift + S` | Captura de tela com seleção de área (**Grim + Slurp**) |
+| `Super + Shift + S` ou `Print` | Captura de região com anotações, setas, blur e edição (**Flameshot**) |
 | `Super + Shift + R` | Gravação de tela em MP4/GIF com áudio (**wf-recorder**) |
 | `Super + Shift + T` | Extração de texto da tela via OCR (**Tesseract**) |
 | `Super + Shift + P` | Conta-gotas / Seletor de cor HEX da tela (**Hyprpicker**) |
