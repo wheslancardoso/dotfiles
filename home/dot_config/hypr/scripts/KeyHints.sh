@@ -46,6 +46,8 @@ GDK_BACKEND=$BACKEND yad \
 " ~ (til) ou  U" "Terminal Dropdown Suspenso (Quake Style)" "scratchpad-term.sh" \
 " E" "Explorador de Arquivos Yazi (Modo Tiling)" "open-yazi-tiled.sh" \
 " SHIFT E" "Explorador de Arquivos Yazi (Flutuante)" "open-yazi.sh" \
+" SHIFT D" "Upload Rápido de Documentos (CNH, RG, Comprovantes)" "open-acesso-rapido.sh" \
+" ALT S" "Sincronizar Saves de Jogos na Nuvem" "sync-ludusavi.sh" \
 "fix-pendrive" "Destravar & Reparar Pen-drive (Terminal)" "fix-pendrive.sh" \
 "fix-suspend" "Blindagem e Diagnóstico de Suspensão" "fix-suspend.sh" \
 "safe-update" "Atualização Blindada (Chaveiro + Pacotes)" "safe-update.sh" \
@@ -120,6 +122,9 @@ GDK_BACKEND=$BACKEND yad \
 "bruno / api" "Testador de APIs e REST" "GUI" \
 "vibe" "Ambiente Vibe Coding (LazyVim + Antigravity CLI)" "Zellij" \
 "organizar" "Suíte Organizador Master de Arquivos" "Python" \
+"organizar --doctor" "Diagnóstico e Nota 100/100 Padrão Ouro" "Auditoria" \
+"organizar --dedup" "Buscar Duplicatas por Hash SHA-256" "Deduplicador" \
+"organizar --watch" "Triagem Automática em Segundo Plano" "Daemon" \
 "m / mi / mu" "Gerenciador de Runtimes Mise (Node, Bun, Go, Java)" "Mise" \
 "" "" "" \
 "── YAZI: NAVEGAÇÃO BÁSICA ──" "── ATALHOS DO YAZI ──" "────────────────────────" \

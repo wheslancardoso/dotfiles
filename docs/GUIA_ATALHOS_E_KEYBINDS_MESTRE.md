@@ -28,7 +28,9 @@
 | `Super + Shift + A` | Alternar saída de áudio (Caixas de Som <-> Fone/Headset) |
 | `Super + C` | Calculadora flutuante com conversão de moedas ao vivo |
 | `Super + Space` | Alternar layout de teclado (US-Intl, PT-BR ABNT2, US-Dev) |
-| `Super + H` | **Cheat Sheet Mestre** com todos os atalhos do sistema e do Yazi |
+| `Super + H` | **Cheat Sheet Mestre** com todos os atalhos do sistema (Yad GUI) |
+| `Super + Shift + D` | **Upload Rápido de Documentos** (Acesso Rápido - CNH, RG, Comprovantes em janela flutuante) |
+| `Super + Alt + S` | **Sincronização de Saves de Jogos** (Ludusavi Cloud Backup com notificação nativa) |
 | `Super + Shift + M` | Gerenciador de Monitores e Projeção (**nwg-displays**) |
 | `Alt + V` | Gerenciador e histórico da área de transferência (**CopyQ**) |
 | `Super + L` | Bloquear tela (**Hyprlock**) |
@@ -168,6 +170,10 @@
 | `mobile` | Inicia layout Mobile (LazyVim + IA + Metro/Flutter) |
 | `scrcpy-dev` | Abre tela do celular físico em janela flutuante no Hyprland |
 | `organizar` | Executa a suíte de organização de arquivos (`00_` a `06_`) |
+| `organizar --doctor` | Diagnóstico de saúde da taxonomia (Nota 100/100 Padrão Ouro) |
+| `organizar --dedup` | Busca e quarentena de arquivos duplicados por hash SHA-256 |
+| `organizar --watch` | Inicia daemon de monitoramento contínuo em tempo real |
+| `vincular_linux` | Vincula diretórios da `$HOME` à partição `/mnt/dados` |
 | `lg` | Abre o **LazyGit** |
 | `ld` | Abre o **LazyDocker** |
 | `z [pasta]` | Salta instantaneamente para qualquer pasta recente (**Zoxide**) |
