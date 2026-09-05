@@ -14,7 +14,7 @@ class SystemDoctor:
     """Auditor rigoroso de padronização, ruído e organização de arquivos."""
 
     ARTIFACTS_REGEX = re.compile(
-        r"(\s*\(\d+\)|\s*\[\d+\]|\s*-\s*c[oó]pia|\s*-\s*copy|\s*copia|\s*copy)",
+        r"(\s*\([1-9]\d{0,1}\)|\s*\[[1-9]\d{0,1}\]|\s*[-_]\s*c[oó]pia\b|\s*[-_]\s*copy\b)",
         re.IGNORECASE,
     )
 
