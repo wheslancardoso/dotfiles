@@ -28,3 +28,4 @@ unionfs-fuse
 vesktop-bin
 wallust
 xdg-desktop-portal-termfilechooser-hunkyburrito-git
+ripdrag-git

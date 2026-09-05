@@ -30,6 +30,11 @@ prepend_keymap = [
 	{ on = [ "c", "d" ], run = "copy dirpath", desc = "Copiar Caminho da Pasta" },
 
 	# --------------------------------------------------------------------------
+	# 🖱️ DRAG & DROP (Arrastar e Soltar para Navegador / Discord / Drive)
+	# --------------------------------------------------------------------------
+	{ on = "<C-y>", run = 'shell "ripdrag -x -i -T %s" --confirm', desc = "Arrastar arquivos para Apps/Browser (Drag & Drop)" },
+
+	# --------------------------------------------------------------------------
 	# 🚀 NAVEGAÇÃO RÁPIDA (GOTO JUMPS - Atalhos Diretos no seu Drive /mnt/dados)
 	# --------------------------------------------------------------------------
 	{ on = [ "g", "i" ], run = "cd /mnt/dados/00_Inbox", desc = "Ir para 00_Inbox (Downloads)" },

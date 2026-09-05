@@ -35,3 +35,13 @@ alias fullstack="zellij --layout fullstack"
 alias mobile="zellij --layout mobile"
 alias scrcpy-dev='scrcpy --always-on-top --window-title "Mobile Emulator Device"'
 alias organizar="python3 $HOME/dotfiles/scripts/organizador/main.py"
+
+# Yazi CWD Wrapper (troca de pasta automaticamente ao sair)
+function y
+    set tmp (mktemp -t "yazi-cwd.XXXXXX")
+    yazi $argv --cwd-file="$tmp"
+    if set cwd (command cat -- "$tmp"); and test -n "$cwd"; and test "$cwd" != "$PWD"
+        builtin cd -- "$cwd"
+    end
+    rm -f -- "$tmp"
+end

@@ -46,7 +46,7 @@ Esqueça o terminal manual ou menus lentos. Tudo é feito com teclas mnemônicas
 
 ---
 
-## 📋 3. Cópia de Metadados & Clipboard (Limpo e Sem Conflitos)
+## 📋 3. Cópia de Metadados, Clipboard & Drag & Drop
 
 Liberamos a tecla `c` para compressão e reorganizamos as cópias para atalhos intuitivos:
 
@@ -55,10 +55,50 @@ Liberamos a tecla `c` para compressão e reorganizamos as cópias para atalhos i
 | `c` `p` | Copiar **Caminho Completo** | `/mnt/dados/04_Dev/meu-projeto/main.py` |
 | `c` `f` | Copiar **Nome do Arquivo** | `main.py` |
 | `c` `d` | Copiar **Caminho da Pasta** | `/mnt/dados/04_Dev/meu-projeto` |
+| `<Ctrl+y>` | **Arrastar e Soltar (Drag & Drop)** | Abre caixinha flutuante com `ripdrag` para arrastar com mouse direto para Discord, Chrome, Drive, Telegram! |
 
 ---
 
-## 🚀 4. Navegação Rápida (GOTO Jumps no `/mnt/dados`)
+## 🌐 4. Adeus ao Thunar / Nautilus: Como Funciona o Download na Web com Yazi?
+
+### 😡 A Raiva Histórica do GTK File Chooser (Thunar / Nautilus)
+No Linux tradicional com XFCE ou GNOME, quando um navegador abre a janela de "Salvar Como", existe um comportamento irritante conhecido como *type-ahead search*:
+- O foco da janela cai na lista de arquivos em vez do campo de nome.
+- Ao começar a digitar o nome que você quer dar ao arquivo, o gerenciador trava tudo e começa a pesquisar palavras dentro da pasta!
+- A janela é pesada, cheia de abas desnecessárias e atrito.
+
+### 🛡️ A Solução Definitiva do nosso Ecossistema (2 Camadas Anti-Atrito):
+
+#### 🚀 Camada 1: O Fluxo Recomendado — Zero Diálogos (Downloads Automáticos)
+No seu navegador (Zen Browser, Firefox, Chrome, Brave):
+1. Deixe ativada a opção: **"Salvar arquivos automaticamente em Downloads"** (sem perguntar a cada download).
+2. Como `~/Downloads` é um link simbólico que aponta diretamente para `/mnt/dados/00_Inbox`, você clica em baixar e o arquivo cai direto no disco em **0 segundos**, sem nenhuma janela saltando na sua cara.
+3. Depois, basta dar `Super + E` (Yazi flutuante) e teclar `g i` para triar o arquivo, ou deixar o **Organizador Master** fazer isso por você em segundo plano!
+
+#### 🗂️ Camada 2: Quando o Site/App EXIGE Escolher Onde Salvar ou Fazer Upload
+Quando você clica em *"Salvar Como..."*, ou clica em *"Enviar Arquivo / Upload"* no Discord, Telegram ou no navegador:
+1. O **Hyprland** intercepta a chamada através do `xdg-desktop-portal-termfilechooser`.
+2. Em vez de Thunar ou Nautilus, **uma janela flutuante e elegante do terminal com o Yazi surge no centro da tela** (`yazi_picker`)!
+3. **Se for Upload**: Você navega na velocidade da luz com `j`/`k`, salta de pasta com `g i`, `g v`, `g p` ou busca com `z` (zoxide), aperta `<Enter>` e a janela fecha instantaneamente entregando o arquivo para o app.
+4. **Se for Salvar Como**: O Yazi abre na pasta com o nome sugerido já selecionado:
+   - Se quiser o nome padrão: apenas tecle `<Enter>`.
+   - Se quiser mudar de pasta: salte com `g p` ou `g i`.
+   - Se quiser renomear: tecle `r`, digite o nome e tecle `<Enter>`.
+   - Se quiser cancelar: tecle `q` ou `<Esc>`.
+5. **Zero travamentos, zero pesquisa indesejada no meio da digitação, 100% teclado e velocidade.**
+
+#### 📂 Camada 3: Clicar em "Mostrar na Pasta" no Navegador
+Quando um download termina e você clica em *"Mostrar na pasta"* no Chrome/Firefox, o sistema consulta o padrão `inode/directory` configurado em `mimeapps.list`. Registramos o `yazi.desktop`, logo o **Yazi flutuante abre exatamente no diretório do arquivo com ele focado**!
+
+#### 🐚 Camada 4: O Atalho `y` no Terminal (CD Automático ao Sair)
+Se você estiver no terminal (Zsh, Bash ou Fish) e digitar apenas `y`:
+- O Yazi abre no diretório atual.
+- Você navega para qualquer lugar do disco (`g v`, `g j`, etc.).
+- Ao apertar `q`, seu terminal **já estará dentro da pasta onde você parou no Yazi**! Nunca mais digite caminhos gigantescos de `cd`.
+
+---
+
+## 🚀 5. Navegação Rápida (GOTO Jumps no `/mnt/dados`)
 
 Vá para qualquer lugar da sua máquina em fração de segundo digitando `g` seguido da inicial da pasta:
 
@@ -80,7 +120,7 @@ Vá para qualquer lugar da sua máquina em fração de segundo digitando `g` seg
 
 ---
 
-## ⚡ 5. Ferramentas Master & Produtividade (Prefixo `M` - Shift+M)
+## ⚡ 6. Ferramentas Master & Produtividade (Prefixo `M` - Shift+M)
 
 Operações do sistema acionadas de dentro do Yazi:
 
@@ -95,7 +135,7 @@ Operações do sistema acionadas de dentro do Yazi:
 
 ---
 
-## 🛠️ 6. Operações Básicas de Arquivos (Padrão Vim)
+## 🛠️ 7. Operações Básicas de Arquivos (Padrão Vim)
 
 | Tecla | Ação | Detalhes |
 |---|---|---|
@@ -123,7 +163,7 @@ Operações do sistema acionadas de dentro do Yazi:
 
 ---
 
-## 🧩 7. Estrutura dos Arquivos de Configuração
+## 🧩 8. Estrutura dos Arquivos de Configuração
 
 Todas as configurações são versionadas no seu repositório de dotfiles:
 

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Yazi
+GenericName=File Manager
+Comment=Blazing fast terminal file manager
+Icon=utilities-file-archiver
+Exec=bash -c "$HOME/.config/hypr/UserScripts/open-yazi.sh %u"
+Terminal=false
+Categories=System;FileTools;FileManager;
+MimeType=inode/directory;
+Keywords=files;file manager;yazi;console;terminal;
