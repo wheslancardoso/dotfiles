@@ -1,6 +1,57 @@
-# Yazi Keymap Diagnostic
+# ==============================================================================
+# 🚀 YAZI POWER-USER KEYMAP — Zero Fricção, Máxima Velocidade & Produtividade
+# ==============================================================================
+# Baseado na arquitetura upstream do Yazi.
+# Configuração limpa com prepend_keymap para sobrepor e desbloquear atalhos.
+# ==============================================================================
 
-[manager]
+[mgr]
 prepend_keymap = [
-	{ on = "<F12>", run = "plugin custom-help", desc = "Teste de Notificação" },
+	# --------------------------------------------------------------------------
+	# 📦 COMPRESSÃO RÁPIDA (Prefixo: 'c' de Compress)
+	# --------------------------------------------------------------------------
+	{ on = [ "c", "z" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-archive.sh compress-zip %s" --confirm', desc = "Comprimir para .ZIP (Rápido)" },
+	{ on = [ "c", "7" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-archive.sh compress-7z %s" --confirm', desc = "Comprimir para .7Z (Ultra LZMA2)" },
+	{ on = [ "c", "t" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-archive.sh compress-tar %s" --confirm', desc = "Comprimir para .TAR.GZ (Linux)" },
+	{ on = [ "c", "c" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-archive.sh compress-custom %s" --block', desc = "Comprimir com Nome Personalizado" },
+
+	# --------------------------------------------------------------------------
+	# 📂 EXTRAÇÃO INTELIGENTE (Prefixo: 'e' de Extract ou 'X' de 1-toque)
+	# --------------------------------------------------------------------------
+	{ on = [ "e", "s" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-archive.sh extract-sub %s" --confirm', desc = "Extrair para Subpasta Limpa" },
+	{ on = [ "e", "x" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-archive.sh extract-here %s" --confirm', desc = "Extrair Aqui" },
+	{ on = "X",          run = 'shell "bash $HOME/dotfiles/scripts/yazi-archive.sh extract-sub %s" --confirm', desc = "Extrair para Subpasta (1 Toque)" },
+
+	# --------------------------------------------------------------------------
+	# 📋 COPIAR CAMINHOS / METADADOS (Desbloqueado e intuitivo)
+	# --------------------------------------------------------------------------
+	{ on = [ "c", "p" ], run = "copy path", desc = "Copiar Caminho Absoluto" },
+	{ on = [ "c", "f" ], run = "copy filename", desc = "Copiar Nome do Arquivo" },
+	{ on = [ "c", "d" ], run = "copy dirpath", desc = "Copiar Caminho da Pasta" },
+
+	# --------------------------------------------------------------------------
+	# 🚀 NAVEGAÇÃO RÁPIDA (GOTO JUMPS - Atalhos Diretos no seu Drive /mnt/dados)
+	# --------------------------------------------------------------------------
+	{ on = [ "g", "i" ], run = "cd /mnt/dados/00_Inbox", desc = "Ir para 00_Inbox (Downloads)" },
+	{ on = [ "g", "p" ], run = "cd /mnt/dados/01_Pessoal", desc = "Ir para 01_Pessoal" },
+	{ on = [ "g", "e" ], run = "cd /mnt/dados/03_Estudos_Carreira", desc = "Ir para 03_Estudos_Carreira" },
+	{ on = [ "g", "v" ], run = "cd /mnt/dados/04_Dev", desc = "Ir para 04_Dev (Projetos/Git)" },
+	{ on = [ "g", "j" ], run = "cd /mnt/dados/06.4_Games", desc = "Ir para 06.4_Games (Jogos & Emuladores)" },
+	{ on = [ "g", "m" ], run = "cd /mnt/dados/05_Midias", desc = "Ir para 05_Midias" },
+	{ on = [ "g", "D" ], run = "cd /mnt/dados", desc = "Ir para Raiz /mnt/dados" },
+	{ on = [ "g", "." ], run = "cd ~/dotfiles", desc = "Ir para ~/dotfiles" },
+
+	# --------------------------------------------------------------------------
+	# ⚡ INTEGRAÇÃO COM ORGANIZADOR MASTER & FERRAMENTAS DO SISTEMA
+	# --------------------------------------------------------------------------
+	{ on = [ "M", "o" ], run = 'shell "organizar --all" --block', desc = "Organizar Downloads / Inbox Agora" },
+	{ on = [ "M", "d" ], run = 'shell "organizar --doctor" --block', desc = "Diagnóstico do Sistema (Doctor)" },
+	{ on = [ "M", "s" ], run = 'shell "bash $HOME/dotfiles/scripts/sync-ludusavi.sh backup" --block', desc = "Backup Saves Jogos (Ludusavi)" },
+	{ on = [ "M", "g" ], run = 'shell "lazygit" --block', desc = "Abrir Lazygit nesta Pasta" },
+	{ on = [ "M", "t" ], run = 'shell "$TERMINAL &" --confirm', desc = "Abrir Terminal nesta Pasta" },
+
+	# --------------------------------------------------------------------------
+	# 💡 AJUDA E DIAGNÓSTICO
+	# --------------------------------------------------------------------------
+	{ on = "<F12>", run = 'shell "bash -c \"notify-send -a Yazi \'Yazi Power-User\' \'Configuração carregada com sucesso! Pressione ? para ajuda.\'\"" --confirm', desc = "Status / Teste Yazi" },
 ]

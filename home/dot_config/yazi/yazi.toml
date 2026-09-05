@@ -20,10 +20,10 @@ ueberzug_offset = [ 0, 0, 0, 0 ]
 
 [opener]
 open = [
-	{ run = 'xdg-open "$@"', desc = "Open" },
+	{ run = 'xdg-open "$@"', desc = "Abrir com App Padrão" },
 ]
 edit = [
-	{ run = '${EDITOR:-vi} "$@"', block = true, desc = "Edit" },
+	{ run = '${EDITOR:-vi} "$@"', block = true, desc = "Editar" },
 ]
 pdf = [
 	{ run = 'okular "$@"', orphan = true, desc = "Okular (PDF & Anotações)" },
@@ -35,6 +35,11 @@ video = [
 ]
 office = [
 	{ run = 'onlyoffice-desktopeditors "$@"', orphan = true, desc = "OnlyOffice" },
+]
+archive = [
+	{ run = 'bash "$HOME/dotfiles/scripts/yazi-archive.sh" extract-sub %s', block = true, desc = "Extrair para Subpasta (Limpo)" },
+	{ run = 'bash "$HOME/dotfiles/scripts/yazi-archive.sh" extract-here %s', block = true, desc = "Extrair Aqui" },
+	{ run = 'xdg-open %s1', orphan = true, desc = "Abrir com Gerenciador Padrão" },
 ]
 
 [open]
@@ -48,6 +53,16 @@ rules = [
 	{ mime = "application/vnd.openxmlformats-officedocument.*", use = [ "office", "open" ] },
 	{ mime = "application/msword", use = [ "office", "open" ] },
 	{ mime = "application/vnd.ms-*", use = [ "office", "open" ] },
+	# Suporte Completo a Arquivos Comprimidos / Compactados
+	{ mime = "application/*zip", use = [ "archive", "open" ] },
+	{ mime = "application/x-tar", use = [ "archive", "open" ] },
+	{ mime = "application/x-bzip*", use = [ "archive", "open" ] },
+	{ mime = "application/x-7z-compressed", use = [ "archive", "open" ] },
+	{ mime = "application/x-rar*", use = [ "archive", "open" ] },
+	{ mime = "application/x-xz", use = [ "archive", "open" ] },
+	{ mime = "application/gzip", use = [ "archive", "open" ] },
+	{ mime = "application/zstd", use = [ "archive", "open" ] },
+	{ name = "*.{zip,rar,7z,tar,tar.gz,tgz,tar.bz2,tbz2,tar.xz,txz,gz,xz,zst,apk,iso}", use = [ "archive", "open" ] },
 ]
 
 

@@ -13,11 +13,13 @@
 │   ├── [GUIA_POWERUSER_DEV.md](./GUIA_POWERUSER_DEV.md)           # Zero atritos, Dadbod SQL, Kulala REST, Surround
 │   ├── [GUIA_FULLSTACK_WORKFLOWS.md](./GUIA_FULLSTACK_WORKFLOWS.md) # Playbooks práticos (Java, React, Python, Mobile, Go)
 │   ├── [GUIA_LAZYVIM_ANTIGRAVITY.md](./GUIA_LAZYVIM_ANTIGRAVITY.md) # Vibe Coding (Neovim + Antigravity CLI + Zellij)
+│   ├── [GUIA_YAZI_POWERUSER.md](./GUIA_YAZI_POWERUSER.md)         # Yazi ultra-veloz, compactação/extração e saltos no Drive
 │   └── [GUIA_ATALHOS_E_KEYBINDS_MESTRE.md](./GUIA_ATALHOS_E_KEYBINDS_MESTRE.md) # Cheat sheet geral de atalhos
 │
 ├── 🛠️ SETUP DE MÁQUINA, JOGOS & BACKUPS
 │   ├── [GUIA_MIGRACAO_TOTAL_WINDOWS_LINUX.md](./GUIA_MIGRACAO_TOTAL_WINDOWS_LINUX.md) # 🚀 Desapego do Windows, Equivalências e KVM Quickemu
 │   ├── [GUIA_SETUP_PC.md](./GUIA_SETUP_PC.md)                     # Guia automatizado pós-formatação (Linux & Windows)
+│   ├── [GUIA_GAMES_EMULADORES_LUDUSAVI.md](./GUIA_GAMES_EMULADORES_LUDUSAVI.md) # 🎮 Emuladores Switch/PCSX2 e backup de saves
 │   ├── [GUIA_GAMING_STREAMING_LINUX.md](./GUIA_GAMING_STREAMING_LINUX.md) # 🎮 Gaming, FitGirl Repacks, RTX 5060, Vesktop & Áudio IA
 │   └── [GUIA_BACKUP_PRE_FORMATACAO.md](./GUIA_BACKUP_PRE_FORMATACAO.md) # Checklist seguro de backup (SSH, saves, configs)
 │
@@ -46,6 +48,7 @@
 | [**GUIA_POWERUSER_DEV.md**](./GUIA_POWERUSER_DEV.md) | Eliminação de microatritos, Surround, Dadbod SQL, Kulala REST, Diffview | No dia a dia de código para substituir ferramentas pesadas de IDE |
 | [**GUIA_FULLSTACK_WORKFLOWS.md**](./GUIA_FULLSTACK_WORKFLOWS.md) | Passo a passo por linguagem (Java Spring, React, Mobile, Python, Rust) | Ao iniciar ou configurar projetos em qualquer stack |
 | [**GUIA_LAZYVIM_ANTIGRAVITY.md**](./GUIA_LAZYVIM_ANTIGRAVITY.md) | Integração da IA autônoma com Neovim e Zellij | Para dominar o fluxo de Vibe Coding com agentes |
+| [**GUIA_YAZI_POWERUSER.md**](./GUIA_YAZI_POWERUSER.md) | Gerenciador Yazi terminal, compactação, extração e saltos rápidos | Para dominar navegação ultra-veloz de arquivos e compactação |
 | [**GUIA_ATALHOS_E_KEYBINDS_MESTRE.md**](./GUIA_ATALHOS_E_KEYBINDS_MESTRE.md) | Cheat sheet unificado (Hyprland, Zellij, Yazi, Neovim, Shell) | Consulta rápida para memorizar atalhos |
 
 ---
@@ -56,6 +59,7 @@
 |---|---|---|
 | [**GUIA_MIGRACAO_TOTAL_WINDOWS_LINUX.md**](./GUIA_MIGRACAO_TOTAL_WINDOWS_LINUX.md) | Desapego do Windows, equivalências de apps e KVM Quickemu | Ao planejar a migração definitiva para Linux ou rodar VM |
 | [**GUIA_SETUP_PC.md**](./GUIA_SETUP_PC.md) | Instalação em lote de softwares, debloat e particionamento | Ao formatar um computador novo (Linux ou Windows) |
+| [**GUIA_GAMES_EMULADORES_LUDUSAVI.md**](./GUIA_GAMES_EMULADORES_LUDUSAVI.md) | Emuladores (Switch/PCSX2), pastas de jogos e backup de saves | Para configurar jogatina, mods e sincronização com Google Drive |
 | [**GUIA_GAMING_STREAMING_LINUX.md**](./GUIA_GAMING_STREAMING_LINUX.md) | Jogos FitGirl, Proton-GE, RTX 5060, Vesktop e Áudio IA | Para jogar e fazer streaming em alto nível no Arch + Hyprland |
 | [**GUIA_BACKUP_PRE_FORMATACAO.md**](./GUIA_BACKUP_PRE_FORMATACAO.md) | Coleta de chaves SSH, saves de jogos (Ludusavi) e perfis | Antes de formatar qualquer disco |
 

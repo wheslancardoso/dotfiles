@@ -67,21 +67,55 @@
 
 ---
 
-## 📂 3. Yazi (Explorador de Arquivos no Terminal)
+## 📂 3. Yazi (Explorador de Arquivos Terminal Power-User)
 
-| Tecla | Ação |
+> 📖 **Guia Dedicado**: Confira o [GUIA_YAZI_POWERUSER.md](file:///home/lan/dotfiles/docs/GUIA_YAZI_POWERUSER.md) para todos os detalhes e workflows avançados.
+
+### 📦 Compressão & Extração Instantânea
+| Atalho | Ação |
 |---|---|
-| `h` / `l` | Voltar pasta pai / Entrar na pasta selecionada |
-| `j` / `k` | Rolar para baixo / Rolar para cima |
-| `Space` | Selecionar / desselecionar arquivo |
-| `y` | Copiar arquivo(s) selecionado(s) |
-| `x` | Recortar arquivo(s) |
-| `p` | Colar arquivo(s) no diretório atual |
-| `d` | Enviar arquivo para a Lixeira |
-| `D` | Deletar permanentemente |
+| `c` + `z` | **Compactar para .ZIP** (Rápido e compatível com tudo) |
+| `c` + `7` | **Compactar para .7Z** (Ultra compressão LZMA2) |
+| `c` + `t` | **Compactar para .TAR.GZ** (Linux padrão) |
+| `c` + `c` | **Compactar Personalizado** (Prompt para nome e formato) |
+| `X` *(maiúsculo)* | **Extrair para Subpasta** (Limpo - 1 toque sem espalhar arquivos) |
+| `e` + `s` | **Extrair para Subpasta** (Extract Sub) |
+| `e` + `x` | **Extrair Aqui** (Extract Here) |
+| `<Enter>` | Em arquivos compactados, extrai automaticamente para subpasta! |
+
+### 🚀 Saltos Rápidos no Drive (`/mnt/dados`)
+| Atalho | Destino |
+|---|---|
+| `g` + `i` | `/mnt/dados/00_Inbox` (Downloads & Triagem) |
+| `g` + `p` | `/mnt/dados/01_Pessoal` (Documentos & Finanças) |
+| `g` + `e` | `/mnt/dados/03_Estudos_Carreira` |
+| `g` + `v` | `/mnt/dados/04_Dev` (Códigos & Git) |
+| `g` + `j` | `/mnt/dados/06.4_Games` (Jogos & Emuladores) |
+| `g` + `m` | `/mnt/dados/05_Midias` (Fotos & Vídeos) |
+| `g` + `D` | `/mnt/dados` (Raiz da partição) |
+| `g` + `.` | `~/dotfiles` (Configurações) |
+
+### ⚡ Ações Master & Sistema (`Shift+M`)
+| Atalho | Ação |
+|---|---|
+| `M` + `o` | **Organizar Tudo** (`organizar --all` do Organizador Master) |
+| `M` + `d` | **Doctor Diagnóstico** (`organizar --doctor`) |
+| `M` + `s` | **Backup Saves de Jogos** (`sync-ludusavi.sh backup`) |
+| `M` + `g` | **Abrir Lazygit** na pasta atual |
+| `M` + `t` | **Abrir Terminal** na pasta atual |
+
+### 📋 Copiar Metadados & Operações Básicas
+| Atalho | Ação |
+|---|---|
+| `c` + `p` | Copiar Caminho Completo para a Área de Transferência |
+| `c` + `f` | Copiar Nome do Arquivo |
+| `c` + `d` | Copiar Caminho da Pasta Pai |
+| `Space` | Selecionar / desselecionar arquivo individual |
+| `v` | Seleção visual contínua |
+| `y` / `x` / `p` | Copiar / Recortar / Colar arquivos |
+| `d` / `D` | Enviar para Lixeira / Deletar permanentemente |
 | `a` | Criar novo arquivo (termine com `/` para criar pasta) |
-| `r` | Renomear arquivo |
-| `z` | Busca rápida com **Zoxide** para saltar de pasta |
+| `r` / `R` | Renomear arquivo / Bulk Rename com Neovim |
 | `.` | Alternar exibição de arquivos ocultos (dotfiles) |
 | `q` | Sair do Yazi mantendo o diretório no shell |
 
