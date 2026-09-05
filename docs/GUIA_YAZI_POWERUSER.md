@@ -130,8 +130,14 @@ Operações do sistema acionadas de dentro do Yazi:
 | `M` `d` | **Doctor Diagnóstico** | Roda `organizar --doctor` para verificar mounts, symlinks e integridade. |
 | `M` `s` | **Backup de Saves** | Executa `sync-ludusavi.sh backup` sincronizando todos os saves de jogos para o Google Drive. |
 | `M` `g` | **Abrir Lazygit** | Abre a interface do Lazygit na pasta atual para commits e push rápidos. |
+| `M` `l` | **Enviar via LocalSend** | Dispara os arquivos selecionados direto para o seu celular ou outro PC via AirDrop local! |
 | `M` `t` | **Abrir Terminal** | Abre uma nova janela do terminal exatamente no diretório selecionado. |
 | `<F12>` | **Status / Verificação** | Emite notificação de integridade confirmando que as configurações estão ativas. |
+
+### 🚀 Visualizadores de Alta Velocidade Integrados ao `<Enter>`:
+- **Imagens (PNG, JPG, WebP, GIF)**: Abre em **0.01s** via **`imv`** (controlado por setas, zoom no scroll e Wayland nativo).
+- **Documentos Markdown (`.md`)**: Abre estilizado no terminal via **`glow -p`** (cores Catppuccin e paginação).
+- **PDFs**: Abre no **`zathura`** (renderização instantânea, atalhos Vim `j/k` e modo noturno com `Ctrl+r`).
 
 ---
 

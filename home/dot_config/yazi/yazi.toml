@@ -25,9 +25,18 @@ open = [
 edit = [
 	{ run = '${EDITOR:-vi} "$@"', block = true, desc = "Editar" },
 ]
+image = [
+	{ run = 'imv "$@"', orphan = true, desc = "IMV (Visualizador Rápido Wayland)" },
+	{ run = 'xdg-open "$@"', orphan = true, desc = "Abrir com App Padrão (Loupe)" },
+]
+markdown = [
+	{ run = 'glow -p "$@"', block = true, desc = "Glow (Leitor Estilizado no Terminal)" },
+	{ run = '${EDITOR:-nvim} "$@"', block = true, desc = "Editar no Neovim" },
+	{ run = 'xdg-open "$@"', orphan = true, desc = "Abrir com App Padrão" },
+]
 pdf = [
-	{ run = 'okular "$@"', orphan = true, desc = "Okular (PDF & Anotações)" },
 	{ run = 'zathura "$@"', orphan = true, desc = "Zathura (Vim PDF Rápido)" },
+	{ run = 'okular "$@"', orphan = true, desc = "Okular (PDF & Anotações)" },
 ]
 video = [
 	{ run = 'celluloid "$@"', orphan = true, desc = "Celluloid (MPV Moderno)" },
@@ -35,6 +44,9 @@ video = [
 ]
 office = [
 	{ run = 'onlyoffice-desktopeditors "$@"', orphan = true, desc = "OnlyOffice" },
+]
+share = [
+	{ run = 'localsend "$@" &', orphan = true, desc = "Enviar via LocalSend (AirDrop Celular/PC)" },
 ]
 archive = [
 	{ run = 'bash "$HOME/dotfiles/scripts/yazi-archive.sh" extract-sub %s', block = true, desc = "Extrair para Subpasta (Limpo)" },
@@ -45,8 +57,9 @@ archive = [
 [open]
 rules = [
 	{ mime = "inode/directory", use = [ "open", "edit" ] },
+	{ name = "*.md", use = [ "markdown", "edit", "open" ] },
 	{ mime = "text/*", use = [ "edit", "open" ] },
-	{ mime = "image/*", use = [ "open" ] },
+	{ mime = "image/*", use = [ "image", "open" ] },
 	{ mime = "video/*", use = [ "video", "open" ] },
 	{ mime = "audio/*", use = [ "video", "open" ] },
 	{ mime = "application/pdf", use = [ "pdf", "open" ] },

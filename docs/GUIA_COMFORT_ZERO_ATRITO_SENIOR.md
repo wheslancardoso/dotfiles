@@ -26,7 +26,9 @@
 | `Super + E` | 📂 **Arquivos** | Yazi File Manager em tela dividida (Tiling). |
 | `Super + Shift + E` | 📂 **Arquivos** | Yazi File Manager em janela flutuante no centro da tela. |
 | `Super + Shift + D` | 🪪 **Documentos** | Acesso Rápido flutuante com seus documentos essenciais (CNH, RG, comprovantes). |
-| `Alt + V` / `Super + V` | 📋 **Clipboard** | Abre o CopyQ com histórico de textos copiados, imagens e busca instantânea. |
+| `Super + V` | 📋 **Clipboard Rápido** | Abre o Cliphist no Rofi com busca instantânea (fuzzy search 2ms) para colar rápido. |
+| `Alt + V` | 📋 **Clipboard Avançado** | Abre o CopyQ com abas, snippets fixados, editor de texto e histórico de imagens. |
+| `Super + D` ou `Alt + Espaço` | 🔍 **Spotlight** | Rofi App Launcher ergonômico de uma mão só (busca instantânea de aplicativos). |
 | `Super + H` ou `Super + /`| ❓ **Ajuda** | Cheat Sheet gráfico interativo com todos os atalhos mapeados e busca. |
 
 ---
@@ -97,6 +99,11 @@ Chega de abrir telas pesadas de configurações do sistema:
 - **Downloads sem Janelas**: No navegador, deixe ativado para baixar direto em `~/Downloads`. Como ele é um link simbólico para `/mnt/dados/00_Inbox`, você clica em download e ele baixa em 0 segundos, sem janelas.
 - **File Chooser Flutuante com Yazi**: Quando um site exige escolher arquivo para upload ou "Salvar Como", o Hyprland abre o **Yazi Flutuante** no centro da tela (`yazi-picker.sh`), permitindo navegar, renomear (`r`) e confirmar (`Enter`) em microssegundos.
 - **Drag & Drop do Terminal (`<Ctrl + y>`)**: No Yazi, aperte `<Ctrl + y>` para abrir a caixinha do `ripdrag` e arrastar arquivos direto para o Discord, Telegram ou navegador.
+- **AirDrop Universal com LocalSend (`M l` no Yazi)**: Selecione qualquer arquivo no Yazi, tecle `M l` e o LocalSend abre na hora para transferir para o seu celular (Android/iOS) ou outro PC via Wi-Fi em velocidade máxima.
+- **Visualizadores Ultrarrápidos no Yazi (`<Enter>`)**:
+  - **Imagens**: Abre no **`imv`** em 0.01s (Wayland puro, atalhos de setas e zoom no scroll).
+  - **Markdown (`.md`)**: Abre no **`glow -p`** (terminal estilizado com paginação e cores Catppuccin).
+  - **PDFs**: Abre no **`zathura`** (navegação Vim `j/k`, inversão de cores com `Ctrl+r` e zero travamento).
 - **Auto-CD no Terminal (`y`)**: No Zsh, Bash ou Fish, digite `y`, navegue até a pasta desejada e ao sair com `q`, seu terminal já estará dentro dela!
 
 ---

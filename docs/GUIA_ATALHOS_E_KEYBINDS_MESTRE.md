@@ -13,8 +13,9 @@
 | `Super + Q` | Fechar janela ativa (**Kill**) |
 | `Super + Return` | Abrir terminal (**Ghostty / Kitty / Alacritty**) |
 | `Super + E` | Abrir explorador de arquivos (**Yazi / Thunar**) |
-| `Super + Space` | Abrir menu de aplicativos (**Rofi Launcher**) |
-| `Super + V` | Histórico da área de transferência (**Cliphist / Rofi**) |
+| `Super + D` ou `Alt + Space` | Abrir menu de aplicativos (**Rofi Spotlight**) |
+| `Super + V` | Histórico rápido da área de transferência (**Cliphist / Rofi 2ms**) |
+| `Alt + V` | Gerenciador e histórico avançado com abas e imagens (**CopyQ**) |
 | `Super + F` | Janela em tela cheia (**Fullscreen Toggle**) |
 | `Super + Shift + Space` | Alternar janela flutuante (**Floating Toggle**) |
 | `Super + H / J / K / L` | Mover foco entre janelas (Esquerda, Abaixo, Acima, Direita) |
@@ -34,7 +35,6 @@
 | `Super + Shift + D` | **Upload Rápido de Documentos** (Acesso Rápido - CNH, RG, Comprovantes em janela flutuante) |
 | `Super + Alt + S` | **Sincronização de Saves de Jogos** (Ludusavi Cloud Backup com notificação nativa) |
 | `Super + Shift + M` | Gerenciador de Monitores e Projeção (**nwg-displays**) |
-| `Alt + V` | Gerenciador e histórico da área de transferência (**CopyQ**) |
 | `Super + M` | **Spotify Dropdown Scratchpad** (Desce janela flutuante com blur Catppuccin e esconde ao apertar de novo) |
 | `Super + Ctrl + Space` | Play / Pause do Spotify em segundo plano |
 | `Super + Ctrl + ]` / `[` | Próxima faixa / Faixa anterior do Spotify |

@@ -17,6 +17,7 @@ jack
 lazydocker-bin
 lazysql-bin
 ludusavi-bin
+localsend-bin
 mise-bin
 onlyoffice-bin
 protonup-qt
