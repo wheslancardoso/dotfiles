@@ -14,16 +14,61 @@
 | `Super + Ctrl + ]` / `[` | ⏭️ **Mídia** | Pular para a próxima faixa / Voltar faixa anterior. |
 | `Super + Alt + B` | 🔵 **Bluetooth** | Menu rápido no Rofi para ligar, desligar e conectar fones/controles com 1 clique. |
 | `Super + Alt + W` | 📶 **Wi-Fi** | Menu rápido no Rofi com intensidade do sinal e conexão a redes sem abrir janelas. |
-| `Super + Shift + A` | 🔀 **Áudio** | Alternar na hora entre Caixa de Som e Fone de Ouvido / Headset. |
+| `Super + Alt + A` | 🔀 **Áudio** | Alternar na hora entre Caixa de Som e Fone de Ouvido / Headset. |
+| `Super + Alt + M` | 🎙️ **Microfone** | Silenciar / Ativar o Microfone globalmente (**Mic Mute Toggle**) com OSD. |
+| `Super + Alt + S` | 🎮 **Jogos** | Sincroniza e faz backup na nuvem de todos os seus saves de jogos via Ludusavi. |
+| `Super + Alt + R` | 🎥 **Gravação** | Inicia/para gravação da tela em MP4 de alta qualidade ou GIF animado. |
+| `Super + Shift + S` | ✂️ **Screenshot** | Captura de região com anotações e setas estilo Windows Snipping Tool (Swappy). |
+| `Super + Shift + T` | 🔍 **OCR** | Seleciona qualquer área da tela e copia o texto de imagens/vídeos para o clipboard. |
+| `Super + Shift + P` | 🎨 **Cor** | Conta-gotas (Color Picker): clica em qualquer pixel da tela e copia o código HEX. |
+| `Super + Shift + N` | 🔔 **Notificações**| Central SwayNC com histórico, controle de volume e botão **Não Perturbe (DND)**. |
+| `Super + N` | 🌙 **Luz Noturna** | Ativa/desativa filtro de luz azul quente (Hyprsunset) para conforto visual noturno. |
 | `Super + E` | 📂 **Arquivos** | Yazi File Manager em tela dividida (Tiling). |
 | `Super + Shift + E` | 📂 **Arquivos** | Yazi File Manager em janela flutuante no centro da tela. |
 | `Super + Shift + D` | 🪪 **Documentos** | Acesso Rápido flutuante com seus documentos essenciais (CNH, RG, comprovantes). |
-| `Super + Alt + S` | 🎮 **Jogos** | Sincroniza e faz backup na nuvem de todos os seus saves de jogos via Ludusavi. |
-| `Super + Shift + T` | 🔍 **OCR** | Seleciona qualquer área da tela e copia o texto de imagens/vídeos para o clipboard. |
-| `Super + Shift + P` | 🎨 **Cor** | Conta-gotas (Color Picker): clica em qualquer pixel da tela e copia o código HEX. |
-| `Super + Shift + R` | 🎥 **Gravação** | Inicia/para gravação da tela em MP4 de alta qualidade ou GIF animado. |
-| `Alt + V` | 📋 **Clipboard** | Abre o CopyQ com histórico de textos copiados, imagens e busca instantânea. |
-| `Super + H` | ❓ **Ajuda** | Cheat Sheet gráfico interativo com todos os atalhos mapeados. |
+| `Alt + V` / `Super + V` | 📋 **Clipboard** | Abre o CopyQ com histórico de textos copiados, imagens e busca instantânea. |
+| `Super + H` ou `Super + /`| ❓ **Ajuda** | Cheat Sheet gráfico interativo com todos os atalhos mapeados e busca. |
+
+---
+
+## 🧠 O Modelo Mental Anti-Confusão (A Regra dos 3 Andares)
+
+Para você **nunca se perder nem precisar decorar dezenas de teclas isoladas**, todos os atalhos foram arquitetados em uma hierarquia mnemônica estrita de 3 andares:
+
+```
+Andar 1: SUPER puro               ──> O Dia a Dia de Janelas e Apps Vitais
+Andar 2: SUPER + ALT + [Letra]    ──> Painel de Hardware & Conexões (Mnemônico)
+Andar 3: SUPER + SHIFT + [Letra]  ──> Utilitários Especiais de Tela & Captura
+```
+
+### 🏢 Andar 1 — `SUPER` Puro (Janelas & Apps do Dia a Dia)
+Apenas a tecla Super + a letra principal do app:
+- `Super + Return` = Terminal
+- `Super + E` = Explorador de arquivos (Yazi)
+- `Super + M` = Spotify Dropdown
+- `Super + V` = Clipboard
+- `Super + C` = Calculadora
+- `Super + Q` = Fechar Janela
+
+### ⚙️ Andar 2 — `SUPER + ALT + [Letra]` (Hardware & Conexões)
+Tudo que mexe com conexão de hardware usa **`Super + Alt`** + **a primeira letra do componente**:
+- `Super + Alt + B` = **B**luetooth (Ligar/desligar, bateria e fones)
+- `Super + Alt + W` = **W**i-Fi (Redes e conexão rápida)
+- `Super + Alt + A` = **A**udio Output (Alternar Caixa <-> Fone)
+- `Super + Alt + M` = **M**icrophone Mute (Silenciar mic de qualquer lugar)
+- `Super + Alt + S` = **S**aves de Jogos (Backup em nuvem com Ludusavi)
+- `Super + Alt + R` = **R**ecord (Gravação de tela)
+
+> **💡 Regra de Ouro**: Precisa mexer em qualquer hardware ou conexão? É sempre `Super + Alt` + Primeira Letra! Zero confusão mental.
+
+### 📸 Andar 3 — `SUPER + SHIFT + [Letra]` (Captura & Utilitários Visuais)
+Ações avançadas de tela e ferramentas auxiliares:
+- `Super + Shift + S` = **S**creenshot com ferramenta de corte e setas (Swappy)
+- `Super + Shift + P` = Color **P**icker (Conta-gotas de cor)
+- `Super + Shift + T` = **T**ext OCR (Copiar texto de qualquer imagem/vídeo)
+- `Super + Shift + N` = **N**otificações & Central de Controle (SwayNC)
+- `Super + Shift + G` = **G**ame Mode (Desativa animações para ganho absurdo de FPS)
+- `Super + Shift + D` = **D**ocumentos de Acesso Rápido
 
 ---
 

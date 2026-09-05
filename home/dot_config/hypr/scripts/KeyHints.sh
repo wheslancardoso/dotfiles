@@ -38,6 +38,7 @@ GDK_BACKEND=$BACKEND yad \
 " ALT W" "Wi-Fi Rápido (Conectar redes sem janelas)" "rofi-wifi.sh" \
 " SHIFT R ou  ALT R" "Gravação de Tela (MP4/GIF com áudio)" "screen-record.sh" \
 " SHIFT A ou  ALT A" "Alternar Saída de Som (Caixa <-> Fone)" "audio-switch.sh" \
+" ALT M" "Silenciar/Ativar Microfone (Mic Mute)" "Volume.sh --toggle-mic" \
 " SHIFT T" "Screen OCR (Copiar texto de qualquer imagem)" "ocr-screen.sh" \
 " SHIFT P" "Conta-gotas de Cor Hex direto pro clipboard" "hyprpicker" \
 " C" "Calculadora + Conversor de Moedas ao vivo" "gnome-calculator" \

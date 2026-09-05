@@ -25,10 +25,13 @@
 | `Super + Shift + R` | Gravação de tela em MP4/GIF com áudio (**wf-recorder**) |
 | `Super + Shift + T` | Extração de texto da tela via OCR (**Tesseract**) |
 | `Super + Shift + P` | Conta-gotas / Seletor de cor HEX da tela (**Hyprpicker**) |
-| `Super + Shift + A` | Alternar saída de áudio (Caixas de Som <-> Fone/Headset) |
+| `Super + Shift + A` / `Super + Alt + A` | Alternar saída de áudio (Caixas de Som <-> Fone/Headset) |
+| `Super + Alt + M` | Silenciar / Ativar Microfone globalmente (**Mic Mute Toggle**) |
+| `Super + Alt + B` | **Bluetooth Quick Manager** (Menu Rofi com bateria e conexão rápida) |
+| `Super + Alt + W` | **Wi-Fi Quick Manager** (Menu Rofi com intensidade de sinal `▂▄▆█`) |
 | `Super + C` | Calculadora flutuante com conversão de moedas ao vivo |
 | `Super + Space` | Alternar layout de teclado (US-Intl, PT-BR ABNT2, US-Dev) |
-| `Super + H` | **Cheat Sheet Mestre** com todos os atalhos do sistema (Yad GUI) |
+| `Super + H` ou `Super + /` | **Cheat Sheet Mestre** com todos os atalhos do sistema (KeyHints HUD) |
 | `Super + Shift + D` | **Upload Rápido de Documentos** (Acesso Rápido - CNH, RG, Comprovantes em janela flutuante) |
 | `Super + Alt + S` | **Sincronização de Saves de Jogos** (Ludusavi Cloud Backup com notificação nativa) |
 | `Super + Shift + M` | Gerenciador de Monitores e Projeção (**nwg-displays**) |
@@ -36,6 +39,8 @@
 | `Super + M` | **Spotify Dropdown Scratchpad** (Desce janela flutuante com blur Catppuccin e esconde ao apertar de novo) |
 | `Super + Ctrl + Space` | Play / Pause do Spotify em segundo plano |
 | `Super + Ctrl + ]` / `[` | Próxima faixa / Faixa anterior do Spotify |
+| `Super + Shift + N` | Central de Notificações e Controle (**SwayNC** com Não Perturbe) |
+| `Super + N` | Luz Noturna / Filtro de Luz Azul (**Hyprsunset**) |
 | `Ctrl + Alt + P` | Menu de saída / Desligar / Reiniciar (**Wlogout**) |
 
 
