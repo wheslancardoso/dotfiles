@@ -29,3 +29,6 @@ vesktop-bin
 wallust
 xdg-desktop-portal-termfilechooser-hunkyburrito-git
 ripdrag-git
+spotify
+spicetify-cli
+spotify-player
