@@ -175,10 +175,10 @@ download_video() {
     mkdir -p "$dest"
     cd "$dest"
 
-    # Template inteligente: se for playlist, numera 01_ 02_ etc.
+    # Template inteligente: se for playlist, cria subpasta dedicada e numera 01 - ...
     local output_tpl="%(title)s [%(id)s].%(ext)s"
     if [[ "$url" =~ list= ]]; then
-        output_tpl="%(playlist_index)02d - %(title)s.%(ext)s"
+        output_tpl="%(playlist_title,playlist)s/%(playlist_index)02d - %(title)s.%(ext)s"
     fi
 
     eval yt-dlp \
@@ -214,7 +214,7 @@ download_audio() {
 
     local output_tpl="%(title)s [%(id)s].%(ext)s"
     if [[ "$url" =~ list= ]]; then
-        output_tpl="%(playlist_index)02d - %(title)s.%(ext)s"
+        output_tpl="%(playlist_title,playlist)s/%(playlist_index)02d - %(title)s.%(ext)s"
     fi
 
     eval yt-dlp \
@@ -250,12 +250,15 @@ download_spotify() {
     # Template inteligente de organização:
     # Se for álbum: cria subpasta com nome do Álbum e numera as faixas
     # Se for playlist: cria subpasta com nome da Playlist e numera as faixas
+    # Se for discografia de artista: cria pasta Artista/Álbum/faixas
     # Se for faixa única: salva diretamente na pasta raiz de músicas
     local output_tpl="{artist} - {title}.{output-ext}"
     if [[ "$url" =~ /album/ ]]; then
         output_tpl="{album}/{track-number} - {artist} - {title}.{output-ext}"
     elif [[ "$url" =~ /playlist/ ]]; then
         output_tpl="{playlist}/{track-number} - {artist} - {title}.{output-ext}"
+    elif [[ "$url" =~ /artist/ ]]; then
+        output_tpl="{artist}/{album}/{track-number} - {title}.{output-ext}"
     fi
 
     local bitrate_flag="--bitrate 320k"
