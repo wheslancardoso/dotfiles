@@ -78,10 +78,28 @@ O Hyprland já inicia em segundo plano o daemon [`MusicNotification.sh`](file://
 
 ---
 
-## 🧩 6. Arquivos e Configurações no Dotfiles
+## 📥 6. Download de Músicas, Álbuns e Playlists Offline (`spotDL`)
+
+Quer guardar músicas no seu disco local `/mnt/dados/05_Midias_Design_e_Criacao/Musicas_e_Audios/Downloads` em 320kbps MP3 ou FLAC Lossless com capas oficiais e letras sincronizadas?
+
+O nosso motor [`media-download.sh`](file:///home/lan/dotfiles/scripts/media-download.sh) reconhece URLs do Spotify automaticamente!
+
+* **Via Teclado**: Copie o link e tecle **`SUPER + ALT + D`** (abre seletor de formato MP3/FLAC/M4A).
+* **Via Terminal**: Digite **`dl`** (ou `dl "https://open.spotify.com/playlist/..."`).
+* **Via Yazi**: Navegue até a pasta onde deseja salvar e tecle **`M y`**.
+* **Como os arquivos são organizados**:
+  - Músicas únicas: `{Artista} - {Título}.mp3` + `.lrc` (letras).
+  - Álbuns completos: Cria pasta `{Álbum}/` com faixas numeradas ordenadamente.
+  - Playlists completas: Cria pasta `{Playlist}/` com todas as faixas ordenadas.
+* Para mais detalhes, consulte o [Guia do Media Downloader Universal](file:///home/lan/dotfiles/docs/GUIA_MEDIA_DOWNLOADER_UNIVERSAL.md).
+
+---
+
+## 🧩 7. Arquivos e Configurações no Dotfiles
 
 - [`scripts/setup-spicetify.sh`](file:///home/lan/dotfiles/scripts/setup-spicetify.sh): Instalador e configurador automático do Spicetify.
+- [`scripts/media-download.sh`](file:///home/lan/dotfiles/scripts/media-download.sh): Motor unificado de download com suporte a spotDL e yt-dlp.
 - [`home/dot_config/hypr/scripts/spotify-toggle.sh`](file:///home/lan/dotfiles/home/dot_config/hypr/scripts/spotify-toggle.sh): Runner do scratchpad flutuante para `SUPER + M`.
 - [`home/dot_config/hypr/UserConfigs/WindowRules.conf`](file:///home/lan/dotfiles/home/dot_config/hypr/UserConfigs/WindowRules.conf): Regras de janela para o Spotify (float, center, blur, 72% de tamanho, workspace especial).
 - [`home/dot_config/hypr/UserConfigs/UserKeybinds.conf`](file:///home/lan/dotfiles/home/dot_config/hypr/UserConfigs/UserKeybinds.conf): Mapeamento de `SUPER + M` e controles multimídia globais.
-- [`packages/pacman-aur.txt`](file:///home/lan/dotfiles/packages/pacman-aur.txt): Pacotes `spotify`, `spicetify-cli` e `spotify-player` incluídos.
+- [`packages/pacman-aur.txt`](file:///home/lan/dotfiles/packages/pacman-aur.txt): Pacotes `spotify`, `spicetify-cli`, `spotify-player` e `spotdl` incluídos.

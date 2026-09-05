@@ -52,10 +52,10 @@ GDK_BACKEND=$BACKEND yad \
 " SHIFT E" "Explorador de Arquivos Yazi (Flutuante)" "open-yazi.sh" \
 " SHIFT D" "Upload Rápido de Documentos (CNH, RG, Comprovantes)" "open-acesso-rapido.sh" \
 " ALT S" "Sincronizar Saves de Jogos na Nuvem" "sync-ludusavi.sh" \
-" ALT D" "Download de Vídeo/Áudio da URL (yt-dlp)" "media-download.sh" \
+" ALT D" "Download Vídeo/Spotify (yt-dlp + spotdl)" "media-download.sh" \
 "cleanup" "Faxina Inteligente do Arch (Órfãos/Cache)" "sys-maintenance.sh" \
 "sys-update" "Atualização Completa e Segura do Sistema" "sys-maintenance.sh" \
-"dl [url]" "Download Rápido de Mídia no Terminal" "media-download.sh" \
+"dl [url]" "Download Mídia/Spotify no Terminal" "media-download.sh" \
 "fix-pendrive" "Destravar & Reparar Pen-drive (Terminal)" "fix-pendrive.sh" \
 "fix-suspend" "Blindagem e Diagnóstico de Suspensão" "fix-suspend.sh" \
 "fix-pacman" "Destravar db.lck do Pacman" "fix-pacman.sh" \
@@ -165,5 +165,8 @@ GDK_BACKEND=$BACKEND yad \
 "." "Mostrar/Ocultar arquivos ocultos" "(Utilitários)" \
 "v" "Seleção visual (como no Vim)" "(Utilitários)" \
 "Space" "Selecionar arquivo individual" "(Utilitários)" \
+"M y" "Baixar Mídia/Spotify para pasta atual" "(Yazi Power-User)" \
+"M l" "Enviar via LocalSend (AirDrop P2P)" "(Yazi Power-User)" \
+"Ctrl + y" "Arrastar arquivo (Drag & Drop p/ apps)" "(ripdrag)" \
 "" "" "" \
 "More tips:" "https://github.com/JaKooLit/Hyprland-Dots/wiki" ""

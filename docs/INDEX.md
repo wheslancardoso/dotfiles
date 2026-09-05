@@ -11,6 +11,7 @@
 ~/dotfiles/docs/
 ├── 💻 DESENVOLVIMENTO & POWER USER
 │   ├── [GUIA_COMFORT_ZERO_ATRITO_SENIOR.md](./GUIA_COMFORT_ZERO_ATRITO_SENIOR.md) # 🧘 Setup Senior: Zero atritos, Bluetooth/Wi-Fi, Spotify e Manutenção
+│   ├── [GUIA_MEDIA_DOWNLOADER_UNIVERSAL.md](./GUIA_MEDIA_DOWNLOADER_UNIVERSAL.md) # 📥 Downloader Universal: YouTube, Spotify, TikTok, 1800+ sites e spotDL
 │   ├── [GUIA_POWERUSER_DEV.md](./GUIA_POWERUSER_DEV.md)           # Zero atritos, Dadbod SQL, Kulala REST, Surround
 │   ├── [GUIA_FULLSTACK_WORKFLOWS.md](./GUIA_FULLSTACK_WORKFLOWS.md) # Playbooks práticos (Java, React, Python, Mobile, Go)
 │   ├── [GUIA_LAZYVIM_ANTIGRAVITY.md](./GUIA_LAZYVIM_ANTIGRAVITY.md) # Vibe Coding (Neovim + Antigravity CLI + Zellij)
