@@ -1,0 +1,53 @@
+# ==============================================================================
+# 🛡️ BLINDAGEM DE NUVEM — REGRAS DE EXCLUSÃO PARA DESENVOLVIMENTO
+# ==============================================================================
+# Evita que pastas pesadas com milhares de micro-arquivos (node_modules, venvs, builds)
+# saturem o Google Drive, Rclone, Insync ou sincronizadores de nuvem.
+# ==============================================================================
+
+# JavaScript / TypeScript / Node
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/
+.next/
+.nuxt/
+.astro/
+.output/
+dist/
+build/
+coverage/
+
+# Python
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Rust / Go / C++
+target/
+.cargo/
+bin/
+obj/
+
+# Mobile / Android / iOS
+.gradle/
+.idea/
+captures/
+*.apk
+*.aab
+Pods/
+
+# Testes & Logs
+test-results/
+playwright-report/
+*.log
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db

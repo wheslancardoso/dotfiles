@@ -3,6 +3,8 @@ Módulo de Monitoramento Contínuo em Tempo Real (Watcher Daemon).
 Observa diretórios (ex: 00_Inbox_Triagem ou Downloads) e organiza novos arquivos automaticamente.
 """
 
+import shutil
+import subprocess
 import time
 from pathlib import Path
 from typing import Callable, Dict, Optional, Set, Tuple
@@ -10,6 +12,20 @@ from typing import Callable, Dict, Optional, Set, Tuple
 from .core import FileOrganizerEngine
 from .renamer import AutoNamer
 from .utils import Colors, log_error, log_info, log_success, log_warning
+
+
+def send_desktop_notification(title: str, message: str) -> None:
+    """Dispara notificação de desktop não-bloqueante no Linux/Wayland se notify-send existir."""
+    if shutil.which("notify-send"):
+        try:
+            subprocess.run(
+                ["notify-send", "-a", "Organizador Master", "-i", "folder-download", title, message],
+                check=False,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+        except Exception:
+            pass
 
 
 class DirectoryWatcher:
@@ -77,9 +93,14 @@ class DirectoryWatcher:
         # 2. Classifica e move para a taxonomia mestre
         dest_dir = self.engine.classify_file(file_path)
         if dest_dir:
-            success, _ = self.engine.move_item(file_path, dest_dir)
+            orig_name = file_path.name
+            success, final_path = self.engine.move_item(file_path, dest_dir)
             if success:
-                log_success(f"Auto-Organizado: {file_path.name} ➔ {dest_dir.name}")
+                log_success(f"Auto-Organizado: {orig_name} ➔ {dest_dir.name}")
+                send_desktop_notification(
+                    "📦 Organizador Master",
+                    f"{orig_name}\n➔ {dest_dir.name}",
+                )
                 return True
 
         return False

@@ -145,6 +145,7 @@ setup_services() {
         "pipewire-pulse.service"
         "wireplumber.service"
         "xdg-user-dirs.service"
+        "organizador-watcher.service"
     )
 
     for svc in "${usr_services[@]}"; do

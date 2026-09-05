@@ -1,0 +1,14 @@
+[Unit]
+Description=Organizador Master — Auto Watcher & Triagem em Tempo Real
+After=default.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 %h/dotfiles/scripts/organizador/main.py --watch %h/downloads
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target
