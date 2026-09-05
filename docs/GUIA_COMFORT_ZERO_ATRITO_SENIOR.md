@@ -27,8 +27,7 @@
 | `Super + Shift + E` | 📂 **Arquivos** | Yazi File Manager em janela flutuante no centro da tela. |
 | `Super + Shift + D` | 🪪 **Documentos** | Acesso Rápido flutuante com seus documentos essenciais (CNH, RG, comprovantes). |
 | `Super + V` | 📋 **Clipboard Rápido** | Abre o Cliphist no Rofi com busca instantânea (fuzzy search 2ms) para colar rápido. |
-| `Alt + V` | 📋 **Clipboard Avançado** | Abre o CopyQ com abas, snippets fixados, editor de texto e histórico de imagens. |
-| `Super + D` ou `Alt + Espaço` | 🔍 **Spotlight** | Rofi App Launcher ergonômico de uma mão só (busca instantânea de aplicativos). |
+| `Super + D` | 🚀 **Launcher** | Rofi App Launcher oficial (busca instantânea de aplicativos). |
 | `Super + H` ou `Super + /`| ❓ **Ajuda** | Cheat Sheet gráfico interativo com todos os atalhos mapeados e busca. |
 
 ---

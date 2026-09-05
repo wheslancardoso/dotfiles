@@ -67,8 +67,7 @@ GDK_BACKEND=$BACKEND yad \
 " enter" "Abrir Terminal" "(kitty)" \
 " SHIFT enter" "DropDown Terminal Alternativo" " Q para fechar" \
 " B" "Abrir Navegador Web" "(Navegador Padrão)" \
-" A" "Desktop Overview" "(Overview de Janelas)" \
-" D ou ALT SPACE" "Menu de Aplicativos (Spotlight)" "(rofi-wayland)" \
+" D" "Menu de Aplicativos (Launcher)" "(rofi-wayland)" \
 " V" "Histórico Rápido de Clipboard (Fuzzy 2ms)" "ClipManager.sh" \
 "ALT V" "Painel Avançado de Clipboard / Snippets" "copyq toggle" \
 " S" "Busca no Google via Rofi" "(rofi)" \

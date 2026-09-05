@@ -13,7 +13,7 @@
 | `Super + Q` | Fechar janela ativa (**Kill**) |
 | `Super + Return` | Abrir terminal (**Ghostty / Kitty / Alacritty**) |
 | `Super + E` | Abrir explorador de arquivos (**Yazi / Thunar**) |
-| `Super + D` ou `Alt + Space` | Abrir menu de aplicativos (**Rofi Spotlight**) |
+| `Super + D` | Abrir menu de aplicativos (**Rofi Launcher**) |
 | `Super + V` | Histórico rápido da área de transferência (**Cliphist / Rofi 2ms**) |
 | `Alt + V` | Gerenciador e histórico avançado com abas e imagens (**CopyQ**) |
 | `Super + F` | Janela em tela cheia (**Fullscreen Toggle**) |
