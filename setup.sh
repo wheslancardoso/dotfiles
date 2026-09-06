@@ -235,8 +235,46 @@ setup_keyring() {
             echo "--password-store=gnome-libsecret" >> "$HOME/.config/$flag_file"
         fi
     done
-
     ok "GNOME Keyring blindado: credenciais de IDEs, navegadores e Git salvas sem popups!"
+}
+
+# 5.2. Configurar Git & Credenciais de Forma Segura (Sem vazar tokens em repositórios públicos)
+setup_git() {
+    info "Configurando Git e credenciais de forma segura..."
+    git config --global user.name "wheslancardoso"
+    git config --global user.email "wheslancardoso1@gmail.com"
+    git config --global init.defaultBranch main
+    git config --global credential.helper store
+    git config --global core.autocrlf input
+
+    # Verifica se já existe ~/.git-credentials
+    if [ -f "$HOME/.git-credentials" ] && grep -q "github.com" "$HOME/.git-credentials"; then
+        ok "Credenciais do GitHub já configuradas localmente em ~/.git-credentials."
+    else
+        # Se fornecido por variável de ambiente GITHUB_TOKEN ou se o usuário quiser inserir interativamente
+        local token="${GITHUB_TOKEN:-}"
+        if [ -z "$token" ] && [ -t 0 ]; then
+            echo -ne "${BLUE}[INFO]${NC} Deseja configurar seu GitHub Personal Access Token (PAT) agora? [s/N]: "
+            read -r resp
+            if [[ "$resp" =~ ^[Ss]$ ]]; then
+                echo -ne "Cole seu token do GitHub (não será exibido no terminal): "
+                read -rs token
+                echo ""
+            fi
+        fi
+
+        if [ -n "$token" ]; then
+            echo "https://wheslancardoso:${token}@github.com" > "$HOME/.git-credentials"
+            chmod 600 "$HOME/.git-credentials"
+            ok "Token do GitHub configurado em ~/.git-credentials (permissão 600 estrita)."
+            if command -v gh &>/dev/null; then
+                echo "$token" | gh auth login --with-token 2>/dev/null && ok "GitHub CLI (gh) autenticado com sucesso!" || true
+            fi
+        else
+            info "Token do GitHub não informado no momento. Pode ser configurado quando desejar."
+        fi
+    fi
+    ok "Git configurado para wheslancardoso."
 }
 
 # 6. Configurar Shell (ZSH)
@@ -571,6 +609,7 @@ install_packages
 setup_groups
 setup_services
 setup_keyring
+setup_git
 apply_dotfiles
 setup_lowercase_dirs
 setup_shell
