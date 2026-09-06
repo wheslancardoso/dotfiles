@@ -103,8 +103,8 @@ prepend_fetchers = [
 ]
 prepend_previewers = [
 	# 📝 Preview de Markdown Renderizado no Estilo Glow Catppuccin
-	{ url = "*.md", run = "piper -- glow -s dark -w $2 '$1'" },
+	{ url = "*.md", run = 'piper -- CLICOLOR_FORCE=1 glow -w=$w -s=dark "$1"' },
 	# 🌐 Preview de HTML Renderizado via w3m
-	{ url = "*.{html,htm}", run = "piper -- w3m -dump -T text/html -cols $2 '$1'" },
+	{ url = "*.{html,htm}", run = 'piper -- w3m -dump -T text/html -cols $w "$1"' },
 ]
 
