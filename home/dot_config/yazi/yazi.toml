@@ -60,6 +60,11 @@ archive = [
 	{ run = 'bash "$HOME/dotfiles/scripts/yazi-archive.sh" extract-here %s', block = true, desc = "Extrair Aqui" },
 	{ run = 'xdg-open %s1', orphan = true, desc = "Abrir com Gerenciador Padrão" },
 ]
+html = [
+	{ run = 'brave %s', orphan = true, desc = "Brave Browser" },
+	{ run = '${EDITOR:-nvim} %s', block = true, desc = "Editar no Neovim" },
+	{ run = 'xdg-open %s1', orphan = true, desc = "Abrir com Navegador Padrão" },
+]
 
 [open]
 rules = [
@@ -67,6 +72,9 @@ rules = [
 	{ mime = "text/markdown", use = [ "markdown", "edit", "open" ] },
 	{ url = "*.md", use = [ "markdown", "edit", "open" ] },
 	{ url = "**/*.md", use = [ "markdown", "edit", "open" ] },
+	{ mime = "text/html", use = [ "html", "edit", "open" ] },
+	{ url = "*.{html,htm}", use = [ "html", "edit", "open" ] },
+	{ url = "**/*.{html,htm}", use = [ "html", "edit", "open" ] },
 	{ mime = "text/*", use = [ "edit", "open" ] },
 	{ mime = "image/*", use = [ "image", "open" ] },
 	{ mime = "video/*", use = [ "video", "open" ] },
@@ -88,13 +96,15 @@ rules = [
 	{ url = "**/*.{zip,rar,7z,tar,tar.gz,tgz,tar.bz2,tbz2,tar.xz,txz,gz,xz,zst,apk,iso}", use = [ "archive", "open" ] },
 ]
 
-
-[flavor]
-use = "catppuccin-mocha"
-
 [plugin]
 prepend_fetchers = [
 	{ id = "git", url = "*", run = "git", prio = "normal", group = "git" },
 	{ id = "git", url = "*/", run = "git", prio = "normal", group = "git" },
+]
+prepend_previewers = [
+	# 📝 Preview de Markdown Renderizado no Estilo Glow Catppuccin
+	{ url = "*.md", run = "piper -- glow -s dark -w $2 '$1'" },
+	# 🌐 Preview de HTML Renderizado via w3m
+	{ url = "*.{html,htm}", run = "piper -- w3m -dump -T text/html -cols $2 '$1'" },
 ]
 

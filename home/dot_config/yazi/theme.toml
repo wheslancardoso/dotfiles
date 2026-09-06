@@ -1,5 +1,9 @@
 # vim:fileencoding=utf-8:foldmethod=marker
 
+[flavor]
+dark = "catppuccin-mocha"
+light = "catppuccin-mocha"
+
 # : Manager {{{
 
 [mgr]
@@ -186,15 +190,27 @@ dirs = [
 	{ name = ".github", text = "", fg = "#89b4fa" },
 	{ name = ".npm", text = "", fg = "#89b4fa" },
 	{ name = "Desktop", text = "", fg = "#94e2d5" },
+	{ name = "desktop", text = "", fg = "#94e2d5" },
 	{ name = "Development", text = "", fg = "#94e2d5" },
+	{ name = "development", text = "", fg = "#94e2d5" },
 	{ name = "Documents", text = "", fg = "#94e2d5" },
+	{ name = "documents", text = "", fg = "#94e2d5" },
 	{ name = "Downloads", text = "", fg = "#94e2d5" },
+	{ name = "downloads", text = "", fg = "#94e2d5" },
 	{ name = "Library", text = "", fg = "#94e2d5" },
 	{ name = "Movies", text = "", fg = "#94e2d5" },
+	{ name = "movies", text = "", fg = "#94e2d5" },
 	{ name = "Music", text = "", fg = "#94e2d5" },
+	{ name = "music", text = "", fg = "#94e2d5" },
 	{ name = "Pictures", text = "", fg = "#94e2d5" },
+	{ name = "pictures", text = "", fg = "#94e2d5" },
 	{ name = "Public", text = "", fg = "#94e2d5" },
+	{ name = "public", text = "", fg = "#94e2d5" },
+	{ name = "Templates", text = "", fg = "#94e2d5" },
+	{ name = "templates", text = "", fg = "#94e2d5" },
 	{ name = "Videos", text = "", fg = "#94e2d5" },
+	{ name = "videos", text = "", fg = "#94e2d5" },
+	{ name = "dotfiles", text = "", fg = "#cba6f7" },
 ]
 conds = [
 	# Special files
