@@ -90,8 +90,8 @@ COMMUNITY_EXT_URL="https://raw.githubusercontent.com/spicetify/spicetify-marketp
 # Adblock oficial da comunidade Spicetify
 curl -sSL "https://raw.githubusercontent.com/spicetify/spicetify-cli/master/jsHelper/adblock.js" -o "$EXTENSIONS_DIR/adblock.js" 2>/dev/null || true
 
-# 7. Configura o Spicetify com o tema e extensões
-echo -e "${GREEN}[*] Injetando tema Catppuccin Mocha e extensões...${NC}"
+# 7. Configura o Spicetify com o tema e extensões Vim
+echo -e "${GREEN}[*] Injetando tema Catppuccin Mocha e extensões Vimium (keyboardShortcut)...${NC}"
 spicetify config \
     current_theme catppuccin \
     color_scheme mocha \
@@ -100,8 +100,8 @@ spicetify config \
     overwrite_assets 1 \
     inject_theme_js 1 || true
 
-# Ativa extensões
-spicetify config extensions adblock.js || true
+# Ativa extensões: Adblock + Navegação Vim/Vimium nativa
+spicetify config extensions adblock.js keyboardShortcut.js || true
 
 # 8. Aplica tudo
 echo -e "${GREEN}[*] Compilando e aplicando customizações...${NC}"
@@ -109,11 +109,15 @@ spicetify apply || true
 
 echo -e ""
 echo -e "${CYAN}====================================================${NC}"
-echo -e "${GREEN}✨ SPICETIFY INSTALADO COM SUCESSO!${NC}"
+echo -e "${GREEN}✨ SPICETIFY COM ATALHOS VIM INSTALADO COM SUCESSO!${NC}"
 echo -e "${CYAN}====================================================${NC}"
 echo -e "Use ${YELLOW}SUPER + M${NC} para abrir o Spotify no Dropdown Scratchpad!"
-echo -e "Ele já vem com:"
-echo -e "  - ${GREEN}Tema Catppuccin Mocha${NC} nativo"
-echo -e "  - ${GREEN}Adblock ativado${NC} (zero propagandas de áudio)"
-echo -e "  - ${GREEN}Janela flutuante com blur e cantos arredondados${NC}"
+echo -e "Navegação Estilo Vim / Vimium ativa:"
+echo -e "  - ${GREEN}f${NC}             : Ativa modo Vimium (hints amarelos para clicar com o teclado)"
+echo -e "  - ${GREEN}/${NC}             : Foca instantaneamente na barra de busca"
+echo -e "  - ${GREEN}j / k${NC}         : Scroll suave para baixo e para cima"
+echo -e "  - ${GREEN}g / G${NC}         : Ir para o topo / final da playlist"
+echo -e "  - ${GREEN}Ctrl + Tab${NC}    : Alterna itens e playlists na barra lateral"
+echo -e "  - ${GREEN}Adblock${NC}       : Zero anúncios de áudio e sem banners"
+echo -e "  - ${GREEN}Tema${NC}          : Catppuccin Mocha nativo"
 echo -e ""
