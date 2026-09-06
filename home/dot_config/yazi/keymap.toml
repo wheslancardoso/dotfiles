@@ -43,6 +43,7 @@ prepend_keymap = [
 	{ on = [ "g", "v" ], run = "cd /mnt/dados/04_Dev", desc = "Ir para 04_Dev (Projetos/Git)" },
 	{ on = [ "g", "j" ], run = "cd /mnt/dados/06.4_Games", desc = "Ir para 06.4_Games (Jogos & Emuladores)" },
 	{ on = [ "g", "m" ], run = "cd /mnt/dados/05_Midias", desc = "Ir para 05_Midias" },
+	{ on = [ "g", "u" ], run = "cd /run/media", desc = "Ir para Dispositivos USB / Pen-drives" },
 	{ on = [ "g", "D" ], run = "cd /mnt/dados", desc = "Ir para Raiz /mnt/dados" },
 	{ on = [ "g", "G" ], run = "cd ~/gdrive", desc = "Ir para Google Drive Virtual (5 TB)" },
 	{ on = [ "g", "." ], run = "cd ~/dotfiles", desc = "Ir para ~/dotfiles" },
@@ -52,6 +53,7 @@ prepend_keymap = [
 	# --------------------------------------------------------------------------
 	{ on = [ "M", "o" ], run = 'shell "organizar --all" --block', desc = "Organizar Downloads / Inbox Agora" },
 	{ on = [ "M", "d" ], run = 'shell "organizar --doctor" --block', desc = "Diagnóstico do Sistema (Doctor)" },
+	{ on = [ "M", "u" ], run = 'shell "bash $HOME/dotfiles/scripts/fix-pendrive.sh" --block', desc = "Destravar / Reparar Pen-drive (NTFS/FAT/exFAT)" },
 	{ on = [ "M", "s" ], run = 'shell "bash $HOME/dotfiles/scripts/sync-ludusavi.sh backup" --block', desc = "Backup Saves Jogos (Ludusavi)" },
 	{ on = [ "M", "G" ], run = 'shell "bash $HOME/dotfiles/scripts/gdrive-mount.sh toggle" --block', desc = "Conectar / Desconectar Google Drive 5TB" },
 	{ on = [ "M", "g" ], run = 'shell "lazygit" --block', desc = "Abrir Lazygit nesta Pasta" },
