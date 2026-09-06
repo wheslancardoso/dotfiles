@@ -32,8 +32,8 @@ GDK_BACKEND=$BACKEND yad \
 "ESC" "Fechar este guia" "Sair" \
 " = " "Tecla SUPER (Tecla Windows)" "(SUPER / MOD)" \
 " SHIFT H ou  /" "Abrir este Cheat Sheet Completo" "KeyHints.sh" \
-" SHIFT K" "Buscar Atalhos Interativamente" "(Pesquisar atalhos no rofi)" \
-" SHIFT E" "Yazi Flutuante Centralizado" "open-yazi.sh" \
+" E" "Explorador de Arquivos Yazi (Tiling Padrão)" "open-yazi-tiled.sh" \
+" SHIFT E" "Yazi Flutuante Compacto (Diálogo 50%)" "open-yazi.sh" \
 " CTRL ," "Menu de Configurações KooL Hyprland" "Kool_Quick_Settings.sh" \
 "" "" "" \
 "── 🚀 ATALHOS ESSENCIAIS E SISTEMA ──" "── HYPRLAND CORE ──" "────────────────────────" \
@@ -100,8 +100,8 @@ GDK_BACKEND=$BACKEND yad \
 " ALT scroll mouse" "Zoom do Desktop / Lupa de Acessibilidade" "Desktop Magnifier" \
 "" "" "" \
 "── 📂 YAZI: EXPLORADOR DE ARQUIVOS ──" "── CONTROLES E NAVEGAÇÃO ──" "────────────────────────" \
-" E" "Abrir Yazi (Modo Tiling / Ladrilhado)" "open-yazi-tiled.sh" \
-" SHIFT E" "Abrir Yazi (Janela Flutuante Centralizada)" "open-yazi.sh" \
+" E" "Abrir Yazi (Modo Tiling / Ladrilhado Padrão)" "open-yazi-tiled.sh" \
+" SHIFT E" "Abrir Yazi (Janela Flutuante Compacta 50%)" "open-yazi.sh" \
 "h / j / k / l" "Navegar (Voltar Pasta, Baixo, Cima, Entrar)" "Navegação Vim" \
 "Enter ou l" "Abrir Arquivo / Entrar Inteligente" "smart-enter" \
 "Space" "Selecionar / Deselecionar Arquivo Individual" "Toggle Select" \
