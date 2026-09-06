@@ -79,7 +79,6 @@ fastfetch
 fd
 ffmpeg
 ffmpegthumbnailer
-firefox
 flatpak
 flameshot
 fsarchiver

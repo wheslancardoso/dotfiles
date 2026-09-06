@@ -228,9 +228,9 @@ setup_keyring() {
         echo "login" > "$HOME/.local/share/keyrings/default"
     fi
 
-    # Configurar flags para Chromium / Electron / VS Code / Antigravity
+    # Configurar flags para Chromium / Brave / Electron / VS Code / Antigravity
     mkdir -p "$HOME/.config"
-    for flag_file in electron-flags.conf chrome-flags.conf chromium-flags.conf code-flags.conf; do
+    for flag_file in electron-flags.conf chrome-flags.conf chromium-flags.conf code-flags.conf brave-flags.conf; do
         if [ ! -f "$HOME/.config/$flag_file" ] || ! grep -q "password-store" "$HOME/.config/$flag_file" 2>/dev/null; then
             echo "--password-store=gnome-libsecret" >> "$HOME/.config/$flag_file"
         fi
@@ -371,6 +371,12 @@ setup_extras() {
     if command -v onlyoffice-desktopeditors &>/dev/null; then
         xdg-mime default onlyoffice-desktopeditors.desktop application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document application/vnd.ms-excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet application/vnd.ms-powerpoint application/vnd.openxmlformats-officedocument.presentationml.presentation
     fi
+
+    # Configurar Navegador Padrão (Brave Browser prioritário)
+    info "Configurando Brave Browser como navegador padrão do sistema..."
+    xdg-settings set default-web-browser brave-browser.desktop 2>/dev/null || true
+    xdg-mime default brave-browser.desktop text/html x-scheme-handler/http x-scheme-handler/https x-scheme-handler/about x-scheme-handler/unknown 2>/dev/null || true
+
     ok "Associações padrão configuradas."
 }
 
