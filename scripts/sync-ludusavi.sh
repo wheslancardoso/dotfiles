@@ -1,0 +1,1 @@
+/home/lan/dotfiles/home/dot_config/hypr/UserScripts/sync-ludusavi.sh

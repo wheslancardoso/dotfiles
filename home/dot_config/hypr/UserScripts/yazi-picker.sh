@@ -54,10 +54,10 @@ fi
 yazi_args+=("$path")
 
 # Executa o terminal preferido
-if command -v alacritty &>/dev/null; then
-    alacritty --class yazi_picker,yazi_picker --title "yazi-float" -e yazi "${yazi_args[@]}" || true
-elif command -v kitty &>/dev/null; then
+if command -v kitty &>/dev/null; then
     kitty --class yazi_picker --title "yazi-float" -e yazi "${yazi_args[@]}" || true
+elif command -v alacritty &>/dev/null; then
+    alacritty --class yazi_picker,yazi_picker --title "yazi-float" -e yazi "${yazi_args[@]}" || true
 elif command -v ghostty &>/dev/null; then
     ghostty --class=yazi_picker --title="yazi-float" -e yazi "${yazi_args[@]}" || true
 else
