@@ -132,6 +132,65 @@ is_gallery_domain() {
     return 1
 }
 
+is_magnet_or_torrent() {
+    local url="$1"
+    if [[ "$url" =~ ^magnet:\? ]] || [[ "$url" =~ \.torrent($|\?) ]]; then
+        return 0
+    fi
+    return 1
+}
+
+is_direct_download_file() {
+    local url="$1"
+    local pattern="\.(iso|zip|tar\.gz|tar\.xz|tar\.zst|7z|rar|exe|msi|dmg|pkg|deb|rpm|bin|apk)($|\?)"
+    if echo "$url" | grep -qiE "$pattern"; then
+        return 0
+    fi
+    return 1
+}
+
+download_torrent_or_magnet() {
+    local url="$1"
+    local dest_dir="${2:-$DEFAULT_DEST_VIDEO}"
+    mkdir -p "$dest_dir"
+    echo -e "${PEACH}🧲 Baixando via Torrent/Magnet com Aria2c (P2P Multi-peer)...${NC}"
+    if command -v aria2c >/dev/null 2>&1; then
+        aria2c --dir="$dest_dir" \
+            --seed-time=0 \
+            --max-connection-per-server=16 \
+            --split=16 \
+            --min-split-size=1M \
+            --summary-interval=5 \
+            "$url"
+        notify_completion "Torrent / Magnet Baixado" "$dest_dir"
+    else
+        echo -e "${RED}❌ aria2c não encontrado para download de torrents.${NC}"
+        exit 1
+    fi
+}
+
+download_direct_file() {
+    local url="$1"
+    local dest_dir="${2:-$DEFAULT_DEST_VIDEO}"
+    mkdir -p "$dest_dir"
+    echo -e "${TEAL}🚀 Acelerando download de arquivo direto com Aria2c (16 conexões simultâneas)...${NC}"
+    if command -v aria2c >/dev/null 2>&1; then
+        aria2c --dir="$dest_dir" \
+            --continue=true \
+            --max-connection-per-server=16 \
+            --split=16 \
+            --min-split-size=1M \
+            --summary-interval=3 \
+            "$url"
+        notify_completion "Arquivo Direto Baixado" "$dest_dir"
+    else
+        echo -e "${YELLOW}Aria2c não encontrado, baixando via curl...${NC}"
+        curl -C - -L -O --output-dir "$dest_dir" "$url"
+        notify_completion "Arquivo Direto Baixado" "$dest_dir"
+    fi
+}
+
+
 get_downloader_args() {
     if command -v aria2c >/dev/null 2>&1; then
         echo "--downloader aria2c --downloader-args 'aria2c:-c -j 16 -x 16 -s 16 -k 1M --quiet=true'"
@@ -984,7 +1043,11 @@ main() {
             mkdir -p "$dest_v" "$dest_a" "$dest_i"
         fi
 
-        if [[ "$target_url" =~ (open\.spotify\.com|spotify:) ]]; then
+        if is_magnet_or_torrent "$target_url"; then
+            download_torrent_or_magnet "$target_url" "$dest_v"
+        elif is_direct_download_file "$target_url"; then
+            download_direct_file "$target_url" "$dest_v"
+        elif [[ "$target_url" =~ (open\.spotify\.com|spotify:) ]]; then
             download_spotify "$target_url" "mp3" "$dest_a" "cli"
         elif [ "$direct_action" == "gallery" ] || is_gallery_domain "$target_url"; then
             download_gallery "$target_url" "$dest_i"
@@ -993,6 +1056,7 @@ main() {
         else
             download_video "$target_url" "best" "$dest_v" "$CUSTOM_CLIP"
         fi
+
     else
         # Caso padrão (dl, dl <url>, ou Yazi M y): abre o menu interativo com o banner e opções
         run_cli_mode "$target_url"
