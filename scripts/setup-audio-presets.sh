@@ -40,12 +40,18 @@ for preset in \
 done
 
 echo -e "\n${GREEN}${BOLD}✔ Presets de Áudio e Graves instalados com sucesso em ${EE_DIR}!${NC}\n"
+
+# Ativa imediatamente o preset padrão ideal para Hip-Hop
+if command -v easyeffects >/dev/null 2>&1; then
+    echo -e "${GREEN}[*] Ativando 'Bass Enhancing + Perfect EQ' como preset padrão de inicialização...${NC}"
+    easyeffects -l "Bass Enhancing + Perfect EQ" 2>/dev/null || true
+fi
+
 echo -e "${BOLD}Como usar no EasyEffects:${NC}"
-echo -e "  1. Abra o EasyEffects: tecle ${BLUE}Super + D${NC} e busque por 'EasyEffects'"
-echo -e "  2. Na aba ${BOLD}Presets${NC} (canto superior esquerdo), selecione ${GREEN}Bass Enhancing + Perfect EQ${NC}"
-echo -e "  3. Clique em ${BOLD}Load${NC} (Carregar) e sinta os graves imediatos!"
-echo -e "  4. (Opcional) Marque a caixa de ${BOLD}Autoload${NC} para carregar automaticamente ao plugar seu fone."
+echo -e "  - Preset Padrão Ativo: ${GREEN}Bass Enhancing + Perfect EQ${NC} (Hip-Hop & Graves Nítidos)"
+echo -e "  - Chavear via Terminal: digite ${BLUE}bass${NC} (Hip-Hop), ${BLUE}bass-max${NC} (808 extremo) ou ${BLUE}dolby${NC}"
+echo -e "  - Chavear via Teclado: pressione ${YELLOW}SUPER + ALT + A${NC} para o menu Rofi"
 
 if command -v notify-send >/dev/null 2>&1; then
-    notify-send -u low -i audio-volume-high "EasyEffects Presets" "Presets de Grave e Dolby Atmos prontos para uso!" || true
+    notify-send -u low -i audio-volume-high "EasyEffects Presets" "Preset Bass Enhancing (Hip-Hop Mode) ativado como padrão!" || true
 fi
