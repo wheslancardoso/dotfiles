@@ -77,8 +77,9 @@ GDK_BACKEND=$BACKEND yad \
 "── 🪟 NAVEGAÇÃO E JANELAS ──" "── VIM KEYS E MULTITAREFA ──" "────────────────────────" \
 " H / J / K / L" "Mover FOCO entre Janelas (Esq, Baixo, Cima, Dir)" "movefocus l/d/u/r" \
 " CTRL H / J / K / L" "Mover POSIÇÃO da Janela no Grid Tiling" "movewindow l/d/u/r" \
-" ALT H / J / K / L" "Redimensionar Tamanho da Janela Ativa" "resizeactive" \
-"ALT Tab / ALT SHIFT Tab" "Alternar Janelas Instantaneamente (0ms)" "cyclenext" \
+" R" "Modo Redimensionamento Interativo (H/J/K/L ou Setas)" "submap resize" \
+" ALT H / J / K / L" "Redimensionar Tamanho Rápido sem Sair" "resizeactive" \
+"ALT Tab" "Voltar para o Último Workspace Visitado (Back-and-Forth)" "workspace previous" \
 " Tab" "Seletor Visual de Janelas com Miniaturas" "Rofi Window Switcher" \
 " 1 .. 9" "Mudar para Área de Trabalho (Workspace) 1 a 9" "workspace 1..9" \
 " SHIFT 1 .. 9" "Mover Janela Ativa para Área de Trabalho 1 a 9" "movetoworkspace 1..9" \
@@ -86,6 +87,7 @@ GDK_BACKEND=$BACKEND yad \
 " + Botão Esquerdo" "Arrastar para Mover Qualquer Janela" "movewindow (mouse)" \
 " + Botão Direito" "Arrastar para Redimensionar Qualquer Janela" "resizewindow (mouse)" \
 " + Botão Meio" "Alternar Janela entre Flutuante e Tiling" "togglefloating (mouse)" \
+"Borda da Janela (Mouse)" "Área de 20px nas Bordas para Redimensionar" "resize_on_border" \
 " ALT scroll mouse" "Zoom do Desktop / Lupa de Acessibilidade" "Desktop Magnifier" \
 "" "" "" \
 "── 📂 YAZI: EXPLORADOR DE ARQUIVOS ──" "── CONTROLES E NAVEGAÇÃO ──" "────────────────────────" \
