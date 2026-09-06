@@ -8,6 +8,7 @@
 # ==============================================================================
 
 set -eo pipefail
+export PATH="$HOME/.local/bin:$PATH"
 
 # ------------------------------------------------------------------------------
 # DIRETÓRIOS CANÔNICOS DE DESTINO
@@ -554,6 +555,7 @@ download_spotify() {
         spotdl download "$url" \
             --format "$format" \
             $bitrate_flag \
+            --audio youtube-music youtube soundcloud \
             --output "$output_tpl" \
             --sponsor-block \
             --generate-lrc >/dev/null 2>&1 || true
@@ -561,8 +563,10 @@ download_spotify() {
         spotdl download "$url" \
             --format "$format" \
             $bitrate_flag \
+            --audio youtube-music youtube soundcloud \
             --output "$output_tpl" \
             --sponsor-block \
+            --simple-tui \
             --generate-lrc || true
     fi
 
