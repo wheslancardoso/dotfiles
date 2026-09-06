@@ -29,7 +29,7 @@
 | `Super + Shift + D` | 🪪 **Documentos** | Acesso Rápido flutuante com seus documentos essenciais (CNH, RG, comprovantes). |
 | `Super + V` | 📋 **Clipboard Rápido** | Abre o Cliphist no Rofi com busca instantânea (fuzzy search 2ms) para colar rápido. |
 | `Super + D` | 🚀 **Launcher** | Rofi App Launcher oficial (busca instantânea de aplicativos). |
-| `Super + H` ou `Super + /`| ❓ **Ajuda** | Cheat Sheet gráfico interativo com todos os atalhos mapeados e busca. |
+| `Super + Shift + H` ou `Super + /`| ❓ **Ajuda** | Cheat Sheet gráfico interativo com todos os atalhos mapeados e busca. |
 
 ---
 

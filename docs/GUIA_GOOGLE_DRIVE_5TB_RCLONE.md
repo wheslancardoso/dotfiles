@@ -53,7 +53,7 @@ graph LR
 | `SUPER + ALT + G` | **Hyprland** (Global) | **Conectar / Desconectar Google Drive** (com notificação) |
 | `g G` | **Yazi** | **Pular direto** para a pasta `~/gdrive` (Google Drive) |
 | `M G` | **Yazi** | **Montar / Desmontar** o Drive direto de dentro do Yazi |
-| `SUPER + H` | **Hyprland** | Ver o atalho do Google Drive no **Cheat Sheet Mestre** |
+| `SUPER + SHIFT + H` | **Hyprland** | Ver o atalho do Google Drive no **Cheat Sheet Mestre** |
 
 ---
 

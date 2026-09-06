@@ -50,6 +50,6 @@ No Hyprland, qual atalho abre e fecha o <b>Dropdown Scratchpad do Spotify</b>?	<
 No Hyprland, como abrir o <b>menu visual de Presets de Áudio (Bass Boost, Dolby Atmos)</b>?	<code>Super + Alt + A</code>	hyprland::atalhos
 No Hyprland, qual atalho abre a ferramenta de <b>Busca Instantânea de Arquivos (FSearch)</b>?	<code>Super + Shift + F</code>	hyprland::atalhos
 No Hyprland, qual atalho abre o histórico da <b>Área de Transferência (CopyQ)</b>?	<code>Alt + V</code>	hyprland::atalhos
-No Hyprland, como abrir a <b>colinha completa de atalhos (Key Hints)</b> na tela?	<code>Super + H</code>	hyprland::atalhos
+No Hyprland, como abrir a <b>colinha completa de atalhos (Key Hints)</b> na tela?	<code>Super + Shift + H</code> (ou <code>Super + /</code>)	hyprland::atalhos
 No terminal, quais são os comandos rápidos para mudar o <b>Preset de Som do EasyEffects</b>?	• <code>bass</code>: Ativa graves ricos para Hip-Hop e Trap.<br>• <code>bass-max</code>: Ativa sub-grave 808 sísmico.<br>• <code>dolby</code>: Ativa espacialização Dolby Atmos com Convolver IRS.<br>• <code>audio-flat</code>: Desativa efeitos (som puro de estúdio).	audio::easyeffects
 Se o som ou microfone parar de funcionar ou der estalo, qual comando <b>recupera todo o áudio</b> em 1 segundo?	Digite <code>fix-audio</code> no terminal.<br><br>(Reinicia PipeWire, WirePlumber e reativa os presets do EasyEffects).	audio::easyeffects

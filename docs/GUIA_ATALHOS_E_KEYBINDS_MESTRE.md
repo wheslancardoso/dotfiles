@@ -24,11 +24,11 @@
 | `Super + F` | Janela em tela cheia (**Fullscreen Toggle**) |
 | `Super + Space` | Alternar layout de teclado (US-Intl, PT-BR ABNT2, US-Dev) |
 | `Super + ;` | Seletor de Emojis e Símbolos especiais (**RofiEmoji**) |
-| `Super + H` ou `Super + /` | **Cheat Sheet Mestre** com todos os atalhos do sistema (KeyHints HUD) |
+| `Super + Shift + H` ou `Super + /` | **Cheat Sheet Mestre** com todos os atalhos do sistema (KeyHints HUD) |
 | `Super + Shift + /` ou `Super + ?` | **Buscador Universal de Atalhos** (cheat-keys via Rofi com busca em tempo real) |
 | `Super + Shift + Space` | Alternar janela flutuante (**Floating Toggle**) |
 | `Super + H / J / K / L` | Mover foco entre janelas (Esquerda, Abaixo, Acima, Direita) |
-| `Super + Shift + H / J / K / L` | Mover janela de posição no layout tiling |
+| `Super + Ctrl + H / J / K / L` | Mover janela de posição no layout tiling |
 | `Super + 1` a `9` | Mudar para a Área de Trabalho (Workspace) correspondente |
 | `Super + Shift + S` ou `Print` | Captura de região com anotações, setas, blur e edição (**Flameshot**) |
 | `Super + Shift + R` | Gravação de tela em MP4/GIF com áudio (**wf-recorder**) |

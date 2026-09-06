@@ -28,7 +28,7 @@ No Hyprland, qual atalho abre o gerenciador de arquivos <b>Yazi</b> no terminal 
 No Hyprland, qual atalho abre o histórico da <b>Área de Transferência (CopyQ)</b>?	<code>Alt + V</code>	hyprland::atalhos
 No Hyprland, qual atalho abre o <b>Flameshot</b> para captura de tela com anotações e setas?	<code>Super + Shift + S</code>	hyprland::atalhos
 No Hyprland, qual atalho abre a ferramenta de <b>Busca Instantânea de Arquivos (FSearch)</b>?	<code>Super + Shift + F</code>	hyprland::atalhos
-No Hyprland, como abrir a <b>colinha completa de atalhos (Key Hints)</b> na tela?	<code>Super + H</code>	hyprland::atalhos
+No Hyprland, como abrir a <b>colinha completa de atalhos (Key Hints)</b> na tela?	<code>Super + Shift + H</code> (ou <code>Super + /</code>)	hyprland::atalhos
 No gerenciador <b>Yazi</b>, como entrar em uma pasta e como voltar para a pasta pai?	• Entrar na pasta: <code>l</code> ou <code>Enter</code><br>• Voltar para a pasta pai: <code>h</code>	yazi::filemanager
 No gerenciador <b>Yazi</b>, como criar um novo arquivo ou pasta?	Pressione <code>a</code> e digite o nome.<br><br>Se terminar com <code>/</code>, cria uma pasta; caso contrário, cria um arquivo.	yazi::filemanager
 No gerenciador <b>Yazi</b>, como <b>deletar</b> um item selecionado?	Pressione <code>d</code>.<br><br>(Move para a lixeira com segurança).	yazi::filemanager
