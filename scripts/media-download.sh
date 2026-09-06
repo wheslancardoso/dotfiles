@@ -992,7 +992,8 @@ show_help() {
     echo -e "  ${GREEN}dl -a <url>${NC}                 Baixa direto como Áudio MP3 320k"
     echo -e "  ${PEACH}dl -p <url>${NC}                 Roteia direto para a pasta .privado"
     echo -e "  ${BLUE}dl -b, --batch <file.txt>${NC}   Processa arquivo de texto com links em lote"
-    echo -e "  ${BLUE}dl -d, --dir <pasta>${NC}        Define diretório de destino customizado"
+    echo -e "  ${BLUE}dl --here <url>${NC}             Baixa diretamente na pasta atual onde o terminal está"
+    echo -e "  ${BLUE}dl -d, --dir <pasta>${NC}        Define diretório de destino customizado (ex: dl -d .)"
     echo -e "  ${TEAL}dl -c 01:20-02:40 <url>${NC}     Corta trecho cirúrgico do vídeo"
     echo -e "  ${YELLOW}dl -z 10 <url>${NC}              Comprime para caber em 10MB (Discord)"
     echo -e "  ${MAUVE}dl -g 00:05-00:15 <url>${NC}     Gera GIF animado do trecho"
@@ -1028,6 +1029,10 @@ main() {
             -d|--dir)
                 CUSTOM_DIR="$2"
                 shift 2
+                ;;
+            --here)
+                CUSTOM_DIR="$(pwd)"
+                shift
                 ;;
             -n|--now)
                 local now_url
