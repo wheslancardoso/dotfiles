@@ -79,7 +79,7 @@ GDK_BACKEND=$BACKEND yad \
 " CTRL H / J / K / L" "Mover POSIÇÃO da Janela no Grid Tiling" "movewindow l/d/u/r" \
 " R" "Modo Redimensionamento Interativo (H/J/K/L ou Setas)" "submap resize" \
 " ALT H / J / K / L" "Redimensionar Tamanho Rápido sem Sair" "resizeactive" \
-"ALT Tab" "Voltar para o Último Workspace Visitado (Back-and-Forth)" "workspace previous" \
+" [1..9] (2x)" "Alternar e Retornar ao Workspace Anterior (Back-and-Forth)" "workspace toggle" \
 " Tab" "Seletor Visual de Janelas com Miniaturas" "Rofi Window Switcher" \
 " 1 .. 9" "Mudar para Área de Trabalho (Workspace) 1 a 9" "workspace 1..9" \
 " SHIFT 1 .. 9" "Mover Janela Ativa para Área de Trabalho 1 a 9" "movetoworkspace 1..9" \

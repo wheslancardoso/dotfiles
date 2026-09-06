@@ -16,8 +16,20 @@
 /* ---- Global Configuration Fonts ---- */
 @import "~/.config/rofi/0-shared-fonts.rasi"
 
+/* ---- Vim Navigation & Performance Optimization ---- */
+configuration {
+    /* Teclas de Navegação Vim (sem conflito com a digitação de j/k) */
+    kb-row-up:                  "Up,Control+p,Control+k";
+    kb-row-down:                "Down,Control+n,Control+j";
+    kb-row-left:                "Left,Control+h";
+    kb-row-right:               "Right,Control+l";
+    kb-remove-to-eol:           "";
+    kb-mode-complete:           "";
+    kb-accept-entry:            "Return,KP_Enter";
+    kb-cancel:                  "Escape,Control+bracketleft";
+}
+
 /* note: Main themes in ~/.config/rofi/themes */
 /* You can manually change here or you can use rofi theme selector SUPER SHIFT E */
-
 
 @theme "~/.config/rofi/themes/KooL_style-4.rasi"
