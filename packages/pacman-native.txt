@@ -83,6 +83,7 @@ firefox
 flatpak
 flameshot
 fsarchiver
+fuse3
 fzf
 gamemode
 gamescope
@@ -235,6 +236,7 @@ quickshell
 rebuild-detector
 redis
 reflector
+rclone
 ripgrep
 rofi
 rsync

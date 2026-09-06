@@ -105,6 +105,65 @@ do_update() {
     notify "Atualização Concluída" "Sistema Arch Linux e pacotes AUR estão 100% atualizados!"
 }
 
+do_mirrors() {
+    echo -e "${CYAN}====================================================${NC}"
+    echo -e "${CYAN}   ⚡ OTIMIZAÇÃO DE ESPELHOS PACMAN (Reflector)    ${NC}"
+    echo -e "${CYAN}====================================================${NC}"
+
+    if ! command -v reflector &>/dev/null; then
+        echo -e "${RED}[!] Reflector não está instalado.${NC}"
+        echo "Instale com: sudo pacman -S --needed reflector"
+        return 1
+    fi
+
+    echo -e "${GREEN}[*] Testando e ranqueando os servidores mais rápidos no Brasil e América do Sul...${NC}"
+    notify "Otimizando Espelhos" "Testando mirrors do Pacman mais rápidos no Brasil..."
+
+    local threads
+    threads=$(nproc 2>/dev/null || echo 4)
+    sudo reflector --country Brazil,Chile,Argentina --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist --threads "$threads"
+
+    echo -e "${GREEN}✓ Mirrorlist atualizada com os servidores mais rápidos!${NC}"
+    notify "Espelhos Otimizados" "Mirrorlist atualizada. Downloads do pacman agora na velocidade máxima!"
+}
+
+do_turbo() {
+    echo -e "${CYAN}====================================================${NC}"
+    echo -e "${CYAN}   🚀 PACMAN & MAKEPKG TURBO ATIVADOR              ${NC}"
+    echo -e "${CYAN}====================================================${NC}"
+
+    local cores
+    cores=$(nproc 2>/dev/null || echo 4)
+
+    if [ -f /etc/pacman.conf ]; then
+        echo -e "${GREEN}[1/2] Ativando 10 downloads paralelos e cores no pacman.conf...${NC}"
+        sudo sed -i 's/^#Color/Color/' /etc/pacman.conf 2>/dev/null || true
+        sudo sed -i 's/^#VerbosePkgLists/VerbosePkgLists/' /etc/pacman.conf 2>/dev/null || true
+        sudo sed -i 's/^#ParallelDownloads.*/ParallelDownloads = 10/' /etc/pacman.conf 2>/dev/null || true
+        sudo sed -i 's/^ParallelDownloads = .*/ParallelDownloads = 10/' /etc/pacman.conf 2>/dev/null || true
+        if ! grep -q "ILoveCandy" /etc/pacman.conf 2>/dev/null; then
+            sudo sed -i '/^Color/a ILoveCandy' /etc/pacman.conf 2>/dev/null || true
+        fi
+        echo -e "${GREEN}✓ Pacman configurado com 10 downloads paralelos e ILoveCandy!${NC}"
+    fi
+
+    if [ -f /etc/makepkg.conf ]; then
+        echo -e "${GREEN}[2/2] Ativando compilação multi-core (${cores} threads) no makepkg.conf...${NC}"
+        if grep -q "^#MAKEFLAGS=" /etc/makepkg.conf; then
+            sudo sed -i "s/^#MAKEFLAGS=.*/MAKEFLAGS=\"-j${cores}\"/" /etc/makepkg.conf
+        elif grep -q "^MAKEFLAGS=" /etc/makepkg.conf; then
+            sudo sed -i "s/^MAKEFLAGS=.*/MAKEFLAGS=\"-j${cores}\"/" /etc/makepkg.conf
+        else
+            echo "MAKEFLAGS=\"-j${cores}\"" | sudo tee -a /etc/makepkg.conf >/dev/null
+        fi
+        sudo sed -i "s/^COMPRESSZST=.*/COMPRESSZST=(zstd -c -z -q --threads=0 -)/" /etc/makepkg.conf 2>/dev/null || true
+        sudo sed -i "s/^COMPRESSXZ=.*/COMPRESSXZ=(xz -c -z - --threads=0)/" /etc/makepkg.conf 2>/dev/null || true
+        echo -e "${GREEN}✓ Makepkg configurado com ${cores} núcleos (AUR compilará a velocidade máxima)!${NC}"
+    fi
+
+    notify "Turbo Ativado" "Pacman (10 downloads) e Makepkg (${cores} núcleos) otimizados com sucesso."
+}
+
 case "$ACTION" in
     cleanup|limpar)
         do_cleanup
@@ -112,10 +171,18 @@ case "$ACTION" in
     update|atualizar)
         do_update
         ;;
+    mirrors|espelhos)
+        do_mirrors
+        ;;
+    turbo)
+        do_turbo
+        ;;
     *)
-        echo "Uso: $0 {cleanup|update}"
+        echo "Uso: $0 {cleanup|update|mirrors|turbo}"
         echo "  cleanup : Remove pacotes órfãos, limpa cache do pacman e trunca logs antigos"
         echo "  update  : Atualiza pacman, AUR, flatpaks e roda diagnóstico de integridade"
+        echo "  mirrors : Rankea os mirrors mais rápidos do Brasil/América do Sul com Reflector"
+        echo "  turbo   : Configura pacman (10 downloads paralelos) e makepkg (-j núcleos) no talo"
         exit 1
         ;;
 esac

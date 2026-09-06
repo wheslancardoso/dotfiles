@@ -57,6 +57,33 @@ setup_pacman_turbo() {
         fi
         ok "Pacman Turbo configurado com sucesso!"
     fi
+
+    # Otimização de espelhos com Reflector (se disponível)
+    if command -v reflector >/dev/null 2>&1; then
+        info "Otimizando espelhos do Pacman com Reflector (Brasil & América do Sul)..."
+        sudo reflector --country Brazil,Chile,Argentina --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist --threads "$(nproc)" 2>/dev/null || warn "Reflector não pôde atualizar mirrorlist no momento. Continuando..."
+    fi
+}
+
+setup_makepkg_turbo() {
+    info "Configurando Makepkg Turbo (compilação multi-core e compressão Zstd multi-thread)..."
+    local cores
+    cores=$(nproc 2>/dev/null || echo 4)
+    if [ -f /etc/makepkg.conf ]; then
+        # Habilitar MAKEFLAGS multi-core
+        if grep -q "^#MAKEFLAGS=" /etc/makepkg.conf; then
+            sudo sed -i "s/^#MAKEFLAGS=.*/MAKEFLAGS=\"-j${cores}\"/" /etc/makepkg.conf
+        elif grep -q "^MAKEFLAGS=" /etc/makepkg.conf; then
+            sudo sed -i "s/^MAKEFLAGS=.*/MAKEFLAGS=\"-j${cores}\"/" /etc/makepkg.conf
+        else
+            echo "MAKEFLAGS=\"-j${cores}\"" | sudo tee -a /etc/makepkg.conf >/dev/null
+        fi
+
+        # Otimizar compressão Zstd e Xz para usar todas as threads da CPU
+        sudo sed -i "s/^COMPRESSZST=.*/COMPRESSZST=(zstd -c -z -q --threads=0 -)/" /etc/makepkg.conf 2>/dev/null || true
+        sudo sed -i "s/^COMPRESSXZ=.*/COMPRESSXZ=(xz -c -z - --threads=0)/" /etc/makepkg.conf 2>/dev/null || true
+        ok "Makepkg Turbo configurado com $cores núcleos (até 10x mais rápido no AUR)!"
+    fi
 }
 
 enable_multilib() {
@@ -72,6 +99,7 @@ enable_multilib() {
 
 update_system() {
     setup_pacman_turbo
+    setup_makepkg_turbo
     enable_multilib
     info "Atualizando o sistema..."
     sudo pacman -Syu --noconfirm
@@ -146,6 +174,7 @@ setup_services() {
         "wireplumber.service"
         "xdg-user-dirs.service"
         "organizador-watcher.service"
+        "rclone-gdrive.service"
     )
 
     for svc in "${usr_services[@]}"; do

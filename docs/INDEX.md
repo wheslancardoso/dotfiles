@@ -33,6 +33,7 @@
 │   ├── [TAXONOMIA_MESTRE.md](./TAXONOMIA_MESTRE.md)               # Hierarquia ordinal das pastas 00_ a 06_
 │   ├── [GUIA_NOMENCLATURA.md](./GUIA_NOMENCLATURA.md)             # Padrão ouro para nomes de arquivos (Datas ISO)
 │   ├── [GUIA_BUSCA_INSTANTANEA.md](./GUIA_BUSCA_INSTANTANEA.md)   # Busca em menos de 1 segundo (fzf, zoxide, ripgrep)
+│   ├── [GUIA_GOOGLE_DRIVE_5TB_RCLONE.md](./GUIA_GOOGLE_DRIVE_5TB_RCLONE.md) # ☁️ Google Drive 5TB Rclone VFS & Pacman Turbo
 │   ├── [GUIA_GOOGLE_DRIVE.md](./GUIA_GOOGLE_DRIVE.md)             # Limpeza, sincronização e organização na nuvem
 │   └── [ARCHITECTURE_ORGANIZADOR.md](./ARCHITECTURE_ORGANIZADOR.md) # Arquitetura do motor Python do organizador
 │
