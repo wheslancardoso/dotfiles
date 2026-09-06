@@ -334,6 +334,7 @@ setup_shell() {
     [ ! -d "$zsh_custom/plugins/zsh-history-substring-search" ] && git clone https://github.com/zsh-users/zsh-history-substring-search "$zsh_custom/plugins/zsh-history-substring-search"
     [ ! -d "$zsh_custom/plugins/you-should-use" ] && git clone https://github.com/MichaelAquilina/zsh-you-should-use.git "$zsh_custom/plugins/you-should-use"
     [ ! -d "$zsh_custom/plugins/zsh-autopair" ] && git clone https://github.com/hlissner/zsh-autopair.git "$zsh_custom/plugins/zsh-autopair"
+    [ ! -d "$zsh_custom/plugins/fzf-tab" ] && git clone --depth=1 https://github.com/Aloxaf/fzf-tab "$zsh_custom/plugins/fzf-tab"
     
     # Muda o shell padrão para ZSH
     if [[ "$SHELL" != *"zsh"* ]]; then

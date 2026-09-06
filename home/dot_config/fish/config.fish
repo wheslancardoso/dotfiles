@@ -24,6 +24,26 @@ if command -v mise >/dev/null
     mise activate fish | source
 end
 
+# 🎨 Catppuccin Mocha - Syntax Highlighting de Alto Contraste
+set -g fish_color_normal cdd6f4
+set -g fish_color_command a6e3a1 --bold
+set -g fish_color_keyword cba6f7 --bold
+set -g fish_color_quote f9e2af
+set -g fish_color_redirection fab387
+set -g fish_color_end f9e2af
+set -g fish_color_error f38ba8 --bold
+set -g fish_color_param 89b4fa
+set -g fish_color_comment 6c7086
+set -g fish_color_selection --background=313244
+set -g fish_color_search_match --background=313244
+set -g fish_color_operator 94e2d5
+set -g fish_color_escape fab387
+set -g fish_color_autosuggestion 7f849c
+set -g fish_color_cancel f38ba8
+set -g fish_pager_color_prefix 89b4fa --bold
+set -g fish_pager_color_completion cdd6f4
+set -g fish_pager_color_description 6c7086
+
 # Aliases
 alias vim="nvim"
 alias lg="lazygit"
