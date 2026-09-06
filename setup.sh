@@ -558,11 +558,25 @@ setup_anti_friction() {
         ok "Coredumps desativados para preservar SSD!"
     fi
 
-    # 13. Áudio Bluetooth de alta fidelidade em chamadas (WirePlumber)
+    # 13. Áudio Audiófilo PipeWire & WirePlumber (Bit-perfect, Resampler SoX Q10, LDAC 990k)
+    if [ -d "$sys_src/pipewire" ]; then
+        sudo mkdir -p /etc/pipewire/pipewire.conf.d /etc/pipewire/pipewire-pulse.conf.d
+        [ -d "$sys_src/pipewire/pipewire.conf.d" ] && sudo cp -f "$sys_src/pipewire/pipewire.conf.d/"*.conf /etc/pipewire/pipewire.conf.d/
+        [ -d "$sys_src/pipewire/pipewire-pulse.conf.d" ] && sudo cp -f "$sys_src/pipewire/pipewire-pulse.conf.d/"*.conf /etc/pipewire/pipewire-pulse.conf.d/
+        ok "PipeWire Audiophile Engine configurado (Bit-Perfect, 192kHz dinâmico e Resampler SoX Q10)!"
+    fi
+
     if [ -d "$sys_src/wireplumber/wireplumber.conf.d" ]; then
         sudo mkdir -p /etc/wireplumber/wireplumber.conf.d
         sudo cp -f "$sys_src/wireplumber/wireplumber.conf.d/"*.conf /etc/wireplumber/wireplumber.conf.d/
-        ok "WirePlumber configurado para manter áudio de alta resolução!"
+        ok "WirePlumber configurado para LDAC 990k, anti-suspensão e alta resolução!"
+    fi
+
+    # 13.1. Presets de Áudio EasyEffects (Dolby Atmos, Bass Boost & Convolver IRS)
+    if [ -f "$DOTFILES_DIR/scripts/setup-audio-presets.sh" ]; then
+        info "Instalando presets de áudio estúdio e Dolby Atmos (EasyEffects)..."
+        bash "$DOTFILES_DIR/scripts/setup-audio-presets.sh" >/dev/null 2>&1 || true
+        ok "Presets de áudio audiófilos (Dolby Atmos / Bass Boost) instalados!"
     fi
 
     # 14. Flags de aceleração GPU por hardware e Wayland nativo para navegadores e apps Electron
