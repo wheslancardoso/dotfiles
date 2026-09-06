@@ -33,7 +33,8 @@ GDK_BACKEND=$BACKEND yad \
 " = " "Tecla SUPER (Tecla Windows)" "(SUPER / MOD)" \
 " SHIFT H ou  /" "Abrir este Cheat Sheet Completo" "KeyHints.sh" \
 " SHIFT K" "Buscar Atalhos Interativamente" "(Pesquisar atalhos no rofi)" \
-" SHIFT E" "Menu de Configurações KooL Hyprland" "Kool_Quick_Settings.sh" \
+" SHIFT E" "Yazi Flutuante Centralizado" "open-yazi.sh" \
+" CTRL ," "Menu de Configurações KooL Hyprland" "Kool_Quick_Settings.sh" \
 "" "" "" \
 "── 🚀 ATALHOS ESSENCIAIS E SISTEMA ──" "── HYPRLAND CORE ──" "────────────────────────" \
 " enter" "Abrir Terminal Principal" "kitty" \
@@ -44,7 +45,8 @@ GDK_BACKEND=$BACKEND yad \
 " Q" "Fechar Janela Ativa" "closewindow" \
 " Shift Q" "Forçar Encerramento da Janela (Kill)" "killactive" \
 " F" "Tela Cheia Total (Fullscreen)" "fullscreen 0" \
-" SHIFT F" "Maximizar Janela (Mantém Waybar e Gaps)" "fullscreen 1" \
+" SHIFT F" "Busca Instantânea FSearch (Estilo Everything)" "fsearch" \
+" CTRL F" "Maximizar Janela (Mantém Waybar e Gaps)" "fullscreen 1" \
 " SHIFT SPACE" "Alternar Janela Ativa Flutuante / Tiling" "togglefloating" \
 " ALT SPACE" "Alternar Todas as Janelas para Flutuante" "togglefloating (all)" \
 "CTRL ALT L" "Bloquear Tela" "hyprlock" \
@@ -60,6 +62,7 @@ GDK_BACKEND=$BACKEND yad \
 " ;" "Seletor de Emojis e Símbolos Rápidos" "RofiEmoji.sh" \
 " SPACE" "Trocar Layout do Teclado (US-Intl / PT-BR / US-Dev)" "KeyboardLayout.sh" \
 " SHIFT A" "Alternar Saída de Som (Caixas ↔ Headset)" "audio-switch.sh" \
+" ALT A" "Presets de Áudio e Graves (EasyEffects)" "audio-preset-switch.sh menu" \
 " ALT M" "Silenciar / Ativar Microfone (Mic Mute)" "Volume.sh --toggle-mic" \
 " ALT B" "Menu Bluetooth Rápido (Conectar Fones)" "rofi-bluetooth.sh" \
 " ALT W" "Menu Wi-Fi Rápido (Redes sem abrir abas)" "rofi-wifi.sh" \
@@ -80,12 +83,13 @@ GDK_BACKEND=$BACKEND yad \
 " SHIFT T" "Screen OCR (Copiar texto de qualquer imagem/vídeo)" "ocr-screen.sh" \
 "" "" "" \
 "── 🪟 NAVEGAÇÃO E JANELAS ──" "── VIM KEYS E MULTITAREFA ──" "────────────────────────" \
+"ALT Tab" "Ciclo Rápido de Janelas (0ms, sem popups)" "cyclenext" \
+" Tab" "Seletor Visual de Janelas com Miniaturas" "Rofi Window Switcher" \
 " H / J / K / L" "Mover FOCO entre Janelas (Esq, Baixo, Cima, Dir)" "movefocus l/d/u/r" \
 " CTRL H / J / K / L" "Mover POSIÇÃO da Janela no Grid Tiling" "movewindow l/d/u/r" \
 " R" "Modo Redimensionamento Interativo (H/J/K/L ou Setas)" "submap resize" \
 " ALT H / J / K / L" "Redimensionar Tamanho Rápido sem Sair" "resizeactive" \
 " [1..9] (2x)" "Alternar e Retornar ao Workspace Anterior (Back-and-Forth)" "workspace toggle" \
-" Tab" "Seletor Visual de Janelas com Miniaturas" "Rofi Window Switcher" \
 " 1 .. 9" "Mudar para Área de Trabalho (Workspace) 1 a 9" "workspace 1..9" \
 " SHIFT 1 .. 9" "Mover Janela Ativa para Área de Trabalho 1 a 9" "movetoworkspace 1..9" \
 " Scroll Mouse" "Navegar entre Áreas de Trabalho Rápido" "workspace +/-" \

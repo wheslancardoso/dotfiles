@@ -33,8 +33,12 @@ alias vim-king="$HOME/dotfiles/scripts/vim-king.sh"
 alias vibe="zellij --layout vibe"
 alias fullstack="zellij --layout fullstack"
 alias mobile="zellij --layout mobile"
-alias scrcpy-dev='scrcpy --always-on-top --window-title "Mobile Emulator Device"'
+# 🧹 Organizador Master & Taxonomia
 alias organizar="python3 $HOME/dotfiles/scripts/organizador/main.py"
+alias vincular_linux="bash $HOME/dotfiles/scripts/vincular_linux.sh"
+
+# 📦 Descompactador Universal (x arquivo.zip/tar/7z/rar)
+alias x="bash $HOME/dotfiles/scripts/yazi-archive.sh extract-sub"
 
 # Yazi CWD Wrapper (troca de pasta automaticamente ao sair)
 function y
@@ -116,4 +120,60 @@ alias trestore="trash-restore"
 alias trash-restore="trash-restore"
 alias tempty="trash-empty"
 alias trash-empty="trash-empty"
+
+# 🎛️ Modos de Energia & Silêncio (power-profiles-daemon)
+alias perf='powerprofilesctl set performance 2>/dev/null; and notify-send -u low -i preferences-system-power "Energia" "Modo Performance Máxima Ativado"; or true'
+alias balanced='powerprofilesctl set balanced 2>/dev/null; and notify-send -u low -i preferences-system-power "Energia" "Modo Equilibrado Ativado"; or true'
+alias quiet='powerprofilesctl set power-saver 2>/dev/null; and notify-send -u low -i preferences-system-power "Energia" "Modo Silêncio Ativado"; or true'
+alias saver='powerprofilesctl set power-saver 2>/dev/null; and notify-send -u low -i preferences-system-power "Energia" "Modo Economia Ativado"; or true'
+
+# 📋 clip: Tubulação direta pro Clipboard do Hyprland
+function clip
+    if not isatty stdin
+        if command -v wl-copy >/dev/null
+            wl-copy
+        else if command -v xclip >/dev/null
+            xclip -selection clipboard
+        end
+    else if test (count $argv) -gt 0
+        if command -v wl-copy >/dev/null
+            echo -n "$argv" | wl-copy
+        else if command -v xclip >/dev/null
+            echo -n "$argv" | xclip -selection clipboard
+        end
+    else
+        echo "Uso: comando | clip   OU   clip \"texto a copiar\""
+    end
+end
+
+# 📱 qr: Gerador Instantâneo de QR Code no terminal
+function qr
+    set text ""
+    if not isatty stdin
+        set text (command cat)
+    else if test (count $argv) -gt 0
+        set text "$argv"
+    else
+        if command -v wl-paste >/dev/null
+            set text (wl-paste)
+        else if command -v xclip >/dev/null
+            set text (xclip -selection clipboard -o)
+        end
+    end
+
+    if test -z "$text"
+        echo "Uso: qr <texto/url>  OU  comando | qr  OU  apenas 'qr' (lê do clipboard)"
+        return 1
+    end
+
+    if command -v qrencode >/dev/null
+        echo ""
+        qrencode -t ANSIUTF8 "$text"
+        echo ""
+        echo "📱 Aponte a câmera do celular para escanear"
+    else
+        echo "Instalando qrencode..."
+        sudo pacman -S --noconfirm qrencode 2>/dev/null; and qrencode -t ANSIUTF8 "$text"
+    end
+end
 

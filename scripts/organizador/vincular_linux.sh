@@ -47,9 +47,17 @@ read -rp "Pressione ENTER para confirmar ou digite o caminho personalizado: " US
 DATA_DIR="${USER_INPUT:-$DEFAULT_DATA_DIR}"
 
 if [[ ! -d "$DATA_DIR/01_Pessoal_e_Vida" ]]; then
-    echo -e "${RED}[ERRO] O diretório informado não contém as pastas da Taxonomia Mestre (01_Pessoal_e_Vida, etc.).${RESET}"
-    echo -e "Caminho testado: $DATA_DIR"
-    exit 1
+    echo -e "${YELLOW}[INFO] Estrutura da Taxonomia Mestre não detectada em $DATA_DIR.${RESET}"
+    echo -e "${CYAN}[*] Criando estrutura padrão (00_ a 06_) automaticamente...${RESET}"
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    python3 "$SCRIPT_DIR/main.py" --scaffold-only --dest "$DATA_DIR"
+    # Links de conveniência para navegação ultra-rápida (Yazi / shell)
+    ln -sfn "$DATA_DIR/00_Inbox_Triagem" "$DATA_DIR/00_Inbox" 2>/dev/null || true
+    ln -sfn "$DATA_DIR/01_Pessoal_e_Vida" "$DATA_DIR/01_Pessoal" 2>/dev/null || true
+    ln -sfn "$DATA_DIR/02_Estudos_e_Concursos" "$DATA_DIR/03_Estudos_Carreira" 2>/dev/null || true
+    ln -sfn "$DATA_DIR/04_Desenvolvimento_e_Codigo" "$DATA_DIR/04_Dev" 2>/dev/null || true
+    ln -sfn "$DATA_DIR/05_Design_Midia_e_Criacao" "$DATA_DIR/05_Midias" 2>/dev/null || true
+    ln -sfn "$DATA_DIR/06_Backups_ISOs_e_Sistemas/06.4_Games_e_Emuladores" "$DATA_DIR/06.4_Games" 2>/dev/null || true
 fi
 
 echo -e "\n${GREEN}[OK] Raiz de dados válida confirmada: ${DATA_DIR}${RESET}\n"

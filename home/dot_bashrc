@@ -68,8 +68,12 @@ alias mobile='zellij --layout mobile'
 # 📱 Mobile Dev
 alias scrcpy-dev='scrcpy --always-on-top --window-title "Mobile Emulator Device"'
 
-# 🧹 Organizador Master
+# 🧹 Organizador Master & Taxonomia
 alias organizar='python3 ~/dotfiles/scripts/organizador/main.py'
+alias vincular_linux='bash $HOME/dotfiles/scripts/vincular_linux.sh'
+
+# 📦 Descompactador Universal (x arquivo.zip/tar/7z/rar)
+alias x='bash $HOME/dotfiles/scripts/yazi-archive.sh extract-sub'
 
 # Docker
 alias dc='docker-compose'
@@ -156,4 +160,60 @@ alias trestore='trash-restore'
 alias trash-restore='trash-restore'
 alias tempty='trash-empty'
 alias trash-empty='trash-empty'
+
+# 🎛️ Modos de Energia & Silêncio (power-profiles-daemon)
+alias perf='powerprofilesctl set performance 2>/dev/null && notify-send -u low -i preferences-system-power "Energia" "Modo Performance Máxima Ativado" || true'
+alias balanced='powerprofilesctl set balanced 2>/dev/null && notify-send -u low -i preferences-system-power "Energia" "Modo Equilibrado Ativado" || true'
+alias quiet='powerprofilesctl set power-saver 2>/dev/null && notify-send -u low -i preferences-system-power "Energia" "Modo Silêncio Ativado" || true'
+alias saver='powerprofilesctl set power-saver 2>/dev/null && notify-send -u low -i preferences-system-power "Energia" "Modo Economia Ativado" || true'
+
+# 📋 clip: Tubulação direta pro Clipboard do Hyprland
+clip() {
+    if [ ! -t 0 ]; then
+        if command -v wl-copy &>/dev/null; then
+            wl-copy
+        elif command -v xclip &>/dev/null; then
+            xclip -selection clipboard
+        fi
+    elif [ $# -gt 0 ]; then
+        if command -v wl-copy &>/dev/null; then
+            echo -n "$*" | wl-copy
+        elif command -v xclip &>/dev/null; then
+            echo -n "$*" | xclip -selection clipboard
+        fi
+    else
+        echo "Uso: comando | clip   OU   clip \"texto a copiar\""
+    fi
+}
+
+# 📱 qr: Gerador Instantâneo de QR Code no terminal
+qr() {
+    local text=""
+    if [ ! -t 0 ]; then
+        text="$(cat)"
+    elif [ $# -gt 0 ]; then
+        text="$*"
+    else
+        if command -v wl-paste &>/dev/null; then
+            text="$(wl-paste)"
+        elif command -v xclip &>/dev/null; then
+            text="$(xclip -selection clipboard -o)"
+        fi
+    fi
+
+    if [ -z "$text" ]; then
+        echo "Uso: qr <texto/url>  OU  comando | qr  OU  apenas 'qr' (lê do clipboard)"
+        return 1
+    fi
+
+    if command -v qrencode &>/dev/null; then
+        echo ""
+        qrencode -t ANSIUTF8 "$text"
+        echo ""
+        echo "📱 Aponte a câmera do celular para escanear"
+    else
+        echo "Instalando qrencode..."
+        sudo pacman -S --noconfirm qrencode 2>/dev/null && qrencode -t ANSIUTF8 "$text"
+    fi
+}
 

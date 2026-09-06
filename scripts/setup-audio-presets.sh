@@ -64,9 +64,9 @@ echo -e "\n${GREEN}${BOLD}✔ Presets de Áudio, Graves e Microfone instalados c
 # Ativa imediatamente os presets padrão de saída e microfone
 if command -v easyeffects >/dev/null 2>&1; then
     echo -e "${GREEN}[*] Ativando 'Bass Enhancing + Perfect EQ' na saída...${NC}"
-    easyeffects -l "Bass Enhancing + Perfect EQ" 2>/dev/null || true
+    timeout 3 easyeffects -l "Bass Enhancing + Perfect EQ" 2>/dev/null || true
     echo -e "${GREEN}[*] Ativando 'Podcast_Studio_Mic' no microfone...${NC}"
-    easyeffects -l "Podcast_Studio_Mic" 2>/dev/null || true
+    timeout 3 easyeffects -l "Podcast_Studio_Mic" 2>/dev/null || true
 fi
 
 echo -e "${BOLD}Como usar no EasyEffects:${NC}"

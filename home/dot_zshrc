@@ -300,8 +300,12 @@ alias mobile='zellij --layout mobile'
 # 📱 Mobile Dev (scrcpy sem lag)
 alias scrcpy-dev='scrcpy --always-on-top --window-title "Mobile Emulator Device"'
 
-# 🧹 Organizador Master
+# 🧹 Organizador Master & Taxonomia
 alias organizar='python3 ~/dotfiles/scripts/organizador/main.py'
+alias vincular_linux='bash $HOME/dotfiles/scripts/vincular_linux.sh'
+
+# 📦 Descompactador Universal (x arquivo.zip/tar/7z/rar)
+alias x='bash $HOME/dotfiles/scripts/yazi-archive.sh extract-sub'
 
 # Docker
 alias dc='docker-compose'
