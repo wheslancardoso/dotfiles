@@ -34,8 +34,9 @@ O sistema foi arquitetado para você nunca precisar abrir páginas de conversore
    - `✂️ Cortar Trecho de Vídeo (Clip)`: Pede o início e fim (ex: `01:20-02:40`) e baixa só aquele trecho.
    - `🗜️ Comprimir para Discord / WhatsApp`: Reduz automaticamente para caber em <10MB.
    - `🎞️ Gerar GIF Animado`: Gera um GIF fluido a 15-30fps com paleta inteligente.
+   - `🤖 Transcrição Limpa para IA (.md)`: Extrai legendas e formata em Markdown limpo para ChatGPT/Claude.
    - `📸 Galeria de Fotos / Imagens`: Baixa álbuns inteiros com `gallery-dl`.
-   - `📝 Baixar Apenas Legendas (.srt)`: Extrai as legendas para estudo ou IA.
+   - `📝 Baixar Apenas Legendas (.srt)`: Extrai as legendas brutas.
    - `🖼️ Baixar Apenas Capa / Thumbnail`: Salva a imagem oficial em 4K.
    - `📜 Ver Histórico de Downloads`: Busca rápida de tudo que você já baixou.
 
@@ -82,6 +83,17 @@ dl -a "https://www.youtube.com/watch?v=..."
 
 # Baixar direto para a pasta .privado (modo furtivo anti-vazamento):
 dl -p "https://..."
+
+# Extrair transcrição limpa em Markdown (.md) pronta para IA (ChatGPT/Claude):
+dl -t "https://www.youtube.com/watch?v=..."
+# (O texto também é copiado automaticamente para a sua Área de Transferência!)
+
+# Remover patrocínios embutidos, jabás e introduções (SponsorBlock):
+dl --no-sponsors "https://www.youtube.com/watch?v=..."
+dl -a --no-sponsors "https://www.youtube.com/watch?v=..." # Áudio sem jabá
+
+# Atualizar todos os motores de download para as versões mais recentes:
+dl -u # ou dl --update
 
 # Cortar apenas um trecho sem baixar o vídeo inteiro de gigabytes:
 dl -c 01:30-02:45 "https://www.youtube.com/watch?v=..."

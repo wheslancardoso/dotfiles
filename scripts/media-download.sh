@@ -44,6 +44,7 @@ STUDY_SPEED=""
 COOKIES_BROWSER=""
 SUB_ONLY=false
 THUMB_ONLY=false
+SKIP_SPONSORS=false
 FORCE_PRIVATE=false
 BATCH_FILE=""
 
@@ -278,7 +279,7 @@ notify_completion() {
     local target_file="${3:-}"
 
     if [ -z "$target_file" ]; then
-        target_file=$(find "$dest_dir" -maxdepth 2 -type f \( -name "*.mp3" -o -name "*.flac" -o -name "*.m4a" -o -name "*.mp4" -o -name "*.mkv" -o -name "*.webm" -o -name "*.gif" -o -name "*.png" -o -name "*.jpg" \) -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -1 | cut -f2- -d" ")
+        target_file=$(find "$dest_dir" -maxdepth 2 -type f \( -name "*.mp3" -o -name "*.flac" -o -name "*.m4a" -o -name "*.mp4" -o -name "*.mkv" -o -name "*.webm" -o -name "*.gif" -o -name "*.png" -o -name "*.jpg" -o -name "*.md" \) -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -1 | cut -f2- -d" ")
     fi
 
     if command -v notify-send >/dev/null 2>&1; then
@@ -417,6 +418,7 @@ download_video() {
     [ "$SPLIT_CHAPTERS" = true ] && extra_flags+=(--split-chapters -o "chapter:%(title)s/%(section_number)02d - %(section_title)s.%(ext)s")
     [ "$SYNC_PLAYLIST" = true ] && extra_flags+=(--download-archive "$dest/.download_archive.txt")
     [ -n "$COOKIES_BROWSER" ] && extra_flags+=(--cookies-from-browser "$COOKIES_BROWSER")
+    [ "$SKIP_SPONSORS" = true ] && extra_flags+=(--sponsorblock-remove "sponsor,selfpromo,interaction,intro,outro")
     [ "$SUB_ONLY" = true ] && extra_flags+=(--skip-download --write-auto-subs --sub-lang 'pt,en' --convert-subs srt)
     [ "$THUMB_ONLY" = true ] && extra_flags+=(--skip-download --write-thumbnail --convert-thumbnails png)
 
@@ -486,6 +488,7 @@ download_audio() {
     [ "$SPLIT_CHAPTERS" = true ] && extra_flags+=(--split-chapters -o "chapter:%(title)s/%(section_number)02d - %(section_title)s.%(ext)s")
     [ "$SYNC_PLAYLIST" = true ] && extra_flags+=(--download-archive "$dest/.download_archive.txt")
     [ -n "$COOKIES_BROWSER" ] && extra_flags+=(--cookies-from-browser "$COOKIES_BROWSER")
+    [ "$SKIP_SPONSORS" = true ] && extra_flags+=(--sponsorblock-remove "sponsor,selfpromo,interaction,intro,outro")
 
     local output_tpl="%(title)s [%(id)s].%(ext)s"
     if [[ "$url" =~ list= ]] && [ "$SPLIT_CHAPTERS" = false ]; then
@@ -598,6 +601,152 @@ download_gallery() {
     latest_file=$(find "$dest" -maxdepth 2 -type f \( -name "*.jpg" -o -name "*.png" -o -name "*.webp" \) -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -1 | cut -f2- -d" ")
     log_history "Galeria de Fotos" "$url" "$dest" "GALLERY"
     notify_completion "Galeria de Imagens Baixada" "$dest" "$latest_file"
+}
+
+# ------------------------------------------------------------------------------
+# EXTRAÇÃO DE TRANSCRIÇÃO LIMPA PARA IA (MARKDOWN / LLMs)
+# ------------------------------------------------------------------------------
+download_transcript() {
+    local url="$1"
+    local dest="$2"
+    local dl_args
+    dl_args=$(get_downloader_args)
+
+    mkdir -p "$dest"
+    cd "$dest"
+
+    echo -e "${MAUVE}🤖 Conectando e obtendo transcrição para IA...${NC}"
+    local title
+    title=$(yt-dlp --get-title "$url" 2>/dev/null | head -n1 || echo "Transcricao")
+    local uploader
+    uploader=$(yt-dlp --print "%(uploader,channel)s" "$url" 2>/dev/null | head -n1 || echo "Canal")
+
+    local tmp_prefix="temp_sub_$$"
+    eval yt-dlp \
+        $dl_args \
+        --skip-download \
+        --write-auto-subs \
+        --write-subs \
+        --sub-lang "'pt,pt-BR,pt-pt,en,en-US'" \
+        --convert-subs srt \
+        -o "'${tmp_prefix}.%(ext)s'" \
+        --no-mtime \
+        "'$url'" >/dev/null 2>&1 || true
+
+    local srt_file
+    srt_file=$(find . -maxdepth 1 -name "${tmp_prefix}*.srt" 2>/dev/null | head -n1 || true)
+
+    if [ -z "$srt_file" ] || [ ! -f "$srt_file" ]; then
+        echo -e "${RED}❌ Nenhuma legenda ou transcrição disponível para esta mídia.${NC}"
+        if command -v notify-send >/dev/null 2>&1; then
+            notify-send -u critical "Transcrição Indisponível" "Não foram encontradas legendas (manuais ou automáticas) para esta mídia."
+        fi
+        return 1
+    fi
+
+    local clean_title
+    clean_title=$(echo "$title" | sed 's/[/\\?%*:|"<>]/_/g')
+    local md_output="${dest}/${clean_title} [Transcricao IA].md"
+    local date_now
+    date_now=$(date '+%Y-%m-%d %H:%M:%S')
+
+    {
+        echo "# ${title}"
+        echo ""
+        echo "- **Fonte:** ${url}"
+        echo "- **Canal / Autor:** ${uploader}"
+        echo "- **Data de Extração:** ${date_now}"
+        echo "- **Processado por:** Media Downloader AI Engine (dl)"
+        echo ""
+        echo "---"
+        echo ""
+        echo "## 📝 Transcrição Completa"
+        echo ""
+    } > "$md_output"
+
+    awk '
+        /^[0-9]+$/ { next }
+        /^[0-9]{2}:[0-9]{2}:[0-9]{2}/ { next }
+        /^$/ { next }
+        {
+            gsub(/<[^>]*>/, "")
+            gsub(/&nbsp;/, " ")
+            gsub(/^[ \t]+|[ \t]+$/, "")
+            if (length($0) > 0 && $0 != last) {
+                print $0
+                last = $0
+            }
+        }
+    ' "$srt_file" >> "$md_output"
+
+    rm -f "${tmp_prefix}"*
+
+    echo -e "${GREEN}✔ Transcrição formatada para IA gerada com sucesso!${NC}"
+    echo -e "${BLUE}📄 Arquivo salvo em:${NC} ${md_output}"
+
+    if command -v wl-copy >/dev/null 2>&1; then
+        wl-copy < "$md_output"
+        echo -e "${PEACH}📋 Conteúdo copiado automaticamente para a Área de Transferência! (Pronto para colar no ChatGPT/Claude)${NC}"
+    elif command -v xclip >/dev/null 2>&1; then
+        xclip -selection clipboard < "$md_output"
+        echo -e "${PEACH}📋 Conteúdo copiado automaticamente para a Área de Transferência! (Pronto para colar no ChatGPT/Claude)${NC}"
+    fi
+
+    log_history "$title [Transcricao IA]" "$url" "$md_output" "TRANSCRIPT"
+    notify_completion "$title [Transcrição IA]" "$dest" "$md_output"
+}
+
+# ------------------------------------------------------------------------------
+# ATUALIZADOR DOS MOTORES DE DOWNLOAD (YT-DLP + SPOTDL + GALLERY-DL)
+# ------------------------------------------------------------------------------
+update_engines() {
+    echo -e "${MAUVE}${BOLD}╭───────────────────────────────────────────────────────────────╮${NC}"
+    echo -e "${MAUVE}${BOLD}│       🚀 ATUALIZADOR DE MOTORES DE MÍDIA (dl --update)        │${NC}"
+    echo -e "${MAUVE}${BOLD}╰───────────────────────────────────────────────────────────────╯${NC}"
+    echo ""
+
+    echo -e "${BLUE}1. Verificando motor de vídeo (yt-dlp)...${NC}"
+    local ytdlp_out
+    ytdlp_out=$(yt-dlp -U 2>&1 || true)
+    if echo "$ytdlp_out" | grep -qi "Installed with"; then
+        echo -e "${PEACH}ℹ️ yt-dlp é gerenciado pelo Arch Linux (pacman/yay).${NC}"
+        if command -v yay >/dev/null 2>&1; then
+            echo -e "${SUBTEXT}Sincronizando via yay...${NC}"
+            yay -S --needed yt-dlp || true
+        fi
+    else
+        echo "$ytdlp_out"
+    fi
+    local ytdlp_ver
+    ytdlp_ver=$(yt-dlp --version 2>/dev/null || echo "N/A")
+    echo -e "${GREEN}✔ yt-dlp versão ativa:${NC} $ytdlp_ver"
+    echo ""
+
+    echo -e "${BLUE}2. Verificando motor de música (spotdl)...${NC}"
+    if command -v pipx >/dev/null 2>&1 && pipx list 2>/dev/null | grep -q "package spotdl"; then
+        pipx upgrade spotdl || true
+    elif command -v pip >/dev/null 2>&1; then
+        pip install --upgrade spotdl 2>/dev/null || true
+    elif command -v yay >/dev/null 2>&1; then
+        yay -S --needed spotdl 2>/dev/null || true
+    fi
+    local spotdl_ver
+    spotdl_ver=$(spotdl --version 2>/dev/null || echo "N/A")
+    echo -e "${GREEN}✔ spotdl versão ativa:${NC} $spotdl_ver"
+    echo ""
+
+    echo -e "${BLUE}3. Verificando motor de galerias (gallery-dl)...${NC}"
+    if command -v gallery-dl >/dev/null 2>&1; then
+        gallery-dl --update 2>/dev/null || true
+        local gdl_ver
+        gdl_ver=$(gallery-dl --version 2>/dev/null || echo "N/A")
+        echo -e "${GREEN}✔ gallery-dl versão ativa:${NC} $gdl_ver"
+    else
+        echo -e "${SUBTEXT}gallery-dl não instalado (opcional).${NC}"
+    fi
+    echo ""
+
+    echo -e "${GREEN}${BOLD}✔ Todos os motores foram verificados e sincronizados!${NC}"
 }
 
 # ------------------------------------------------------------------------------
@@ -715,7 +864,7 @@ run_rofi_mode() {
     fi
 
     local choice
-    choice=$(printf "🎥 Vídeo Completo (1080p/4K MP4)\n🎵 Áudio MP3 (320kbps + Capa & Tags)\n⚡ Vídeo Leve (720p Rápido)\n✂️ Cortar Trecho de Vídeo (Clip)\n🗜️ Comprimir para Discord / WhatsApp (<10MB)\n🎞️ Gerar GIF Animado\n📸 Galeria de Fotos / Imagens\n📝 Baixar Apenas Legendas (.srt)\n🖼️ Baixar Apenas Capa / Thumbnail" | rofi -dmenu -i -p "Escolha o Formato" -l 9 || true)
+    choice=$(printf "🎥 Vídeo Completo (1080p/4K MP4)\n🎵 Áudio MP3 (320kbps + Capa & Tags)\n⚡ Vídeo Leve (720p Rápido)\n✂️ Cortar Trecho de Vídeo (Clip)\n🗜️ Comprimir para Discord / WhatsApp (<10MB)\n🎞️ Gerar GIF Animado\n🤖 Transcrição Limpa para IA (.md)\n📸 Galeria de Fotos / Imagens\n📝 Baixar Apenas Legendas (.srt)\n🖼️ Baixar Apenas Capa / Thumbnail" | rofi -dmenu -i -p "Escolha o Formato" -l 10 || true)
 
     case "$choice" in
         *"Vídeo Completo"*)
@@ -743,6 +892,9 @@ run_rofi_mode() {
             clip_time=$(rofi -dmenu -p "Minutagem do GIF (ex: 00:05-00:15)" -theme-str 'entry { placeholder: "MM:SS-MM:SS"; }' </dev/null || true)
             MAKE_GIF=true
             download_video "$url" "720" "$dest_v" "$clip_time"
+            ;;
+        *"Transcrição"*)
+            download_transcript "$url" "$dest_v"
             ;;
         *"Galeria de Fotos"*)
             download_gallery "$url" "$dest_i"
@@ -907,11 +1059,12 @@ run_cli_mode() {
     echo -e "  ${YELLOW}[5]${NC} 🗜️ Comprimir para Discord / WhatsApp (<10MB)"
     echo -e "  ${MAUVE}[6]${NC} 🎞️ Gerar GIF Animado Fluido"
     echo -e "  ${BLUE}[7]${NC} ⏩ Modo Estudo (Sem silêncios + 1.5x de velocidade)"
-    echo -e "  ${SUBTEXT}[8]${NC} 📝 Apenas Legendas / Transcrição (.srt)"
-    echo -e "  ${SUBTEXT}[9]${NC} 🖼️ Apenas Capa / Thumbnail em Alta Resolução"
+    echo -e "  ${MAUVE}[8]${NC} 🤖 Transcrição Limpa para IA (.md / pronto para ChatGPT & Claude)"
+    echo -e "  ${SUBTEXT}[9]${NC} 📝 Apenas Legendas (.srt bruto)"
+    echo -e "  ${SUBTEXT}[10]${NC} 🖼️ Apenas Capa / Thumbnail em Alta Resolução"
     echo -e "  ${RED}[q]${NC} Cancelar"
     echo ""
-    read -rp "Opção [1-9, padrão: 1]: " opt
+    read -rp "Opção [1-10, padrão: 1]: " opt
     opt="${opt:-1}"
 
     case "$opt" in
@@ -953,11 +1106,15 @@ run_cli_mode() {
             download_audio "$url" "$dest_a"
             ;;
         8)
+            echo -e "\n${MAUVE}🤖 Extraindo transcrição e gerando resumo limpo em Markdown para IA...${NC}\n"
+            download_transcript "$url" "$dest_v"
+            ;;
+        9)
             echo -e "\n${SUBTEXT}📝 Extraindo apenas as legendas (.srt)...${NC}\n"
             SUB_ONLY=true
             download_video "$url" "best" "$dest_v"
             ;;
-        9)
+        10)
             echo -e "\n${SUBTEXT}🖼️ Baixando a thumbnail/capa em alta resolução...${NC}\n"
             THUMB_ONLY=true
             download_video "$url" "best" "$dest_i"
@@ -989,11 +1146,14 @@ show_help() {
     echo -e "  ${BLUE}dl --rofi${NC}                   Abre o menu visual Rofi (SUPER + ALT + D)"
     echo -e "  ${BLUE}dl -n, --now${NC}                Baixa o que está tocando agora (SUPER + CTRL + D)"
     echo -e "  ${BLUE}dl -h, --history${NC}            Histórico de downloads com busca FZF"
+    echo -e "  ${BLUE}dl -u, --update${NC}             Atualiza os motores de download (yt-dlp, spotdl, gallery-dl)"
     echo -e "  ${BLUE}dl -b <lista.txt>${NC}          Baixa em lote todos os links de um arquivo de texto"
     echo -e "  ${BLUE}dl -p <lista.txt>${NC}          Baixa a lista toda direto para a pasta .privado"
     echo ""
     echo -e "${BOLD}Flags Diretas de Linha de Comando:${NC}"
     echo -e "  ${GREEN}dl -a <url>${NC}                 Baixa direto como Áudio MP3 320k"
+    echo -e "  ${MAUVE}dl -t, --transcript <url>${NC}   Extrai transcrição limpa em Markdown (.md) para IA/LLMs"
+    echo -e "  ${GREEN}dl --no-sponsors <url>${NC}       Remove jabás e patrocínios embutidos (SponsorBlock)"
     echo -e "  ${PEACH}dl -p <url>${NC}                 Roteia direto para a pasta .privado"
     echo -e "  ${BLUE}dl -b, --batch <file.txt>${NC}   Processa arquivo de texto com links em lote"
     echo -e "  ${BLUE}dl --here <url>${NC}             Baixa diretamente na pasta atual onde o terminal está"
@@ -1026,6 +1186,10 @@ main() {
                 run_rofi_mode
                 exit 0
                 ;;
+            -u|--update)
+                update_engines
+                exit 0
+                ;;
             -h|--history)
                 view_history "cli"
                 exit 0
@@ -1051,6 +1215,14 @@ main() {
                 ;;
             -a|--audio)
                 direct_action="audio"
+                shift
+                ;;
+            -t|--transcript|--text)
+                direct_action="transcript"
+                shift
+                ;;
+            --no-sponsors|--clean)
+                SKIP_SPONSORS=true
                 shift
                 ;;
             -p|--private)
@@ -1133,7 +1305,7 @@ main() {
     fi
 
     # Se foi chamada uma flag direta específica de linha de comando, executa direto
-    if [ -n "$direct_action" ] || [ "$MAKE_GIF" = true ] || [ -n "$COMPRESS_TARGET" ] || [ "$SPLIT_CHAPTERS" = true ] || [ "$SYNC_PLAYLIST" = true ] || [ -n "$CUSTOM_CLIP" ] || [ "$FORCE_PRIVATE" = true ]; then
+    if [ -n "$direct_action" ] || [ "$MAKE_GIF" = true ] || [ -n "$COMPRESS_TARGET" ] || [ "$SPLIT_CHAPTERS" = true ] || [ "$SYNC_PLAYLIST" = true ] || [ -n "$CUSTOM_CLIP" ] || [ "$FORCE_PRIVATE" = true ] || [ "$SKIP_SPONSORS" = true ]; then
 
 
         if [ -z "$target_url" ]; then
@@ -1163,6 +1335,8 @@ main() {
             download_spotify "$target_url" "mp3" "$dest_a" "cli"
         elif [ "$direct_action" == "gallery" ] || is_gallery_domain "$target_url"; then
             download_gallery "$target_url" "$dest_i"
+        elif [ "$direct_action" == "transcript" ]; then
+            download_transcript "$target_url" "$dest_v"
         elif [ "$direct_action" == "audio" ]; then
             download_audio "$target_url" "$dest_a" "$CUSTOM_CLIP"
         else
