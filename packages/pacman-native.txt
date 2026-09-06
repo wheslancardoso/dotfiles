@@ -318,4 +318,5 @@ zathura
 zathura-pdf-mupdf
 zellij
 zoxide
+qrencode
 zram-generator

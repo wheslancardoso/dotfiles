@@ -298,10 +298,21 @@ alias fix-audio='$HOME/dotfiles/scripts/fix-audio.sh'
 alias fix-pendrive='$HOME/dotfiles/scripts/fix-pendrive.sh'
 alias fix-ntfs='$HOME/dotfiles/scripts/fix-pendrive.sh'
 
-# 🗑️ Lixeira no Terminal (trash-cli)
+# 🗑️ Lixeira Inteligente & Proteção contra perda acidental (trash-cli)
+alias tp='trash-put'
+alias trash='trash-put'
+alias tl='trash-list'
 alias trash-list='trash-list'
-alias trash-empty='trash-empty'
+alias trestore='trash-restore'
 alias trash-restore='trash-restore'
+alias tempty='trash-empty'
+alias trash-empty='trash-empty'
+
+# ⌨️ Buscador Universal de Atalhos & Comandos (Zero esforço de memória)
+alias keys='bash $HOME/dotfiles/scripts/cheat-keys.sh'
+alias ajuda='bash $HOME/dotfiles/scripts/cheat-keys.sh'
+alias atalhos='bash $HOME/dotfiles/scripts/cheat-keys.sh'
+
 
 # ⏰ Sincronização Forçada do Relógio NTP
 alias sync-clock='sudo timedatectl set-ntp true && sudo systemctl restart systemd-timesyncd && date'
@@ -345,6 +356,38 @@ clip() {
         echo "Uso: comando | clip   OU   clip \"texto a copiar\""
     fi
 }
+
+# 📱 qr: Gerador Instantâneo de QR Code no terminal (celular -> PC sem cabos nem login)
+qr() {
+    local text=""
+    if [ ! -t 0 ]; then
+        text="$(cat)"
+    elif [ $# -gt 0 ]; then
+        text="$*"
+    else
+        if command -v wl-paste &>/dev/null; then
+            text="$(wl-paste)"
+        elif command -v xclip &>/dev/null; then
+            text="$(xclip -selection clipboard -o)"
+        fi
+    fi
+
+    if [ -z "$text" ]; then
+        echo "Uso: qr <texto/url>  OU  comando | qr  OU  apenas 'qr' (lê do clipboard)"
+        return 1
+    fi
+
+    if command -v qrencode &>/dev/null; then
+        echo ""
+        qrencode -t ANSIUTF8 "$text"
+        echo ""
+        echo "📱 Aponte a câmera do celular para escanear"
+    else
+        echo "Instalando qrencode..."
+        sudo pacman -S --noconfirm qrencode 2>/dev/null && qrencode -t ANSIUTF8 "$text"
+    fi
+}
+
 
 
 # Yazi CWD Wrapper: navegue no terminal com 'y' ou 'yz' e mude de pasta automaticamente ao sair com 'q'

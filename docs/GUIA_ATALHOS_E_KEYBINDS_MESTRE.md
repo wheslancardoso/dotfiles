@@ -11,12 +11,21 @@
 | Atalho | Ação |
 |---|---|
 | `Super + Q` | Fechar janela ativa (**Kill**) |
+| `Super + Backspace` | **Mata-Processo de Emergência** (Cursor de mira para matar app congelado) |
 | `Super + Return` | Abrir terminal (**Ghostty / Kitty / Alacritty**) |
+| `Alt + Tab` / `Alt + Shift + Tab` | **Ciclo Rápido de Janelas** (0ms de lag, alternância instantânea pura sem popups) |
+| `Super + Tab` | **Seletor Visual de Janelas** (Busca interativa com ícones e workspaces no Rofi) |
+| `Super + A` | **Desktop Overview** (Visão geral de todos os workspaces e janelas em mosaico) |
+| `Ctrl + Shift + Esc` ou `Super + Esc` | **Gerenciador de Tarefas TUI** (Abre o `btop` instantâneo flutuante com Catppuccin) |
 | `Super + E` | Abrir explorador de arquivos (**Yazi / Thunar**) |
 | `Super + D` | Abrir menu de aplicativos (**Rofi Launcher**) |
 | `Super + V` | Histórico rápido da área de transferência (**Cliphist / Rofi 2ms**) |
 | `Alt + V` | Gerenciador e histórico avançado com abas e imagens (**CopyQ**) |
 | `Super + F` | Janela em tela cheia (**Fullscreen Toggle**) |
+| `Super + Space` | Alternar layout de teclado (US-Intl, PT-BR ABNT2, US-Dev) |
+| `Super + ;` | Seletor de Emojis e Símbolos especiais (**RofiEmoji**) |
+| `Super + H` ou `Super + /` | **Cheat Sheet Mestre** com todos os atalhos do sistema (KeyHints HUD) |
+| `Super + Shift + /` ou `Super + ?` | **Buscador Universal de Atalhos** (cheat-keys via Rofi com busca em tempo real) |
 | `Super + Shift + Space` | Alternar janela flutuante (**Floating Toggle**) |
 | `Super + H / J / K / L` | Mover foco entre janelas (Esquerda, Abaixo, Acima, Direita) |
 | `Super + Shift + H / J / K / L` | Mover janela de posição no layout tiling |
@@ -30,8 +39,7 @@
 | `Super + Alt + B` | **Bluetooth Quick Manager** (Menu Rofi com bateria e conexão rápida) |
 | `Super + Alt + W` | **Wi-Fi Quick Manager** (Menu Rofi com intensidade de sinal `▂▄▆█`) |
 | `Super + C` | Calculadora flutuante com conversão de moedas ao vivo |
-| `Super + Space` | Alternar layout de teclado (US-Intl, PT-BR ABNT2, US-Dev) |
-| `Super + H` ou `Super + /` | **Cheat Sheet Mestre** com todos os atalhos do sistema (KeyHints HUD) |
+| `Super + Alt + C` | Calculadora científica e financeira avançada (**Qalculate-GTK**) |
 | `Super + Shift + D` | **Upload Rápido de Documentos** (Acesso Rápido - CNH, RG, Comprovantes em janela flutuante) |
 | `Super + Alt + S` | **Sincronização de Saves de Jogos** (Ludusavi Cloud Backup com notificação nativa) |
 | `Super + Alt + G` | **Google Drive 5TB On-Demand** (Conectar/Desconectar Rclone VFS streaming com notificação) |
@@ -44,6 +52,7 @@
 | `Super + Shift + N` | Central de Notificações e Controle (**SwayNC** com Não Perturbe) |
 | `Super + N` | Luz Noturna / Filtro de Luz Azul (**Hyprsunset**) |
 | `Ctrl + Alt + P` | Menu de saída / Desligar / Reiniciar (**Wlogout**) |
+
 
 
 
@@ -212,6 +221,18 @@
 
 | Alias | O que faz |
 |---|---|
+| `keys` / `ajuda` | **Buscador Universal de Atalhos** (FZF interativo com preview ao vivo) |
+| `qr [texto/url]` | **Gerador Instantâneo de QR Code** (Transfere links/texto do PC pro celular sem fios) |
+| `clip [texto]` | Copia texto ou saída de comando pro clipboard (`cat arq \| clip` ou `clip "texto"`) |
+| `brave-sync` | Copia o código de 25 palavras do Brave Sync pro clipboard com a palavra do dia |
+| `als` / `aliases` | Busca fuzzy interativa de todos os aliases do terminal com preview |
+| `alias-help` | Tabela resumida de aliases categorizados |
+| `Ctrl + Y` / `Alt + Y` | **Seletor Visual Yazi no Prompt** (Escolha arquivos visualmente para o comando atual) |
+| `tp [arquivo]` | Envia para a Lixeira Segura (`trash-put`) sem risco de perda definitiva |
+| `tl` | Lista arquivos na lixeira (`trash-list`) com datas e caminhos originais |
+| `trestore` | Restaura arquivos da lixeira de forma interativa com 1 número |
+| `tempty` | Esvazia a lixeira do sistema (`trash-empty`) |
+| `x [arquivo]` | Extrai qualquer formato compactado (.zip, .7z, .tar.gz, .rar) automaticamente |
 | `vibe` | Inicia sessão de Vibe Coding no Zellij (LazyVim + IA) |
 | `fullstack` | Inicia layout Fullstack (LazyVim + IA + Server/DB) |
 | `mobile` | Inicia layout Mobile (LazyVim + IA + Metro/Flutter) |
@@ -228,15 +249,15 @@
 | `cat [arquivo]` | Leitura de arquivo com realce de sintaxe (**Bat**) |
 | `y` | Abre o **Yazi** e muda o diretório do terminal ao sair |
 | `pacup` / `safe-update` | Atualização blindada (chaveiro PGP atualizado antes e snapshot Btrfs) |
+| `cleanup` | Faxina geral de caches, logs antigos e pacotes órfãos |
 | `fix-pacman` | Destrava o banco de dados `/var/lib/pacman/db.lck` com segurança |
 | `fix-keys` | Repara e atualiza as chaves PGP oficiais do Arch Linux |
 | `fix-mirrors` | Ranqueia os mirrors mais rápidos do Brasil e América do Sul |
 | `fix-audio` | Reinicia PipeWire e WirePlumber em caso de estalos ou falha |
 | `fix-pendrive` | Desbloqueia e repara pen-drives NTFS (dirty-bit) e FAT32 |
 | `fix-suspend` | Diagnóstico e proteção para o PC nunca acordar sozinho |
-| `clean-system` | Faxina geral de caches, logs antigos e pacotes órfãos |
-| `trash-empty` | Esvazia a lixeira do sistema de forma segura |
 | `perf` / `quiet` | Alterna entre performance máxima e silêncio das ventoinhas |
+
 
 
 
