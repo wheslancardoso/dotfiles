@@ -345,6 +345,10 @@ alias fix-bass='$HOME/dotfiles/scripts/setup-audio-presets.sh'
 alias fix-pendrive='$HOME/dotfiles/scripts/fix-pendrive.sh'
 alias fix-ntfs='$HOME/dotfiles/scripts/fix-pendrive.sh'
 
+# ⚡ Cópia Rápida com Progresso Real e Percentual (Rsync Turbo)
+alias cpr='rsync -ah --info=progress2'
+alias cp-fast='rsync -ah --info=progress2'
+
 # 🗑️ Lixeira Inteligente & Proteção contra perda acidental (trash-cli)
 alias tp='trash-put'
 alias trash='trash-put'
