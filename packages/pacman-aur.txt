@@ -1,21 +1,17 @@
 ananicy-cpp
-ananicy-rules-cachyos-git
 android-studio
 antigravity
 brave-bin
 bruno-bin
-curlie-bin
 flutter-bin
 fsearch
 gallery-dl-bin
 geocode-glib-2
-geocode-glib-common
 google-chrome
 gpu-screen-recorder
 gpu-screen-recorder-gtk
 gtk-engine-murrine
 heroic-games-launcher-bin
-hypr-dynamic-cursors-git
 jack
 lazydocker-bin
 lazysql-bin
@@ -35,5 +31,4 @@ xdg-desktop-portal-termfilechooser-hunkyburrito-git
 ripdrag-git
 spotify
 spicetify-cli
-spotify-player
 spotdl

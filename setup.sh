@@ -9,6 +9,24 @@ NC='\033[0m'
 
 export DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dotfiles}"
 
+# Detecção de modo não-interativo / automação
+NON_INTERACTIVE=false
+for arg in "$@"; do
+    case "$arg" in
+        --non-interactive|-y|--yes)
+            NON_INTERACTIVE=true
+            ;;
+        --help|-h)
+            echo "Uso: ./setup.sh [--non-interactive|-y]"
+            exit 0
+            ;;
+    esac
+done
+
+if [ ! -t 0 ]; then
+    NON_INTERACTIVE=true
+fi
+
 info() { printf "${BLUE}[INFO]${NC} %s\n" "$1"; }
 ok()   { printf "${GREEN}[OK]${NC} %s\n" "$1"; }
 warn() { printf "${YELLOW}[WARN]${NC} %s\n" "$1"; }
@@ -277,7 +295,7 @@ setup_git() {
     else
         # Se fornecido por variável de ambiente GITHUB_TOKEN ou se o usuário quiser inserir interativamente
         local token="${GITHUB_TOKEN:-}"
-        if [ -z "$token" ] && [ -t 0 ]; then
+        if [ -z "$token" ] && [ -t 0 ] && [ "$NON_INTERACTIVE" = false ]; then
             echo -ne "${BLUE}[INFO]${NC} Deseja configurar seu GitHub Personal Access Token (PAT) agora? [s/N]: "
             read -r resp
             if [[ "$resp" =~ ^[Ss]$ ]]; then
@@ -348,15 +366,45 @@ apply_dotfiles() {
     mkdir -p "$HOME/.local/share"
     ln -sfn "$DOTFILES_DIR" "$HOME/.local/share/chezmoi"
 
+    # Garantir permissões de execução em todos os scripts do repositório
+    find "$DOTFILES_DIR/home/dot_config/hypr/scripts" "$DOTFILES_DIR/home/dot_config/hypr/UserScripts" "$DOTFILES_DIR/scripts" -type f \( -name "*.sh" -o -name "*.py" \) -exec chmod +x {} + 2>/dev/null || true
+
     # Inicializar e aplicar no modo symlink (preserva hot-reload no Hyprland/LazyVim)
     info "Inicializando e aplicando dotfiles via Chezmoi (modo symlink)..."
     chezmoi init --source "$DOTFILES_DIR" --apply --mode symlink --force
+
+    # Reassegurar permissões de execução em todos os scripts vinculados
+    find "$HOME/.config/hypr/scripts" "$HOME/.config/hypr/UserScripts" -type f \( -name "*.sh" -o -name "*.py" \) -exec chmod +x {} + 2>/dev/null || true
     
     # Garantia de links diretos para arquivos mestres críticos
     ln -sf "$DOTFILES_DIR/home/dot_zshrc" "$HOME/.zshrc"
     ln -sf "$DOTFILES_DIR/home/dot_bashrc" "$HOME/.bashrc"
     ln -sf "$DOTFILES_DIR/home/dot_gitconfig" "$HOME/.gitconfig"
     [ -f "$DOTFILES_DIR/home/dot_ideavimrc" ] && ln -sf "$DOTFILES_DIR/home/dot_ideavimrc" "$HOME/.ideavimrc"
+
+    # Yazi desktop entry para abrir como aplicativo gráfico do sistema
+    if [ -f "$DOTFILES_DIR/home/dot_local/share/applications/yazi.desktop" ]; then
+        mkdir -p "$HOME/.local/share/applications"
+        ln -sf "$DOTFILES_DIR/home/dot_local/share/applications/yazi.desktop" "$HOME/.local/share/applications/yazi.desktop"
+    fi
+
+    # Configuração do Yazi: plugins e package.toml
+    mkdir -p "$HOME/.config/yazi/plugins"
+    [ -f "$DOTFILES_DIR/home/dot_config/yazi/package.toml" ] && ln -sf "$DOTFILES_DIR/home/dot_config/yazi/package.toml" "$HOME/.config/yazi/package.toml"
+    [ -d "$DOTFILES_DIR/home/dot_config/yazi/plugins/piper.yazi" ] && ln -sfn "$DOTFILES_DIR/home/dot_config/yazi/plugins/piper.yazi" "$HOME/.config/yazi/plugins/piper.yazi"
+
+    # Pre-deploy do lockfile do Neovim / LazyVim
+    if [ -f "$DOTFILES_DIR/home/dot_config/nvim/lazy-lock.json" ] && [ ! -f "$HOME/.config/nvim/lazy-lock.json" ]; then
+        mkdir -p "$HOME/.config/nvim"
+        cp -f "$DOTFILES_DIR/home/dot_config/nvim/lazy-lock.json" "$HOME/.config/nvim/lazy-lock.json"
+    fi
+
+    # Pre-deploy das configurações do Vesktop (Discord Wayland com áudio)
+    if [ -d "$DOTFILES_DIR/home/dot_config/vesktop" ]; then
+        mkdir -p "$HOME/.config/vesktop/settings"
+        [ -f "$DOTFILES_DIR/home/dot_config/vesktop/settings.json" ] && cp -n "$DOTFILES_DIR/home/dot_config/vesktop/settings.json" "$HOME/.config/vesktop/settings.json" 2>/dev/null || true
+        [ -f "$DOTFILES_DIR/home/dot_config/vesktop/settings/settings.json" ] && cp -n "$DOTFILES_DIR/home/dot_config/vesktop/settings/settings.json" "$HOME/.config/vesktop/settings/settings.json" 2>/dev/null || true
+    fi
 
     # Garantir que todos os scripts utilitários estejam no PATH (~/.local/bin)
     mkdir -p "$HOME/.local/bin"
@@ -376,6 +424,8 @@ apply_dotfiles() {
     [ -f "$DOTFILES_DIR/scripts/setup-audio-presets.sh" ] && ln -sf "$DOTFILES_DIR/scripts/setup-audio-presets.sh" "$HOME/.local/bin/fix-bass"
     [ -f "$DOTFILES_DIR/scripts/vim-king.sh" ] && ln -sf "$DOTFILES_DIR/scripts/vim-king.sh" "$HOME/.local/bin/vk"
     [ -f "$DOTFILES_DIR/scripts/media-download.sh" ] && ln -sf "$DOTFILES_DIR/scripts/media-download.sh" "$HOME/.local/bin/dl"
+    [ -f "$DOTFILES_DIR/scripts/setup-spicetify.sh" ] && ln -sf "$DOTFILES_DIR/scripts/setup-spicetify.sh" "$HOME/.local/bin/fix-spicetify"
+    [ -f "$DOTFILES_DIR/scripts/audio-preset-switch.sh" ] && ln -sf "$DOTFILES_DIR/scripts/audio-preset-switch.sh" "$HOME/.local/bin/audio-preset-switch"
 
     ok "Dotfiles e utilitários aplicados com sucesso via Chezmoi."
 }
@@ -476,16 +526,30 @@ setup_extras() {
         ok "Spotify & Spicetify configurados com sucesso!"
     fi
 
-    # Configurar plugins oficiais do Hyprland (hypr-dynamic-cursors com efeito mouse shake)
+    # Garantir SpotDL via pipx (zero conflitos com ambiente global Python)
+    if command -v pipx &>/dev/null && ! command -v spotdl &>/dev/null; then
+        info "Instalando SpotDL via pipx..."
+        pipx install spotdl 2>/dev/null || true
+        ok "SpotDL instalado com sucesso via pipx."
+    fi
+
+    # Inicializar e sincronizar plugins do Yazi via package manager 'ya'
+    if command -v ya &>/dev/null; then
+        info "Sincronizando plugins do Yazi..."
+        ya pack -i 2>/dev/null || true
+        ok "Plugins do Yazi sincronizados com sucesso."
+    fi
+
+    # Configurar plugins oficiais do Hyprland (hypr-dynamic-cursors)
     if command -v hyprpm &>/dev/null; then
-        info "Configurando plugins Hyprland via hyprpm (dynamic-cursors / mouse shake)..."
+        info "Configurando plugins Hyprland via hyprpm (dynamic-cursors)..."
         hyprpm update 2>/dev/null || true
         hyprpm add https://github.com/VirtCode/hypr-dynamic-cursors 2>/dev/null || true
         hyprpm enable dynamic-cursors 2>/dev/null || true
         ok "Plugin hypr-dynamic-cursors configurado e habilitado no Hyprland."
     fi
 
-    ok "Associações padrão configuradas."
+    ok "Associações padrão e extras configurados."
 }
 
 # 9.1. Blindagem de Antiatritos do Sistema (Suspensão, Wakeup Espúrio, Desligamento Rápido, ZRAM, Kernel)
@@ -618,9 +682,9 @@ setup_anti_friction() {
     fi
 
     # 14. Flags de aceleração GPU por hardware e Wayland nativo para navegadores e apps Electron
-    for f in chrome-flags.conf chromium-flags.conf electron-flags.conf code-flags.conf; do
-        if [ -f "$DOTFILES_DIR/home/dot_config/$f" ]; then
-            cp -f "$DOTFILES_DIR/home/dot_config/$f" "$HOME/.config/$f"
+    for f in chrome-flags.conf chromium-flags.conf electron-flags.conf code-flags.conf brave-flags.conf; do
+        if [ -f "$DOTFILES_DIR/home/dot_config/$f" ] && [ ! -e "$HOME/.config/$f" ]; then
+            ln -sf "$DOTFILES_DIR/home/dot_config/$f" "$HOME/.config/$f"
         fi
     done
     ok "Flags de aceleração por hardware e Wayland nativo aplicadas!"
@@ -654,8 +718,40 @@ setup_default_theme_and_wallpaper() {
     if [ -f "$HOME/.config/waybar/configs/[TOP] Default" ]; then
         ln -sf "$HOME/.config/waybar/configs/[TOP] Default" "$HOME/.config/waybar/config"
     fi
-    if [ -f "$HOME/.config/waybar/style/[WALLUST] ML4W-modern.css" ]; then
+    if [ -f "$HOME/.config/waybar/style/[WALLUST] Rice Invejavel.css" ]; then
+        ln -sf "$HOME/.config/waybar/style/[WALLUST] Rice Invejavel.css" "$HOME/.config/waybar/style.css"
+    elif [ -f "$HOME/.config/waybar/style/[WALLUST] ML4W-modern.css" ]; then
         ln -sf "$HOME/.config/waybar/style/[WALLUST] ML4W-modern.css" "$HOME/.config/waybar/style.css"
+    fi
+
+    # Sincronização e Configuração do SDDM (simple_sddm_2 + Night_City.png)
+    local sddm_theme_dir="/usr/share/sddm/themes/simple_sddm_2"
+    if [ -d "$sddm_theme_dir" ]; then
+        info "Configurando Night_City como wallpaper do SDDM e liberando permissões dinâmicas..."
+        sudo mkdir -p "$sddm_theme_dir/Backgrounds"
+        if [ -f "$default_wp" ]; then
+            sudo cp -f "$default_wp" "$sddm_theme_dir/Backgrounds/default"
+            sudo cp -f "$default_wp" "$sddm_theme_dir/Backgrounds/default.png" 2>/dev/null || true
+            sudo cp -f "$default_wp" "$sddm_theme_dir/Backgrounds/default.jpg" 2>/dev/null || true
+        fi
+        # Concede permissão de escrita para o usuário na pasta de Backgrounds do tema
+        # Isso permite que WallustSwww.sh sincronize o background do SDDM dinamicamente sem pedir sudo
+        sudo chown -R "$USER:$USER" "$sddm_theme_dir/Backgrounds" 2>/dev/null || true
+        sudo chmod -R 775 "$sddm_theme_dir/Backgrounds" 2>/dev/null || true
+        ok "SDDM sincronizado com Night_City e permissões configuradas!"
+    fi
+
+    # Configuração de /etc/sddm.conf
+    if [ ! -f /etc/sddm.conf ] || ! grep -q "Current=simple_sddm_2" /etc/sddm.conf 2>/dev/null; then
+        sudo mkdir -p /etc
+        cat << 'EOF' | sudo tee /etc/sddm.conf >/dev/null
+[Theme]
+Current=simple_sddm_2
+
+[General]
+InputMethod=qtvirtualkeyboard
+EOF
+        ok "Arquivo /etc/sddm.conf configurado com sucesso."
     fi
 
     # Executar Wallust se disponível para pré-gerar paletas de cores
@@ -665,7 +761,7 @@ setup_default_theme_and_wallpaper() {
         ok "Paleta Wallust gerada com sucesso."
     fi
 
-    ok "Wallpaper Night_City e Waybar Poweruser configurados."
+    ok "Wallpaper Night_City, SDDM e Waybar Poweruser configurados."
 }
 
 # 11. Verificação do Hyprland
@@ -673,14 +769,62 @@ check_hyprland_install() {
     if ! command -v hyprland &> /dev/null && ! command -v Hyprland &> /dev/null; then
         warn "Hyprland não foi detectado no sistema."
         if [ -f "$DOTFILES_DIR/Arch-Hyprland-main/install-master.sh" ]; then
-            echo -e "\n[?] Deseja executar a instalação base do Arch-Hyprland (drivers, Hyprland, SDDM, áudio) agora? [s/N]"
-            read -r response
-            if [[ "$response" =~ ^[Ss]$ ]]; then
-                info "Iniciando instalador Arch-Hyprland Master..."
+            if [ "$NON_INTERACTIVE" = true ]; then
+                info "Iniciando instalador Arch-Hyprland Master automaticamente em modo não-interativo..."
                 bash "$DOTFILES_DIR/Arch-Hyprland-main/install-master.sh"
+            else
+                echo -e "\n[?] Deseja executar a instalação base do Arch-Hyprland (drivers, Hyprland, SDDM, áudio) agora? [s/N]"
+                read -r response
+                if [[ "$response" =~ ^[Ss]$ ]]; then
+                    info "Iniciando instalador Arch-Hyprland Master..."
+                    bash "$DOTFILES_DIR/Arch-Hyprland-main/install-master.sh"
+                fi
             fi
         fi
     fi
+}
+
+# 12. Provisão Automatizada do Ambiente de Desenvolvimento
+setup_development_environment() {
+    info "Configurando ambiente completo de desenvolvimento (Docker, Mise runtimes e Neovim/LazyVim)..."
+
+    # 1. Docker
+    if command -v docker &>/dev/null; then
+        sudo systemctl enable --now docker.service 2>/dev/null || true
+        sudo systemctl enable --now docker.socket 2>/dev/null || true
+        sudo gpasswd -a "$USER" docker >/dev/null 2>&1 || true
+        ok "Docker habilitado e usuário adicionado ao grupo docker."
+    fi
+
+    # 2. Mise e Runtimes (Node LTS, Bun, Pnpm, Python 3.12, Go, Java 17)
+    if ! command -v mise &>/dev/null; then
+        info "Instalando Mise..."
+        curl -fsSL https://mise.run | sh 2>/dev/null || true
+        export PATH="$HOME/.local/bin:$PATH"
+    fi
+
+    if command -v mise &>/dev/null; then
+        mkdir -p "$HOME/.config/mise"
+        if [ -f "$DOTFILES_DIR/home/dot_config/mise/config.toml" ]; then
+            cp -f "$DOTFILES_DIR/home/dot_config/mise/config.toml" "$HOME/.config/mise/config.toml"
+        fi
+        info "Provisionando runtimes configuradas no Mise (Node, Bun, Pnpm, Python, Go, Java)..."
+        mise install -y 2>/dev/null || warn "Mise: downloads das runtimes podem requerer conexão ativa."
+        ok "Runtimes do Mise sincronizadas com sucesso."
+    fi
+
+    # 3. Pre-aquecimento e sincronização do Neovim / LazyVim
+    if command -v nvim &>/dev/null; then
+        info "Sincronizando plugins do LazyVim em background headless..."
+        nvim --headless "+Lazy! restore" +qa 2>/dev/null || true
+        ok "LazyVim pronto para uso instantâneo."
+    fi
+
+    # 4. Git core.editor
+    git config --global core.editor "nvim"
+    git config --global color.ui true
+
+    ok "Ambiente de desenvolvimento configurado com sucesso!"
 }
 
 # Execução principal
@@ -699,23 +843,34 @@ setup_extras
 setup_anti_friction
 setup_default_theme_and_wallpaper
 
-
-printf "\n"
-read -p "Deseja configurar o ambiente de desenvolvimento agora? (Docker, Mise, Neovim/LazyVim) [s/N] " DEV_CONF
-if [[ "$DEV_CONF" =~ ^[Ss]$ ]]; then
-    if [ -f "$DOTFILES_DIR/scripts/dev-setup.sh" ]; then
-        bash "$DOTFILES_DIR/scripts/dev-setup.sh"
+# Configuração do ambiente de desenvolvimento
+if [ "$NON_INTERACTIVE" = true ]; then
+    setup_development_environment
+else
+    printf "\n"
+    read -p "Deseja configurar o ambiente de desenvolvimento agora? (Docker, Mise, Neovim/LazyVim) [S/n] " DEV_CONF
+    DEV_CONF="${DEV_CONF:-S}"
+    if [[ "$DEV_CONF" =~ ^[Ss]$ ]]; then
+        setup_development_environment
     else
-        warn "Script dev-setup.sh não encontrado."
+        info "Configuração do ambiente de desenvolvimento ignorada pelo usuário."
     fi
 fi
 
-printf "\n"
-read -p "Deseja vincular sua partição de dados (/mnt/dados) com a Taxonomia Mestre (Organizador)? [s/N] " VINC_CONF
-if [[ "$VINC_CONF" =~ ^[Ss]$ ]]; then
-    if [ -f "$DOTFILES_DIR/scripts/organizador/vincular_linux.sh" ]; then
-        bash "$DOTFILES_DIR/scripts/organizador/vincular_linux.sh"
+# Vinculação da partição de dados
+if [ -d "/mnt/dados/01_Pessoal_e_Vida" ]; then
+    if [ "$NON_INTERACTIVE" = true ]; then
+        bash "$DOTFILES_DIR/scripts/organizador/vincular_linux.sh" 2>/dev/null || true
+    else
+        printf "\n"
+        read -p "Detectada partição /mnt/dados com Taxonomia Mestre. Deseja vinculá-la agora? [S/n] " VINC_CONF
+        VINC_CONF="${VINC_CONF:-S}"
+        if [[ "$VINC_CONF" =~ ^[Ss]$ ]]; then
+            bash "$DOTFILES_DIR/scripts/organizador/vincular_linux.sh"
+        fi
     fi
+else
+    info "Partição /mnt/dados não detectada. Para vincular pastas quando sua partição estiver pronta, execute 'vincular-linux'."
 fi
 
 echo -e "\n${GREEN}=====================================================${NC}"

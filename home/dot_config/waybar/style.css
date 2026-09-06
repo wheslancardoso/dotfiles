@@ -1,357 +1,370 @@
-/* ---- 💫 https://github.com/JaKooLit 💫 ---- */
-/*  ml4w-modern */
+/* ==============================================================================
+ * 🌟 RICE INVEJÁVEL - Masterpiece Floating Island Theme (Wallust Dynamic Colors)
+ * Glassmorphism, Floating Pills, Glow Effects & Drawer Transitions
+ * ============================================================================== */
 
 @import '../../.config/waybar/wallust/colors-waybar.css';
 
-@define-color backgroundlight @color0;
-@define-color backgrounddark @color12;
-@define-color workspacesbackground1 @color0;
-@define-color workspacesbackground2 @color12;
-@define-color bordercolor @color13;
-@define-color textcolor1 @foreground;
-@define-color textcolor2 @foreground;
-@define-color textcolor3 @foreground;
-@define-color iconcolor @foreground;
+@define-color bar-bg rgba(15, 17, 24, 0.65);
+@define-color pill-bg rgba(22, 25, 37, 0.88);
+@define-color pill-bg-hover rgba(35, 39, 58, 0.96);
+@define-color pill-border rgba(255, 255, 255, 0.08);
 
 * {
-	font-family: "JetBrainsMono Nerd Font";
-	font-weight: bold;
-	min-height: 0;
-	/* set font-size to 100% if font scaling is set to 1.00 using nwg-look */
-	font-size: 97%;
-	/* note: different modules have different font sizes */
-	font-feature-settings: '"zero", "ss01", "ss02", "ss03", "ss04", "ss05", "cv31"';
+    font-family: "JetBrainsMono Nerd Font", "Font Awesome 6 Free", sans-serif;
+    font-weight: 700;
+    min-height: 0;
+    font-size: 13px;
+    font-feature-settings: '"zero", "ss01", "ss02", "ss03", "ss04", "ss05", "cv31"';
 }
 
 window#waybar {
-    background-color: rgba(0,0,0,0.8);
-border-bottom: 0px solid @foreground;
-    /* color: #FFFFFF; */
-    background: transparent;
+    background-color: transparent;
+    color: @foreground;
     transition-property: background-color;
-    transition-duration: .5s;
-}
-
-#workspaces {
-    background: @workspacesbackground1;
-    margin: 2px 18px 3px 1px;
-    margin-left: 6px;
-    padding: 0px 2px;
-    border-radius: 5px 5px 5px 5px;
-    border: 0px;
-    font-style: normal;
-    color: @textcolor1;
-}
-
-#workspaces button {
-    padding: 0px 6px;
-    margin: 3px 2px;
-    border-radius: 3px 3px 3px 3px;
-    color: @textcolor1;
-    background-color: @workspacesbackground1;
-    transition: all 0.1s linear;
-}
-
-#workspaces button.active {
-    color: @textcolor1;
-    background: @workspacesbackground2;
-    border-radius: 3px 3px 3px 3px;
-    min-width: 30px;
-    transition: all 0.1s linear;
-}
-
-#workspaces button:hover {
-    color: @textcolor1;
-    background: @workspacesbackground2;
-    border-radius: 5px 5px 5px 5px;
-    opacity:0.7;
-}
-
-tooltip {
-    border-radius: 16px;
-    background-color: @backgroundlight;
-    opacity:0.9;
-    padding:20px;
-    margin:0px;
-}
-
-tooltip label {
-    color: @textcolor2;
-}
-
-#window {
-    margin: 3px 15px 3px 0px;
-    padding: 2px 10px 0px 10px;
-    border-radius: 5px 5px 5px 5px;
-    color:white;
-    font-weight:normal;
+    transition-duration: 0.4s;
 }
 
 window#waybar.empty #window {
-    background-color:transparent;
+    background-color: transparent;
+    border: none;
 }
 
-#taskbar {
-    background: @backgroundlight;
-    margin: 3px 15px 3px 0px;
-    padding:0px;
-    border-radius: 5px 5px 5px 5px;
-    font-weight: normal;
-    font-style: normal;
-    border: 3px solid @backgroundlight;
-}
+/* ==============================================================================
+ * 💎 FLOATING ISLAND PILLS (Containers & Modules)
+ * ============================================================================== */
 
-#taskbar button {
-    margin:0;
-    border-radius: 5px 5px 5px 5px;
-    padding: 0px 5px 0px 5px;
-}
-
-#taskbar.empty {
-    background:transparent;
-    border:0;
-    padding:0;
-    margin:0;
-}
-
-.modules-left > widget:first-child > #workspaces {
-    margin-left: 0;
-}
-
-.modules-right > widget:last-child > #workspaces {
-    margin-right: 0;
-}
-
-#backlight,
-#backlight-slider,
-#battery,
-#bluetooth,
-#clock,
-#cpu,
-#disk,
-#idle_inhibitor,
-#keyboard-state,
-#memory,
-#mode,
-#mpris,
-#network,
-#power-profiles-daemon,
-#pulseaudio,
-#pulseaudio-slider,
-#taskbar button,
-#taskbar,
-#temperature,
-#tray,
-#window,
-#wireplumber,
 #workspaces,
-#custom-backlight,
-#custom-nightlight,
-#custom-browser,
-#custom-cava_mviz,
-#custom-cycle_wall,
-#custom-dot_update,
-#custom-file_manager,
-#custom-keybinds,
-#custom-keyboard,
-#custom-light_dark,
-#custom-nightlight,
-#custom-lock,
-#custom-hint,
-#custom-hypridle,
-#custom-menu,
-#custom-playerctl,
-#custom-power_vertical,
-#custom-power,
-#custom-quit,
-#custom-reboot,
-#custom-settings,
-#custom-spotify,
-#custom-swaync,
-#custom-tty,
-#custom-updater,
-#custom-hyprpicker,
+#group-window_drawer,
+#clock,
+#mpris,
+#group-media,
+#group-mobo_drawer,
+#group-connections,
+#group-audio,
+#group-status,
+#group-notify,
+#group-app_drawer,
+#tray,
+#idle_inhibitor,
 #custom-weather,
-#custom-weather.clearNight,
-#custom-weather.cloudyFoggyDay,
-#custom-weather.cloudyFoggyNight,
-#custom-weather.default, 
-#custom-weather.rainyDay,
-#custom-weather.rainyNight,
-#custom-weather.severe,
-#custom-weather.showyIcyDay,
-#custom-weather.snowyIcyNight,
-#custom-weather.sunnyDay {
-    margin-right: 8px;
-	margin-left: 6px;
-    font-size: 100%;
-    color: @iconcolor;
+#custom-nightlight,
+#custom-hint,
+#custom-cava_mviz {
+    background: @pill-bg;
+    border: 1.5px solid @pill-border;
+    border-radius: 14px;
+    padding: 3px 12px;
+    margin: 4px 3px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#custom-swaync {
-	margin-left: 12px;
+/* Separadores discretos */
+#custom-separator {
+    color: @color10;
+    opacity: 0.35;
+    margin: 0 2px;
 }
 
-#idle_inhibitor {
-    margin-right: 15px;
-    font-size: 102%;
-    font-weight: bold;
-    color: @iconcolor;
-    border-bottom: 0px solid @foreground;
+/* Efeito Hover nos Pills */
+#clock:hover,
+#mpris:hover,
+#group-media:hover,
+#group-window_drawer:hover,
+#group-mobo_drawer:hover,
+#group-connections:hover,
+#group-audio:hover,
+#group-status:hover,
+#group-notify:hover,
+#custom-weather:hover,
+#custom-hint:hover,
+#idle_inhibitor:hover {
+    background: @pill-bg-hover;
+    border-color: @color12;
+    box-shadow: 0 4px 18px rgba(198, 138, 238, 0.25);
 }
 
-#idle_inhibitor.activated {
-    margin-right: 15px;
-    font-size: 100%;
-    font-weight: bold;
-color: @color13;
-    border-bottom: 0px solid @foreground;
+/* ==============================================================================
+ * 🚀 WORKSPACES (Pílula Dinâmica com Glow Neon)
+ * ============================================================================== */
+
+#workspaces {
+    padding: 2px 4px;
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
-#custom-menu {
-    background-color: @backgrounddark;
-    color: @textcolor1;
-    border-radius: 5px 5px 5px 5px;
-    padding: 0px 10px 0px 10px;
-    margin: 2px 17px 2px 0px;
-    border:3px solid @bordercolor;
+#workspaces button {
+    padding: 2px 9px;
+    margin: 2px 2px;
+    border-radius: 10px;
+    color: @color13;
+    background-color: transparent;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#custom-power {
-    background-color: @backgrounddark;
-    color: @textcolor1;
-    border-radius: 5px 5px 5px 5px;
-    padding: 0px 0px 0px 6px;
-    border:3px solid @bordercolor;
+#workspaces button:hover {
+    color: @foreground;
+    background-color: rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
 }
 
-#custom-keybinds {
-    margin: 0px 13px 0px 0px;
-    padding:0px;
-    color: @iconcolor;
+#workspaces button.active {
+    color: #111419;
+    background: linear-gradient(135deg, @color12 0%, @color14 100%);
+    border-radius: 10px;
+    min-width: 32px;
+    font-weight: 900;
+    box-shadow: 0 0 12px @color12;
 }
 
-#custom-updater {
-    background-color: @backgroundlight;
-    color: @textcolor2;
-    border-radius: 5px 5px 5px 5px;
-    padding: 2px 10px 0px 10px;
-    margin: 3px 15px 3px 0px;
+#workspaces button.urgent {
+    color: #ffffff;
+    background: @color11;
+    border-radius: 10px;
+    box-shadow: 0 0 12px @color11;
 }
 
-#custom-updates.green {
-    background-color: @backgroundlight;
+/* ==============================================================================
+ * 🎵 POWER-USER MEDIA & SPOTIFY (Pill & Drawer Controls)
+ * ============================================================================== */
+
+#mpris {
+    background: @pill-bg;
+    border: 1.5px solid @color12;
+    border-radius: 14px;
+    padding: 3px 14px;
+    margin: 4px 3px;
+    color: @foreground;
+    box-shadow: 0 4px 14px rgba(198, 138, 238, 0.25);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#custom-updates.yellow {
-background-color: @color11;
-    color: #FFFFFF;
+#mpris:hover {
+    background: @pill-bg-hover;
+    box-shadow: 0 4px 20px rgba(198, 138, 238, 0.45);
 }
 
-#custom-updates.red {
-background-color: @color13;
-    color: #FFFFFF;
+/* Botões do Drawer de Mídia (Slide-out) */
+#custom-media_prev,
+#custom-media_play,
+#custom-media_next {
+    padding: 0 6px;
+    margin: 0 2px;
+    color: @color14;
+    font-size: 14px;
+    transition: all 0.2s ease;
 }
 
-#keyboard-state {
-    margin-right:10px;
+#custom-media_prev:hover,
+#custom-media_play:hover,
+#custom-media_next:hover {
+    color: @color12;
 }
+
+/* ==============================================================================
+ * 🕒 CLOCK / DATA (Central Highlight)
+ * ============================================================================== */
 
 #clock {
-    background-color: @backgrounddark;
-    color: @textcolor1;
-    border-radius: 3px 5px 3px 5px;
-    padding: 1px 10px 0px 10px;
-    margin: 3px 0px 3px 0px;
-    border:3px solid @bordercolor;   
+    border-color: @color14;
+    color: @color14;
+    font-weight: 800;
+    padding: 3px 14px;
+    box-shadow: 0 0 10px rgba(241, 207, 138, 0.2);
 }
 
-#backlight {
-    background-color: @backgroundlight;
-    margin-left: 6px;
-    color: @textcolor2;
-    border-radius: 5px 5px 5px 5px;
-    padding: 2px 10px 0px 10px;
-    margin: 3px 15px 3px 0px;
+/* ==============================================================================
+ * 🪟 GAVETA DE TÍTULO DA JANELA (App Icon/Class -> Expande Título no Hover)
+ * ============================================================================== */
+
+#group-window_drawer {
+    border-color: @color13;
 }
 
-#pulseaudio {
-    background-color: @backgroundlight;
-    color: @textcolor2;
-    border-radius: 5px 5px 5px 5px;
-    padding: 2px 10px 0px 10px;
-    margin: 3px 15px 3px 0px;
+#group-window_drawer #window,
+#group-window_drawer .window-title-expanded,
+#group-window_drawer label {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
 }
 
-#pulseaudio.muted {
-    background-color: @backgrounddark;
-    color: @textcolor1;
+#window.app {
+    color: @color14;
+    font-weight: 700;
+    padding: 0 4px;
+}
+
+#window.title {
+    color: @foreground;
+    font-weight: 500;
+    padding: 0 4px;
+}
+
+/* ==============================================================================
+ * 🌡️ SISTEMA & HARDWARE (Mobo Drawer: Temp -> CPU, RAM, Disk)
+ * ============================================================================== */
+
+#group-mobo_drawer {
+    border-color: #a6e3a1;
+}
+
+#temperature {
+    color: #a6e3a1;
+    font-weight: 600;
+    padding: 0 4px;
+}
+
+#temperature.critical {
+    color: #e05f65;
+    font-weight: 800;
+}
+
+#cpu {
+    color: @color12;
+    padding: 0 6px;
+}
+
+#memory {
+    color: @color5;
+    padding: 0 6px;
+}
+
+#disk {
+    color: @color14;
+    padding: 0 6px;
+}
+
+#power-profiles-daemon {
+    color: @color6;
+    padding: 0 4px;
+}
+
+/* ==============================================================================
+ * 🌐 CONEXÕES EXPANSÍVEL (Network Drawer: Wi-Fi -> Bluetooth, Velocidade)
+ * ============================================================================== */
+
+#group-connections {
+    border-color: @color6;
 }
 
 #network {
-    background-color: @backgroundlight;
-    color: @textcolor2;
-    border-radius: 5px 5px 5px 5px;
-    padding: 2px 10px 0px 10px;
-    margin: 3px 15px 3px 0px;
+    color: @color6;
+    padding: 0 4px;
 }
 
-#network.ethernet {
-    background-color: @backgroundlight;
-    color: @textcolor2;
+#network.disconnected {
+    color: @color11;
 }
 
-#network.wifi {
-    background-color: @backgroundlight;
-    color: @textcolor2;
+#bluetooth {
+    color: @color12;
+    padding: 0 6px;
 }
 
-#bluetooth, #bluetooth.on, #bluetooth.connected {
-    background-color: @backgroundlight;
-    color: @textcolor2;
-    border-radius: 5px 5px 5px 5px;
-    padding: 2px 10px 0px 10px;
-    margin: 3px 15px 3px 0px;
+#network.speed {
+    color: @color14;
+    padding: 0 6px;
+    font-size: 11px;
 }
 
-#bluetooth.off {
-    background-color: transparent;
-    padding: 0px;
-    margin: 0px;
+/* ==============================================================================
+ * 🔊 ÁUDIO & MICROFONE
+ * ============================================================================== */
+
+#group-audio {
+    border-color: @color12;
 }
 
-#battery {
-    background-color: @backgroundlight;
-    color: @textcolor2;
-    border-radius: 5px 5px 5px 5px;
-    padding: 2px 15px 0px 10px;
-    margin: 3px 15px 3px 0px;
+#pulseaudio {
+    color: @color12;
+    padding: 0 4px;
 }
 
-#battery.charging, #battery.plugged {
-    color: @textcolor2;
-    background-color: @backgroundlight;
+#pulseaudio.muted {
+    color: @color10;
 }
 
-@keyframes blink {
-    to {
-        background-color: @backgroundlight;
-        color: @textcolor2;
-    }
+#pulseaudio.microphone {
+    color: @color14;
+    padding: 0 6px;
 }
 
-#battery.critical:not(.charging) {
-background-color: @color13;
-    color: @textcolor3;
-	animation-name: blink;
-	animation-duration: 3.0s;
-	animation-timing-function: steps(12);
-	animation-iteration-count: infinite;
-	animation-direction: alternate;
+#pulseaudio.microphone-muted {
+    color: @color11;
+}
+
+/* ==============================================================================
+ * ⚡ STATUS & POWER (Power Drawer: Power -> Lock, Exit, Reboot)
+ * ============================================================================== */
+
+#group-status {
+    border-color: @color11;
+}
+
+#custom-power {
+    color: @color11;
+    font-size: 14px;
+    padding: 0 4px;
+}
+
+#custom-power:hover {
+    color: #ffffff;
+}
+
+#custom-lock,
+#custom-quit,
+#custom-reboot,
+#custom-keyboard,
+#keyboard-state {
+    padding: 0 6px;
+    color: @color14;
+}
+
+#custom-lock:hover,
+#custom-quit:hover,
+#custom-reboot:hover {
+    color: @color12;
+}
+
+/* ==============================================================================
+ * 🔔 NOTIFICAÇÕES & WEATHER
+ * ============================================================================== */
+
+#group-notify {
+    border-color: @color13;
+}
+
+#custom-swaync {
+    color: @color13;
+    padding: 0 4px;
+}
+
+#custom-weather {
+    color: @color14;
+    border-color: @color14;
+}
+
+#idle_inhibitor {
+    color: @color6;
+    border-color: @color6;
+}
+
+#custom-nightlight {
+    color: @color14;
+    border-color: @color14;
+}
+
+#custom-hint {
+    color: @color14;
+    border-color: @color14;
 }
 
 #tray {
-    padding: 0px 15px 0px 0px;
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
 #tray > .passive {
@@ -360,27 +373,33 @@ background-color: @color13;
 
 #tray > .needs-attention {
     -gtk-icon-effect: highlight;
+    color: @color11;
 }
 
-#backlight-slider slider,
-#pulseaudio-slider slider {
-	min-width: 0px;
-	min-height: 0px;
-	opacity: 0;
-	background-image: none;
-	border: none;
-	box-shadow: none;
+#custom-cava_mviz {
+    color: @color12;
+    border-color: rgba(255, 255, 255, 0.08);
+    padding: 0 8px;
 }
 
-#backlight-slider trough,
-#pulseaudio-slider trough {
-	min-width: 80px;
-	min-height: 5px;
-	border-radius: 5px;
+#window {
+    color: @color13;
+    border-color: rgba(255, 255, 255, 0.08);
 }
 
-#backlight-slider highlight,
-#pulseaudio-slider highlight {
-	min-height: 10px;
-	border-radius: 5px;
+/* ==============================================================================
+ * 💬 TOOLTIPS (Popup de Informações Estilizado com Vidro Escuro)
+ * ============================================================================== */
+
+tooltip {
+    background: rgba(15, 17, 24, 0.96);
+    border: 1.5px solid @color12;
+    border-radius: 12px;
+    padding: 10px 14px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+}
+
+tooltip label {
+    color: @foreground;
+    font-weight: 600;
 }

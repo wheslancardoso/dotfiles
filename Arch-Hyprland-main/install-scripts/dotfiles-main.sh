@@ -32,7 +32,11 @@ if [ "$custom_dots" == "ON" ] || [ -d "$DOTFILES_DIR" ] || [ "$use_master_dots" 
   if [ -f "$DOTFILES_DIR/setup.sh" ]; then
     echo -e "${OK} Running Master Dotfiles setup (${DOTFILES_DIR}/setup.sh)..."
     chmod +x "$DOTFILES_DIR/setup.sh"
-    cd "$DOTFILES_DIR" && bash ./setup.sh
+    local setup_args=()
+    if [ "$non_interactive" == "true" ]; then
+      setup_args+=("--non-interactive")
+    fi
+    cd "$DOTFILES_DIR" && bash ./setup.sh "${setup_args[@]}"
     printf "\n%.0s" {1..2}
     exit 0
   fi
