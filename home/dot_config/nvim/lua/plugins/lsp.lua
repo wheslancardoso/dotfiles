@@ -9,6 +9,9 @@ return {
         "java-debug-adapter",
         "java-test",
         "vtsls",
+        "angular-language-server",
+        "html-lsp",
+        "emmet-ls",
         "tailwindcss-language-server",
         "prettier",
         "pyright",
@@ -24,5 +27,19 @@ return {
         "stylua",
       })
     end,
+  },
+
+  -- Configuração adicional de servidores LSP (Angular, HTML, Emmet)
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        angularls = {},
+        html = {},
+        emmet_ls = {
+          filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less" },
+        },
+      },
+    },
   },
 }
