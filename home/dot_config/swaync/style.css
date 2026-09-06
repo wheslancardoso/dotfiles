@@ -4,7 +4,7 @@
 @import '../../.config/waybar/wallust/colors-waybar.css';
 
 :root {
-    --notification-icon-size: 88px;
+    --notification-icon-size: 48px;
     --notification-app-icon-size: 24px;
 }
 
@@ -39,10 +39,153 @@
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
 }
 
+/* ==============================================================================
+ * 🎵 SPOTIFY: Layout Completo de Música com Capa Grande e Glow Verde
+ * ============================================================================== */
 .notification.Spotify,
-.notification.spotify {
+.notification.spotify,
+.notification.spotify-osd,
+.notification.music_notif {
     border: 1.5px solid #1db954;
-    box-shadow: 0 8px 28px rgba(29, 185, 84, 0.25);
+    background: rgba(18, 24, 20, 0.96);
+    box-shadow: 0 8px 30px rgba(29, 185, 84, 0.28);
+}
+
+.notification.Spotify .image,
+.notification.spotify .image,
+.notification.spotify-osd .image,
+.notification.music_notif .image {
+    min-width: 88px;
+    min-height: 88px;
+    -gtk-icon-size: 88px;
+    border-radius: 12px;
+    margin: 2px 14px 2px 2px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+    border: 1.5px solid rgba(29, 185, 84, 0.4);
+}
+
+.notification.Spotify .summary,
+.notification.spotify .summary {
+    color: #a6e3a1;
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+/* ==============================================================================
+ * 📺 YOUTUBE / VÍDEO: Identidade Vermelho YouTube & Formato Limpo
+ * ============================================================================== */
+.notification.YouTube,
+.notification.youtube,
+.notification.youtube_media {
+    border: 1.5px solid #ff0000;
+    background: rgba(26, 18, 20, 0.96);
+    box-shadow: 0 8px 26px rgba(255, 0, 0, 0.25);
+}
+
+.notification.YouTube .image,
+.notification.youtube .image,
+.notification.youtube_media .image {
+    min-width: 68px;
+    min-height: 52px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 0, 0, 0.3);
+}
+
+.notification.YouTube .summary,
+.notification.youtube .summary {
+    color: #f38ba8;
+    font-size: 0.98rem;
+    font-weight: 800;
+}
+
+/* ==============================================================================
+ * 💬 WHATSAPP WEB / MENSAGENS: Estilo Chat com Verde WhatsApp
+ * ============================================================================== */
+.notification.WhatsApp,
+.notification.whatsapp,
+.notification[app-name*="whatsapp"],
+.notification[app-name*="WhatsApp"] {
+    border: 1.5px solid #25d366;
+    background: rgba(16, 26, 22, 0.96);
+    box-shadow: 0 8px 26px rgba(37, 211, 102, 0.25);
+}
+
+.notification.WhatsApp .image,
+.notification.whatsapp .image {
+    min-width: 48px;
+    min-height: 48px;
+    -gtk-icon-size: 48px;
+    border-radius: 50%;
+    border: 1.5px solid #25d366;
+}
+
+.notification.WhatsApp .summary,
+.notification.whatsapp .summary {
+    color: #25d366;
+    font-size: 0.98rem;
+    font-weight: 800;
+}
+
+/* ==============================================================================
+ * 🦁 BRAVE / NAVEGADORES WEB: Acento Laranja
+ * ============================================================================== */
+.notification.Brave,
+.notification.brave,
+.notification.firefox,
+.notification.chromium {
+    border: 1.5px solid #fe640b;
+    background: rgba(26, 20, 18, 0.96);
+    box-shadow: 0 8px 24px rgba(254, 100, 11, 0.22);
+}
+
+.notification.Brave .summary,
+.notification.brave .summary {
+    color: #fab387;
+}
+
+/* ==============================================================================
+ * 🎮 DISCORD & TELEGRAM
+ * ============================================================================== */
+.notification.discord,
+.notification.Discord {
+    border: 1.5px solid #5865f2;
+    background: rgba(20, 22, 34, 0.96);
+    box-shadow: 0 8px 26px rgba(88, 101, 242, 0.25);
+}
+
+.notification.discord .summary,
+.notification.Discord .summary {
+    color: #b4befe;
+}
+
+.notification.telegram,
+.notification.Telegram {
+    border: 1.5px solid #229ed9;
+    background: rgba(18, 24, 32, 0.96);
+    box-shadow: 0 8px 26px rgba(34, 158, 217, 0.25);
+}
+
+.notification.telegram .summary,
+.notification.Telegram .summary {
+    color: #89dceb;
+}
+
+/* ==============================================================================
+ * 💻 TERMINAL & DEV
+ * ============================================================================== */
+.notification.ghostty,
+.notification.kitty,
+.notification.alacritty,
+.notification.foot {
+    border: 1.5px solid @color12;
+    background: rgba(20, 22, 30, 0.96);
+    box-shadow: 0 8px 24px rgba(198, 138, 238, 0.22);
+}
+
+.notification.ghostty .summary,
+.notification.kitty .summary,
+.notification.alacritty .summary {
+    color: @color12;
 }
 
 .notification-default-action {
@@ -141,13 +284,13 @@
 
 .notification-content .image,
 .image {
-    -gtk-icon-size: 88px;
-    min-width: 88px;
-    min-height: 88px;
-    border-radius: 12px;
-    margin: 2px 14px 2px 2px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    -gtk-icon-size: 48px;
+    min-width: 48px;
+    min-height: 48px;
+    border-radius: 10px;
+    margin: 2px 12px 2px 2px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .notification-content .app-icon,

@@ -13,19 +13,41 @@ mkdir -p "$COVER_DIR"
 DEFAULT_ICON="$HOME/.config/swaync/icons/music.png"
 [ -f "$DEFAULT_ICON" ] || DEFAULT_ICON="media-playback-start"
 
+# Prioriza Spotify se estiver em execução, para evitar colisão com vídeos do YouTube
+TARGET_PLAYER=""
+if playerctl -l 2>/dev/null | grep -qi "spotify"; then
+    TARGET_PLAYER="-p spotify"
+fi
+
 # 1. Executar a ação de mídia solicitada
 case "$ACTION" in
     --play-pause|play-pause|-p)
-        playerctl play-pause 2>/dev/null || true
+        if [[ -n "$TARGET_PLAYER" ]]; then
+            playerctl $TARGET_PLAYER play-pause 2>/dev/null || playerctl play-pause 2>/dev/null || true
+        else
+            playerctl play-pause 2>/dev/null || true
+        fi
         ;;
     --next|next|-n)
-        playerctl next 2>/dev/null || true
+        if [[ -n "$TARGET_PLAYER" ]]; then
+            playerctl $TARGET_PLAYER next 2>/dev/null || playerctl next 2>/dev/null || true
+        else
+            playerctl next 2>/dev/null || true
+        fi
         ;;
     --prev|--previous|prev|previous)
-        playerctl previous 2>/dev/null || true
+        if [[ -n "$TARGET_PLAYER" ]]; then
+            playerctl $TARGET_PLAYER previous 2>/dev/null || playerctl previous 2>/dev/null || true
+        else
+            playerctl previous 2>/dev/null || true
+        fi
         ;;
     --stop|stop)
-        playerctl stop 2>/dev/null || true
+        if [[ -n "$TARGET_PLAYER" ]]; then
+            playerctl $TARGET_PLAYER stop 2>/dev/null || playerctl stop 2>/dev/null || true
+        else
+            playerctl stop 2>/dev/null || true
+        fi
         ;;
     *)
         echo "Uso: $0 [--play-pause|--next|--prev|--stop]"
@@ -37,7 +59,7 @@ esac
 sleep 0.12
 
 # 3. Obter estado atual do player
-STATUS=$(playerctl status 2>/dev/null || echo "Desconhecido")
+STATUS=$(playerctl $TARGET_PLAYER status 2>/dev/null || playerctl status 2>/dev/null || echo "Desconhecido")
 if [[ "$STATUS" == "Desconhecido" ]]; then
     notify-send -e -u low -t 1500 \
         -h string:x-canonical-private-synchronous:spotify-osd \
@@ -47,10 +69,10 @@ if [[ "$STATUS" == "Desconhecido" ]]; then
 fi
 
 # 4. Obter metadados
-TITLE=$(playerctl metadata --format '{{markup_escape(title)}}' 2>/dev/null || echo "Sem título")
-ARTIST=$(playerctl metadata --format '{{markup_escape(artist)}}' 2>/dev/null || echo "Desconhecido")
-ALBUM=$(playerctl metadata --format '{{markup_escape(album)}}' 2>/dev/null || echo "")
-ART_URL=$(playerctl metadata --format '{{mpris:artUrl}}' 2>/dev/null || echo "")
+TITLE=$(playerctl $TARGET_PLAYER metadata --format '{{markup_escape(title)}}' 2>/dev/null || playerctl metadata --format '{{markup_escape(title)}}' 2>/dev/null || echo "Sem título")
+ARTIST=$(playerctl $TARGET_PLAYER metadata --format '{{markup_escape(artist)}}' 2>/dev/null || playerctl metadata --format '{{markup_escape(artist)}}' 2>/dev/null || echo "Desconhecido")
+ALBUM=$(playerctl $TARGET_PLAYER metadata --format '{{markup_escape(album)}}' 2>/dev/null || playerctl metadata --format '{{markup_escape(album)}}' 2>/dev/null || echo "")
+ART_URL=$(playerctl $TARGET_PLAYER metadata --format '{{mpris:artUrl}}' 2>/dev/null || playerctl metadata --format '{{mpris:artUrl}}' 2>/dev/null || echo "")
 
 # Truncar título e artista se forem excessivamente longos
 [ ${#TITLE} -gt 42 ] && TITLE="${TITLE:0:39}..."

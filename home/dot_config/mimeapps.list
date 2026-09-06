@@ -27,6 +27,7 @@ application/vnd.openxmlformats-officedocument.spreadsheetml.sheet=onlyoffice-des
 application/vnd.ms-powerpoint=onlyoffice-desktopeditors.desktop
 application/vnd.openxmlformats-officedocument.presentationml.presentation=onlyoffice-desktopeditors.desktop
 x-scheme-handler/antigravity=antigravity.desktop
+x-scheme-handler/discord=vesktop.desktop
 
 [Added Associations]
 inode/directory=yazi.desktop;

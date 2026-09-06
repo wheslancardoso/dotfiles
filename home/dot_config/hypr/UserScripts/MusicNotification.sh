@@ -71,33 +71,60 @@ notify_track() {
         safe_album="${safe_album:0:31}..."
     fi
 
-    # Player Badge
-    local player_badge=" Spotify"
-    local player_color="#a6e3a1"
-    if [[ "$player" =~ (brave|firefox|chrome|chromium) ]]; then
-        player_badge="󰖟 Web Player"
-        player_color="#89b4fa"
-    elif [[ "$player" =~ (mpv|vlc|celluloid) ]]; then
-        player_badge="󰕼 Video Player"
-        player_color="#f9e2af"
+    # Distinção Dinâmica de Layout e Identidade por Aplicativo
+    if [[ "$player" == "spotify" ]]; then
+        # 🎵 SPOTIFY: Layout Completo e Rico de Música (Artista | Álbum | Status)
+        local body_grid
+        body_grid="<span font_family='JetBrains Mono Nerd Font' size='9500'>"
+        body_grid+="<span color='#89b4fa'>󰠃 Artista</span> <span color='#6c7086'>│</span> <span color='#cdd6f4' weight='bold'>${safe_artist}</span>\n"
+        body_grid+="<span color='#f9e2af'>󰀥 Álbum  </span> <span color='#6c7086'>│</span> <span color='#bac2de'>${safe_album}</span>\n"
+        body_grid+="<span color='#a6e3a1'> Spotify</span> <span color='#6c7086'>│</span> <span color='#a6e3a1' weight='bold'>Tocando Agora</span>"
+        body_grid+="</span>"
+
+        notify-send \
+            -a "Spotify" \
+            -i "$cover_path" \
+            -u normal \
+            -t 5000 \
+            -h string:x-canonical-private-synchronous:music_notif \
+            "$safe_title" \
+            "$body_grid"
+
+    elif [[ "$player" =~ (brave|firefox|chrome|chromium) ]]; then
+        # 📺 YOUTUBE / NAVEGADOR: Layout Especial para Vídeo Web (Sem tags falsas de álbum)
+        local body_yt
+        body_yt="<span font_family='JetBrains Mono Nerd Font' size='9500'>"
+        if [[ -n "$safe_artist" && "$safe_artist" != "Desconhecido" ]]; then
+            body_yt+="<span color='#f38ba8'>󰗃 Canal  </span> <span color='#6c7086'>│</span> <span color='#cdd6f4' weight='bold'>${safe_artist}</span>\n"
+        fi
+        body_yt+="<span color='#f38ba8'>󰗃 YouTube</span> <span color='#6c7086'>│</span> <span color='#f9e2af' weight='bold'>Vídeo no Navegador</span>"
+        body_yt+="</span>"
+
+        notify-send \
+            -a "YouTube" \
+            -i "$cover_path" \
+            -u low \
+            -t 4000 \
+            -h string:x-canonical-private-synchronous:youtube_media \
+            "$safe_title" \
+            "$body_yt"
+
+    else
+        # 󰕼 REPRODUTOR DE VÍDEO LOCAL (MPV, VLC)
+        local body_video
+        body_video="<span font_family='JetBrains Mono Nerd Font' size='9500'>"
+        body_video+="<span color='#f9e2af'>󰕼 Player </span> <span color='#6c7086'>│</span> <span color='#cdd6f4' weight='bold'>${player}</span>"
+        body_video+="</span>"
+
+        notify-send \
+            -a "Video" \
+            -i "$cover_path" \
+            -u low \
+            -t 3500 \
+            -h string:x-canonical-private-synchronous:video_media \
+            "$safe_title" \
+            "$body_video"
     fi
-
-    # Grid formatado em Pango Markup monospace alinhado
-    local body_grid
-    body_grid="<span font_family='JetBrains Mono Nerd Font' size='9500'>"
-    body_grid+="<span color='#89b4fa'>󰠃 Artista</span> <span color='#6c7086'>│</span> <span color='#cdd6f4' weight='bold'>${safe_artist}</span>\n"
-    body_grid+="<span color='#f9e2af'>󰀥 Álbum  </span> <span color='#6c7086'>│</span> <span color='#bac2de'>${safe_album}</span>\n"
-    body_grid+="<span color='${player_color}'>${player_badge}</span> <span color='#6c7086'>│</span> <span color='${player_color}' weight='bold'>Tocando Agora</span>"
-    body_grid+="</span>"
-
-    notify-send \
-        -a "Spotify" \
-        -i "$cover_path" \
-        -u normal \
-        -t 5000 \
-        -h string:x-canonical-private-synchronous:music_notif \
-        "$safe_title" \
-        "$body_grid"
 }
 
 # Notifica faixa atual se já estiver tocando
