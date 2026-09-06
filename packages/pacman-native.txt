@@ -295,6 +295,7 @@ unzip
 upower
 usb_modeswitch
 usbutils
+v4l-utils
 vim
 vkd3d
 vlc-plugins-all
