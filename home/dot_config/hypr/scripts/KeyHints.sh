@@ -39,8 +39,8 @@ GDK_BACKEND=$BACKEND yad \
 " Q" "Fechar Janela Ativa" "closewindow" \
 " Shift Q" "Forçar Encerramento da Janela (Kill)" "killactive" \
 " F" "Tela Cheia Total (Fullscreen)" "fullscreen 0" \
-" CTRL F" "Fake Fullscreen (Mantém Waybar visível)" "fullscreen 1" \
-" SPACE" "Alternar Janela Ativa Flutuante / Tiling" "togglefloating" \
+" SHIFT F" "Maximizar Janela (Mantém Waybar e Gaps)" "fullscreen 1" \
+" SHIFT SPACE" "Alternar Janela Ativa Flutuante / Tiling" "togglefloating" \
 " ALT SPACE" "Alternar Todas as Janelas para Flutuante" "togglefloating (all)" \
 "CTRL ALT L" "Bloquear Tela" "hyprlock" \
 "CTRL ALT Del" "Sair do Hyprland / Logout" "wlogout" \
@@ -53,7 +53,7 @@ GDK_BACKEND=$BACKEND yad \
 " C" "Calculadora Gnome (Moedas, Unidades ao vivo)" "gnome-calculator" \
 " ALT C" "Calculadora Científica e Financeira" "qalculate-gtk" \
 " ;" "Seletor de Emojis e Símbolos Rápidos" "RofiEmoji.sh" \
-" SPACE (tap)" "Trocar Idioma do Teclado (US-Intl / PT-BR)" "KeyboardLayout.sh" \
+" SPACE" "Trocar Layout do Teclado (US-Intl / PT-BR / US-Dev)" "KeyboardLayout.sh" \
 " SHIFT A" "Alternar Saída de Som (Caixas ↔ Headset)" "audio-switch.sh" \
 " ALT M" "Silenciar / Ativar Microfone (Mic Mute)" "Volume.sh --toggle-mic" \
 " ALT B" "Menu Bluetooth Rápido (Conectar Fones)" "rofi-bluetooth.sh" \

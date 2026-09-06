@@ -5,49 +5,69 @@
 COVER_DIR="/tmp/mpris_covers"
 mkdir -p "$COVER_DIR"
 
+DEFAULT_ICON="$HOME/.config/swaync/icons/music.png"
 LAST_SONG=""
 
-# Fallback default icon
-DEFAULT_ICON="$HOME/.config/swaync/icons/music.png"
+escape_xml() {
+    local s="$1"
+    s="${s//&/&amp;}"
+    s="${s//</&lt;}"
+    s="${s//>/&gt;}"
+    printf '%s' "$s"
+}
 
-# Listen to player events
-playerctl --follow metadata --format "{{status}}::{{title}}::{{artist}}::{{album}}::{{mpris:artUrl}}" 2>/dev/null | while IFS= read -r line; do
-    status=$(echo "$line" | awk -F "::" '{print $1}')
-    title=$(echo "$line" | awk -F "::" '{print $2}')
-    artist=$(echo "$line" | awk -F "::" '{print $3}')
-    album=$(echo "$line" | awk -F "::" '{print $4}')
-    art_url=$(echo "$line" | awk -F "::" '{print $5}')
+notify_track() {
+    local status="$1"
+    local title="$2"
+    local artist="$3"
+    local album="$4"
+    local art_url="$5"
 
-    # Only notify when song is playing and track changed
-    if [[ "$status" == "Playing" && -n "$title" && "$title" != "$LAST_SONG" ]]; then
-        LAST_SONG="$title"
-        cover_path="$DEFAULT_ICON"
+    [[ "$status" != "Playing" || -z "$title" ]] && return 0
+    [[ "$title" == "$LAST_SONG" ]] && return 0
 
-        # Download or resolve album art
-        if [[ "$art_url" =~ ^https?:// ]]; then
-            cover_file="$COVER_DIR/current_cover.png"
-            if curl -s -L "$art_url" -o "$cover_file" 2>/dev/null && [ -s "$cover_file" ]; then
-                cover_path="$cover_file"
-            fi
-        elif [[ "$art_url" =~ ^file:// ]]; then
-            local_path="${art_url#file://}"
-            if [ -f "$local_path" ]; then
-                cover_path="$local_path"
-            fi
+    LAST_SONG="$title"
+    local cover_path="$DEFAULT_ICON"
+
+    if [[ "$art_url" =~ ^https?:// ]]; then
+        local hash
+        hash=$(printf '%s' "$art_url" | md5sum | cut -d' ' -f1)
+        local cover_file="$COVER_DIR/${hash}.png"
+        if [[ ! -s "$cover_file" ]]; then
+            curl -s -L --max-time 3 "$art_url" -o "$cover_file" 2>/dev/null || true
         fi
-
-        # Escape XML entities for notify-send markup
-        safe_title=$(echo "$title" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')
-        safe_artist=$(echo "$artist" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')
-        safe_album=$(echo "$album" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')
-
-        # Send rich notification (synchronous replaces previous notification seamlessly)
-        notify-send \
-            -a "Spotify" \
-            -i "$cover_path" \
-            -h string:x-canonical-private-synchronous:music_notif \
-            -h string:urgency:low \
-            "🎵 Now Playing" \
-            "<b>$safe_title</b>\n👤 $safe_artist${safe_album:+<br>💿 $safe_album}"
+        if [[ -s "$cover_file" ]]; then
+            cover_path="$cover_file"
+        fi
+    elif [[ "$art_url" =~ ^file:// ]]; then
+        local local_path="${art_url#file://}"
+        if [[ -f "$local_path" ]]; then
+            cover_path="$local_path"
+        fi
     fi
+
+    local safe_title safe_artist safe_album
+    safe_title=$(escape_xml "$title")
+    safe_artist=$(escape_xml "$artist")
+    safe_album=$(escape_xml "$album")
+
+    notify-send \
+        -a "Spotify" \
+        -i "$cover_path" \
+        -u normal \
+        -h string:x-canonical-private-synchronous:music_notif \
+        "🎵 Now Playing" \
+        "<b>${safe_title}</b>\n👤 ${safe_artist}${safe_album:+<br>💿 ${safe_album}}"
+}
+
+# Notifica faixa atual se já estiver tocando
+curr_meta=$(playerctl metadata --format "{{status}}	{{title}}	{{artist}}	{{album}}	{{mpris:artUrl}}" 2>/dev/null || true)
+if [[ -n "$curr_meta" ]]; then
+    IFS=$'\t' read -r c_status c_title c_artist c_album c_art <<< "$curr_meta"
+    notify_track "$c_status" "$c_title" "$c_artist" "$c_album" "$c_art"
+fi
+
+# Escuta mudanças em tempo real com buffer de linha (stdbuf -oL)
+stdbuf -oL playerctl --follow metadata --format "{{status}}	{{title}}	{{artist}}	{{album}}	{{mpris:artUrl}}" 2>/dev/null | while IFS=$'\t' read -r status title artist album art_url; do
+    notify_track "$status" "$title" "$artist" "$album" "$art_url"
 done
