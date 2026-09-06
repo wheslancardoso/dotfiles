@@ -31,7 +31,12 @@ plugins=(
     fzf
     sudo
     fzf-tab
+    you-should-use
 )
+
+# Configurações do plugin You-Should-Use (Lembrete ativo de aliases)
+export YSU_MESSAGE_POSITION="after"
+export YSU_MODE="ALL"
 
 source $ZSH/oh-my-zsh.sh
 
@@ -107,6 +112,70 @@ fcd() {
     local dir
     dir=$(zoxide query -l | fzf --preview 'eza --tree --color=always {} 2>/dev/null | head -100' --header='[fcd] Ir para diretório')
     [ -n "$dir" ] && cd "$dir"
+}
+
+# 6. als / aliases: Explorador Interativo de Aliases com FZF
+als() {
+    local selected
+    selected=$(alias | sed -E "s/^alias //" | fzf \
+        --ansi \
+        --header='[Aliases ZSH] Digite para filtrar | ENTER para carregar no prompt' \
+        --delimiter='=' \
+        --preview='echo -e "\033[1;36mAlias:\033[0m {1}\n\n\033[1;32mComando:\033[0m\n{2..}"' \
+        --preview-window='down:4:wrap')
+    if [ -n "$selected" ]; then
+        local alias_name
+        alias_name=$(echo "$selected" | cut -d'=' -f1)
+        print -z "$alias_name"
+    fi
+}
+alias aliases='als'
+
+# 7. alias-help: Cheat Sheet visual dos principais aliases do sistema
+alias-help() {
+    cat << 'EOF'
+╭───────────────────────────────────────────────────────────────────────────╮
+│                  🚀 GUIA RÁPIDO DE ALIASES DO SEU ZSH                     │
+╰───────────────────────────────────────────────────────────────────────────╯
+
+ 🏎️  SISTEMA & MANUTENÇÃO (Arch Linux)
+   sys-update     -> Atualiza Pacman, AUR (yay) e Flatpaks com segurança
+   cleanup        -> Faxina de pacotes órfãos, cache do pacman e logs antigos
+   mirrors        -> Rankeia os mirrors mais rápidos do Brasil com Reflector
+   turbo          -> Ativa 10 downloads paralelos e compilação multi-core
+
+ ☁️  NUVEM, MÍDIA & PRODUTIVIDADE
+   gdrive         -> Gerencia o Google Drive 5TB virtual (mount/unmount/status)
+   brave-sync     -> Copia o código de 25 palavras do Brave Sync pro clipboard
+   dl [url]       -> Downloader universal de vídeos, músicas e clips (yt-dlp)
+   organizar      -> Executa triagem e organização de arquivos (Organizador Master)
+
+ 🐙  GIT & CONTAINERS
+   lg             -> Abre Lazygit (interface TUI profissional para Git)
+   ld             -> Abre Lazydocker (painel de containers e volumes)
+   gs / gp / gl   -> git status / git push / git log estilizado
+   dc / dps / dimg-> docker compose / docker ps / docker images
+
+ 💻  DESENVOLVIMENTO & BANCO DE DADOS
+   vibe           -> Sessão Zellij para desenvolvimento ágil com IA
+   fullstack      -> Sessão Zellij com Neovim, front e back integrados
+   lsql           -> Lazysql (TUI para Postgres, MySQL e SQLite)
+   api            -> Abre o Bruno API Client (substituto leve do Postman)
+   db-up / db-down-> Sobe / desce os bancos de dados em Docker
+   m / mi / mu    -> Mise (gerenciador universal de Node, Python, Java, Go)
+
+ 📂  ARQUIVOS & NAVEGAÇÃO
+   y              -> Yazi File Manager (troca de pasta automática ao sair)
+   ll / la / lt   -> Eza com ícones, permissões e árvore de pastas
+   cat / dog      -> Bat com syntax highlighting e paginação inteligente
+   du             -> Dust (análise visual de espaço em disco)
+   fif <termo>    -> Busca interativa dentro de arquivos (Ripgrep + FZF + Bat)
+   fkill          -> Matador de processos interativo com FZF
+   fport          -> Ver portas de rede abertas e processos donos
+   als / aliases  -> Menu interativo de busca com FZF em TODOS os aliases
+
+💡 Dica: O plugin 'you-should-use' te avisa sempre que você digitar o comando longo!
+EOF
 }
 
 # --- Aliases de Produtividade & Ferramentas Modernas ---
