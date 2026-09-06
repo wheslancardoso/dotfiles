@@ -12,13 +12,13 @@ if ! command -v kitty &> /dev/null; then
 fi
 
 # Detect distribution and update accordingly
-if command -v paru &> /dev/null || command -v yay &> /dev/null; then
+if command -v yay &> /dev/null || command -v paru &> /dev/null; then
   # Arch-based
-  if command -v paru &> /dev/null; then
-    kitty -T update -e paru -Syu
+  if command -v yay &> /dev/null; then
+    kitty -T update -e yay -Syu
     notify-send -i "$iDIR/ja.png" -u low 'Arch-based system' 'has been updated.'
   else
-    kitty -T update -e yay -Syu
+    kitty -T update -e paru -Syu
     notify-send -i "$iDIR/ja.png" -u low 'Arch-based system' 'has been updated.'
   fi
 elif command -v dnf &> /dev/null; then

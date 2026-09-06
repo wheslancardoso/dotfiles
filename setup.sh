@@ -109,14 +109,12 @@ update_system() {
     ok "Sistema atualizado."
 }
 
-# 2. Instalar yay ou paru (se não existir)
+# 2. Instalar yay (AUR Helper preferido)
 install_yay() {
-    if ! command -v yay &> /dev/null && ! command -v paru &> /dev/null; then
-        info "Instalando AUR Helper..."
+    if ! command -v yay &> /dev/null; then
+        info "Instalando yay (AUR Helper preferido)..."
         if sudo pacman -S --needed --noconfirm yay 2>/dev/null; then
-            ok "Yay instalado via repositório oficial!"
-        elif sudo pacman -S --needed --noconfirm paru 2>/dev/null; then
-            ok "Paru instalado via repositório oficial!"
+            ok "Yay instalado com sucesso via repositório oficial CachyOS!"
         else
             sudo pacman -S --needed base-devel git --noconfirm
             git clone https://aur.archlinux.org/yay.git /tmp/yay
@@ -125,13 +123,15 @@ install_yay() {
             rm -rf /tmp/yay
         fi
     fi
-    ok "AUR Helper pronto."
+    ok "Yay está pronto para uso."
 }
 
 # 3. Instalar pacotes nativos e AUR com tolerância a falhas
 install_packages() {
     local aur_helper="yay"
-    command -v paru &>/dev/null && aur_helper="paru"
+    if ! command -v yay &>/dev/null && command -v paru &>/dev/null; then
+        aur_helper="paru"
+    fi
 
     info "Instalando pacotes nativos (pacman)..."
     if ! sudo pacman -S --needed --noconfirm - < "$DOTFILES_DIR/packages/pacman-native.txt"; then
