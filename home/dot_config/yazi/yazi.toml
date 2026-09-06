@@ -64,7 +64,7 @@ archive = [
 [open]
 rules = [
 	{ mime = "inode/directory", use = [ "open", "edit" ] },
-	{ name = "*.md", use = [ "markdown", "edit", "open" ] },
+	{ url = "*.md", use = [ "markdown", "edit", "open" ] },
 	{ mime = "text/*", use = [ "edit", "open" ] },
 	{ mime = "image/*", use = [ "image", "open" ] },
 	{ mime = "video/*", use = [ "video", "open" ] },
@@ -82,7 +82,7 @@ rules = [
 	{ mime = "application/x-xz", use = [ "archive", "open" ] },
 	{ mime = "application/gzip", use = [ "archive", "open" ] },
 	{ mime = "application/zstd", use = [ "archive", "open" ] },
-	{ name = "*.{zip,rar,7z,tar,tar.gz,tgz,tar.bz2,tbz2,tar.xz,txz,gz,xz,zst,apk,iso}", use = [ "archive", "open" ] },
+	{ url = "*.{zip,rar,7z,tar,tar.gz,tgz,tar.bz2,tbz2,tar.xz,txz,gz,xz,zst,apk,iso}", use = [ "archive", "open" ] },
 ]
 
 
@@ -91,7 +91,7 @@ use = "catppuccin-mocha"
 
 [plugin]
 prepend_fetchers = [
-	{ id = "git", name = "*", run = "git", prio = "normal" },
-	{ id = "git", name = "*/", run = "git", prio = "normal" },
+	{ id = "git", url = "*", run = "git", prio = "normal", group = "git" },
+	{ id = "git", url = "*/", run = "git", prio = "normal", group = "git" },
 ]
 

@@ -130,6 +130,7 @@ shotactive() {
 }
 
 shotflameshot() {
+	mkdir -p /mnt/dados/05_Midias_Design_e_Criacao/Screenshots "$HOME/pictures/screenshots" 2>/dev/null || true
 	if command -v flameshot >/dev/null 2>&1; then
 		pkill -x flameshot || true
 		env XDG_CURRENT_DESKTOP=sway QT_QPA_PLATFORM=wayland flameshot gui

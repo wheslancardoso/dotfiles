@@ -86,7 +86,6 @@ fuse3
 fzf
 gamemode
 gamescope
-gallery-dl
 gdu
 giflib
 git
@@ -130,7 +129,6 @@ kvantum
 lazygit
 less
 lib32-gamemode
-lib32-giflib
 lib32-gnutls
 lib32-libldap
 lib32-libpng
@@ -237,7 +235,7 @@ qt6-virtualkeyboard
 qt6ct
 quickshell
 rebuild-detector
-redis
+valkey
 reflector
 rclone
 ripgrep

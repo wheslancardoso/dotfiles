@@ -22,7 +22,7 @@ PARENT_DIR="$SCRIPT_DIR/.."
 cd "$PARENT_DIR" || { echo "${ERROR} Failed to change directory to $PARENT_DIR"; exit 1; }
 
 # Source the global functions script
-if ! source "$(dirname "$(readlink -f "$0")")/Global_functions.sh"; then
+if ! source "$SCRIPT_DIR/Global_functions.sh"; then
   echo "Failed to source Global_functions.sh"
   exit 1
 fi
@@ -44,11 +44,15 @@ fi
 
 # Install additional Nvidia packages
 printf "${YELLOW} Installing ${SKY_BLUE}Nvidia Packages and Linux headers${RESET}...\n"
-for krnl in $(cat /usr/lib/modules/*/pkgbase); do
-  for NVIDIA in "${krnl}-headers" "${nvidia_pkg[@]}"; do
-    install_package "$NVIDIA" "$LOG"
+if pacman -Qq | grep -qE '^linux-cachyos.*nvidia'; then
+  printf "${OK} Drivers NVIDIA proprietários CachyOS já instalados e ativos. Ignorando compilação DKMS conflitante.\n" | tee -a "$LOG"
+else
+  for krnl in $(cat /usr/lib/modules/*/pkgbase); do
+    for NVIDIA in "${krnl}-headers" "${nvidia_pkg[@]}"; do
+      install_package "$NVIDIA" "$LOG"
+    done
   done
-done
+fi
 
 # Check if the Nvidia modules are already added in mkinitcpio.conf and add if not
 if grep -qE '^MODULES=.*nvidia. *nvidia_modeset.*nvidia_uvm.*nvidia_drm' /etc/mkinitcpio.conf; then

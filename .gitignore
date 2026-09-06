@@ -3,6 +3,10 @@
 *.swp
 *~
 .netrwhist
+Arch-Hyprland-main/Install-Logs/
+Arch-Hyprland-main/*.log
+Arch-Hyprland-main/yay-bin/
+Arch-Hyprland-main/GTK-themes-icons/
 
 # Ignorar pastas de cache se houver
 .cache/

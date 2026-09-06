@@ -4,20 +4,20 @@
 clear
 
 # Set some colors for output messages
-OK="$(tput setaf 2)[OK]$(tput sgr0)"
-ERROR="$(tput setaf 1)[ERROR]$(tput sgr0)"
-NOTE="$(tput setaf 3)[NOTE]$(tput sgr0)"
-INFO="$(tput setaf 4)[INFO]$(tput sgr0)"
-WARN="$(tput setaf 1)[WARN]$(tput sgr0)"
-CAT="$(tput setaf 6)[ACTION]$(tput sgr0)"
-MAGENTA="$(tput setaf 5)"
-ORANGE="$(tput setaf 214)"
-WARNING="$(tput setaf 1)"
-YELLOW="$(tput setaf 3)"
-GREEN="$(tput setaf 2)"
-BLUE="$(tput setaf 4)"
-SKY_BLUE="$(tput setaf 6)"
-RESET="$(tput sgr0)"
+OK="$(tput setaf 2 2>/dev/null || true)[OK]$(tput sgr0 2>/dev/null || true)"
+ERROR="$(tput setaf 1 2>/dev/null || true)[ERROR]$(tput sgr0 2>/dev/null || true)"
+NOTE="$(tput setaf 3 2>/dev/null || true)[NOTE]$(tput sgr0 2>/dev/null || true)"
+INFO="$(tput setaf 4 2>/dev/null || true)[INFO]$(tput sgr0 2>/dev/null || true)"
+WARN="$(tput setaf 1 2>/dev/null || true)[WARN]$(tput sgr0 2>/dev/null || true)"
+CAT="$(tput setaf 6 2>/dev/null || true)[ACTION]$(tput sgr0 2>/dev/null || true)"
+MAGENTA="$(tput setaf 5 2>/dev/null || true)"
+ORANGE="$(tput setaf 214 2>/dev/null || true)"
+WARNING="$(tput setaf 1 2>/dev/null || true)"
+YELLOW="$(tput setaf 3 2>/dev/null || true)"
+GREEN="$(tput setaf 2 2>/dev/null || true)"
+BLUE="$(tput setaf 4 2>/dev/null || true)"
+SKY_BLUE="$(tput setaf 6 2>/dev/null || true)"
+RESET="$(tput sgr0 2>/dev/null || true)"
 
 # Create Directory for Install Logs
 if [ ! -d Install-Logs ]; then

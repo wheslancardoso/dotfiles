@@ -51,17 +51,22 @@ ensure_secret() {
 
 copy_clipboard() {
     local text="$1"
+    local copied=false
     if command -v wl-copy >/dev/null 2>&1; then
         echo -n "$text" | wl-copy
-        return 0
+        copied=true
     elif command -v xclip >/dev/null 2>&1; then
         echo -n "$text" | xclip -selection clipboard
-        return 0
+        copied=true
     elif command -v xsel >/dev/null 2>&1; then
         echo -n "$text" | xsel --clipboard --input
-        return 0
+        copied=true
     fi
-    return 1
+    if command -v copyq >/dev/null 2>&1; then
+        copyq add "$text" 2>/dev/null || true
+        copied=true
+    fi
+    $copied && return 0 || return 1
 }
 
 do_show_and_copy() {

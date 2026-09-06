@@ -74,5 +74,5 @@ prepend_keymap = [
 	# --------------------------------------------------------------------------
 	# 💡 AJUDA E DIAGNÓSTICO
 	# --------------------------------------------------------------------------
-	{ on = "<F12>", run = 'shell "bash -c \"notify-send -a Yazi \'Yazi Power-User\' \'Configuração carregada com sucesso! Pressione ? para ajuda.\'\"" --confirm', desc = "Status / Teste Yazi" },
+	{ on = "<F12>", run = 'shell "notify-send -a Yazi \"Yazi Power-User\" \"Configuração carregada com sucesso! Pressione ? para ajuda.\"" --confirm', desc = "Status / Teste Yazi" },
 ]

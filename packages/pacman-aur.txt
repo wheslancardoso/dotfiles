@@ -6,6 +6,7 @@ brave-bin
 bruno-bin
 curlie-bin
 flutter-bin
+gallery-dl-bin
 geocode-glib-2
 geocode-glib-common
 google-chrome
