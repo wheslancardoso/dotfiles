@@ -37,14 +37,21 @@ for preset in \
     "Loudness + Autogain.json"; do
     echo -e "  -> Baixando Preset: ${GREEN}$preset${NC}"
     curl -fsSL "$REPO_URL/$preset" -o "$EE_DIR/output/$preset" 2>/dev/null || true
-done
+# Instalar preset de microfone de estúdio (RNNoise + EQ + Compressor + Limiter)
+DOTFILES_MIC="$HOME/dotfiles/system/etc/easyeffects/input/Podcast_Studio_Mic.json"
+if [ -f "$DOTFILES_MIC" ]; then
+    cp -f "$DOTFILES_MIC" "$EE_DIR/input/Podcast_Studio_Mic.json"
+    echo -e "  -> Instalando Preset de Microfone: ${GREEN}Podcast_Studio_Mic.json${NC}"
+fi
 
-echo -e "\n${GREEN}${BOLD}✔ Presets de Áudio e Graves instalados com sucesso em ${EE_DIR}!${NC}\n"
+echo -e "\n${GREEN}${BOLD}✔ Presets de Áudio, Graves e Microfone instalados com sucesso em ${EE_DIR}!${NC}\n"
 
-# Ativa imediatamente o preset padrão ideal para Hip-Hop
+# Ativa imediatamente os presets padrão de saída e microfone
 if command -v easyeffects >/dev/null 2>&1; then
-    echo -e "${GREEN}[*] Ativando 'Bass Enhancing + Perfect EQ' como preset padrão de inicialização...${NC}"
+    echo -e "${GREEN}[*] Ativando 'Bass Enhancing + Perfect EQ' na saída...${NC}"
     easyeffects -l "Bass Enhancing + Perfect EQ" 2>/dev/null || true
+    echo -e "${GREEN}[*] Ativando 'Podcast_Studio_Mic' no microfone...${NC}"
+    easyeffects -l "Podcast_Studio_Mic" 2>/dev/null || true
 fi
 
 echo -e "${BOLD}Como usar no EasyEffects:${NC}"

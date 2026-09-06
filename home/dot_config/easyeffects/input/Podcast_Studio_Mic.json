@@ -1,0 +1,50 @@
+{
+  "input": {
+    "blocklist": [],
+    "plugins_order": [
+      "rnnoise#0",
+      "equalizer#0",
+      "compressor#0",
+      "limiter#0"
+    ],
+    "rnnoise#0": {
+      "bypass": false,
+      "enable-vad": false,
+      "model-name": "",
+      "release": 20.0,
+      "vad-thres": 50.0,
+      "wet": 0.0
+    },
+    "equalizer#0": {
+      "bypass": false,
+      "input-gain": 0.0,
+      "output-gain": 0.0,
+      "left": {
+        "band0": { "frequency": 80.0, "gain": 0.0, "mode": "HighPass", "q": 0.707, "slope": "x1", "solo": false, "type": "Butterworth" },
+        "band1": { "frequency": 250.0, "gain": -2.0, "mode": "Bell", "q": 1.4, "slope": "x1", "solo": false, "type": "Bell" },
+        "band2": { "frequency": 3500.0, "gain": 2.5, "mode": "Bell", "q": 1.0, "slope": "x1", "solo": false, "type": "Bell" },
+        "band3": { "frequency": 10000.0, "gain": 1.5, "mode": "HighShelf", "q": 0.707, "slope": "x1", "solo": false, "type": "HighShelf" }
+      }
+    },
+    "compressor#0": {
+      "attack": 20.0,
+      "bypass": false,
+      "knee": -6.0,
+      "makeup": 2.0,
+      "ratio": 3.0,
+      "release": 100.0,
+      "threshold": -18.0
+    },
+    "limiter#0": {
+      "alr": false,
+      "attack": 1.0,
+      "bypass": false,
+      "dithering": "None",
+      "gain-boost": false,
+      "lookahead": 2.0,
+      "oversampling": "None",
+      "release": 10.0,
+      "threshold": -1.0
+    }
+  }
+}
