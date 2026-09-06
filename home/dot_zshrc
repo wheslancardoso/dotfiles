@@ -293,6 +293,8 @@ alias fix-pacman='$HOME/dotfiles/scripts/fix-pacman.sh'
 alias fix-keys='$HOME/dotfiles/scripts/fix-keys.sh'
 alias fix-mirrors='$HOME/dotfiles/scripts/fix-mirrors.sh'
 alias fix-audio='$HOME/dotfiles/scripts/fix-audio.sh'
+alias audio-presets='$HOME/dotfiles/scripts/setup-audio-presets.sh'
+alias fix-bass='$HOME/dotfiles/scripts/setup-audio-presets.sh'
 
 # 💾 Pen-drives & Dispositivos Removíveis (Zero Dor de Cabeça)
 alias fix-pendrive='$HOME/dotfiles/scripts/fix-pendrive.sh'
