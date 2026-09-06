@@ -64,3 +64,56 @@ alias fix-spicetify="bash $HOME/dotfiles/scripts/setup-spicetify.sh"
 alias spicetify-setup="bash $HOME/dotfiles/scripts/setup-spicetify.sh"
 alias spt="spotify-player"
 alias spotify-tui="spotify-player"
+
+# 🧹 Manutenção & Otimização do Arch (Safe Update & Auto-Cura)
+alias clean-system="bash $HOME/dotfiles/scripts/clean-system.sh"
+alias pacup="bash $HOME/dotfiles/scripts/safe-update.sh"
+alias safe-update="bash $HOME/dotfiles/scripts/safe-update.sh"
+
+# 🛠️ Ferramentas de Auto-Cura (Zero Dor de Cabeça no Arch)
+alias fix-pacman="bash $HOME/dotfiles/scripts/fix-pacman.sh"
+alias fix-keys="bash $HOME/dotfiles/scripts/fix-keys.sh"
+alias fix-mirrors="bash $HOME/dotfiles/scripts/fix-mirrors.sh"
+alias fix-audio="bash $HOME/dotfiles/scripts/fix-audio.sh"
+alias audio-presets="bash $HOME/dotfiles/scripts/setup-audio-presets.sh"
+alias fix-bass="bash $HOME/dotfiles/scripts/setup-audio-presets.sh"
+alias fix-pendrive="bash $HOME/dotfiles/scripts/fix-pendrive.sh"
+alias fix-ntfs="bash $HOME/dotfiles/scripts/fix-pendrive.sh"
+alias fix-suspend="bash $HOME/dotfiles/scripts/fix-suspend.sh"
+
+# ⌨️ Buscador Universal de Atalhos & Comandos
+alias keys="bash $HOME/dotfiles/scripts/cheat-keys.sh"
+alias ajuda="bash $HOME/dotfiles/scripts/cheat-keys.sh"
+alias atalhos="bash $HOME/dotfiles/scripts/cheat-keys.sh"
+
+# 🦁 Brave Sync
+alias brave-sync="bash $HOME/dotfiles/scripts/brave-sync.sh"
+
+# ☁️ Google Drive 5TB (Rclone VFS)
+alias gdrive="bash $HOME/dotfiles/scripts/gdrive-mount.sh"
+
+# 🐳 Docker Databases Suite
+alias db-up="docker compose -f ~/dotfiles/dev/databases/docker-compose.yml up -d"
+alias db-down="docker compose -f ~/dotfiles/dev/databases/docker-compose.yml down"
+alias db-status="docker compose -f ~/dotfiles/dev/databases/docker-compose.yml ps"
+alias db-logs="docker compose -f ~/dotfiles/dev/databases/docker-compose.yml logs -f"
+alias db-reset="docker compose -f ~/dotfiles/dev/databases/docker-compose.yml down -v"
+
+# ⚡ Mise (SDK & Runtime Manager) Power Aliases
+alias m="mise"
+alias mi="mise install"
+alias mu="mise use"
+alias mls="mise list"
+alias mout="mise outdated"
+alias mup="mise upgrade"
+
+# 🗑️ Lixeira Inteligente (trash-cli)
+alias tp="trash-put"
+alias trash="trash-put"
+alias tl="trash-list"
+alias trash-list="trash-list"
+alias trestore="trash-restore"
+alias trash-restore="trash-restore"
+alias tempty="trash-empty"
+alias trash-empty="trash-empty"
+

@@ -1,0 +1,1 @@
+organizador/vincular_linux.sh

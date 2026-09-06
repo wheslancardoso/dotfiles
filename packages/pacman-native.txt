@@ -116,6 +116,7 @@ hyprland
 hyprlock
 hyprpicker
 hyprpolkitagent
+hyprsunset
 inetutils
 imv
 iptables
@@ -225,6 +226,7 @@ pv
 python
 python-defusedxml
 python-packaging
+python-pipx
 python-pyquery
 python-requests
 qalculate-gtk

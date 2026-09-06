@@ -358,7 +358,26 @@ apply_dotfiles() {
     ln -sf "$DOTFILES_DIR/home/dot_gitconfig" "$HOME/.gitconfig"
     [ -f "$DOTFILES_DIR/home/dot_ideavimrc" ] && ln -sf "$DOTFILES_DIR/home/dot_ideavimrc" "$HOME/.ideavimrc"
 
-    ok "Dotfiles aplicados com sucesso via Chezmoi."
+    # Garantir que todos os scripts utilitários estejam no PATH (~/.local/bin)
+    mkdir -p "$HOME/.local/bin"
+    for f in "$DOTFILES_DIR"/scripts/*.sh; do
+        [ -f "$f" ] || continue
+        base=$(basename "$f")
+        name="${base%.sh}"
+        ln -sf "$f" "$HOME/.local/bin/$base"
+        ln -sf "$f" "$HOME/.local/bin/$name"
+    done
+    [ -f "$DOTFILES_DIR/scripts/organizador/main.py" ] && ln -sf "$DOTFILES_DIR/scripts/organizador/main.py" "$HOME/.local/bin/organizar"
+    [ -f "$DOTFILES_DIR/scripts/organizador/vincular_linux.sh" ] && ln -sf "$DOTFILES_DIR/scripts/organizador/vincular_linux.sh" "$HOME/.local/bin/vincular-linux"
+    [ -f "$DOTFILES_DIR/scripts/organizador/vincular_linux.sh" ] && ln -sf "$DOTFILES_DIR/scripts/organizador/vincular_linux.sh" "$HOME/.local/bin/vincular_linux"
+    [ -f "$DOTFILES_DIR/scripts/safe-update.sh" ] && ln -sf "$DOTFILES_DIR/scripts/safe-update.sh" "$HOME/.local/bin/pacup"
+    [ -f "$DOTFILES_DIR/scripts/fix-pendrive.sh" ] && ln -sf "$DOTFILES_DIR/scripts/fix-pendrive.sh" "$HOME/.local/bin/fix-ntfs"
+    [ -f "$DOTFILES_DIR/scripts/setup-audio-presets.sh" ] && ln -sf "$DOTFILES_DIR/scripts/setup-audio-presets.sh" "$HOME/.local/bin/audio-presets"
+    [ -f "$DOTFILES_DIR/scripts/setup-audio-presets.sh" ] && ln -sf "$DOTFILES_DIR/scripts/setup-audio-presets.sh" "$HOME/.local/bin/fix-bass"
+    [ -f "$DOTFILES_DIR/scripts/vim-king.sh" ] && ln -sf "$DOTFILES_DIR/scripts/vim-king.sh" "$HOME/.local/bin/vk"
+    [ -f "$DOTFILES_DIR/scripts/media-download.sh" ] && ln -sf "$DOTFILES_DIR/scripts/media-download.sh" "$HOME/.local/bin/dl"
+
+    ok "Dotfiles e utilitários aplicados com sucesso via Chezmoi."
 }
 
 # 8. Diretórios Home em lowercase (power user style)
@@ -384,7 +403,7 @@ setup_lowercase_dirs() {
 
     for upper in "${!migration[@]}"; do
         lower="${migration[$upper]}"
-        if [ -d "$HOME/$upper" ] && [ "$upper" != "$lower" ]; then
+        if [ -d "$HOME/$upper" ] && [ ! -L "$HOME/$upper" ] && [ "$upper" != "$lower" ]; then
             # Move o conteúdo e remove a pasta uppercase
             if [ "$(ls -A "$HOME/$upper" 2>/dev/null)" ]; then
                 info "Migrando conteúdo de ~/$upper para ~/$lower..."
@@ -392,7 +411,10 @@ setup_lowercase_dirs() {
                 cp -rn "$HOME/$upper/".* "$HOME/$lower/" 2>/dev/null || true
             fi
             rm -rf "$HOME/$upper"
-            info "Removido ~/$upper (agora é ~/$lower)"
+            ln -sfn "$HOME/$lower" "$HOME/$upper"
+            info "Vinculado link de compatibilidade ~/$upper -> ~/$lower"
+        elif [ ! -e "$HOME/$upper" ] && [ -d "$HOME/$lower" ]; then
+            ln -sfn "$HOME/$lower" "$HOME/$upper"
         fi
     done
 
@@ -452,6 +474,15 @@ setup_extras() {
         info "Configurando Spotify com Spicetify (Catppuccin Mocha + Adblock)..."
         bash "$DOTFILES_DIR/scripts/setup-spicetify.sh" || warn "Spicetify poderá ser reaplicado após login com o comando: fix-spicetify"
         ok "Spotify & Spicetify configurados com sucesso!"
+    fi
+
+    # Configurar plugins oficiais do Hyprland (hypr-dynamic-cursors com efeito mouse shake)
+    if command -v hyprpm &>/dev/null; then
+        info "Configurando plugins Hyprland via hyprpm (dynamic-cursors / mouse shake)..."
+        hyprpm update 2>/dev/null || true
+        hyprpm add https://github.com/VirtCode/hypr-dynamic-cursors 2>/dev/null || true
+        hyprpm enable dynamic-cursors 2>/dev/null || true
+        ok "Plugin hypr-dynamic-cursors configurado e habilitado no Hyprland."
     fi
 
     ok "Associações padrão configuradas."

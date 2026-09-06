@@ -26,34 +26,34 @@ bizarre_retry = 5
 
 [opener]
 open = [
-	{ run = 'xdg-open "$@"', desc = "Abrir com App Padrão" },
+	{ run = 'xdg-open %s1', desc = "Abrir com App Padrão", orphan = true },
 ]
 edit = [
-	{ run = '${EDITOR:-vi} "$@"', block = true, desc = "Editar" },
+	{ run = '${EDITOR:-nvim} %s', block = true, desc = "Editar no Neovim" },
 ]
 image = [
-	{ run = 'imv "$@"', orphan = true, desc = "IMV (Visualizador Rápido Wayland)" },
-	{ run = 'xdg-open "$@"', orphan = true, desc = "Abrir com App Padrão (Loupe)" },
+	{ run = 'imv %s', orphan = true, desc = "IMV (Visualizador Rápido Wayland)" },
+	{ run = 'xdg-open %s1', orphan = true, desc = "Abrir com App Padrão (Loupe)" },
 ]
 markdown = [
-	{ run = 'glow -p "$@"', block = true, desc = "Glow (Leitor Estilizado no Terminal)" },
-	{ run = '${EDITOR:-nvim} "$@"', block = true, desc = "Editar no Neovim" },
-	{ run = 'xdg-open "$@"', orphan = true, desc = "Abrir com App Padrão" },
+	{ run = 'glow -p %s', block = true, desc = "Glow (Leitor Estilizado no Terminal)" },
+	{ run = '${EDITOR:-nvim} %s', block = true, desc = "Editar no Neovim" },
+	{ run = 'xdg-open %s1', orphan = true, desc = "Abrir com App Padrão" },
 ]
 pdf = [
-	{ run = 'zathura "$@"', orphan = true, desc = "Zathura (Vim PDF Rápido)" },
-	{ run = 'okular "$@"', orphan = true, desc = "Okular (PDF & Anotações)" },
+	{ run = 'zathura %s', orphan = true, desc = "Zathura (Vim PDF Rápido)" },
+	{ run = 'okular %s', orphan = true, desc = "Okular (PDF & Anotações)" },
 ]
 video = [
-	{ run = 'celluloid "$@"', orphan = true, desc = "Celluloid (Player Moderno)" },
-	{ run = 'mpv "$@"', orphan = true, desc = "MPV (Aceleração GPU NVDEC)" },
-	{ run = 'mpv --vo=kitty "$@"', block = true, desc = "Assistir Dentro do Terminal (Kitty VO)" },
+	{ run = 'celluloid %s', orphan = true, desc = "Celluloid (Player Moderno)" },
+	{ run = 'mpv %s', orphan = true, desc = "MPV (Aceleração GPU NVDEC)" },
+	{ run = 'mpv --vo=kitty %s', block = true, desc = "Assistir Dentro do Terminal (Kitty VO)" },
 ]
 office = [
-	{ run = 'onlyoffice-desktopeditors "$@"', orphan = true, desc = "OnlyOffice" },
+	{ run = 'onlyoffice-desktopeditors %s', orphan = true, desc = "OnlyOffice" },
 ]
 share = [
-	{ run = 'localsend "$@" &', orphan = true, desc = "Enviar via LocalSend (AirDrop Celular/PC)" },
+	{ run = 'localsend %s &', orphan = true, desc = "Enviar via LocalSend (AirDrop Celular/PC)" },
 ]
 archive = [
 	{ run = 'bash "$HOME/dotfiles/scripts/yazi-archive.sh" extract-sub %s', block = true, desc = "Extrair para Subpasta (Limpo)" },
@@ -64,7 +64,9 @@ archive = [
 [open]
 rules = [
 	{ mime = "inode/directory", use = [ "open", "edit" ] },
+	{ mime = "text/markdown", use = [ "markdown", "edit", "open" ] },
 	{ url = "*.md", use = [ "markdown", "edit", "open" ] },
+	{ url = "**/*.md", use = [ "markdown", "edit", "open" ] },
 	{ mime = "text/*", use = [ "edit", "open" ] },
 	{ mime = "image/*", use = [ "image", "open" ] },
 	{ mime = "video/*", use = [ "video", "open" ] },
@@ -83,6 +85,7 @@ rules = [
 	{ mime = "application/gzip", use = [ "archive", "open" ] },
 	{ mime = "application/zstd", use = [ "archive", "open" ] },
 	{ url = "*.{zip,rar,7z,tar,tar.gz,tgz,tar.bz2,tbz2,tar.xz,txz,gz,xz,zst,apk,iso}", use = [ "archive", "open" ] },
+	{ url = "**/*.{zip,rar,7z,tar,tar.gz,tgz,tar.bz2,tbz2,tar.xz,txz,gz,xz,zst,apk,iso}", use = [ "archive", "open" ] },
 ]
 
 
