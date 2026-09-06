@@ -10,12 +10,12 @@ if ! command -v pactl &>/dev/null; then
     exit 1
 fi
 
-# 1. Obter todos os sinks disponíveis
-SINKS=($(pactl list short sinks | awk '{print $2}'))
+# 1. Obter apenas sinks FÍSICOS de saída (ignora easyeffects, null, virtual)
+SINKS=($(pactl list short sinks | awk '{print $2}' | grep -vE 'easyeffects|null|virtual'))
 TOTAL_SINKS=${#SINKS[@]}
 
 if [ "$TOTAL_SINKS" -le 1 ]; then
-    notify-send -t 3000 -i audio-speakers "Saída de Áudio" "Apenas 1 dispositivo de áudio detectado."
+    notify-send -t 3000 -i audio-speakers "Saída de Áudio" "Apenas 1 dispositivo físico de áudio detectado."
     exit 0
 fi
 
@@ -33,14 +33,16 @@ done
 
 NEW_SINK="${SINKS[$NEXT_INDEX]}"
 
-# 4. Definir novo sink padrão
+# 4. Definir novo sink padrão no PipeWire / PulseAudio
 pactl set-default-sink "$NEW_SINK"
 
-# 5. Mover todos os fluxos ativos (músicas, vídeos, jogos) para o novo sink
-SINK_INPUTS=($(pactl list short sink-inputs | awk '{print $1}'))
-for input in "${SINK_INPUTS[@]}"; do
-    pactl move-sink-input "$input" "$NEW_SINK" 2>/dev/null || true
-done
+# 5. Se EasyEffects não estiver rodando, migrar streams diretamente para o novo sink
+if ! pgrep -x "easyeffects" >/dev/null 2>&1; then
+    SINK_INPUTS=($(pactl list short sink-inputs | awk '{print $1}'))
+    for input in "${SINK_INPUTS[@]}"; do
+        pactl move-sink-input "$input" "$NEW_SINK" 2>/dev/null || true
+    done
+fi
 
 # 6. Obter descrição amigável do dispositivo
 DESC=$(pactl list sinks | grep -E "(Name: $NEW_SINK|Description:)" -A 1 | grep "Description:" | head -n1 | cut -d: -f2- | sed 's/^[ \t]*//')
