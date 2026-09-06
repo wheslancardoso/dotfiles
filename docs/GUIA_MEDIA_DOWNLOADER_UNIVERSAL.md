@@ -58,10 +58,29 @@ dl
 # Baixar vídeo padrão em qualidade máxima:
 dl "https://www.youtube.com/watch?v=..."
 
-# Extrair apenas o áudio MP3 320k:
+# Baixar diretamente na pasta atual onde você está no terminal:
+dl --here "https://www.youtube.com/watch?v=..."
+# ou especificando pasta customizada:
+dl -d /mnt/dados/Cursos "https://..."
+
+# Baixar listas e arquivos de texto em lote (.txt):
+dl lista.txt                    # Processa todos os links da lista em fila
+dl -p lista.txt                 # Processa a lista inteira direto para a pasta .privado
+dl --here lista.txt             # Baixa a lista inteira na pasta onde você está
+
+# Playlists e Cursos (Organização automática com numeração '01 - ', '02 - '):
+dl "https://www.youtube.com/playlist?list=..."
+dl -a "https://www.youtube.com/playlist?list=..."  # Playlist inteira em MP3 320k
+dl --sync "https://www.youtube.com/playlist?list=..." # Pula o que já baixou e só baixa vídeos novos
+
+# Torrents, Magnets e Arquivos Diretos (Acelerado com 16 conexões via Aria2c):
+dl "magnet:?xt=urn:btih:..."    # Baixa torrent P2P em alta velocidade
+dl "https://releases.ubuntu.com/24.04/ubuntu-24.04-desktop-amd64.iso" # Aceleração 16x multi-thread
+
+# Extrair apenas o áudio MP3 320k com capa e tags ID3:
 dl -a "https://www.youtube.com/watch?v=..."
 
-# Baixar direto para a pasta .privado (modo furtivo):
+# Baixar direto para a pasta .privado (modo furtivo anti-vazamento):
 dl -p "https://..."
 
 # Cortar apenas um trecho sem baixar o vídeo inteiro de gigabytes:
@@ -80,9 +99,6 @@ dl --study 1.5 "https://www.youtube.com/watch?v=..."
 # Dividir álbuns/shows do YouTube por capítulos em faixas numeradas:
 dl --split-chapters "https://www.youtube.com/watch?v=..."
 
-# Sincronizar playlist (baixa somente as músicas novas sem duplicatas):
-dl --sync "https://www.youtube.com/playlist?list=..."
-
 # Usar cookies do navegador para vídeos restritos (18+):
 dl --cookies brave "https://www.youtube.com/watch?v=..."
 
@@ -95,7 +111,28 @@ dl -h
 
 ---
 
-### Modo 4: Direto na Pasta Atual do Yazi (`M y`)
+### Modo 4: Download em Lote via Arquivo de Texto (Batch Mode)
+Você pode acumular dezenas ou centenas de links num arquivo `.txt` (um por linha):
+
+```text
+# Arquivo: lista_estudos.txt
+https://www.youtube.com/watch?v=exemplo1
+https://www.youtube.com/watch?v=exemplo2
+magnet:?xt=urn:btih:...
+https://open.spotify.com/album/...
+```
+
+Basta rodar:
+```bash
+dl lista_estudos.txt
+```
+- **Contador em tempo real:** Mostra `[1/4]`, `[2/4]`, etc.
+- **Tolerante a falhas:** Se um vídeo foi apagado ou caiu, o script avisa do erro e pula para o próximo sem interromper a fila.
+- **Roteamento individual:** Identifica cada link por domínio (se for Spotify baixa via spotdl, se for torrent acelera com aria2c, se for vídeo usa yt-dlp).
+
+---
+
+### Modo 5: Direto na Pasta Atual do Yazi (`M y`)
 1. Navegue até a pasta desejada no Yazi.
 2. Copie o link da mídia.
 3. Pressione as teclas **`M`** e depois **`y`** (Media/Yazi).
@@ -116,7 +153,11 @@ Ao concluir qualquer download, uma notificação surge com 3 botões:
 
 | Plataforma | Suporte | Recursos Especiais |
 |---|---|---|
-| **YouTube** | Vídeos, Shorts, Playlists, Músicas | 1080p, 4K, 60fps, legendas, split de capítulos, cortes |
+| **YouTube** | Vídeos, Shorts, Playlists, Músicas | 1080p, 4K, 60fps, legendas, split de capítulos, cortes, sincronização `--sync` |
+| **Playlists** | YouTube, Cursos, Podcasts | Cria subpasta com nome da playlist e numera faixas (`01 - `, `02 - `) |
+| **Torrents & Magnets** | Links `magnet:?` e arquivos `.torrent` | Download acelerado P2P nativo via Aria2c |
+| **Arquivos Diretos** | `.iso`, `.zip`, `.tar.gz`, `.exe`, `.7z`, etc. | Aceleração turbo com 16 conexões simultâneas via Aria2c |
+| **Listas em Lote** | Qualquer arquivo `.txt` com múltiplos links | Execução sequencial com contador `[X/N]` e proteção contra links quebrados |
 | **Spotify** | Músicas, Álbuns, Playlists, Artistas | MP3 320k, FLAC, capa 3000px, letras sincronizadas `.lrc` |
 | **Twitter / X** | Vídeos, GIFs e carrosséis de fotos | Extração via yt-dlp e gallery-dl |
 | **Instagram** | Reels, Vídeos e Carrosséis de Fotos | Baixa todos os posts e fotos em resolução nativa |
