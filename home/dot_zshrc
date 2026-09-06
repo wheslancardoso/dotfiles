@@ -371,6 +371,10 @@ alias sync-clock='sudo timedatectl set-ntp true && sudo systemctl restart system
 # 💤 Diagnóstico & Proteção de Suspensão (Zero Wakeup Espúrio)
 alias fix-suspend='$HOME/dotfiles/scripts/fix-suspend.sh'
 
+# 💽 Analisador Ultrarrápido de Espaço em Disco (Substituto do WinDirStat)
+alias disk='gdu'
+alias disk-usage='gdu'
+
 # 🎛️ Modos de Energia & Silêncio (power-profiles-daemon)
 alias perf='powerprofilesctl set performance 2>/dev/null && notify-send -u low -i preferences-system-power "Energia" "Modo Performance Máxima Ativado" || true'
 alias balanced='powerprofilesctl set balanced 2>/dev/null && notify-send -u low -i preferences-system-power "Energia" "Modo Equilibrado Ativado" || true'

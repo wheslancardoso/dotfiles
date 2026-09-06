@@ -87,6 +87,7 @@ fzf
 gamemode
 gamescope
 gallery-dl
+gdu
 giflib
 git
 git-delta
