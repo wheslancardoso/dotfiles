@@ -57,9 +57,14 @@ if [ -d "$SPOTIFY_DIR" ]; then
     sudo chmod a+wr -R "$SPOTIFY_DIR/Apps" 2>/dev/null || true
 fi
 
+# 3.1. Pré-configuração do arquivo de preferências para evitar erros em instalações limpas
+mkdir -p "$HOME/.config/spotify"
+touch "$HOME/.config/spotify/prefs"
+spicetify config spotify_path "/opt/spotify" prefs_path "$HOME/.config/spotify/prefs" 2>/dev/null || true
+
 # 4. Inicializa o backup do Spicetify
 echo -e "${GREEN}[*] Criando backup dos arquivos originais do Spotify...${NC}"
-spicetify backup apply || spicetify apply || true
+spicetify backup apply 2>/dev/null || spicetify apply 2>/dev/null || true
 
 # 5. Instalação dos Temas Oficiais do Spicetify (Catppuccin Mocha)
 THEMES_DIR="$HOME/.config/spicetify/Themes"

@@ -348,6 +348,8 @@ alias dolby='$HOME/dotfiles/scripts/audio-preset-switch.sh dolby'
 alias audio-flat='$HOME/dotfiles/scripts/audio-preset-switch.sh flat'
 alias audio-menu='$HOME/dotfiles/scripts/audio-preset-switch.sh menu'
 alias presets='$HOME/dotfiles/scripts/audio-preset-switch.sh menu'
+alias fix-spicetify='$HOME/dotfiles/scripts/setup-spicetify.sh'
+alias spicetify-setup='$HOME/dotfiles/scripts/setup-spicetify.sh'
 
 # 💾 Pen-drives & Dispositivos Removíveis (Zero Dor de Cabeça)
 alias fix-pendrive='$HOME/dotfiles/scripts/fix-pendrive.sh'

@@ -447,6 +447,13 @@ setup_extras() {
     xdg-settings set default-web-browser brave-browser.desktop 2>/dev/null || true
     xdg-mime default brave-browser.desktop text/html x-scheme-handler/http x-scheme-handler/https x-scheme-handler/about x-scheme-handler/unknown 2>/dev/null || true
 
+    # Configurar Spotify com Spicetify (Catppuccin Mocha + Adblock)
+    if [ -f "$DOTFILES_DIR/scripts/setup-spicetify.sh" ]; then
+        info "Configurando Spotify com Spicetify (Catppuccin Mocha + Adblock)..."
+        bash "$DOTFILES_DIR/scripts/setup-spicetify.sh" || warn "Spicetify poderá ser reaplicado após login com o comando: fix-spicetify"
+        ok "Spotify & Spicetify configurados com sucesso!"
+    fi
+
     ok "Associações padrão configuradas."
 }
 
