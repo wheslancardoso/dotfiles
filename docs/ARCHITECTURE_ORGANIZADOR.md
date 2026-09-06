@@ -47,9 +47,12 @@ organizador-master/
    - Novas regras de classificação, novas extensões e novos tópicos são adicionados diretamente em `config/regras.json` **sem necessidade de alterar uma única linha de código Python**.
 
 3. **Segurança e Idempotência**:
-   - `get_unique_destination_path`: Se um arquivo já existir no destino com o mesmo nome, o script nunca sobrescreve silenciosamente — ele adiciona sufixos sequenciais (`_1`, `_2`, etc.).
-   - Arquivos de sistema (`desktop.ini`, `.git`, `.venv`, atalhos de janelas) são estritamente protegidos.
-   - Inspeção não-destrutiva de metadados de texto (`.docx`, `.txt`, `.md`) para desambiguação de arquivos com nomes genéricos.
+    - `get_unique_destination_path`: Se um arquivo já existir no destino com o mesmo nome, o script nunca sobrescreve silenciosamente — ele adiciona sufixos sequenciais (`_1`, `_2`, etc.).
+    - Arquivos de sistema (`desktop.ini`, `.git`, `.venv`, atalhos de janelas) são estritamente protegidos.
+    - **Escudo Anti-Download Incompleto**: Arquivos temporários em gravação (`.crdownload`, `.part`, `.tmp`, `.aria2`, `.!ut`) são blindados e ignorados até a conclusão total do download.
+    - **Deep Content Sniffing Avançado**: Inspeção não-destrutiva de metadados e conteúdo de texto em `.pdf`, `.docx`, `.txt`, `.md` e `.json` para classificação semântica de arquivos com nomes genéricos.
+    - **Similaridade Fuzzy (Tolerância a Typos)**: Reconhece palavras-chave mesmo com pequenos erros de digitação (similaridade $\ge 85\%$).
+    - **Limpeza de Pastas Vazias**: Varredura recursiva (`--clean-empty`) que expurga pastas vazias residuais sem afetar a árvore principal.
 
 ---
 
