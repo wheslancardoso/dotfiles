@@ -8,9 +8,14 @@
 
 BACKEND=wayland
 
-# Fecha instâncias anteriores de rofi ou yad se estiverem abertas
-pidof rofi >/dev/null && pkill rofi
-pidof yad >/dev/null && pkill yad
+# Se o Cheat Sheet (yad) já estiver aberto, fecha imediatamente (toggle limpo) e sai
+if pidof yad >/dev/null 2>&1; then
+    killall -q yad
+    exit 0
+fi
+
+# Fecha rofi se estiver aberto para não colidir
+killall -q rofi 2>/dev/null || true
 
 # Launch yad com todos os atalhos organizados por categorias
 GDK_BACKEND=$BACKEND yad \
@@ -26,7 +31,7 @@ GDK_BACKEND=$BACKEND yad \
     --timeout-indicator=bottom \
 "ESC" "Fechar este guia" "Sair" \
 " = " "Tecla SUPER (Tecla Windows)" "(SUPER / MOD)" \
-" H ou  /" "Abrir este Cheat Sheet Completo" "KeyHints.sh" \
+" SHIFT H ou  /" "Abrir este Cheat Sheet Completo" "KeyHints.sh" \
 " SHIFT K" "Buscar Atalhos Interativamente" "(Pesquisar atalhos no rofi)" \
 " SHIFT E" "Menu de Configurações KooL Hyprland" "Kool_Quick_Settings.sh" \
 "" "" "" \
