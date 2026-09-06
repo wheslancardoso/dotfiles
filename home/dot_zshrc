@@ -32,6 +32,9 @@ plugins=(
     sudo
     fzf-tab
     you-should-use
+    colored-man-pages
+    extract
+    zsh-autopair
 )
 
 # Configurações do plugin You-Should-Use (Lembrete ativo de aliases)
@@ -43,6 +46,17 @@ source $ZSH/oh-my-zsh.sh
 # --- Prompt & Navegação ---
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
+
+# --- Navegação Inteligente (Zero Fricção) ---
+setopt AUTO_CD              # Digite apenas '..' ou o nome de uma pasta para navegar sem digitar 'cd'
+setopt AUTO_PUSHD           # Mantém histórico de diretórios acessados
+setopt PUSHD_IGNORE_DUPS    # Remove duplicados na pilha de diretórios
+
+# Atalhos de Pastas Globais (Named Directories: use ~dados, ~drive, ~dots em qualquer comando)
+hash -d dados=/mnt/dados 2>/dev/null || true
+hash -d drive=$HOME/gdrive 2>/dev/null || true
+hash -d dots=$HOME/dotfiles 2>/dev/null || true
+hash -d inbox=/mnt/dados/00_Inbox 2>/dev/null || hash -d inbox=$HOME/Downloads 2>/dev/null || true
 
 # Atuin (Histórico inteligente SQLite)
 if command -v atuin &> /dev/null; then
@@ -314,8 +328,7 @@ cheat() {
 }
 
 
-# --- Utilitários ---
-# Yazi CWD Wrapper
+# Yazi CWD Wrapper: navegue no terminal com 'y' ou 'yz' e mude de pasta automaticamente ao sair com 'q'
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
 	yazi "$@" --cwd-file="$tmp"
@@ -324,6 +337,26 @@ function y() {
 	fi
 	rm -f -- "$tmp"
 }
+alias yz='y'
+
+# 🎯 Yazi File Chooser Widget (Ctrl + Y ou Alt + Y no Prompt do Terminal)
+# Abre o Yazi para escolher arquivos visualmente e injeta os caminhos no comando atual
+function yazi-picker-widget() {
+    local tmp="$(mktemp -t "yazi-chooser.XXXXXX")"
+    yazi --chooser-file="$tmp"
+    if [ -f "$tmp" ]; then
+        local files
+        files="$(tr '\n' ' ' < "$tmp" | sed 's/ $//')"
+        if [ -n "$files" ]; then
+            LBUFFER="${LBUFFER}${files} "
+        fi
+        rm -f "$tmp"
+    fi
+    zle redisplay
+}
+zle -N yazi-picker-widget
+bindkey '^y' yazi-picker-widget      # Ctrl + Y
+bindkey '^[y' yazi-picker-widget     # Alt + Y
 
 # Scratchpad Dropdown Terminal Shortcut
 alias sp='$HOME/.config/hypr/scripts/scratchpad-term.sh'
