@@ -7,7 +7,7 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-DOTFILES_DIR="$HOME/dotfiles"
+export DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dotfiles}"
 
 info() { printf "${BLUE}[INFO]${NC} %s\n" "$1"; }
 ok()   { printf "${GREEN}[OK]${NC} %s\n" "$1"; }
@@ -58,8 +58,11 @@ setup_pacman_turbo() {
         ok "Pacman Turbo configurado com sucesso!"
     fi
 
-    # Otimização de espelhos com Reflector (se disponível)
-    if command -v reflector >/dev/null 2>&1; then
+    # Otimização de espelhos no CachyOS
+    if command -v cachyos-rate-mirrors >/dev/null 2>&1; then
+        info "Otimizando espelhos CachyOS com cachyos-rate-mirrors..."
+        sudo cachyos-rate-mirrors 2>/dev/null || true
+    elif command -v reflector >/dev/null 2>&1; then
         info "Otimizando espelhos do Pacman com Reflector (Brasil & América do Sul)..."
         sudo reflector --country Brazil,Chile,Argentina --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist --threads "$(nproc)" 2>/dev/null || warn "Reflector não pôde atualizar mirrorlist no momento. Continuando..."
     fi
@@ -106,27 +109,48 @@ update_system() {
     ok "Sistema atualizado."
 }
 
-# 2. Instalar yay (se não existir)
+# 2. Instalar yay ou paru (se não existir)
 install_yay() {
-    if ! command -v yay &> /dev/null; then
-        info "Instalando yay (AUR Helper)..."
-        sudo pacman -S --needed base-devel git --noconfirm
-        git clone https://aur.archlinux.org/yay.git /tmp/yay
-        cd /tmp/yay && makepkg -si --noconfirm
-        cd -
-        rm -rf /tmp/yay
+    if ! command -v yay &> /dev/null && ! command -v paru &> /dev/null; then
+        info "Instalando AUR Helper..."
+        if sudo pacman -S --needed --noconfirm yay 2>/dev/null; then
+            ok "Yay instalado via repositório oficial!"
+        elif sudo pacman -S --needed --noconfirm paru 2>/dev/null; then
+            ok "Paru instalado via repositório oficial!"
+        else
+            sudo pacman -S --needed base-devel git --noconfirm
+            git clone https://aur.archlinux.org/yay.git /tmp/yay
+            cd /tmp/yay && makepkg -si --noconfirm
+            cd -
+            rm -rf /tmp/yay
+        fi
     fi
-    ok "Yay está instalado."
+    ok "AUR Helper pronto."
 }
 
-# 3. Instalar pacotes nativos e AUR
+# 3. Instalar pacotes nativos e AUR com tolerância a falhas
 install_packages() {
+    local aur_helper="yay"
+    command -v paru &>/dev/null && aur_helper="paru"
+
     info "Instalando pacotes nativos (pacman)..."
-    sudo pacman -S --needed --noconfirm - < "$DOTFILES_DIR/packages/pacman-native.txt"
+    if ! sudo pacman -S --needed --noconfirm - < "$DOTFILES_DIR/packages/pacman-native.txt"; then
+        warn "Instalação em lote encontrou pendências. Executando modo tolerante pacote a pacote..."
+        while IFS= read -r pkg || [ -n "$pkg" ]; do
+            [[ -z "$pkg" || "$pkg" =~ ^# ]] && continue
+            sudo pacman -S --needed --noconfirm "$pkg" 2>/dev/null || warn "Pacote nativo '$pkg' ignorado ou não encontrado. Continuando..."
+        done < "$DOTFILES_DIR/packages/pacman-native.txt"
+    fi
     ok "Pacotes nativos instalados."
     
-    info "Instalando pacotes do AUR (yay)..."
-    yay -S --needed --noconfirm - < "$DOTFILES_DIR/packages/pacman-aur.txt"
+    info "Instalando pacotes do AUR ($aur_helper)..."
+    if ! $aur_helper -S --needed --noconfirm - < "$DOTFILES_DIR/packages/pacman-aur.txt"; then
+        warn "Instalação em lote do AUR encontrou pendências. Executando modo tolerante pacote a pacote..."
+        while IFS= read -r pkg || [ -n "$pkg" ]; do
+            [[ -z "$pkg" || "$pkg" =~ ^# ]] && continue
+            $aur_helper -S --needed --noconfirm "$pkg" 2>/dev/null || warn "Pacote AUR '$pkg' ignorado ou falhou. Continuando..."
+        done < "$DOTFILES_DIR/packages/pacman-aur.txt"
+    fi
     ok "Pacotes AUR instalados."
 }
 
@@ -328,6 +352,12 @@ apply_dotfiles() {
     info "Inicializando e aplicando dotfiles via Chezmoi (modo symlink)..."
     chezmoi init --source "$DOTFILES_DIR" --apply --mode symlink --force
     
+    # Garantia de links diretos para arquivos mestres críticos
+    ln -sf "$DOTFILES_DIR/home/dot_zshrc" "$HOME/.zshrc"
+    ln -sf "$DOTFILES_DIR/home/dot_bashrc" "$HOME/.bashrc"
+    ln -sf "$DOTFILES_DIR/home/dot_gitconfig" "$HOME/.gitconfig"
+    [ -f "$DOTFILES_DIR/home/dot_ideavimrc" ] && ln -sf "$DOTFILES_DIR/home/dot_ideavimrc" "$HOME/.ideavimrc"
+
     ok "Dotfiles aplicados com sucesso via Chezmoi."
 }
 
@@ -610,9 +640,9 @@ setup_groups
 setup_services
 setup_keyring
 setup_git
+setup_shell
 apply_dotfiles
 setup_lowercase_dirs
-setup_shell
 setup_extras
 setup_anti_friction
 setup_default_theme_and_wallpaper

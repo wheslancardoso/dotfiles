@@ -17,6 +17,8 @@ ok() { echo -e "${GREEN}[OK] $1${NC}"; }
 warn() { echo -e "${YELLOW}[WARN] $1${NC}"; }
 error() { echo -e "${RED}[ERROR] $1${NC}"; }
 
+DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dotfiles}"
+
 # --- 1. Verificação de Ambiente & Sudo NOPASSWD ---
 info "Iniciando provisão do ambiente de desenvolvimento..."
 if [ ! -f "/etc/sudoers.d/99-$USER-nopasswd" ]; then
