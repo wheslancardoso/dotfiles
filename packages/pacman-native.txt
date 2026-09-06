@@ -99,6 +99,7 @@ gnome-clocks
 gnome-keyring
 gnome-system-monitor
 gparted
+gradle
 grim
 gst-libav
 gst-plugin-pipewire
@@ -121,6 +122,7 @@ iptables
 iwd
 jfsutils
 jq
+jdk17-openjdk
 kdeconnect
 kitty
 kvantum
@@ -163,6 +165,7 @@ lvm2
 man-db
 man-pages
 mangohud
+maven
 mariadb-clients
 mdadm
 meld

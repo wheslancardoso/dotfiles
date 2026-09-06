@@ -6,10 +6,41 @@ export EDITOR="nvim"
 export VISUAL="nvim"
 export MANPAGER="nvim +Man!"
 
-# Adicionando binários locais ao PATH
+# --- 🛠️ Ecossistema Completo de Desenvolvimento & PATH ---
+# 1. Binários locais do usuário (Scripts, pipx, Mason, UV)
 export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 
-# Android SDK (suporte a lowercase e uppercase)
+# 2. Rust & Cargo
+[ -d "$HOME/.cargo/bin" ] && export PATH="$HOME/.cargo/bin:$PATH"
+
+# 3. Go Environment (GOPATH & GOBIN)
+export GOPATH="${GOPATH:-$HOME/go}"
+[ -d "$GOPATH/bin" ] && export PATH="$GOPATH/bin:$PATH"
+
+# 4. Node.js, PNPM, Bun & Global CLIs (@angular/cli, typescript)
+export PNPM_HOME="$HOME/.local/share/pnpm"
+[ -d "$PNPM_HOME" ] && export PATH="$PNPM_HOME:$PATH"
+[ -d "$HOME/.bun/bin" ] && export PATH="$HOME/.bun/bin:$PATH"
+[ -d "$HOME/.npm-global/bin" ] && export PATH="$HOME/.npm-global/bin:$PATH"
+
+# 5. Java Environment (Maven, Gradle, Spring Boot, JDTLS)
+# Detecta automaticamente JDK instalado pelo Arch Linux ou Mise
+if [ -z "$JAVA_HOME" ]; then
+    if [ -d "/usr/lib/jvm/default-runtime" ]; then
+        export JAVA_HOME="/usr/lib/jvm/default-runtime"
+    elif [ -d "/usr/lib/jvm/default" ]; then
+        export JAVA_HOME="/usr/lib/jvm/default"
+    elif [ -d "/usr/lib/jvm/java-21-openjdk" ]; then
+        export JAVA_HOME="/usr/lib/jvm/java-21-openjdk"
+    elif [ -d "/usr/lib/jvm/java-17-openjdk" ]; then
+        export JAVA_HOME="/usr/lib/jvm/java-17-openjdk"
+    elif [ -d "$HOME/.local/share/mise/installs/java/latest" ]; then
+        export JAVA_HOME="$HOME/.local/share/mise/installs/java/latest"
+    fi
+fi
+[ -n "$JAVA_HOME" ] && export PATH="$JAVA_HOME/bin:$PATH"
+
+# 6. Android SDK & Ferramentas de Linha de Comando
 for p in "$HOME/android/sdk" "$HOME/Android/Sdk"; do
     if [ -d "$p" ]; then
         export ANDROID_HOME="$p"
@@ -20,6 +51,20 @@ for p in "$HOME/android/sdk" "$HOME/Android/Sdk"; do
         break
     fi
 done
+
+# 7. Flutter SDK (se instalado)
+for f in "$HOME/development/flutter/bin" "$HOME/.local/share/flutter/bin" "$HOME/flutter/bin"; do
+    if [ -d "$f" ]; then
+        export PATH="$PATH:$f"
+        break
+    fi
+done
+
+# 8. Mise (SDK & Tool Version Manager universal: gerencia Node, Java, Python, Go)
+if command -v mise &> /dev/null; then
+    eval "$(mise activate zsh)"
+fi
+
 
 # --- Plugins (Oh My Zsh) ---
 plugins=(
@@ -432,10 +477,6 @@ alias dl='bash $HOME/dotfiles/scripts/media-download.sh'
 alias brave-sync='bash $HOME/dotfiles/scripts/brave-sync.sh'
 alias gdrive='bash $HOME/dotfiles/scripts/gdrive-mount.sh'
 
-# Mise (SDK Manager)
-if command -v mise &> /dev/null; then
-    eval "$(mise activate zsh)"
-fi
 
 # Keyring & Secrets Integration
 export GNOME_KEYRING_CONTROL="${GNOME_KEYRING_CONTROL:-$XDG_RUNTIME_DIR/keyring}"
