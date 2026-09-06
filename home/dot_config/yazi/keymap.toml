@@ -35,6 +35,16 @@ prepend_keymap = [
 	{ on = "<C-y>", run = 'shell "ripdrag -x -i -T %s" --confirm', desc = "Arrastar arquivos para Apps/Browser (Drag & Drop)" },
 
 	# --------------------------------------------------------------------------
+	# 🔍 BUSCA FUZZY, NAVEGAÇÃO & PLUGINS DE ELITE
+	# --------------------------------------------------------------------------
+	{ on = "z",          run = "plugin zoxide", desc = "Pulo Rápido Inteligente (Zoxide)" },
+	{ on = "Z",          run = "plugin fzf", desc = "Busca Recursiva de Arquivos (FZF)" },
+	{ on = "<C-d>",      run = "plugin diff", desc = "Comparar Diferenças (Diff com Arquivo Selecionado)" },
+	{ on = [ "c", "m" ], run = "plugin chmod", desc = "Alterar Permissões (Chmod Interativo)" },
+	{ on = [ "M", "m" ], run = "plugin mount", desc = "Gerenciador de Discos / Montagem / Ejeção (Mount Manager)" },
+	{ on = "l",          run = "plugin smart-enter", desc = "Entrada Inteligente (Pastas, Arquivos, Zips)" },
+
+	# --------------------------------------------------------------------------
 	# 🚀 NAVEGAÇÃO RÁPIDA (GOTO JUMPS - Atalhos Diretos no seu Drive /mnt/dados)
 	# --------------------------------------------------------------------------
 	{ on = [ "g", "i" ], run = "cd /mnt/dados/00_Inbox", desc = "Ir para 00_Inbox (Downloads)" },

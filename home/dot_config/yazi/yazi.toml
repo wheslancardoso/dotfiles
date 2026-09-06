@@ -9,14 +9,20 @@ show_symlink   = true
 
 [preview]
 tab_size        = 2
-max_width       = 600
-max_height      = 900
+max_width       = 1200
+max_height      = 1500
 cache_dir       = ""
 image_filter    = "triangle"
-image_quality   = 75
+image_quality   = 85
 sixel_fraction  = 15
 ueberzug_scale  = 1
 ueberzug_offset = [ 0, 0, 0, 0 ]
+
+[tasks]
+micro_workers = 16
+macro_workers = 32
+bizarre_retry = 5
+
 
 [opener]
 open = [
@@ -82,3 +88,10 @@ rules = [
 
 [flavor]
 use = "catppuccin-mocha"
+
+[plugin]
+prepend_fetchers = [
+	{ id = "git", name = "*", run = "git", prio = "normal" },
+	{ id = "git", name = "*/", run = "git", prio = "normal" },
+]
+
