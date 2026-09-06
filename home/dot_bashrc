@@ -91,3 +91,13 @@ alias cleanup='bash $HOME/dotfiles/scripts/sys-maintenance.sh cleanup'
 alias sys-update='bash $HOME/dotfiles/scripts/sys-maintenance.sh update'
 alias dl='bash $HOME/dotfiles/scripts/media-download.sh'
 
+# 🎧 Presets de Áudio (EasyEffects & Graves Hip-Hop)
+alias bass='$HOME/dotfiles/scripts/audio-preset-switch.sh bass'
+alias hiphop='$HOME/dotfiles/scripts/audio-preset-switch.sh bass'
+alias bass-max='$HOME/dotfiles/scripts/audio-preset-switch.sh bass-max'
+alias bass808='$HOME/dotfiles/scripts/audio-preset-switch.sh bass-max'
+alias dolby='$HOME/dotfiles/scripts/audio-preset-switch.sh dolby'
+alias audio-flat='$HOME/dotfiles/scripts/audio-preset-switch.sh flat'
+alias audio-menu='$HOME/dotfiles/scripts/audio-preset-switch.sh menu'
+alias presets='$HOME/dotfiles/scripts/audio-preset-switch.sh menu'
+
