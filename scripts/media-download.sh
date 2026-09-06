@@ -44,6 +44,8 @@ COOKIES_BROWSER=""
 SUB_ONLY=false
 THUMB_ONLY=false
 FORCE_PRIVATE=false
+BATCH_FILE=""
+
 
 # ------------------------------------------------------------------------------
 # CORES CATPPUCCIN MOCHA PARA TERMINAL
@@ -189,6 +191,78 @@ download_direct_file() {
         notify_completion "Arquivo Direto Baixado" "$dest_dir"
     fi
 }
+
+download_batch() {
+    local file="$1"
+    local dest="$2"
+    local mode="${3:-video}"
+
+    if [ ! -f "$file" ]; then
+        echo -e "${RED}❌ Arquivo de lote não encontrado:${NC} $file"
+        exit 1
+    fi
+
+    local urls=()
+    while IFS= read -r line || [ -n "$line" ]; do
+        line=$(echo "$line" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+        if [[ "$line" =~ ^https?:// ]] || [[ "$line" =~ ^magnet:\? ]]; then
+            urls+=("$line")
+        fi
+    done < "$file"
+
+    local total="${#urls[@]}"
+    if [ "$total" -eq 0 ]; then
+        echo -e "${YELLOW}Nenhuma URL válida encontrada em $file.${NC}"
+        exit 0
+    fi
+
+    echo -e "${MAUVE}📦 Iniciando Download em Lote (Batch Mode):${NC} ${BOLD}$total mídias na fila${NC}"
+    echo -e "${BLUE}📂 Pasta Base de Destino:${NC} $dest\n"
+
+    local current=0
+    local success=0
+    local failed=0
+
+    for u in "${urls[@]}"; do
+        current=$((current + 1))
+        echo -e "${PEACH}[$current/$total] Processando:${NC} $u"
+        local item_dest="$dest"
+        if is_sensitive_domain "$u" || [ "$FORCE_PRIVATE" = true ]; then
+            item_dest="$DEFAULT_DEST_PRIVATE/Videos_e_Cenas"
+            [ "$mode" == "audio" ] && item_dest="$DEFAULT_DEST_PRIVATE/Audios"
+            mkdir -p "$item_dest"
+        fi
+
+        local res=0
+        if is_magnet_or_torrent "$u"; then
+            download_torrent_or_magnet "$u" "$item_dest" || res=1
+        elif is_direct_download_file "$u"; then
+            download_direct_file "$u" "$item_dest" || res=1
+        elif [[ "$u" =~ (open\.spotify\.com|spotify:) ]]; then
+            download_spotify "$u" "mp3" "$item_dest" "cli" || res=1
+        elif is_gallery_domain "$u"; then
+            download_gallery "$u" "$item_dest" || res=1
+        elif [ "$mode" == "audio" ]; then
+            download_audio "$u" "$item_dest" || res=1
+        else
+            download_video "$u" "best" "$item_dest" || res=1
+        fi
+
+        if [ "$res" -eq 0 ]; then
+            success=$((success + 1))
+        else
+            failed=$((failed + 1))
+            echo -e "${RED}⚠ Falha ou recurso indisponível no link:${NC} $u (continuando lote...)"
+        fi
+        echo ""
+    done
+
+
+    echo -e "${GREEN}🎉 Lote concluído!${NC} $total processados ($success com sucesso, $failed falhas)."
+    notify_completion "Download em Lote Concluído ($total itens)" "$dest"
+}
+
+
 
 
 get_downloader_args() {
@@ -365,7 +439,11 @@ download_video() {
         --windows-filenames \
         --no-mtime \
         "${extra_flags[@]}" \
-        "'$url'" || true
+        "'$url'" || dl_status=$?
+
+    if [ "$dl_status" -ne 0 ]; then
+        return 1
+    fi
 
     local latest_file
     latest_file=$(find "$dest" -maxdepth 2 -type f -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -1 | cut -f2- -d" ")
@@ -425,7 +503,11 @@ download_audio() {
         --windows-filenames \
         --no-mtime \
         "${extra_flags[@]}" \
-        "'$url'" || true
+        "'$url'" || dl_status=$?
+
+    if [ "$dl_status" -ne 0 ]; then
+        return 1
+    fi
 
     local latest_file
     latest_file=$(find "$dest" -maxdepth 2 -type f \( -name "*.mp3" -o -name "*.flac" -o -name "*.m4a" \) -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -1 | cut -f2- -d" ")
@@ -903,10 +985,14 @@ show_help() {
     echo -e "  ${BLUE}dl --rofi${NC}                   Abre o menu visual Rofi (SUPER + ALT + D)"
     echo -e "  ${BLUE}dl -n, --now${NC}                Baixa o que está tocando agora (SUPER + CTRL + D)"
     echo -e "  ${BLUE}dl -h, --history${NC}            Histórico de downloads com busca FZF"
+    echo -e "  ${BLUE}dl -b <lista.txt>${NC}          Baixa em lote todos os links de um arquivo de texto"
+    echo -e "  ${BLUE}dl -p <lista.txt>${NC}          Baixa a lista toda direto para a pasta .privado"
     echo ""
     echo -e "${BOLD}Flags Diretas de Linha de Comando:${NC}"
     echo -e "  ${GREEN}dl -a <url>${NC}                 Baixa direto como Áudio MP3 320k"
     echo -e "  ${PEACH}dl -p <url>${NC}                 Roteia direto para a pasta .privado"
+    echo -e "  ${BLUE}dl -b, --batch <file.txt>${NC}   Processa arquivo de texto com links em lote"
+    echo -e "  ${BLUE}dl -d, --dir <pasta>${NC}        Define diretório de destino customizado"
     echo -e "  ${TEAL}dl -c 01:20-02:40 <url>${NC}     Corta trecho cirúrgico do vídeo"
     echo -e "  ${YELLOW}dl -z 10 <url>${NC}              Comprime para caber em 10MB (Discord)"
     echo -e "  ${MAUVE}dl -g 00:05-00:15 <url>${NC}     Gera GIF animado do trecho"
@@ -939,7 +1025,7 @@ main() {
                 view_history "cli"
                 exit 0
                 ;;
-            --dir)
+            -d|--dir)
                 CUSTOM_DIR="$2"
                 shift 2
                 ;;
@@ -962,6 +1048,11 @@ main() {
                 FORCE_PRIVATE=true
                 shift
                 ;;
+            -b|--batch)
+                BATCH_FILE="$2"
+                shift 2
+                ;;
+
             -c|--clip)
                 CUSTOM_CLIP="$2"
                 shift 2
@@ -1021,8 +1112,20 @@ main() {
         esac
     done
 
+    # Se foi passado um arquivo de lote (.txt com múltiplos links) ou a flag --batch
+    local batch_candidate="${BATCH_FILE:-$target_url}"
+    if [ -n "$batch_candidate" ] && [ -f "$batch_candidate" ]; then
+        local dest_batch="${CUSTOM_DIR:-$DEFAULT_DEST_VIDEO}"
+        [ "$FORCE_PRIVATE" = true ] && dest_batch="$DEFAULT_DEST_PRIVATE/Videos_e_Cenas"
+        local mode="video"
+        [ "$direct_action" == "audio" ] && mode="audio"
+        download_batch "$batch_candidate" "$dest_batch" "$mode"
+        exit 0
+    fi
+
     # Se foi chamada uma flag direta específica de linha de comando, executa direto
     if [ -n "$direct_action" ] || [ "$MAKE_GIF" = true ] || [ -n "$COMPRESS_TARGET" ] || [ "$SPLIT_CHAPTERS" = true ] || [ "$SYNC_PLAYLIST" = true ] || [ -n "$CUSTOM_CLIP" ] || [ "$FORCE_PRIVATE" = true ]; then
+
 
         if [ -z "$target_url" ]; then
             target_url=$(get_clipboard_url)
