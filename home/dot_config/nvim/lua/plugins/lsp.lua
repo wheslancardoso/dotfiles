@@ -4,7 +4,7 @@ return {
     "mason-org/mason.nvim",
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
-      vim.list_extend(opts.ensure_installed, {
+      local to_add = {
         "jdtls",
         "java-debug-adapter",
         "java-test",
@@ -25,7 +25,43 @@ return {
         "docker-compose-language-service",
         "shfmt",
         "stylua",
-      })
+      }
+      local seen = {}
+      local deduplicated = {}
+      for _, item in ipairs(opts.ensure_installed) do
+        if not seen[item] then
+          seen[item] = true
+          table.insert(deduplicated, item)
+        end
+      end
+      for _, item in ipairs(to_add) do
+        if not seen[item] then
+          seen[item] = true
+          table.insert(deduplicated, item)
+        end
+      end
+      opts.ensure_installed = deduplicated
+    end,
+    config = function(_, opts)
+      require("mason").setup(opts)
+      local mr = require("mason-registry")
+      mr:on("package:install:success", function()
+        vim.defer_fn(function()
+          require("lazy.core.handler.event").trigger({
+            event = "FileType",
+            buf = vim.api.nvim_get_current_buf(),
+          })
+        end, 100)
+      end)
+
+      mr.refresh(function()
+        for _, tool in ipairs(opts.ensure_installed or {}) do
+          local ok, p = pcall(mr.get_package, tool)
+          if ok and p and not p:is_installed() and not p:is_installing() then
+            pcall(p.install, p)
+          end
+        end
+      end)
     end,
   },
 
