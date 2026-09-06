@@ -80,6 +80,12 @@ cp -f "$wallpaper_path" "$wallpaper_current" || true
 mkdir -p "$HOME/.cache"
 echo "$wallpaper_path" > "$HOME/.cache/current_wallpaper" || true
 
+# Sincronizar automaticamente o wallpaper com a tela de login SDDM (simple_sddm_2)
+sddm_bg="/usr/share/sddm/themes/simple_sddm_2/Backgrounds/default"
+if [[ -w "$sddm_bg" || -w "$(dirname "$sddm_bg" 2>/dev/null)" ]]; then
+  cp -f "$wallpaper_path" "$sddm_bg" 2>/dev/null || true
+fi
+
 # Ensure Ghostty directory exists so Wallust can write target even if Ghostty isn't installed
 mkdir -p "$HOME/.config/ghostty" || true
 wait_for_templates() {

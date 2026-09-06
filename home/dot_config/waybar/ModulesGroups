@@ -67,6 +67,21 @@
 	]
 },
 
+"group/media": {
+	"orientation": "inherit",
+	"drawer": {
+		"transition-duration": 400,
+		"children-class": "media-drawer-child",
+		"transition-left-to-right": true
+	},
+	"modules": [
+		"mpris",
+		"custom/media_prev",
+		"custom/media_play",
+		"custom/media_next"
+	]
+},
+
 "group/connections": {
 	"orientation": "inherit",
 	"drawer": {
@@ -76,9 +91,11 @@
         },
 	"modules": [
 		"network",
-		"bluetooth"
+		"bluetooth",
+		"network#speed"
 	]
 },
+
 
 "group/status": {
 	"orientation": "inherit",

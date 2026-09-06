@@ -1,0 +1,368 @@
+/* ==============================================================================
+ * 🌟 RICE INVEJÁVEL - Masterpiece Floating Island Theme (Wallust Dynamic Colors)
+ * Glassmorphism, Floating Pills, Glow Effects & Drawer Transitions
+ * ============================================================================== */
+
+@import '../../.config/waybar/wallust/colors-waybar.css';
+
+@define-color bar-bg rgba(15, 17, 24, 0.65);
+@define-color pill-bg rgba(22, 25, 37, 0.88);
+@define-color pill-bg-hover rgba(35, 39, 58, 0.96);
+@define-color pill-border rgba(255, 255, 255, 0.08);
+
+* {
+    font-family: "JetBrainsMono Nerd Font", "Font Awesome 6 Free", sans-serif;
+    font-weight: 700;
+    min-height: 0;
+    font-size: 13px;
+    font-feature-settings: '"zero", "ss01", "ss02", "ss03", "ss04", "ss05", "cv31"';
+}
+
+window#waybar {
+    background-color: transparent;
+    color: @foreground;
+    transition-property: background-color;
+    transition-duration: 0.4s;
+}
+
+window#waybar.empty #window {
+    background-color: transparent;
+    border: none;
+}
+
+/* ==============================================================================
+ * 💎 FLOATING ISLAND PILLS (Containers & Modules)
+ * ============================================================================== */
+
+#workspaces,
+#window,
+#clock,
+#mpris,
+#group-media,
+#group-mobo_drawer,
+#group-connections,
+#group-audio,
+#group-status,
+#group-notify,
+#group-app_drawer,
+#tray,
+#idle_inhibitor,
+#custom-weather,
+#custom-nightlight,
+#custom-hint,
+#custom-cava_mviz {
+    background: @pill-bg;
+    border: 1.5px solid @pill-border;
+    border-radius: 14px;
+    padding: 3px 12px;
+    margin: 4px 3px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Separadores discretos */
+#custom-separator {
+    color: @color10;
+    opacity: 0.35;
+    margin: 0 2px;
+}
+
+/* Efeito Hover nos Pills */
+#clock:hover,
+#mpris:hover,
+#group-media:hover,
+#group-mobo_drawer:hover,
+#group-connections:hover,
+#group-audio:hover,
+#group-status:hover,
+#group-notify:hover,
+#custom-weather:hover,
+#custom-hint:hover,
+#idle_inhibitor:hover {
+    background: @pill-bg-hover;
+    border-color: @color12;
+    box-shadow: 0 4px 18px rgba(198, 138, 238, 0.25);
+}
+
+/* ==============================================================================
+ * 🚀 WORKSPACES (Pílula Dinâmica com Glow Neon)
+ * ============================================================================== */
+
+#workspaces {
+    padding: 2px 4px;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+#workspaces button {
+    padding: 2px 9px;
+    margin: 2px 2px;
+    border-radius: 10px;
+    color: @color13;
+    background-color: transparent;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#workspaces button:hover {
+    color: @foreground;
+    background-color: rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+}
+
+#workspaces button.active {
+    color: #111419;
+    background: linear-gradient(135deg, @color12 0%, @color14 100%);
+    border-radius: 10px;
+    min-width: 32px;
+    font-weight: 900;
+    box-shadow: 0 0 12px @color12;
+}
+
+#workspaces button.urgent {
+    color: #ffffff;
+    background: @color11;
+    border-radius: 10px;
+    box-shadow: 0 0 12px @color11;
+}
+
+/* ==============================================================================
+ * 🎵 POWER-USER MEDIA & SPOTIFY (Pill & Drawer Controls)
+ * ============================================================================== */
+
+#mpris {
+    background: @pill-bg;
+    border: 1.5px solid @color12;
+    border-radius: 14px;
+    padding: 3px 14px;
+    margin: 4px 3px;
+    color: @foreground;
+    box-shadow: 0 4px 14px rgba(198, 138, 238, 0.25);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#mpris:hover {
+    background: @pill-bg-hover;
+    box-shadow: 0 4px 20px rgba(198, 138, 238, 0.45);
+}
+
+/* Botões do Drawer de Mídia (Slide-out) */
+#custom-media_prev,
+#custom-media_play,
+#custom-media_next {
+    padding: 0 6px;
+    margin: 0 2px;
+    color: @color14;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+#custom-media_prev:hover,
+#custom-media_play:hover,
+#custom-media_next:hover {
+    color: @color12;
+}
+
+/* ==============================================================================
+ * 🕒 CLOCK / DATA (Central Highlight)
+ * ============================================================================== */
+
+#clock {
+    border-color: @color14;
+    color: @color14;
+    font-weight: 800;
+    padding: 3px 14px;
+    box-shadow: 0 0 10px rgba(241, 207, 138, 0.2);
+}
+
+/* ==============================================================================
+ * 🌡️ SISTEMA & HARDWARE (Mobo Drawer: Temp -> CPU, RAM, Disk)
+ * ============================================================================== */
+
+#group-mobo_drawer {
+    border-color: @color11;
+}
+
+#temperature {
+    color: @color11;
+    padding: 0 4px;
+}
+
+#cpu {
+    color: @color12;
+    padding: 0 6px;
+}
+
+#memory {
+    color: @color5;
+    padding: 0 6px;
+}
+
+#disk {
+    color: @color14;
+    padding: 0 6px;
+}
+
+#power-profiles-daemon {
+    color: @color6;
+    padding: 0 4px;
+}
+
+/* ==============================================================================
+ * 🌐 CONEXÕES EXPANSÍVEL (Network Drawer: Wi-Fi -> Bluetooth, Velocidade)
+ * ============================================================================== */
+
+#group-connections {
+    border-color: @color6;
+}
+
+#network {
+    color: @color6;
+    padding: 0 4px;
+}
+
+#network.disconnected {
+    color: @color11;
+}
+
+#bluetooth {
+    color: @color12;
+    padding: 0 6px;
+}
+
+#network.speed {
+    color: @color14;
+    padding: 0 6px;
+    font-size: 11px;
+}
+
+/* ==============================================================================
+ * 🔊 ÁUDIO & MICROFONE
+ * ============================================================================== */
+
+#group-audio {
+    border-color: @color12;
+}
+
+#pulseaudio {
+    color: @color12;
+    padding: 0 4px;
+}
+
+#pulseaudio.muted {
+    color: @color10;
+}
+
+#pulseaudio.microphone {
+    color: @color14;
+    padding: 0 6px;
+}
+
+#pulseaudio.microphone-muted {
+    color: @color11;
+}
+
+/* ==============================================================================
+ * ⚡ STATUS & POWER (Power Drawer: Power -> Lock, Exit, Reboot)
+ * ============================================================================== */
+
+#group-status {
+    border-color: @color11;
+}
+
+#custom-power {
+    color: @color11;
+    font-size: 14px;
+    padding: 0 4px;
+}
+
+#custom-power:hover {
+    color: #ffffff;
+}
+
+#custom-lock,
+#custom-quit,
+#custom-reboot,
+#custom-keyboard,
+#keyboard-state {
+    padding: 0 6px;
+    color: @color14;
+}
+
+#custom-lock:hover,
+#custom-quit:hover,
+#custom-reboot:hover {
+    color: @color12;
+}
+
+/* ==============================================================================
+ * 🔔 NOTIFICAÇÕES & WEATHER
+ * ============================================================================== */
+
+#group-notify {
+    border-color: @color13;
+}
+
+#custom-swaync {
+    color: @color13;
+    padding: 0 4px;
+}
+
+#custom-weather {
+    color: @color14;
+    border-color: @color14;
+}
+
+#idle_inhibitor {
+    color: @color6;
+    border-color: @color6;
+}
+
+#custom-nightlight {
+    color: @color14;
+    border-color: @color14;
+}
+
+#custom-hint {
+    color: @color14;
+    border-color: @color14;
+}
+
+#tray {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    color: @color11;
+}
+
+#custom-cava_mviz {
+    color: @color12;
+    border-color: rgba(255, 255, 255, 0.08);
+    padding: 0 8px;
+}
+
+#window {
+    color: @color13;
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* ==============================================================================
+ * 💬 TOOLTIPS (Popup de Informações Estilizado com Vidro Escuro)
+ * ============================================================================== */
+
+tooltip {
+    background: rgba(15, 17, 24, 0.96);
+    border: 1.5px solid @color12;
+    border-radius: 12px;
+    padding: 10px 14px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+}
+
+tooltip label {
+    color: @foreground;
+    font-weight: 600;
+}
