@@ -39,8 +39,9 @@ pdf = [
 	{ run = 'okular "$@"', orphan = true, desc = "Okular (PDF & Anotações)" },
 ]
 video = [
-	{ run = 'celluloid "$@"', orphan = true, desc = "Celluloid (MPV Moderno)" },
-	{ run = 'mpv "$@"', orphan = true, desc = "MPV" },
+	{ run = 'celluloid "$@"', orphan = true, desc = "Celluloid (Player Moderno)" },
+	{ run = 'mpv "$@"', orphan = true, desc = "MPV (Aceleração GPU NVDEC)" },
+	{ run = 'mpv --vo=kitty "$@"', block = true, desc = "Assistir Dentro do Terminal (Kitty VO)" },
 ]
 office = [
 	{ run = 'onlyoffice-desktopeditors "$@"', orphan = true, desc = "OnlyOffice" },
