@@ -263,6 +263,8 @@ alias sp='$HOME/.config/hypr/scripts/scratchpad-term.sh'
 alias cleanup='bash $HOME/dotfiles/scripts/sys-maintenance.sh cleanup'
 alias sys-update='bash $HOME/dotfiles/scripts/sys-maintenance.sh update'
 alias dl='bash $HOME/dotfiles/scripts/media-download.sh'
+alias brave-sync='bash $HOME/dotfiles/scripts/brave-sync.sh'
+alias gdrive='bash $HOME/dotfiles/scripts/gdrive-mount.sh'
 
 # Mise (SDK Manager)
 if command -v mise &> /dev/null; then

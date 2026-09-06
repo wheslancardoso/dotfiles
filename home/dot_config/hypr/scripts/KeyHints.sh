@@ -58,6 +58,7 @@ GDK_BACKEND=$BACKEND yad \
 "cleanup" "Faxina Inteligente do Arch (Órfãos/Cache)" "sys-maintenance.sh" \
 "sys-update" "Atualização Completa e Segura do Sistema" "sys-maintenance.sh" \
 "dl [url]" "Download Mídia/Spotify no Terminal" "media-download.sh" \
+"brave-sync" "Copiar 25 Palavras do Brave Sync (Clipboard)" "brave-sync.sh" \
 "fix-pendrive" "Destravar & Reparar Pen-drive (Terminal)" "fix-pendrive.sh" \
 "fix-suspend" "Blindagem e Diagnóstico de Suspensão" "fix-suspend.sh" \
 "fix-pacman" "Destravar db.lck do Pacman" "fix-pacman.sh" \
