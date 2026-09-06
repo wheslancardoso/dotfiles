@@ -28,11 +28,12 @@ if systemctl --user is-active --quiet wireplumber; then
     echo -e "${GREEN}[OK] WirePlumber ativo e rodando!${NC}"
 fi
 
-# Reinicia easyeffects se estiver instalado
+# Reinicia easyeffects e reaplica presets se estiver instalado
 if command -v easyeffects >/dev/null 2>&1; then
     pkill -x easyeffects 2>/dev/null || true
     nohup easyeffects --gapplication-service >/dev/null 2>&1 &
-    echo -e "${GREEN}[OK] EasyEffects (filtro de ruído IA) reiniciado!${NC}"
+    (sleep 1.5 && easyeffects -l "Bass Enhancing + Perfect EQ" 2>/dev/null && easyeffects -l "Podcast_Studio_Mic" 2>/dev/null) &
+    echo -e "${GREEN}[OK] EasyEffects (graves de estúdio e filtro de ruído IA) reiniciado!${NC}"
 fi
 
 echo -e "\n${GREEN}${BOLD}✔ Sistema de áudio 100% restabelecido!${NC}"

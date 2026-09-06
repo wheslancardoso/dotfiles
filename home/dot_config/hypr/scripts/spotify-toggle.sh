@@ -9,6 +9,13 @@
 
 set -euo pipefail
 
+# Lockfile anti-rebote (debounce) para evitar disparos concorrentes
+LOCKFILE="/tmp/spotify-toggle.lock"
+exec 200>"$LOCKFILE"
+if ! flock -n 200; then
+    exit 0
+fi
+
 # Monitor focado atualmente
 current_mon=$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | .name')
 

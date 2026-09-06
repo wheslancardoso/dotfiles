@@ -15,28 +15,43 @@ NC='\033[0m'
 
 echo -e "${BLUE}${BOLD}=== 🎵 Calibrador de Áudio & Graves Profissionais (EasyEffects) ===${NC}\n"
 
-EE_DIR="$HOME/.config/easyeffects"
-mkdir -p "$EE_DIR/output" "$EE_DIR/input" "$EE_DIR/irs" "$EE_DIR/autoload"
+EE_DIR="$HOME/.local/share/easyeffects"
+mkdir -p "$EE_DIR/output" "$EE_DIR/input" "$EE_DIR/irs" "$HOME/.config/easyeffects/autoload"
 
-echo -e "${BLUE}[INFO] Baixando presets de alta fidelidade e graves da comunidade (JackHack96)...${NC}"
+# 1. Copiar presets e IRSs empacotados nos dotfiles
+DOTFILES_EE="$HOME/dotfiles/system/etc/easyeffects"
+if [ -d "$DOTFILES_EE" ]; then
+    echo -e "${BLUE}[INFO] Copiando presets e impulsos IRS dos dotfiles...${NC}"
+    cp -rf "$DOTFILES_EE"/output/*.json "$EE_DIR/output/" 2>/dev/null || true
+    cp -rf "$DOTFILES_EE"/irs/*.irs "$EE_DIR/irs/" 2>/dev/null || true
+    cp -rf "$DOTFILES_EE"/input/*.json "$EE_DIR/input/" 2>/dev/null || true
+fi
+
+echo -e "${BLUE}[INFO] Garantindo presets de alta fidelidade e graves atualizados (JackHack96)...${NC}"
 
 REPO_URL="https://raw.githubusercontent.com/JackHack96/EasyEffects-Presets/master"
 
 # Baixar IRS (Impulse Responses para Dolby Atmos e Surround)
 for irs in "Dolby ATMOS ((128K MP3)) 1.Default.irs" "Razor surround.irs"; do
-    echo -e "  -> Baixando IRS: ${YELLOW}$irs${NC}"
-    curl -fsSL "$REPO_URL/irs/$irs" -o "$EE_DIR/irs/$irs" 2>/dev/null || true
+    if [ ! -f "$EE_DIR/irs/$irs" ]; then
+        echo -e "  -> Baixando IRS: ${YELLOW}$irs${NC}"
+        curl -fsSL "$REPO_URL/irs/$irs" -o "$EE_DIR/irs/$irs" 2>/dev/null || true
+    fi
 done
 
 # Baixar Presets Principais
 for preset in \
     "Bass Enhancing + Perfect EQ.json" \
-    "Bass Multiplying + Perfect EQ.json" \
+    "Bass Boosted.json" \
     "Dolby Atmos.json" \
     "Advanced Auto Gain.json" \
-    "Loudness + Autogain.json"; do
-    echo -e "  -> Baixando Preset: ${GREEN}$preset${NC}"
-    curl -fsSL "$REPO_URL/$preset" -o "$EE_DIR/output/$preset" 2>/dev/null || true
+    "Loudness+Autogain.json"; do
+    if [ ! -f "$EE_DIR/output/$preset" ]; then
+        echo -e "  -> Baixando Preset: ${GREEN}$preset${NC}"
+        curl -fsSL "$REPO_URL/$preset" -o "$EE_DIR/output/$preset" 2>/dev/null || true
+    fi
+done
+
 # Instalar preset de microfone de estúdio (RNNoise + EQ + Compressor + Limiter)
 DOTFILES_MIC="$HOME/dotfiles/system/etc/easyeffects/input/Podcast_Studio_Mic.json"
 if [ -f "$DOTFILES_MIC" ]; then

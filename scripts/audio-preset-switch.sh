@@ -13,7 +13,7 @@
 set -euo pipefail
 
 ACTION="${1:-menu}"
-EE_DIR="$HOME/.config/easyeffects"
+EE_DIR="$HOME/.local/share/easyeffects"
 
 # Garante que os presets foram baixados
 if [ ! -f "$EE_DIR/output/Bass Enhancing + Perfect EQ.json" ]; then

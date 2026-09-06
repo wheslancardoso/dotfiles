@@ -3,8 +3,13 @@
 
 @import '../../.config/waybar/wallust/colors-waybar.css';
 
+:root {
+    --notification-icon-size: 88px;
+    --notification-app-icon-size: 24px;
+}
+
 @define-color noti-border-color @color12;
-@define-color noti-bg rgba(0, 0, 0, 0.8);
+@define-color noti-bg rgba(24, 24, 37, 0.95);
 @define-color noti-bg-alt @background-alt;
 @define-color noti-bg-hover @background;
 @define-color text-color @foreground;
@@ -19,7 +24,7 @@
 .control-center .notification-row:hover {
     opacity: 1;
     background: @noti-bg;
-    border-radius: 10px
+    border-radius: 12px;
 }
 
 .notification-row {
@@ -27,11 +32,17 @@
 }
 
 .notification {
-	/*color: @text-color;*/
     background: @noti-bg;
-    padding: 3px 10px 3px 6px;
-    border-radius: 10px;
-    border: 2px solid @noti-border-color;
+    padding: 10px 14px 10px 10px;
+    border-radius: 14px;
+    border: 1.5px solid @noti-border-color;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.notification.Spotify,
+.notification.spotify {
+    border: 1.5px solid #1db954;
+    box-shadow: 0 8px 28px rgba(29, 185, 84, 0.25);
 }
 
 .notification-default-action {
@@ -123,35 +134,66 @@
     background: @noti-bg-hover
 }
 
+.notification-content {
+    padding: 0;
+    margin: 0;
+}
+
+.notification-content .image,
+.image {
+    -gtk-icon-size: 88px;
+    min-width: 88px;
+    min-height: 88px;
+    border-radius: 12px;
+    margin: 2px 14px 2px 2px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.notification-content .app-icon,
+.app-icon {
+    -gtk-icon-size: 22px;
+    margin: 4px;
+    -gtk-icon-shadow: 0 1px 4px black;
+}
+
+.notification-content .text-box,
+.text-box {
+    margin: 0;
+    padding: 2px 0;
+}
+
 .body-image {
     margin-top: 6px;
     color: @text-color;
-    border-radius: 10px
+    border-radius: 12px;
 }
 
 .summary {
-    font-size: 1rem;
-    font-weight: bold;
+    font-size: 1.05rem;
+    font-weight: 800;
     background: transparent;
-    color: @text-color;
-    text-shadow: none
+    color: #89b4fa;
+    text-shadow: none;
+    margin-bottom: 3px;
 }
 
 .time {
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: bold;
     background: transparent;
-    color: @text-color;
+    color: alpha(@text-color, 0.5);
     text-shadow: none;
-    margin-right: 18px
+    margin-right: 18px;
 }
 
 .body {
-    font-size: 1rem;
-    font-weight: bold;
+    font-size: 0.9rem;
+    font-weight: normal;
     background: transparent;
     color: @text-color;
-    text-shadow: none
+    text-shadow: none;
+    line-height: 1.35;
 }
 
 .control-center {
