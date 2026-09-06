@@ -12,5 +12,13 @@ if [[ -z "$active_pid" || ! "$active_pid" =~ ^[0-9]+$ ]]; then
   exit 1
 fi
 
-# Close active window
-kill "$active_pid"
+# Encerra o processo ativo (SIGTERM imediato com garantia de SIGKILL -9 para apps travados)
+kill "$active_pid" 2>/dev/null || true
+(
+  sleep 0.2
+  if kill -0 "$active_pid" 2>/dev/null; then
+    kill -9 "$active_pid" 2>/dev/null || true
+  fi
+) &
+
+notify-send -u low -t 1500 -i "$HOME/.config/swaync/icons/close.png" "Processo Finalizado" "PID $active_pid aniquilado com sucesso."
