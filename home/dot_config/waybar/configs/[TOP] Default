@@ -24,7 +24,7 @@
 "modules-left": [
 	"group/media",
 	"custom/separator#blank",
-	"hyprland/window",
+	"group/window_drawer",
 	],
 
 "modules-center": [
@@ -36,9 +36,6 @@
 	"clock",
 	"custom/separator#dot-line",
 	"custom/weather",
-	"custom/separator#dot-line",
-	"idle_inhibitor",	
-	"custom/hint",	
 	],
 
 "modules-right": [
@@ -49,6 +46,8 @@
 	"group/mobo_drawer",
 	"custom/separator#line",  
 	"group/audio",
+	"custom/separator#dot-line", 
+	"idle_inhibitor",
 	"custom/separator#dot-line", 
 	"custom/nightlight",
 	"custom/separator#dot-line", 

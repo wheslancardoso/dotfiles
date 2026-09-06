@@ -6,18 +6,19 @@
 {
 
 "temperature": {
-	"interval": 10,
+	"interval": 4,
 	"tooltip": true,
 	"hwmon-path": [
+		"/sys/class/hwmon/hwmon2/temp1_input",
+		"/sys/class/hwmon/hwmon3/temp1_input",
 		"/sys/class/hwmon/hwmon1/temp1_input",
 		"/sys/class/thermal/thermal_zone0/temp"
 	],
-	//"thermal-zone": 0,
-	"critical-threshold": 82,
-	"format-critical": "{temperatureC}°C {icon}",
+	"critical-threshold": 80,
+	"format-critical": "{temperatureC}°C 󰈸",
 	"format": "{temperatureC}°C {icon}",
 	"format-icons": [
-		"󰈸"
+		"󰔏", "󱃂", "󰔐", "󱃃", "󰈸"
 	],
 	"on-click-right": "$HOME/.config/hypr/scripts/WaybarScripts.sh --nvtop"
 },
@@ -203,6 +204,41 @@
 	}
 },
 
+"hyprland/window#app": {
+	"format": "{class}",
+	"separate-outputs": true,
+	"rewrite": {
+		"antigravity": "󰚩 Antigravity",
+		"brave-browser": "🦁 Brave",
+		"google-chrome": " Chrome",
+		"firefox": " Firefox",
+		"com.mitchellh.ghostty": "󰅩 Ghostty",
+		"ghostty": "󰅩 Ghostty",
+		"kitty": "󰄛 Kitty",
+		"Alacritty": "󰞷 Alacritty",
+		"foot": "󰽒 Foot",
+		"neovim": " Neovim",
+		"nvim": " Neovim",
+		"vesktop": "󰙯 Discord",
+		"discord": "󰙯 Discord",
+		"org.telegram.desktop": " Telegram",
+		"Spotify": " Spotify",
+		"spotify": " Spotify",
+		"thunar": "📁 Arquivos",
+		"yazi": "📁 Yazi",
+		"code": "󰨞 Code",
+		"Code": "󰨞 Code",
+		"steam": "󰓓 Steam",
+		"": ""
+	}
+},
+
+"hyprland/window#title": {
+	"format": "• {}",
+	"max-length": 55,
+	"separate-outputs": true
+},
+
 "idle_inhibitor": {
 	"tooltip": true,
 	"tooltip-format-activated": "Idle_inhibitor active",
@@ -268,7 +304,7 @@
 	"dynamic-order": ["title", "artist"],
 	"dynamic-importance-order": ["title", "artist"],
 	"dynamic-separator": " • ",
-	"dynamic-len": 42,
+	"dynamic-len": 30,
 	"ignored-players": ["firefox", "chromium", "brave", "google-chrome", "chrome"],
 	"tooltip": true,
 	"tooltip-format": "{player} ({status})\n<b>🎵 {title}</b>\n👤 {artist}\n💿 {album}\n\n🖱️ Clique: Play/Pause | Dir: Próxima | Meio: Anterior | Scroll: Volume"

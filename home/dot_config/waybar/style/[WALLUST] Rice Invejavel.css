@@ -35,7 +35,7 @@ window#waybar.empty #window {
  * ============================================================================== */
 
 #workspaces,
-#window,
+#group-window_drawer,
 #clock,
 #mpris,
 #group-media,
@@ -71,6 +71,7 @@ window#waybar.empty #window {
 #clock:hover,
 #mpris:hover,
 #group-media:hover,
+#group-window_drawer:hover,
 #group-mobo_drawer:hover,
 #group-connections:hover,
 #group-audio:hover,
@@ -174,16 +175,52 @@ window#waybar.empty #window {
 }
 
 /* ==============================================================================
+ * 🪟 GAVETA DE TÍTULO DA JANELA (App Icon/Class -> Expande Título no Hover)
+ * ============================================================================== */
+
+#group-window_drawer {
+    border-color: @color13;
+}
+
+#group-window_drawer #window,
+#group-window_drawer .window-title-expanded,
+#group-window_drawer label {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+}
+
+#window.app {
+    color: @color14;
+    font-weight: 700;
+    padding: 0 4px;
+}
+
+#window.title {
+    color: @foreground;
+    font-weight: 500;
+    padding: 0 4px;
+}
+
+/* ==============================================================================
  * 🌡️ SISTEMA & HARDWARE (Mobo Drawer: Temp -> CPU, RAM, Disk)
  * ============================================================================== */
 
 #group-mobo_drawer {
-    border-color: @color11;
+    border-color: #a6e3a1;
 }
 
 #temperature {
-    color: @color11;
+    color: #a6e3a1;
+    font-weight: 600;
     padding: 0 4px;
+}
+
+#temperature.critical {
+    color: #e05f65;
+    font-weight: 800;
 }
 
 #cpu {

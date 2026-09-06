@@ -82,6 +82,19 @@
 	]
 },
 
+"group/window_drawer": {
+	"orientation": "inherit",
+	"drawer": {
+		"transition-duration": 350,
+		"children-class": "window-expanded",
+		"transition-left-to-right": true
+	},
+	"modules": [
+		"hyprland/window#app",
+		"hyprland/window#title"
+	]
+},
+
 "group/connections": {
 	"orientation": "inherit",
 	"drawer": {
