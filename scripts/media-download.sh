@@ -963,7 +963,8 @@ main() {
     done
 
     # Se foi chamada uma flag direta específica de linha de comando, executa direto
-    if [ -n "$direct_action" ] || [ "$MAKE_GIF" = true ] || [ -n "$COMPRESS_TARGET" ] || [ "$SPLIT_CHAPTERS" = true ] || [ "$SYNC_PLAYLIST" = true ] || [ -n "$CUSTOM_CLIP" ]; then
+    if [ -n "$direct_action" ] || [ "$MAKE_GIF" = true ] || [ -n "$COMPRESS_TARGET" ] || [ "$SPLIT_CHAPTERS" = true ] || [ "$SYNC_PLAYLIST" = true ] || [ -n "$CUSTOM_CLIP" ] || [ "$FORCE_PRIVATE" = true ]; then
+
         if [ -z "$target_url" ]; then
             target_url=$(get_clipboard_url)
         fi
