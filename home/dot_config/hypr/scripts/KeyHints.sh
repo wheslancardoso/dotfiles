@@ -44,11 +44,13 @@ GDK_BACKEND=$BACKEND yad \
 " C" "Calculadora + Conversor de Moedas ao vivo" "gnome-calculator" \
 " ALT C" "Calculadora Científica / Financeira" "qalculate-gtk" \
 " SPACE" "Trocar Teclado (US-Intl / PT-BR / US-Dev)" "KeyboardLayout.sh" \
-"CTRL SHIFT ESC" "Gerenciador de Tarefas (Task Manager)" "gnome-system-monitor" \
+"CTRL SHIFT ESC ou  ESC" "Gerenciador de Tarefas TUI (Ultra-Rápido)" "btop (flutuante)" \
 " ;" "Seletor de Emojis e Símbolos" "RofiEmoji.sh" \
 " SHIFT M" "Configurar Monitores / Resolução / Projetar" "nwg-displays" \
 "ALT V ou  V" "Área de Transferência com busca e histórico" "CopyQ" \
-" Tab" "Seletor Visual de Janelas abertas" "Rofi Window Switcher" \
+"ALT Tab / ALT SHIFT Tab" "Alternar Janelas Instantaneamente (0ms)" "cyclenext (sem popup)" \
+" Tab" "Seletor Visual de Janelas com busca e ícones" "Rofi Window Switcher" \
+
 " ~ (til) ou  U" "Terminal Dropdown Suspenso (Quake Style)" "scratchpad-term.sh" \
 " E" "Explorador de Arquivos Yazi (Modo Tiling)" "open-yazi-tiled.sh" \
 " SHIFT E" "Explorador de Arquivos Yazi (Flutuante)" "open-yazi.sh" \
