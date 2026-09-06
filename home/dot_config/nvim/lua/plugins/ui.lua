@@ -26,6 +26,44 @@ return {
         { "<leader>r", group = "Refactor", icon = "󰑕 " },
         { "<leader>F", group = "Flutter Mobile", icon = " " },
         { "<leader>a", group = "AI Agent (Antigravity)", icon = "󰚩 " },
+        { "<leader>u", group = "UI / Visual Toggles", icon = "󰔡 " },
+      },
+    },
+  },
+
+  -- 🧘 Zen Mode: Ambiente hiperfocado sem distrações
+  {
+    "folke/zen-mode.nvim",
+    cmd = "ZenMode",
+    keys = {
+      { "<leader>z", "<cmd>ZenMode<cr>", desc = "Zen Mode (Hiperfoco)" },
+      { "<leader>uz", "<cmd>ZenMode<cr>", desc = "Toggle Zen Mode" },
+    },
+    opts = {
+      window = {
+        backdrop = 0.95,
+        width = 120,
+        height = 1,
+        options = {
+          signcolumn = "no",
+          number = false,
+          relativenumber = false,
+          cursorline = true,
+          cursorcolumn = false,
+          foldcolumn = "0",
+          list = false,
+        },
+      },
+      plugins = {
+        options = {
+          enabled = true,
+          ruler = false,
+          showcmd = false,
+          laststatus = 0,
+        },
+        twilight = { enabled = false },
+        gitsigns = { enabled = false },
+        tmux = { enabled = false },
       },
     },
   },

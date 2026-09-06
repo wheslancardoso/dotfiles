@@ -98,6 +98,55 @@ return {
     "ThePrimeagen/vim-be-good",
     cmd = "VimBeGood",
   },
+
+  -- ⏳ UndoTree: Máquina do tempo visual para histórico ramificado de edições
+  -- Permite desfazer edições mesmo após fechar o arquivo ou fazer modificações em galhos separados
+  {
+    "mbbill/undotree",
+    cmd = "UndotreeToggle",
+    keys = {
+      { "<leader>ut", "<cmd>UndotreeToggle<cr>", desc = "Toggle UndoTree (Histórico Ramificado)" },
+    },
+    config = function()
+      vim.g.undotree_SetFocusWhenToggle = 1
+      vim.g.undotree_WindowLayout = 2
+    end,
+  },
+
+  -- 🤹 Visual Multi: Multi-cursor inteligente com vocabulário completo do Vim
+  -- Atalhos: Ctrl+N (seleciona palavra / próxima ocorrência), Ctrl+Down/Up (adiciona cursor vertical)
+  {
+    "mg979/vim-visual-multi",
+    branch = "master",
+    event = { "BufReadPost", "BufNewFile" },
+    init = function()
+      vim.g.VM_maps = {
+        ["Find Under"] = "<C-n>",
+        ["Find Subword Under"] = "<C-n>",
+      }
+    end,
+  },
+
+  -- 🔁 Substitute & Exchange: Substituição sem poluir registradores e troca cirúrgica de posições
+  -- gs{motion} -> substitui texto com o registrador atual sem sobrescrever clipboard
+  -- gss        -> substitui linha inteira
+  -- cx{motion} -> marca primeiro elemento para troca; no segundo cx{motion}, permuta ambos de lugar
+  -- cxx        -> troca linha inteira
+  -- cxc        -> cancela troca pendente
+  {
+    "gbprod/substitute.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {},
+    keys = {
+      { "gs", function() require("substitute").operator() end, desc = "Substituir com Registrador" },
+      { "gss", function() require("substitute").line() end, desc = "Substituir Linha com Registrador" },
+      { "gs", function() require("substitute").visual() end, mode = "x", desc = "Substituir Seleção com Registrador" },
+      { "cx", function() require("substitute.exchange").operator() end, desc = "Trocar (Exchange) Operador" },
+      { "cxx", function() require("substitute.exchange").line() end, desc = "Trocar Linha com outra" },
+      { "cxc", function() require("substitute.exchange").cancel() end, desc = "Cancelar Troca Pendente" },
+      { "X", function() require("substitute.exchange").visual() end, mode = "x", desc = "Trocar Seleção com outra" },
+    },
+  },
 }
 
 
