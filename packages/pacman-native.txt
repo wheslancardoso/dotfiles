@@ -242,6 +242,7 @@ reflector
 rclone
 ripgrep
 rofi
+rofi-calc
 rsync
 s-nail
 scrcpy
