@@ -44,6 +44,8 @@ GDK_BACKEND=$BACKEND yad \
 " C" "Calculadora + Conversor de Moedas ao vivo" "gnome-calculator" \
 " ALT C" "Calculadora Científica / Financeira" "qalculate-gtk" \
 " SPACE" "Trocar Teclado (US-Intl / PT-BR / US-Dev)" "KeyboardLayout.sh" \
+"CTRL SHIFT ESC" "Gerenciador de Tarefas (Task Manager)" "gnome-system-monitor" \
+" ;" "Seletor de Emojis e Símbolos" "RofiEmoji.sh" \
 " SHIFT M" "Configurar Monitores / Resolução / Projetar" "nwg-displays" \
 "ALT V ou  V" "Área de Transferência com busca e histórico" "CopyQ" \
 " Tab" "Seletor Visual de Janelas abertas" "Rofi Window Switcher" \
