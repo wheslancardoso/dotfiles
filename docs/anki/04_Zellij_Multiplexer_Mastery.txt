@@ -1,6 +1,7 @@
 #separator:tab
 #html:true
 #tags column:3
+#deck:Cockpit Dev::04 - Zellij Multiplexer
 O que é o <b>Zellij</b> e por que ele é superior a usar múltiplas abas soltas de terminal?	É um <b>multiplexador de terminal moderno</b> escrito em Rust (substituto amigável do Tmux).<br><br>Ele permite dividir a tela em múltiplos painéis, criar abas e, o mais importante: <b>suas sessões nunca morrem</b> mesmo se você fechar o terminal ou reiniciar a interface gráfica.	zellij::fundamentos
 Como <b>iniciar uma nova sessão nomeada</b> ou <b>listar as sessões ativas</b> no Zellij via terminal?	• Criar sessão nomeada: <code>zellij -s nome_do_projeto</code><br>• Listar todas as sessões rodando: <code>zellij ls</code><br>• Reconectar a uma sessão existente: <code>zellij attach nome_do_projeto</code>	zellij::sessoes
 O que é o <b>Layout Vibe Coding (`vibe`)</b> configurado no seu ecossistema?	É uma sessão pré-moldada do Zellij dividindo a tela perfeitamente:<br>• <b>Esquerda (70%)</b>: LazyVim para edição rápida.<br>• <b>Direita Superior (30%)</b>: Agente autônomo Antigravity CLI (<code>agy</code>).<br>• <b>Direita Inferior (30%)</b>: Terminal para rodar servidores, testes e builds.<br><br><i>Para iniciar: basta digitar <code>vibe</code> no terminal!</i>	zellij::fundamentos

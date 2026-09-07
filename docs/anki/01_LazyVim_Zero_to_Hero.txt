@@ -1,6 +1,7 @@
 #separator:tab
 #html:true
 #tags column:3
+#deck:Cockpit Dev::01 - LazyVim
 O que é o <b>Modo Normal (Normal Mode)</b> no Neovim e por que ele é o modo padrão?	É o modo onde <b>você NÃO digita texto</b>, mas dá <b>comandos e navega</b> pelo código.<br><br>No Neovim, passamos mais tempo lendo, navegando e editando do que digitando letras puras. Por isso, ao abrir o Neovim, você sempre começa no Modo Normal.	lazyvim::01_fundamentos
 Como você começa a <b>digitar texto (entrar no Modo de Inserção / Insert Mode)</b> e como você <b>sai dele</b>?	• <b>Para começar a digitar:</b> aperte <code>i</code> (de <i>Insert</i>) antes do cursor.<br>• <b>Para parar de digitar e voltar aos comandos:</b> aperte a tecla <code>&lt;Esc&gt;</code>.<br><br><i>Dica de Ouro: Sempre volte para o Modo Normal assim que terminar de digitar uma linha ou frase!</i>	lazyvim::01_fundamentos
 Qual a diferença entre apertar <code>i</code> e apertar <code>a</code> no Modo Normal?	• <code>i</code> (<i>Insert</i>): Começa a digitar <b>ANTES</b> da letra onde o cursor está.<br>• <code>a</code> (<i>Append</i>): Começa a digitar <b>DEPOIS</b> da letra onde o cursor está.<br><br><i>Exemplo: Para adicionar algo no fim de uma palavra, coloque o cursor nela e aperte <code>a</code>.</i>	lazyvim::01_fundamentos

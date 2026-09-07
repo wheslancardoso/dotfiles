@@ -1,6 +1,7 @@
 #separator:tab
 #html:true
 #tags column:3
+#deck:Cockpit Dev::07 - Audio & Media Workflow
 No Hyprland, quais são os <b>controles de mídia globais</b> para controlar o Spotify sem sair do código ou jogo?	Sem precisar de teclas Fn de teclado especial:<br>• <code>Super + Ctrl + Espaço</code>: <b>Play / Pause</b> global.<br>• <code>Super + Ctrl + ]</code>: <b>Próxima faixa</b> (Next track).<br>• <code>Super + Ctrl + [</code>: <b>Faixa anterior</b> (Previous track).<br><br><i>Funciona com Spotify, reprodutor de vídeo e navegadores em segundo plano!</i>	audio_media::spotify
 Quais são os <b>comandos diretos no terminal</b> para mudar o perfil de som do <b>EasyEffects</b>?	Basta digitar no terminal:<br>• <code>bass</code>: Ativa <b>Hip-Hop Bass</b> (graves ricos e perfeitos para beats e trap).<br>• <code>bass-max</code>: Ativa <b>Sub-Bass 808 Sísmico</b> (para sentir a pressão do grave).<br>• <code>dolby</code>: Ativa <b>Dolby Atmos 3D</b> com Convolver IRS de cinema.<br>• <code>audio-flat</code>: Desativa todas as equalizações (som neutro para edição de áudio).	audio_media::easyeffects
 Qual atalho do teclado abre o <b>menu visual do Rofi para escolher Presets de Áudio</b>?	<code>Super + Alt + A</code>.<br><br>Permite trocar o perfil de som com 2 cliques sem abrir a janela do EasyEffects.	audio_media::easyeffects

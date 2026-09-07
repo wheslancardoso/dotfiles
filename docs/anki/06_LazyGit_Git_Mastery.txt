@@ -1,6 +1,7 @@
 #separator:tab
 #html:true
 #tags column:3
+#deck:Cockpit Dev::06 - Git & LazyGit
 O que é o <b>LazyGit</b> e quais são as 3 formas mais rápidas de abri-lo no seu setup?	É uma interface visual em modo texto para Git que permite fazer commits, branches, merges e rebase com 1 único toque de tecla.<br><br><b>Como abrir:</b><br>1. No terminal comum: digite <code>lazygit</code> (ou <code>lg</code>).<br>2. Dentro do <b>LazyVim</b>: aperte <code>&lt;Espaço&gt; gg</code>.<br>3. Dentro do <b>Yazi</b>: aperte <code>M</code> + <code>g</code> (Shift+M seguido de g).	lazygit::fundamentos
 Quais são os <b>4 painéis principais</b> da tela do LazyGit e como navegar entre eles?	Você pode teclar diretamente o número do painel ou usar <code>h / l</code>:<br>• <code>1</code>: <b>Arquivos / Status</b> (Arquivos modificados e stage)<br>• <code>2</code>: <b>Branches</b> (Locais e remotas)<br>• <code>3</code>: <b>Commits</b> (Histórico do branch atual)<br>• <code>4</code>: <b>Stash</b> (Alterações salvas temporariamente)<br><br><i>O painel grande à direita sempre exibe o <b>Diff de código</b> em tempo real.</i>	lazygit::navegacao
 No LazyGit, como fazer <b>Stage (git add)</b> de um arquivo e como fazer de <b>todos os arquivos</b>?	No painel de Arquivos (painel 1):<br>• <code>Barra de Espaço</code>: Adiciona ou remove o arquivo selecionado do Stage (verde = staged).<br>• <code>a</code>: Adiciona <b>TODOS</b> os arquivos modificados ao Stage de uma vez.	lazygit::staging

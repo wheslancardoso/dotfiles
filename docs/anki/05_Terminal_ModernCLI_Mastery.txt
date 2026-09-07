@@ -1,6 +1,7 @@
 #separator:tab
 #html:true
 #tags column:3
+#deck:Cockpit Dev::05 - Terminal & Modern CLI
 O que é o <b>Zoxide (comando <code>z</code>)</b> e por que você nunca mais deve digitar caminhos longos com <code>cd</code>?	O <b>Zoxide</b> é um substituto inteligente do <code>cd</code> que aprende as pastas que você mais usa.<br><br>Em vez de digitar <code>cd /mnt/dados/04_Dev/meu_projeto_gigante</code>, você só digita:<br><code>z projeto</code><br><br>Ele salta instantaneamente para a pasta de qualquer lugar do sistema!	terminal::modern_cli
 Como <b>pesquisar comandos antigos no histórico do terminal</b> usando o <b>FZF</b> em 1 segundo?	No terminal, aperte <code>Ctrl + r</code>.<br><br>Abre um menu de busca interativo instantâneo. Digite qualquer pedaço de um comando que você rodou no passado, use as setas para selecionar e aperte <code>Enter</code> para executar!	terminal::modern_cli
 No terminal, para que serve o atalho <b><code>Ctrl + t</code></b> e o atalho <b><code>Alt + c</code></b> do FZF?	• <code>Ctrl + t</code>: Abre busca difusa de arquivos e <b>cola o caminho do arquivo selecionado direto no seu comando atual</b>.<br>• <code>Alt + c</code>: Abre busca de diretórios e já faz <code>cd</code> diretamente para a pasta selecionada.	terminal::modern_cli

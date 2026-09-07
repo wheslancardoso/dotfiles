@@ -1,20 +1,44 @@
-# 🗂️ Suíte de Decks Anki: Ecossistema Completo Arch + Hyprland + LazyVim
+# 🗂️ Suíte de Decks Anki: Ecossistema Cockpit Dev (Arch + Hyprland + LazyVim)
 
-Coleção oficial de flashcards formatados e otimizados para memorização rápida e desenvolvimento de memória muscular no **Anki Desktop**, **AnkiDroid (Android)** ou **AnkiWeb**.
+Coleção oficial de flashcards de alto rendimento formatados e otimizados para memorização rápida e desenvolvimento de memória muscular no **Anki Desktop**, **AnkiDroid (Android)** ou **AnkiWeb**.
 
-Desenvolvido para transformar você em um **Power-User Ninja ("Blazingly Fast")**, cobrindo cada detalhe de cada ferramenta do zero absoluto até técnicas avançadas de engenharia de software.
+Desenvolvido para transformar você em um **Power-User Ninja ("Blazingly Fast")**, cobrindo cada detalhe de cada ferramenta do ecossistema: do zero absoluto até técnicas avançadas de engenharia de software e IA autônoma.
+
+---
+
+## 🌳 Estrutura Automática de Baralhos (`Cockpit Dev`)
+
+Ao importar qualquer um dos arquivos, o Anki **cria automaticamente a árvore hierárquica de baralhos** graças às diretivas nativas `#deck:` incorporadas no topo de cada módulo:
+
+```text
+Cockpit Dev
+├── 01 - LazyVim (69 cards)
+├── 02 - Hyprland (30 cards)
+├── 03 - Yazi File Manager (27 cards)
+├── 04 - Zellij Multiplexer (16 cards)
+├── 05 - Terminal & Modern CLI (16 cards)
+├── 06 - Git & LazyGit (13 cards)
+├── 07 - Audio & Media Workflow (10 cards)
+└── 08 - Antigravity AI (agy) (12 cards)
+```
+> **Total: 193 Flashcards de Elite**
 
 ---
 
 ## 📦 Como Escolher o Arquivo para Importar
 
-### Opção A: Tudo de Uma Vez (Recomendado)
-Importe o arquivo mestre com **163 flashcards categorizados**:
+### Opção A: Tudo em 1 Clique (Recomendado)
+Importe o arquivo mestre contendo todos os **193 flashcards**:
 📁 **`ECOSSISTEMA_COMPLETO_MESTRE.txt`**
 
-### Opção B: Módulo por Módulo (Estudar em Decks Separados)
-Se preferir baralhos independentes no Anki:
-- **`01_LazyVim_Zero_to_Hero.txt` (60 cards)**:
+O Anki criará a pasta-mãe `Cockpit Dev` e distribuirá cada um dos 193 cards diretamente para os seus respectivos 8 sub-baralhos em uma única importação.
+
+---
+
+### Opção B: Módulo por Módulo (Estudo Focado)
+Você também pode importar apenas o módulo específico que estiver treinando hoje:
+
+- **`01_LazyVim_Zero_to_Hero.txt` (69 cards)**:
   - Modos (`Normal`, `Insert`, `Visual`), `i`, `a`, `I`, `A`, `o`, `O`, `<Esc>`, salvar, sair forçado (`:q!`), undo (`u`), redo (`Ctrl+r`), repetir (`.`).
   - Navegação pura: `hjkl`, palavras (`w`, `b`, `e`, `W`, `B`, `E`), linhas (`0`, `^`, `$`), topo/rodapé (`gg`, `G`), rolagem (`Ctrl+d`, `Ctrl+u`), centralização (`zz`), correspondência de parênteses (`%`), busca de palavras (`*`, `#`).
   - Edição cirúrgica: `ciw`, `diw`, `daw`, `ci"`, `ci'`, `ci(`, `ci{`, `dit`, `dat`, `D`, `C`, arrastar linhas (`Alt+j`, `Alt+k`), manipulação de aspas e parênteses com **Surround** (`gsa"`, `gsc"'`, `gsd"`), alternar arrays/objetos de 1 linha para multiline (**Split & Join** `gS`).
@@ -38,7 +62,7 @@ Se preferir baralhos independentes no Anki:
   - Extração de texto de imagens via OCR (`Super+Shift+T`), conta-gotas de cor HEX (`Super+Shift+P`).
   - Monitor Btop (`Ctrl+Shift+Esc`), Night Light (`Super+N`) e efeito Shake do mouse.
 
-- **`03_Yazi_FileManager_Mastery.txt` (20 cards)**:
+- **`03_Yazi_FileManager_Mastery.txt` (27 cards)**:
   - Abrir no terminal (`Super+E`) e flutuante (`Super+Shift+E`).
   - Navegação Vim (`j/k`, `l/Enter`, `h`).
   - Filtro em tempo real de arquivos (`f`).
@@ -97,15 +121,30 @@ Se preferir baralhos independentes no Anki:
   - Espelhamento de tela Android sem emulador pesado: `scrcpy`.
   - Google Drive 5TB virtual on-demand: `Super+Alt+G`.
 
+- **`08_Antigravity_AI_Mastery.txt` (12 cards)**:
+  - O que é o `agy` (pair-programmer autônomo do DeepMind para terminal).
+  - Autonomia total sem travar pedindo confirmações (`agy --dangerously-skip-permissions`).
+  - Ambiente Vibe Coding lado a lado (`vibe` no terminal: 70% LazyVim + 30% `agy`).
+  - Sincronização em tempo real entre edições do `agy` no disco e buffers do Neovim (`autoread`).
+  - Modo one-shot não-interativo via terminal (`agy -p "prompt"`).
+  - Retomada de sessões anteriores (`agy -c` / `agy --continue`).
+  - Listagem e seleção de modelos LLM (`agy models`, `--model claude-sonnet-4-6`, `gemini-3.8-flash`).
+  - Slash commands internos (`/exit`, `/clear`, `/status`, `/help`).
+  - Interrupção e atalhos de saída (`Ctrl+C`, `Ctrl+D Ctrl+D`).
+  - Respeito a `.gitignore` e proteção de variáveis sensíveis.
+  - Diferença entre Antigravity GUI (desktop) e `agy` CLI (terminal ultraleve).
+  - Estrutura de memória e logs em `~/.gemini/antigravity/`.
+
 ---
 
-## 📥 Como Importar no Anki (Passo a Passo em 3 Cliques)
+## 📥 Como Importar no Anki (Passo a Passo em 3 Segundos)
 
 1. Abra o **Anki**.
 2. Clique no menu superior em **Arquivo (`File`)** ➔ **Importar... (`Import...`)** *(ou atalho `Ctrl + Shift + I`)*.
-3. Escolha o arquivo `ECOSSISTEMA_COMPLETO_MESTRE.txt`.
-4. Na tela de importação:
+3. Escolha o arquivo `ECOSSISTEMA_COMPLETO_MESTRE.txt` (ou qualquer módulo individual `01_...` a `08_...`).
+4. Na tela de importação do Anki:
    - **Tipo de Nota**: `Básico` (Basic).
    - **Separador de Campos**: `Tabulação` (Tab) *(detectado automaticamente)*.
    - **Permitir HTML nos campos**: `Marcado` (Checked).
-5. Clique em **Importar**.
+5. Clique no botão **Importar**.
+6. Pronto! A árvore `Cockpit Dev` e todos os sub-baralhos aparecerão perfeitamente organizados e prontos para estudo diário.

@@ -1,6 +1,7 @@
 #separator:tab
 #html:true
 #tags column:3
+#deck:Cockpit Dev::03 - Yazi File Manager
 O que é o <b>Yazi</b> e quais são os atalhos no Hyprland para abri-lo?	É um gerenciador de arquivos para terminal escrito em Rust, com suporte a pré-visualização instantânea de imagens, vídeos, PDFs e código.<br><br>• <code>Super + E</code>: Abre o Yazi ocupando o terminal no workspace atual.<br>• <code>Super + Shift + E</code>: Abre o Yazi em uma janela flutuante centralizada.	yazi::fundamentos
 Como você <b>navega entre pastas e arquivos</b> no Yazi usando as teclas clássicas do Vim?	• <code>j</code>: Desce para o próximo item.<br>• <code>k</code>: Sobe para o item anterior.<br>• <code>l</code> ou <code>Enter</code>: <b>Entra na pasta</b> selecionada (ou abre o arquivo no app padrão).<br>• <code>h</code>: <b>Volta para a pasta pai</b> anterior.	yazi::navegacao
 Como <b>filtrar arquivos em tempo real</b> na pasta atual no Yazi?	Aperte a letra <code>f</code> (de <i>Filter</i>).<br><br>Conforme você digita, o Yazi oculta tudo e mostra apenas os arquivos que coincidem com o que você digitou!<br><br>• Para limpar o filtro e voltar a ver tudo: aperte <code>&lt;Esc&gt;</code>.	yazi::navegacao

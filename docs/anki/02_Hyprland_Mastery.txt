@@ -1,6 +1,7 @@
 #separator:tab
 #html:true
 #tags column:3
+#deck:Cockpit Dev::02 - Hyprland
 No <b>Hyprland</b>, qual é a <b>tecla mestre (Super/Mod)</b> no teclado físico?	É a <b>tecla Windows</b> (ou <i>Command</i> no Mac).<br><br>Nos arquivos de configuração ela aparece como <code>$mainMod</code>.	hyprland::fundamentos
 Qual atalho abre um <b>novo terminal</b> instantaneamente no Hyprland?	<code>Super + Enter</code> (ou <code>Super + Return</code>).<br><br>Abre o terminal padrão ultra-rápido (Ghostty ou Kitty).	hyprland::janelas
 Qual atalho <b>fecha/mata a janela ativa</b> no Hyprland?	<code>Super + Q</code> (de <i>Quit</i>).	hyprland::janelas
