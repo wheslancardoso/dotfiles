@@ -83,7 +83,8 @@ alias gdrive-sync='bash ~/dotfiles/scripts/gdrive-sync.sh'
 alias vincular-linux='bash $HOME/dotfiles/scripts/organizador/vincular_linux.sh'
 alias vincular_linux='bash $HOME/dotfiles/scripts/organizador/vincular_linux.sh'
 
-# ⚡ Rsync Turbo — Transferências Ultra-Seguras (Retomada após Queda de Energia/Cabo)
+# ⚡ Rsync Turbo — Sempre com Máxima Velocidade, Progresso Real e Retomada Automática
+alias rsync='rsync -ahP --inplace --info=progress2'
 alias rsync-turbo='rsync -ahP --inplace --info=progress2'
 alias cp-safe='rsync -ahP --inplace --info=progress2'
 alias mv-safe='rsync -ahP --inplace --remove-source-files --info=progress2'

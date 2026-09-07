@@ -23,28 +23,36 @@ for f in "${FILES[@]}"; do
     echo "  ➔ $(basename "$f")"
 done
 echo "----------------------------------------------------------"
-echo "Onde deseja salvar? (Cole o caminho ou aperte ENTER para usar pasta atual)"
-echo "Sugestões rápidas:"
-echo "  1) /run/media/$USER/ (Dispositivos USB / HDs Externos)"
-echo "  2) /mnt/dados/00_Inbox_Triagem"
-echo "  3) /mnt/dados/06_Backups_ISOs_e_Sistemas"
+echo "Para onde deseja transferir?"
+echo "  [ENTER] Pasta atual ($PWD)"
+
+# Listar unidades removíveis montadas (/run/media/$USER/*) dinamicamente
+idx=1
+declare -A SUGGESTIONS
+for d in /run/media/"$USER"/*; do
+    if [ -d "$d" ]; then
+        echo "  [$idx] Dispositivo USB: $d"
+        SUGGESTIONS[$idx]="$d"
+        idx=$((idx+1))
+    fi
+done
+
+echo "  [d] /mnt/dados/00_Inbox_Triagem (Downloads)"
+echo "  [b] /mnt/dados/06_Backups_ISOs_e_Sistemas (Backups)"
+echo "  [ou digite/cole qualquer caminho personalizado]"
 echo "----------------------------------------------------------"
 
-read -rp "Destino: " DEST_INPUT
+read -rp "Destino [Padrão: pasta atual]: " DEST_INPUT
 
 DEST="${DEST_INPUT:-$PWD}"
 
-if [[ "$DEST_INPUT" == "1" ]]; then
-    # Lista pen-drives / hds externos
-    USB_DRIVES=(/run/media/"$USER"/*)
-    if [ -d "${USB_DRIVES[0]:-}" ]; then
-        DEST="${USB_DRIVES[0]}"
-    else
-        DEST="/run/media/$USER"
-    fi
-elif [[ "$DEST_INPUT" == "2" ]]; then
+if [[ -n "${SUGGESTIONS[$DEST_INPUT]:-}" ]]; then
+    DEST="${SUGGESTIONS[$DEST_INPUT]}"
+elif [[ "$DEST_INPUT" == "1" && -z "${SUGGESTIONS[1]:-}" ]]; then
+    DEST="/run/media/$USER"
+elif [[ "$DEST_INPUT" == "d" || "$DEST_INPUT" == "D" ]]; then
     DEST="/mnt/dados/00_Inbox_Triagem"
-elif [[ "$DEST_INPUT" == "3" ]]; then
+elif [[ "$DEST_INPUT" == "b" || "$DEST_INPUT" == "B" ]]; then
     DEST="/mnt/dados/06_Backups_ISOs_e_Sistemas"
 fi
 
@@ -52,14 +60,15 @@ mkdir -p "$DEST"
 
 echo ""
 echo "Operação:"
-echo "  [c] Copiar (mantém arquivos de origem)"
-echo "  [m] Mover (remove arquivos de origem após confirmação de integridade)"
+echo "  [c] Copiar (mantém origens, grava com recuperação contínua)"
+echo "  [m] Mover (remove origem com segurança APÓS gravação no destino)"
 read -rp "Escolha (c/m) [Padrão: c]: " OP_CHOICE
 
 OP="${OP_CHOICE:-c}"
 
 echo ""
-echo "🚀 Iniciando transferência via Rsync para: $DEST"
+echo "🚀 Iniciando transferência via Rsync Turbo para: $DEST"
+echo "Flags: -ahP --inplace --info=progress2"
 echo "=========================================================="
 
 if [[ "$OP" == "m" || "$OP" == "M" ]]; then
