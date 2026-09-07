@@ -11,11 +11,11 @@ layout {
                 command "nvim"
             }
             pane size="30%" split_direction="horizontal" {
-                pane size="60%" name="Antigravity AI (agy)" {
-                    command "bash"
-                    args "-c" "if command -v agy &>/dev/null; then agy --dangerously-skip-permissions; else echo 'Antigravity CLI (agy) não encontrado no PATH. Execute npm install -g @google/antigravity ou verifique seu ambiente.'; exec bash; fi"
+                pane size="65%" name="Antigravity AI (agy)" {
+                    command "agy"
+                    args "--dangerously-skip-permissions"
                 }
-                pane size="40%" name="Terminal Runner"
+                pane size="35%" name="Terminal Runner"
             }
         }
     }
