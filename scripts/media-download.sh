@@ -102,6 +102,51 @@ get_clipboard_url() {
     fi
 }
 
+is_url_or_file() {
+    local input="$1"
+    if [[ "$input" =~ ^https?:// ]] || [[ "$input" =~ ^magnet:\? ]] || [ -f "$input" ] || [ -d "$input" ]; then
+        return 0
+    fi
+    return 1
+}
+
+search_youtube_fzf() {
+    local query="$1"
+    echo -e "${MAUVE}🔍 Pesquisando vídeos no YouTube para: ${BOLD}${query}${NC}..." >&2
+
+    local raw_results
+    raw_results=$(yt-dlp --print "%(title)s [%(duration>%H:%M:%S)s] • %(channel)s	%(webpage_url)s" "ytsearch10:${query}" 2>/dev/null || true)
+
+    if [ -z "$raw_results" ]; then
+        echo -e "${RED}❌ Nenhum vídeo encontrado para a busca '${query}'.${NC}" >&2
+        return 1
+    fi
+
+    if ! command -v fzf >/dev/null 2>&1 || [ ! -t 0 ]; then
+        echo "$raw_results" | head -n1 | cut -f2
+        return 0
+    fi
+
+    local selected
+    selected=$(echo "$raw_results" | fzf \
+        --prompt="🎬 Selecione o vídeo para baixar > " \
+        --height=50% \
+        --layout=reverse \
+        --border=rounded \
+        --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
+        --color=fg:#cdd6f4,header:#cba6f7,info:#cba6f7,pointer:#f5e0dc \
+        --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
+        --with-nth=1 \
+        --delimiter="\t")
+
+    if [ -z "$selected" ]; then
+        echo -e "${YELLOW}Busca cancelada pelo usuário.${NC}" >&2
+        return 1
+    fi
+
+    echo "$selected" | cut -f2
+}
+
 get_now_playing_info() {
     if ! command -v playerctl >/dev/null 2>&1; then
         return 1
@@ -321,10 +366,10 @@ download_batch() {
 
 
 get_downloader_args() {
-    # Motor multi-thread nativo concorrente do yt-dlp (-N 16):
-    # Muito mais veloz e estável que aria2c em streams HLS/DASH/m3u8,
-    # preserva cookies de sessão do navegador, evita falsos erros de 'Range' e não sofre fallback.
-    echo "-N 16 --concurrent-fragments 16 --buffer-size 16M --http-chunk-size 10M --retries 10 --fragment-retries 10 --file-access-retries 5 --retry-sleep exp=1:5 --no-warnings"
+    # Motor multi-thread nativo turbo do yt-dlp (-N 24):
+    # Conexões paralelas massivas para HLS/DASH/m3u8 e arquivos diretos,
+    # buffer de 32MB na RAM para saturar conexões gigabit sem gargalo de disco.
+    echo "-N 24 --concurrent-fragments 24 --buffer-size 32M --http-chunk-size 16M --retries 10 --fragment-retries 10 --file-access-retries 5 --retry-sleep exp=1:5 --no-warnings"
 }
 
 notify_completion() {
@@ -504,9 +549,9 @@ download_video() {
         "${extra_flags[@]}" \
         "'$url'" || dl_status=$?
 
-    # Fallback automático para Brave cookies se falhar e não tinha browser configurado
+    # Fallback automático para Brave / Chrome cookies se falhar e não tinha browser configurado
     if [ "$dl_status" -ne 0 ] && [ -z "$COOKIES_BROWSER" ]; then
-        echo -e "${YELLOW}⚠️ Download anônimo falhou ou requer autenticação. Tentando novamente com cookies do Brave...${NC}"
+        echo -e "${YELLOW}⚠️ Download anônimo falhou ou requer autenticação. Tentando com cookies do Brave...${NC}"
         dl_status=0
         eval yt-dlp \
             $dl_args \
@@ -522,6 +567,25 @@ download_video() {
             --no-mtime \
             "${extra_flags[@]}" \
             "'$url'" || dl_status=$?
+
+        if [ "$dl_status" -ne 0 ]; then
+            echo -e "${YELLOW}⚠️ Tentando alternativamente com cookies do Chrome...${NC}"
+            dl_status=0
+            eval yt-dlp \
+                $dl_args \
+                --cookies-from-browser chrome \
+                -f "'$format_str'" \
+                --merge-output-format mp4 \
+                --remux-video mp4 \
+                --embed-thumbnail \
+                --embed-metadata \
+                --embed-chapters \
+                -o "'$output_tpl'" \
+                --windows-filenames \
+                --no-mtime \
+                "${extra_flags[@]}" \
+                "'$url'" || dl_status=$?
+        fi
     fi
 
     if [ "$dl_status" -ne 0 ]; then
@@ -626,9 +690,9 @@ download_audio() {
         "${extra_flags[@]}" \
         "'$url'" || dl_status=$?
 
-    # Fallback automático para Brave cookies se falhar
+    # Fallback automático para Brave / Chrome cookies se falhar
     if [ "$dl_status" -ne 0 ] && [ -z "$COOKIES_BROWSER" ]; then
-        echo -e "${YELLOW}⚠️ Download anônimo falhou ou requer autenticação. Tentando novamente com cookies do Brave...${NC}"
+        echo -e "${YELLOW}⚠️ Download anônimo falhou ou requer autenticação. Tentando com cookies do Brave...${NC}"
         dl_status=0
         eval yt-dlp \
             $dl_args \
@@ -643,6 +707,24 @@ download_audio() {
             --no-mtime \
             "${extra_flags[@]}" \
             "'$url'" || dl_status=$?
+
+        if [ "$dl_status" -ne 0 ]; then
+            echo -e "${YELLOW}⚠️ Tentando alternativamente com cookies do Chrome...${NC}"
+            dl_status=0
+            eval yt-dlp \
+                $dl_args \
+                --cookies-from-browser chrome \
+                -x \
+                --audio-format mp3 \
+                --audio-quality 0 \
+                --embed-thumbnail \
+                --add-metadata \
+                -o "'$output_tpl'" \
+                --windows-filenames \
+                --no-mtime \
+                "${extra_flags[@]}" \
+                "'$url'" || dl_status=$?
+        fi
     fi
 
     if [ "$dl_status" -ne 0 ]; then
@@ -905,14 +987,28 @@ body = "\n\n".join(paragraphs)
 
 header = f"""# {title}
 
-- **Fonte:** {url}
-- **Canal / Autor:** {uploader}
-- **Data de Extração:** {date_now}
-- **Processado por:** Media Downloader AI Engine (dl)
+> **Fonte:** {url}  
+> **Canal / Autor:** {uploader}  
+> **Extraído em:** {date_now}  
+> **Motor:** Media Downloader AI Suite (`dl -t`)
 
 ---
 
-## 📝 Transcrição Completa (Limpa para IA)
+### 🤖 Prompt Executivo para IA (ChatGPT / Claude / Gemini / DeepSeek)
+> *Copie e cole este bloco em qualquer modelo de IA para extrair valor imediato deste vídeo:*
+
+```markdown
+Você é um assistente sênior especialista em síntese, clareza e análise crítica.
+Com base na transcrição fiel deste vídeo que envio abaixo, elabore:
+1. 🎯 Resumo Executivo em 3 parágrafos claros, densos e objetivos.
+2. 💡 Principais Lições e Insights Práticos em tópicos estruturados.
+3. 💬 Frases e Citações Marcantes mais impactantes.
+4. 📋 Plano de Ação Aplicável (o que fazer ou implementar na prática a partir deste conteúdo).
+```
+
+---
+
+## 📝 Transcrição Completa Formatada
 
 """
 
@@ -1644,6 +1740,7 @@ show_help() {
     echo -e "${BOLD}Comandos Rápidos:${NC}"
     echo -e "  ${BLUE}dl${NC}                          Abre o menu interativo no terminal"
     echo -e "  ${BLUE}dl <url>${NC}                    Abre o menu interativo para a URL"
+    echo -e "  ${PEACH}dl \"<busca>\"${NC}                Busca vídeos no YouTube com seletor interativo FZF"
     echo -e "  ${BLUE}dl --rofi${NC}                   Abre o menu visual Rofi (SUPER + ALT + D)"
     echo -e "  ${BLUE}dl -n, --now${NC}                Baixa o que está tocando agora (SUPER + CTRL + D)"
     echo -e "  ${BLUE}dl -h, --history${NC}            Histórico de downloads com busca FZF"
@@ -1817,6 +1914,16 @@ main() {
                 ;;
         esac
     done
+
+    # Se target_url não for URL nem arquivo existente, interpreta como busca rápida no YouTube
+    if [ -n "$target_url" ] && ! is_url_or_file "$target_url"; then
+        local search_found
+        search_found=$(search_youtube_fzf "$target_url")
+        if [ -z "$search_found" ]; then
+            exit 0
+        fi
+        target_url="$search_found"
+    fi
 
     # Se foi passado um arquivo de lote (.txt com múltiplos links) ou a flag --batch
     local batch_candidate="${BATCH_FILE:-$target_url}"
