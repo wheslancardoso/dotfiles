@@ -60,11 +60,19 @@ if [[ -z "$tec_addr" ]]; then
     done
 fi
 
-# Garante que a janela vá para o special:tecconcursos e seja exibida no monitor atual
+# Garante que a janela vá para o special:tecconcursos, seja redimensionada e centralizada no monitor atual
 if [[ -n "$tec_addr" ]]; then
+    # Calcula dimensões dinâmicas (80% largura x 88% altura) do monitor focado
+    mon_w=$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | .width')
+    mon_h=$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | .height')
+    target_w=$(( mon_w * 80 / 100 ))
+    target_h=$(( mon_h * 88 / 100 ))
+
     hyprctl dispatch movetoworkspacesilent special:tecconcursos,address:"$tec_addr"
     hyprctl dispatch togglespecialworkspace tecconcursos
     hyprctl dispatch focuswindow address:"$tec_addr"
+    hyprctl dispatch resizewindowpixel "exact ${target_w} ${target_h},address:$tec_addr"
+    hyprctl dispatch centerwindow
 else
     hyprctl dispatch togglespecialworkspace tecconcursos
 fi
