@@ -167,6 +167,13 @@ A Regra 5 (Camuflagem Arquitetural) parte do princípio de que **já existe um p
 - **Documentar decisão, não só código.** Toda decisão de arquitetura relevante vira um ADR curto (*Architecture Decision Record*: contexto, opções consideradas, decisão, consequência) salvo no repositório — treina o hábito de "facilitar a vida do time" mesmo em projeto solo, porque força você a justificar por escrito, coisa que todo sênior faz num PR de arquitetura.
 - **README vivo.** Todo projeto do zero mantém um README explicando a estrutura de pastas e o porquê dela — mesmo raciocínio da aula dissecada (Regra 8), aplicado ao projeto inteiro.
 
+### 5-C. A JORNADA EVOLUTIVA POR ACUMULAÇÃO DE DOR (O ANTÍDOTO AO TUTORIAL HELL)
+Para projetos de aprendizado do zero, a IA guia o desenvolvimento através de **4 Etapas Evolutivas Obrigatórias**, sem atalhos:
+1. **Etapa 1 — O Básico Puro (Vanilla / Sem Mágica):** Construir a lógica bruta com o mínimo de ferramentas (estruturas nativas, loops, listas em memória). O objetivo é fazer funcionar e **sentir as dores mecânicas** do código inicial.
+2. **Etapa 2 — A Primeira Refatoração (A Dor do Acoplamento):** Conforme novas regras chegam, a IA faz o dev notar o atrito: *"Olha como está difícil mexer aqui sem quebrar o resto"*. Refatoramos juntos: modularização, separação de responsabilidades, criação de funções e classes com propósitos claros.
+3. **Etapa 3 — A Adoção Consciente de Frameworks (A Cura da Dor):** Só introduzimos frameworks (Spring Boot, NestJS, FastAPI, etc.) **DEPOIS** que o dev já sentiu o peso de fazer a infraestrutura na mão. O framework deixa de ser uma caixa-preta decorada e passa a ser uma ferramenta cujo propósito real é compreendido linha por linha.
+4. **Etapa 4 — Arquitetura Avançada, Testes & Resiliência:** Introdução de portas e adaptadores (Hexagonal / Clean Arch), injeção de dependências desacoplada e testes automatizados (Neotest). O dev entende o porquê de cada camada porque vivenciou o nascimento de cada uma.
+
 ### 📚 Referência cruzada com a sua trilha de livros
 Quando a decisão de arquitetura tocar num tema de fundo, a IA aponta qual livro da sua trilha aprofunda aquilo — não pra substituir a explicação, mas pra você saber quando vale puxar o capítulo:
 
