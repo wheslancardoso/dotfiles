@@ -86,7 +86,49 @@ gamemoderun meu_jogo_ou_app
 
 ---
 
-## 📊 Comandos Rápidos de Monitoramento
+## 💾 4. Transferência de Arquivos & HDs Externos (Zero Corrupção e Velocidade Real)
+
+Muitos tentam usar softwares como o **PrimoCache** no Windows e sofrem com arquivos corrompidos:
+* **A armadilha do PrimoCache:** Ele diz que a cópia terminou em 5 segundos, mas os arquivos ainda estão voláteis na RAM esperando para gravar no HD mecânico. Se o cabo USB for desconectado ou o PC suspender, os arquivos ficam quebrados com tamanho zerado e a partição vira RAW.
+
+### A. A Calibragem Inteligente do Kernel no seu Sistema:
+O seu CachyOS já está calibrado cirurgicamente com:
+```ini
+vm.dirty_background_bytes = 67108864   # 64 MB
+vm.dirty_bytes = 268435456             # 256 MB
+```
+* **O que isso significa:** O kernel não "mente" para você fingindo que copiou 20 GB em 1 segundo. Ele limita o buffer da RAM a 256 MB. Assim que atinge 64 MB, ele começa a descarregar no HD externo em fluxo contínuo.
+* **O ganho:** A cópia mostra a velocidade **real** do barramento USB (120-140 MB/s), o sistema nunca engasga e o botão de "Ejetar com Segurança" responde na hora sem travar por 10 minutos.
+
+### B. O Melhor Sistema de Arquivos para HD Externo (Linux + Windows): **exFAT**
+Se você for formatar um dos seus HDs externos para usar tanto no Arch quanto no Windows:
+
+| Sistema de Arquivos | Compatibilidade | Problemas Frequentes | Veredito |
+|---|---|---|---|
+| **FAT32** | 100% | Limite ridículo de 4 GB por arquivo | ❌ Obsoleto |
+| **NTFS** | Boa | Journaling pesado causa lentidão em HD mecânico; permissões de usuário (ACLs/SIDs) travam arquivos no Linux; *dirty bit* em caso de Fast Startup | ⚠️ Ruim para HD externo |
+| **Btrfs / Ext4** | 100% no Linux | O Windows não lê nativamente sem drivers extras | ❌ Ruim para compartilhar com Windows |
+| **exFAT** | **100% Nativo (Linux, Win, Mac)** | Nenhum. Suporta arquivos gigantes (> 50 GB), sem travas de permissão e sem overhead de journaling | **🏆 O Campeão Absoluto** |
+
+#### Como Formatar seu HD Externo com Máxima Velocidade (Tamanho de Cluster 128KB):
+Para HDs mecânicos com arquivos médios e grandes (vídeos, ISOs, backups), um tamanho de cluster de **128 KB** reduz a fragmentação e aumenta a taxa de transferência sequencial:
+```bash
+# Identifique a partição do HD externo (ex: /dev/sdb1 com lsblk)
+# Formatar com rótulo "BACKUP_EXT":
+sudo mkfs.exfat -s 128k -n "BACKUP_EXT" /dev/sdX1
+```
+
+### C. O Comando Supremo de Cópia com Retomada (`rsync`):
+Em vez do `cp` tradicional que não mostra progresso e recomeça do zero se falhar, use:
+```bash
+rsync -ah --info=progress2 /pasta/origem/ /run/media/lan/NOME_DO_HD/destino/
+```
+* Exibe a velocidade real em MB/s e tempo estimado.
+* Se a cópia for interrompida, basta rodar de novo: ele **retoma de onde parou** sem duplicar dados.
+
+---
+
+## 📊 5. Comandos Rápidos de Monitoramento
 
 * **Ver Uso de RAM, CPU e Processos no Terminal:**
   ```bash
@@ -101,4 +143,8 @@ gamemoderun meu_jogo_ou_app
 * **Verificar sincronização do Navegador na RAM:**
   ```bash
   psd status
+  ```
+* **Garantir que todos os dados da RAM foram gravados nos discos externos:**
+  ```bash
+  sync
   ```

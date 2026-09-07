@@ -73,6 +73,9 @@ GDK_BACKEND=$BACKEND yad \
 " ALT D" "Download de Vídeo ou Música do Clipboard" "media-download.sh" \
 " CTRL D" "Baixar Música que está Tocando Agora" "media-download.sh --now" \
 " ALT U" "Atualização Blindada do Sistema (safe-update)" "safe-update.sh" \
+" ALT N" "Menu de Temperaturas de Luz Noturna (Presets f.lux)" "Hyprsunset.sh menu" \
+" N" "Luz Noturna f.lux (Pausar / Retomar Cores Reais)" "Hyprsunset.sh toggle" \
+" W" "Mudar Wallpaper + Paleta de Cores do Sistema (Wallust)" "Rofi Wallpapers" \
 "" "" "" \
 "── 📸 CAPTURAS DE TELA E GRAVAÇÃO ──" "── SCREENSHOTS E MÍDIA ──" "────────────────────────" \
 " SHIFT S ou Print" "Captura com Anotações, Setas e Destaque" "flameshot gui" \
@@ -186,8 +189,8 @@ GDK_BACKEND=$BACKEND yad \
 "psd status" "Verificar status do navegador rodando na RAM" "profile-sync-daemon" \
 "" "" "" \
 "── 🎨 ESTILO, WALLPAPER E WAYBAR ──" "── PERSONALIZAÇÃO VISUAL ──" "────────────────────────" \
-" W" "Menu de Seleção de Wallpapers" "Rofi Wallpapers" \
-" SHIFT W" "Menu de Efeitos e Filtros no Wallpaper" "awww effects" \
+" W" "Menu de Seleção de Wallpapers (Sincroniza Wallust)" "Rofi Wallpapers" \
+" SHIFT W" "Menu de Efeitos e Filtros de Cores (Wallust)" "WallpaperEffects.sh" \
 "CTRL ALT W" "Sortear Wallpaper Aleatório da Coleção" "awww random" \
 " CTRL ALT B" "Ocultar / Exibir Barra Waybar" "waybar toggle" \
 " CTRL B" "Menu de Estilos Visuais da Waybar" "waybar styles" \
