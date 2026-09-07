@@ -56,6 +56,9 @@ Exemplos de Uso:
     parser.add_argument("--quarantine-dir", type=str, metavar="DIR", help="Diretório de quarentena para onde enviar cópias de duplicatas do --dedup")
     parser.add_argument("--watch", type=str, metavar="DIR", help="Inicia daemon de monitoramento contínuo em tempo real no diretório")
     parser.add_argument("--clean-empty", type=str, nargs="?", const="all", metavar="DIR", help="Localiza e remove diretórios vazios residuais no caminho informado ou nos diretórios gerenciados")
+    parser.add_argument("--aging", action="store_true", help="Alerta sobre arquivos estagnados há mais de 7 dias em 00_Inbox_Triagem")
+    parser.add_argument("--aging-days", type=int, default=7, help="Número de dias para considerar um arquivo estagnado no Inbox (Padrão: 7)")
+    parser.add_argument("--purge-installers", type=int, nargs="?", const=45, metavar="DIAS", help="Expurga instaladores/APKs obsoletos em 06.1 com mais de DIAS dias (Padrão: 45)")
 
     return parser
 
@@ -135,9 +138,39 @@ def run_cli():
         print(f"{Colors.BOLD}{Colors.GREEN}===================================================={Colors.END}\n")
         return
 
+    default_data_target = Path("/mnt/dados") if Path("/mnt/dados").exists() else (Path.home() / "documents")
+
+    # Comando: --aging
+    if args.aging:
+        target = Path(args.dest).resolve() if args.dest else (Path(args.drive).resolve() if args.drive else default_data_target)
+        log_info(f"Verificando arquivos estagnados no Inbox (> {args.aging_days} dias) em: {target}")
+        stale = SystemDoctor.check_inbox_aging(target, max_days=args.aging_days)
+        if not stale:
+            log_success("Inbox 100% fresco! Nenhum arquivo estagnado acumulando poeira.")
+        else:
+            print(f"\n{Colors.BOLD}{Colors.YELLOW}=== ARQUIVOS ESTAGNADOS EM 00_INBOX_TRIAGEM ==={Colors.END}")
+            for item in stale:
+                print(f"  ⚠ {item['name']} — {item['age_days']} dias atrás ({item['size_kb']} KB)")
+            print(f"\n{Colors.BOLD}{Colors.YELLOW}Total de {len(stale)} arquivos requerem triagem manual.{Colors.END}\n")
+        return
+
+    # Comando: --purge-installers
+    if args.purge_installers is not None:
+        dest_root = Path(args.dest).resolve() if args.dest else None
+        engine = FileOrganizerEngine(config_path=config_path, custom_dest_root=dest_root, history_manager=history_mgr)
+        days = args.purge_installers
+        log_info(f"Iniciando ciclo de expurgo de instaladores (> {days} dias) em: {engine.dest_root} (DryRun: {args.dry_run})")
+        purged = engine.purge_old_installers(max_days=days, dry_run=args.dry_run)
+        print(f"\n{Colors.BOLD}{Colors.GREEN}=== RESUMO DO EXPURGO DE INSTALADORES ==={Colors.END}")
+        print(f" Total de Instaladores Antigos : {len(purged)}")
+        total_mb = sum(p["size_mb"] for p in purged)
+        print(f" Espaço em Disco Recuperado/Livre : {round(total_mb, 2)} MB")
+        print(f"{Colors.BOLD}{Colors.GREEN}========================================={Colors.END}\n")
+        return
+
     # Comando: --audit / --doctor
     if args.doctor:
-        target = Path(args.dest).resolve() if args.dest else (Path(args.drive).resolve() if args.drive else project_root.parent)
+        target = Path(args.dest).resolve() if args.dest else (Path(args.drive).resolve() if args.drive else default_data_target)
         log_info(f"Executando auditoria completa em: {target}")
         audit_data = SystemDoctor.audit(target)
         print(SystemDoctor.format_report(audit_data))

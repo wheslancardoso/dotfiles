@@ -83,7 +83,10 @@ gdrive toggle	Zsh / Shell	Conectar/Desconectar Google Drive	Ativa ou desmonta a 
 dl <url>	Zsh / Shell	Downloader Universal de Mídia	Baixa músicas ou vídeos do YouTube, Spotify, TikTok, etc., na pasta atual via CLI.
 organizar --doctor	Organizador	Diagnóstico de Pastas e Taxonomia	Testa e pontua a organização das pastas 00_ a 06_ no padrão ouro.
 organizar --all	Organizador	Organização Completa de Arquivos	Executa a triagem, renomeação ISO e arquivamento em lote de todos os arquivos pendentes.
+organizar --aging	Organizador	Alerta de Arquivos Estagnados	Identifica arquivos parados na Inbox há mais de 7 dias acumulando poeira digital.
+organizar --purge-installers	Organizador	Expurgo de Instaladores Antigos	Remove executáveis e APKs com mais de 45 dias para liberar espaço em disco.
 organizar --dedup	Organizador	Deduplicação de Arquivos	Localiza duplicatas exatas via hash SHA-256 e envia para quarentena segura.
+gdrive-sync	Nuvem / Backup	Sincronização Seletiva 5TB	Sincroniza pilares de vida e trabalho (01..04) com o Google Drive via Rclone.
 pacup	Zsh / Shell	Atualização Blindada do Arch Linux	Atualiza keyring PGP primeiro, sincroniza pacotes oficiais + AUR e limpa órfãos.
 cleanup	Zsh / Shell	Faxina Inteligente do Arch Linux	Remove caches antigos do pacman, arquivos temporários e logs antigos com segurança.
 fix-pacman	Zsh / Shell	Destravar Pacman (db.lck)	Remove travas residuais de instalações interrompidas do Pacman com checagem de processo.

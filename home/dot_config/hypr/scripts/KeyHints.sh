@@ -179,6 +179,8 @@ GDK_BACKEND=$BACKEND yad \
 "dl [link/url]" "Download de Vídeo (YT, Insta, TikTok) ou Spotify" "media-download.sh" \
 "organizar" "Suíte de Organização Automática Padrão Ouro" "organizar --all" \
 "organizar --doctor" "Diagnóstico e Nota 100/100 das Pastas" "organizar" \
+"organizar-aging" "Alerta de Arquivos Estagnados no Inbox (> 7d)" "organizar --aging" \
+"gdrive-sync" "Sincronização Seletiva Nuvem (Google Drive 5TB)" "gdrive-sync.sh" \
 "organizar --dedup" "Deduplicação de Arquivos por Hash SHA-256" "organizar" \
 "fix-pendrive" "Destravar e Reparar Pen-drives (NTFS/FAT/exFAT)" "fix-pendrive.sh" \
 "fix-audio" "Reiniciar e Recuperar Servidor PipeWire / WirePlumber" "fix-audio.sh" \

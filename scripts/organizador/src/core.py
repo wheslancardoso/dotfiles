@@ -6,6 +6,8 @@ import json
 import os
 import re
 import shutil
+import subprocess
+import time
 import zipfile
 from difflib import SequenceMatcher
 from pathlib import Path
@@ -48,9 +50,20 @@ class FileOrganizerEngine:
             self.config = json.load(f)
 
         self.root_user = root_user or Path.home()
-        self.dest_root = custom_dest_root or (self.root_user / "Documents")
-        self.desktop = self.root_user / "Desktop"
-        self.downloads = self.root_user / "Downloads"
+
+        # Resolução inteligente do diretório raiz da taxonomia
+        if custom_dest_root:
+            self.dest_root = custom_dest_root
+        elif Path("/mnt/dados").exists() and (Path("/mnt/dados") / "00_Inbox_Triagem").exists():
+            self.dest_root = Path("/mnt/dados")
+        elif (self.root_user / "documents").exists():
+            self.dest_root = self.root_user / "documents"
+        else:
+            self.dest_root = self.root_user / "Documents"
+
+        # Resolução de Desktop e Downloads (prioriza minúsculas modernas)
+        self.desktop = (self.root_user / "desktop") if (self.root_user / "desktop").exists() else (self.root_user / "Desktop")
+        self.downloads = (self.root_user / "downloads") if (self.root_user / "downloads").exists() else (self.root_user / "Downloads")
 
         self.ignored = set(self.config.get("arquivos_ignorados", []))
         self.keyword_rules = self.config.get("regras_palavras_chave", [])
@@ -116,10 +129,31 @@ class FileOrganizerEngine:
             pass
         return normalize_text(content)
 
+    def sniff_image_content(self, file_path: Path, timeout: float = 4.0) -> str:
+        """
+        Executa OCR leve via Tesseract em imagens/prints (ex: comprovantes, RGs, documentos).
+        Retorna o texto extraído normalizado ou string vazia se falhar ou passar do timeout.
+        """
+        if not shutil.which("tesseract"):
+            return ""
+        try:
+            result = subprocess.run(
+                ["tesseract", str(file_path), "stdout", "-l", "por+eng", "--oem", "1", "--psm", "3"],
+                capture_output=True,
+                text=True,
+                timeout=timeout,
+                check=False,
+            )
+            if result.returncode == 0 and result.stdout:
+                return normalize_text(result.stdout[:8192])
+        except Exception:
+            pass
+        return ""
+
     def classify_file(self, file_path: Path) -> Optional[Path]:
         """
         Classifica um arquivo com base nas regras de palavras-chave, deep content sniffing,
-        similaridade fuzzy e extensões. Retorna o caminho de destino absoluto correspondente na taxonomia.
+        OCR em imagens, similaridade fuzzy e extensões. Retorna o caminho de destino absoluto.
         """
         name_normalized = normalize_text(file_path.name)
         ext = file_path.suffix.lower()
@@ -148,6 +182,46 @@ class FileOrganizerEngine:
                     for term in terms:
                         term_normalized = normalize_text(term)
                         if len(term_normalized) > 3 and term_normalized in content_snippet:
+                            return self.dest_root / dest_rel
+
+        # 2.5 Visual OCR Sniffing em Imagens e Prints (Comprovantes Pix, Boletos, Documentos)
+        is_image = ext in [".png", ".jpg", ".jpeg", ".webp", ".bmp"]
+        is_scan_or_photo = any(s in name_normalized for s in [
+            "screenshot", "captura", "whatsapp", "img", "image", "photo", "foto", "pic", "scan", "scan_", "comprovante", "boleto", "doc"
+        ]) or re.match(r"^\d+[\-_]", file_path.name)
+
+        if is_image and (is_scan_or_photo or is_generic):
+            ocr_text = self.sniff_image_content(file_path)
+            if ocr_text:
+                # Regra 1: Comprovantes Bancários, Pix e Contas
+                if any(w in ocr_text for w in [
+                    "comprovante", "transferencia", "pix", "valor pago", "pagador",
+                    "favorecido", "autenticacao", "nubank", "inter", "caixa", "bradesco",
+                    "itau", "santander", "recibo", "pagamento realizado", "debito"
+                ]):
+                    return self.dest_root / "01_Pessoal_e_Vida/01.5_Financas_e_Contas"
+
+                # Regra 2: Documentos Pessoais & Identidade
+                if any(w in ocr_text for w in [
+                    "republica federativa", "carteira nacional", "identidade", "cpf",
+                    "registro geral", "titulo de eleitor", "certidao de nascimento",
+                    "certidao de casamento", "reservista", "habilitacao"
+                ]):
+                    return self.dest_root / "01_Pessoal_e_Vida/01.1_Identidade_e_Documentos"
+
+                # Regra 3: Concursos & Estudos
+                if any(w in ocr_text for w in [
+                    "gabarito", "tce-go", "caderno de questoes", "prova objetiva", "folha de respostas", "edital de abertura"
+                ]):
+                    return self.dest_root / "02_Estudos_e_Concursos/02.1_TCE-GO"
+
+                # Regra 4: Checagem geral nas palavras-chave configuradas
+                for rule in self.keyword_rules:
+                    terms = rule.get("termos", [])
+                    dest_rel = rule.get("destino", "")
+                    for term in terms:
+                        term_normalized = normalize_text(term)
+                        if len(term_normalized) > 3 and term_normalized in ocr_text:
                             return self.dest_root / dest_rel
 
         # 3. Classificação por Similaridade Fuzzy (tolerância a pequenos erros de digitação no nome)
@@ -292,3 +366,44 @@ class FileOrganizerEngine:
                 log_warning(f"Não foi possível remover diretório vazio {current_path.name}: {e}")
 
         return removed_count
+
+    def purge_old_installers(self, max_days: int = 45, dry_run: bool = True) -> list:
+        """
+        Localiza e expurga instaladores/APKs obsoletos em 06_Backups_ISOs_e_Sistemas/06.1_Instaladores_e_APKs
+        com mais de max_days dias. Protege ISOs e drivers vitais.
+        Retorna lista de dicionários com informações dos arquivos afetados.
+        """
+        installers_dir = self.dest_root / "06_Backups_ISOs_e_Sistemas/06.1_Instaladores_e_APKs"
+        if not installers_dir.exists():
+            return []
+
+        expired = []
+        now = time.time()
+        max_age_seconds = max_days * 86400
+        installer_exts = {".exe", ".msi", ".apk", ".deb", ".rpm", ".appimage", ".dmg", ".pkg"}
+
+        for item in installers_dir.rglob("*"):
+            if item.is_file() and item.suffix.lower() in installer_exts:
+                try:
+                    mtime = item.stat().st_mtime
+                    age_seconds = now - mtime
+                    if age_seconds > max_age_seconds:
+                        age_days = int(age_seconds // 86400)
+                        size_mb = round(item.stat().st_size / (1024 * 1024), 2)
+                        info = {
+                            "path": item,
+                            "name": item.name,
+                            "age_days": age_days,
+                            "size_mb": size_mb,
+                        }
+                        expired.append(info)
+                        if dry_run:
+                            log_dry_run(f"Instalador antigo ({age_days} dias, {size_mb} MB): {item.name}")
+                        else:
+                            item.unlink()
+                            log_info(f"Instalador expurgado ({age_days} dias, {size_mb} MB): {item.name}")
+                except Exception as e:
+                    log_warning(f"Erro ao avaliar instalador {item.name}: {e}")
+
+        return expired
+

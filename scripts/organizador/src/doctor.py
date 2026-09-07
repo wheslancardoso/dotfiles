@@ -4,6 +4,7 @@ Avalia a conformidade com a Taxonomia Mestre e o Guia Padrão Ouro de Nomenclatu
 """
 
 import re
+import time
 from pathlib import Path
 from typing import Dict, List, Tuple
 
@@ -19,13 +20,43 @@ class SystemDoctor:
     )
 
     @classmethod
-    def audit(cls, root_dir: Path) -> Dict:
+    def check_inbox_aging(cls, root_dir: Path, max_days: int = 7) -> List[Dict]:
+        """Varre 00_Inbox_Triagem identificando arquivos que estão acumulando poeira digital há mais de max_days dias."""
+        inbox_dir = root_dir / "00_Inbox_Triagem"
+        if not inbox_dir.exists():
+            return []
+
+        stale = []
+        now = time.time()
+        max_age_sec = max_days * 86400
+
+        for f in inbox_dir.rglob("*"):
+            if f.is_file() and not f.name.startswith("."):
+                try:
+                    mtime = f.stat().st_mtime
+                    age_sec = now - mtime
+                    if age_sec > max_age_sec:
+                        age_days = int(age_sec // 86400)
+                        size_kb = round(f.stat().st_size / 1024, 1)
+                        stale.append({
+                            "name": f.name,
+                            "path": str(f.relative_to(root_dir)),
+                            "age_days": age_days,
+                            "size_kb": size_kb,
+                        })
+                except Exception:
+                    pass
+        return sorted(stale, key=lambda x: x["age_days"], reverse=True)
+
+    @classmethod
+    def audit(cls, root_dir: Path, inbox_max_days: int = 7) -> Dict:
         """Executa auditoria abrangente em um diretório raiz de arquivos."""
         results = {
             "root_dir": str(root_dir),
             "loose_root_files": [],
             "noise_metadata_files": [],
             "naming_artifacts": [],
+            "stale_inbox_files": [],
             "taxonomy_distribution": {},
             "total_files": 0,
             "total_dirs": 0,
@@ -96,6 +127,13 @@ class SystemDoctor:
             deductions += min(inbox * 2, 15)
             results["issues"].append(f"{inbox} arquivos pendentes em 00_Inbox_Triagem.")
 
+        # Checagem de envelhecimento (Anti-Staleness) no Inbox
+        results["stale_inbox_files"] = cls.check_inbox_aging(root_dir, max_days=inbox_max_days)
+        if results["stale_inbox_files"]:
+            stale_count = len(results["stale_inbox_files"])
+            deductions += min(stale_count * 3, 20)
+            results["issues"].append(f"{stale_count} arquivos estagnados há mais de {inbox_max_days} dias em 00_Inbox_Triagem.")
+
         score = max(0, 100 - deductions)
         results["score"] = score
 
@@ -151,10 +189,19 @@ class SystemDoctor:
             lines.append(f"  {Colors.RED}✖{Colors.END} {len(audit_data['naming_artifacts'])} arquivos com nomes não padronizados")
 
         inbox_count = audit_data["taxonomy_distribution"].get("00_Inbox_Triagem", {}).get("files", 0)
+        stale_files = audit_data.get("stale_inbox_files", [])
+
         if inbox_count == 0:
             lines.append(f"  {Colors.GREEN}✔{Colors.END} Caixa de entrada (00_Inbox_Triagem) totalmente limpa")
+        elif not stale_files:
+            lines.append(f"  {Colors.YELLOW}⚠{Colors.END} {inbox_count} arquivos recentes aguardando triagem em 00_Inbox_Triagem (todos < 7 dias)")
         else:
-            lines.append(f"  {Colors.YELLOW}⚠{Colors.END} {inbox_count} arquivos pendentes em 00_Inbox_Triagem")
+            lines.append(f"  {Colors.RED}✖{Colors.END} {len(stale_files)}/{inbox_count} arquivos estagnados há > 7 dias em 00_Inbox_Triagem:")
+            for item in stale_files[:5]:
+                lines.append(f"     • {item['name']} ({item['age_days']} dias, {item['size_kb']} KB)")
+            if len(stale_files) > 5:
+                lines.append(f"     ... e mais {len(stale_files) - 5} arquivos acumulando poeira digital")
 
         lines.append(f"{Colors.BOLD}{Colors.HEADER}===================================================={Colors.END}\n")
         return "\n".join(lines)
+

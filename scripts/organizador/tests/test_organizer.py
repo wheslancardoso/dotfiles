@@ -240,6 +240,36 @@ class TestOrganizadorMaster(unittest.TestCase):
         except Exception:
             pass
 
+    def test_purge_old_installers(self):
+        inst_dir = self.dest_root / "06_Backups_ISOs_e_Sistemas" / "06.1_Instaladores_e_APKs"
+        inst_dir.mkdir(parents=True, exist_ok=True)
+        old_installer = inst_dir / "setup_antigo.exe"
+        old_installer.write_text("dummy binary content")
+
+        # Define data de modificação para 60 dias atrás
+        old_time = os.path.getmtime(old_installer) - (60 * 86400)
+        os.utime(old_installer, (old_time, old_time))
+
+        purged = self.engine.purge_old_installers(max_days=45, dry_run=False)
+        self.assertEqual(len(purged), 1)
+        self.assertEqual(purged[0]["name"], "setup_antigo.exe")
+        self.assertFalse(old_installer.exists())
+
+    def test_inbox_aging_detection(self):
+        inbox_dir = self.test_dir / "00_Inbox_Triagem"
+        inbox_dir.mkdir(parents=True, exist_ok=True)
+        stale_file = inbox_dir / "nota_fiscal_esquecida.pdf"
+        stale_file.write_text("nota fiscal esquecida")
+
+        # Define data para 10 dias atrás
+        old_time = os.path.getmtime(stale_file) - (10 * 86400)
+        os.utime(stale_file, (old_time, old_time))
+
+        stale = SystemDoctor.check_inbox_aging(self.test_dir, max_days=7)
+        self.assertEqual(len(stale), 1)
+        self.assertEqual(stale[0]["name"], "nota_fiscal_esquecida.pdf")
+        self.assertGreaterEqual(stale[0]["age_days"], 10)
+
 
 if __name__ == "__main__":
     unittest.main()
