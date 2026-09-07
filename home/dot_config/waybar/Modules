@@ -15,8 +15,8 @@
 		"/sys/class/thermal/thermal_zone0/temp"
 	],
 	"critical-threshold": 80,
-	"format-critical": "{temperatureC}°C 󰈸",
-	"format": "{temperatureC}°C {icon}",
+	"format-critical": "CPU {temperatureC}°C 󰈸",
+	"format": "CPU {temperatureC}°C {icon}",
 	"format-icons": [
 		"󰔏", "󱃂", "󰔐", "󱃃", "󰈸"
 	],

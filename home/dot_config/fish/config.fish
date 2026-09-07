@@ -97,6 +97,10 @@ alias flux-menu="bash $HOME/.config/hypr/scripts/Hyprsunset.sh menu"
 alias flux-auto="bash $HOME/.config/hypr/scripts/Hyprsunset.sh auto"
 alias flux-off="bash $HOME/.config/hypr/scripts/Hyprsunset.sh off"
 
+# 🌤️ Clima & Temperatura da Cidade (Waybar Weather)
+alias clima="bash $HOME/.config/hypr/UserScripts/WeatherLocation.sh"
+alias weather="bash $HOME/.config/hypr/UserScripts/WeatherLocation.sh"
+
 # 🧹 Manutenção & Otimização do Arch (Safe Update & Auto-Cura)
 alias clean-system="bash $HOME/dotfiles/scripts/clean-system.sh"
 alias pacup="bash $HOME/dotfiles/scripts/safe-update.sh"

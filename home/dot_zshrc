@@ -387,6 +387,10 @@ alias flux-menu='$HOME/.config/hypr/scripts/Hyprsunset.sh menu'
 alias flux-auto='$HOME/.config/hypr/scripts/Hyprsunset.sh auto'
 alias flux-off='$HOME/.config/hypr/scripts/Hyprsunset.sh off'
 
+# 🌤️ Clima & Temperatura da Cidade (Waybar Weather)
+alias clima='$HOME/.config/hypr/UserScripts/WeatherLocation.sh'
+alias weather='$HOME/.config/hypr/UserScripts/WeatherLocation.sh'
+
 # 💾 Pen-drives & Dispositivos Removíveis (Zero Dor de Cabeça)
 alias fix-pendrive='$HOME/dotfiles/scripts/fix-pendrive.sh'
 alias fix-ntfs='$HOME/dotfiles/scripts/fix-pendrive.sh'

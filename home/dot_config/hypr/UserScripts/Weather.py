@@ -67,6 +67,28 @@ ENV_LAT = os.getenv("WEATHER_LAT")
 ENV_LON = os.getenv("WEATHER_LON")
 # Optional manual place override for tooltip (and optional forward geocoding)
 ENV_PLACE = os.getenv("WEATHER_PLACE")
+
+# Try loading from ~/.config/hypr/weather.conf or dotfiles
+if not ENV_PLACE:
+    for conf_candidate in [
+        Path.home() / ".config" / "hypr" / "weather.conf",
+        Path.home() / "dotfiles" / "home" / "dot_config" / "hypr" / "weather.conf",
+        Path(__file__).parent.parent / "weather.conf",
+    ]:
+        if conf_candidate.is_file():
+            try:
+                for conf_line in conf_candidate.read_text(encoding="utf-8").splitlines():
+                    conf_line = conf_line.strip()
+                    if conf_line.startswith("WEATHER_PLACE="):
+                        val = conf_line.split("=", 1)[1].strip().strip('"').strip("'")
+                        if val:
+                            ENV_PLACE = val
+                            break
+                if ENV_PLACE:
+                    break
+            except Exception:
+                pass
+
 # Manual place name set inside this file. If set (non-empty), this takes top priority for display
 # and, if coordinates are not provided, will be used to geocode latitude/longitude.
 # Example: MANUAL_PLACE = "Concord, NH, US"
@@ -805,7 +827,7 @@ def build_output(loc: Location, forecast: Optional[Dict[str, Any]], aqi: Optiona
     out_data: Dict[str, Any] = {
         "text": f"{data.icon}  {data.temp_str}",
         "alt": data.status,
-        "tooltip": tooltip_text,
+        "tooltip": tooltip_text + "\n\n💡 Clique para mudar a cidade",
         "class": f"wmo-{data.code} {'day' if data.is_day else 'night'}",
     }
 
