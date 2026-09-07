@@ -84,7 +84,7 @@ GDK_BACKEND=$BACKEND yad \
 " SHIFT T" "Screen OCR (Copiar texto de qualquer imagem/vídeo)" "ocr-screen.sh" \
 "" "" "" \
 "── 🪟 NAVEGAÇÃO E JANELAS ──" "── VIM KEYS E MULTITAREFA ──" "────────────────────────" \
-"ALT Tab" "Alternar Janela / Workspace Anterior (0ms, estilo Windows)" "focuscurrentorlast" \
+"ALT Tab" "Alternar Workspace Anterior (Bate-e-Volta 0ms)" "workspace previous" \
 " Tab" "Seletor Visual de Janelas com Miniaturas" "Rofi Window Switcher" \
 " H / J / K / L" "Mover FOCO entre Janelas (Esq, Baixo, Cima, Dir)" "movefocus l/d/u/r" \
 " CTRL H / J / K / L" "Mover POSIÇÃO da Janela no Grid Tiling" "movewindow l/d/u/r" \
