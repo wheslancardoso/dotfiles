@@ -30,6 +30,11 @@ prepend_keymap = [
 	{ on = [ "c", "d" ], run = "copy dirpath", desc = "Copiar Caminho da Pasta" },
 
 	# --------------------------------------------------------------------------
+	# 🚀 RSYNC TURBO (Transferência Segura de HDs Externos / USB)
+	# --------------------------------------------------------------------------
+	{ on = "R", run = 'shell "bash $HOME/dotfiles/scripts/yazi-rsync.sh %s" --block', desc = "Rsync Turbo (Transferência Segura com Barra de Progresso)" },
+
+	# --------------------------------------------------------------------------
 	# 🖱️ DRAG & DROP (Arrastar e Soltar para Navegador / Discord / Drive)
 	# --------------------------------------------------------------------------
 	{ on = "<C-y>", run = 'shell "ripdrag -x -i -T %s" --confirm', desc = "Arrastar arquivos para Apps/Browser (Drag & Drop)" },

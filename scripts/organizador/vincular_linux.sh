@@ -67,25 +67,17 @@ fi
 
 echo -e "\n${GREEN}[OK] Raiz de dados válida confirmada: ${DATA_DIR}${RESET}\n"
 
-# 2. Mapeamento de Symlinks para $HOME
-# Compatível tanto com lowercase power-user quanto com XDG tradicional
+# 2. Mapeamento de Symlinks para $HOME (Estilo Power-User 100% Lowercase)
 declare -A LINKS=(
     ["$HOME/downloads"]="$DATA_DIR/00_Inbox_Triagem"
-    ["$HOME/Downloads"]="$DATA_DIR/00_Inbox_Triagem"
     ["$HOME/documents"]="$DATA_DIR/01_Pessoal_e_Vida"
-    ["$HOME/Documentos"]="$DATA_DIR/01_Pessoal_e_Vida"
     ["$HOME/estudos"]="$DATA_DIR/02_Estudos_e_Concursos"
-    ["$HOME/Estudos"]="$DATA_DIR/02_Estudos_e_Concursos"
     ["$HOME/carreira"]="$DATA_DIR/03_Profissional_WFIX"
     ["$HOME/wfix"]="$DATA_DIR/03_Profissional_WFIX"
     ["$HOME/projects"]="$DATA_DIR/04_Desenvolvimento_e_Codigo"
-    ["$HOME/Projetos"]="$DATA_DIR/04_Desenvolvimento_e_Codigo"
     ["$HOME/pictures"]="$DATA_DIR/05_Design_Midia_e_Criacao"
-    ["$HOME/Imagens"]="$DATA_DIR/05_Design_Midia_e_Criacao"
     ["$HOME/videos"]="$DATA_DIR/05_Design_Midia_e_Criacao/05.4_Filmes_e_Series"
-    ["$HOME/Vídeos"]="$DATA_DIR/05_Design_Midia_e_Criacao/05.4_Filmes_e_Series"
     ["$HOME/music"]="$DATA_DIR/05_Design_Midia_e_Criacao/05.2_Audios_e_Midias"
-    ["$HOME/Música"]="$DATA_DIR/05_Design_Midia_e_Criacao/05.2_Audios_e_Midias"
     ["$HOME/backups"]="$DATA_DIR/06_Backups_ISOs_e_Sistemas"
 )
 

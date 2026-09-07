@@ -467,10 +467,9 @@ setup_lowercase_dirs() {
                 cp -rn "$HOME/$upper/".* "$HOME/$lower/" 2>/dev/null || true
             fi
             rm -rf "$HOME/$upper"
-            ln -sfn "$HOME/$lower" "$HOME/$upper"
-            info "Vinculado link de compatibilidade ~/$upper -> ~/$lower"
-        elif [ ! -e "$HOME/$upper" ] && [ -d "$HOME/$lower" ]; then
-            ln -sfn "$HOME/$lower" "$HOME/$upper"
+            info "Pasta ~/$upper consolidada em ~/$lower."
+        elif [ -L "$HOME/$upper" ]; then
+            rm -f "$HOME/$upper"
         fi
     done
 
