@@ -20,3 +20,8 @@ check-update: false
 
 # Editor visual quando necessário
 editor: nvim
+
+# 🧠 Regras de Ouro do Sistema carregadas automaticamente em cada sessão
+read:
+  - /home/lan/dotfiles/RULES.md
+

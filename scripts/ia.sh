@@ -124,7 +124,7 @@ fi
 if [ $# -eq 0 ]; then
     echo -e "${GREEN}${BOLD}🤖 Iniciando sessão interativa do Agente IA (Modelo: $MODEL)...${NC}"
     echo -e "${CYAN}Dica: Digite /add <arquivo> para adicionar arquivos de contexto, ou digite o que deseja fazer.${NC}\n"
-    exec aider --model "$MODEL"
+    exec aider --model "$MODEL" --read "/home/lan/dotfiles/RULES.md"
 fi
 
 # Modo autônomo (com instrução passada como argumento)
@@ -142,8 +142,9 @@ echo "────────────────────────�
 
 PREV_COMMIT=$(git rev-parse HEAD 2>/dev/null || echo "none")
 
-# Executa o Aider com auto-aprovação de alterações
-aider --model "$MODEL" --yes-always --message "$INSTRUCTION"
+# Executa o Aider com auto-aprovação de alterações respeitando as REGRAS DE OURO
+aider --model "$MODEL" --read "/home/lan/dotfiles/RULES.md" --yes-always --message "$INSTRUCTION"
+
 
 CURRENT_COMMIT=$(git rev-parse HEAD 2>/dev/null || echo "none")
 
