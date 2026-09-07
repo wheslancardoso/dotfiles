@@ -120,6 +120,18 @@ elif [[ "${1:-}" == "--qwen" ]]; then
     shift
 fi
 
+# Verificar se o Ollama e Aider estão presentes no sistema
+if ! command -v aider &>/dev/null || ! command -v ollama &>/dev/null; then
+    echo -e "${YELLOW}${BOLD}ℹ️  O motor de IA local (Ollama/Aider) não está instalado no disco.${NC}"
+    echo -e "Todas as configurações e documentações estão preservadas nos dotfiles."
+    echo -e "\n${BOLD}Para reinstalar os binários e modelos quando desejar:${NC}"
+    echo -e "  1) ${GREEN}sudo pacman -S ollama-cuda${NC}"
+    echo -e "  2) ${GREEN}pipx install --python \$(which python3.12 2>/dev/null || which python3) aider-chat${NC}"
+    echo -e "  3) ${GREEN}ollama pull qwen2.5-coder:32b${NC}\n"
+    exit 1
+fi
+
+
 # Modo interativo (sem argumentos)
 if [ $# -eq 0 ]; then
     echo -e "${GREEN}${BOLD}🤖 Iniciando sessão interativa do Agente IA (Modelo: $MODEL)...${NC}"

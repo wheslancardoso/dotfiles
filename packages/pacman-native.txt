@@ -209,7 +209,6 @@ ntfs-3g
 nvidia-settings
 nvidia-utils
 nvtop
-ollama-cuda
 nwg-displays
 nwg-look
 obs-studio
