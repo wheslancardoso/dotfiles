@@ -25,13 +25,20 @@ Cockpit Dev
 
 ---
 
-## 📦 Como Escolher o Arquivo para Importar
+## 📦 Como Importar
 
-### Opção A: Tudo em 1 Clique (Recomendado)
-Importe o arquivo mestre contendo todos os **193 flashcards**:
+### 🌟 Opção 1: Pacote Nativo Anki `.apkg` (Recomendado - 100% Automático)
+O arquivo `.apkg` é o pacote compilado nativo do Anki. **Ele cria a árvore inteira e todos os 8 sub-baralhos instantaneamente com 1 clique**, sem abrir telas de configuração de texto, e já vem estilizado no tema escuro Catppuccin Mocha:
+
+📁 **`Cockpit_Dev_Ecossistema_Mestre.apkg`**
+
+* **Como importar:** No Anki aberto, aperte `Ctrl + Shift + I` e escolha esse arquivo (ou no terminal: `anki Cockpit_Dev_Ecossistema_Mestre.apkg`).
+
+---
+
+### Opção 2: Arquivo Texto Mestre
 📁 **`ECOSSISTEMA_COMPLETO_MESTRE.txt`**
-
-O Anki criará a pasta-mãe `Cockpit Dev` e distribuirá cada um dos 193 cards diretamente para os seus respectivos 8 sub-baralhos em uma única importação.
+Contém os 193 cards formatados em 4 colunas (`Frente \t Verso \t Baralho \t Tags`). Ao importar, o Anki lê a coluna 3 (`#deck column:3`) para distribuir os cards.
 
 ---
 
