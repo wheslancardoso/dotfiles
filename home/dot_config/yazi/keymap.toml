@@ -10,17 +10,17 @@ prepend_keymap = [
 	# --------------------------------------------------------------------------
 	# 📦 COMPRESSÃO RÁPIDA (Prefixo: 'c' de Compress)
 	# --------------------------------------------------------------------------
-	{ on = [ "c", "z" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-archive.sh compress-zip %s" --confirm', desc = "Comprimir para .ZIP (Rápido)" },
-	{ on = [ "c", "7" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-archive.sh compress-7z %s" --confirm', desc = "Comprimir para .7Z (Ultra LZMA2)" },
-	{ on = [ "c", "t" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-archive.sh compress-tar %s" --confirm', desc = "Comprimir para .TAR.GZ (Linux)" },
+	{ on = [ "c", "z" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-archive.sh compress-zip %s" --block', desc = "Comprimir para .ZIP (Rápido)" },
+	{ on = [ "c", "7" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-archive.sh compress-7z %s" --block', desc = "Comprimir para .7Z (Ultra LZMA2)" },
+	{ on = [ "c", "t" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-archive.sh compress-tar %s" --block', desc = "Comprimir para .TAR.GZ (Linux)" },
 	{ on = [ "c", "c" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-archive.sh compress-custom %s" --block', desc = "Comprimir com Nome Personalizado" },
 
 	# --------------------------------------------------------------------------
 	# 📂 EXTRAÇÃO INTELIGENTE (Prefixo: 'e' de Extract ou 'X' de 1-toque)
 	# --------------------------------------------------------------------------
-	{ on = [ "e", "s" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-archive.sh extract-sub %s" --confirm', desc = "Extrair para Subpasta Limpa" },
-	{ on = [ "e", "x" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-archive.sh extract-here %s" --confirm', desc = "Extrair Aqui" },
-	{ on = "X",          run = 'shell "bash $HOME/dotfiles/scripts/yazi-archive.sh extract-sub %s" --confirm', desc = "Extrair para Subpasta (1 Toque)" },
+	{ on = [ "e", "s" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-archive.sh extract-sub %s" --block', desc = "Extrair para Subpasta Limpa" },
+	{ on = [ "e", "x" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-archive.sh extract-here %s" --block', desc = "Extrair Aqui" },
+	{ on = "X",          run = 'shell "bash $HOME/dotfiles/scripts/yazi-archive.sh extract-sub %s" --block', desc = "Extrair para Subpasta (1 Toque)" },
 
 	# --------------------------------------------------------------------------
 	# 📋 COPIAR CAMINHOS / METADADOS (Desbloqueado e intuitivo)

@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 from .core import FileOrganizerEngine
-from .dedup import HashDeduplicator
+from .dedup import HashDeduplicator, MediaDeduplicator
 from .doctor import SystemDoctor
 from .history import HistoryManager
 from .partition_calc import PartitionCalculator
@@ -52,6 +52,7 @@ Exemplos de Uso:
     parser.add_argument("--recursive", action="store_true", help="Aplica a operação de forma recursiva em subpastas")
     parser.add_argument("--audit", "--doctor", action="store_true", dest="doctor", help="Auditoria e diagnóstico de saúde da taxonomia mestre")
     parser.add_argument("--dedup", type=str, metavar="DIR", help="Localiza duplicatas exatas por hash criptográfico SHA-256 no diretório")
+    parser.add_argument("--media", action="store_true", help="Ativa modo inteligente de mídias/vídeos (detecta duplicatas com nomes traduzidos ou diferentes via FFprobe)")
     parser.add_argument("--quarantine-dir", type=str, metavar="DIR", help="Diretório de quarentena para onde enviar cópias de duplicatas do --dedup")
     parser.add_argument("--watch", type=str, metavar="DIR", help="Inicia daemon de monitoramento contínuo em tempo real no diretório")
 
@@ -144,14 +145,24 @@ def run_cli():
     # Comando: --dedup
     if args.dedup:
         target = Path(args.dedup).resolve()
-        log_info(f"Varrendo duplicatas por hash SHA-256 em: {target} (recursivo={args.recursive})")
-        duplicates = HashDeduplicator.scan_directory(target, recursive=args.recursive)
-        print(HashDeduplicator.format_report(duplicates, target))
+        if args.media:
+            log_info(f"Varrendo vídeos duplicados via análise inteligente (FFprobe + Título) em: {target} (recursivo={args.recursive})")
+            duplicates = MediaDeduplicator.scan_directory(target, recursive=args.recursive)
+            print(MediaDeduplicator.format_report(duplicates, target))
 
-        if args.quarantine_dir and duplicates:
-            q_dir = Path(args.quarantine_dir).resolve()
-            count = HashDeduplicator.quarantine_duplicates(duplicates, q_dir, dry_run=args.dry_run)
-            log_success(f"Total de {count} cópias movidas para a quarentena em: {q_dir}")
+            if args.quarantine_dir and duplicates:
+                q_dir = Path(args.quarantine_dir).resolve()
+                count = MediaDeduplicator.quarantine_duplicates(duplicates, q_dir, dry_run=args.dry_run)
+                log_success(f"Total de {count} cópias redundantes movidas para a quarentena em: {q_dir}")
+        else:
+            log_info(f"Varrendo duplicatas por hash SHA-256 em: {target} (recursivo={args.recursive})")
+            duplicates = HashDeduplicator.scan_directory(target, recursive=args.recursive)
+            print(HashDeduplicator.format_report(duplicates, target))
+
+            if args.quarantine_dir and duplicates:
+                q_dir = Path(args.quarantine_dir).resolve()
+                count = HashDeduplicator.quarantine_duplicates(duplicates, q_dir, dry_run=args.dry_run)
+                log_success(f"Total de {count} cópias movidas para a quarentena em: {q_dir}")
         return
 
     # Comando: --watch

@@ -4,11 +4,14 @@ Identifica arquivos com conteúdo idêntico mesmo que tenham nomes totalmente di
 """
 
 import hashlib
+import json
 import os
+import re
 import shutil
+import subprocess
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from .utils import Colors, log_dry_run, log_error, log_info, log_success, log_warning
 
@@ -130,3 +133,179 @@ class HashDeduplicator:
                         log_error(f"Erro ao mover cópia {copy.name}: {e}")
 
         return quarantined_count
+
+
+class MediaDeduplicator:
+    """
+    Detecta vídeos duplicados considerando títulos normalizados (sem IDs),
+    durações coincidentes via ffprobe e variações de resolução.
+    Mantém automaticamente a versão de melhor qualidade e isola as redundantes.
+    """
+
+    MEDIA_EXTENSIONS = {".mp4", ".mkv", ".webm", ".avi", ".mov", ".m4v", ".flv", ".ts"}
+
+    @classmethod
+    def normalize_title(cls, filename: str) -> str:
+        stem = Path(filename).stem
+        # Remove IDs entre colchetes como [xhZ5vo3] ou [345748] ou [ph5f106a5c78711]
+        stem = re.sub(r"\[.*?\]", "", stem)
+        # Remove tags comuns de resolução como [720p], (360p), etc.
+        stem = re.sub(r"[\(\[]?\d{3,4}p[\)\]]?", "", stem, flags=re.IGNORECASE)
+        # Remove caracteres especiais e pontuações
+        stem = re.sub(r"[^a-zA-Z0-9áàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ]", " ", stem).lower()
+        return re.sub(r"\s+", " ", stem).strip()
+
+    @classmethod
+    def get_media_info(cls, file_path: Path) -> Optional[Dict[str, Any]]:
+        cmd = [
+            "ffprobe",
+            "-v", "error",
+            "-show_entries", "format=duration,size",
+            "-show_entries", "stream=width,height",
+            "-of", "json",
+            str(file_path)
+        ]
+        try:
+            res = subprocess.run(cmd, capture_output=True, text=True, timeout=5)
+            if res.returncode != 0:
+                return None
+            data = json.loads(res.stdout)
+            dur = float(data.get("format", {}).get("duration", 0))
+            sz = int(data.get("format", {}).get("size", 0))
+            w, h = 0, 0
+            for s in data.get("streams", []):
+                if "width" in s and s["width"]:
+                    w, h = int(s["width"]), int(s["height"])
+                    break
+            return {
+                "path": file_path,
+                "duration": round(dur, 1),
+                "size": sz,
+                "width": w,
+                "height": h,
+                "norm_title": cls.normalize_title(file_path.name),
+            }
+        except Exception:
+            return None
+
+    @classmethod
+    def scan_directory(cls, target_dir: Path, recursive: bool = True) -> List[List[Dict[str, Any]]]:
+        files = list(target_dir.rglob("*") if recursive else target_dir.iterdir())
+        media_files = [
+            p for p in files
+            if p.is_file() and p.suffix.lower() in cls.MEDIA_EXTENSIONS and not p.name.startswith(".")
+        ]
+
+        media_info_list = []
+        for p in media_files:
+            info = cls.get_media_info(p)
+            if info and info["duration"] > 2.0:
+                media_info_list.append(info)
+
+        duplicates = []
+        used = set()
+
+        for i, v1 in enumerate(media_info_list):
+            if v1["path"] in used:
+                continue
+            group = [v1]
+            for v2 in media_info_list[i + 1:]:
+                if v2["path"] in used:
+                    continue
+
+                is_dup = False
+                # Caso 1: Mesmo título normalizado (>= 4 caracteres) e duração muito próxima (<= 2.5s)
+                if len(v1["norm_title"]) >= 4 and v1["norm_title"] == v2["norm_title"] and abs(v1["duration"] - v2["duration"]) <= 2.5:
+                    is_dup = True
+
+                # Caso 2: Mesma duração exata (<= 0.2s) e tamanho em bytes muito próximo (<= 3%)
+                elif abs(v1["duration"] - v2["duration"]) <= 0.2:
+                    max_sz = max(v1["size"], v2["size"])
+                    if max_sz > 0 and abs(v1["size"] - v2["size"]) / max_sz < 0.03:
+                        is_dup = True
+
+                # Caso 3: Mesma duração exata (<= 0.3s) e dimensões de vídeo idênticas
+                elif abs(v1["duration"] - v2["duration"]) <= 0.3 and v1["width"] > 0 and v1["width"] == v2["width"] and v1["height"] == v2["height"]:
+                    is_dup = True
+
+                if is_dup:
+                    group.append(v2)
+                    used.add(v2["path"])
+
+            if len(group) > 1:
+                used.add(v1["path"])
+                # Ordena de forma que o item de melhor qualidade/resolução fique no índice 0
+                group.sort(key=lambda x: (x["width"] * x["height"], x["size"]), reverse=True)
+                duplicates.append(group)
+
+        return duplicates
+
+    @classmethod
+    def format_report(cls, duplicates: List[List[Dict[str, Any]]], root_dir: Path) -> str:
+        if not duplicates:
+            return f"\n{Colors.GREEN}{Colors.BOLD}✅ Nenhum vídeo/mídia duplicada encontrada!{Colors.END}\n"
+
+        total_redundant = sum(len(grp) - 1 for grp in duplicates)
+        total_wasted_bytes = sum(sum(item["size"] for item in grp[1:]) for grp in duplicates)
+        wasted_mb = total_wasted_bytes / (1024 * 1024)
+
+        lines = [
+            f"\n{Colors.BOLD}{Colors.HEADER}=== DETECÇÃO INTELIGENTE DE MÍDIAS DUPLICADAS (FFPROBE) ==={Colors.END}",
+            f"Grupos com vídeos idênticos : {len(duplicates)}",
+            f"Vídeos redundantes           : {total_redundant}",
+            f"Espaço recuperável          : {wasted_mb:.2f} MB ({wasted_mb/1024:.2f} GB)",
+            f"{Colors.HEADER}----------------------------------------------------------------------{Colors.END}",
+        ]
+
+        for idx, grp in enumerate(duplicates, 1):
+            orig = grp[0]
+            copies = grp[1:]
+            dur_str = f"{orig['duration']:.1f}s"
+            lines.append(f"\n{Colors.YELLOW}Grupo #{idx}{Colors.END} [Duração: {dur_str}]:")
+
+            orig_rel = orig["path"].relative_to(root_dir) if orig["path"].is_relative_to(root_dir) else orig["path"]
+            orig_sz = orig["size"] / (1024 * 1024)
+            orig_res = f"{orig['width']}x{orig['height']}" if orig["width"] else "resolução ?"
+            lines.append(f"   {Colors.GREEN}[MANTER - MELHOR]{Colors.END} {orig_rel} ({orig_res}, {orig_sz:.1f} MB)")
+
+            for c in copies:
+                c_rel = c["path"].relative_to(root_dir) if c["path"].is_relative_to(root_dir) else c["path"]
+                c_sz = c["size"] / (1024 * 1024)
+                c_res = f"{c['width']}x{c['height']}" if c["width"] else "resolução ?"
+                lines.append(f"   {Colors.RED}[REDUNDANTE]    {Colors.END} {c_rel} ({c_res}, {c_sz:.1f} MB)")
+
+        lines.append(f"\n{Colors.BOLD}{Colors.HEADER}======================================================================{Colors.END}\n")
+        return "\n".join(lines)
+
+    @classmethod
+    def quarantine_duplicates(
+        cls,
+        duplicates: List[List[Dict[str, Any]]],
+        quarantine_dir: Path,
+        dry_run: bool = False,
+    ) -> int:
+        quarantined = 0
+        for grp in duplicates:
+            copies = grp[1:]
+            for c in copies:
+                copy_path = c["path"]
+                dest_file = quarantine_dir / copy_path.name
+                counter = 1
+                while dest_file.exists():
+                    dest_file = quarantine_dir / f"{dest_file.stem}_{counter}{dest_file.suffix}"
+                    counter += 1
+
+                if dry_run:
+                    log_dry_run(f"Mover cópia redundante: {copy_path.name} ➔ {dest_file}")
+                    quarantined += 1
+                else:
+                    quarantine_dir.mkdir(parents=True, exist_ok=True)
+                    try:
+                        shutil.move(str(copy_path), str(dest_file))
+                        log_success(f"Quarentena: {copy_path.name} ➔ {dest_file.name}")
+                        quarantined += 1
+                    except Exception as e:
+                        log_error(f"Erro ao mover cópia {copy_path.name}: {e}")
+
+        return quarantined
+
