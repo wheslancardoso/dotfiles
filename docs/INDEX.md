@@ -22,6 +22,7 @@
 │   ├── [GUIA_MIGRACAO_TOTAL_WINDOWS_LINUX.md](./GUIA_MIGRACAO_TOTAL_WINDOWS_LINUX.md) # 🚀 Desapego do Windows, Equivalências e KVM Quickemu
 │   ├── [GUIA_SETUP_PC.md](./GUIA_SETUP_PC.md)                     # Guia automatizado pós-formatação (Linux & Windows)
 │   ├── [GUIA_SPOTIFY_HYPRLAND_POWERUSER.md](./GUIA_SPOTIFY_HYPRLAND_POWERUSER.md) # 🎵 Spotify Scratchpad, Spicetify e alta fidelidade
+│   ├── [GUIA_DROPDOWN_SCRATCHPADS_HYPRLAND.md](./GUIA_DROPDOWN_SCRATCHPADS_HYPRLAND.md) # ⚡ Blueprint de Dropdown Scratchpads (TecConcursos, WebApps & Quake)
 │   ├── [GUIA_GAMES_EMULADORES_LUDUSAVI.md](./GUIA_GAMES_EMULADORES_LUDUSAVI.md) # 🎮 Emuladores Switch/PCSX2 e backup de saves
 │   ├── [GUIA_GAMING_STREAMING_LINUX.md](./GUIA_GAMING_STREAMING_LINUX.md) # 🎮 Gaming, FitGirl Repacks, RTX 5060, Vesktop & Áudio IA
 │   └── [GUIA_BACKUP_PRE_FORMATACAO.md](./GUIA_BACKUP_PRE_FORMATACAO.md) # Checklist seguro de backup (SSH, saves, configs)

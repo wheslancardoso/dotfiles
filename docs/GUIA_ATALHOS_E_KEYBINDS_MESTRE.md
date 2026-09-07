@@ -47,6 +47,7 @@
 | `Super + Ctrl + D` | **Baixar Tocando Agora** (Captura imediata da faixa/vídeo ativa via MPRIS / Spotify / Navegador) |
 | `Super + Shift + M` | Gerenciador de Monitores e Projeção (**nwg-displays**) |
 | `Super + M` | **Spotify Dropdown Scratchpad** (Desce janela flutuante com blur Catppuccin e esconde ao apertar de novo) |
+| `Super + T` | **TecConcursos Dropdown Scratchpad** (Treinador de questões 60s centralizado 80%x88%, modo stealth com 1 toque) |
 | `Super + Ctrl + Space` | Play / Pause do Spotify em segundo plano |
 | `Super + Ctrl + ]` / `[` | Próxima faixa / Faixa anterior do Spotify |
 | `Super + Shift + N` | Central de Notificações e Controle (**SwayNC** com Não Perturbe) |
