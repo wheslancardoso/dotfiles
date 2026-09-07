@@ -7,6 +7,7 @@ alsa-plugins
 alsa-utils
 amd-ucode
 android-udev
+anki
 aria2
 atuin
 awesome-terminal-fonts

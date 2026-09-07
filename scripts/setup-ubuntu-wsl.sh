@@ -66,7 +66,8 @@ setup_system_and_docker() {
         libreadline-dev \
         libsqlite3-dev \
         docker.io \
-        docker-compose-v2
+        docker-compose-v2 \
+        anki
 
     ok "Pacotes APT essenciais instalados com sucesso!"
 

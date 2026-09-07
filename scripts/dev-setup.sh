@@ -37,7 +37,7 @@ sudo pacman -S --needed --noconfirm \
     zoxide tealdeer chezmoi neovim python-pip \
     git-delta dust procs xh tokei hyperfine atuin \
     zellij scrcpy dbeaver sqlite mariadb-clients valkey \
-    tree-sitter-cli luarocks wl-clipboard
+    tree-sitter-cli luarocks wl-clipboard anki
 
 # --- 3. Docker (Instalação e Permissões Zero-Touch) ---
 info "Configurando Docker (sem necessidade de sudo posterior)..."
