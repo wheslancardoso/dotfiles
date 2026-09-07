@@ -55,6 +55,7 @@ SUPER + ALT + B	Hyprland	Bluetooth Rápido (Rofi Bluetooth)	Ligue/desligue bluet
 SUPER + ALT + W	Hyprland	Wi-Fi Rápido (Rofi Wi-Fi)	Conecte-se a redes Wi-Fi e visualize o sinal com medidor gráfico no Rofi.
 SUPER + ALT + G	Hyprland	Google Drive 5TB Virtual (Rclone)	Conecta ou desconecta a unidade na nuvem de 5TB em ~/gdrive via streaming VFS on-demand.
 SUPER + ALT + D	Hyprland	Menu Media Downloader (yt-dlp)	Baixe qualquer vídeo ou música do YouTube, Instagram, TikTok, etc., pelo menu Rofi.
+SUPER + ALT + U	Hyprland	Atualização Blindada (safe-update)	Abre o terminal flutuante executando atualização com snapshot Btrfs prévio.
 SUPER + CTRL + D	Hyprland	Baixar Mídia Tocando Agora (MPRIS)	Detecta o que está tocando no Spotify ou Navegador e baixa o arquivo em MP3/MP4 automaticamente.
 SUPER + C	Hyprland	Calculadora com Conversão de Moedas	Calculadora rápida GNOME com suporte a conversão de moedas e unidades ao vivo.
 SUPER + ALT + C	Hyprland	Calculadora Científica (Qalculate)	Calculadora avançada para matemática simbólica, engenharia e finanças.
@@ -126,6 +127,8 @@ s <letras>	LazyVim	Flash Jump	Pula o cursor instantaneamente para qualquer palav
 ysiw"	LazyVim	Surround com Aspas Duplas	Envolve a palavra atual com aspas duplas ("palavra").
 cs"'	LazyVim	Trocar Aspas Duplas por Simples	Altera o delimitador ao redor da palavra de " para '.
 ds"	LazyVim	Remover Aspas	Deleta as aspas ao redor da palavra atual.
+virt-manager	Sistema / KVM	Gerenciador de Máquinas Virtuais	Interface gráfica profissional para criar e controlar VMs KVM/QEMU com USB passthrough.
+psd status	Sistema / RAM	Status do Navegador na RAM	Exibe o status do Profile-Sync-Daemon rodando o perfil do navegador na memória RAM.
 EOF
 }
 

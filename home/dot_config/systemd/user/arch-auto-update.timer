@@ -1,0 +1,12 @@
+[Unit]
+Description=Timer de Atualização Automática do Sistema (Boot + Semanal)
+
+[Timer]
+# Executa 5 minutos após ligar o PC (permite rede e desktop estabilizarem)
+OnBootSec=5min
+# Executa a cada 7 dias caso a máquina fique ligada continuamente
+OnUnitActiveSec=7d
+Persistent=true
+
+[Install]
+WantedBy=timers.target

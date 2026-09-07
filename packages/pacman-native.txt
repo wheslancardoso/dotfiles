@@ -230,6 +230,7 @@ playerctl
 plocate
 plymouth
 poppler-glib
+profile-sync-daemon
 postgresql
 power-profiles-daemon
 procs

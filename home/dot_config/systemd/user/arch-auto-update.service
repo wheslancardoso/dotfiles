@@ -1,0 +1,15 @@
+[Unit]
+Description=Atualização Automática e Blindada do Arch Linux + AUR
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+Nice=19
+IOSchedulingClass=idle
+ExecStart=/home/lan/dotfiles/scripts/safe-update.sh --auto
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

@@ -72,6 +72,7 @@ GDK_BACKEND=$BACKEND yad \
 " ALT G" "Google Drive 5TB Virtual (Montar/Desmontar)" "gdrive-mount.sh toggle" \
 " ALT D" "Download de Vídeo ou Música do Clipboard" "media-download.sh" \
 " CTRL D" "Baixar Música que está Tocando Agora" "media-download.sh --now" \
+" ALT U" "Atualização Blindada do Sistema (safe-update)" "safe-update.sh" \
 "" "" "" \
 "── 📸 CAPTURAS DE TELA E GRAVAÇÃO ──" "── SCREENSHOTS E MÍDIA ──" "────────────────────────" \
 " SHIFT S ou Print" "Captura com Anotações, Setas e Destaque" "flameshot gui" \
@@ -181,6 +182,8 @@ GDK_BACKEND=$BACKEND yad \
 "fix-keys" "Reparar e Baixar Chaves PGP do Arch Linux" "fix-keys.sh" \
 "fix-suspend" "Blindagem de Suspensão e Despertar do Sistema" "fix-suspend.sh" \
 "m / mi / mu" "Gerenciador Rápido de Runtimes Mise (Node, Bun, Go)" "mise" \
+"virt-manager" "Gerenciador de Máquinas Virtuais KVM (Windows/Linux)" "virt-manager" \
+"psd status" "Verificar status do navegador rodando na RAM" "profile-sync-daemon" \
 "" "" "" \
 "── 🎨 ESTILO, WALLPAPER E WAYBAR ──" "── PERSONALIZAÇÃO VISUAL ──" "────────────────────────" \
 " W" "Menu de Seleção de Wallpapers" "Rofi Wallpapers" \

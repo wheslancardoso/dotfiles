@@ -19,6 +19,7 @@
 | `Super + Alt + S` | 🎮 **Jogos** | Sincroniza e faz backup na nuvem de todos os seus saves de jogos via Ludusavi. |
 | `Super + Alt + R` | 🎥 **Gravação** | Inicia/para gravação da tela em MP4 de alta qualidade ou GIF animado. |
 | `Super + Alt + D` | 📥 **Download** | Baixa vídeo ou áudio da URL copiada (aceleração multi-conexão aria2c ou comando `dl`). |
+| `Super + Alt + U` | 🛡️ **Update** | Atualização blindada do sistema em janela flutuante com snapshot Btrfs (`safe-update`). |
 | `Super + Shift + S` ou `Print` | ✂️ **Screenshot** | Captura de região com anotações, setas e blur via **Flameshot** (com fallback). |
 | `Super + Shift + T` | 🔍 **OCR** | Seleciona qualquer área da tela e copia o texto de imagens/vídeos para o clipboard. |
 | `Super + Shift + P` | 🎨 **Cor** | Conta-gotas (Color Picker): clica em qualquer pixel da tela e copia o código HEX. |

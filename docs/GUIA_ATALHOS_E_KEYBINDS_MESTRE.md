@@ -44,6 +44,7 @@
 | `Super + Alt + S` | **Sincronização de Saves de Jogos** (Ludusavi Cloud Backup com notificação nativa) |
 | `Super + Alt + G` | **Google Drive 5TB On-Demand** (Conectar/Desconectar Rclone VFS streaming com notificação) |
 | `Super + Alt + D` | **Menu Media Downloader** (Rofi interativo para YouTube, Spotify, cortes, GIFs, etc.) |
+| `Super + Alt + U` | **Atualização Blindada do Sistema** (Janela flutuante do `safe-update` com snapshot Btrfs) |
 | `Super + Ctrl + D` | **Baixar Tocando Agora** (Captura imediata da faixa/vídeo ativa via MPRIS / Spotify / Navegador) |
 | `Super + Shift + M` | Gerenciador de Monitores e Projeção (**nwg-displays**) |
 | `Super + M` | **Spotify Dropdown Scratchpad** (Desce janela flutuante com blur Catppuccin e esconde ao apertar de novo) |
