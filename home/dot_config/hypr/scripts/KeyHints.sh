@@ -190,6 +190,8 @@ GDK_BACKEND=$BACKEND yad \
 " ALT B" "Menu de Layouts da Waybar" "waybar layouts" \
 " ALT R" "Recarregar Waybar, SwayNC e Temas" "Refresh.sh" \
 " SHIFT N" "Abrir Central de Notificações SwayNC" "swaync-client" \
+" N" "Luz Noturna / f.lux (Alternar Automático ↔ Pausar)" "Hyprsunset.sh toggle" \
+" ALT N" "Menu de Temperaturas de Luz Noturna (Presets f.lux)" "Hyprsunset.sh menu" \
 " T" "Seletor Global de Temas do Sistema" "Theme Selector" \
 " SHIFT G" "Modo Jogo (GameMode - Desativa Blur e Efeitos)" "gamemode" \
 "" "" "" \

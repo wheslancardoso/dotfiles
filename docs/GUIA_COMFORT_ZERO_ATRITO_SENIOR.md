@@ -23,7 +23,8 @@
 | `Super + Shift + T` | 🔍 **OCR** | Seleciona qualquer área da tela e copia o texto de imagens/vídeos para o clipboard. |
 | `Super + Shift + P` | 🎨 **Cor** | Conta-gotas (Color Picker): clica em qualquer pixel da tela e copia o código HEX. |
 | `Super + Shift + N` | 🔔 **Notificações**| Central SwayNC com histórico, controle de volume e botão **Não Perturbe (DND)**. |
-| `Super + N` | 🌙 **Luz Noturna** | Ativa/desativa filtro de luz azul quente (Hyprsunset) para conforto visual noturno. |
+| `Super + N` | 🌙 **Luz Noturna (f.lux)** | Alterna ciclo solar automático f.lux (3800K) ou pausa para cores reais (6500K). |
+| `Super + Alt + N` | 🌅 **Menu f.lux** | Menu Rofi com presets de temperatura (3800K, 3000K, 2400K, 5000K, Automático). |
 | `Super + E` | 📂 **Arquivos** | Yazi File Manager em tela dividida (Tiling). |
 | `Super + Shift + E` | 📂 **Arquivos** | Yazi File Manager em janela flutuante no centro da tela. |
 | `Super + Shift + D` | 🪪 **Documentos** | Acesso Rápido flutuante com seus documentos essenciais (CNH, RG, comprovantes). |

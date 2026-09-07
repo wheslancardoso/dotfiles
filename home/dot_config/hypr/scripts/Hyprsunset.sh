@@ -1,111 +1,250 @@
 #!/usr/bin/env bash
+# ==============================================================================
+# 🌙 HYPRLAND NIGHT LIGHT & F.LUX DAEMON (wlsunset + hyprsunset)
+# ==============================================================================
+# Gerenciador inteligente de temperatura de cor e filtro de luz azul para Wayland.
+# - Modo Automático (f.lux): Transição solar suave de 30min no pôr/nascer do sol.
+# - Modo Manual / Forçado: Presets de 5000K a 2400K para alívio visual imediato.
+# - Modo Pausado: Restaura 6500K para fidelidade de cor em design, fotos e jogos.
+#
+# Comandos:
+#   init     -> Inicializa o daemon no boot (f.lux automático)
+#   toggle   -> Alterna entre Automático e Pausado (Super + N)
+#   menu     -> Abre menu visual Rofi com presets (Super + Alt + N)
+#   status   -> Retorna JSON para o Waybar
+#   set <K>  -> Aplica temperatura específica (ex: set 3000 ou set auto)
+# ==============================================================================
+
 set -euo pipefail
 
-# Hyprsunset toggle + Waybar status helper
-# Phase 1: manual toggle only (no scheduling)
-# Icons:
-# - Off: bright sun
-# - On: sunset icon if available, otherwise a blue sun
-#
-# Customize via env vars:
-#   HYPRSUNSET_TEMP   default 4500 (K)
-#   HYPRSUNSET_ICON_MODE  sunset|blue  (default: sunset)
-
 STATE_FILE="$HOME/.cache/.hyprsunset_state"
-TARGET_TEMP="${HYPRSUNSET_TEMP:-4500}"
-ICON_MODE="${HYPRSUNSET_ICON_MODE:-sunset}"
+LOC_CACHE="$HOME/.cache/.nightlight_location"
 
-ensure_state() {
-  [[ -f "$STATE_FILE" ]] || echo "off" > "$STATE_FILE"
-}
+# Parâmetros padrão de conforto (estilo f.lux)
+DAY_TEMP=6500
+DEFAULT_NIGHT_TEMP=3800
+FADE_DURATION=1800 # 30 minutos de transição suave
 
-# Render icons using pango markup to allow colorization
-icon_off() {
-  # universally available sun symbol
-  printf "☀"
-}
+# Coordenadas padrão (Goiânia / Brasil) se offline
+DEFAULT_LAT="-16.68"
+DEFAULT_LON="-49.25"
 
-icon_on() {
-  case "$ICON_MODE" in
-    sunset)
-      # sunset emoji (falls back to tofu if no emoji font)
-      printf "🌇"
-      ;;
-    blue)
-      # no color in text; rely on CSS .on to style if desired
-      printf "☀"
-      ;;
-    *)
-      printf "☀"
-      ;;
-  esac
-}
-
-cmd_toggle() {
-  ensure_state
-  state="$(cat "$STATE_FILE" || echo off)"
-
-  # Always stop any running hyprsunset first to avoid CTM manager conflicts
-  if pgrep -x hyprsunset >/dev/null 2>&1; then
-    pkill -x hyprsunset || true
-    # give it a moment to release the CTM manager
-    sleep 0.2
-  fi
-
-if [[ "$state" == "on" ]]; then
-    # Turning OFF: set identity and exit
-    if command -v hyprsunset >/dev/null 2>&1; then
-      nohup hyprsunset -i >/dev/null 2>&1 &
-      # if hyprsunset persists, stop it shortly after applying identity
-      sleep 0.3 && pkill -x hyprsunset || true
+get_location() {
+    if [[ -f "$LOC_CACHE" ]] && [[ -s "$LOC_CACHE" ]]; then
+        cat "$LOC_CACHE"
+        return 0
     fi
-    echo off > "$STATE_FILE"
-    notify-send -u low "Hyprsunset: Disabled" || true
-  else
-    # Turning ON: start hyprsunset at target temp in background
-    if command -v hyprsunset >/dev/null 2>&1; then
-      nohup hyprsunset -t "$TARGET_TEMP" >/dev/null 2>&1 &
+
+    local loc=""
+    if command -v curl >/dev/null 2>&1; then
+        loc=$(curl -s --connect-timeout 2 https://ipinfo.io/loc 2>/dev/null || true)
     fi
-    echo on > "$STATE_FILE"
-    notify-send -u low "Hyprsunset: Enabled" "${TARGET_TEMP}K" || true
-  fi
+
+    if [[ "$loc" =~ ^-?[0-9]+\.[0-9]+,-?[0-9]+\.[0-9]+$ ]]; then
+        echo "$loc" > "$LOC_CACHE"
+        echo "$loc"
+    else
+        echo "${DEFAULT_LAT},${DEFAULT_LON}"
+    fi
 }
 
-cmd_status() {
-  ensure_state
-  # Prefer live process detection; fall back to state file
-  if pgrep -x hyprsunset >/dev/null 2>&1; then
-    onoff="on"
-  else
-    onoff="$(cat "$STATE_FILE" || echo off)"
-  fi
+notify() {
+    local title="$1"
+    local msg="$2"
+    if command -v notify-send >/dev/null 2>&1; then
+        notify-send -a "Night Light" -u low -i preferences-desktop-display-color "$title" "$msg" 2>/dev/null || true
+    fi
+}
 
-  if [[ "$onoff" == "on" ]]; then
-    txt="<span size='18pt'>$(icon_on)</span>"
-    cls="on"
-    tip="Night light on @ ${TARGET_TEMP}K"
-  else
-    txt="<span size='16pt'>$(icon_off)</span>"
-    cls="off"
-    tip="Night light off"
-  fi
-  printf '{"text":"%s","class":"%s","tooltip":"%s"}\n' "$txt" "$cls" "$tip"
+stop_all() {
+    pkill -x wlsunset >/dev/null 2>&1 || true
+    if pgrep -x hyprsunset >/dev/null 2>&1; then
+        pkill -x hyprsunset >/dev/null 2>&1 || true
+        if command -v hyprsunset >/dev/null 2>&1; then
+            nohup hyprsunset -i >/dev/null 2>&1 &
+            sleep 0.2 && pkill -x hyprsunset >/dev/null 2>&1 || true
+        fi
+    fi
+}
+
+start_auto() {
+    local target_temp="${1:-$DEFAULT_NIGHT_TEMP}"
+    stop_all
+
+    local loc
+    loc=$(get_location)
+    local lat="${loc%%,*}"
+    local lon="${loc##*,}"
+
+    if command -v wlsunset >/dev/null 2>&1; then
+        wlsunset -l "$lat" -L "$lon" -t "$target_temp" -T "$DAY_TEMP" -d "$FADE_DURATION" </dev/null >/dev/null 2>&1 & disown || true
+    elif command -v hyprsunset >/dev/null 2>&1; then
+        # Fallback se wlsunset não estiver instalado
+        local hour
+        hour=$(date +%H)
+        if [ "$hour" -ge 18 ] || [ "$hour" -lt 6 ]; then
+            hyprsunset -t "$target_temp" </dev/null >/dev/null 2>&1 & disown || true
+        fi
+    fi
+
+    echo "auto:$target_temp" > "$STATE_FILE"
+}
+
+start_forced() {
+    local target_temp="$1"
+    stop_all
+
+    if command -v wlsunset >/dev/null 2>&1; then
+        # Força temperatura constante noite e dia
+        wlsunset -t "$target_temp" -T "$((target_temp + 1))" -S 23:59 -s 00:00 </dev/null >/dev/null 2>&1 & disown || true
+    elif command -v hyprsunset >/dev/null 2>&1; then
+        hyprsunset -t "$target_temp" </dev/null >/dev/null 2>&1 & disown || true
+    fi
+
+    echo "forced:$target_temp" > "$STATE_FILE"
+}
+
+start_off() {
+    stop_all
+    echo "off:6500" > "$STATE_FILE"
 }
 
 cmd_init() {
-  ensure_state
-  state="$(cat "$STATE_FILE" || echo off)"
-
-  if [[ "$state" == "on" ]]; then
-    if command -v hyprsunset >/dev/null 2>&1; then
-      nohup hyprsunset -t "$TARGET_TEMP" >/dev/null 2>&1 &
+    # Inicialização no boot: se não houver estado ou for auto, liga o f.lux
+    if [[ ! -f "$STATE_FILE" ]]; then
+        start_auto "$DEFAULT_NIGHT_TEMP"
+        return 0
     fi
-  fi
+
+    local state
+    state=$(cat "$STATE_FILE" || echo "auto:$DEFAULT_NIGHT_TEMP")
+    local mode="${state%%:*}"
+    local temp="${state##*:}"
+
+    case "$mode" in
+        forced) start_forced "$temp" ;;
+        off)    start_off ;;
+        *)      start_auto "${temp:-$DEFAULT_NIGHT_TEMP}" ;;
+    esac
 }
 
-case "${1:-}" in
-  toggle) cmd_toggle ;;
-  status) cmd_status ;;
-  init) cmd_init ;;
-  *) echo "usage: $0 [toggle|status|init]" >&2; exit 2 ;;
- esac
+cmd_toggle() {
+    local state="off:6500"
+    if [[ -f "$STATE_FILE" ]]; then
+        state=$(cat "$STATE_FILE")
+    fi
+
+    local mode="${state%%:*}"
+    local temp="${state##*:}"
+
+    if [[ "$mode" == "off" ]]; then
+        start_auto "$DEFAULT_NIGHT_TEMP"
+        notify "🌙 Modo Noturno Ativado" "Ciclo solar automático (f.lux) ativo (${DEFAULT_NIGHT_TEMP}K)"
+    else
+        start_off
+        notify "☀ Luz Noturna Pausada" "Cores reais ativadas (6500K neutro)"
+    fi
+}
+
+cmd_menu() {
+    if ! command -v rofi >/dev/null 2>&1 || [ -z "${WAYLAND_DISPLAY:-${DISPLAY:-}}" ]; then
+        echo "Rofi não disponível ou fora de sessão gráfica."
+        exit 1
+    fi
+
+    local state="auto:$DEFAULT_NIGHT_TEMP"
+    [[ -f "$STATE_FILE" ]] && state=$(cat "$STATE_FILE")
+    local current_mode="${state%%:*}"
+    local current_temp="${state##*:}"
+
+    local options="1. 🌅 Automático (f.lux) — Ciclo solar dia ↔ noite (3800K)
+2. 🌙 Conforto Noturno — 3800K (Padrão f.lux para descanso ocular)
+3. 🕯️ Relaxamento Profundo — 3000K (Âmbar aconchegante para tarde da noite)
+4. 🛌 Foco no Sono — 2400K (Bloqueio total de luz azul para dormir melhor)
+5. 🛋️ Leve / Escritório — 5000K (Filtro sutil para longas horas diurnas)
+6. 🎨 Cores Reais / Desativar — 6500K (Sem filtro para design, fotos e jogos)"
+
+    local chosen
+    chosen=$(echo -e "$options" | rofi -dmenu -i -p "🌙 Modo Noturno" -theme-str 'window {width: 600px;}')
+
+    case "$chosen" in
+        *Automático*)
+            start_auto "$DEFAULT_NIGHT_TEMP"
+            notify "🌅 Modo Automático (f.lux)" "Ajuste dinâmico suave conforme pôr do sol"
+            ;;
+        *3800K*)
+            start_forced 3800
+            notify "🌙 Conforto Noturno" "Temperatura fixada em 3800K"
+            ;;
+        *3000K*)
+            start_forced 3000
+            notify "🕯️ Relaxamento Profundo" "Temperatura fixada em 3000K (Âmbar quente)"
+            ;;
+        *2400K*)
+            start_forced 2400
+            notify "🛌 Foco no Sono" "Temperatura fixada em 2400K (Zero luz azul)"
+            ;;
+        *5000K*)
+            start_forced 5000
+            notify "🛋️ Filtro Leve" "Temperatura fixada em 5000K"
+            ;;
+        *Desativar*|*6500K*)
+            start_off
+            notify "🎨 Cores Reais" "Filtro de luz azul desativado (6500K)"
+            ;;
+    esac
+}
+
+cmd_status() {
+    local is_running=0
+    if pgrep -x wlsunset >/dev/null 2>&1 || pgrep -x hyprsunset >/dev/null 2>&1; then
+        is_running=1
+    fi
+
+    local state="off:6500"
+    [[ -f "$STATE_FILE" ]] && state=$(cat "$STATE_FILE")
+    local mode="${state%%:*}"
+    local temp="${state##*:}"
+
+    local text="☀"
+    local class="off"
+    local tip="Luz Noturna: Desativada (6500K)\nClique esquerdo: Ativar f.lux\nClique direito: Presets"
+
+    if [ "$is_running" -eq 1 ] && [ "$mode" != "off" ]; then
+        if [ "$mode" == "auto" ]; then
+            text="<span size='16pt'>🌇</span>"
+            class="on"
+            tip="Luz Noturna (f.lux): Automático\nTransição solar ativa (~18h às ~06h)\nAlvo noturno: ${temp}K\nClique esquerdo: Pausar\nClique direito: Presets"
+        else
+            text="<span size='16pt'>🌙</span>"
+            class="on"
+            tip="Luz Noturna: Fixada em ${temp}K\nClique esquerdo: Pausar\nClique direito: Presets"
+        fi
+    else
+        text="<span size='16pt'>☀</span>"
+        class="off"
+        tip="Luz Noturna: Pausada (6500K)\nClique esquerdo: Ativar f.lux\nClique direito: Presets"
+    fi
+
+    printf '{"text":"%s","class":"%s","tooltip":"%s"}\n' "$text" "$class" "$tip"
+}
+
+case "${1:-status}" in
+    init)   cmd_init ;;
+    toggle) cmd_toggle ;;
+    menu)   cmd_menu ;;
+    status) cmd_status ;;
+    auto)   start_auto "${2:-$DEFAULT_NIGHT_TEMP}" ;;
+    off)    start_off ;;
+    set)
+        if [[ "${2:-}" =~ ^[0-9]+$ ]]; then
+            start_forced "$2"
+        else
+            start_auto "$DEFAULT_NIGHT_TEMP"
+        fi
+        ;;
+    *)
+        echo "Uso: $0 {init|toggle|menu|status|auto|off|set <temp>}"
+        exit 1
+        ;;
+esac

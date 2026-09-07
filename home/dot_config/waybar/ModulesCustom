@@ -113,8 +113,8 @@
 	"format": "{text}",
 	"min-length": 2,
 	"on-click": "$HOME/.config/hypr/scripts/Hyprsunset.sh toggle",
+	"on-click-right": "$HOME/.config/hypr/scripts/Hyprsunset.sh menu",
 	"tooltip": true,
-	"tooltip-format": "Night light toggle",
 	"escape": false
 },
 

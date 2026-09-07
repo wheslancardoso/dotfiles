@@ -50,8 +50,9 @@
 | `Super + Ctrl + Space` | Play / Pause do Spotify em segundo plano |
 | `Super + Ctrl + ]` / `[` | Próxima faixa / Faixa anterior do Spotify |
 | `Super + Shift + N` | Central de Notificações e Controle (**SwayNC** com Não Perturbe) |
-| `Super + N` | Luz Noturna / Filtro de Luz Azul (**Hyprsunset**) |
-| `Ctrl + Alt + P` | Menu de saída / Desligar / Reiniciar (**Wlogout**) |
+| `Super + N` | Luz Noturna / f.lux (Alternar Automático ↔ Pausar) |
+| `Super + Alt + N` | Menu de Presets de Luz Noturna (f.lux, 3800K, 3000K, 2400K) |
+| `Super + P` ou `Ctrl + Alt + P` | Menu de saída / Desligar / Reiniciar (**Wlogout**) |
 
 
 

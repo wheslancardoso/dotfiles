@@ -315,7 +315,6 @@ alias vk='$HOME/dotfiles/scripts/vim-king.sh'
 alias vim-king='$HOME/dotfiles/scripts/vim-king.sh'
 
 # 🚀 Vibe Coding & Layouts Zellij
-alias agy='agy --dangerously-skip-permissions'
 alias vibe='zellij --layout vibe'
 alias fullstack='zellij --layout fullstack'
 alias mobile='zellij --layout mobile'
@@ -379,6 +378,14 @@ alias fix-spicetify='$HOME/dotfiles/scripts/setup-spicetify.sh'
 alias spicetify-setup='$HOME/dotfiles/scripts/setup-spicetify.sh'
 alias spt='spotify-player'
 alias spotify-tui='spotify-player'
+
+# 🌙 Modo Noturno & Filtro de Luz Azul (f.lux para Linux / Wayland)
+alias flux='$HOME/.config/hypr/scripts/Hyprsunset.sh'
+alias nightlight='$HOME/.config/hypr/scripts/Hyprsunset.sh'
+alias flux-toggle='$HOME/.config/hypr/scripts/Hyprsunset.sh toggle'
+alias flux-menu='$HOME/.config/hypr/scripts/Hyprsunset.sh menu'
+alias flux-auto='$HOME/.config/hypr/scripts/Hyprsunset.sh auto'
+alias flux-off='$HOME/.config/hypr/scripts/Hyprsunset.sh off'
 
 # 💾 Pen-drives & Dispositivos Removíveis (Zero Dor de Cabeça)
 alias fix-pendrive='$HOME/dotfiles/scripts/fix-pendrive.sh'
@@ -564,3 +571,7 @@ bindkey -M vicmd 'j' zsh-history-substring-search-down 2>/dev/null || true
 if [[ -o interactive ]] && command -v fastfetch &>/dev/null && [ -z "$VIMRUNTIME" ] && [ -z "$ZELLIJ" ] && [ "$TERM_PROGRAM" != "vscode" ]; then
     fastfetch
 fi
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/lan/.local/bin:$PATH"

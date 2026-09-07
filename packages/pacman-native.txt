@@ -325,6 +325,7 @@ winetricks
 wireplumber
 wl-clipboard
 wlogout
+wlsunset
 wpa_supplicant
 xarchiver
 xdg-desktop-portal-gtk

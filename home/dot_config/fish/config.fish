@@ -89,6 +89,14 @@ alias spicetify-setup="bash $HOME/dotfiles/scripts/setup-spicetify.sh"
 alias spt="spotify-player"
 alias spotify-tui="spotify-player"
 
+# 🌙 Modo Noturno & Filtro de Luz Azul (f.lux para Linux / Wayland)
+alias flux="bash $HOME/.config/hypr/scripts/Hyprsunset.sh"
+alias nightlight="bash $HOME/.config/hypr/scripts/Hyprsunset.sh"
+alias flux-toggle="bash $HOME/.config/hypr/scripts/Hyprsunset.sh toggle"
+alias flux-menu="bash $HOME/.config/hypr/scripts/Hyprsunset.sh menu"
+alias flux-auto="bash $HOME/.config/hypr/scripts/Hyprsunset.sh auto"
+alias flux-off="bash $HOME/.config/hypr/scripts/Hyprsunset.sh off"
+
 # 🧹 Manutenção & Otimização do Arch (Safe Update & Auto-Cura)
 alias clean-system="bash $HOME/dotfiles/scripts/clean-system.sh"
 alias pacup="bash $HOME/dotfiles/scripts/safe-update.sh"
@@ -197,3 +205,7 @@ function qr
     end
 end
 
+
+
+# Added by Antigravity CLI installer
+set -gx PATH "/home/lan/.local/bin" $PATH
