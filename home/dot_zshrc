@@ -413,6 +413,12 @@ alias weather='$HOME/.config/hypr/UserScripts/WeatherLocation.sh'
 alias fix-pendrive='$HOME/dotfiles/scripts/fix-pendrive.sh'
 alias fix-ntfs='$HOME/dotfiles/scripts/fix-pendrive.sh'
 
+# 💿 Ventoy — Bootloader Multiboot Universal (MBR + UEFI + Secure Boot)
+alias ventoy-instalar='$HOME/dotfiles/scripts/ventoy-instalar.sh'   # instala Ventoy em pen-drive/SSD externo detectado automaticamente
+alias ventoy-atualizar='sudo ventoy -U'                              # atualiza Ventoy sem apagar as ISOs: ventoy-atualizar /dev/sdX
+alias ventoy-gui='sudo ventoyweb'                                    # interface web gráfica do Ventoy no navegador
+alias criar-boot='$HOME/dotfiles/scripts/ventoy-instalar.sh'        # alias intuitivo: criar-boot
+
 # ⚡ Cópia Rápida com Progresso Real e Percentual (Rsync Turbo)
 alias cpr='rsync -ahP --inplace --info=progress2'
 alias cp-fast='rsync -ahP --inplace --info=progress2'

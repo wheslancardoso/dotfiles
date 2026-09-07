@@ -307,6 +307,7 @@ ttf-opensans
 tumbler
 udiskie
 udisks2
+ventoy-bin
 ufw
 ufw-extras
 umockdev

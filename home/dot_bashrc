@@ -155,6 +155,12 @@ alias fix-pendrive='$HOME/dotfiles/scripts/fix-pendrive.sh'
 alias fix-ntfs='$HOME/dotfiles/scripts/fix-pendrive.sh'
 alias fix-suspend='$HOME/dotfiles/scripts/fix-suspend.sh'
 
+# 💿 Ventoy — Bootloader Multiboot Universal (MBR + UEFI + Secure Boot)
+alias ventoy-instalar='$HOME/dotfiles/scripts/ventoy-instalar.sh'
+alias ventoy-atualizar='sudo ventoy -U'
+alias ventoy-gui='sudo ventoyweb'
+alias criar-boot='$HOME/dotfiles/scripts/ventoy-instalar.sh'
+
 # ⌨️ Buscador Universal de Atalhos & Comandos
 alias keys='bash $HOME/dotfiles/scripts/cheat-keys.sh'
 alias ajuda='bash $HOME/dotfiles/scripts/cheat-keys.sh'
