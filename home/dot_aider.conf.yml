@@ -1,0 +1,22 @@
+# ==============================================================================
+# 🤖 AIDER CONFIG — AGENTE AUTÔNOMO LOCAL (OLLAMA + RTX 5060)
+# ==============================================================================
+
+# Modelo padrão de código e tool calling
+model: ollama/qwen2.5-coder:32b
+
+# Interface adaptada ao tema escuro do terminal
+dark-mode: true
+
+# Commits automáticos no Git após cada modificação validada
+auto-commits: true
+
+# Idioma das mensagens de commit
+commit-language: pt-br
+
+# Suprimir avisos não críticos de modelos locais
+show-model-warnings: false
+check-update: false
+
+# Editor visual quando necessário
+editor: nvim

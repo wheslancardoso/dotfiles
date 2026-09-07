@@ -199,6 +199,7 @@ setup_services() {
         "ananicy-cpp.service"
         "paccache.timer"
         "power-profiles-daemon.service"
+        "ollama.service"
     )
 
     for svc in "${sys_services[@]}"; do
@@ -434,6 +435,13 @@ apply_dotfiles() {
         sudo ln -sf /opt/abdownloadmanager/bin/ABDownloadManager /usr/local/bin/ab-download-manager 2>/dev/null || true
         /opt/abdownloadmanager/bin/ABDownloadManagerCli native-messaging install 2>/dev/null || true
     fi
+
+    # 🤖 Garantir que o Aider (Agente de IA Autônomo) esteja instalado
+    if command -v pipx >/dev/null 2>&1 && ! command -v aider >/dev/null 2>&1; then
+        info "Instalando Aider (Agente de IA Autônomo)..."
+        pipx install aider-chat 2>/dev/null || true
+    fi
+
 
     ok "Dotfiles e utilitários aplicados com sucesso via Chezmoi."
 }

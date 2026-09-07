@@ -419,6 +419,15 @@ alias ventoy-atualizar='sudo ventoy -U'                              # atualiza 
 alias ventoy-gui='sudo ventoyweb'                                    # interface web gráfica do Ventoy no navegador
 alias criar-boot='$HOME/dotfiles/scripts/ventoy-instalar.sh'        # alias intuitivo: criar-boot
 
+# 🤖 IA Autônoma Local (Ollama + Aider + RTX 5060)
+alias ia='$HOME/dotfiles/scripts/ia.sh'                              # Agente interativo ou autônomo: ia "instrução"
+alias auto-dot='$HOME/dotfiles/scripts/ia.sh'                        # Alias dedicado para gerenciar dotfiles
+alias ia-agent='$HOME/dotfiles/scripts/ia.sh'                        # Agente autônomo completo
+alias ia-stop='$HOME/dotfiles/scripts/ia.sh stop'                    # Descarrega modelos da VRAM imediatamente (pause)
+alias ia-status='$HOME/dotfiles/scripts/ia.sh status'                # Monitor de VRAM, GPU e modelos ativos
+alias ia-models='$HOME/dotfiles/scripts/ia.sh models'                # Lista modelos instalados no Ollama
+
+
 # ⚡ Cópia Rápida com Progresso Real e Percentual (Rsync Turbo)
 alias cpr='rsync -ahP --inplace --info=progress2'
 alias cp-fast='rsync -ahP --inplace --info=progress2'

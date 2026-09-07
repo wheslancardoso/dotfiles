@@ -161,6 +161,15 @@ alias ventoy-atualizar='sudo ventoy -U'
 alias ventoy-gui='sudo ventoyweb'
 alias criar-boot='$HOME/dotfiles/scripts/ventoy-instalar.sh'
 
+# 🤖 IA Autônoma Local (Ollama + Aider + RTX 5060)
+alias ia='$HOME/dotfiles/scripts/ia.sh'
+alias auto-dot='$HOME/dotfiles/scripts/ia.sh'
+alias ia-agent='$HOME/dotfiles/scripts/ia.sh'
+alias ia-stop='$HOME/dotfiles/scripts/ia.sh stop'
+alias ia-status='$HOME/dotfiles/scripts/ia.sh status'
+alias ia-models='$HOME/dotfiles/scripts/ia.sh models'
+
+
 # ⌨️ Buscador Universal de Atalhos & Comandos
 alias keys='bash $HOME/dotfiles/scripts/cheat-keys.sh'
 alias ajuda='bash $HOME/dotfiles/scripts/cheat-keys.sh'

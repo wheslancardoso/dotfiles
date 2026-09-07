@@ -100,7 +100,13 @@ fix-keys	Zsh / Shell	Reparar Chaves PGP do Arch	Recarrega o chaveiro oficial do 
 fix-audio	Zsh / Shell	Reiniciar Servidor PipeWire	Reinicia serviços de som PipeWire e WirePlumber em caso de estalos ou desconexões.
 fix-pendrive	Zsh / Shell	Reparar Pen-drive / HD Externo	Repara dirty-bit em partições NTFS e FAT32 de pen-drives sem formatar.
 fix-suspend	Zsh / Shell	Diagnóstico de Suspensão / Sleep	Identifica e bloqueia dispositivos USB que impedem o PC de suspender ou acordam sozinhos.
+criar-boot	Sistema	Instalador Ventoy Multiboot	Detecta pen-drives e SSDs USB e instala bootloader universal (MBR+UEFI+SecureBoot).
+ia "comando"	IA Local	Agente IA Autônomo de Sistema	Executa modificações em dotfiles/scripts, valida, commita e dá push no Git sozinho.
+ia	IA Local	Chat Interativo com Agente IA	Abre o terminal interativo de programação em par com Qwen 2.5 Coder 32B.
+ia-stop	IA Local	Pausar / Liberar VRAM Imediatamente	Descarrega todos os modelos da memória da GPU para devolver recursos a jogos/apps.
+ia-status	IA Local	Monitor da GPU e IA Local	Exibe uso detalhado de VRAM da RTX 5060, temperatura e modelo carregado.
 tp <arquivo>	Zsh / Shell	Enviar para Lixeira Segura	Move arquivo para ~/.local/share/Trash (trash-put) sem risco de deleção irreversível.
+
 tl	Zsh / Shell	Listar Lixeira	Exibe lista de todos os arquivos na lixeira com data e caminho de origem.
 trestore	Zsh / Shell	Restaurar Arquivo da Lixeira	Restaura arquivo deletado para o local original através de menu interativo com número.
 tempty	Zsh / Shell	Esvaziar Lixeira	Esvazia completamente a lixeira do sistema de forma segura.
