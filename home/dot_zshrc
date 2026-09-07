@@ -337,6 +337,12 @@ alias gdrive-sync='bash ~/dotfiles/scripts/gdrive-sync.sh'
 alias vincular-linux='bash $HOME/dotfiles/scripts/organizador/vincular_linux.sh'
 alias vincular_linux='bash $HOME/dotfiles/scripts/organizador/vincular_linux.sh'
 
+# ⚡ Rsync Turbo — Transferências Ultra-Seguras (Retomada após Queda de Energia/Cabo)
+alias rsync-turbo='rsync -ahP --inplace --info=progress2'
+alias cp-safe='rsync -ahP --inplace --info=progress2'
+alias mv-safe='rsync -ahP --inplace --remove-source-files --info=progress2'
+alias rsync-sync='rsync -auhP --inplace --info=progress2 --delete'
+
 # 📦 Descompactador Universal (x arquivo.zip/tar/7z/rar)
 alias x='bash $HOME/dotfiles/scripts/yazi-archive.sh extract-sub'
 

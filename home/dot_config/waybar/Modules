@@ -251,15 +251,14 @@
 },
 
 "keyboard-state": {
-	//"numlock": true,
+	"numlock": false,
 	"capslock": true,
 	"format": {
-		"numlock": "N {icon}",
-		"capslock": "󰪛 {icon}"
+		"capslock": "{icon}"
 	},
 	"format-icons": {
-		"locked": "",
-		"unlocked": ""
+		"locked": "󰪛 CAPS",
+		"unlocked": ""
 	}
 },
 

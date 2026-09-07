@@ -17,6 +17,7 @@ lazydocker-bin
 lazysql-bin
 ludusavi-bin
 localsend-bin
+masterpdfeditor
 mise-bin
 onlyoffice-bin
 protonup-qt

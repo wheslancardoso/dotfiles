@@ -403,3 +403,49 @@ tooltip label {
     color: @foreground;
     font-weight: 600;
 }
+
+/* ==============================================================================
+ * 🔒 LOGITECH K380s CAPSLOCK INDICATOR
+ * ============================================================================== */
+
+#custom-capslock.active {
+    background: #f38ba8;
+    color: #11111b;
+    font-weight: 900;
+    padding: 0 10px;
+    margin: 3px 4px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(243, 139, 168, 0.7);
+}
+
+#custom-capslock.inactive {
+    padding: 0;
+    margin: 0;
+}
+
+#keyboard-state {
+    padding: 0;
+    margin: 0;
+}
+
+#keyboard-state label {
+    padding: 0;
+    margin: 0;
+}
+
+#keyboard-state label.locked {
+    background: #f38ba8;
+    color: #11111b;
+    font-weight: 900;
+    padding: 0 10px;
+    margin: 3px 4px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(243, 139, 168, 0.7);
+}
+
+#keyboard-state label.unlocked {
+    padding: 0;
+    margin: 0;
+}
+
+

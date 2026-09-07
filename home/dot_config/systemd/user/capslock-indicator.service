@@ -1,0 +1,13 @@
+[Unit]
+Description=Logitech K380s Caps Lock OSD Indicator
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /home/lan/dotfiles/scripts/capslock-indicator.py
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=default.target

@@ -63,11 +63,11 @@ echo "🚀 Iniciando transferência via Rsync para: $DEST"
 echo "=========================================================="
 
 if [[ "$OP" == "m" || "$OP" == "M" ]]; then
-    rsync -ahP --remove-source-files --info=progress2 "${FILES[@]}" "$DEST/"
+    rsync -ahP --inplace --remove-source-files --info=progress2 "${FILES[@]}" "$DEST/"
     echo ""
     echo "✔ Mover concluído com integridade verificada!"
 else
-    rsync -ahP --info=progress2 "${FILES[@]}" "$DEST/"
+    rsync -ahP --inplace --info=progress2 "${FILES[@]}" "$DEST/"
     echo ""
     echo "✔ Cópia concluída com integridade verificada!"
 fi

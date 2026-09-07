@@ -51,6 +51,7 @@
 	"custom/separator#dot-line", 
 	"custom/nightlight",
 	"custom/separator#dot-line", 
+	"keyboard-state",
 	"group/status",
 	],
 }

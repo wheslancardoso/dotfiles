@@ -31,5 +31,13 @@
     "on-click": "$HOME/.config/hypr/scripts/MediaControl.sh --next",
     "tooltip": true,
     "tooltip-format": "⏭️ Próxima Faixa"
+},
+
+"custom/capslock": {
+    "format": "{}",
+    "return-type": "json",
+    "exec": "python3 /home/lan/dotfiles/scripts/capslock-indicator.py --waybar",
+    "tooltip": true,
+    "on-click": "hyprctl dispatch key Caps_Lock"
 }
 }

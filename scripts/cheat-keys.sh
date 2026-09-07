@@ -87,6 +87,12 @@ organizar --aging	Organizador	Alerta de Arquivos Estagnados	Identifica arquivos 
 organizar --purge-installers	Organizador	Expurgo de Instaladores Antigos	Remove executáveis e APKs com mais de 45 dias para liberar espaço em disco.
 organizar --dedup	Organizador	Deduplicação de Arquivos	Localiza duplicatas exatas via hash SHA-256 e envia para quarentena segura.
 gdrive-sync	Nuvem / Backup	Sincronização Seletiva 5TB	Sincroniza pilares de vida e trabalho (01..04) com o Google Drive via Rclone.
+rsync-turbo	Zsh / Shell	Transferência Ultra-Segura	Rsync acelerado com barra de progresso real e retomada de onde parou.
+cp-safe <origem> <dest>	Zsh / Shell	Cópia com Retomada	Substituto seguro para cópias grandes (imune a quedas de energia/cabo).
+mv-safe <origem> <dest>	Zsh / Shell	Mover com Verificação	Só apaga da origem após verificar 100% da gravação física no destino.
+pdf-edit <arquivo.pdf>	PDF / Docs	Editor Estilo Foxit Premium	Abre no Master PDF Editor (edição de texto, exclusão de objetos e marcas).
+remover-marca-dagua	PDF / Docs	Remover Marca d'Água / CPF	Remove carimbos e marcas d'água de apostilas e editais via CLI ou GUI.
+pdfarranger	PDF / Docs	Organizador e Recorte de PDF	Mescla, divide, reorganiza páginas e recorta margens de cabeçalho/rodapé.
 pacup	Zsh / Shell	Atualização Blindada do Arch Linux	Atualiza keyring PGP primeiro, sincroniza pacotes oficiais + AUR e limpa órfãos.
 cleanup	Zsh / Shell	Faxina Inteligente do Arch Linux	Remove caches antigos do pacman, arquivos temporários e logs antigos com segurança.
 fix-pacman	Zsh / Shell	Destravar Pacman (db.lck)	Remove travas residuais de instalações interrompidas do Pacman com checagem de processo.

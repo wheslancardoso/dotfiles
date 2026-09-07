@@ -217,6 +217,7 @@ setup_services() {
         "xdg-user-dirs.service"
         "organizador-watcher.service"
         "rclone-gdrive.service"
+        "capslock-indicator.service"
     )
 
     for svc in "${usr_services[@]}"; do

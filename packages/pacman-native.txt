@@ -223,6 +223,7 @@ pacman-contrib
 pamixer
 paru
 pavucontrol
+pdfarranger
 perl
 pipewire-alsa
 pipewire-pulse

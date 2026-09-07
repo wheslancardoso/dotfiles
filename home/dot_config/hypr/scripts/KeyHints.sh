@@ -187,6 +187,11 @@ GDK_BACKEND=$BACKEND yad \
 "fix-pacman" "Remover Lock db.lck Travado do Pacman" "fix-pacman.sh" \
 "fix-keys" "Reparar e Baixar Chaves PGP do Arch Linux" "fix-keys.sh" \
 "fix-suspend" "Blindagem de Suspensão e Despertar do Sistema" "fix-suspend.sh" \
+"rsync-turbo" "Transferência Ultra-Segura (Retoma de onde parou)" "rsync -ahP" \
+"cp-safe / mv-safe" "Cópia e Movimento Blindados contra Queda de Energia" "rsync" \
+"pdf-edit [doc.pdf]" "Editor Visual Estilo Foxit Premium (Texto e Objetos)" "masterpdfeditor5" \
+"remover-marca-dagua" "Remoção Cirúrgica de Marcas d'Água e CPFs" "remover-marca-dagua.py" \
+"pdfarranger" "Organizador Visual de Páginas e Recorte de Margens" "pdfarranger" \
 "m / mi / mu" "Gerenciador Rápido de Runtimes Mise (Node, Bun, Go)" "mise" \
 "virt-manager" "Gerenciador de Máquinas Virtuais KVM (Windows/Linux)" "virt-manager" \
 "psd status" "Verificar status do navegador rodando na RAM" "profile-sync-daemon" \
