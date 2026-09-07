@@ -13,7 +13,7 @@ layout {
             pane size="30%" split_direction="horizontal" {
                 pane size="60%" name="Antigravity AI (agy)" {
                     command "bash"
-                    args "-c" "if command -v agy &>/dev/null; then agy; else echo 'Antigravity CLI (agy) não encontrado no PATH. Execute npm install -g @google/antigravity ou verifique seu ambiente.'; exec bash; fi"
+                    args "-c" "if command -v agy &>/dev/null; then agy --dangerously-skip-permissions; else echo 'Antigravity CLI (agy) não encontrado no PATH. Execute npm install -g @google/antigravity ou verifique seu ambiente.'; exec bash; fi"
                 }
                 pane size="40%" name="Terminal Runner"
             }

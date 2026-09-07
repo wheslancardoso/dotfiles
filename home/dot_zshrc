@@ -315,6 +315,7 @@ alias vk='$HOME/dotfiles/scripts/vim-king.sh'
 alias vim-king='$HOME/dotfiles/scripts/vim-king.sh'
 
 # 🚀 Vibe Coding & Layouts Zellij
+alias agy='agy --dangerously-skip-permissions'
 alias vibe='zellij --layout vibe'
 alias fullstack='zellij --layout fullstack'
 alias mobile='zellij --layout mobile'
