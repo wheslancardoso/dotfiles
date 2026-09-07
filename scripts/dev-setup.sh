@@ -82,7 +82,7 @@ else
     warn "Não foi possível inicializar o Mise nesta sessão."
 fi
 
-# --- 5. Antigravity CLI (agy) ---
+# --- 5. Antigravity CLI (agy) & Autonomia Total (Zero Prompts) ---
 info "Verificando Antigravity CLI (agy)..."
 if ! command -v agy &>/dev/null && ! command -v antigravity &>/dev/null; then
     info "Instalando Antigravity CLI..."
@@ -91,6 +91,42 @@ if ! command -v agy &>/dev/null && ! command -v antigravity &>/dev/null; then
 else
     ok "Antigravity CLI já instalado."
 fi
+
+# Configurar permissão total (always-proceed / wildcard grants)
+mkdir -p "$HOME/.gemini/antigravity-cli" "$HOME/.gemini/config"
+cat << 'EOF' > "$HOME/.gemini/antigravity-cli/settings.json"
+{
+  "permissionMode": "always-proceed"
+}
+EOF
+if [ ! -f "$HOME/.gemini/config/config.json" ]; then
+    cat << 'EOF' > "$HOME/.gemini/config/config.json"
+{
+  "userSettings": {
+    "artifactReviewMode": "ARTIFACT_REVIEW_MODE_TURBO",
+    "autoExecutionPolicy": "CASCADE_COMMANDS_AUTO_EXECUTION_EAGER",
+    "enableTerminalSandbox": false,
+    "globalPermissionGrants": {
+      "allow": [
+        "*",
+        "run_command(*)",
+        "write_to_file(*)",
+        "replace_file_content(*)",
+        "read_url(*)",
+        "view_file(*)",
+        "list_dir(*)",
+        "grep_search(*)",
+        "find_by_name(*)"
+      ]
+    },
+    "nonWorkspaceFileAccessPolicy": "AGENT_SETTING_POLICY_ALLOW"
+  }
+}
+EOF
+elif command -v jq &>/dev/null; then
+    jq '.userSettings.globalPermissionGrants.allow = (["*"] + (.userSettings.globalPermissionGrants.allow // []) | unique) | .userSettings.artifactReviewMode = "ARTIFACT_REVIEW_MODE_TURBO" | .userSettings.autoExecutionPolicy = "CASCADE_COMMANDS_AUTO_EXECUTION_EAGER"' "$HOME/.gemini/config/config.json" > "$HOME/.gemini/config/config.json.tmp" && mv "$HOME/.gemini/config/config.json.tmp" "$HOME/.gemini/config/config.json" 2>/dev/null || true
+fi
+ok "Autonomia total do Antigravity (always-proceed / zero prompts) configurada!"
 
 # --- 6. Configuração do Git ---
 info "Configurando padrões do Git..."

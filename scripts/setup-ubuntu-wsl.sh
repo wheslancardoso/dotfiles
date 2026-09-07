@@ -291,7 +291,7 @@ setup_modern_cli() {
         ok "Tree-Sitter já instalado."
     fi
 
-    # 16. Antigravity CLI (agy)
+    # 16. Antigravity CLI (agy) & Autonomia Total (Zero Prompts)
     if ! command -v agy &>/dev/null && ! command -v antigravity &>/dev/null; then
         info "Instalando Antigravity CLI (agy)..."
         curl -fsSL https://antigravity.google/cli/install.sh | bash 2>/dev/null || warn "Falha ao instalar Antigravity CLI no WSL."
@@ -299,6 +299,42 @@ setup_modern_cli() {
     else
         ok "Antigravity CLI já instalado."
     fi
+
+    # Configurar permissão total (always-proceed / wildcard grants)
+    mkdir -p "${HOME}/.gemini/antigravity-cli" "${HOME}/.gemini/config"
+    cat << 'EOF' > "${HOME}/.gemini/antigravity-cli/settings.json"
+{
+  "permissionMode": "always-proceed"
+}
+EOF
+    if [ ! -f "${HOME}/.gemini/config/config.json" ]; then
+        cat << 'EOF' > "${HOME}/.gemini/config/config.json"
+{
+  "userSettings": {
+    "artifactReviewMode": "ARTIFACT_REVIEW_MODE_TURBO",
+    "autoExecutionPolicy": "CASCADE_COMMANDS_AUTO_EXECUTION_EAGER",
+    "enableTerminalSandbox": false,
+    "globalPermissionGrants": {
+      "allow": [
+        "*",
+        "run_command(*)",
+        "write_to_file(*)",
+        "replace_file_content(*)",
+        "read_url(*)",
+        "view_file(*)",
+        "list_dir(*)",
+        "grep_search(*)",
+        "find_by_name(*)"
+      ]
+    },
+    "nonWorkspaceFileAccessPolicy": "AGENT_SETTING_POLICY_ALLOW"
+  }
+}
+EOF
+    elif command -v jq &>/dev/null; then
+        jq '.userSettings.globalPermissionGrants.allow = (["*"] + (.userSettings.globalPermissionGrants.allow // []) | unique) | .userSettings.artifactReviewMode = "ARTIFACT_REVIEW_MODE_TURBO" | .userSettings.autoExecutionPolicy = "CASCADE_COMMANDS_AUTO_EXECUTION_EAGER"' "${HOME}/.gemini/config/config.json" > "${HOME}/.gemini/config/config.json.tmp" && mv "${HOME}/.gemini/config/config.json.tmp" "${HOME}/.gemini/config/config.json" 2>/dev/null || true
+    fi
+    ok "Autonomia total do Antigravity (always-proceed / zero prompts) configurada!"
 
     # Espelhar binários para /usr/local/bin para que fiquem visíveis universalmente
     if has_sudo; then
