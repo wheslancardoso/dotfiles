@@ -152,6 +152,7 @@ libopenraw
 libsecret
 libspng
 libva-nvidia-driver
+libvirt
 limine
 limine-mkinitcpio-hook
 limine-snapper-sync
@@ -242,6 +243,7 @@ python-pyquery
 python-requests
 qalculate-gtk
 qbittorrent
+qemu-desktop
 qrencode
 qt5-quickcontrols2
 qt5ct
@@ -312,6 +314,8 @@ usbutils
 v4l-utils
 valkey
 vim
+virt-manager
+virt-viewer
 vkd3d
 vlc-plugins-all
 vulkan-icd-loader

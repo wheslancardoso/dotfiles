@@ -20,6 +20,7 @@
 │
 ├── 🛠️ SETUP DE MÁQUINA, JOGOS & BACKUPS
 │   ├── [GUIA_MIGRACAO_TOTAL_WINDOWS_LINUX.md](./GUIA_MIGRACAO_TOTAL_WINDOWS_LINUX.md) # 🚀 Desapego do Windows, Equivalências e KVM Quickemu
+│   ├── [GUIA_VIRT_MANAGER_LABS.md](./GUIA_VIRT_MANAGER_LABS.md) # 🧪 Virt-Manager Labs: Substituição Total do VirtualBox (VHD, Sysprep, Macrium, Redes Isoladas)
 │   ├── [GUIA_SETUP_PC.md](./GUIA_SETUP_PC.md)                     # Guia automatizado pós-formatação (Linux & Windows)
 │   ├── [GUIA_SPOTIFY_HYPRLAND_POWERUSER.md](./GUIA_SPOTIFY_HYPRLAND_POWERUSER.md) # 🎵 Spotify Scratchpad, Spicetify e alta fidelidade
 │   ├── [GUIA_DROPDOWN_SCRATCHPADS_HYPRLAND.md](./GUIA_DROPDOWN_SCRATCHPADS_HYPRLAND.md) # ⚡ Blueprint de Dropdown Scratchpads (TecConcursos, WebApps & Quake)
@@ -65,6 +66,7 @@
 | Documento | Foco Principal | Quando Consultar? |
 |---|---|---|
 | [**GUIA_MIGRACAO_TOTAL_WINDOWS_LINUX.md**](./GUIA_MIGRACAO_TOTAL_WINDOWS_LINUX.md) | Desapego do Windows, equivalências de apps e KVM Quickemu | Ao planejar a migração definitiva para Linux ou rodar VM |
+| [**GUIA_VIRT_MANAGER_LABS.md**](./GUIA_VIRT_MANAGER_LABS.md) | Substituição do VirtualBox por Virt-Manager (VHD, Sysprep, Macrium, USB e Redes) | Para criar laboratórios avançados, imagens de Windows e manutenção Epson |
 | [**GUIA_SETUP_PC.md**](./GUIA_SETUP_PC.md) | Instalação em lote de softwares, debloat e particionamento | Ao formatar um computador novo (Linux ou Windows) |
 | [**GUIA_SPOTIFY_HYPRLAND_POWERUSER.md**](./GUIA_SPOTIFY_HYPRLAND_POWERUSER.md) | Dropdown scratchpad (`SUPER+M`), Spicetify, adblock e letras | Experiência de áudio estética e imersiva no Hyprland |
 | [**GUIA_GAMES_EMULADORES_LUDUSAVI.md**](./GUIA_GAMES_EMULADORES_LUDUSAVI.md) | Emuladores (Switch/PCSX2), pastas de jogos e backup de saves | Para configurar jogatina, mods e sincronização com Google Drive |

@@ -100,16 +100,17 @@ install_ad() {
 }
 
 install_kvm() {
-    info "Instalando KVM, QEMU e Virt-Manager com suporte a TPM 2.0 (Windows 11)..."
-    sudo pacman -S --needed --noconfirm qemu-desktop virt-manager libvirt dnsmasq iptables-nft edk2-ovmf swtpm
-    
-    # Habilitar serviços libvirt
-    sudo systemctl enable --now libvirtd.service 2>/dev/null || true
-    sudo usermod -aG libvirt "$USER" 2>/dev/null || true
-    sudo usermod -aG kvm "$USER" 2>/dev/null || true
-
-    ok "Virt-Manager e KVM instalados! Você pode rodar uma VM de Windows 11 com aceleração nativa."
-    warn "Nota: Faça logoff e login para que os grupos libvirt e kvm tenham efeito."
+    local script_dir
+    script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    if [ -f "$script_dir/setup-virt-manager.sh" ]; then
+        bash "$script_dir/setup-virt-manager.sh"
+    else
+        info "Instalando KVM, QEMU e Virt-Manager..."
+        sudo pacman -S --needed --noconfirm qemu-desktop virt-manager virt-viewer libvirt dnsmasq iptables-nft edk2-ovmf swtpm
+        sudo systemctl enable --now libvirtd.service 2>/dev/null || true
+        sudo usermod -aG libvirt,kvm "$USER" 2>/dev/null || true
+        ok "Virt-Manager e KVM instalados!"
+    fi
 }
 
 case "$OPTION" in
