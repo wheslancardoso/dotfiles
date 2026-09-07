@@ -1,4 +1,5 @@
 7zip
+ab-download-manager
 accountsservice
 adobe-source-code-pro-fonts
 alacritty

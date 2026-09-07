@@ -129,6 +129,7 @@ cs"'	LazyVim	Trocar Aspas Duplas por Simples	Altera o delimitador ao redor da pa
 ds"	LazyVim	Remover Aspas	Deleta as aspas ao redor da palavra atual.
 virt-manager	Sistema / KVM	Gerenciador de Máquinas Virtuais	Interface gráfica profissional para criar e controlar VMs KVM/QEMU com USB passthrough.
 psd status	Sistema / RAM	Status do Navegador na RAM	Exibe o status do Profile-Sync-Daemon rodando o perfil do navegador na memória RAM.
+abdownloadmanager	Internet	Acelerador de Downloads (IDM)	Gerenciador e acelerador multi-thread de downloads com extensão para navegadores.
 EOF
 }
 

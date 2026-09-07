@@ -187,6 +187,7 @@ GDK_BACKEND=$BACKEND yad \
 "m / mi / mu" "Gerenciador Rápido de Runtimes Mise (Node, Bun, Go)" "mise" \
 "virt-manager" "Gerenciador de Máquinas Virtuais KVM (Windows/Linux)" "virt-manager" \
 "psd status" "Verificar status do navegador rodando na RAM" "profile-sync-daemon" \
+"abdownloadmanager" "Acelerador e Gerenciador de Downloads (Estilo IDM)" "ab-download-manager" \
 "" "" "" \
 "── 🎨 ESTILO, WALLPAPER E WAYBAR ──" "── PERSONALIZAÇÃO VISUAL ──" "────────────────────────" \
 " W" "Menu de Seleção de Wallpapers (Sincroniza Wallust)" "Rofi Wallpapers" \

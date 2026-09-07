@@ -427,6 +427,10 @@ apply_dotfiles() {
     [ -f "$DOTFILES_DIR/scripts/media-download.sh" ] && ln -sf "$DOTFILES_DIR/scripts/media-download.sh" "$HOME/.local/bin/dl"
     [ -f "$DOTFILES_DIR/scripts/setup-spicetify.sh" ] && ln -sf "$DOTFILES_DIR/scripts/setup-spicetify.sh" "$HOME/.local/bin/fix-spicetify"
     [ -f "$DOTFILES_DIR/scripts/audio-preset-switch.sh" ] && ln -sf "$DOTFILES_DIR/scripts/audio-preset-switch.sh" "$HOME/.local/bin/audio-preset-switch"
+    if [ -f "/opt/abdownloadmanager/bin/ABDownloadManager" ]; then
+        sudo ln -sf /opt/abdownloadmanager/bin/ABDownloadManager /usr/local/bin/abdownloadmanager 2>/dev/null || true
+        sudo ln -sf /opt/abdownloadmanager/bin/ABDownloadManager /usr/local/bin/ab-download-manager 2>/dev/null || true
+    fi
 
     ok "Dotfiles e utilitários aplicados com sucesso via Chezmoi."
 }
