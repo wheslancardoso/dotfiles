@@ -73,6 +73,7 @@ GDK_BACKEND=$BACKEND yad \
 " ALT D" "Download de Vídeo ou Música do Clipboard" "media-download.sh" \
 " CTRL D" "Baixar Música que está Tocando Agora" "media-download.sh --now" \
 " ALT U" "Atualização Blindada do Sistema (safe-update)" "safe-update.sh" \
+" ALT O" "Organizador Master (Auditoria, Triagem, Limpeza)" "organizador-menu.sh" \
 " ALT N" "Menu de Temperaturas de Luz Noturna (Presets f.lux)" "Hyprsunset.sh menu" \
 " N" "Luz Noturna f.lux (Pausar / Retomar Cores Reais)" "Hyprsunset.sh toggle" \
 " W" "Mudar Wallpaper + Paleta de Cores do Sistema (Wallust)" "Rofi Wallpapers" \

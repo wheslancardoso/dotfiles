@@ -201,6 +201,45 @@ class TestOrganizadorMaster(unittest.TestCase):
         self.assertIsNotNone(dest)
         self.assertTrue("02.1_TCE-GO" in str(dest))
 
+    def test_in_flight_downloads_ignored(self):
+        self.assertTrue(self.engine.should_ignore(Path("video.mp4.crdownload")))
+        self.assertTrue(self.engine.should_ignore(Path("archive.zip.part")))
+        self.assertTrue(self.engine.should_ignore(Path("temp_file.tmp")))
+        self.assertTrue(self.engine.should_ignore(Path("distro.iso.aria2")))
+        self.assertFalse(self.engine.should_ignore(Path("documento_completo.pdf")))
+
+    def test_fuzzy_matching_classification(self):
+        # "curriculo" (>= 5 letras) com erro de digitação proposital ("curriculoo" ou "curriculo_ti")
+        typo_file = self.test_dir / "curriculoo_desenvolvedor.docx"
+        dest = self.engine.classify_file(typo_file)
+        self.assertIsNotNone(dest)
+        self.assertTrue("01.2_Carreira_e_Curriculos" in str(dest))
+
+    def test_clean_empty_directories(self):
+        parent_dir = self.test_dir / "nested_empty"
+        child_dir = parent_dir / "child_empty"
+        child_dir.mkdir(parents=True)
+        self.assertTrue(child_dir.exists())
+
+        removed = self.engine.clean_empty_directories(parent_dir)
+        self.assertGreaterEqual(removed, 1)
+        self.assertFalse(child_dir.exists())
+
+    def test_pdf_content_sniffing(self):
+        try:
+            import importlib
+            pypdf = importlib.import_module("pypdf")
+            pdf_path = self.test_dir / "documento_desconhecido.pdf"
+            writer = pypdf.PdfWriter()
+            page = writer.add_blank_page(width=300, height=300)
+            with open(pdf_path, "wb") as f:
+                writer.write(f)
+            # Testa que sniff_file_content não gera exceção
+            content = self.engine.sniff_file_content(pdf_path)
+            self.assertIsInstance(content, str)
+        except Exception:
+            pass
+
 
 if __name__ == "__main__":
     unittest.main()

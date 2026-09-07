@@ -70,7 +70,15 @@ alias scrcpy-dev='scrcpy --always-on-top --window-title "Mobile Emulator Device"
 
 # 🧹 Organizador Master & Taxonomia
 alias organizar='python3 ~/dotfiles/scripts/organizador/main.py'
-alias vincular_linux='bash $HOME/dotfiles/scripts/vincular_linux.sh'
+alias organizar-tudo='python3 ~/dotfiles/scripts/organizador/main.py --all'
+alias organizar-simular='python3 ~/dotfiles/scripts/organizador/main.py --all --dry-run'
+alias organizar-auditoria='python3 ~/dotfiles/scripts/organizador/main.py --doctor --dest /mnt/dados'
+alias organizar-limpar='python3 ~/dotfiles/scripts/organizador/main.py --clean-empty /mnt/dados'
+alias organizar-desfazer='python3 ~/dotfiles/scripts/organizador/main.py --undo'
+alias organizar-status='systemctl --user status organizador-watcher.service'
+alias organizar-logs='journalctl --user -u organizador-watcher.service -f'
+alias vincular-linux='bash $HOME/dotfiles/scripts/organizador/vincular_linux.sh'
+alias vincular_linux='bash $HOME/dotfiles/scripts/organizador/vincular_linux.sh'
 
 # 📦 Descompactador Universal (x arquivo.zip/tar/7z/rar)
 alias x='bash $HOME/dotfiles/scripts/yazi-archive.sh extract-sub'

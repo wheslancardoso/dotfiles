@@ -55,6 +55,7 @@ Exemplos de Uso:
     parser.add_argument("--media", action="store_true", help="Ativa modo inteligente de mídias/vídeos (detecta duplicatas com nomes traduzidos ou diferentes via FFprobe)")
     parser.add_argument("--quarantine-dir", type=str, metavar="DIR", help="Diretório de quarentena para onde enviar cópias de duplicatas do --dedup")
     parser.add_argument("--watch", type=str, metavar="DIR", help="Inicia daemon de monitoramento contínuo em tempo real no diretório")
+    parser.add_argument("--clean-empty", type=str, nargs="?", const="all", metavar="DIR", help="Localiza e remove diretórios vazios residuais no caminho informado ou nos diretórios gerenciados")
 
     return parser
 
@@ -185,6 +186,22 @@ def run_cli():
 
     if args.scaffold_only:
         log_success("Árvore de taxonomia criada com sucesso!")
+        return
+
+    # Comando: --clean-empty
+    if args.clean_empty:
+        target = args.clean_empty
+        if target == "all":
+            dirs_to_clean = [engine.downloads, engine.desktop, dest_root]
+            total_cleaned = 0
+            for d in dirs_to_clean:
+                if d.exists():
+                    total_cleaned += engine.clean_empty_directories(d, dry_run=args.dry_run)
+            log_success(f"Limpeza de pastas vazias concluída: {total_cleaned} pastas removidas.")
+        else:
+            p = Path(target).resolve()
+            cleaned = engine.clean_empty_directories(p, dry_run=args.dry_run)
+            log_success(f"Limpeza de pastas vazias concluída em {p.name}: {cleaned} pastas removidas.")
         return
 
     # Se nenhum argumento específico for passado, assume --all

@@ -430,6 +430,7 @@ apply_dotfiles() {
     if [ -f "/opt/abdownloadmanager/bin/ABDownloadManager" ]; then
         sudo ln -sf /opt/abdownloadmanager/bin/ABDownloadManager /usr/local/bin/abdownloadmanager 2>/dev/null || true
         sudo ln -sf /opt/abdownloadmanager/bin/ABDownloadManager /usr/local/bin/ab-download-manager 2>/dev/null || true
+        /opt/abdownloadmanager/bin/ABDownloadManagerCli native-messaging install 2>/dev/null || true
     fi
 
     ok "Dotfiles e utilitários aplicados com sucesso via Chezmoi."
@@ -472,6 +473,12 @@ setup_lowercase_dirs() {
             ln -sfn "$HOME/$lower" "$HOME/$upper"
         fi
     done
+
+    # Vinculação automática com /mnt/dados (Taxonomia Mestre)
+    if [ -d "/mnt/dados" ] && [ -f "$DOTFILES_DIR/scripts/organizador/vincular_linux.sh" ]; then
+        info "Detectada partição /mnt/dados. Vinculando Taxonomia Mestre à \$HOME..."
+        bash "$DOTFILES_DIR/scripts/organizador/vincular_linux.sh" --auto || true
+    fi
 
     ok "Diretórios Home em lowercase configurados."
 }

@@ -242,6 +242,7 @@ python-packaging
 python-pip
 python-pipx
 python-pyquery
+python-pypdf
 python-requests
 qalculate-gtk
 qbittorrent

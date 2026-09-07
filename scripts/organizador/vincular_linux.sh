@@ -42,9 +42,14 @@ fi
 
 echo -e "Onde está localizada a raiz da Taxonomia Mestre (00_ a 06_)?"
 echo -e "Diretório sugerido detectado: ${BOLD}${GREEN}${DEFAULT_DATA_DIR}${RESET}"
-read -rp "Pressione ENTER para confirmar ou digite o caminho personalizado: " USER_INPUT
-
-DATA_DIR="${USER_INPUT:-$DEFAULT_DATA_DIR}"
+if [[ -z "${DATA_DIR:-}" ]]; then
+    if [[ "${1:-}" == "-y" || "${1:-}" == "--auto" || ! -t 0 ]]; then
+        DATA_DIR="$DEFAULT_DATA_DIR"
+    else
+        read -rp "Pressione ENTER para confirmar ou digite o caminho personalizado: " USER_INPUT
+        DATA_DIR="${USER_INPUT:-$DEFAULT_DATA_DIR}"
+    fi
+fi
 
 if [[ ! -d "$DATA_DIR/01_Pessoal_e_Vida" ]]; then
     echo -e "${YELLOW}[INFO] Estrutura da Taxonomia Mestre não detectada em $DATA_DIR.${RESET}"
@@ -69,14 +74,18 @@ declare -A LINKS=(
     ["$HOME/Downloads"]="$DATA_DIR/00_Inbox_Triagem"
     ["$HOME/documents"]="$DATA_DIR/01_Pessoal_e_Vida"
     ["$HOME/Documentos"]="$DATA_DIR/01_Pessoal_e_Vida"
-    ["$HOME/carreira"]="$DATA_DIR/02_Profissional_e_Carreira"
-    ["$HOME/estudos"]="$DATA_DIR/03_Estudos_e_Conhecimento"
+    ["$HOME/estudos"]="$DATA_DIR/02_Estudos_e_Concursos"
+    ["$HOME/Estudos"]="$DATA_DIR/02_Estudos_e_Concursos"
+    ["$HOME/carreira"]="$DATA_DIR/03_Profissional_WFIX"
+    ["$HOME/wfix"]="$DATA_DIR/03_Profissional_WFIX"
     ["$HOME/projects"]="$DATA_DIR/04_Desenvolvimento_e_Codigo"
     ["$HOME/Projetos"]="$DATA_DIR/04_Desenvolvimento_e_Codigo"
-    ["$HOME/pictures"]="$DATA_DIR/05_Midias_e_Criatividade"
-    ["$HOME/Imagens"]="$DATA_DIR/05_Midias_e_Criatividade"
-    ["$HOME/videos"]="$DATA_DIR/05_Midias_e_Criatividade/05.3_Videos_e_Gravacoes"
-    ["$HOME/music"]="$DATA_DIR/05_Midias_e_Criatividade/05.2_Audios_e_Midias"
+    ["$HOME/pictures"]="$DATA_DIR/05_Design_Midia_e_Criacao"
+    ["$HOME/Imagens"]="$DATA_DIR/05_Design_Midia_e_Criacao"
+    ["$HOME/videos"]="$DATA_DIR/05_Design_Midia_e_Criacao/05.4_Filmes_e_Series"
+    ["$HOME/Vídeos"]="$DATA_DIR/05_Design_Midia_e_Criacao/05.4_Filmes_e_Series"
+    ["$HOME/music"]="$DATA_DIR/05_Design_Midia_e_Criacao/05.2_Audios_e_Midias"
+    ["$HOME/Música"]="$DATA_DIR/05_Design_Midia_e_Criacao/05.2_Audios_e_Midias"
     ["$HOME/backups"]="$DATA_DIR/06_Backups_ISOs_e_Sistemas"
 )
 
@@ -110,9 +119,9 @@ done
 if command -v xdg-user-dirs-update &>/dev/null; then
     xdg-user-dirs-update --set DOWNLOAD "$DATA_DIR/00_Inbox_Triagem" 2>/dev/null || true
     xdg-user-dirs-update --set DOCUMENTS "$DATA_DIR/01_Pessoal_e_Vida" 2>/dev/null || true
-    xdg-user-dirs-update --set PICTURES "$DATA_DIR/05_Midias_e_Criatividade" 2>/dev/null || true
-    xdg-user-dirs-update --set VIDEOS "$DATA_DIR/05_Midias_e_Criatividade/05.3_Videos_e_Gravacoes" 2>/dev/null || true
-    xdg-user-dirs-update --set MUSIC "$DATA_DIR/05_Midias_e_Criatividade/05.2_Audios_e_Midias" 2>/dev/null || true
+    xdg-user-dirs-update --set PICTURES "$DATA_DIR/05_Design_Midia_e_Criacao" 2>/dev/null || true
+    xdg-user-dirs-update --set VIDEOS "$DATA_DIR/05_Design_Midia_e_Criacao/05.4_Filmes_e_Series" 2>/dev/null || true
+    xdg-user-dirs-update --set MUSIC "$DATA_DIR/05_Design_Midia_e_Criacao/05.2_Audios_e_Midias" 2>/dev/null || true
     echo -e "\n${GREEN}[SUCESSO] XDG User Dirs atualizados para apontar nativamente para a Taxonomia Mestre!${RESET}"
 fi
 
@@ -121,5 +130,7 @@ echo -e "${BOLD}${GREEN}   SISTEMA VINCULADO COM SUCESSO!                     ${
 echo -e "${BOLD}${GREEN}======================================================${RESET}"
 echo -e "Agora, qualquer download do navegador cai em: ${CYAN}00_Inbox_Triagem${RESET}"
 echo -e "Seus documentos pessoais abrem direto em:     ${CYAN}01_Pessoal_e_Vida${RESET}"
+echo -e "Seus estudos e concursos abrem em:           ${CYAN}02_Estudos_e_Concursos${RESET}"
+echo -e "Sua carreira e WFIX abrem em:                 ${CYAN}03_Profissional_WFIX${RESET}"
 echo -e "Seus projetos de código abrem em:            ${CYAN}04_Desenvolvimento_e_Codigo${RESET}"
-echo -e "Suas mídias e fotos abrem em:                ${CYAN}05_Midias_e_Criatividade${RESET}\n"
+echo -e "Suas mídias e fotos abrem em:                ${CYAN}05_Design_Midia_e_Criacao${RESET}\n"
