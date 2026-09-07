@@ -15,18 +15,27 @@ export PATH="$HOME/.local/bin:$PATH"
 # ------------------------------------------------------------------------------
 if [ -d "/mnt/dados/05_Midias_Design_e_Criacao" ]; then
     DEFAULT_DEST_VIDEO="/mnt/dados/05_Midias_Design_e_Criacao/Videos/Downloads"
+    DEFAULT_DEST_SERIES="/mnt/dados/05_Midias_Design_e_Criacao/Videos/Séries"
+    DEFAULT_DEST_MOVIES="/mnt/dados/05_Midias_Design_e_Criacao/Videos/Filmes"
     DEFAULT_DEST_AUDIO="/mnt/dados/05_Midias_Design_e_Criacao/Musicas_e_Audios/Downloads"
     DEFAULT_DEST_IMAGE="/mnt/dados/05_Midias_Design_e_Criacao/Imagens/Downloads"
+    DEFAULT_DEST_TRANSCRIPT="/mnt/dados/05_Midias_Design_e_Criacao/Videos/Transcrições"
     DEFAULT_DEST_PRIVATE="/mnt/dados/01_Pessoal_e_Vida/.privado"
 elif [ -d "$HOME/drive-organizacao/05_Design_Midia_e_Criacao" ]; then
     DEFAULT_DEST_VIDEO="$HOME/drive-organizacao/05_Design_Midia_e_Criacao/05.4_Filmes_e_Series"
+    DEFAULT_DEST_SERIES="$HOME/drive-organizacao/05_Design_Midia_e_Criacao/05.4_Filmes_e_Series/Séries"
+    DEFAULT_DEST_MOVIES="$HOME/drive-organizacao/05_Design_Midia_e_Criacao/05.4_Filmes_e_Series/Filmes"
     DEFAULT_DEST_AUDIO="$HOME/drive-organizacao/05_Design_Midia_e_Criacao/05.2_Audios_e_Midias"
     DEFAULT_DEST_IMAGE="$HOME/drive-organizacao/05_Design_Midia_e_Criacao/05.1_Artes_e_Wallpapers"
+    DEFAULT_DEST_TRANSCRIPT="$HOME/drive-organizacao/05_Design_Midia_e_Criacao/05.4_Filmes_e_Series/Transcrições"
     DEFAULT_DEST_PRIVATE="$HOME/drive-organizacao/01_Pessoal_e_Vida/.privado"
 else
     DEFAULT_DEST_VIDEO="$HOME/Videos/Downloads"
+    DEFAULT_DEST_SERIES="$HOME/Videos/Séries"
+    DEFAULT_DEST_MOVIES="$HOME/Videos/Filmes"
     DEFAULT_DEST_AUDIO="$HOME/Music/Downloads"
     DEFAULT_DEST_IMAGE="$HOME/Pictures/Downloads"
+    DEFAULT_DEST_TRANSCRIPT="$HOME/Videos/Transcrições"
     DEFAULT_DEST_PRIVATE="$HOME/.privado"
 fi
 
@@ -35,6 +44,7 @@ HISTORY_FILE="$STATE_DIR/history.log"
 mkdir -p "$STATE_DIR"
 
 CUSTOM_DIR=""
+CUSTOM_NAME=""
 CUSTOM_CLIP=""
 COMPRESS_TARGET=""
 MAKE_GIF=false
@@ -44,9 +54,12 @@ STUDY_SPEED=""
 COOKIES_BROWSER=""
 SUB_ONLY=false
 THUMB_ONLY=false
+WITH_SUBS=false
 SKIP_SPONSORS=false
 FORCE_PRIVATE=false
 BATCH_FILE=""
+SEASON_ARG=""
+EP_ARG=""
 
 
 # ------------------------------------------------------------------------------
@@ -153,6 +166,14 @@ is_direct_download_file() {
     return 1
 }
 
+is_pomfy_domain() {
+    local url="$1"
+    if [[ "$url" =~ (pomfy\.online|pomfy\.stream) ]]; then
+        return 0
+    fi
+    return 1
+}
+
 download_torrent_or_magnet() {
     local url="$1"
     local dest_dir="${2:-$DEFAULT_DEST_VIDEO}"
@@ -218,22 +239,32 @@ download_batch() {
         exit 0
     fi
 
-    echo -e "${MAUVE}📦 Iniciando Download em Lote (Batch Mode):${NC} ${BOLD}$total mídias na fila${NC}"
-    echo -e "${BLUE}📂 Pasta Base de Destino:${NC} $dest\n"
+    echo -e "${MAUVE}${BOLD}╭──────────────────────────────────────────────────────────────╮${NC}"
+    echo -e "${MAUVE}${BOLD}│       📦 DOWNLOAD EM LOTE APEX V2 (BATCH MODE ATIVADO)       │${NC}"
+    echo -e "${MAUVE}${BOLD}╰──────────────────────────────────────────────────────────────╯${NC}"
+    echo -e "  ${BOLD}Fila de Mídias :${NC} ${BOLD}$total links${NC}"
+    echo -e "  ${BLUE}Pasta Destino  :${NC} $dest"
+    echo -e "  ${SUBTEXT}Multi-thread 16 conexões ativas + detecção automática de duplicados.${NC}\n"
 
     local current=0
-    local success=0
+    local success_new=0
+    local already_downloaded=0
     local failed=0
+    local failed_urls=()
 
     for u in "${urls[@]}"; do
         current=$((current + 1))
-        echo -e "${PEACH}[$current/$total] Processando:${NC} $u"
+        echo -e "${PEACH}[$current/$total] ⬇️ Processando:${NC} $u"
         local item_dest="$dest"
         if is_sensitive_domain "$u" || [ "$FORCE_PRIVATE" = true ]; then
             item_dest="$DEFAULT_DEST_PRIVATE/Videos_e_Cenas"
             [ "$mode" == "audio" ] && item_dest="$DEFAULT_DEST_PRIVATE/Audios"
             mkdir -p "$item_dest"
         fi
+
+        local archive_file="$item_dest/.download_archive.txt"
+        local lines_before=0
+        [ -f "$archive_file" ] && lines_before=$(wc -l < "$archive_file" 2>/dev/null || echo 0)
 
         local res=0
         if is_magnet_or_torrent "$u"; then
@@ -245,32 +276,55 @@ download_batch() {
         elif is_gallery_domain "$u"; then
             download_gallery "$u" "$item_dest" || res=1
         elif [ "$mode" == "audio" ]; then
-            download_audio "$u" "$item_dest" || res=1
+            download_audio "$u" "$item_dest" "" true || res=1
         else
-            download_video "$u" "best" "$item_dest" || res=1
+            download_video "$u" "best" "$item_dest" "" true || res=1
         fi
 
         if [ "$res" -eq 0 ]; then
-            success=$((success + 1))
+            local lines_after=0
+            [ -f "$archive_file" ] && lines_after=$(wc -l < "$archive_file" 2>/dev/null || echo 0)
+            if [ "$lines_after" -gt "$lines_before" ]; then
+                success_new=$((success_new + 1))
+                echo -e "   ${GREEN}✔ [SUCESSO] Baixado e convertido para MP4 com sucesso!${NC}"
+            else
+                already_downloaded=$((already_downloaded + 1))
+                echo -e "   ${TEAL}⏭️  [JÁ EXISTE] Já registrado no histórico local (arquivo preservado).${NC}"
+            fi
         else
             failed=$((failed + 1))
-            echo -e "${RED}⚠ Falha ou recurso indisponível no link:${NC} $u (continuando lote...)"
+            failed_urls+=("$u")
+            echo -e "   ${RED}❌ [FALHA] Link indisponível, excluído ou protegido (404/410).${NC}"
         fi
         echo ""
     done
 
+    echo -e "${MAUVE}${BOLD}╭──────────────────────────────────────────────────────────────╮${NC}"
+    echo -e "${MAUVE}${BOLD}│             📊 RESUMO DO PROCESSAMENTO EM LOTE               │${NC}"
+    echo -e "${MAUVE}${BOLD}╰──────────────────────────────────────────────────────────────╯${NC}"
+    echo -e "  ${BOLD}Total de URLs processadas :${NC} $total"
+    echo -e "  ${GREEN}✅ Baixados com sucesso   :${NC} ${BOLD}$success_new${NC}"
+    echo -e "  ${TEAL}⏭️  Já existiam (pulados)  :${NC} ${BOLD}$already_downloaded${NC}"
+    echo -e "  ${RED}❌ Links indisponíveis    :${NC} ${BOLD}$failed${NC}"
+    echo -e "${MAUVE}────────────────────────────────────────────────────────────────${NC}"
 
-    echo -e "${GREEN}🎉 Lote concluído!${NC} $total processados ($success com sucesso, $failed falhas)."
-    notify_completion "Download em Lote Concluído ($total itens)" "$dest"
+    if [ "$failed" -gt 0 ]; then
+        local fail_file="${dest}/falhas_download_$(date +%Y%m%d_%H%M%S).txt"
+        printf "%s\n" "${failed_urls[@]}" > "$fail_file"
+        echo -e "${YELLOW}📝 Lista dos links que falharam salva em:${NC} $fail_file\n"
+    fi
+
+    notify_completion "Lote Concluído: $success_new novos, $already_downloaded pulados, $failed falhas" "$dest"
 }
 
 
 
 
 get_downloader_args() {
-    if command -v aria2c >/dev/null 2>&1; then
-        echo "--downloader aria2c --downloader-args 'aria2c:-c -j 16 -x 16 -s 16 -k 1M --quiet=true'"
-    fi
+    # Motor multi-thread nativo concorrente do yt-dlp (-N 16):
+    # Muito mais veloz e estável que aria2c em streams HLS/DASH/m3u8,
+    # preserva cookies de sessão do navegador, evita falsos erros de 'Range' e não sofre fallback.
+    echo "-N 16 --concurrent-fragments 16 --buffer-size 16M --http-chunk-size 10M --retries 10 --fragment-retries 10 --file-access-retries 5 --retry-sleep exp=1:5 --no-warnings"
 }
 
 notify_completion() {
@@ -400,56 +454,82 @@ download_video() {
     local quality="${2:-best}"
     local dest="$3"
     local clip_range="${4:-$CUSTOM_CLIP}"
+    local is_batch="${5:-false}"
     local dl_args
     dl_args=$(get_downloader_args)
 
     mkdir -p "$dest"
     cd "$dest"
 
-    local format_str="bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b"
+    local format_str="bv*+ba/b"
     if [ "$quality" == "720" ]; then
-        format_str="bv*[height<=720][ext=mp4]+ba[ext=m4a]/b[height<=720] / bv*[height<=720]+ba/b"
+        format_str="bv*[height<=720]+ba/b[height<=720]"
     elif [ "$quality" == "1080" ]; then
-        format_str="bv*[height<=1080][ext=mp4]+ba[ext=m4a]/b[height<=1080] / bv*[height<=1080]+ba/b"
+        format_str="bv*[height>=1080]+ba/bv*[height<=1080]+ba/b"
     fi
 
     local extra_flags=()
     [ -n "$clip_range" ] && extra_flags+=(--download-sections "*${clip_range}" --force-keyframes-at-cuts)
     [ "$SPLIT_CHAPTERS" = true ] && extra_flags+=(--split-chapters -o "chapter:%(title)s/%(section_number)02d - %(section_title)s.%(ext)s")
-    [ "$SYNC_PLAYLIST" = true ] && extra_flags+=(--download-archive "$dest/.download_archive.txt")
+    if [ "$SYNC_PLAYLIST" = true ] || [ "$FORCE_PRIVATE" = true ] || [ "$is_batch" = true ]; then
+        extra_flags+=(--download-archive "$dest/.download_archive.txt")
+    fi
     [ -n "$COOKIES_BROWSER" ] && extra_flags+=(--cookies-from-browser "$COOKIES_BROWSER")
     [ "$SKIP_SPONSORS" = true ] && extra_flags+=(--sponsorblock-remove "sponsor,selfpromo,interaction,intro,outro")
     [ "$SUB_ONLY" = true ] && extra_flags+=(--skip-download --write-auto-subs --sub-lang 'pt,en' --convert-subs srt)
     [ "$THUMB_ONLY" = true ] && extra_flags+=(--skip-download --write-thumbnail --convert-thumbnails png)
+    [ "$WITH_SUBS" = true ] && extra_flags+=(--write-auto-subs --sub-lang 'pt,en' --embed-subs)
 
     local output_tpl="%(title)s [%(id)s].%(ext)s"
-    if [[ "$url" =~ list= ]] && [ "$SPLIT_CHAPTERS" = false ]; then
+    if [ -n "$CUSTOM_NAME" ]; then
+        local base_custom="${CUSTOM_NAME%.*}"
+        output_tpl="${base_custom}.%(ext)s"
+    elif [[ "$url" =~ list= ]] && [ "$SPLIT_CHAPTERS" = false ]; then
         output_tpl="%(playlist_title,playlist)s/%(playlist_index)02d - %(title)s.%(ext)s"
     fi
 
-    echo -e "${BLUE}⬇️ Baixando vídeo com aceleração multi-thread...${NC}"
+    [ "$is_batch" = false ] && echo -e "${BLUE}⬇️ Baixando vídeo com aceleração nativa multi-thread (-N 16)...${NC}"
+    local dl_status=0
     eval yt-dlp \
         $dl_args \
         -f "'$format_str'" \
         --merge-output-format mp4 \
+        --remux-video mp4 \
         --embed-thumbnail \
         --embed-metadata \
         --embed-chapters \
-        --write-auto-subs \
-        --sub-lang "'pt,en'" \
-        --embed-subs \
         -o "'$output_tpl'" \
         --windows-filenames \
         --no-mtime \
         "${extra_flags[@]}" \
         "'$url'" || dl_status=$?
 
+    # Fallback automático para Brave cookies se falhar e não tinha browser configurado
+    if [ "$dl_status" -ne 0 ] && [ -z "$COOKIES_BROWSER" ]; then
+        echo -e "${YELLOW}⚠️ Download anônimo falhou ou requer autenticação. Tentando novamente com cookies do Brave...${NC}"
+        dl_status=0
+        eval yt-dlp \
+            $dl_args \
+            --cookies-from-browser brave \
+            -f "'$format_str'" \
+            --merge-output-format mp4 \
+            --remux-video mp4 \
+            --embed-thumbnail \
+            --embed-metadata \
+            --embed-chapters \
+            -o "'$output_tpl'" \
+            --windows-filenames \
+            --no-mtime \
+            "${extra_flags[@]}" \
+            "'$url'" || dl_status=$?
+    fi
+
     if [ "$dl_status" -ne 0 ]; then
         return 1
     fi
 
     local latest_file
-    latest_file=$(find "$dest" -maxdepth 2 -type f -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -1 | cut -f2- -d" ")
+    latest_file=$(find "$dest" -maxdepth 2 -type f \( -name "*.mp4" -o -name "*.mkv" -o -name "*.webm" -o -name "*.gif" \) -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -1 | cut -f2- -d" ")
     local final_target="$latest_file"
 
     if [ "$MAKE_GIF" = true ] && [ -n "$latest_file" ] && [ -f "$latest_file" ]; then
@@ -465,9 +545,39 @@ download_video() {
     fi
 
     local title
-    title=$(yt-dlp --get-title "$url" 2>/dev/null | head -n1 || echo "Vídeo Concluído")
+    if [ -n "$CUSTOM_NAME" ]; then
+        title="${CUSTOM_NAME%.*}"
+    elif [ -n "$final_target" ] && [ -f "$final_target" ]; then
+        title=$(basename "$final_target")
+        title="${title%.*}"
+    else
+        title="Vídeo Concluído"
+    fi
     log_history "$title" "$url" "$final_target" "VIDEO"
-    notify_completion "$title" "$dest" "$final_target"
+
+    local f_size=""
+    local f_res=""
+    if [ -n "$final_target" ] && [ -f "$final_target" ]; then
+        f_size=$(du -h "$final_target" | cut -f1 2>/dev/null || echo "")
+        if command -v ffprobe >/dev/null 2>&1; then
+            f_res=$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 "$final_target" 2>/dev/null || true)
+            [ -n "$f_res" ] && f_res="${f_res}p"
+        fi
+    fi
+
+    if [ "$is_batch" = false ]; then
+        echo -e "\n${GREEN}${BOLD}┌──────────────────────────────────────────────────────────────┐${NC}"
+        echo -e "${GREEN}${BOLD}│  ✅ DOWNLOAD CONCLUÍDO COM SUCESSO!                          │${NC}"
+        echo -e "${GREEN}${BOLD}└──────────────────────────────────────────────────────────────┘${NC}"
+        echo -e "  ${BLUE}📁 Arquivo :${NC} ${BOLD}$(basename "$final_target")${NC}"
+        echo -e "  ${BLUE}📂 Destino :${NC} ${dest}"
+        local details_str=""
+        [ -n "$f_res" ] && details_str="${f_res}"
+        [ -n "$f_size" ] && details_str="${details_str} | ${f_size}"
+        [ -n "$details_str" ] && echo -e "  ${BLUE}📊 Detalhes:${NC} ${details_str}"
+        echo ""
+        notify_completion "$title" "$dest" "$final_target"
+    fi
 }
 
 # ------------------------------------------------------------------------------
@@ -477,6 +587,7 @@ download_audio() {
     local url="$1"
     local dest="$2"
     local clip_range="${3:-$CUSTOM_CLIP}"
+    local is_batch="${4:-false}"
     local dl_args
     dl_args=$(get_downloader_args)
 
@@ -486,16 +597,22 @@ download_audio() {
     local extra_flags=()
     [ -n "$clip_range" ] && extra_flags+=(--download-sections "*${clip_range}" --force-keyframes-at-cuts)
     [ "$SPLIT_CHAPTERS" = true ] && extra_flags+=(--split-chapters -o "chapter:%(title)s/%(section_number)02d - %(section_title)s.%(ext)s")
-    [ "$SYNC_PLAYLIST" = true ] && extra_flags+=(--download-archive "$dest/.download_archive.txt")
+    if [ "$SYNC_PLAYLIST" = true ] || [ "$FORCE_PRIVATE" = true ] || [ "$is_batch" = true ]; then
+        extra_flags+=(--download-archive "$dest/.download_archive.txt")
+    fi
     [ -n "$COOKIES_BROWSER" ] && extra_flags+=(--cookies-from-browser "$COOKIES_BROWSER")
     [ "$SKIP_SPONSORS" = true ] && extra_flags+=(--sponsorblock-remove "sponsor,selfpromo,interaction,intro,outro")
 
     local output_tpl="%(title)s [%(id)s].%(ext)s"
-    if [[ "$url" =~ list= ]] && [ "$SPLIT_CHAPTERS" = false ]; then
+    if [ -n "$CUSTOM_NAME" ]; then
+        local base_custom="${CUSTOM_NAME%.*}"
+        output_tpl="${base_custom}.%(ext)s"
+    elif [[ "$url" =~ list= ]] && [ "$SPLIT_CHAPTERS" = false ]; then
         output_tpl="%(playlist_title,playlist)s/%(playlist_index)02d - %(title)s.%(ext)s"
     fi
 
-    echo -e "${BLUE}⬇️ Extraindo áudio de alta fidelidade (MP3 320kbps)...${NC}"
+    [ "$is_batch" = false ] && echo -e "${BLUE}⬇️ Extraindo áudio de alta fidelidade (MP3 320kbps)...${NC}"
+    local dl_status=0
     eval yt-dlp \
         $dl_args \
         -x \
@@ -508,6 +625,25 @@ download_audio() {
         --no-mtime \
         "${extra_flags[@]}" \
         "'$url'" || dl_status=$?
+
+    # Fallback automático para Brave cookies se falhar
+    if [ "$dl_status" -ne 0 ] && [ -z "$COOKIES_BROWSER" ]; then
+        echo -e "${YELLOW}⚠️ Download anônimo falhou ou requer autenticação. Tentando novamente com cookies do Brave...${NC}"
+        dl_status=0
+        eval yt-dlp \
+            $dl_args \
+            --cookies-from-browser brave \
+            -x \
+            --audio-format mp3 \
+            --audio-quality 0 \
+            --embed-thumbnail \
+            --add-metadata \
+            -o "'$output_tpl'" \
+            --windows-filenames \
+            --no-mtime \
+            "${extra_flags[@]}" \
+            "'$url'" || dl_status=$?
+    fi
 
     if [ "$dl_status" -ne 0 ]; then
         return 1
@@ -524,9 +660,28 @@ download_audio() {
     fi
 
     local title
-    title=$(yt-dlp --get-title "$url" 2>/dev/null | head -n1 || echo "Áudio Concluído")
+    if [ -n "$CUSTOM_NAME" ]; then
+        title="${CUSTOM_NAME%.*}"
+    elif [ -n "$final_target" ] && [ -f "$final_target" ]; then
+        title=$(basename "$final_target")
+        title="${title%.*}"
+    else
+        title="Áudio Concluído"
+    fi
     log_history "$title" "$url" "$final_target" "AUDIO"
-    notify_completion "$title" "$dest" "$final_target"
+
+    if [ "$is_batch" = false ]; then
+        local f_size=""
+        [ -n "$final_target" ] && [ -f "$final_target" ] && f_size=$(du -h "$final_target" | cut -f1 2>/dev/null || echo "")
+        echo -e "\n${GREEN}${BOLD}┌──────────────────────────────────────────────────────────────┐${NC}"
+        echo -e "${GREEN}${BOLD}│  ✅ ÁUDIO MP3 EXTRAÍDO COM SUCESSO!                          │${NC}"
+        echo -e "${GREEN}${BOLD}└──────────────────────────────────────────────────────────────┘${NC}"
+        echo -e "  ${BLUE}🎵 Arquivo :${NC} ${BOLD}$(basename "$final_target")${NC}"
+        echo -e "  ${BLUE}📂 Destino :${NC} ${dest}"
+        [ -n "$f_size" ] && echo -e "  ${BLUE}📊 Tamanho :${NC} ${f_size}"
+        echo ""
+        notify_completion "$title" "$dest" "$final_target"
+    fi
 }
 
 # ------------------------------------------------------------------------------
@@ -542,7 +697,10 @@ download_spotify() {
     cd "$dest"
 
     local output_tpl="{artist} - {title}.{output-ext}"
-    if [[ "$url" =~ /album/ ]]; then
+    if [ -n "$CUSTOM_NAME" ]; then
+        local base_custom="${CUSTOM_NAME%.*}"
+        output_tpl="${base_custom}.{output-ext}"
+    elif [[ "$url" =~ /album/ ]]; then
         output_tpl="{album}/{track-number} - {artist} - {title}.{output-ext}"
     elif [[ "$url" =~ /playlist/ ]]; then
         output_tpl="{playlist}/{track-number} - {artist} - {title}.{output-ext}"
@@ -608,35 +766,61 @@ download_gallery() {
 # ------------------------------------------------------------------------------
 download_transcript() {
     local url="$1"
-    local dest="$2"
-    local dl_args
-    dl_args=$(get_downloader_args)
+    local dest="${2:-$DEFAULT_DEST_TRANSCRIPT}"
+    [ -z "$dest" ] && dest="/mnt/dados/05_Midias_Design_e_Criacao/Videos/Transcrições"
+    [ ! -d "/mnt/dados" ] && dest="$HOME/Videos/Transcrições"
 
     mkdir -p "$dest"
-    cd "$dest"
 
-    echo -e "${MAUVE}🤖 Conectando e obtendo transcrição para IA...${NC}"
+    echo -e "${MAUVE}🤖 Conectando e obtendo transcrição limpa para IA...${NC}"
     local title
     title=$(yt-dlp --get-title "$url" 2>/dev/null | head -n1 || echo "Transcricao")
     local uploader
     uploader=$(yt-dlp --print "%(uploader,channel)s" "$url" 2>/dev/null | head -n1 || echo "Canal")
 
-    local tmp_prefix="temp_sub_$$"
-    eval yt-dlp \
-        $dl_args \
+    local tmp_dir
+    tmp_dir=$(mktemp -d "/tmp/dl_trans_XXXXXX")
+    local out_tpl="${tmp_dir}/sub.%(ext)s"
+
+    # 1. Tentativa anônima com sub-formatos abrangentes
+    yt-dlp \
         --skip-download \
         --write-auto-subs \
         --write-subs \
-        --sub-lang "'pt,pt-BR,pt-pt,en,en-US'" \
-        --convert-subs srt \
-        -o "'${tmp_prefix}.%(ext)s'" \
-        --no-mtime \
-        "'$url'" >/dev/null 2>&1 || true
+        --sub-lang "pt-orig,pt,pt-BR,pt-PT,en-orig,en,en-US,es" \
+        --sub-format "vtt/srt/best" \
+        -o "$out_tpl" \
+        --no-warnings \
+        --ignore-errors \
+        "$url" >/dev/null 2>&1 || true
 
-    local srt_file
-    srt_file=$(find . -maxdepth 1 -name "${tmp_prefix}*.srt" 2>/dev/null | head -n1 || true)
+    # 2. Se nenhuma legenda foi baixada, tenta com cookies do Brave
+    local sub_count
+    sub_count=$(find "$tmp_dir" -type f \( -name "*.vtt" -o -name "*.srt" \) 2>/dev/null | wc -l)
+    if [ "$sub_count" -eq 0 ]; then
+        echo -e "${YELLOW}⚠️ Nenhuma legenda na tentativa inicial. Tentando com cookies do Brave...${NC}"
+        yt-dlp \
+            --cookies-from-browser brave \
+            --skip-download \
+            --write-auto-subs \
+            --write-subs \
+            --sub-lang "pt-orig,pt,pt-BR,pt-PT,en-orig,en,en-US,es" \
+            --sub-format "vtt/srt/best" \
+            -o "$out_tpl" \
+            --no-warnings \
+            --ignore-errors \
+            "$url" >/dev/null 2>&1 || true
+    fi
 
-    if [ -z "$srt_file" ] || [ ! -f "$srt_file" ]; then
+    # Seleciona o melhor arquivo de legenda baixado (priorizando pt-orig, pt, en)
+    local best_sub=""
+    for pattern in "*pt-orig*" "*pt-BR*" "*pt-PT*" "*pt*" "*en-orig*" "*en*" "*.vtt" "*.srt"; do
+        best_sub=$(find "$tmp_dir" -type f -name "$pattern" 2>/dev/null | head -n1 || true)
+        [ -n "$best_sub" ] && [ -f "$best_sub" ] && break
+    done
+
+    if [ -z "$best_sub" ] || [ ! -f "$best_sub" ]; then
+        rm -rf "$tmp_dir"
         echo -e "${RED}❌ Nenhuma legenda ou transcrição disponível para esta mídia.${NC}"
         if command -v notify-send >/dev/null 2>&1; then
             notify-send -u critical "Transcrição Indisponível" "Não foram encontradas legendas (manuais ou automáticas) para esta mídia."
@@ -645,55 +829,363 @@ download_transcript() {
     fi
 
     local clean_title
-    clean_title=$(echo "$title" | sed 's/[/\\?%*:|"<>]/_/g')
+    if [ -n "$CUSTOM_NAME" ]; then
+        clean_title="${CUSTOM_NAME%.*}"
+    else
+        clean_title=$(echo "$title" | sed 's/[/\\?%*:|"<>]/_/g')
+    fi
     local md_output="${dest}/${clean_title} [Transcricao IA].md"
     local date_now
     date_now=$(date '+%Y-%m-%d %H:%M:%S')
 
-    {
-        echo "# ${title}"
-        echo ""
-        echo "- **Fonte:** ${url}"
-        echo "- **Canal / Autor:** ${uploader}"
-        echo "- **Data de Extração:** ${date_now}"
-        echo "- **Processado por:** Media Downloader AI Engine (dl)"
-        echo ""
-        echo "---"
-        echo ""
-        echo "## 📝 Transcrição Completa"
-        echo ""
-    } > "$md_output"
+    # Processamento e higienização profunda em Python (elimina timestamps, repetições e quebra em parágrafos)
+    python3 -c '
+import os, sys, re
 
-    awk '
-        /^[0-9]+$/ { next }
-        /^[0-9]{2}:[0-9]{2}:[0-9]{2}/ { next }
-        /^$/ { next }
-        {
-            gsub(/<[^>]*>/, "")
-            gsub(/&nbsp;/, " ")
-            gsub(/^[ \t]+|[ \t]+$/, "")
-            if (length($0) > 0 && $0 != last) {
-                print $0
-                last = $0
-            }
-        }
-    ' "$srt_file" >> "$md_output"
+sub_path = sys.argv[1]
+title = sys.argv[2]
+uploader = sys.argv[3]
+url = sys.argv[4]
+date_now = sys.argv[5]
+md_out = sys.argv[6]
 
-    rm -f "${tmp_prefix}"*
+with open(sub_path, "r", encoding="utf-8", errors="replace") as f:
+    content = f.read()
 
-    echo -e "${GREEN}✔ Transcrição formatada para IA gerada com sucesso!${NC}"
-    echo -e "${BLUE}📄 Arquivo salvo em:${NC} ${md_output}"
+lines = content.splitlines()
+clean_lines = []
+for line in lines:
+    line = line.strip()
+    if not line or line.startswith("WEBVTT") or line.startswith("Kind:") or line.startswith("Language:"):
+        continue
+    if "-->" in line or line.startswith("NOTE") or line.isdigit():
+        continue
+    # Remove micro-timestamps do YouTube como <00:00:00.480><c>
+    line = re.sub(r"<[^>]+>", "", line)
+    line = re.sub(r"&nbsp;", " ", line)
+    line = re.sub(r"&amp;", "&", line)
+    line = re.sub(r"&quot;", "\"", line)
+    line = re.sub(r"&#39;", "\x27", line)
+    line = line.strip()
+    if line:
+        if not clean_lines or clean_lines[-1] != line:
+            if clean_lines and (line.startswith(clean_lines[-1]) or clean_lines[-1].endswith(line)):
+                clean_lines[-1] = line
+            else:
+                clean_lines.append(line)
 
-    if command -v wl-copy >/dev/null 2>&1; then
-        wl-copy < "$md_output"
-        echo -e "${PEACH}📋 Conteúdo copiado automaticamente para a Área de Transferência! (Pronto para colar no ChatGPT/Claude)${NC}"
-    elif command -v xclip >/dev/null 2>&1; then
-        xclip -selection clipboard < "$md_output"
-        echo -e "${PEACH}📋 Conteúdo copiado automaticamente para a Área de Transferência! (Pronto para colar no ChatGPT/Claude)${NC}"
+text = " ".join(clean_lines)
+words = text.split()
+deduped = []
+for w in words:
+    if not deduped or w.lower() != deduped[-1].lower():
+        deduped.append(w)
+
+clean_text = " ".join(deduped)
+
+# Agrupa em parágrafos elegantes a cada 3 a 5 frases
+sentences = re.split(r"(\. |\? |\! )", clean_text)
+paragraphs = []
+curr = ""
+count = 0
+for i in range(0, len(sentences)-1, 2):
+    s = sentences[i] + sentences[i+1]
+    curr += s
+    count += 1
+    if count >= 4:
+        paragraphs.append(curr.strip())
+        curr = ""
+        count = 0
+if curr:
+    paragraphs.append(curr.strip())
+if not paragraphs:
+    paragraphs = [clean_text]
+
+body = "\n\n".join(paragraphs)
+
+header = f"""# {title}
+
+- **Fonte:** {url}
+- **Canal / Autor:** {uploader}
+- **Data de Extração:** {date_now}
+- **Processado por:** Media Downloader AI Engine (dl)
+
+---
+
+## 📝 Transcrição Completa (Limpa para IA)
+
+"""
+
+with open(md_out, "w", encoding="utf-8") as f:
+    f.write(header + body + "\n")
+
+# Salva arquivo de texto puro (.txt) apenas com os paragrafos limpos
+txt_out = md_out.rsplit(".", 1)[0] + ".txt"
+with open(txt_out, "w", encoding="utf-8") as f:
+    f.write(body + "\n")
+' "$best_sub" "$title" "$uploader" "$url" "$date_now" "$md_output"
+
+    local txt_output="${md_output%.*}.txt"
+    if [ -f "$txt_output" ]; then
+        if command -v wl-copy >/dev/null 2>&1; then
+            cat "$txt_output" | wl-copy
+        elif command -v xclip >/dev/null 2>&1; then
+            cat "$txt_output" | xclip -selection clipboard
+        fi
+    fi
+
+    rm -rf "$tmp_dir"
+
+    echo -e "\n${GREEN}${BOLD}┌──────────────────────────────────────────────────────────────┐${NC}"
+    echo -e "${GREEN}${BOLD}│  ✅ TRANSCRIÇÃO LIMPA EXTRAÍDA COM SUCESSO!                  │${NC}"
+    echo -e "${GREEN}${BOLD}└──────────────────────────────────────────────────────────────┘${NC}"
+    echo -e "  ${BLUE}🎬 Título  :${NC} ${BOLD}${title}${NC}"
+    echo -e "  ${BLUE}👤 Canal   :${NC} ${uploader}"
+    echo -e "  ${BLUE}📄 Arquivo :${NC} ${md_output}"
+    echo -e "  ${PEACH}📋 STATUS  : Copiada para o Clipboard (pronto para colar na IA)${NC}\n"
+
+    # Exibe preview dos primeiros 400 caracteres
+    if [ -f "$md_output" ]; then
+        echo -e "${SUBTEXT}Prévia da transcrição limpa:${NC}"
+        echo -e "${TEXT}$(tail -n +10 "$md_output" | head -n 8)${NC}"
+        echo -e "${SUBTEXT}... (continua no arquivo e na área de transferência)${NC}\n"
     fi
 
     log_history "$title [Transcricao IA]" "$url" "$md_output" "TRANSCRIPT"
     notify_completion "$title [Transcrição IA]" "$dest" "$md_output"
+}
+
+# ------------------------------------------------------------------------------
+# MOTOR DE STREAMING (FILMES & SÉRIES POMFY / HLS DECRYPTION SUITE)
+# ------------------------------------------------------------------------------
+download_streaming_pomfy() {
+    local target="$1"
+    local season_req="$2"
+    local ep_req="$3"
+    local dest_base="$CUSTOM_DIR"
+
+    local script_extractor="/home/lan/dotfiles/scripts/stream-extractor/pomfy-extractor.js"
+    if [ ! -f "$script_extractor" ]; then
+        echo -e "${RED}❌ Extrator Pomfy não encontrado em $script_extractor${NC}"
+        return 1
+    fi
+
+    local dest_series="${DEFAULT_DEST_SERIES:-/mnt/dados/05_Midias_Design_e_Criacao/Videos/Séries}"
+    local dest_movies="${DEFAULT_DEST_MOVIES:-/mnt/dados/05_Midias_Design_e_Criacao/Videos/Filmes}"
+    [ ! -d "/mnt/dados" ] && dest_series="$HOME/Videos/Séries"
+    [ ! -d "/mnt/dados" ] && dest_movies="$HOME/Videos/Filmes"
+
+    echo -e "${MAUVE}${BOLD}╭───────────────────────────────────────────────────────────────╮${NC}"
+    echo -e "${MAUVE}${BOLD}│       🎬 POMFY STREAMING & HLS EXTRACTOR (APEX V2)            │${NC}"
+    echo -e "${MAUVE}${BOLD}╰───────────────────────────────────────────────────────────────╯${NC}"
+    echo ""
+
+    # 1. Verifica se o alvo é uma página de série completa
+    local is_serie_root=false
+    if [[ "$target" =~ /serie/([0-9]+) ]] && [[ ! "$target" =~ temporada= ]]; then
+        is_serie_root=true
+    fi
+
+    if [ "$is_serie_root" = true ]; then
+        echo -e "${BLUE}🔍 Obtendo metadados oficiais da série...${NC}"
+        local metadata
+        metadata=$(node "$script_extractor" info "$target" 2>/dev/null || true)
+
+        if [ -z "$metadata" ] || ! echo "$metadata" | jq -e '.title' >/dev/null 2>&1; then
+            echo -e "${RED}❌ Não foi possível carregar os metadados da série.${NC}"
+            return 1
+        fi
+
+        local serie_id serie_title serie_year
+        serie_id=$(echo "$metadata" | jq -r '.id')
+        serie_title=$(echo "$metadata" | jq -r '.title')
+        serie_year=$(echo "$metadata" | jq -r '.year // empty')
+
+        if [ -n "$serie_year" ]; then
+            echo -e "${GREEN}📺 Série:${NC} ${BOLD}${serie_title} (${serie_year})${NC}"
+        else
+            echo -e "${GREEN}📺 Série:${NC} ${BOLD}${serie_title}${NC}"
+        fi
+        echo -e "${SUBTEXT}Temporadas disponíveis:${NC}"
+
+        echo "$metadata" | jq -r '.availableSeasons[]' | while read -r s; do
+            local ep_count
+            ep_count=$(echo "$metadata" | jq -r ".episodeCountMap[\"$s\"] // 0")
+            echo -e "   ${MAUVE}• Temporada ${s}:${NC} ${ep_count} episódios"
+        done
+        echo ""
+
+        # Pergunta temporada se não informada
+        local chosen_season="$season_req"
+        if [ -z "$chosen_season" ]; then
+            read -rp "Qual temporada deseja baixar? [Ex: 1, 2 ou 'todas', padrão: 1]: " chosen_season
+            chosen_season="${chosen_season:-1}"
+        fi
+
+        # Pergunta episódios se não informado
+        local chosen_eps="$ep_req"
+        if [ -z "$chosen_eps" ] && [ "$chosen_season" != "todas" ] && [ "$chosen_season" != "all" ]; then
+            local max_eps
+            max_eps=$(echo "$metadata" | jq -r ".episodeCountMap[\"$chosen_season\"] // 1")
+            read -rp "Quais episódios da T${chosen_season}? [Ex: 1-${max_eps}, 1, ou 'todos', padrão: todos]: " chosen_eps
+            chosen_eps="${chosen_eps:-todos}"
+        fi
+
+        # Monta lista de temporadas a baixar
+        local seasons_to_download=()
+        if [ "$chosen_season" == "todas" ] || [ "$chosen_season" == "all" ]; then
+            while IFS= read -r s; do
+                seasons_to_download+=("$s")
+            done < <(echo "$metadata" | jq -r '.availableSeasons[]')
+        else
+            seasons_to_download+=("$chosen_season")
+        fi
+
+        for s in "${seasons_to_download[@]}"; do
+            local total_in_season
+            total_in_season=$(echo "$metadata" | jq -r ".episodeCountMap[\"$s\"] // 1")
+
+            local eps_to_download=()
+            if [ -z "$chosen_eps" ] || [ "$chosen_eps" == "todos" ] || [ "$chosen_eps" == "all" ]; then
+                for ((e=1; e<=total_in_season; e++)); do
+                    eps_to_download+=("$e")
+                done
+            elif [[ "$chosen_eps" =~ ^([0-9]+)-([0-9]+)$ ]]; then
+                local start_ep="${BASH_REMATCH[1]}"
+                local end_ep="${BASH_REMATCH[2]}"
+                for ((e=start_ep; e<=end_ep; e++)); do
+                    eps_to_download+=("$e")
+                done
+            else
+                IFS=',' read -ra ADDR <<< "$chosen_eps"
+                for i in "${ADDR[@]}"; do
+                    eps_to_download+=("$(echo "$i" | tr -d ' ')")
+                done
+            fi
+
+            local s_padded
+            s_padded=$(printf "%02d" "$s")
+            local target_dest_folder="${dest_base:-$dest_series/$serie_title/Temporada $s_padded}"
+            mkdir -p "$target_dest_folder"
+
+            echo -e "\n${BOLD}${BLUE}📦 Baixando Temporada ${s} (${#eps_to_download[@]} episódios)...${NC}"
+            echo -e "${SUBTEXT}Destino: ${target_dest_folder}${NC}\n"
+
+            for ep in "${eps_to_download[@]}"; do
+                local ep_padded
+                ep_padded=$(printf "%02d" "$ep")
+                local expected_file="$target_dest_folder/${serie_title} - S${s_padded}E${ep_padded}.mp4"
+
+                if [ -f "$expected_file" ]; then
+                    echo -e "${YELLOW}⏩ [JÁ EXISTE]${NC} ${serie_title} - S${s_padded}E${ep_padded}.mp4"
+                    continue
+                fi
+
+                echo -e "${TEAL}⏳ Extraindo link do stream S${s_padded}E${ep_padded} (bypass PoW Captcha)...${NC}"
+                local stream_json
+                stream_json=$(node "$script_extractor" stream --id "$serie_id" --season "$s" --ep "$ep" 2>/dev/null || true)
+
+                if [ -z "$stream_json" ] || ! echo "$stream_json" | jq -e '.streamUrl' >/dev/null 2>&1; then
+                    echo -e "${RED}❌ [FALHA] Não foi possível extrair o stream de S${s_padded}E${ep_padded}.${NC}"
+                    continue
+                fi
+
+                local stream_url stream_ref stream_file
+                stream_url=$(echo "$stream_json" | jq -r '.streamUrl')
+                stream_ref=$(echo "$stream_json" | jq -r '.referer // "https://f7hyg4q.org/"')
+                stream_file=$(echo "$stream_json" | jq -r '.fileName')
+
+                echo -e "${GREEN}🚀 Baixando S${s_padded}E${ep_padded} em 1080p Full HD com áudio Dublado/Original...${NC}"
+
+                eval yt-dlp \
+                    --no-warnings \
+                    -N 16 \
+                    --concurrent-fragments 16 \
+                    --buffer-size 16M \
+                    --http-chunk-size 10M \
+                    --retries 10 \
+                    --fragment-retries 10 \
+                    --referer "'$stream_ref'" \
+                    -f "'bv*+ba[language=por]/bv*+ba/b'" \
+                    --merge-output-format mp4 \
+                    --remux-video mp4 \
+                    -o "'$target_dest_folder/$stream_file'" \
+                    "'$stream_url'" || {
+                        echo -e "${RED}❌ Erro no download de S${s_padded}E${ep_padded}${NC}"
+                    }
+
+                log_history "${serie_title} S${s_padded}E${ep_padded}" "$target" "$target_dest_folder/$stream_file" "STREAMING"
+            done
+        done
+
+        notify_completion "Série ${serie_title} Baixada" "${dest_base:-$dest_series/$serie_title}"
+        return 0
+    fi
+
+    # 2. Caso seja um episódio único ou filme
+    echo -e "${TEAL}⏳ Conectando e descriptografando stream (bypass PoW Captcha)...${NC}"
+    local stream_json
+    stream_json=$(node "$script_extractor" stream "$target" 2>/dev/null || true)
+
+    if [ -z "$stream_json" ] || ! echo "$stream_json" | jq -e '.streamUrl' >/dev/null 2>&1; then
+        echo -e "${RED}❌ Não foi possível extrair o stream do link fornecido.${NC}"
+        local err_msg
+        err_msg=$(echo "$stream_json" | jq -r '.message // "Erro desconhecido"')
+        echo -e "${SUBTEXT}Detalhes: ${err_msg}${NC}"
+        return 1
+    fi
+
+    local stream_url stream_ref stream_file item_type item_title item_season
+    stream_url=$(echo "$stream_json" | jq -r '.streamUrl')
+    stream_ref=$(echo "$stream_json" | jq -r '.referer // "https://f7hyg4q.org/"')
+    stream_file=$(echo "$stream_json" | jq -r '.fileName')
+    item_type=$(echo "$stream_json" | jq -r '.type')
+    item_title=$(echo "$stream_json" | jq -r '.title')
+    item_season=$(echo "$stream_json" | jq -r '.season // empty')
+
+    local final_dest_dir="$dest_base"
+    if [ -z "$final_dest_dir" ]; then
+        if [ "$item_type" == "serie" ]; then
+            local s_pad
+            s_pad=$(printf "%02d" "${item_season:-1}")
+            final_dest_dir="$dest_series/$item_title/Temporada $s_pad"
+        else
+            final_dest_dir="$dest_movies"
+        fi
+    fi
+    mkdir -p "$final_dest_dir"
+
+    if [ -n "$CUSTOM_NAME" ]; then
+        stream_file="${CUSTOM_NAME%.*}.mp4"
+    fi
+
+    local clip_flags=()
+    if [ -n "$CUSTOM_CLIP" ]; then
+        clip_flags+=(--download-sections "*${CUSTOM_CLIP}" --force-keyframes-at-cuts)
+    fi
+
+    echo -e "${GREEN}🎬 Título:${NC} ${BOLD}${stream_file}${NC}"
+    echo -e "${BLUE}📂 Pasta de Destino:${NC} ${final_dest_dir}"
+    echo -e "${GREEN}🚀 Baixando em 1080p com aceleração multi-thread (16 threads)...${NC}\n"
+
+    eval yt-dlp \
+        --no-warnings \
+        -N 16 \
+        --concurrent-fragments 16 \
+        --buffer-size 16M \
+        --http-chunk-size 10M \
+        --retries 10 \
+        --fragment-retries 10 \
+        --referer "'$stream_ref'" \
+        -f "'bv*+ba[language=por]/bv*+ba/b'" \
+        --merge-output-format mp4 \
+        --remux-video mp4 \
+        "${clip_flags[@]}" \
+        -o "'$final_dest_dir/$stream_file'" \
+        "'$stream_url'"
+
+    log_history "$item_title" "$target" "$final_dest_dir/$stream_file" "STREAMING"
+    notify_completion "$item_title Baixado" "$final_dest_dir" "$final_dest_dir/$stream_file"
 }
 
 # ------------------------------------------------------------------------------
@@ -1028,6 +1520,12 @@ run_cli_mode() {
         exit 0
     fi
 
+    # Roteamento especial para Pomfy / Streaming
+    if is_pomfy_domain "$url"; then
+        download_streaming_pomfy "$url" "$SEASON_ARG" "$EP_ARG"
+        exit 0
+    fi
+
     echo ""
     echo -e "${SUBTEXT}🔍 Conectando e obtendo metadados oficiais...${NC}"
     local info_title
@@ -1036,6 +1534,9 @@ run_cli_mode() {
 
     if [ -n "$CUSTOM_DIR" ]; then
         echo -e "${BLUE}📂 Pasta de Destino:${NC} ${CUSTOM_DIR}"
+    fi
+    if [ -n "$CUSTOM_NAME" ]; then
+        echo -e "${PEACH}🏷️ Nome Personalizado:${NC} ${CUSTOM_NAME}"
     fi
 
     # Detecção de Playlist
@@ -1107,7 +1608,7 @@ run_cli_mode() {
             ;;
         8)
             echo -e "\n${MAUVE}🤖 Extraindo transcrição e gerando resumo limpo em Markdown para IA...${NC}\n"
-            download_transcript "$url" "$dest_v"
+            download_transcript "$url" "$DEFAULT_DEST_TRANSCRIPT"
             ;;
         9)
             echo -e "\n${SUBTEXT}📝 Extraindo apenas as legendas (.srt)...${NC}\n"
@@ -1152,7 +1653,9 @@ show_help() {
     echo ""
     echo -e "${BOLD}Flags Diretas de Linha de Comando:${NC}"
     echo -e "  ${GREEN}dl -a <url>${NC}                 Baixa direto como Áudio MP3 320k"
+    echo -e "  ${BLUE}dl -o, --name <nome> <url>${NC}  Define nome personalizado do arquivo"
     echo -e "  ${MAUVE}dl -t, --transcript <url>${NC}   Extrai transcrição limpa em Markdown (.md) para IA/LLMs"
+    echo -e "  ${BLUE}dl -s, --subs <url>${NC}         Embuti legendas automáticas pt/en no vídeo"
     echo -e "  ${GREEN}dl --no-sponsors <url>${NC}       Remove jabás e patrocínios embutidos (SponsorBlock)"
     echo -e "  ${PEACH}dl -p <url>${NC}                 Roteia direto para a pasta .privado"
     echo -e "  ${BLUE}dl -b, --batch <file.txt>${NC}   Processa arquivo de texto com links em lote"
@@ -1168,6 +1671,8 @@ show_help() {
     echo -e "  ${BLUE}dl --gallery <url>${NC}          Baixa álbuns de fotos (Instagram/Twitter)"
     echo -e "  ${BLUE}dl --sub-only <url>${NC}         Baixa apenas as legendas (.srt)"
     echo -e "  ${BLUE}dl --thumb <url>${NC}            Baixa apenas a capa / thumbnail em 4K"
+    echo -e "  ${TEAL}dl --pomfy <url>${NC}            Baixa filme ou episódio do Pomfy com bypass PoW e 1080p"
+    echo -e "  ${TEAL}dl --pomfy <url> --season 1 --ep 1-7${NC} Baixa lote de episódios da série no Pomfy"
     echo ""
 }
 
@@ -1194,6 +1699,10 @@ main() {
                 view_history "cli"
                 exit 0
                 ;;
+            -o|--output|--name)
+                CUSTOM_NAME="$2"
+                shift 2
+                ;;
             -d|--dir)
                 CUSTOM_DIR="$2"
                 shift 2
@@ -1217,9 +1726,25 @@ main() {
                 direct_action="audio"
                 shift
                 ;;
+            -s|--subs|--subtitles)
+                WITH_SUBS=true
+                shift
+                ;;
             -t|--transcript|--text)
                 direct_action="transcript"
                 shift
+                ;;
+            --pomfy|--stream)
+                direct_action="pomfy"
+                shift
+                ;;
+            --season)
+                SEASON_ARG="$2"
+                shift 2
+                ;;
+            --ep|--episode)
+                EP_ARG="$2"
+                shift 2
                 ;;
             --no-sponsors|--clean)
                 SKIP_SPONSORS=true
@@ -1295,6 +1820,11 @@ main() {
 
     # Se foi passado um arquivo de lote (.txt com múltiplos links) ou a flag --batch
     local batch_candidate="${BATCH_FILE:-$target_url}"
+    if [ -n "$batch_candidate" ]; then
+        if [ ! -f "$batch_candidate" ] && [ -f "$DEFAULT_DEST_PRIVATE/$batch_candidate" ]; then
+            batch_candidate="$DEFAULT_DEST_PRIVATE/$batch_candidate"
+        fi
+    fi
     if [ -n "$batch_candidate" ] && [ -f "$batch_candidate" ]; then
         local dest_batch="${CUSTOM_DIR:-$DEFAULT_DEST_VIDEO}"
         [ "$FORCE_PRIVATE" = true ] && dest_batch="$DEFAULT_DEST_PRIVATE/Videos_e_Cenas"
@@ -1305,7 +1835,7 @@ main() {
     fi
 
     # Se foi chamada uma flag direta específica de linha de comando, executa direto
-    if [ -n "$direct_action" ] || [ "$MAKE_GIF" = true ] || [ -n "$COMPRESS_TARGET" ] || [ "$SPLIT_CHAPTERS" = true ] || [ "$SYNC_PLAYLIST" = true ] || [ -n "$CUSTOM_CLIP" ] || [ "$FORCE_PRIVATE" = true ] || [ "$SKIP_SPONSORS" = true ]; then
+    if [ -n "$direct_action" ] || [ "$MAKE_GIF" = true ] || [ -n "$COMPRESS_TARGET" ] || [ "$SPLIT_CHAPTERS" = true ] || [ "$SYNC_PLAYLIST" = true ] || [ -n "$CUSTOM_CLIP" ] || [ "$FORCE_PRIVATE" = true ] || [ "$SKIP_SPONSORS" = true ] || [ "$WITH_SUBS" = true ]; then
 
 
         if [ -z "$target_url" ]; then
@@ -1327,7 +1857,9 @@ main() {
             mkdir -p "$dest_v" "$dest_a" "$dest_i"
         fi
 
-        if is_magnet_or_torrent "$target_url"; then
+        if is_pomfy_domain "$target_url" || [ "$direct_action" == "pomfy" ]; then
+            download_streaming_pomfy "$target_url" "$SEASON_ARG" "$EP_ARG"
+        elif is_magnet_or_torrent "$target_url"; then
             download_torrent_or_magnet "$target_url" "$dest_v"
         elif is_direct_download_file "$target_url"; then
             download_direct_file "$target_url" "$dest_v"
@@ -1336,7 +1868,8 @@ main() {
         elif [ "$direct_action" == "gallery" ] || is_gallery_domain "$target_url"; then
             download_gallery "$target_url" "$dest_i"
         elif [ "$direct_action" == "transcript" ]; then
-            download_transcript "$target_url" "$dest_v"
+            local dest_t="${CUSTOM_DIR:-$DEFAULT_DEST_TRANSCRIPT}"
+            download_transcript "$target_url" "$dest_t"
         elif [ "$direct_action" == "audio" ]; then
             download_audio "$target_url" "$dest_a" "$CUSTOM_CLIP"
         else
