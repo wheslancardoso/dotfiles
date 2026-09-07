@@ -82,20 +82,30 @@ else
     warn "Não foi possível inicializar o Mise nesta sessão."
 fi
 
-# --- 5. Configuração do Git ---
+# --- 5. Antigravity CLI (agy) ---
+info "Verificando Antigravity CLI (agy)..."
+if ! command -v agy &>/dev/null && ! command -v antigravity &>/dev/null; then
+    info "Instalando Antigravity CLI..."
+    curl -fsSL https://antigravity.google/cli/install.sh | bash || warn "Não foi possível instalar Antigravity CLI automaticamente."
+    ok "Antigravity CLI instalado com sucesso!"
+else
+    ok "Antigravity CLI já instalado."
+fi
+
+# --- 6. Configuração do Git ---
 info "Configurando padrões do Git..."
 git config --global core.editor "nvim"
 git config --global init.defaultBranch main
 git config --global color.ui true
 
-# --- 6. Suíte de Organização e Dependências ---
+# --- 7. Suíte de Organização e Dependências ---
 info "Configurando dependências do Organizador Master..."
 if [ -f "$DOTFILES_DIR/scripts/organizador/requirements.txt" ]; then
     pip install --user -r "$DOTFILES_DIR/scripts/organizador/requirements.txt" 2>/dev/null || true
     ok "Dependências do organizador configuradas."
 fi
 
-# --- 7. Verificação de Caminhos (Android SDK) ---
+# --- 8. Verificação de Caminhos (Android SDK) ---
 ANDROID_DIR=""
 for p in "$HOME/android/sdk" "$HOME/Android/Sdk"; do
     if [ -d "$p" ]; then

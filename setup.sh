@@ -814,7 +814,16 @@ setup_development_environment() {
         ok "Runtimes do Mise sincronizadas com sucesso."
     fi
 
-    # 3. Pre-aquecimento e sincronização do Neovim / LazyVim
+    # 3. Antigravity CLI (agy)
+    if ! command -v agy &>/dev/null && ! command -v antigravity &>/dev/null; then
+        info "Instalando Antigravity CLI (agy)..."
+        curl -fsSL https://antigravity.google/cli/install.sh | bash 2>/dev/null || warn "Falha ao instalar Antigravity CLI via script oficial."
+        ok "Antigravity CLI configurado!"
+    else
+        ok "Antigravity CLI já instalado."
+    fi
+
+    # 4. Pre-aquecimento e sincronização do Neovim / LazyVim
     if command -v nvim &>/dev/null; then
         info "Sincronizando plugins do LazyVim em background headless..."
         nvim --headless "+Lazy! restore" +qa 2>/dev/null || true

@@ -291,6 +291,15 @@ setup_modern_cli() {
         ok "Tree-Sitter já instalado."
     fi
 
+    # 16. Antigravity CLI (agy)
+    if ! command -v agy &>/dev/null && ! command -v antigravity &>/dev/null; then
+        info "Instalando Antigravity CLI (agy)..."
+        curl -fsSL https://antigravity.google/cli/install.sh | bash 2>/dev/null || warn "Falha ao instalar Antigravity CLI no WSL."
+        ok "Antigravity CLI instalado!"
+    else
+        ok "Antigravity CLI já instalado."
+    fi
+
     # Espelhar binários para /usr/local/bin para que fiquem visíveis universalmente
     if has_sudo; then
         sudo ln -sfn "${BIN_DIR}"/* /usr/local/bin/ 2>/dev/null || true
