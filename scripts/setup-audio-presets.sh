@@ -63,17 +63,17 @@ echo -e "\n${GREEN}${BOLD}✔ Presets de Áudio, Graves e Microfone instalados c
 
 # Ativa imediatamente os presets padrão de saída e microfone
 if command -v easyeffects >/dev/null 2>&1; then
-    echo -e "${GREEN}[*] Ativando 'Bass Enhancing + Perfect EQ' na saída...${NC}"
-    timeout 3 easyeffects -l "Bass Enhancing + Perfect EQ" 2>/dev/null || true
+    echo -e "${GREEN}[*] Ativando 'Bass Multiplying + Perfect EQ' (Sub-Bass 808 Extremo) na saída...${NC}"
+    timeout 3 easyeffects -l "Bass Multiplying + Perfect EQ" 2>/dev/null || true
     echo -e "${GREEN}[*] Ativando 'Podcast_Studio_Mic' no microfone...${NC}"
     timeout 3 easyeffects -l "Podcast_Studio_Mic" 2>/dev/null || true
 fi
 
 echo -e "${BOLD}Como usar no EasyEffects:${NC}"
-echo -e "  - Preset Padrão Ativo: ${GREEN}Bass Enhancing + Perfect EQ${NC} (Hip-Hop & Graves Nítidos)"
-echo -e "  - Chavear via Terminal: digite ${BLUE}bass${NC} (Hip-Hop), ${BLUE}bass-max${NC} (808 extremo) ou ${BLUE}dolby${NC}"
+echo -e "  - Preset Padrão Ativo: ${GREEN}Bass Multiplying + Perfect EQ${NC} (Sub-Bass 808 Pesado / Muito Grave)"
+echo -e "  - Chavear via Terminal: digite ${BLUE}bass${NC} (808 extremo), ${BLUE}bass-light${NC} (moderado) ou ${BLUE}dolby${NC}"
 echo -e "  - Chavear via Teclado: pressione ${YELLOW}SUPER + ALT + A${NC} para o menu Rofi"
 
 if command -v notify-send >/dev/null 2>&1; then
-    notify-send -u low -i audio-volume-high "EasyEffects Presets" "Preset Bass Enhancing (Hip-Hop Mode) ativado como padrão!" || true
+    notify-send -u low -i audio-volume-high "EasyEffects Presets" "Preset Bass Multiplying (Sub-Bass 808 Pesado) ativado como padrão!" || true
 fi

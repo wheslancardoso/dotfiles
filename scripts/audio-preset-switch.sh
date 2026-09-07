@@ -53,11 +53,11 @@ load_preset() {
 }
 
 case "$ACTION" in
-    bass|hiphop|trap)
-        load_preset "Bass Enhancing + Perfect EQ" "🎵 Hip-Hop Bass Ativado" "Graves potentes e nítidos (Bass Enhancing + Perfect EQ)"
+    bass|bass-max|bass-ultra|808|sub|hiphop|trap)
+        load_preset "Bass Multiplying + Perfect EQ" "🔥 Sub-Bass 808 Pesado (Padrão)" "Graves multiplicados de alto impacto para Hip-Hop e Beats"
         ;;
-    bass-max|bass-ultra|808|sub)
-        load_preset "Bass Multiplying + Perfect EQ" "🔥 Sub-Bass 808 Pesado" "Graves multiplicados de alto impacto para Hip-Hop e Beats"
+    bass-light|bass-smooth)
+        load_preset "Bass Enhancing + Perfect EQ" "🎵 Hip-Hop Bass Suave" "Graves moderados e nítidos (Bass Enhancing + Perfect EQ)"
         ;;
     dolby|cinema|atmos)
         load_preset "Dolby Atmos" "🎬 Dolby Atmos Ativado" "Espacialização 3D analógica com Convolver IRS de cinema"
