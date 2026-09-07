@@ -51,7 +51,7 @@ GDK_BACKEND=$BACKEND yad \
 " ALT SPACE" "Alternar Todas as Janelas para Flutuante" "togglefloating (all)" \
 "CTRL ALT L" "Bloquear Tela" "hyprlock" \
 "CTRL ALT Del" "Sair do Hyprland / Logout" "wlogout" \
-"CTRL ALT P" "Menu de Energia e Desligamento" "wlogout" \
+" P ou CTRL ALT P" "Menu de Energia e Desligamento" "wlogout" \
 "" "" "" \
 "── 📋 CLIPBOARD E PRODUTIVIDADE ──" "── WORKFLOW RÁPIDO ──" "────────────────────────" \
 "ALT V ou  ALT V" "Painel Avançado CopyQ (Abas, Snippets, Imagens)" "copyq-toggle.sh" \
