@@ -218,6 +218,7 @@ setup_services() {
         "organizador-watcher.service"
         "rclone-gdrive.service"
         "capslock-indicator.service"
+        "udiskie.service"
     )
 
     for svc in "${usr_services[@]}"; do

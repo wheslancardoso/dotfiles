@@ -1,0 +1,20 @@
+# ==============================================================================
+# 💾 UDISKIE CONFIG — AUTOMOUNT INTELIGENTE & NOTIFICAÇÕES VISUAIS
+# ==============================================================================
+
+program_options:
+  # Automount de novos dispositivos conectados (pen-drives, HDs externos, cartões SD)
+  automount: true
+
+  # Desativa notificações brutas do udiskie (usamos nosso event_hook estilizado)
+  notify: false
+
+  # Ícone inteligente no tray (só aparece quando há pendrives montados)
+  tray: auto
+
+  # Gerenciador de arquivos ao interagir com o dispositivo
+  file_manager: "kitty -e yazi"
+
+  # Notificações visuais ricas para inserção, montagem, desmontagem e desconexão
+  event_hook: "usb-notify.sh '{event}' '{device_presentation}' '{mount_path}' '{id_label}'"
+
