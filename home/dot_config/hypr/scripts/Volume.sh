@@ -4,6 +4,20 @@
 
 iDIR="$HOME/.config/swaync/icons"
 sDIR="$HOME/.config/hypr/scripts"
+# Ensure default sink is physical hardware, not EasyEffects virtual sink
+ensure_physical_sink() {
+    local cur_sink
+    cur_sink=$(pamixer --get-default-sink 2>/dev/null || echo "")
+    if [[ "$cur_sink" == *"easyeffects"* ]]; then
+        local target
+        target=$(pactl list sinks short 2>/dev/null | grep -v "easyeffects" | awk '$7 == "RUNNING" || $7 == "IDLE" {print $2; exit}')
+        [[ -z "$target" ]] && target=$(pactl list sinks short 2>/dev/null | grep -v "easyeffects" | awk '{print $2; exit}')
+        if [[ -n "$target" ]]; then
+            pactl set-default-sink "$target" 2>/dev/null || true
+        fi
+    fi
+}
+ensure_physical_sink
 
 # Get Volume
 get_volume() {
