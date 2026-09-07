@@ -57,6 +57,7 @@ GDK_BACKEND=$BACKEND yad \
 "ALT V ou  ALT V" "Painel Avançado CopyQ (Abas, Snippets, Imagens)" "copyq-toggle.sh" \
 " V" "Busca Rápida de Clipboard (Cliphist Fuzzy 2ms)" "ClipManager.sh" \
 " M" "Spotify Dropdown Player (Scratchpad Flutuante)" "spotify-toggle.sh" \
+" T" "TecConcursos Dropdown (Treinador de Questões 60s)" "tecconcursos-toggle.sh" \
 " C" "Calculadora Gnome (Moedas, Unidades ao vivo)" "gnome-calculator" \
 " ALT C" "Calculadora Científica e Financeira" "qalculate-gtk" \
 " ;" "Seletor de Emojis e Símbolos Rápidos" "RofiEmoji.sh" \
