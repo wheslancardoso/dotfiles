@@ -13,7 +13,7 @@
 | `Super + Q` | Fechar janela ativa (**Kill**) |
 | `Super + Backspace` | **Mata-Processo de Emergência** (Cursor de mira para matar app congelado) |
 | `Super + Return` | Abrir terminal (**Ghostty / Kitty / Alacritty**) |
-| `Alt + Tab` / `Alt + Shift + Tab` | **Ciclo Rápido de Janelas** (0ms de lag, alternância instantânea pura sem popups) |
+| `Alt + Tab` / `Alt + Shift + Tab` | **Alternância Inteligente de Janelas/Workspaces** (Estilo Windows: pula entre o app atual e o último utilizado, trocando de workspace automaticamente com 0ms de lag) |
 | `Super + Tab` | **Seletor Visual de Janelas** (Busca interativa com ícones e workspaces no Rofi) |
 | `Super + A` | **Desktop Overview** (Visão geral de todos os workspaces e janelas em mosaico) |
 | `Ctrl + Shift + Esc` ou `Super + Esc` | **Gerenciador de Tarefas TUI** (Abre o `btop` instantâneo flutuante com Catppuccin) |
