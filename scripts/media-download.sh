@@ -1667,7 +1667,8 @@ run_cli_mode() {
 
     clear
     echo -e "${MAUVE}${BOLD}╭───────────────────────────────────────────────────────────────╮${NC}"
-    echo -e "${MAUVE}${BOLD}│    📥 MEDIA DOWNLOADER POWER-USER (yt-dlp + spotdl + aria2)   │${NC}"
+    echo -e "${MAUVE}${BOLD}│   🎬 APEX MEDIA COCKPIT • Universal Stream & Video Suite      │${NC}"
+    echo -e "${SUBTEXT}│   yt-dlp • spotdl • gallery-dl • pomfy • aria2c • fzf         │${NC}"
     echo -e "${MAUVE}${BOLD}╰───────────────────────────────────────────────────────────────╯${NC}"
     echo ""
 

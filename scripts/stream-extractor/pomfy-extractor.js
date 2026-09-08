@@ -287,6 +287,43 @@ async function extractStreamUrl(item, timeoutMs = 25000) {
   }
 }
 
+const GENRES = {
+  28: 'Ação',
+  12: 'Aventura',
+  16: 'Animação',
+  35: 'Comédia',
+  80: 'Crime',
+  99: 'Documentário',
+  18: 'Drama',
+  10751: 'Família',
+  14: 'Fantasia',
+  36: 'História',
+  27: 'Terror',
+  10402: 'Música',
+  9648: 'Mistério',
+  10749: 'Romance',
+  878: 'Ficção Científica',
+  10770: 'Cinema TV',
+  53: 'Suspense',
+  10752: 'Guerra',
+  37: 'Faroeste',
+  10759: 'Ação & Aventura',
+  10762: 'Infantil',
+  10763: 'Notícias',
+  10764: 'Reality',
+  10765: 'Sci-Fi & Fantasy',
+  10766: 'Novela',
+  10767: 'Talk Show',
+  10768: 'Guerra & Política'
+};
+
+function getStarGauge(rating) {
+  const count = Math.round((rating || 0) / 10 * 10);
+  const full = '★'.repeat(Math.max(0, Math.min(count, 10)));
+  const empty = '☆'.repeat(Math.max(0, 10 - full.length));
+  return `${full}${empty}`;
+}
+
 async function searchCatalog(query) {
   let cat = { filmes: [], series: [] };
   try {
@@ -310,6 +347,8 @@ async function searchCatalog(query) {
       const rating = r.vote_average ? r.vote_average.toFixed(1) : '';
       const voteCount = r.vote_count || 0;
       const overview = r.overview || 'Sinopse não cadastrada no catálogo.';
+      const genres = (r.genre_ids || []).map(id => GENRES[id]).filter(Boolean).slice(0, 3).join(' • ');
+      const posterPath = r.poster_path || '';
       const url = isTv ? `https://pomfy.online/serie/${r.id}` : `https://pomfy.online/assistir/${r.id}?tipo=filme`;
       return {
         id: r.id,
@@ -320,6 +359,8 @@ async function searchCatalog(query) {
         rating,
         voteCount,
         overview,
+        genres,
+        posterPath,
         available,
         url
       };
@@ -369,14 +410,41 @@ async function main() {
         nc: '\x1b[0m'
       };
 
+      // Tenta renderizar o pôster com chafa se disponível
+      if (item.posterPath && fs.existsSync('/usr/bin/chafa')) {
+        const posterDir = '/tmp/pomfy_posters';
+        if (!fs.existsSync(posterDir)) fs.mkdirSync(posterDir, { recursive: true });
+        const posterFile = `${posterDir}/${item.id}.jpg`;
+        if (!fs.existsSync(posterFile)) {
+          try {
+            const pRes = await fetch(`https://image.tmdb.org/t/p/w185${item.posterPath}`);
+            if (pRes.ok) {
+              const buf = Buffer.from(await pRes.arrayBuffer());
+              fs.writeFileSync(posterFile, buf);
+            }
+          } catch (e) {}
+        }
+        if (fs.existsSync(posterFile)) {
+          try {
+            const { execSync } = require('child_process');
+            const chafaArt = execSync(`chafa --size=24x12 --symbols=block,border,space "${posterFile}"`, { encoding: 'utf8' });
+            console.log(chafaArt);
+          } catch (e) {}
+        }
+      }
+
       console.log(`${c.mauve}${c.bold}╭────────────────────────────────────────────────────────╮${c.nc}`);
       console.log(`${c.mauve}${c.bold}│  ${item.type === 'serie' ? '📺 SÉRIE' : '🎬 FILME'}: ${item.title}${item.year ? ` (${item.year})` : ''}${c.nc}`);
       console.log(`${c.mauve}${c.bold}╰────────────────────────────────────────────────────────╯${c.nc}`);
       if (item.originalTitle && item.originalTitle !== item.title) {
         console.log(`${c.subtext}Título Original: ${item.originalTitle}${c.nc}`);
       }
+      if (item.genres) {
+        console.log(`${c.peach}🏷️  Gêneros: ${item.genres}${c.nc}`);
+      }
       if (item.rating) {
-        console.log(`${c.yellow}⭐ Avaliação TMDB:${c.nc} ${item.rating}/10 (${(item.voteCount || 0).toLocaleString('pt-BR')} votos)`);
+        const stars = getStarGauge(parseFloat(item.rating));
+        console.log(`${c.yellow}⭐ Avaliação: ${c.bold}${stars} ${item.rating}/10${c.nc} (${(item.voteCount || 0).toLocaleString('pt-BR')} avaliações)`);
       }
       if (item.available) {
         console.log(`${c.green}${c.bold}✔️ Status: DISPONÍVEL NO POMFY (1080p Full HD / Dual Áudio)${c.nc}`);
@@ -387,6 +455,7 @@ async function main() {
       console.log(`${c.text}${item.overview || 'Sem sinopse disponível.'}${c.nc}`);
       return;
     }
+
 
     if (mode === 'search') {
       const query = args.slice(1).join(' ');
