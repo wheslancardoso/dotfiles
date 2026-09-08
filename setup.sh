@@ -428,7 +428,15 @@ apply_dotfiles() {
     [ -f "$DOTFILES_DIR/scripts/setup-audio-presets.sh" ] && ln -sf "$DOTFILES_DIR/scripts/setup-audio-presets.sh" "$HOME/.local/bin/fix-bass"
     [ -f "$DOTFILES_DIR/scripts/vim-king.sh" ] && ln -sf "$DOTFILES_DIR/scripts/vim-king.sh" "$HOME/.local/bin/vk"
     [ -f "$DOTFILES_DIR/scripts/media-download.sh" ] && ln -sf "$DOTFILES_DIR/scripts/media-download.sh" "$HOME/.local/bin/dl"
+    [ -f "$DOTFILES_DIR/scripts/media-download.sh" ] && ln -sf "$DOTFILES_DIR/scripts/media-download.sh" "$HOME/.local/bin/apex"
+    [ -f "$DOTFILES_DIR/scripts/ventoy-instalar.sh" ] && ln -sf "$DOTFILES_DIR/scripts/ventoy-instalar.sh" "$HOME/.local/bin/criar-boot"
+    [ -f "$DOTFILES_DIR/scripts/ventoy-instalar.sh" ] && ln -sf "$DOTFILES_DIR/scripts/ventoy-instalar.sh" "$HOME/.local/bin/ventoy-instalar"
+    [ -f "$DOTFILES_DIR/scripts/yazi-ventoy.sh" ] && ln -sf "$DOTFILES_DIR/scripts/yazi-ventoy.sh" "$HOME/.local/bin/yazi-ventoy"
     [ -f "$DOTFILES_DIR/scripts/setup-spicetify.sh" ] && ln -sf "$DOTFILES_DIR/scripts/setup-spicetify.sh" "$HOME/.local/bin/fix-spicetify"
+    if [ -d "$DOTFILES_DIR/scripts/stream-extractor" ]; then
+        info "Configurando motor de streaming Pomfy (Node.js/Puppeteer)..."
+        (cd "$DOTFILES_DIR/scripts/stream-extractor" && npm install --omit=dev --silent 2>/dev/null || true)
+    fi
     [ -f "$DOTFILES_DIR/scripts/audio-preset-switch.sh" ] && ln -sf "$DOTFILES_DIR/scripts/audio-preset-switch.sh" "$HOME/.local/bin/audio-preset-switch"
     if [ -f "/opt/abdownloadmanager/bin/ABDownloadManager" ]; then
         sudo ln -sf /opt/abdownloadmanager/bin/ABDownloadManager /usr/local/bin/abdownloadmanager 2>/dev/null || true

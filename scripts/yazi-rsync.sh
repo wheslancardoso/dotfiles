@@ -29,8 +29,14 @@ echo "  [ENTER] Pasta atual ($PWD)"
 # Listar unidades removíveis montadas (/run/media/$USER/*) dinamicamente
 idx=1
 declare -A SUGGESTIONS
+VENTOY_DIR=""
 for d in /run/media/"$USER"/*; do
     if [ -d "$d" ]; then
+        label=$(basename "$d")
+        if [[ "$label" =~ ^Ventoy || -d "$d/ventoy" || -d "$d/ISOs" ]]; then
+            VENTOY_DIR="$d"
+            echo "  [v] 💿 Pen-drive Ventoy: $d"
+        fi
         echo "  [$idx] Dispositivo USB: $d"
         SUGGESTIONS[$idx]="$d"
         idx=$((idx+1))
@@ -48,6 +54,9 @@ DEST="${DEST_INPUT:-$PWD}"
 
 if [[ -n "${SUGGESTIONS[$DEST_INPUT]:-}" ]]; then
     DEST="${SUGGESTIONS[$DEST_INPUT]}"
+elif [[ ("$DEST_INPUT" == "v" || "$DEST_INPUT" == "V") && -n "$VENTOY_DIR" ]]; then
+    DEST="$VENTOY_DIR"
+    [ -d "$VENTOY_DIR/ISOs" ] && DEST="$VENTOY_DIR/ISOs"
 elif [[ "$DEST_INPUT" == "1" && -z "${SUGGESTIONS[1]:-}" ]]; then
     DEST="/run/media/$USER"
 elif [[ "$DEST_INPUT" == "d" || "$DEST_INPUT" == "D" ]]; then
