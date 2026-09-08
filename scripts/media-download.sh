@@ -179,10 +179,10 @@ search_pomfy_fzf() {
 
         local formatted_lines
         formatted_lines=$(echo "$raw_json" | jq -r '.[] | 
-            (if .type == "serie" then "📺 [SÉRIE]" else "🎬 [FILME]" end) as $t |
+            (if .type == "serie" then "📺 Série" else "🎬 Filme" end) as $t |
             (if .year != "" then " (" + .year + ")" else "" end) as $y |
             (if .rating != "" then " • ⭐ " + .rating else "" end) as $r |
-            (if .available then " ✔️ [Disponível]" else " ⏳ [Indisponível]" end) as $st |
+            (if .available then " ✔️" else " ⏳" end) as $st |
             "\($t) \(.title)\($y)\($r)\($st)\t\(.url)\t\(.available)"
         ')
 
@@ -200,11 +200,13 @@ search_pomfy_fzf() {
         local cache_file="/tmp/pomfy_search_${$}.json"
         echo "$raw_json" > "$cache_file"
 
+        local fzf_header=$'[ENTER] Baixar • [Ctrl+O] Pôster HD\n[Ctrl+S] Nova Busca • [Ctrl+D/U] Rolar • [ESC] Sair'
+
         local fzf_output
         fzf_output=$(echo "$formatted_lines" | fzf \
             --expect="ctrl-s,ctrl-r" \
             --prompt="🎬 Selecione Filme ou Série > " \
-            --header="[ENTER] Baixar • [Ctrl+O] Pôster HD • [Ctrl+S] Nova Busca • [Ctrl+J/K] Navegar • [ESC] Sair" \
+            --header="$fzf_header" \
             --height=75% \
             --layout=reverse \
             --border=rounded \
@@ -213,7 +215,7 @@ search_pomfy_fzf() {
             --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
             --bind="ctrl-j:down,ctrl-k:up,ctrl-d:preview-page-down,ctrl-u:preview-page-up,ctrl-o:execute-silent(node \"$script_extractor\" open-poster \"$cache_file\" {2})" \
             --preview="node \"$script_extractor\" render-preview \"$cache_file\" {2}" \
-            --preview-window="right:55%:wrap:border-rounded" \
+            --preview-window="right:48%:wrap:border-rounded" \
             --with-nth=1 \
             --delimiter="\t")
 

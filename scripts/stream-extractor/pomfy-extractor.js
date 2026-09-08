@@ -447,7 +447,7 @@ async function main() {
           try {
             const { execSync } = require('child_process');
             const chafaArt = execSync(`chafa --probe=off --format=symbols --size=30x20 --symbols=sextant+quad+block+half --color-space=rgb "${posterFile}"`, { encoding: 'utf8' });
-            console.log(`\n${c.subtext}🖼️  Pôster Oficial (pressione ${c.peach}Ctrl+O${c.subtext} para abrir em HD):${c.nc}`);
+            console.log(`\n${c.subtext}🖼️  Pôster Oficial [${c.peach}Ctrl+O${c.subtext} = Ver em HD]:${c.nc}`);
             console.log(chafaArt);
           } catch (e) {}
         }
