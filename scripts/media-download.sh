@@ -157,77 +157,99 @@ search_pomfy_fzf() {
         return 1
     fi
 
-    if [ -z "$query" ]; then
-        read -rp "🎬 Digite o nome do filme ou série: " query
-    fi
-    if [ -z "$query" ]; then
-        echo -e "${YELLOW}Busca cancelada.${NC}" >&2
-        return 1
-    fi
+    while true; do
+        if [ -z "$query" ]; then
+            read -rp "🎬 Digite o nome do filme ou série (ou 'q' para sair): " query
+        fi
+        if [ -z "$query" ] || [ "$query" == "q" ] || [ "$query" == "exit" ]; then
+            echo -e "${YELLOW}Busca cancelada.${NC}" >&2
+            return 1
+        fi
 
-    echo -e "${MAUVE}🔍 Pesquisando catálogo Pomfy para: ${BOLD}${query}${NC}..." >&2
-    local raw_json
-    raw_json=$(node "$script_extractor" search "$query" 2>/dev/null || true)
+        echo -e "${MAUVE}🔍 Pesquisando catálogo Pomfy para: ${BOLD}${query}${NC}..." >&2
+        local raw_json
+        raw_json=$(node "$script_extractor" search "$query" 2>/dev/null || true)
 
-    if [ -z "$raw_json" ] || [ "$raw_json" == "[]" ]; then
-        echo -e "${RED}❌ Nenhum filme ou série encontrado para '${query}'.${NC}" >&2
-        return 1
-    fi
+        if [ -z "$raw_json" ] || [ "$raw_json" == "[]" ]; then
+            echo -e "${RED}❌ Nenhum filme ou série encontrado para '${query}'.${NC}" >&2
+            query=""
+            continue
+        fi
 
-    local formatted_lines
-    formatted_lines=$(echo "$raw_json" | jq -r '.[] | 
-        (if .type == "serie" then "📺 [SÉRIE]" else "🎬 [FILME]" end) as $t |
-        (if .year != "" then " (" + .year + ")" else "" end) as $y |
-        (if .rating != "" then " • ⭐ " + .rating else "" end) as $r |
-        (if .available then " ✔️ [Disponível]" else " ⏳ [Indisponível]" end) as $st |
-        "\($t) \(.title)\($y)\($r)\($st)\t\(.url)\t\(.available)"
-    ')
+        local formatted_lines
+        formatted_lines=$(echo "$raw_json" | jq -r '.[] | 
+            (if .type == "serie" then "📺 [SÉRIE]" else "🎬 [FILME]" end) as $t |
+            (if .year != "" then " (" + .year + ")" else "" end) as $y |
+            (if .rating != "" then " • ⭐ " + .rating else "" end) as $r |
+            (if .available then " ✔️ [Disponível]" else " ⏳ [Indisponível]" end) as $st |
+            "\($t) \(.title)\($y)\($r)\($st)\t\(.url)\t\(.available)"
+        ')
 
-    if [ -z "$formatted_lines" ]; then
-        echo -e "${RED}❌ Não foi possível formatar os resultados do Pomfy.${NC}" >&2
-        return 1
-    fi
+        if [ -z "$formatted_lines" ]; then
+            echo -e "${RED}❌ Não foi possível formatar os resultados do Pomfy.${NC}" >&2
+            query=""
+            continue
+        fi
 
-    if ! command -v fzf >/dev/null 2>&1 || [ ! -t 0 ]; then
-        echo "$formatted_lines" | head -n1 | cut -f2
+        if ! command -v fzf >/dev/null 2>&1 || [ ! -t 0 ]; then
+            echo "$formatted_lines" | head -n1 | cut -f2
+            return 0
+        fi
+
+        local cache_file="/tmp/pomfy_search_${$}.json"
+        echo "$raw_json" > "$cache_file"
+
+        local fzf_output
+        fzf_output=$(echo "$formatted_lines" | fzf \
+            --expect="ctrl-s,ctrl-r" \
+            --prompt="🎬 Selecione Filme ou Série > " \
+            --header="[ENTER] Baixar • [Ctrl+S] Nova Busca • [Ctrl+J/K] Navegar • [Ctrl+D/U] Sinopse • [ESC] Sair" \
+            --height=75% \
+            --layout=reverse \
+            --border=rounded \
+            --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
+            --color=fg:#cdd6f4,header:#cba6f7,info:#cba6f7,pointer:#f5e0dc \
+            --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
+            --bind="ctrl-j:down,ctrl-k:up,ctrl-d:preview-page-down,ctrl-u:preview-page-up" \
+            --preview="node \"$script_extractor\" render-preview \"$cache_file\" {2}" \
+            --preview-window="right:55%:wrap:border-rounded" \
+            --with-nth=1 \
+            --delimiter="\t")
+
+        rm -f "$cache_file"
+
+        if [ -z "$fzf_output" ]; then
+            echo -e "${YELLOW}Busca cancelada pelo usuário.${NC}" >&2
+            return 1
+        fi
+
+        local key_pressed
+        key_pressed=$(echo "$fzf_output" | head -n1)
+        local selected
+        selected=$(echo "$fzf_output" | tail -n +2)
+
+        if [ "$key_pressed" == "ctrl-s" ] || [ "$key_pressed" == "ctrl-r" ]; then
+            echo ""
+            read -rp "🔍 Digite o novo termo de pesquisa: " query
+            continue
+        fi
+
+        if [ -z "$selected" ]; then
+            query=""
+            continue
+        fi
+
+        local chosen_url is_avail
+        chosen_url=$(echo "$selected" | cut -f2)
+        is_avail=$(echo "$selected" | cut -f3)
+
+        if [ "$is_avail" == "false" ]; then
+            echo -e "${PEACH}⚠️ Aviso: Este título pode não estar indexado no momento pelo servidor.${NC}" >&2
+        fi
+
+        echo "$chosen_url"
         return 0
-    fi
-
-    local cache_file="/tmp/pomfy_search_${$}.json"
-    echo "$raw_json" > "$cache_file"
-
-    local selected
-    selected=$(echo "$formatted_lines" | fzf \
-        --prompt="🎬 Selecione Filme ou Série > " \
-        --header="[ENTER] Baixar  •  [Ctrl+J/K] Navegar  •  [Ctrl+D/U] Rolar Sinopse  •  [ESC] Sair" \
-        --height=70% \
-        --layout=reverse \
-        --border=rounded \
-        --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
-        --color=fg:#cdd6f4,header:#cba6f7,info:#cba6f7,pointer:#f5e0dc \
-        --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
-        --bind="ctrl-j:down,ctrl-k:up,ctrl-d:preview-page-down,ctrl-u:preview-page-up" \
-        --preview="node \"$script_extractor\" render-preview \"$cache_file\" {2}" \
-        --preview-window="right:55%:wrap:border-rounded" \
-        --with-nth=1 \
-        --delimiter="\t")
-
-    rm -f "$cache_file"
-
-    if [ -z "$selected" ]; then
-        echo -e "${YELLOW}Busca cancelada pelo usuário.${NC}" >&2
-        return 1
-    fi
-
-    local chosen_url is_avail
-    chosen_url=$(echo "$selected" | cut -f2)
-    is_avail=$(echo "$selected" | cut -f3)
-
-    if [ "$is_avail" == "false" ]; then
-        echo -e "${PEACH}⚠️ Aviso: Este título pode não estar indexado no momento pelo servidor.${NC}" >&2
-    fi
-
-    echo "$chosen_url"
+    done
 }
 
 get_now_playing_info() {
@@ -1740,14 +1762,41 @@ run_cli_mode() {
 
         echo -e "${BLUE}📂 Pasta de Destino:${NC} ${dest_a}"
         echo ""
-        echo -e "${BOLD}Escolha o Formato de Áudio:${NC}"
-        echo -e "  ${BLUE}[1]${NC} 🎵 MP3 320kbps (Capa Oficial + Tags ID3 + Letras .lrc) [Padrão]"
-        echo -e "  ${GREEN}[2]${NC} 💎 FLAC Lossless (Áudio Estúdio sem perdas)"
-        echo -e "  ${PEACH}[3]${NC} ⚡ M4A AAC (Stream Nativo Rápido)"
-        echo -e "  ${RED}[q]${NC} Cancelar"
-        echo ""
-        read -rp "Opção [1-3, padrão: 1]: " sp_opt
-        sp_opt="${sp_opt:-1}"
+        local sp_opt=""
+        if command -v fzf >/dev/null 2>&1 && [ -t 0 ]; then
+            local sp_menu_in="1\t🎵 MP3 320kbps (Capa Oficial + Tags ID3 + Letras .lrc)\tFormato universal com qualidade máxima (320kbps CBR), capa em alta definição e letras sincronizadas (.lrc).\n2\t💎 FLAC Lossless (Áudio Estúdio sem perdas)\tÁudio 100% puro e sem compressão com máxima fidelidade sonora para audiófilos.\n3\t⚡ M4A AAC (Stream Nativo Rápido)\tCodec de alta eficiência da Apple/Spotify, menor tempo de download e processamento."
+
+            local sp_chosen
+            sp_chosen=$(echo -e "$sp_menu_in" | fzf \
+                --prompt="🎧 Escolha o Formato Spotify > " \
+                --header="[ENTER] Confirmar • [Ctrl+J/K] Navegar • [ESC] Cancelar" \
+                --height=45% \
+                --layout=reverse \
+                --border=rounded \
+                --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
+                --color=fg:#cdd6f4,header:#a6e3a1,info:#a6e3a1,pointer:#f5e0dc \
+                --color=marker:#b4befe,fg+:#cdd6f4,prompt:#a6e3a1,hl+:#f38ba8 \
+                --bind="ctrl-j:down,ctrl-k:up" \
+                --with-nth=2 \
+                --delimiter="\t" \
+                --preview='echo -e "\n\033[1;38;2;166;227;161m╭────────────────────────────────────────╮\033[0m\n\033[1;38;2;166;227;161m│ {2}\033[0m\n\033[1;38;2;166;227;161m╰────────────────────────────────────────╯\033[0m\n\n\033[38;2;205;214;244m{3}\033[0m"' \
+                --preview-window="right:45%:wrap:border-rounded")
+
+            if [ -z "$sp_chosen" ]; then
+                echo -e "\n${RED}Cancelado.${NC}"
+                exit 0
+            fi
+            sp_opt=$(echo "$sp_chosen" | cut -f1)
+        else
+            echo -e "${BOLD}Escolha o Formato de Áudio:${NC}"
+            echo -e "  ${BLUE}[1]${NC} 🎵 MP3 320kbps (Capa Oficial + Tags ID3 + Letras .lrc) [Padrão]"
+            echo -e "  ${GREEN}[2]${NC} 💎 FLAC Lossless (Áudio Estúdio sem perdas)"
+            echo -e "  ${PEACH}[3]${NC} ⚡ M4A AAC (Stream Nativo Rápido)"
+            echo -e "  ${RED}[q]${NC} Cancelar"
+            echo ""
+            read -rp "Opção [1-3, padrão: 1]: " sp_opt
+            sp_opt="${sp_opt:-1}"
+        fi
 
         case "$sp_opt" in
             1)
@@ -1816,22 +1865,49 @@ run_cli_mode() {
         fi
     fi
 
-    echo ""
-    echo -e "${BOLD}Escolha o Formato de Download:${NC}"
-    echo -e "  ${BLUE}[1]${NC} 🎥 Melhor Qualidade MP4 (1080p/2K/4K + Legendas pt/en)"
-    echo -e "  ${GREEN}[2]${NC} 🎵 Apenas Áudio MP3 (320kbps + Capa + Tags ID3)"
-    echo -e "  ${PEACH}[3]${NC} ⚡ Rápido e Leve (720p balanceado)"
-    echo -e "  ${TEAL}[4]${NC} ✂️ Cortar Trecho Cirúrgico (Clip)"
-    echo -e "  ${YELLOW}[5]${NC} 🗜️ Comprimir para Discord / WhatsApp (<10MB)"
-    echo -e "  ${MAUVE}[6]${NC} 🎞️ Gerar GIF Animado Fluido"
-    echo -e "  ${BLUE}[7]${NC} ⏩ Modo Estudo (Sem silêncios + 1.5x de velocidade)"
-    echo -e "  ${MAUVE}[8]${NC} 🤖 Transcrição Limpa para IA (.md / pronto para ChatGPT & Claude)"
-    echo -e "  ${SUBTEXT}[9]${NC} 📝 Apenas Legendas (.srt bruto)"
-    echo -e "  ${SUBTEXT}[10]${NC} 🖼️ Apenas Capa / Thumbnail em Alta Resolução"
-    echo -e "  ${RED}[q]${NC} Cancelar"
-    echo ""
-    read -rp "Opção [1-10, padrão: 1]: " opt
-    opt="${opt:-1}"
+    local opt=""
+    if command -v fzf >/dev/null 2>&1 && [ -t 0 ]; then
+        local vid_menu_in="1\t🎥 Melhor Qualidade MP4 (1080p/2K/4K + Legendas)\tMáxima resolução original com aceleração multi-thread (16 conexões paralelas) e legendas pt/en embutidas.\n2\t🎵 Apenas Áudio MP3 (320kbps + Capa + Tags ID3)\tExtração direta de áudio em 320kbps CBR com capa oficial embutida e metadados preenchidos.\n3\t⚡ Rápido e Leve (720p balanceado)\tDownload ultrarrápido em 720p, ideal para economizar espaço e assistir rapidamente.\n4\t✂️ Cortar Trecho Cirúrgico (Clip)\tBaixa apenas o intervalo de minutagem desejado sem precisar baixar o vídeo inteiro.\n5\t🗜️ Comprimir para Discord / WhatsApp (<10MB)\tComprime o arquivo em dois passos inteligentes garantindo tamanho menor que 10MB.\n6\t🎞️ Gerar GIF Animado Fluido\tGera um GIF animado em alta taxa de quadros e paleta otimizada a partir de um trecho.\n7\t⏩ Modo Estudo (Sem silêncios + 1.5x)\tRemove pausas e respirações e acelera o áudio para 1.5x com correção de tom.\n8\t🤖 Transcrição Limpa para IA (.md)\tExtrai texto falado sem timestamps e copia direto pro Clipboard pronto para LLMs.\n9\t📝 Apenas Legendas (.srt)\tBaixa apenas o arquivo de legendas brutas em formato .srt sincronizado.\n10\t🖼️ Apenas Capa / Thumbnail (4K)\tSalva a imagem de capa em alta resolução da mídia na pasta de imagens."
+
+        local chosen_vid
+        chosen_vid=$(echo -e "$vid_menu_in" | fzf \
+            --prompt="🎬 Escolha o Formato > " \
+            --header="[ENTER] Confirmar • [Ctrl+J/K] Navegar • [ESC] Cancelar" \
+            --height=55% \
+            --layout=reverse \
+            --border=rounded \
+            --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
+            --color=fg:#cdd6f4,header:#cba6f7,info:#cba6f7,pointer:#f5e0dc \
+            --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
+            --bind="ctrl-j:down,ctrl-k:up" \
+            --with-nth=2 \
+            --delimiter="\t" \
+            --preview='echo -e "\n\033[1;38;2;203;166;247m╭────────────────────────────────────────╮\033[0m\n\033[1;38;2;203;166;247m│ {2}\033[0m\n\033[1;38;2;203;166;247m╰────────────────────────────────────────╯\033[0m\n\n\033[38;2;205;214;244m{3}\033[0m"' \
+            --preview-window="right:45%:wrap:border-rounded")
+
+        if [ -z "$chosen_vid" ]; then
+            echo -e "\n${RED}Cancelado.${NC}"
+            exit 0
+        fi
+        opt=$(echo "$chosen_vid" | cut -f1)
+    else
+        echo ""
+        echo -e "${BOLD}Escolha o Formato de Download:${NC}"
+        echo -e "  ${BLUE}[1]${NC} 🎥 Melhor Qualidade MP4 (1080p/2K/4K + Legendas pt/en)"
+        echo -e "  ${GREEN}[2]${NC} 🎵 Apenas Áudio MP3 (320kbps + Capa + Tags ID3)"
+        echo -e "  ${PEACH}[3]${NC} ⚡ Rápido e Leve (720p balanceado)"
+        echo -e "  ${TEAL}[4]${NC} ✂️ Cortar Trecho Cirúrgico (Clip)"
+        echo -e "  ${YELLOW}[5]${NC} 🗜️ Comprimir para Discord / WhatsApp (<10MB)"
+        echo -e "  ${MAUVE}[6]${NC} 🎞️ Gerar GIF Animado Fluido"
+        echo -e "  ${BLUE}[7]${NC} ⏩ Modo Estudo (Sem silêncios + 1.5x de velocidade)"
+        echo -e "  ${MAUVE}[8]${NC} 🤖 Transcrição Limpa para IA (.md / pronto para ChatGPT & Claude)"
+        echo -e "  ${SUBTEXT}[9]${NC} 📝 Apenas Legendas (.srt bruto)"
+        echo -e "  ${SUBTEXT}[10]${NC} 🖼️ Apenas Capa / Thumbnail em Alta Resolução"
+        echo -e "  ${RED}[q]${NC} Cancelar"
+        echo ""
+        read -rp "Opção [1-10, padrão: 1]: " opt
+        opt="${opt:-1}"
+    fi
 
     case "$opt" in
         1)

@@ -410,29 +410,6 @@ async function main() {
         nc: '\x1b[0m'
       };
 
-      // Tenta renderizar o pôster com chafa se disponível
-      if (item.posterPath && fs.existsSync('/usr/bin/chafa')) {
-        const posterDir = '/tmp/pomfy_posters';
-        if (!fs.existsSync(posterDir)) fs.mkdirSync(posterDir, { recursive: true });
-        const posterFile = `${posterDir}/${item.id}.jpg`;
-        if (!fs.existsSync(posterFile)) {
-          try {
-            const pRes = await fetch(`https://image.tmdb.org/t/p/w185${item.posterPath}`);
-            if (pRes.ok) {
-              const buf = Buffer.from(await pRes.arrayBuffer());
-              fs.writeFileSync(posterFile, buf);
-            }
-          } catch (e) {}
-        }
-        if (fs.existsSync(posterFile)) {
-          try {
-            const { execSync } = require('child_process');
-            const chafaArt = execSync(`chafa --size=24x12 --symbols=block,border,space "${posterFile}"`, { encoding: 'utf8' });
-            console.log(chafaArt);
-          } catch (e) {}
-        }
-      }
-
       console.log(`${c.mauve}${c.bold}╭────────────────────────────────────────────────────────╮${c.nc}`);
       console.log(`${c.mauve}${c.bold}│  ${item.type === 'serie' ? '📺 SÉRIE' : '🎬 FILME'}: ${item.title}${item.year ? ` (${item.year})` : ''}${c.nc}`);
       console.log(`${c.mauve}${c.bold}╰────────────────────────────────────────────────────────╯${c.nc}`);
@@ -451,8 +428,33 @@ async function main() {
       } else {
         console.log(`${c.red}${c.bold}⏳ Status: Não indexado no momento pelo servidor${c.nc}`);
       }
+
+      // Renderiza pôster com caracteres de texto puro (sem sobreposição gráfica no terminal)
+      if (item.posterPath && fs.existsSync('/usr/bin/chafa')) {
+        const posterDir = '/tmp/pomfy_posters';
+        if (!fs.existsSync(posterDir)) fs.mkdirSync(posterDir, { recursive: true });
+        const posterFile = `${posterDir}/${item.id}.jpg`;
+        if (!fs.existsSync(posterFile)) {
+          try {
+            const pRes = await fetch(`https://image.tmdb.org/t/p/w185${item.posterPath}`);
+            if (pRes.ok) {
+              const buf = Buffer.from(await pRes.arrayBuffer());
+              fs.writeFileSync(posterFile, buf);
+            }
+          } catch (e) {}
+        }
+        if (fs.existsSync(posterFile)) {
+          try {
+            const { execSync } = require('child_process');
+            const chafaArt = execSync(`chafa --format=symbols --size=20x10 --symbols=block,border,space "${posterFile}"`, { encoding: 'utf8' });
+            console.log(`\n${c.subtext}🖼️  Pôster Oficial:${c.nc}`);
+            console.log(chafaArt);
+          } catch (e) {}
+        }
+      }
+
       console.log(`\n${c.blue}${c.bold}📖 SINOPSE:${c.nc}`);
-      console.log(`${c.text}${item.overview || 'Sem sinopse disponível.'}${c.nc}`);
+      console.log(`${c.text}${item.overview || 'Sem sinopse disponível.'}${c.nc}\n`);
       return;
     }
 
