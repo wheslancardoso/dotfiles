@@ -1926,6 +1926,7 @@ show_help() {
     echo -e "  ${BLUE}dl --study 1.5 <url>${NC}        Remove silêncios e acelera para estudo"
     echo -e "  ${BLUE}dl --cookies brave <url>${NC}    Usa cookies do navegador para vídeos 18+"
     echo -e "  ${BLUE}dl --gallery <url>${NC}          Baixa álbuns de fotos (Instagram/Twitter)"
+    echo -e "  ${BLUE}dl --sub-only <url>${NC}         Baixa apenas as legendas (.srt)"
     echo -e "  ${BLUE}dl --thumb <url>${NC}            Baixa apenas a capa / thumbnail em 4K"
     echo -e "  ${TEAL}dl --pomfy <nome|url>${NC}       Busca e baixa filme ou série do Pomfy (FZF)"
     echo -e "  ${TEAL}dl -P \"<busca>\"${NC}               Busca filmes/séries direto no catálogo Pomfy"
