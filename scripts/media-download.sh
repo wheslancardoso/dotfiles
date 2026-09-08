@@ -106,7 +106,8 @@ get_clipboard_url() {
 
 is_url_or_file() {
     local input="$1"
-    if [[ "$input" =~ ^https?:// ]] || [[ "$input" =~ ^magnet:\? ]] || [ -f "$input" ] || [ -d "$input" ]; then
+    input="${input/#\~/$HOME}"
+    if [[ "$input" =~ ^https?:// ]] || [[ "$input" =~ ^magnet:\? ]] || [ -f "$input" ] || [ -d "$input" ] || [ -f "$DEFAULT_DEST_PRIVATE/$input" ]; then
         return 0
     fi
     return 1
@@ -375,13 +376,15 @@ download_batch() {
         exit 1
     fi
 
+    local file_ext="${file##*.}"
+    file_ext=$(echo "$file_ext" | tr '[:upper:]' '[:lower:]')
+    local file_name
+    file_name=$(basename "$file")
+
     local urls=()
-    while IFS= read -r line || [ -n "$line" ]; do
-        line=$(echo "$line" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
-        if [[ "$line" =~ ^https?:// ]] || [[ "$line" =~ ^magnet:\? ]]; then
-            urls+=("$line")
-        fi
-    done < "$file"
+    while IFS= read -r line; do
+        [ -n "$line" ] && urls+=("$line")
+    done < <(grep -oP '(https?://[^\s\)\"\>\]]+|magnet:\?[^\s\)\"\>\]]+)' "$file" 2>/dev/null | sed -e 's/[.,;:]$//' | awk '!seen[$0]++')
 
     local total="${#urls[@]}"
     if [ "$total" -eq 0 ]; then
@@ -392,7 +395,8 @@ download_batch() {
     echo -e "${MAUVE}${BOLD}╭──────────────────────────────────────────────────────────────╮${NC}"
     echo -e "${MAUVE}${BOLD}│       📦 DOWNLOAD EM LOTE APEX V2 (BATCH MODE ATIVADO)       │${NC}"
     echo -e "${MAUVE}${BOLD}╰──────────────────────────────────────────────────────────────╯${NC}"
-    echo -e "  ${BOLD}Fila de Mídias :${NC} ${BOLD}$total links${NC}"
+    echo -e "  ${BOLD}Arquivo Fonte  :${NC} $file_name (${file_ext^^})"
+    echo -e "  ${BOLD}Fila de Mídias :${NC} ${BOLD}$total links válidos detectados${NC}"
     echo -e "  ${BLUE}Pasta Destino  :${NC} $dest"
     echo -e "  ${SUBTEXT}Multi-thread 16 conexões ativas + detecção automática de duplicados.${NC}\n"
 
@@ -404,7 +408,8 @@ download_batch() {
 
     for u in "${urls[@]}"; do
         current=$((current + 1))
-        echo -e "${PEACH}[$current/$total] ⬇️ Processando:${NC} $u"
+        local pct=$(( current * 100 / total ))
+        echo -e "${PEACH}[$current/$total] (${pct}%) ⬇️ Processando:${NC} $u"
         local item_dest="$dest"
         if is_sensitive_domain "$u" || [ "$FORCE_PRIVATE" = true ]; then
             item_dest="$DEFAULT_DEST_PRIVATE/Videos_e_Cenas"
@@ -417,7 +422,9 @@ download_batch() {
         [ -f "$archive_file" ] && lines_before=$(wc -l < "$archive_file" 2>/dev/null || echo 0)
 
         local res=0
-        if is_magnet_or_torrent "$u"; then
+        if is_pomfy_domain "$u"; then
+            download_streaming_pomfy "$u" "$SEASON_ARG" "$EP_ARG" || res=1
+        elif is_magnet_or_torrent "$u"; then
             download_torrent_or_magnet "$u" "$item_dest" || res=1
         elif is_direct_download_file "$u"; then
             download_direct_file "$u" "$item_dest" || res=1
@@ -1704,7 +1711,7 @@ run_cli_mode() {
             read -rp "Pressione [Enter] para usar esta URL ou digite outra (ou 'p' para Pomfy): " input_url
             url="${input_url:-$clip_url}"
         elif command -v fzf >/dev/null 2>&1 && [ -t 0 ]; then
-            local main_actions="1\t🍿 Pesquisar Filmes & Séries no Catálogo Pomfy\tAbre o navegador de filmes e séries com sinopse oficial, notas TMDB e download 1080p.\n2\t🔍 Pesquisar Vídeos no YouTube (FZF)\tBusca vídeos diretamente pelo terminal com seletor interativo.\n3\t🔗 Inserir ou Colar URL Manualmente\tDigita ou cola qualquer link da internet (YouTube, Reddit, Instagram, etc.).\n4\t🎵 Baixar o que está tocando agora (MPRIS / Spotify)\tDetecta a música ou vídeo em reprodução no seu sistema e baixa na hora.\n5\t📂 Ver Histórico de Downloads\tAbre a lista de downloads anteriores pesquisável com FZF.\n6\t🔄 Atualizar Motores de Download\tVerifica e atualiza o yt-dlp, spotdl e gallery-dl.\n7\t🚪 Sair\tFecha o cockpit de mídia."
+            local main_actions="1\t🍿 Pesquisar Filmes & Séries no Catálogo Pomfy\tAbre o navegador de filmes e séries com sinopse oficial, notas TMDB e download 1080p.\n2\t🔍 Pesquisar Vídeos no YouTube (FZF)\tBusca vídeos diretamente pelo terminal com seletor interativo.\n3\t🔗 Inserir URL ou Arquivo de Lote (.txt / .md)\tDigita ou cola link da web ou caminho de arquivo com links (.txt, .md).\n4\t🎵 Baixar o que está tocando agora (MPRIS / Spotify)\tDetecta a música ou vídeo em reprodução no seu sistema e baixa na hora.\n5\t📂 Ver Histórico de Downloads\tAbre a lista de downloads anteriores pesquisável com FZF.\n6\t🔄 Atualizar Motores de Download\tVerifica e atualiza o yt-dlp, spotdl e gallery-dl.\n7\t🚪 Sair\tFecha o cockpit de mídia."
 
             local chosen_action
             chosen_action=$(echo -e "$main_actions" | fzf \
@@ -1746,7 +1753,7 @@ run_cli_mode() {
                     fi
                     ;;
                 3)
-                    read -rp "Cole ou digite a URL: " url
+                    read -rp "Cole a URL ou caminho do arquivo (.txt/.md): " url
                     ;;
                 4)
                     local now_url
@@ -1779,6 +1786,16 @@ run_cli_mode() {
     if [ -z "$url" ]; then
         echo -e "\n${RED}❌ Nenhuma URL fornecida.${NC}"
         exit 1
+    fi
+
+    url="${url/#\~/$HOME}"
+    local batch_file_candidate="$url"
+    if [ ! -f "$batch_file_candidate" ] && [ -f "$DEFAULT_DEST_PRIVATE/$batch_file_candidate" ]; then
+        batch_file_candidate="$DEFAULT_DEST_PRIVATE/$batch_file_candidate"
+    fi
+    if [ -f "$batch_file_candidate" ]; then
+        download_batch "$batch_file_candidate" "$dest_v" "video"
+        exit 0
     fi
 
     if [ "$url" == "p" ] || [ "$url" == "pomfy" ] || [ "$url" == "filme" ] || [ "$url" == "serie" ]; then
@@ -2057,8 +2074,8 @@ show_help() {
     echo -e "  ${BLUE}dl -n, --now${NC}                Baixa o que está tocando agora (SUPER + CTRL + D)"
     echo -e "  ${BLUE}dl -h, --history${NC}            Histórico de downloads com busca FZF"
     echo -e "  ${BLUE}dl -u, --update${NC}             Atualiza os motores de download (yt-dlp, spotdl, gallery-dl)"
-    echo -e "  ${BLUE}dl -b <lista.txt>${NC}          Baixa em lote todos os links de um arquivo de texto"
-    echo -e "  ${BLUE}dl -p <lista.txt>${NC}          Baixa a lista toda direto para a pasta .privado"
+    echo -e "  ${BLUE}dl -b <lista.txt|md>${NC}       Baixa em lote todos os links de um arquivo (.txt ou .md)"
+    echo -e "  ${BLUE}dl -p <lista.txt|md>${NC}       Baixa a lista toda direto para a pasta .privado"
     echo ""
     echo -e "${BOLD}Flags Diretas de Linha de Comando:${NC}"
     echo -e "  ${GREEN}dl -a <url>${NC}                 Baixa direto como Áudio MP3 320k"
@@ -2067,7 +2084,7 @@ show_help() {
     echo -e "  ${BLUE}dl -s, --subs <url>${NC}         Embuti legendas automáticas pt/en no vídeo"
     echo -e "  ${GREEN}dl --no-sponsors <url>${NC}       Remove jabás e patrocínios embutidos (SponsorBlock)"
     echo -e "  ${PEACH}dl -p <url>${NC}                 Roteia direto para a pasta .privado"
-    echo -e "  ${BLUE}dl -b, --batch <file.txt>${NC}   Processa arquivo de texto com links em lote"
+    echo -e "  ${BLUE}dl -b, --batch <file>${NC}       Processa arquivo (.txt, .md) com links em lote"
     echo -e "  ${BLUE}dl --here <url>${NC}             Baixa diretamente na pasta atual onde o terminal está"
     echo -e "  ${BLUE}dl -d, --dir <pasta>${NC}        Define diretório de destino customizado (ex: dl -d .)"
     echo -e "  ${TEAL}dl -c 01:20-02:40 <url>${NC}     Corta trecho cirúrgico do vídeo"
