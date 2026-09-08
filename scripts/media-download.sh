@@ -193,18 +193,26 @@ search_pomfy_fzf() {
         return 0
     fi
 
+    local cache_file="/tmp/pomfy_search_${$}.json"
+    echo "$raw_json" > "$cache_file"
+
     local selected
     selected=$(echo "$formatted_lines" | fzf \
         --prompt="🎬 Selecione Filme ou Série > " \
-        --header="Pressione ENTER para selecionar ou ESC para cancelar" \
-        --height=50% \
+        --header="[ENTER] Baixar  •  [Ctrl+J/K] Navegar  •  [Ctrl+D/U] Rolar Sinopse  •  [ESC] Sair" \
+        --height=70% \
         --layout=reverse \
         --border=rounded \
         --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
         --color=fg:#cdd6f4,header:#cba6f7,info:#cba6f7,pointer:#f5e0dc \
         --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
+        --bind="ctrl-j:down,ctrl-k:up,ctrl-d:preview-page-down,ctrl-u:preview-page-up" \
+        --preview="node \"$script_extractor\" render-preview \"$cache_file\" {2}" \
+        --preview-window="right:55%:wrap:border-rounded" \
         --with-nth=1 \
         --delimiter="\t")
+
+    rm -f "$cache_file"
 
     if [ -z "$selected" ]; then
         echo -e "${YELLOW}Busca cancelada pelo usuário.${NC}" >&2

@@ -305,15 +305,21 @@ async function searchCatalog(query) {
       const isTv = r.media_type === 'tv';
       const available = isTv ? cat.series.includes(r.id) : cat.filmes.includes(r.id);
       const title = isTv ? r.name : r.title;
+      const originalTitle = isTv ? r.original_name : r.original_title;
       const year = (isTv ? r.first_air_date : r.release_date || '').split('-')[0] || '';
       const rating = r.vote_average ? r.vote_average.toFixed(1) : '';
+      const voteCount = r.vote_count || 0;
+      const overview = r.overview || 'Sinopse não cadastrada no catálogo.';
       const url = isTv ? `https://pomfy.online/serie/${r.id}` : `https://pomfy.online/assistir/${r.id}?tipo=filme`;
       return {
         id: r.id,
         type: isTv ? 'serie' : 'filme',
         title,
+        originalTitle,
         year,
         rating,
+        voteCount,
+        overview,
         available,
         url
       };
@@ -331,17 +337,9 @@ async function main() {
   if (args.length === 0 || args.includes('-h') || args.includes('--help')) {
     console.log(`Uso:
   node pomfy-extractor.js search <Nome do Filme ou Série>
+  node pomfy-extractor.js render-preview <arquivo_cache.json> <URL>
   node pomfy-extractor.js info <URL ou ID da Série>
   node pomfy-extractor.js stream <URL ou opções>
-
-Exemplos:
-  node pomfy-extractor.js search "Interestelar"
-  node pomfy-extractor.js search "Breaking Bad"
-  node pomfy-extractor.js info 1396
-  node pomfy-extractor.js info "https://pomfy.online/serie/1396"
-  node pomfy-extractor.js stream "https://pomfy.online/assistir/1396?tipo=serie&temporada=1&episodio=1"
-  node pomfy-extractor.js stream "https://pomfy.online/assistir/550?tipo=filme"
-  node pomfy-extractor.js stream --id 1396 --season 1 --ep 1
 `);
     process.exit(0);
   }
@@ -349,6 +347,47 @@ Exemplos:
   const mode = args[0];
 
   try {
+    if (mode === 'render-preview') {
+      const jsonFile = args[1];
+      const targetUrl = args[2];
+      const fs = require('fs');
+      if (!fs.existsSync(jsonFile)) process.exit(0);
+      const list = JSON.parse(fs.readFileSync(jsonFile, 'utf8'));
+      const item = list.find(x => x.url === targetUrl);
+      if (!item) process.exit(0);
+
+      const c = {
+        mauve: '\x1b[38;2;203;166;247m',
+        blue: '\x1b[38;2;137;180;250m',
+        green: '\x1b[38;2;166;227;161m',
+        peach: '\x1b[38;2;250;179;135m',
+        yellow: '\x1b[38;2;249;226;175m',
+        text: '\x1b[38;2;205;214;244m',
+        subtext: '\x1b[38;2;166;173;200m',
+        red: '\x1b[38;2;243;139;168m',
+        bold: '\x1b[1m',
+        nc: '\x1b[0m'
+      };
+
+      console.log(`${c.mauve}${c.bold}╭────────────────────────────────────────────────────────╮${c.nc}`);
+      console.log(`${c.mauve}${c.bold}│  ${item.type === 'serie' ? '📺 SÉRIE' : '🎬 FILME'}: ${item.title}${item.year ? ` (${item.year})` : ''}${c.nc}`);
+      console.log(`${c.mauve}${c.bold}╰────────────────────────────────────────────────────────╯${c.nc}`);
+      if (item.originalTitle && item.originalTitle !== item.title) {
+        console.log(`${c.subtext}Título Original: ${item.originalTitle}${c.nc}`);
+      }
+      if (item.rating) {
+        console.log(`${c.yellow}⭐ Avaliação TMDB:${c.nc} ${item.rating}/10 (${(item.voteCount || 0).toLocaleString('pt-BR')} votos)`);
+      }
+      if (item.available) {
+        console.log(`${c.green}${c.bold}✔️ Status: DISPONÍVEL NO POMFY (1080p Full HD / Dual Áudio)${c.nc}`);
+      } else {
+        console.log(`${c.red}${c.bold}⏳ Status: Não indexado no momento pelo servidor${c.nc}`);
+      }
+      console.log(`\n${c.blue}${c.bold}📖 SINOPSE:${c.nc}`);
+      console.log(`${c.text}${item.overview || 'Sem sinopse disponível.'}${c.nc}`);
+      return;
+    }
+
     if (mode === 'search') {
       const query = args.slice(1).join(' ');
       if (!query) throw new Error('Forneça um termo de pesquisa.');
