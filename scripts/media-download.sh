@@ -150,11 +150,29 @@ search_youtube_fzf() {
     echo "$selected" | cut -f2
 }
 
+get_pomfy_extractor() {
+    local base_dir
+    base_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+    if [ -f "$base_dir/../lib/stream-extractor/pomfy-extractor.js" ]; then
+        echo "$base_dir/../lib/stream-extractor/pomfy-extractor.js"
+    elif [ -f "$base_dir/stream-extractor/pomfy-extractor.js" ]; then
+        echo "$base_dir/stream-extractor/pomfy-extractor.js"
+    elif [ -f "$HOME/.local/share/apex-dl/lib/stream-extractor/pomfy-extractor.js" ]; then
+        echo "$HOME/.local/share/apex-dl/lib/stream-extractor/pomfy-extractor.js"
+    elif [ -f "$HOME/dotfiles/scripts/stream-extractor/pomfy-extractor.js" ]; then
+        echo "$HOME/dotfiles/scripts/stream-extractor/pomfy-extractor.js"
+    elif [ -f "/home/lan/dotfiles/scripts/stream-extractor/pomfy-extractor.js" ]; then
+        echo "/home/lan/dotfiles/scripts/stream-extractor/pomfy-extractor.js"
+    fi
+}
+
 search_pomfy_fzf() {
     local query="$1"
-    local script_extractor="/home/lan/dotfiles/scripts/stream-extractor/pomfy-extractor.js"
-    if [ ! -f "$script_extractor" ]; then
-        echo -e "${RED}❌ Extrator Pomfy não encontrado em $script_extractor${NC}" >&2
+    local script_extractor
+    script_extractor="$(get_pomfy_extractor)"
+    if [ -z "$script_extractor" ] || [ ! -f "$script_extractor" ]; then
+        echo -e "${RED}❌ Extrator Pomfy não encontrado.${NC}" >&2
         return 1
     fi
 
@@ -605,6 +623,33 @@ apply_study_filters() {
     fi
 }
 
+render_media_card() {
+    local title="$1"
+    local artist="$2"
+    local thumb_url="$3"
+    local engine="$4"
+    local format="$5"
+    local dest="$6"
+
+    echo -e "${MAUVE}${BOLD}╭───────────────────────────────────────────────────────────────╮${NC}"
+    echo -e "${MAUVE}${BOLD}│   ⚡ APEX MEDIA COCKPIT • ${engine}${NC}"
+    echo -e "${MAUVE}${BOLD}╰───────────────────────────────────────────────────────────────╯${NC}"
+    echo -e "  ${BOLD}🎬 Mídia       :${NC} ${GREEN}${title:-Mídia Online}${NC}"
+    [ -n "$artist" ] && echo -e "  ${BOLD}👤 Artista/Canal:${NC} ${BLUE}${artist}${NC}"
+    [ -n "$format" ] && echo -e "  ${BOLD}💎 Formato     :${NC} ${PEACH}${format}${NC}"
+    echo -e "  ${BOLD}📂 Destino     :${NC} ${dest}"
+
+    if [ -n "$thumb_url" ] && command -v chafa >/dev/null 2>&1; then
+        local cache_img="/tmp/apex_media_cover_${$}.jpg"
+        if curl -s -f -m 3 "$thumb_url" -o "$cache_img" 2>/dev/null; then
+            echo ""
+            chafa --probe=off --format=symbols --size=28x14 --symbols=sextant+quad+block+half --color-space=rgb "$cache_img" 2>/dev/null || true
+            rm -f "$cache_img"
+        fi
+    fi
+    echo ""
+}
+
 # ------------------------------------------------------------------------------
 # MOTOR DE DOWNLOAD (VÍDEO / YT-DLP)
 # ------------------------------------------------------------------------------
@@ -647,7 +692,20 @@ download_video() {
         output_tpl="%(playlist_title,playlist)s/%(playlist_index)02d - %(title)s.%(ext)s"
     fi
 
-    [ "$is_batch" = false ] && echo -e "${BLUE}⬇️ Baixando vídeo com aceleração nativa multi-thread (-N 16)...${NC}"
+    if [ "$is_batch" = false ]; then
+        local yt_meta yt_title yt_author yt_thumb
+        if [[ "$url" =~ (youtube\.com|youtu\.be) ]]; then
+            yt_meta=$(curl -s -m 2 "https://www.youtube.com/oembed?url=${url}&format=json" 2>/dev/null || true)
+            if [ -n "$yt_meta" ]; then
+                yt_title=$(echo "$yt_meta" | jq -r '.title // empty' 2>/dev/null || true)
+                yt_author=$(echo "$yt_meta" | jq -r '.author_name // empty' 2>/dev/null || true)
+                yt_thumb=$(echo "$yt_meta" | jq -r '.thumbnail_url // empty' 2>/dev/null || true)
+            fi
+        fi
+        local vid_type="Vídeo Online"
+        [[ "$url" =~ list= ]] && vid_type="Playlist de Vídeos"
+        render_media_card "${yt_title:-$vid_type}" "${yt_author:-Web}" "$yt_thumb" "Video Turbo Suite (yt-dlp)" "${quality^^} MP4" "$dest"
+    fi
     local dl_status=0
     eval yt-dlp \
         $dl_args \
@@ -789,7 +847,20 @@ download_audio() {
         output_tpl="%(playlist_title,playlist)s/%(playlist_index)02d - %(title)s.%(ext)s"
     fi
 
-    [ "$is_batch" = false ] && echo -e "${BLUE}⬇️ Extraindo áudio de alta fidelidade (MP3 320kbps)...${NC}"
+    if [ "$is_batch" = false ]; then
+        local yt_meta yt_title yt_author yt_thumb
+        if [[ "$url" =~ (youtube\.com|youtu\.be) ]]; then
+            yt_meta=$(curl -s -m 2 "https://www.youtube.com/oembed?url=${url}&format=json" 2>/dev/null || true)
+            if [ -n "$yt_meta" ]; then
+                yt_title=$(echo "$yt_meta" | jq -r '.title // empty' 2>/dev/null || true)
+                yt_author=$(echo "$yt_meta" | jq -r '.author_name // empty' 2>/dev/null || true)
+                yt_thumb=$(echo "$yt_meta" | jq -r '.thumbnail_url // empty' 2>/dev/null || true)
+            fi
+        fi
+        local audio_type="Áudio Hi-Fi (YouTube)"
+        [[ "$url" =~ list= ]] && audio_type="Playlist do YouTube"
+        render_media_card "${yt_title:-$audio_type}" "${yt_author:-Canal Oficial}" "$yt_thumb" "Áudio Hi-Fi Suite (yt-dlp)" "MP3 320kbps (Capa + Tags ID3)" "$dest"
+    fi
     local dl_status=0
     eval yt-dlp \
         $dl_args \
@@ -907,7 +978,19 @@ download_spotify() {
     local bitrate_flag="--bitrate 320k"
     [ "$format" == "flac" ] && bitrate_flag="--bitrate disable"
 
-    echo -e "${GREEN}🎵 Baixando do Spotify via spotDL (${format^^} + Capa + Letras .lrc)...${NC}"
+    local sp_meta sp_title sp_thumb
+    sp_meta=$(curl -s -m 2 "https://open.spotify.com/oembed?url=${url}" 2>/dev/null || true)
+    if [ -n "$sp_meta" ]; then
+        sp_title=$(echo "$sp_meta" | jq -r '.title // empty' 2>/dev/null || true)
+        sp_thumb=$(echo "$sp_meta" | jq -r '.thumbnail_url // empty' 2>/dev/null || true)
+    fi
+
+    local item_type="Música"
+    [[ "$url" =~ /playlist/ ]] && item_type="Playlist"
+    [[ "$url" =~ /album/ ]] && item_type="Álbum"
+    [[ "$url" =~ /artist/ ]] && item_type="Discografia do Artista"
+
+    [ "$mode" != "rofi" ] && render_media_card "${sp_title:-Spotify $item_type}" "Spotify Oficial" "$sp_thumb" "Spotify Engine (spotDL)" "${format^^} (320kbps + Letras .lrc + Capa HD)" "$dest"
     if [ "$mode" == "rofi" ]; then
         spotdl download "$url" \
             --format "$format" \
@@ -1174,9 +1257,10 @@ download_streaming_pomfy() {
     local ep_req="$3"
     local dest_base="$CUSTOM_DIR"
 
-    local script_extractor="/home/lan/dotfiles/scripts/stream-extractor/pomfy-extractor.js"
-    if [ ! -f "$script_extractor" ]; then
-        echo -e "${RED}❌ Extrator Pomfy não encontrado em $script_extractor${NC}"
+    local script_extractor
+    script_extractor="$(get_pomfy_extractor)"
+    if [ -z "$script_extractor" ] || [ ! -f "$script_extractor" ]; then
+        echo -e "${RED}❌ Extrator Pomfy não encontrado.${NC}"
         return 1
     fi
 
