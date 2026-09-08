@@ -287,6 +287,42 @@ async function extractStreamUrl(item, timeoutMs = 25000) {
   }
 }
 
+async function searchCatalog(query) {
+  let cat = { filmes: [], series: [] };
+  try {
+    const catRes = await fetch('https://pomfy.online/api/catalogo-ids');
+    if (catRes.ok) cat = await catRes.json();
+  } catch (e) {}
+
+  const tmdbRes = await fetch(`https://api.themoviedb.org/3/search/multi?query=${encodeURIComponent(query)}&page=1&api_key=9e43f45f94705cc8e1d5a0400d19a7b7&language=pt-BR`);
+  if (!tmdbRes.ok) {
+    throw new Error(`Erro ao pesquisar TMDB: ${tmdbRes.status}`);
+  }
+  const tmdb = await tmdbRes.json();
+  const results = (tmdb.results || [])
+    .filter(r => r.media_type === 'movie' || r.media_type === 'tv')
+    .map(r => {
+      const isTv = r.media_type === 'tv';
+      const available = isTv ? cat.series.includes(r.id) : cat.filmes.includes(r.id);
+      const title = isTv ? r.name : r.title;
+      const year = (isTv ? r.first_air_date : r.release_date || '').split('-')[0] || '';
+      const rating = r.vote_average ? r.vote_average.toFixed(1) : '';
+      const url = isTv ? `https://pomfy.online/serie/${r.id}` : `https://pomfy.online/assistir/${r.id}?tipo=filme`;
+      return {
+        id: r.id,
+        type: isTv ? 'serie' : 'filme',
+        title,
+        year,
+        rating,
+        available,
+        url
+      };
+    })
+    .sort((a, b) => (b.available ? 1 : 0) - (a.available ? 1 : 0));
+
+  return results;
+}
+
 // -----------------------------------------------------------------------------
 // CLI HANDLER
 // -----------------------------------------------------------------------------
@@ -294,10 +330,13 @@ async function main() {
   const args = process.argv.slice(2);
   if (args.length === 0 || args.includes('-h') || args.includes('--help')) {
     console.log(`Uso:
+  node pomfy-extractor.js search <Nome do Filme ou Série>
   node pomfy-extractor.js info <URL ou ID da Série>
   node pomfy-extractor.js stream <URL ou opções>
 
 Exemplos:
+  node pomfy-extractor.js search "Interestelar"
+  node pomfy-extractor.js search "Breaking Bad"
   node pomfy-extractor.js info 1396
   node pomfy-extractor.js info "https://pomfy.online/serie/1396"
   node pomfy-extractor.js stream "https://pomfy.online/assistir/1396?tipo=serie&temporada=1&episodio=1"
@@ -310,6 +349,14 @@ Exemplos:
   const mode = args[0];
 
   try {
+    if (mode === 'search') {
+      const query = args.slice(1).join(' ');
+      if (!query) throw new Error('Forneça um termo de pesquisa.');
+      const results = await searchCatalog(query);
+      console.log(JSON.stringify(results, null, 2));
+      return;
+    }
+
     if (mode === 'info') {
       const target = args[1];
       const parsed = parseUrl(target);

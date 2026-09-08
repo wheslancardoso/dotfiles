@@ -60,6 +60,8 @@ FORCE_PRIVATE=false
 BATCH_FILE=""
 SEASON_ARG=""
 EP_ARG=""
+STREAM_AUDIO_LANG="pt"
+STREAM_AUDIO_LANG_SET=false
 
 
 # ------------------------------------------------------------------------------
@@ -145,6 +147,79 @@ search_youtube_fzf() {
     fi
 
     echo "$selected" | cut -f2
+}
+
+search_pomfy_fzf() {
+    local query="$1"
+    local script_extractor="/home/lan/dotfiles/scripts/stream-extractor/pomfy-extractor.js"
+    if [ ! -f "$script_extractor" ]; then
+        echo -e "${RED}❌ Extrator Pomfy não encontrado em $script_extractor${NC}" >&2
+        return 1
+    fi
+
+    if [ -z "$query" ]; then
+        read -rp "🎬 Digite o nome do filme ou série: " query
+    fi
+    if [ -z "$query" ]; then
+        echo -e "${YELLOW}Busca cancelada.${NC}" >&2
+        return 1
+    fi
+
+    echo -e "${MAUVE}🔍 Pesquisando catálogo Pomfy para: ${BOLD}${query}${NC}..." >&2
+    local raw_json
+    raw_json=$(node "$script_extractor" search "$query" 2>/dev/null || true)
+
+    if [ -z "$raw_json" ] || [ "$raw_json" == "[]" ]; then
+        echo -e "${RED}❌ Nenhum filme ou série encontrado para '${query}'.${NC}" >&2
+        return 1
+    fi
+
+    local formatted_lines
+    formatted_lines=$(echo "$raw_json" | jq -r '.[] | 
+        (if .type == "serie" then "📺 [SÉRIE]" else "🎬 [FILME]" end) as $t |
+        (if .year != "" then " (" + .year + ")" else "" end) as $y |
+        (if .rating != "" then " • ⭐ " + .rating else "" end) as $r |
+        (if .available then " ✔️ [Disponível]" else " ⏳ [Indisponível]" end) as $st |
+        "\($t) \(.title)\($y)\($r)\($st)\t\(.url)\t\(.available)"
+    ')
+
+    if [ -z "$formatted_lines" ]; then
+        echo -e "${RED}❌ Não foi possível formatar os resultados do Pomfy.${NC}" >&2
+        return 1
+    fi
+
+    if ! command -v fzf >/dev/null 2>&1 || [ ! -t 0 ]; then
+        echo "$formatted_lines" | head -n1 | cut -f2
+        return 0
+    fi
+
+    local selected
+    selected=$(echo "$formatted_lines" | fzf \
+        --prompt="🎬 Selecione Filme ou Série > " \
+        --header="Pressione ENTER para selecionar ou ESC para cancelar" \
+        --height=50% \
+        --layout=reverse \
+        --border=rounded \
+        --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
+        --color=fg:#cdd6f4,header:#cba6f7,info:#cba6f7,pointer:#f5e0dc \
+        --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
+        --with-nth=1 \
+        --delimiter="\t")
+
+    if [ -z "$selected" ]; then
+        echo -e "${YELLOW}Busca cancelada pelo usuário.${NC}" >&2
+        return 1
+    fi
+
+    local chosen_url is_avail
+    chosen_url=$(echo "$selected" | cut -f2)
+    is_avail=$(echo "$selected" | cut -f3)
+
+    if [ "$is_avail" == "false" ]; then
+        echo -e "${PEACH}⚠️ Aviso: Este título pode não estar indexado no momento pelo servidor.${NC}" >&2
+    fi
+
+    echo "$chosen_url"
 }
 
 get_now_playing_info() {
@@ -1076,6 +1151,45 @@ download_streaming_pomfy() {
     echo -e "${MAUVE}${BOLD}╰───────────────────────────────────────────────────────────────╯${NC}"
     echo ""
 
+    # Seletor interativo de faixa de áudio se não especificado na CLI
+    if [ "$STREAM_AUDIO_LANG_SET" = false ] && [ -t 0 ]; then
+        echo -e "${BOLD}Escolha a Faixa de Áudio:${NC}"
+        echo -e "  ${GREEN}[1]${NC} 🇧🇷 Dublado (Português)"
+        echo -e "  ${BLUE}[2]${NC} 🇺🇸 Áudio Original (Inglês)"
+        echo -e "  ${YELLOW}[3]${NC} 💎 Dual Áudio (Português Dublado + Inglês Original simultâneos)"
+        read -rp "Opção [1-3, padrão: 1]: " aud_opt
+        case "$aud_opt" in
+            2) STREAM_AUDIO_LANG="en" ;;
+            3) STREAM_AUDIO_LANG="dual" ;;
+            *) STREAM_AUDIO_LANG="pt" ;;
+        esac
+        echo ""
+    fi
+
+    local ytdlp_audio_args=()
+    local audio_label=""
+    case "${STREAM_AUDIO_LANG,,}" in
+        dual|ambos|2)
+            audio_label="${YELLOW}Dual Áudio (Português + Inglês)${NC}"
+            ytdlp_audio_args=(
+                --audio-multistreams
+                -f "bv*+ba[language=pt]+ba[language=en]/bv*+ba[language=por]+ba[language=eng]/bv*+ba[language=pt]/bv*+ba[language=en]/bv*+ba/b"
+            )
+            ;;
+        en|original|ingles|inglês)
+            audio_label="${BLUE}Áudio Original (Inglês)${NC}"
+            ytdlp_audio_args=(
+                -f "bv*+ba[language=en]/bv*+ba[language=eng]/bv*+ba/b"
+            )
+            ;;
+        pt|dublado|portugues|português|*)
+            audio_label="${GREEN}Dublado (Português)${NC}"
+            ytdlp_audio_args=(
+                -f "bv*+ba[language=pt]/bv*+ba[language=por]/bv*+ba/b"
+            )
+            ;;
+    esac
+
     # 1. Verifica se o alvo é uma página de série completa
     local is_serie_root=false
     if [[ "$target" =~ /serie/([0-9]+) ]] && [[ ! "$target" =~ temporada= ]]; then
@@ -1164,16 +1278,32 @@ download_streaming_pomfy() {
             local target_dest_folder="${dest_base:-$dest_series/$serie_title/Temporada $s_padded}"
             mkdir -p "$target_dest_folder"
 
-            echo -e "\n${BOLD}${BLUE}📦 Baixando Temporada ${s} (${#eps_to_download[@]} episódios)...${NC}"
+            local total_queue=${#eps_to_download[@]}
+            local current_idx=0
+            local downloaded_count=0
+            local skipped_count=0
+            local failed_count=0
+
+            echo -e "\n${BOLD}${BLUE}📦 Fila Preparada: Temporada ${s} (${total_queue} episódios)${NC}"
+            echo -e "${SUBTEXT}Áudio : ${audio_label}${NC}"
             echo -e "${SUBTEXT}Destino: ${target_dest_folder}${NC}\n"
 
             for ep in "${eps_to_download[@]}"; do
+                ((current_idx++))
+                local pct=$(( current_idx * 100 / total_queue ))
                 local ep_padded
                 ep_padded=$(printf "%02d" "$ep")
                 local expected_file="$target_dest_folder/${serie_title} - S${s_padded}E${ep_padded}.mp4"
 
+                echo -e "${MAUVE}┌───────────────────────────────────────────────────────────────┐${NC}"
+                echo -e "${MAUVE}│${NC} 📦 ${BOLD}Fila: [${current_idx}/${total_queue}] (${pct}% da temporada)${NC}"
+                echo -e "${MAUVE}│${NC} 📺 Série: ${BOLD}${serie_title}${NC} • S${s_padded}E${ep_padded}"
+                echo -e "${MAUVE}│${NC} 🔊 Áudio: ${audio_label}"
+                echo -e "${MAUVE}└───────────────────────────────────────────────────────────────┘${NC}"
+
                 if [ -f "$expected_file" ]; then
-                    echo -e "${YELLOW}⏩ [JÁ EXISTE]${NC} ${serie_title} - S${s_padded}E${ep_padded}.mp4"
+                    echo -e "${YELLOW}⏩ [JÁ EXISTE]${NC} ${serie_title} - S${s_padded}E${ep_padded}.mp4 (pulando)\n"
+                    ((skipped_count++))
                     continue
                 fi
 
@@ -1182,7 +1312,8 @@ download_streaming_pomfy() {
                 stream_json=$(node "$script_extractor" stream --id "$serie_id" --season "$s" --ep "$ep" 2>/dev/null || true)
 
                 if [ -z "$stream_json" ] || ! echo "$stream_json" | jq -e '.streamUrl' >/dev/null 2>&1; then
-                    echo -e "${RED}❌ [FALHA] Não foi possível extrair o stream de S${s_padded}E${ep_padded}.${NC}"
+                    echo -e "${RED}❌ [FALHA] Não foi possível extrair o stream de S${s_padded}E${ep_padded}.${NC}\n"
+                    ((failed_count++))
                     continue
                 fi
 
@@ -1191,9 +1322,9 @@ download_streaming_pomfy() {
                 stream_ref=$(echo "$stream_json" | jq -r '.referer // "https://f7hyg4q.org/"')
                 stream_file=$(echo "$stream_json" | jq -r '.fileName')
 
-                echo -e "${GREEN}🚀 Baixando S${s_padded}E${ep_padded} em 1080p Full HD com áudio Dublado/Original...${NC}"
+                echo -e "${GREEN}🚀 Baixando S${s_padded}E${ep_padded} em 1080p Full HD...${NC}"
 
-                eval yt-dlp \
+                if yt-dlp \
                     --no-warnings \
                     -N 16 \
                     --concurrent-fragments 16 \
@@ -1201,20 +1332,32 @@ download_streaming_pomfy() {
                     --http-chunk-size 10M \
                     --retries 10 \
                     --fragment-retries 10 \
-                    --referer "'$stream_ref'" \
-                    -f "'bv*+ba[language=por]/bv*+ba/b'" \
+                    --referer "$stream_ref" \
+                    "${ytdlp_audio_args[@]}" \
                     --merge-output-format mp4 \
                     --remux-video mp4 \
-                    -o "'$target_dest_folder/$stream_file'" \
-                    "'$stream_url'" || {
-                        echo -e "${RED}❌ Erro no download de S${s_padded}E${ep_padded}${NC}"
-                    }
-
-                log_history "${serie_title} S${s_padded}E${ep_padded}" "$target" "$target_dest_folder/$stream_file" "STREAMING"
+                    -o "$target_dest_folder/$stream_file" \
+                    "$stream_url"; then
+                    ((downloaded_count++))
+                    log_history "${serie_title} S${s_padded}E${ep_padded}" "$target" "$target_dest_folder/$stream_file" "STREAMING"
+                    echo -e "${GREEN}✔ Concluído: S${s_padded}E${ep_padded}${NC}\n"
+                else
+                    echo -e "${RED}❌ Erro no download de S${s_padded}E${ep_padded}${NC}\n"
+                    ((failed_count++))
+                fi
             done
+
+            echo -e "${GREEN}${BOLD}╭───────────────────────────────────────────────────────────────╮${NC}"
+            echo -e "${GREEN}${BOLD}│       🎉 RESUMO DO LOTE DA TEMPORADA ${s}                        │${NC}"
+            echo -e "${GREEN}${BOLD}├───────────────────────────────────────────────────────────────┤${NC}"
+            echo -e "${GREEN}${BOLD}│${NC}  ✔️ Baixados com sucesso : ${BOLD}${downloaded_count}${NC}"
+            echo -e "${GREEN}${BOLD}│${NC}  ⏩ Já existentes (pulados): ${YELLOW}${skipped_count}${NC}"
+            echo -e "${GREEN}${BOLD}│${NC}  ❌ Falhas               : ${RED}${failed_count}${NC}"
+            echo -e "${GREEN}${BOLD}│${NC}  📁 Pasta de destino     : ${SUBTEXT}${target_dest_folder}${NC}"
+            echo -e "${GREEN}${BOLD}╰───────────────────────────────────────────────────────────────╯${NC}\n"
         done
 
-        notify_completion "Série ${serie_title} Baixada" "${dest_base:-$dest_series/$serie_title}"
+        notify_completion "Série ${serie_title} Concluída" "${dest_base:-$dest_series/$serie_title}"
         return 0
     fi
 
@@ -1262,9 +1405,10 @@ download_streaming_pomfy() {
 
     echo -e "${GREEN}🎬 Título:${NC} ${BOLD}${stream_file}${NC}"
     echo -e "${BLUE}📂 Pasta de Destino:${NC} ${final_dest_dir}"
+    echo -e "${PEACH}🔊 Faixa de Áudio:${NC} ${audio_label}"
     echo -e "${GREEN}🚀 Baixando em 1080p com aceleração multi-thread (16 threads)...${NC}\n"
 
-    eval yt-dlp \
+    yt-dlp \
         --no-warnings \
         -N 16 \
         --concurrent-fragments 16 \
@@ -1272,17 +1416,18 @@ download_streaming_pomfy() {
         --http-chunk-size 10M \
         --retries 10 \
         --fragment-retries 10 \
-        --referer "'$stream_ref'" \
-        -f "'bv*+ba[language=por]/bv*+ba/b'" \
+        --referer "$stream_ref" \
+        "${ytdlp_audio_args[@]}" \
         --merge-output-format mp4 \
         --remux-video mp4 \
         "${clip_flags[@]}" \
-        -o "'$final_dest_dir/$stream_file'" \
-        "'$stream_url'"
+        -o "$final_dest_dir/$stream_file" \
+        "$stream_url"
 
     log_history "$item_title" "$target" "$final_dest_dir/$stream_file" "STREAMING"
     notify_completion "$item_title Baixado" "$final_dest_dir" "$final_dest_dir/$stream_file"
 }
+
 
 # ------------------------------------------------------------------------------
 # ATUALIZADOR DOS MOTORES DE DOWNLOAD (YT-DLP + SPOTDL + GALLERY-DL)
@@ -1451,6 +1596,11 @@ run_rofi_mode() {
         exit 0
     fi
 
+    if is_pomfy_domain "$url"; then
+        download_streaming_pomfy "$url" "$SEASON_ARG" "$EP_ARG"
+        exit 0
+    fi
+
     local choice
     choice=$(printf "🎥 Vídeo Completo (1080p/4K MP4)\n🎵 Áudio MP3 (320kbps + Capa & Tags)\n⚡ Vídeo Leve (720p Rápido)\n✂️ Cortar Trecho de Vídeo (Clip)\n🗜️ Comprimir para Discord / WhatsApp (<10MB)\n🎞️ Gerar GIF Animado\n🤖 Transcrição Limpa para IA (.md)\n📸 Galeria de Fotos / Imagens\n📝 Baixar Apenas Legendas (.srt)\n🖼️ Baixar Apenas Capa / Thumbnail" | rofi -dmenu -i -p "Escolha o Formato" -l 10 || true)
 
@@ -1523,14 +1673,24 @@ run_cli_mode() {
             read -rp "Pressione [Enter] para usar esta URL ou digite outra: " input_url
             url="${input_url:-$clip_url}"
         else
-            echo -e "${PEACH}Cole ou digite a URL do vídeo/áudio/foto:${NC}"
-            read -rp "URL: " url
+            echo -e "${PEACH}Cole ou digite a URL (ou 'p' para pesquisar no Pomfy):${NC}"
+            read -rp "URL ou Busca: " url
         fi
     fi
 
     if [ -z "$url" ]; then
         echo -e "\n${RED}❌ Nenhuma URL fornecida.${NC}"
         exit 1
+    fi
+
+    if [ "$url" == "p" ] || [ "$url" == "pomfy" ] || [ "$url" == "filme" ] || [ "$url" == "serie" ]; then
+        local found_pomfy
+        found_pomfy=$(search_pomfy_fzf "")
+        if [ -n "$found_pomfy" ]; then
+            download_streaming_pomfy "$found_pomfy" "$SEASON_ARG" "$EP_ARG"
+            exit 0
+        fi
+        exit 0
     fi
 
     # Roteamento seguro se for site sensível ou privado
@@ -1766,10 +1926,12 @@ show_help() {
     echo -e "  ${BLUE}dl --study 1.5 <url>${NC}        Remove silêncios e acelera para estudo"
     echo -e "  ${BLUE}dl --cookies brave <url>${NC}    Usa cookies do navegador para vídeos 18+"
     echo -e "  ${BLUE}dl --gallery <url>${NC}          Baixa álbuns de fotos (Instagram/Twitter)"
-    echo -e "  ${BLUE}dl --sub-only <url>${NC}         Baixa apenas as legendas (.srt)"
     echo -e "  ${BLUE}dl --thumb <url>${NC}            Baixa apenas a capa / thumbnail em 4K"
-    echo -e "  ${TEAL}dl --pomfy <url>${NC}            Baixa filme ou episódio do Pomfy com bypass PoW e 1080p"
+    echo -e "  ${TEAL}dl --pomfy <nome|url>${NC}       Busca e baixa filme ou série do Pomfy (FZF)"
+    echo -e "  ${TEAL}dl -P \"<busca>\"${NC}               Busca filmes/séries direto no catálogo Pomfy"
     echo -e "  ${TEAL}dl --pomfy <url> --season 1 --ep 1-7${NC} Baixa lote de episódios da série no Pomfy"
+    echo -e "  ${YELLOW}dl --audio <pt|en|dual>${NC}      Seleciona áudio Dublado (pt), Original (en) ou Dual Áudio"
+    echo -e "  ${YELLOW}dl --dual${NC}                     Baixa vídeo com faixas Dublado + Original no mesmo arquivo"
     echo ""
 }
 
@@ -1820,7 +1982,33 @@ main() {
                 shift
                 ;;
             -a|--audio)
-                direct_action="audio"
+                if [[ "$2" =~ ^(pt|en|dual|dublado|original|legendado)$ ]]; then
+                    STREAM_AUDIO_LANG="$2"
+                    STREAM_AUDIO_LANG_SET=true
+                    shift 2
+                else
+                    direct_action="audio"
+                    shift
+                fi
+                ;;
+            --audio-track|--audio-lang|--lang)
+                STREAM_AUDIO_LANG="$2"
+                STREAM_AUDIO_LANG_SET=true
+                shift 2
+                ;;
+            --dual|--dual-audio)
+                STREAM_AUDIO_LANG="dual"
+                STREAM_AUDIO_LANG_SET=true
+                shift
+                ;;
+            --dublado)
+                STREAM_AUDIO_LANG="pt"
+                STREAM_AUDIO_LANG_SET=true
+                shift
+                ;;
+            --original|--legendado)
+                STREAM_AUDIO_LANG="en"
+                STREAM_AUDIO_LANG_SET=true
                 shift
                 ;;
             -s|--subs|--subtitles)
@@ -1831,7 +2019,7 @@ main() {
                 direct_action="transcript"
                 shift
                 ;;
-            --pomfy|--stream)
+            -P|--pomfy|--stream)
                 direct_action="pomfy"
                 shift
                 ;;
@@ -1915,8 +2103,8 @@ main() {
         esac
     done
 
-    # Se target_url não for URL nem arquivo existente, interpreta como busca rápida no YouTube
-    if [ -n "$target_url" ] && ! is_url_or_file "$target_url"; then
+    # Se target_url não for URL nem arquivo existente, interpreta como busca rápida no YouTube (exceto se for pomfy)
+    if [ "$direct_action" != "pomfy" ] && [ -n "$target_url" ] && ! is_url_or_file "$target_url"; then
         local search_found
         search_found=$(search_youtube_fzf "$target_url")
         if [ -z "$search_found" ]; then
@@ -1944,6 +2132,22 @@ main() {
     # Se foi chamada uma flag direta específica de linha de comando, executa direto
     if [ -n "$direct_action" ] || [ "$MAKE_GIF" = true ] || [ -n "$COMPRESS_TARGET" ] || [ "$SPLIT_CHAPTERS" = true ] || [ "$SYNC_PLAYLIST" = true ] || [ -n "$CUSTOM_CLIP" ] || [ "$FORCE_PRIVATE" = true ] || [ "$SKIP_SPONSORS" = true ] || [ "$WITH_SUBS" = true ]; then
 
+        if [ "$direct_action" == "pomfy" ]; then
+            if [ -z "$target_url" ]; then
+                local clip_cand
+                clip_cand=$(get_clipboard_url)
+                if is_pomfy_domain "$clip_cand"; then
+                    target_url="$clip_cand"
+                else
+                    target_url=$(search_pomfy_fzf "")
+                fi
+            elif ! is_pomfy_domain "$target_url"; then
+                target_url=$(search_pomfy_fzf "$target_url")
+            fi
+            if [ -z "$target_url" ]; then
+                exit 0
+            fi
+        fi
 
         if [ -z "$target_url" ]; then
             target_url=$(get_clipboard_url)
