@@ -1701,8 +1701,75 @@ run_cli_mode() {
             echo -e "${BLUE}📋 URL detectada na Área de Transferência:${NC}"
             echo -e "   ${TEXT}${clip_url}${NC}"
             echo ""
-            read -rp "Pressione [Enter] para usar esta URL ou digite outra: " input_url
+            read -rp "Pressione [Enter] para usar esta URL ou digite outra (ou 'p' para Pomfy): " input_url
             url="${input_url:-$clip_url}"
+        elif command -v fzf >/dev/null 2>&1 && [ -t 0 ]; then
+            local main_actions="1\t🍿 Pesquisar Filmes & Séries no Catálogo Pomfy\tAbre o navegador de filmes e séries com sinopse oficial, notas TMDB e download 1080p.\n2\t🔍 Pesquisar Vídeos no YouTube (FZF)\tBusca vídeos diretamente pelo terminal com seletor interativo.\n3\t🔗 Inserir ou Colar URL Manualmente\tDigita ou cola qualquer link da internet (YouTube, Reddit, Instagram, etc.).\n4\t🎵 Baixar o que está tocando agora (MPRIS / Spotify)\tDetecta a música ou vídeo em reprodução no seu sistema e baixa na hora.\n5\t📂 Ver Histórico de Downloads\tAbre a lista de downloads anteriores pesquisável com FZF.\n6\t🔄 Atualizar Motores de Download\tVerifica e atualiza o yt-dlp, spotdl e gallery-dl.\n7\t🚪 Sair\tFecha o cockpit de mídia."
+
+            local chosen_action
+            chosen_action=$(echo -e "$main_actions" | fzf \
+                --prompt="🚀 O que deseja fazer? > " \
+                --header="[ENTER] Selecionar • [Ctrl+J/K] Navegar • [ESC] Sair" \
+                --height=50% \
+                --layout=reverse \
+                --border=rounded \
+                --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
+                --color=fg:#cdd6f4,header:#cba6f7,info:#cba6f7,pointer:#f5e0dc \
+                --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
+                --bind="ctrl-j:down,ctrl-k:up" \
+                --with-nth=2 \
+                --delimiter="\t" \
+                --preview='echo -e "\n\033[1;38;2;203;166;247m╭────────────────────────────────────────╮\033[0m\n\033[1;38;2;203;166;247m│ {2}\033[0m\n\033[1;38;2;203;166;247m╰────────────────────────────────────────╯\033[0m\n\n\033[38;2;205;214;244m{3}\033[0m"' \
+                --preview-window="right:45%:wrap:border-rounded")
+
+            local act_num
+            act_num=$(echo "$chosen_action" | cut -f1)
+
+            case "$act_num" in
+                1)
+                    local found_pomfy
+                    found_pomfy=$(search_pomfy_fzf "")
+                    if [ -n "$found_pomfy" ]; then
+                        download_streaming_pomfy "$found_pomfy" "$SEASON_ARG" "$EP_ARG"
+                        exit 0
+                    fi
+                    exit 0
+                    ;;
+                2)
+                    read -rp "🔍 Digite o que deseja buscar no YouTube: " yt_query
+                    if [ -n "$yt_query" ]; then
+                        local found_yt
+                        found_yt=$(search_youtube_fzf "$yt_query")
+                        [ -n "$found_yt" ] && url="$found_yt"
+                    else
+                        exit 0
+                    fi
+                    ;;
+                3)
+                    read -rp "Cole ou digite a URL: " url
+                    ;;
+                4)
+                    local now_url
+                    now_url=$(get_now_playing_info || true)
+                    if [ -n "$now_url" ]; then
+                        url="$now_url"
+                    else
+                        echo -e "${RED}❌ Nenhuma mídia ativa encontrada no playerctl.${NC}"
+                        exit 1
+                    fi
+                    ;;
+                5)
+                    view_history "cli"
+                    exit 0
+                    ;;
+                6)
+                    update_engines
+                    exit 0
+                    ;;
+                *)
+                    exit 0
+                    ;;
+            esac
         else
             echo -e "${PEACH}Cole ou digite a URL (ou 'p' para pesquisar no Pomfy):${NC}"
             read -rp "URL ou Busca: " url

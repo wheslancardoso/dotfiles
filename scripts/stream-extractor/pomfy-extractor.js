@@ -429,14 +429,14 @@ async function main() {
         console.log(`${c.red}${c.bold}⏳ Status: Não indexado no momento pelo servidor${c.nc}`);
       }
 
-      // Renderiza pôster com caracteres de texto puro (sem sobreposição gráfica no terminal)
+      // Renderiza pôster com caracteres de texto puro de alta definição (sem sobreposição)
       if (item.posterPath && fs.existsSync('/usr/bin/chafa')) {
         const posterDir = '/tmp/pomfy_posters';
         if (!fs.existsSync(posterDir)) fs.mkdirSync(posterDir, { recursive: true });
         const posterFile = `${posterDir}/${item.id}.jpg`;
         if (!fs.existsSync(posterFile)) {
           try {
-            const pRes = await fetch(`https://image.tmdb.org/t/p/w185${item.posterPath}`);
+            const pRes = await fetch(`https://image.tmdb.org/t/p/w342${item.posterPath}`);
             if (pRes.ok) {
               const buf = Buffer.from(await pRes.arrayBuffer());
               fs.writeFileSync(posterFile, buf);
@@ -446,7 +446,7 @@ async function main() {
         if (fs.existsSync(posterFile)) {
           try {
             const { execSync } = require('child_process');
-            const chafaArt = execSync(`chafa --format=symbols --size=20x10 --symbols=block,border,space "${posterFile}"`, { encoding: 'utf8' });
+            const chafaArt = execSync(`chafa --format=symbols --size=26x16 --symbols=half --color-space=rgb "${posterFile}"`, { encoding: 'utf8' });
             console.log(`\n${c.subtext}🖼️  Pôster Oficial:${c.nc}`);
             console.log(chafaArt);
           } catch (e) {}
