@@ -204,14 +204,14 @@ search_pomfy_fzf() {
         fzf_output=$(echo "$formatted_lines" | fzf \
             --expect="ctrl-s,ctrl-r" \
             --prompt="🎬 Selecione Filme ou Série > " \
-            --header="[ENTER] Baixar • [Ctrl+S] Nova Busca • [Ctrl+J/K] Navegar • [Ctrl+D/U] Sinopse • [ESC] Sair" \
+            --header="[ENTER] Baixar • [Ctrl+O] Pôster HD • [Ctrl+S] Nova Busca • [Ctrl+J/K] Navegar • [ESC] Sair" \
             --height=75% \
             --layout=reverse \
             --border=rounded \
             --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
             --color=fg:#cdd6f4,header:#cba6f7,info:#cba6f7,pointer:#f5e0dc \
             --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
-            --bind="ctrl-j:down,ctrl-k:up,ctrl-d:preview-page-down,ctrl-u:preview-page-up" \
+            --bind="ctrl-j:down,ctrl-k:up,ctrl-d:preview-page-down,ctrl-u:preview-page-up,ctrl-o:execute-silent(node \"$script_extractor\" open-poster \"$cache_file\" {2})" \
             --preview="node \"$script_extractor\" render-preview \"$cache_file\" {2}" \
             --preview-window="right:55%:wrap:border-rounded" \
             --with-nth=1 \

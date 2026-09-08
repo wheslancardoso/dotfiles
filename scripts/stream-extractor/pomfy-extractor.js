@@ -429,14 +429,14 @@ async function main() {
         console.log(`${c.red}${c.bold}⏳ Status: Não indexado no momento pelo servidor${c.nc}`);
       }
 
-      // Renderiza pôster com caracteres de texto puro de alta definição (sem sobreposição)
+      // Renderiza pôster com caracteres de texto de ultra definição (Sextant Unicode 13)
       if (item.posterPath && fs.existsSync('/usr/bin/chafa')) {
         const posterDir = '/tmp/pomfy_posters';
         if (!fs.existsSync(posterDir)) fs.mkdirSync(posterDir, { recursive: true });
         const posterFile = `${posterDir}/${item.id}.jpg`;
         if (!fs.existsSync(posterFile)) {
           try {
-            const pRes = await fetch(`https://image.tmdb.org/t/p/w342${item.posterPath}`);
+            const pRes = await fetch(`https://image.tmdb.org/t/p/w500${item.posterPath}`);
             if (pRes.ok) {
               const buf = Buffer.from(await pRes.arrayBuffer());
               fs.writeFileSync(posterFile, buf);
@@ -446,8 +446,8 @@ async function main() {
         if (fs.existsSync(posterFile)) {
           try {
             const { execSync } = require('child_process');
-            const chafaArt = execSync(`chafa --format=symbols --size=26x16 --symbols=half --color-space=rgb "${posterFile}"`, { encoding: 'utf8' });
-            console.log(`\n${c.subtext}🖼️  Pôster Oficial:${c.nc}`);
+            const chafaArt = execSync(`chafa --probe=off --format=symbols --size=30x20 --symbols=sextant+quad+block+half --color-space=rgb "${posterFile}"`, { encoding: 'utf8' });
+            console.log(`\n${c.subtext}🖼️  Pôster Oficial (pressione ${c.peach}Ctrl+O${c.subtext} para abrir em HD):${c.nc}`);
             console.log(chafaArt);
           } catch (e) {}
         }
@@ -455,6 +455,34 @@ async function main() {
 
       console.log(`\n${c.blue}${c.bold}📖 SINOPSE:${c.nc}`);
       console.log(`${c.text}${item.overview || 'Sem sinopse disponível.'}${c.nc}\n`);
+      return;
+    }
+
+    if (mode === 'open-poster') {
+      const cacheFile = args[1];
+      const targetUrl = args[2];
+      if (!fs.existsSync(cacheFile) || !targetUrl) return;
+      try {
+        const data = JSON.parse(fs.readFileSync(cacheFile, 'utf8'));
+        const item = data.find((x) => x.url === targetUrl);
+        if (!item || !item.posterPath) return;
+        const posterDir = '/tmp/pomfy_posters';
+        if (!fs.existsSync(posterDir)) fs.mkdirSync(posterDir, { recursive: true });
+        const posterFile = `${posterDir}/${item.id}.jpg`;
+        if (!fs.existsSync(posterFile)) {
+          const pRes = await fetch(`https://image.tmdb.org/t/p/w500${item.posterPath}`);
+          if (pRes.ok) {
+            const buf = Buffer.from(await pRes.arrayBuffer());
+            fs.writeFileSync(posterFile, buf);
+          }
+        }
+        if (fs.existsSync(posterFile)) {
+          const { spawn } = require('child_process');
+          const viewer = fs.existsSync('/usr/bin/imv') ? 'imv' : (fs.existsSync('/usr/bin/loupe') ? 'loupe' : 'xdg-open');
+          const child = spawn(viewer, [posterFile], { detached: true, stdio: 'ignore' });
+          child.unref();
+        }
+      } catch (e) {}
       return;
     }
 
