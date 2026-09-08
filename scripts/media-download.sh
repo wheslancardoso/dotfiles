@@ -1797,7 +1797,7 @@ run_cli_mode() {
             read -rp "Pressione [Enter] para usar esta URL ou digite outra (ou 'p' para Pomfy): " input_url
             url="${input_url:-$clip_url}"
         elif command -v fzf >/dev/null 2>&1 && [ -t 0 ]; then
-            local main_actions="1\t🍿 Pesquisar Filmes & Séries no Catálogo Pomfy\tAbre o navegador de filmes e séries com sinopse oficial, notas TMDB e download 1080p.\n2\t🔍 Pesquisar Vídeos no YouTube (FZF)\tBusca vídeos diretamente pelo terminal com seletor interativo.\n3\t🔗 Inserir URL ou Arquivo de Lote (.txt / .md)\tDigita ou cola link da web ou caminho de arquivo com links (.txt, .md).\n4\t🎵 Baixar o que está tocando agora (MPRIS / Spotify)\tDetecta a música ou vídeo em reprodução no seu sistema e baixa na hora.\n5\t📂 Ver Histórico de Downloads\tAbre a lista de downloads anteriores pesquisável com FZF.\n6\t🔄 Atualizar Motores de Download\tVerifica e atualiza o yt-dlp, spotdl e gallery-dl.\n7\t🚪 Sair\tFecha o cockpit de mídia."
+            local main_actions="1\t🍿 Pesquisar Filmes & Séries no Catálogo Pomfy\tAbre o navegador de filmes e séries com sinopse oficial, notas TMDB e download 1080p.\n2\t🎧 Baixar / Pesquisar Músicas & Álbuns (Spotify & YouTube)\tPesquise por nome da música/álbum ou cole links do Spotify/YouTube para baixar em MP3 320k/FLAC.\n3\t🔍 Pesquisar Vídeos no YouTube (FZF)\tBusca vídeos diretamente pelo terminal com seletor interativo.\n4\t🔗 Inserir URL ou Arquivo de Lote (.txt / .md)\tDigita ou cola qualquer link da internet ou caminho de arquivo de lote (.txt, .md).\n5\t📻 Baixar o que está tocando agora (MPRIS / Spotify)\tDetecta a música ou vídeo em reprodução no seu sistema e baixa na hora.\n6\t📂 Ver Histórico de Downloads\tAbre a lista de downloads anteriores pesquisável com FZF.\n7\t🔄 Atualizar Motores de Download\tVerifica e atualiza o yt-dlp, spotdl e gallery-dl.\n8\t🚪 Sair\tFecha o cockpit de mídia."
 
             local chosen_action
             chosen_action=$(echo -e "$main_actions" | fzf \
@@ -1829,6 +1829,61 @@ run_cli_mode() {
                     exit 0
                     ;;
                 2)
+                    echo -e "\n${MAUVE}${BOLD}🎧 APEX MUSIC ENGINE • Spotify & YouTube Audio${NC}"
+                    echo -e "${SUBTEXT}Digite o nome da música / álbum / artista OU cole o link (música, álbum ou playlist):${NC}"
+                    read -rp "🎵 Música ou Link: " music_query
+
+                    if [ -z "$music_query" ]; then
+                        exit 0
+                    fi
+
+                    music_query="${music_query/#\~/$HOME}"
+
+                    if [[ "$music_query" =~ (open\.spotify\.com|spotify:) ]]; then
+                        url="$music_query"
+                    elif [[ "$music_query" =~ ^https?:// ]]; then
+                        download_audio "$music_query" "$dest_a"
+                        exit 0
+                    else
+                        local music_engine_choice="1\t🔴 Pesquisar no YouTube Music (Seletor Interativo FZF)\tExibe os resultados com duração e canal para você escolher a faixa ideal.\n2\t🟢 Baixar direto do Spotify (spotDL)\tBusca no catálogo do Spotify e baixa com capa em HD, tags ID3 e letras .lrc."
+                        local chosen_engine
+                        chosen_engine=$(echo -e "$music_engine_choice" | fzf \
+                            --prompt="🎧 Escolha a fonte de áudio > " \
+                            --header="[ENTER] Confirmar • [ESC] Cancelar" \
+                            --height=35% \
+                            --layout=reverse \
+                            --border=rounded \
+                            --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
+                            --color=fg:#cdd6f4,header:#a6e3a1,info:#a6e3a1,pointer:#f5e0dc \
+                            --color=marker:#b4befe,fg+:#cdd6f4,prompt:#a6e3a1,hl+:#f38ba8 \
+                            --with-nth=2 \
+                            --delimiter="\t" \
+                            --preview='echo -e "\n\033[1;38;2;166;227;161m╭────────────────────────────────────────╮\033[0m\n\033[1;38;2;166;227;161m│ {2}\033[0m\n\033[1;38;2;166;227;161m╰────────────────────────────────────────╯\033[0m\n\n\033[38;2;205;214;244m{3}\033[0m"' \
+                            --preview-window="right:45%:wrap:border-rounded")
+
+                        local eng_num
+                        eng_num=$(echo "$chosen_engine" | cut -f1)
+
+                        case "$eng_num" in
+                            1)
+                                local found_yt
+                                found_yt=$(search_youtube_fzf "$music_query")
+                                if [ -n "$found_yt" ]; then
+                                    download_audio "$found_yt" "$dest_a"
+                                fi
+                                exit 0
+                                ;;
+                            2)
+                                download_spotify "$music_query" "mp3" "$dest_a" "cli"
+                                exit 0
+                                ;;
+                            *)
+                                exit 0
+                                ;;
+                        esac
+                    fi
+                    ;;
+                3)
                     read -rp "🔍 Digite o que deseja buscar no YouTube: " yt_query
                     if [ -n "$yt_query" ]; then
                         local found_yt
@@ -1838,10 +1893,10 @@ run_cli_mode() {
                         exit 0
                     fi
                     ;;
-                3)
+                4)
                     read -rp "Cole a URL ou caminho do arquivo (.txt/.md): " url
                     ;;
-                4)
+                5)
                     local now_url
                     now_url=$(get_now_playing_info || true)
                     if [ -n "$now_url" ]; then
@@ -1851,11 +1906,11 @@ run_cli_mode() {
                         exit 1
                     fi
                     ;;
-                5)
+                6)
                     view_history "cli"
                     exit 0
                     ;;
-                6)
+                7)
                     update_engines
                     exit 0
                     ;;
@@ -2163,8 +2218,8 @@ show_help() {
     echo -e "  ${BLUE}dl -b <lista.txt|md>${NC}       Baixa em lote todos os links de um arquivo (.txt ou .md)"
     echo -e "  ${BLUE}dl -p <lista.txt|md>${NC}       Baixa a lista toda direto para a pasta .privado"
     echo ""
-    echo -e "${BOLD}Flags Diretas de Linha de Comando:${NC}"
-    echo -e "  ${GREEN}dl -a <url>${NC}                 Baixa direto como Áudio MP3 320k"
+    echo -e "  ${GREEN}dl -a, -m <url|busca>${NC}       Baixa ou pesquisa áudio MP3 320k (YouTube/Spotify)"
+    echo -e "  ${GREEN}dl --spotify <url|busca>${NC}    Busca ou baixa direto do catálogo Spotify (spotDL)"
     echo -e "  ${BLUE}dl -o, --name <nome> <url>${NC}  Define nome personalizado do arquivo"
     echo -e "  ${MAUVE}dl -t, --transcript <url>${NC}   Extrai transcrição limpa em Markdown (.md) para IA/LLMs"
     echo -e "  ${BLUE}dl -s, --subs <url>${NC}         Embuti legendas automáticas pt/en no vídeo"
@@ -2237,7 +2292,7 @@ main() {
                 target_url="$now_url"
                 shift
                 ;;
-            -a|--audio)
+            -a|--audio|-m|--music)
                 if [[ "$2" =~ ^(pt|en|dual|dublado|original|legendado)$ ]]; then
                     STREAM_AUDIO_LANG="$2"
                     STREAM_AUDIO_LANG_SET=true
@@ -2246,6 +2301,10 @@ main() {
                     direct_action="audio"
                     shift
                 fi
+                ;;
+            --spotify)
+                direct_action="spotify"
+                shift
                 ;;
             --audio-track|--audio-lang|--lang)
                 STREAM_AUDIO_LANG="$2"
@@ -2408,6 +2467,34 @@ main() {
         if [ -z "$target_url" ]; then
             target_url=$(get_clipboard_url)
         fi
+        if [ "$direct_action" == "audio" ] || [ "$direct_action" == "spotify" ]; then
+            if [ -z "$target_url" ]; then
+                local clip_cand
+                clip_cand=$(get_clipboard_url)
+                if [ -n "$clip_cand" ]; then
+                    target_url="$clip_cand"
+                else
+                    read -rp "🎵 Digite o nome da música / artista ou cole a URL: " target_url
+                fi
+                if [ -z "$target_url" ]; then
+                    exit 0
+                fi
+            fi
+            if ! is_url_or_file "$target_url"; then
+                if [ "$direct_action" == "spotify" ]; then
+                    download_spotify "$target_url" "mp3" "$dest_a" "cli"
+                    exit 0
+                else
+                    local found_audio_yt
+                    found_audio_yt=$(search_youtube_fzf "$target_url")
+                    if [ -z "$found_audio_yt" ]; then
+                        exit 0
+                    fi
+                    target_url="$found_audio_yt"
+                fi
+            fi
+        fi
+
         if [ -z "$target_url" ]; then
             echo -e "${RED}❌ Nenhuma URL fornecida para o comando direto.${NC}"
             exit 1
