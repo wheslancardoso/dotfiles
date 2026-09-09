@@ -1,43 +1,73 @@
 -- ==============================================================================
--- 🧠 Smart-Lang — Super-Inteligência de Idioma, Legenda & Dual Audio
+-- 🧠 Smart-Lang v2 — Full Auto Pipeline: Select → Download → Sync → Cache
 -- ==============================================================================
--- Resolve TODOS os problemas de legenda e dual audio de uma vez:
 --
--- 1. AUTO-SELECT: Ao abrir um vídeo, seleciona automaticamente a MELHOR legenda
---    para imersão em inglês (prioriza en full > en SDH > en qualquer > pt)
--- 2. DUAL AUDIO LINK: Ao trocar de áudio (a/A), troca a legenda junto para
---    o idioma correspondente automaticamente.
--- 3. IMMERSION TOGGLE: Alt+e ativa o "Modo Imersão Total" (áudio EN + legenda EN)
---    com 1 tecla. Alt+p volta para áudio PT + legenda PT.
--- 4. AUTO-DOWNLOAD: Se não encontrar legenda boa, baixa automaticamente via
---    OpenSubtitles em background (sem precisar apertar Ctrl+s).
--- 5. SECONDARY SUB: Ctrl+e ativa legendas duplas (EN primária + PT secundária)
---    para estudo comparativo lado a lado.
+-- PIPELINE AUTOMÁTICO COMPLETO (zero cliques):
+--
+--   ┌─────────────────────────────────────────────────────────────────┐
+--   │  Arquivo abre                                                  │
+--   │      ↓                                                         │
+--   │  Cache existe? ─── SIM → Carrega .srt sincronizado → FIM ✅    │
+--   │      ↓ NÃO                                                     │
+--   │  Determina idioma-alvo baseado no áudio selecionado:           │
+--   │    Audio EN → Sub EN | Audio PT → Sub PT | Audio JA → Sub EN   │
+--   │      ↓                                                         │
+--   │  Tem legenda boa? ─── SIM → Seleciona → Auto-Sync → Cache     │
+--   │      ↓ NÃO                                                     │
+--   │  Auto-Download (subliminal, multi-provider) → Sync → Cache     │
+--   └─────────────────────────────────────────────────────────────────┘
+--
+-- RESULTADO: Na 2ª vez que abrir o mesmo vídeo, a legenda perfeitamente
+-- sincronizada carrega em <100ms. Uma vez em cache, NUNCA mais dessincroniza
+-- porque foi alinhada diretamente pela forma de onda do áudio deste vídeo.
+--
+-- DEPENDÊNCIAS (opcionais, o script degrada graciosamente):
+--   pip install ffsubsync   → Sincronização acústica
+--   pip install subliminal   → Download multi-provider (OpenSubtitles, Addic7ed, etc.)
+--   ffmpeg                   → Extração de legendas embutidas em MKV/MP4
+--
+-- ATALHOS MANUAIS:
+--   Alt+e  → Modo Imersão (Audio EN + Sub EN, 1 tecla)
+--   Alt+p  → Modo Nativo (Audio PT + Sub PT, 1 tecla)
+--   Ctrl+e → Dual Sub (EN embaixo + PT em cima)
+--   a/A    → Trocar áudio (legenda acompanha automaticamente)
 -- ==============================================================================
 
 local mp = require 'mp'
 local msg = require 'mp.msg'
+local utils = require 'mp.utils'
 
--- Configuração de preferência de idioma para imersão
+-- ==============================================================================
+-- Configuração
+-- ==============================================================================
+
+local CACHE_DIR = os.getenv("HOME") .. "/.cache/mpv_synced_subs"
+
+-- Preferências de idioma para imersão em inglês
 local PREF = {
-    -- Prioridade de áudio (primeiro = mais preferido)
     audio_immersion = { "en", "eng" },
     audio_native    = { "pt", "por", "pt-BR", "ptBR" },
     audio_anime     = { "ja", "jp", "jpn" },
-
-    -- Prioridade de legenda
     sub_immersion   = { "en", "eng", "enUS", "en-US" },
     sub_native      = { "pt", "por", "pt-BR", "ptBR", "pob" },
 }
 
--- ============================================================================
+-- Cache de verificação de ferramentas (evita rodar `which` repetidamente)
+local tools_cache = {}
+
+-- ==============================================================================
 -- Utilitários
--- ============================================================================
+-- ==============================================================================
+
+local function file_exists(path)
+    local f = io.open(path, "r")
+    if f then f:close(); return true end
+    return false
+end
 
 local function normalize_lang(lang)
     if not lang then return nil end
     lang = lang:lower():gsub("[_%-]", "")
-    -- Mapeia variações para forma canônica
     local map = {
         en = "en", eng = "en", enus = "en",
         pt = "pt", por = "pt", ptbr = "pt", pob = "pt",
@@ -47,6 +77,16 @@ local function normalize_lang(lang)
         de = "de", ger = "de", deu = "de",
     }
     return map[lang] or lang
+end
+
+local function has_tool(name)
+    if tools_cache[name] ~= nil then return tools_cache[name] end
+    local res = mp.command_native({
+        name = "subprocess", playback_only = false,
+        capture_stdout = true, args = { "which", name }
+    })
+    tools_cache[name] = (res.status == 0)
+    return tools_cache[name]
 end
 
 local function is_forced(track)
@@ -67,15 +107,40 @@ local function is_commentary(track)
     return title:find("commentary") or title:find("comment") or title:find("director")
 end
 
--- Pontua uma trilha de legenda (maior = melhor para imersão em inglês)
+local function is_local_file(path)
+    if not path or path == "" then return false end
+    if path:find("^%a[%a%d_]+://") then return false end
+    return true
+end
+
+-- ==============================================================================
+-- Cache Management (chave = vídeo + idioma, não track ID)
+-- ==============================================================================
+
+local function ensure_cache_dir()
+    mp.command_native({
+        name = "subprocess", playback_only = false,
+        args = { "mkdir", "-p", CACHE_DIR }
+    })
+end
+
+local function get_cache_path(video_path, lang)
+    local sanitized = video_path:gsub("[^%w%._-]", "_")
+    if #sanitized > 120 then sanitized = sanitized:sub(-120) end
+    return string.format("%s/%s_%s.synced.srt", CACHE_DIR, sanitized, lang or "en")
+end
+
+-- ==============================================================================
+-- Subtitle Scoring & Selection
+-- ==============================================================================
+
 local function score_subtitle(track, target_langs)
     if not track or track.type ~= "sub" then return -999 end
 
     local lang = normalize_lang(track.lang)
     local score = 0
-
-    -- Idioma correto é a base (+100 para primeiro match, +90 para segundo, etc.)
     local lang_matched = false
+
     for i, wanted in ipairs(target_langs) do
         if lang == normalize_lang(wanted) then
             score = score + (100 - i)
@@ -84,115 +149,310 @@ local function score_subtitle(track, target_langs)
         end
     end
 
-    -- Se o idioma nem bate, descarta
     if not lang_matched then return -999 end
 
-    -- Penalidades e bônus
-    if is_forced(track) then
-        score = score - 80  -- Forçadas = quase nunca queremos
-    end
+    -- Penalidades
+    if is_forced(track)     then score = score - 80 end
+    if is_sdh(track)        then score = score - 5  end
+    if is_commentary(track) then score = score - 90 end
 
-    if is_sdh(track) then
-        score = score - 5   -- SDH é ok, mas full é melhor
-    end
-
-    if is_commentary(track) then
-        score = score - 90  -- Comentário = lixo
-    end
-
-    -- Legendas externas têm leve bônus (geralmente melhor qualidade)
-    if track.external then
-        score = score + 2
-    end
-
-    -- Trilha "default" marcada pelo muxer tem leve bônus
-    if track.default then
-        score = score + 1
-    end
+    -- Bônus
+    if track.external then score = score + 2 end
+    if track.default  then score = score + 1 end
 
     return score
 end
 
--- Encontra a melhor trilha de um tipo com base numa lista de idiomas preferidos
-local function find_best_track(track_type, preferred_langs)
+local function find_best_sub(target_langs)
     local tracks = mp.get_property_native("track-list", {})
-    local best_track = nil
-    local best_score = -999
+    local best, best_score = nil, -999
 
     for _, track in ipairs(tracks) do
-        if track.type == track_type then
-            local s = score_subtitle(track, preferred_langs)
+        if track.type == "sub" then
+            local s = score_subtitle(track, target_langs)
             if s > best_score then
                 best_score = s
-                best_track = track
+                best = track
             end
         end
     end
 
-    return best_track, best_score
+    return best, best_score
 end
 
--- Encontra qualquer trilha de áudio com o idioma especificado
 local function find_audio_by_lang(target_langs)
     local tracks = mp.get_property_native("track-list", {})
     for _, wanted in ipairs(target_langs) do
-        local norm_wanted = normalize_lang(wanted)
+        local norm = normalize_lang(wanted)
         for _, track in ipairs(tracks) do
-            if track.type == "audio" and normalize_lang(track.lang) == norm_wanted then
-                if not is_commentary(track) then
-                    return track
-                end
+            if track.type == "audio" and normalize_lang(track.lang) == norm then
+                if not is_commentary(track) then return track end
             end
         end
     end
     return nil
 end
 
--- ============================================================================
--- 1. AUTO-SELECT: Seleciona a melhor legenda ao abrir o vídeo
--- ============================================================================
+-- ==============================================================================
+-- Audio → Subtitle Language Mapping
+-- ==============================================================================
 
-local function auto_select_best_sub()
+local function get_current_audio_lang()
     local tracks = mp.get_property_native("track-list", {})
-
-    -- Conta quantas trilhas de legenda existem
-    local sub_count = 0
-    for _, t in ipairs(tracks) do
-        if t.type == "sub" then sub_count = sub_count + 1 end
-    end
-
-    if sub_count == 0 then
-        msg.info("Smart-Lang: Nenhuma legenda encontrada. Auto-download será tentado.")
-        -- Dispara auto-download em background após 2 segundos (dá tempo do file-loaded terminar)
-        mp.add_timeout(2, function()
-            auto_download_if_needed()
-        end)
-        return
-    end
-
-    -- Tenta encontrar a melhor legenda em inglês (imersão)
-    local best, best_score = find_best_track("sub", PREF.sub_immersion)
-
-    -- Se não encontrou em inglês, tenta português
-    if best_score < 0 then
-        best, best_score = find_best_track("sub", PREF.sub_native)
-    end
-
-    if best and best_score > 0 then
-        mp.set_property_number("sid", best.id)
-        local lang_label = best.lang or best.title or ("Track " .. best.id)
-        local type_label = ""
-        if is_forced(best) then type_label = " [Forçada]"
-        elseif is_sdh(best) then type_label = " [SDH]"
+    local current_aid = mp.get_property_number("aid", 0)
+    for _, track in ipairs(tracks) do
+        if track.type == "audio" and track.id == current_aid then
+            return normalize_lang(track.lang)
         end
-        msg.info(string.format("Smart-Lang: Auto-selecionado legenda: %s%s (score: %d)",
-            lang_label, type_label, best_score))
+    end
+    return nil
+end
+
+-- Determina qual idioma de legenda baixar/selecionar baseado no áudio
+local function map_audio_to_sub_lang(audio_lang)
+    if audio_lang == "en" then return "en"      -- Audio EN → Sub EN (imersão: lendo junto)
+    elseif audio_lang == "pt" then return "pt"   -- Audio PT → Sub PT (match)
+    elseif audio_lang == "ja" then return "en"   -- Anime: JA → Sub EN
+    else return "en"                             -- Default: imersão em inglês
     end
 end
 
--- ============================================================================
--- 2. DUAL AUDIO LINK: Ao trocar áudio, troca legenda junto
--- ============================================================================
+local function get_sub_prefs(target_lang)
+    if target_lang == "pt" then return PREF.sub_native end
+    return PREF.sub_immersion
+end
+
+-- Retorna o código de idioma que o subliminal entende
+local function get_subliminal_lang(target_lang)
+    if target_lang == "pt" then return "pt-BR" end
+    return target_lang
+end
+
+-- ==============================================================================
+-- Sync Engine (extrai embedded se necessário → ffsubsync → cache)
+-- ==============================================================================
+
+local function get_sub_stream_index(target_track)
+    local tracks = mp.get_property_native("track-list", {})
+    local idx = 0
+    for _, track in ipairs(tracks) do
+        if track.type == "sub" then
+            if track.id == target_track.id then return idx end
+            idx = idx + 1
+        end
+    end
+    return 0
+end
+
+local function sync_and_cache(video_path, sub_file, target_lang, callback)
+    if not has_tool("ffsubsync") then
+        msg.info("Smart-Lang: ffsubsync não disponível. Pulando auto-sync.")
+        if callback then callback(false) end
+        return
+    end
+
+    ensure_cache_dir()
+    local output = get_cache_path(video_path, target_lang)
+
+    mp.osd_message("🔄 [Auto-Sync] Alinhando legenda com o áudio... (background)", 3.0)
+
+    mp.command_native_async({
+        name = "subprocess", playback_only = false,
+        args = { "ffsubsync", video_path, "-i", sub_file, "-o", output }
+    }, function(ok, res)
+        if ok and res.status == 0 and file_exists(output) then
+            mp.commandv("sub-add", output, "select")
+            mp.osd_message("✅ [Auto-Sync] Legenda sincronizada e salva em cache permanente!", 3.5)
+            msg.info("Smart-Lang: Sync completo → " .. output)
+            if callback then callback(true) end
+        else
+            mp.osd_message("⚠️ [Auto-Sync] ffsubsync não conseguiu alinhar. Usando legenda original.", 3.0)
+            if callback then callback(false) end
+        end
+    end)
+end
+
+local function sync_track(video_path, sub_track, target_lang)
+    if sub_track.external and sub_track["external-filename"] then
+        -- Legenda externa: sincroniza direto
+        sync_and_cache(video_path, sub_track["external-filename"], target_lang)
+    else
+        -- Legenda embutida: extrai com ffmpeg primeiro
+        if not has_tool("ffmpeg") then
+            msg.info("Smart-Lang: ffmpeg não disponível. Não é possível extrair legendas internas.")
+            return
+        end
+
+        local sub_idx = get_sub_stream_index(sub_track)
+        local temp = string.format("/tmp/mpv_smartlang_%d.srt", os.time())
+
+        msg.info("Smart-Lang: Extraindo legenda embutida (stream index " .. sub_idx .. ")...")
+
+        mp.command_native_async({
+            name = "subprocess", playback_only = false,
+            args = { "ffmpeg", "-y", "-i", video_path, "-map", string.format("0:s:%d", sub_idx), temp }
+        }, function(ok, res)
+            if ok and res.status == 0 and file_exists(temp) then
+                sync_and_cache(video_path, temp, target_lang, function()
+                    os.remove(temp)
+                end)
+            else
+                msg.warn("Smart-Lang: Falha ao extrair legenda com ffmpeg.")
+                os.remove(temp)
+            end
+        end)
+    end
+end
+
+-- ==============================================================================
+-- Download Engine (subliminal multi-provider, language-aware)
+-- ==============================================================================
+
+local function download_and_sync(video_path, target_lang, callback)
+    if not has_tool("subliminal") then
+        msg.info("Smart-Lang: subliminal não instalado. Auto-download desativado.")
+        mp.osd_message("⚠️ Sem legendas. Para auto-download instale:\npip install subliminal", 4.0)
+        if callback then callback(false) end
+        return
+    end
+
+    -- Diretório temporário limpo para este download
+    local tmp_dir = string.format("/tmp/mpv_smartlang_dl_%d", os.time())
+    mp.command_native({
+        name = "subprocess", playback_only = false,
+        args = { "mkdir", "-p", tmp_dir }
+    })
+
+    local sub_lang = get_subliminal_lang(target_lang)
+    local fallback_lang = target_lang == "en" and "pt-BR" or "en"
+
+    mp.osd_message(string.format("🌐 [Smart-Lang] Baixando legenda %s...", sub_lang:upper()), 3.0)
+    msg.info(string.format("Smart-Lang: Downloading %s subtitles for: %s", sub_lang, video_path))
+
+    local function try_download(lang, on_result)
+        mp.command_native_async({
+            name = "subprocess", playback_only = false,
+            capture_stdout = true, capture_stderr = true,
+            args = { "subliminal", "download", "-l", lang, "-d", tmp_dir, "--", video_path }
+        }, function(ok, res)
+            -- Verifica se algum arquivo foi baixado
+            local find_res = mp.command_native({
+                name = "subprocess", playback_only = false,
+                capture_stdout = true,
+                args = { "find", tmp_dir, "-maxdepth", "1", "-type", "f",
+                         "(", "-name", "*.srt", "-o", "-name", "*.ass", "-o", "-name", "*.sub", ")",
+                         "-print", "-quit" }
+            })
+
+            local found_file = nil
+            if find_res.status == 0 and find_res.stdout then
+                found_file = find_res.stdout:gsub("%s+$", "")
+                if #found_file == 0 then found_file = nil end
+            end
+
+            on_result(found_file)
+        end)
+    end
+
+    -- Tenta idioma primário, depois fallback
+    try_download(sub_lang, function(sub_path)
+        if sub_path then
+            on_download_success(video_path, sub_path, target_lang, tmp_dir, callback)
+        else
+            -- Fallback para outro idioma
+            msg.info("Smart-Lang: Primary language not found, trying fallback: " .. fallback_lang)
+            mp.osd_message(string.format("🌐 [Smart-Lang] %s não encontrada, tentando %s...",
+                sub_lang:upper(), fallback_lang:upper()), 2.5)
+
+            try_download(fallback_lang, function(fb_path)
+                if fb_path then
+                    -- O fallback é de outro idioma, mas ainda usamos target_lang pro cache
+                    local actual_lang = target_lang == "en" and "pt" or "en"
+                    on_download_success(video_path, fb_path, actual_lang, tmp_dir, callback)
+                else
+                    mp.osd_message("⚠️ [Smart-Lang] Nenhuma legenda encontrada online.\nUse Ctrl+s para busca manual.", 4.0)
+                    if callback then callback(false) end
+                end
+            end)
+        end
+    end)
+end
+
+function on_download_success(video_path, sub_path, target_lang, tmp_dir, callback)
+    mp.commandv("sub-add", sub_path, "select")
+    mp.osd_message("🎉 [Smart-Lang] Legenda baixada! Sincronizando...", 2.5)
+
+    -- Auto-sync a legenda baixada
+    mp.add_timeout(0.5, function()
+        sync_and_cache(video_path, sub_path, target_lang, function(sync_ok)
+            -- Limpa temp dir depois de tudo (com delay pra garantir que o sync copiou)
+            mp.add_timeout(2, function()
+                mp.command_native({
+                    name = "subprocess", playback_only = false,
+                    args = { "rm", "-rf", tmp_dir }
+                })
+            end)
+            if callback then callback(true) end
+        end)
+    end)
+end
+
+-- ==============================================================================
+-- 🚀 Full Auto Pipeline — Orquestrador principal
+-- ==============================================================================
+
+local pipeline_running = false
+
+local function run_auto_pipeline()
+    local video_path = mp.get_property("path", "")
+    if not is_local_file(video_path) then return end
+    if pipeline_running then return end
+    pipeline_running = true
+
+    msg.info("Smart-Lang: Pipeline auto iniciado para: " .. video_path)
+
+    -- 1. Determinar idioma-alvo baseado no áudio
+    local audio_lang = get_current_audio_lang()
+    local target_lang = map_audio_to_sub_lang(audio_lang)
+    msg.info(string.format("Smart-Lang: Audio=%s → Target sub=%s", audio_lang or "?", target_lang))
+
+    -- 2. Cache hit? → Carrega instantaneamente e encerra
+    ensure_cache_dir()
+    local cached = get_cache_path(video_path, target_lang)
+    if file_exists(cached) then
+        mp.commandv("sub-add", cached, "select")
+        mp.osd_message(string.format("⚡ [Smart-Lang] Legenda %s sincronizada (cache)", target_lang:upper()), 2.5)
+        pipeline_running = false
+        return
+    end
+
+    -- 3. Buscar a melhor legenda existente no arquivo
+    local pref = get_sub_prefs(target_lang)
+    local best, best_score = find_best_sub(pref)
+
+    if best and best_score > 0 then
+        -- Tem legenda boa → seleciona e sincroniza
+        mp.set_property_number("sid", best.id)
+        local label = best.lang or best.title or ("Track " .. best.id)
+        msg.info(string.format("Smart-Lang: Selecionada legenda: %s (score: %d)", label, best_score))
+
+        -- Auto-sync em background
+        mp.add_timeout(1.5, function()
+            sync_track(video_path, best, target_lang)
+            pipeline_running = false
+        end)
+    else
+        -- Sem legenda boa → download automático
+        msg.info("Smart-Lang: Nenhuma legenda adequada encontrada. Iniciando download...")
+        download_and_sync(video_path, target_lang, function()
+            pipeline_running = false
+        end)
+    end
+end
+
+-- ==============================================================================
+-- 🔗 Dual Audio Link — Troca de áudio sincroniza legenda junto
+-- ==============================================================================
 
 local last_audio_id = nil
 
@@ -201,12 +461,13 @@ local function on_audio_change(_, aid)
     local new_aid = tonumber(aid) or 0
     if new_aid == last_audio_id then return end
     last_audio_id = new_aid
-
     if new_aid == 0 then return end
 
-    local tracks = mp.get_property_native("track-list", {})
+    local video_path = mp.get_property("path", "")
+    if not is_local_file(video_path) then return end
 
-    -- Descobre o idioma do áudio atual
+    -- Descobre o idioma do novo áudio
+    local tracks = mp.get_property_native("track-list", {})
     local audio_lang = nil
     for _, track in ipairs(tracks) do
         if track.type == "audio" and track.id == new_aid then
@@ -214,173 +475,138 @@ local function on_audio_change(_, aid)
             break
         end
     end
-
     if not audio_lang then return end
 
-    -- Mapeia o idioma do áudio para a preferência de legenda correspondente
-    local sub_pref
-    if audio_lang == "en" then
-        sub_pref = PREF.sub_immersion
-    elseif audio_lang == "pt" then
-        sub_pref = PREF.sub_native
-    elseif audio_lang == "ja" then
-        -- Anime: áudio japonês → legenda em inglês
-        sub_pref = PREF.sub_immersion
-    else
-        -- Para outros idiomas, tenta legenda em inglês
-        sub_pref = PREF.sub_immersion
+    local target_lang = map_audio_to_sub_lang(audio_lang)
+
+    -- Cache hit? → Carrega a versão sincronizada para este idioma
+    local cached = get_cache_path(video_path, target_lang)
+    if file_exists(cached) then
+        mp.commandv("sub-add", cached, "select")
+        mp.osd_message(string.format("🧠 [Smart-Lang] Áudio %s → Legenda %s (cache)",
+            audio_lang:upper(), target_lang:upper()), 2.5)
+        return
     end
 
-    local best = find_best_track("sub", sub_pref)
+    -- Sem cache: busca a melhor legenda disponível
+    local pref = get_sub_prefs(target_lang)
+    local best = find_best_sub(pref)
+
     if best then
         mp.set_property_number("sid", best.id)
-        local lang_label = best.lang or best.title or ("Track " .. best.id)
-        mp.osd_message(string.format("🧠 [Smart-Lang] Áudio: %s → Legenda: %s", audio_lang:upper(), lang_label), 2.5)
+        local label = best.lang or best.title or ("Track " .. best.id)
+        mp.osd_message(string.format("🧠 [Smart-Lang] Áudio %s → Legenda: %s",
+            audio_lang:upper(), label), 2.5)
+    else
+        mp.osd_message(string.format("🧠 [Smart-Lang] Áudio %s → Sem legenda %s disponível",
+            audio_lang:upper(), target_lang:upper()), 2.5)
     end
 end
 
--- ============================================================================
--- 3. IMMERSION TOGGLE: Alt+e = Modo Imersão (EN), Alt+p = Modo Nativo (PT)
--- ============================================================================
+-- ==============================================================================
+-- 🎯 Mode Toggles — Immersion / Native / Dual Sub
+-- ==============================================================================
 
 local function set_immersion_mode()
+    local video_path = mp.get_property("path", "")
+
     local audio = find_audio_by_lang(PREF.audio_immersion)
-    if audio then
-        mp.set_property_number("aid", audio.id)
+    if audio then mp.set_property_number("aid", audio.id) end
+
+    -- Tenta cache primeiro
+    if is_local_file(video_path) then
+        local cached = get_cache_path(video_path, "en")
+        if file_exists(cached) then
+            mp.commandv("sub-add", cached, "select")
+            mp.set_property("secondary-sid", "no")
+            local a_label = audio and (audio.lang or "EN") or "N/A"
+            mp.osd_message(string.format(
+                "🎯 [IMMERSION MODE] 🇬🇧\nÁudio: %s | Legenda: EN (synced cache)\nFoco total em inglês!", a_label), 3.5)
+            return
+        end
     end
 
-    local sub = find_best_track("sub", PREF.sub_immersion)
-    if sub then
-        mp.set_property_number("sid", sub.id)
-    end
-
-    -- Desativa legenda secundária
+    local sub = find_best_sub(PREF.sub_immersion)
+    if sub then mp.set_property_number("sid", sub.id) end
     mp.set_property("secondary-sid", "no")
 
     local a_label = audio and (audio.lang or "EN") or "N/A"
     local s_label = sub and (sub.lang or "EN") or "N/A"
-    mp.osd_message(string.format("🎯 [IMMERSION MODE] 🇬🇧\nÁudio: %s | Legenda: %s\nFoco total em inglês!", a_label, s_label), 3.5)
+    mp.osd_message(string.format(
+        "🎯 [IMMERSION MODE] 🇬🇧\nÁudio: %s | Legenda: %s\nFoco total em inglês!", a_label, s_label), 3.5)
 end
 
 local function set_native_mode()
+    local video_path = mp.get_property("path", "")
+
     local audio = find_audio_by_lang(PREF.audio_native)
-    if not audio then
-        -- Se não tem PT, tenta EN
-        audio = find_audio_by_lang(PREF.audio_immersion)
-    end
-    if audio then
-        mp.set_property_number("aid", audio.id)
+    if not audio then audio = find_audio_by_lang(PREF.audio_immersion) end
+    if audio then mp.set_property_number("aid", audio.id) end
+
+    -- Tenta cache primeiro
+    if is_local_file(video_path) then
+        local cached = get_cache_path(video_path, "pt")
+        if file_exists(cached) then
+            mp.commandv("sub-add", cached, "select")
+            mp.set_property("secondary-sid", "no")
+            local a_label = audio and (audio.lang or "PT") or "N/A"
+            mp.osd_message(string.format(
+                "🏠 [NATIVE MODE] 🇧🇷\nÁudio: %s | Legenda: PT (synced cache)", a_label), 3.5)
+            return
+        end
     end
 
-    local sub = find_best_track("sub", PREF.sub_native)
-    if not sub then
-        sub = find_best_track("sub", PREF.sub_immersion)
-    end
-    if sub then
-        mp.set_property_number("sid", sub.id)
-    end
-
+    local sub = find_best_sub(PREF.sub_native)
+    if not sub then sub = find_best_sub(PREF.sub_immersion) end
+    if sub then mp.set_property_number("sid", sub.id) end
     mp.set_property("secondary-sid", "no")
 
     local a_label = audio and (audio.lang or "PT") or "N/A"
     local s_label = sub and (sub.lang or "PT") or "N/A"
-    mp.osd_message(string.format("🏠 [NATIVE MODE] 🇧🇷\nÁudio: %s | Legenda: %s", a_label, s_label), 3.5)
+    mp.osd_message(string.format(
+        "🏠 [NATIVE MODE] 🇧🇷\nÁudio: %s | Legenda: %s", a_label, s_label), 3.5)
 end
-
--- ============================================================================
--- 4. AUTO-DOWNLOAD: Baixa legenda se nenhuma boa for encontrada
--- ============================================================================
-
-function auto_download_if_needed()
-    local tracks = mp.get_property_native("track-list", {})
-    local path = mp.get_property("path", "")
-
-    -- Não funciona para streams
-    if not path or path == "" or path:find("^%a[%a%d_]+://") then return end
-
-    -- Verifica se já tem legenda aceitável
-    local en_sub = find_best_track("sub", PREF.sub_immersion)
-    local pt_sub = find_best_track("sub", PREF.sub_native)
-
-    if en_sub or pt_sub then return end -- Já tem legenda boa
-
-    msg.info("Smart-Lang: Nenhuma legenda encontrada. Tentando download automático...")
-    mp.osd_message("🌐 [Smart-Lang] Sem legendas. Baixando automaticamente...", 3.0)
-
-    -- Tenta via subliminal (mais confiável e simples)
-    mp.command_native_async({
-        name = "subprocess",
-        playback_only = false,
-        capture_stdout = true,
-        args = { "which", "subliminal" }
-    }, function(ok, res)
-        if ok and res.status == 0 then
-            mp.command_native_async({
-                name = "subprocess",
-                playback_only = false,
-                args = { "subliminal", "download", "-l", "en", "-l", "pt-BR", path }
-            }, function(sub_ok, sub_res)
-                if sub_ok and sub_res.status == 0 then
-                    mp.commandv("rescan-external-files", "reselect")
-                    mp.osd_message("🎉 [Smart-Lang] Legenda baixada e ativada automaticamente!", 3.5)
-                    -- Re-run auto-select para pegar a melhor
-                    mp.add_timeout(1, auto_select_best_sub)
-                else
-                    mp.osd_message("⚠️ [Smart-Lang] Não encontrou legendas online. Use Ctrl+s para busca manual.", 3.5)
-                end
-            end)
-        else
-            msg.info("Smart-Lang: 'subliminal' não instalado. Pulando auto-download.")
-        end
-    end)
-end
-
--- ============================================================================
--- 5. SECONDARY SUB: Legenda dupla para estudo (EN + PT lado a lado)
--- ============================================================================
 
 local dual_sub_active = false
 
 local function toggle_dual_subs()
     if dual_sub_active then
-        -- Desativa legenda secundária
         mp.set_property("secondary-sid", "no")
         dual_sub_active = false
         mp.osd_message("📝 [Dual Sub] Desativado — legenda única", 2.5)
     else
-        -- Ativa: primária = EN, secundária = PT
-        local en_sub = find_best_track("sub", PREF.sub_immersion)
-        local pt_sub = find_best_track("sub", PREF.sub_native)
+        local en_sub = find_best_sub(PREF.sub_immersion)
+        local pt_sub = find_best_sub(PREF.sub_native)
 
         if en_sub and pt_sub and en_sub.id ~= pt_sub.id then
             mp.set_property_number("sid", en_sub.id)
             mp.set_property_number("secondary-sid", pt_sub.id)
-            -- Posiciona a secundária no topo da tela
             mp.set_property("secondary-sub-pos", 15)
             dual_sub_active = true
             mp.osd_message("📝 [Dual Sub] Ativo!\n🇬🇧 Inglês (baixo) + 🇧🇷 Português (topo)", 3.5)
         elseif en_sub or pt_sub then
-            mp.osd_message("⚠️ [Dual Sub] Precisa de legendas em 2 idiomas diferentes.", 3.0)
+            mp.osd_message("⚠️ [Dual Sub] Precisa de legendas em 2 idiomas.", 3.0)
         else
             mp.osd_message("⚠️ [Dual Sub] Nenhuma legenda encontrada.", 3.0)
         end
     end
 end
 
--- ============================================================================
+-- ==============================================================================
 -- Registro de Eventos e Atalhos
--- ============================================================================
+-- ==============================================================================
 
--- Auto-select ao carregar arquivo
+-- Pipeline auto ao carregar arquivo (delay de 1s para todas as trilhas serem detectadas)
 mp.register_event("file-loaded", function()
-    -- Pequeno delay para dar tempo de todas as trilhas serem detectadas
-    mp.add_timeout(0.5, auto_select_best_sub)
+    pipeline_running = false
+    last_audio_id = nil
+    mp.add_timeout(1.0, run_auto_pipeline)
 end)
 
--- Monitora troca de áudio para linkar legenda
+-- Dual audio link: monitora troca de áudio
 mp.observe_property("aid", "string", on_audio_change)
 
--- Atalhos registrados (vinculados no input.conf)
+-- Atalhos manuais (vinculados no input.conf)
 mp.add_key_binding(nil, "immersion_mode", set_immersion_mode)
 mp.add_key_binding(nil, "native_mode", set_native_mode)
 mp.add_key_binding(nil, "toggle_dual_subs", toggle_dual_subs)
