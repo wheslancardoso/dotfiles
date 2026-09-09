@@ -63,5 +63,16 @@
 * **Hardsub:** Vídeos com legenda gravada direto nos pixels. Criamos um filtro de máscara dinâmico ajustável com `Alt+b` para ofuscar o rodapé inferior caso o usuário queira sobrepor legenda limpa em inglês.
 
 ### 2. O Problema da Desincronização
-* Permite ajuste manual instantâneo por milissegundos sem pausar a reprodução.
-* Integração com algoritmos de correlação cruzada de áudio para sincronizar automaticamente arquivos `.srt` baixados da internet com o stream real do vídeo.
+* Permite ajuste manual instantâneo por milissegundos sem pausar a reprodução (`z` e `Z`).
+* Integração com algoritmos de correlação acústica (`ffsubsync`) via `Ctrl+Shift+z` para sincronizar automaticamente arquivos `.srt` com a voz dos atores.
+
+### 3. O Problema de Memorizar os Atalhos (Zero Esforço)
+* **HUD Visual Integrado:** Pressione **`?`** ou **`F1`** ou **`h`** durante o vídeo e veja uma tela semi-transparente com todos os atalhos organizados por categoria.
+* **Menu de Contexto do Mouse:** Clique com o botão direito (`MBTN_RIGHT`) para controlar áudio, legendas, velocidade e capítulos graficamente via `uosc`.
+* **Central de Atalhos do Hyprland:** O menu `SUPER + H` (`KeyHints.sh`) agora lista todos os atalhos do MPV God Mode.
+
+### 4. Modo Noturno (Speech Clarity)
+* Tecla **`n`**: Aplica o filtro dinâmico de áudio (`dynaudnorm`) que nivela o volume: vozes sussurradas ficam cristalinas e explosões estrondosas são suavizadas.
+
+### 5. Modo Binge-Watch Automático (Estilo Netflix)
+* Script `auto-next.lua`: Quando um episódio de série atinge os 3 segundos finais, surge uma contagem na tela e o próximo episódio da pasta é iniciado automaticamente (pressione `Esc` para cancelar).

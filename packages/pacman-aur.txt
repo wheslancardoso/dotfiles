@@ -35,3 +35,4 @@ spicetify-cli
 spotdl
 mpv-uosc
 mpv-thumbfast
+python-ffsubsync

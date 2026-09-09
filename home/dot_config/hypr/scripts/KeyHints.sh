@@ -73,6 +73,19 @@ GDK_BACKEND=$BACKEND yad \
 " N" "Luz Noturna f.lux (Pausar / Retomar Cores Reais)" "Hyprsunset.sh toggle" \
 " W" "Mudar Wallpaper + Paleta de Cores do Sistema (Wallust)" "Rofi Wallpapers" \
 "" "" "" \
+"── 🎬 MPV CINEMA, SÉRIES & IMERSÃO EM INGLÊS ──" "── PLAYER GOD MODE ──" "────────────────────────" \
+"F1 ou ? (no MPV)" "HUD Visual com Todos os Atalhos na Tela" "mpv-cheatsheet" \
+"[  ou  ]" "Velocidade Precisa (1.1x, 1.25x... sem voz de esquilo)" "speed +/-" \
+"ALT I ou CTRL N" "Imersão em Inglês (Acelera nos silêncios)" "sub-skip" \
+"ALT M" "Alternar Modo Imersão (Acelerar vs Pular Silêncio)" "sub-skip mode" \
+"SHIFT V" "Forced-Sub Killer (Mata forçadas e filtra trilhas limpas)" "forced-sub-killer" \
+"z  ou  Z" "Ajuste Fino de Legenda em Tempo Real (50ms)" "sub-delay +/-" \
+"CTRL SHIFT Z" "Sincronização Automática de Legenda por Voz" "ffsubsync" \
+"ALT B" "Máscara Hardsub (Cobre legendas queimadas no vídeo)" "hardsub-mask" \
+"N" "Modo Noturno (Vozes nítidas e explosões suavizadas)" "dynaudnorm" \
+"ENTER" "Menu Visual da Playlist / Episódios da Série" "uosc/playlist" \
+">  ou  <" "Próximo Episódio / Episódio Anterior" "playlist next/prev" \
+"" "" "" \
 "── 🎵 CONTROLE DE MÍDIA, ÁUDIO & LETRAS ──" "── PLAYER & KARAOKÊ ──" "────────────────────────" \
 " CTRL SPACE ou Play/Pause" "Play / Pause Global de Mídia (OSD Visual)" "MediaControl.sh --play-pause" \
 " CTRL ] ou Next Track" "Próxima Faixa de Mídia" "MediaControl.sh --next" \
