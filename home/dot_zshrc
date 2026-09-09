@@ -195,7 +195,30 @@ fcd() {
     [ -n "$dir" ] && cd "$dir"
 }
 
-# 6. als / aliases: Explorador Interativo de Aliases com FZF
+# 6. yf: Yazi Find — Busca instantânea (pá pum) de arquivos e abre o Yazi focado nele
+yf() {
+    local query="${*:-}"
+    local file
+    file=$(fd --type f --hidden --follow \
+        --exclude .git \
+        --exclude node_modules \
+        --exclude .cache \
+        --exclude .cargo \
+        --exclude .rustup \
+        --exclude .local/share/Trash \
+        --exclude .wine \
+        . "$HOME" "/mnt/dados" 2>/dev/null | \
+        fzf --query="$query" \
+            --prompt="⚡ Yazi File Jump > " \
+            --header="[ENTER] Abrir focado no Yazi • [ESC] Sair" \
+            --preview='bat --style=numbers --color=always --line-range :300 {} 2>/dev/null || eza -la {} 2>/dev/null' \
+            --preview-window="right:50%:wrap")
+    if [ -n "$file" ]; then
+        yazi "$file"
+    fi
+}
+
+# 7. als / aliases: Explorador Interativo de Aliases com FZF
 als() {
     local selected
     selected=$(alias | sed -E "s/^alias //" | fzf \
