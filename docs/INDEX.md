@@ -14,7 +14,8 @@
 │   ├── [GUIA_MEDIA_DOWNLOADER_UNIVERSAL.md](./GUIA_MEDIA_DOWNLOADER_UNIVERSAL.md) # 📥 Downloader Universal: YouTube, Spotify, TikTok, 1800+ sites e spotDL
 │   ├── [GUIA_POWERUSER_DEV.md](./GUIA_POWERUSER_DEV.md)           # Zero atritos, Dadbod SQL, Kulala REST, Surround
 │   ├── [GUIA_FULLSTACK_WORKFLOWS.md](./GUIA_FULLSTACK_WORKFLOWS.md) # Playbooks práticos (Java, React, Python, Mobile, Go)
-│   ├── [GUIA_LAZYVIM_ANTIGRAVITY.md](./GUIA_LAZYVIM_ANTIGRAVITY.md) # Vibe Coding (Neovim + Antigravity CLI + Zellij)
+│   ├── [GUIA_MPV_CINEMA_IMMERSION_GOD_MODE.md](./GUIA_MPV_CINEMA_IMMERSION_GOD_MODE.md) # 🎬 MPV God Mode: Smart-Resume, Áudio Studio, Readahead e Imersão
+│   ├── [ROADMAP_MPV_EXPANSAO_UX_PREMIUM.md](./ROADMAP_MPV_EXPANSAO_UX_PREMIUM.md) # 🚀 Roadmap MPV UX: uosc, thumbfast, Anime4K & Anki (Fases 1 a 3)
 │   ├── [GUIA_YAZI_POWERUSER.md](./GUIA_YAZI_POWERUSER.md)         # Yazi ultra-veloz, compactação/extração e saltos no Drive
 │   └── [GUIA_ATALHOS_E_KEYBINDS_MESTRE.md](./GUIA_ATALHOS_E_KEYBINDS_MESTRE.md) # Cheat sheet geral de atalhos
 │
