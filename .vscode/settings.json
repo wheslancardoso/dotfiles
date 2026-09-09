@@ -3,7 +3,8 @@
     "**/waybar/Modules*": "jsonc",
     "**/waybar/UserModules": "jsonc",
     "**/waybar/config*": "jsonc",
-    "**/waybar/configs/*": "jsonc"
+    "**/waybar/configs/*": "jsonc",
+    "**/wlogout/layout": "plaintext"
   },
   "json.validate.enable": true
 }
