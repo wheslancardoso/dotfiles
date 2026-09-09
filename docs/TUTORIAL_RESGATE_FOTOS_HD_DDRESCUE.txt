@@ -1,0 +1,131 @@
+================================================================================
+  GUIA DEFINITIVO: RESGATE DE FOTOS ANTIGAS EM HD COM BAD BLOCKS (DDRESCUE + PHOTOREC)
+================================================================================
+
+TEMPO ESTIMADO TOTAL:
+- Clonagem rápida do HD (500GB) com ddrescue: 1h30 a 3h (depende dos bad blocks).
+- Extração de fotos com PhotoRec no NVMe: 15 a 30 minutos.
+- Deixar a noite toda rodando é o CENÁRIO PERFEITO. Você acorda com tudo pronto!
+
+--------------------------------------------------------------------------------
+PASSO 1: CUIDADOS FÍSICOS OBRIGATÓRIOS ANTES DE LIGAR
+--------------------------------------------------------------------------------
+1. Coloque o HD de 2.5" dentro da case USB com cuidado.
+2. Apoie a case em uma superfície FIRME e estável (em cima de um mousepad).
+   AVISO CRÍTICO: Não esbarre, não balance e não mexa na case durante o processo.
+3. Conecte o cabo USB em uma porta USB 3.0 TRASEIRA do computador (direto na placa-mãe).
+   NUNCA use portas da frente do gabinete nem adaptadores/hubs.
+
+--------------------------------------------------------------------------------
+PASSO 2: DAR BOOT PELO PENDRIVE VENTOY NO SYSTEMRESCUE
+--------------------------------------------------------------------------------
+1. Ligue o PC apertando a tecla de Boot Menu (geralmente F11, F12 ou F8 na sua placa).
+2. Escolha o seu pendrive Ventoy.
+3. No menu do Ventoy, selecione a opção:
+   -> "SystemRescue"
+4. Quando o SystemRescue carregar, aperte Enter na opção padrão com interface gráfica (XFCE).
+5. Abra o Terminal clicando no ícone preto na barra inferior.
+
+--------------------------------------------------------------------------------
+PASSO 3: IDENTIFICAR OS DISCOS CORRETAMENTE (MUITO CUIDADO)
+--------------------------------------------------------------------------------
+No terminal do SystemRescue, digite:
+    lsblk
+
+Você verá uma lista como esta:
+- nvme0n1       (Seu SSD NVMe de 512GB interno do PC)
+  ├─ nvme0n1p2  (Partição onde você vai salvar a imagem e as fotos)
+- sda ou sdb    (O seu HD velho de 2.5" conectado no USB)
+
+Exemplo para este tutorial:
+-> O HD velho defeituoso na case USB é o: /dev/sdb
+-> A partição do seu SSD NVMe para salvar os arquivos é a: /dev/nvme0n1p2
+
+--------------------------------------------------------------------------------
+PASSO 4: MONTAR A PARTIÇÃO DO SSD PARA RECEBER O BACKUP
+--------------------------------------------------------------------------------
+Crie uma pasta de resgate no SSD do seu computador:
+
+    mkdir -p /mnt/meu_ssd
+    mount /dev/nvme0n1p2 /mnt/meu_ssd
+    mkdir -p /mnt/meu_ssd/RESGATE_FOTOS_2016
+    cd /mnt/meu_ssd/RESGATE_FOTOS_2016
+
+Agora você está dentro da pasta segura do seu SSD NVMe.
+
+--------------------------------------------------------------------------------
+PASSO 5: A PRIMEIRA PASSADA DO DDRESCUE (CÓPIA RÁPIDA DE SILÍCIO)
+--------------------------------------------------------------------------------
+Este comando vai copiar tudo o que estiver saudável no HD na velocidade máxima,
+pulando na hora qualquer bad block para não estressar o motor nem a agulha:
+
+    ddrescue -n -b 4096 /dev/sdb hd_completo.img resgate.log
+
+O que você vai ver na tela:
+- "rescued": quantidade de gigabytes já salvos com sucesso.
+- "non-scraped" ou "bad sectors": setores que ele pulou propositalmente.
+- O arquivo "resgate.log" anota cada milissegundo do que foi feito.
+
+DICA DE OURO: Se a case USB desconectar ou der timeout:
+NÃO ENTRE EM PÂNICO! Apenas reconecte o cabo USB e repita exatamente o mesmo comando.
+O ddrescue lê o "resgate.log" e continua do exato byte onde parou, sem recomeçar do zero!
+
+--------------------------------------------------------------------------------
+PASSO 6: A SEGUNDA PASSADA DO DDRESCUE (RASPAGEM DOS SETORES DIFÍCEIS)
+--------------------------------------------------------------------------------
+Quando a primeira passada terminar, execute a tentativa nos setores danificados:
+
+    ddrescue -r 1 -b 4096 /dev/sdb hd_completo.img resgate.log
+
+O parâmetro "-r 1" diz: "Tente ler cada setor ruim que sobrou apenas 1 vez".
+Isso recupera pedaços de fotos que caíram perto de áreas defeituosas.
+
+Quando terminar:
+DESPLUGUE A CASE USB DO COMPUTADOR! O HD VELHO JÁ CUMPRIU O PAPEL DELE.
+Ele pode queimar ou descansar na gaveta: o clone 100% fiel de todos os setores
+já está salvo dentro do arquivo "hd_completo.img" no seu SSD NVMe!
+
+--------------------------------------------------------------------------------
+PASSO 7: EXTRAIR AS FOTOS DE 2016 EM RESOLUÇÃO TOTAL (PHOTOREC)
+--------------------------------------------------------------------------------
+Agora vamos rodar o PhotoRec na imagem salva no NVMe. Como ele vai ler da memória
+flash do seu SSD, ele vai voar a mais de 3.000 MB/s!
+
+1. Na mesma pasta (/mnt/meu_ssd/RESGATE_FOTOS_2016), crie a pasta de saída:
+    mkdir -p fotos_recuperadas
+
+2. Abra o PhotoRec apontando para o arquivo de imagem:
+    photorec hd_completo.img
+
+3. Na tela do PhotoRec (navegue com as setas do teclado e Enter):
+   a) Selecione o arquivo "hd_completo.img" e aperte [Proceed].
+   b) Selecione [No partition] (Whole disk) para varrer o disco inteiro cru.
+   c) Vá em [File Opt] (Opções de Arquivo):
+      - Aperte 's' para desmarcar todas as extensões.
+      - Selecione apenas as que importam:
+        [X] jpg (Imagens JPEG na resolução original máxima)
+        [X] png (Imagens PNG)
+        [X] mov / mp4 (Vídeos gravados de câmera/celular)
+        [X] tif / cr2 / nef (Se tiver arquivos RAW de câmeras profissionais)
+      - Aperte 'b' para salvar as opções.
+   d) Selecione [Search].
+   e) Escolha o sistema de arquivos: [Other] (FAT/NTFS/ext).
+   f) Escolha a pasta de destino: entre em "fotos_recuperadas" e aperte 'C' no teclado.
+
+--------------------------------------------------------------------------------
+PASSO 8: ACORDAR DE MANHÃ E CONFERIR SUAS FOTOS!
+--------------------------------------------------------------------------------
+O PhotoRec vai varrer todos os 500GB da imagem e salvar as fotos dentro de subpastas:
+    fotos_recuperadas/recup_dir.1/
+    fotos_recuperadas/recup_dir.2/
+    ...
+
+DIFERENÇA PARA O EASEUS DE 2021:
+- O PhotoRec recupera o arquivo JPEG original de alta resolução.
+- As fotos não virão aquelas miniaturas pixeladas de 160x120.
+- A data original em que a foto foi tirada em 2016 será preservada nos metadados EXIF.
+
+Para ver as fotos no terminal do Linux depois com o visualizador:
+    nsxiv /mnt/meu_ssd/RESGATE_FOTOS_2016/fotos_recuperadas/
+    ou abra o gerenciador de arquivos e visualize a galeria!
+================================================================================
