@@ -69,6 +69,7 @@ setup_system_and_docker() {
         docker-compose-v2 \
         python3-pip \
         pipx \
+        aria2 \
         anki
 
     ok "Pacotes APT essenciais instalados com sucesso!"

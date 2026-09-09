@@ -124,6 +124,22 @@ Todas as ferramentas necessárias para a experiência MPV God Mode estão devida
 3. **Instalador Geral (`setup.sh`):**
    * Provisiona `ffsubsync` e `subliminal` automaticamente via `pipx` para isolamento e estabilidade total sem conflitos de sistema.
 4. **Instalador WSL/Ubuntu (`scripts/setup-ubuntu-wsl.sh`):**
-   * Inclui `python3-pip`, `pipx` e configuração automática de `ffsubsync` e `subliminal`.
+   * Inclui `python3-pip`, `pipx`, `aria2` e configuração automática de `ffsubsync` e `subliminal`.
+
+---
+
+## 🚀 Sinergia Apex Downloader + MPV God Mode
+
+O ecossistema foi desenhado para eliminar 100% do atrito de ponta a ponta:
+
+1. **Download com Áudio Original Garantido (Apex):**
+   * Você pode buscar filmes diretamente pelo catálogo internacional: `dl -y "Inception"` ou opção `2` no menu do Apex.
+   * O release vem em **1080p BluRay ou 4K com Áudio Original em Inglês (AAC / 5.1 Surround)** baixado em segundos via `aria2c` com 16 conexões.
+2. **Fallback Inteligente no Pomfy:**
+   * Se você tentar baixar um filme pelo Pomfy pedindo áudio em inglês (`--original` ou `[2]`), e o servidor do Pomfy só tiver a versão dublada em português:
+   * O Apex **detecta antes de baixar**, emite um aviso amigável e aciona automaticamente o fallback para o release BluRay em inglês via YTS!
+3. **Reprodução e Imersão Instantânea (MPV):**
+   * Ao abrir o arquivo no MPV, o `smart-lang.lua` reconhece a faixa em inglês, busca a legenda correspondente, faz o alinhamento acústico com `ffsubsync` em background e armazena em cache permanente.
+
 
 

@@ -421,6 +421,363 @@ search_pomfy_fzf() {
     done
 }
 
+# ------------------------------------------------------------------------------
+# 🎬 MOTOR INTERNACIONAL DE FILMES (YTS BLURAY 1080P/4K • ÁUDIO ORIGINAL EM INGLÊS)
+# ------------------------------------------------------------------------------
+get_yts_api_base() {
+    local endpoints=(
+        "https://movies-api.accel.li/api/v2"
+        "https://yts.ag/api/v2"
+        "https://yts.lt/api/v2"
+        "https://yts.do/api/v2"
+    )
+    for ep in "${endpoints[@]}"; do
+        if curl -sL -m 2 -f "$ep/list_movies.json?limit=1" >/dev/null 2>&1; then
+            echo "$ep"
+            return 0
+        fi
+    done
+    echo "https://movies-api.accel.li/api/v2"
+}
+
+search_yts_api() {
+    local query="$1"
+    local limit="${2:-20}"
+    local base_url
+    base_url="$(get_yts_api_base)"
+    local encoded
+    encoded=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1]))" "$query" 2>/dev/null || echo "$query")
+    curl -sL -m 8 "${base_url}/list_movies.json?query_term=${encoded}&sort_by=seeds&order_by=desc&limit=${limit}" 2>/dev/null || true
+}
+
+build_yts_magnet() {
+    local hash="$1"
+    local name="$2"
+    local encoded_name
+    encoded_name=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1]))" "$name" 2>/dev/null || echo "$name")
+    local trackers=(
+        "udp://open.demonii.com:1337/announce"
+        "udp://tracker.openbittorrent.com:80"
+        "udp://tracker.coppersurfer.tk:6969"
+        "udp://glotorrents.pw:6969/announce"
+        "udp://tracker.opentrackr.org:1337/announce"
+        "udp://torrent.gresille.org:80/announce"
+        "udp://p4p.arenabg.ch:1337"
+        "udp://tracker.internetwarriors.net:1337"
+    )
+    local tr_str=""
+    for tr in "${trackers[@]}"; do
+        tr_str="${tr_str}&tr=${tr}"
+    done
+    echo "magnet:?xt=urn:btih:${hash}&dn=${encoded_name}${tr_str}"
+}
+
+render_yts_preview() {
+    local cache_file="$1"
+    local movie_id="$2"
+    if [ ! -f "$cache_file" ] || [ -z "$movie_id" ]; then return 0; fi
+
+    local movie
+    movie=$(jq -r --arg id "$movie_id" '.data.movies[]? | select((.id | tostring) == $id)' "$cache_file" 2>/dev/null || true)
+    if [ -z "$movie" ]; then return 0; fi
+
+    printf '\033_Ga=d,d=a\033\\' 2>/dev/null || true
+
+    local title year rating runtime genres summary thumb_url
+    title=$(echo "$movie" | jq -r '.title // "Filme"')
+    year=$(echo "$movie" | jq -r '.year // ""')
+    rating=$(echo "$movie" | jq -r '.rating // "0"')
+    runtime=$(echo "$movie" | jq -r '.runtime // 0')
+    genres=$(echo "$movie" | jq -r '[.genres[]? // empty] | join(" • ")')
+    summary=$(echo "$movie" | jq -r '.summary // .description_full // "Sem sinopse disponível."')
+    thumb_url=$(echo "$movie" | jq -r '.medium_cover_image // empty')
+
+    local c_mauve="\033[1;38;2;203;166;247m"
+    local c_green="\033[38;2;166;227;161m"
+    local c_blue="\033[38;2;137;180;250m"
+    local c_peach="\033[38;2;250;179;135m"
+    local c_yellow="\033[38;2;249;226;175m"
+    local c_text="\033[38;2;205;214;244m"
+    local c_bold="\033[1m"
+    local c_nc="\033[0m"
+
+    echo -e "${c_mauve}╭─────────────────────────────────────────────────────────────╮${c_nc}"
+    echo -e "${c_mauve}│  🎬 FILME (ÁUDIO ORIGINAL INGLÊS): ${title}${year:+ ($year)}${c_nc}"
+    echo -e "${c_mauve}╰─────────────────────────────────────────────────────────────╯${c_nc}"
+
+    if [ -n "$thumb_url" ] && command -v chafa >/dev/null 2>&1; then
+        local poster_dir="/tmp/yts_posters"
+        mkdir -p "$poster_dir"
+        local poster_file="$poster_dir/${movie_id}.jpg"
+        if [ ! -s "$poster_file" ]; then
+            curl -s -f -m 3 "$thumb_url" -o "$poster_file" 2>/dev/null || true
+        fi
+        if [ -s "$poster_file" ]; then
+            local cols="${FZF_PREVIEW_COLUMNS:-40}"
+            local img_w=$(( cols > 6 ? cols - 4 : 30 ))
+            local img_h=11
+            if [ "$TERM" = "xterm-kitty" ] || [ -n "$KITTY_WINDOW_ID" ] || [ -n "$GHOSTTY_RESOURCES_DIR" ] || [ "$TERM_PROGRAM" = "ghostty" ] || [ "$TERM_PROGRAM" = "WezTerm" ]; then
+                chafa --probe=off -f kitty --size="${img_w}x${img_h}" "$poster_file" 2>/dev/null || \
+                chafa --probe=off -f symbols --size="${img_w}x${img_h}" --symbols=sextant+quad+block+half --color-space=rgb "$poster_file" 2>/dev/null || true
+                for ((p=0; p<img_h; p++)); do printf "\n"; done
+            else
+                chafa --probe=off -f symbols --size="${img_w}x${img_h}" --symbols=sextant+quad+block+half --color-space=rgb "$poster_file" 2>/dev/null || true
+            fi
+            echo ""
+        fi
+    fi
+
+    [ -n "$genres" ] && echo -e "  ${c_peach}🏷️ Gêneros  :${c_nc} ${genres}"
+    if [ "$rating" != "0" ] && [ -n "$rating" ]; then
+        local num_stars
+        num_stars=$(python3 -c "print('★' * min(10, max(0, round(float('$rating')))))" 2>/dev/null || echo "★")
+        echo -e "  ${c_yellow}⭐ Avaliação:${c_nc} ${c_bold}${num_stars} ${rating}/10${c_nc}"
+    fi
+    [ "$runtime" -gt 0 ] && echo -e "  ${c_blue}⏱️ Duração  :${c_nc} ${runtime} minutos"
+
+    echo -e "\n  ${c_green}${c_bold}💎 Qualidades Disponíveis (Áudio Original Inglês AAC/5.1):${c_nc}"
+    echo "$movie" | jq -r '.torrents[]? | "     • " + .quality + " " + (.type | ascii_upcase) + " (" + .size + ") — " + (.seeds | tostring) + " seeds [5.1 Surround]"' 2>/dev/null
+
+    echo -e "\n  ${c_blue}${c_bold}📖 SINOPSE:${c_nc}"
+    echo -e "  ${c_text}${summary}${c_nc}\n"
+    echo -e "  ${c_green}✔ Pressione [ENTER] para escolher a resolução e baixar.${c_nc}"
+}
+
+download_yts_selected_movie() {
+    local movie="$1"
+    if [ -z "$movie" ] || [ "$movie" == "null" ]; then return 1; fi
+
+    local title year torrents_json
+    title=$(echo "$movie" | jq -r '.title // "Filme"')
+    year=$(echo "$movie" | jq -r '.year // ""')
+    torrents_json=$(echo "$movie" | jq '.torrents')
+
+    local torrent_count
+    torrent_count=$(echo "$torrents_json" | jq 'length')
+    if [ "$torrent_count" -eq 0 ]; then
+        echo -e "${RED}❌ Nenhum torrent disponível para este filme.${NC}"
+        return 1
+    fi
+
+    local selected_torrent=""
+    if [ "$torrent_count" -eq 1 ] || [ ! -t 0 ]; then
+        selected_torrent=$(echo "$movie" | jq '(.torrents[] | select(.quality == "1080p")) // .torrents[0]')
+    else
+        echo -e "\n${BOLD}${MAUVE}🎬 ${title}${year:+ ($year)}${NC}"
+        echo -e "${BOLD}Escolha a Resolução para Download:${NC}"
+        local idx=1
+        local opt_map=()
+        while IFS= read -r t; do
+            local q type sz seeds
+            q=$(echo "$t" | jq -r '.quality')
+            type=$(echo "$t" | jq -r '.type | ascii_upcase')
+            sz=$(echo "$t" | jq -r '.size')
+            seeds=$(echo "$t" | jq -r '.seeds')
+            local rec=""
+            [ "$q" == "1080p" ] && rec=" ${GREEN}[Recomendado • Áudio 5.1]${NC}"
+            [ "$q" == "2160p" ] && rec=" ${YELLOW}[4K Ultra HD]${NC}"
+            echo -e "  [${BLUE}${idx}${NC}] ${BOLD}${q} ${type}${NC} (${sz}) • ${seeds} seeds${rec}"
+            opt_map+=("$t")
+            ((idx++))
+        done < <(echo "$torrents_json" | jq -c '.[]')
+
+        read -rp "Opção [1-$((idx-1)), padrão: 1]: " user_opt
+        user_opt="${user_opt:-1}"
+        local chosen_idx=$((user_opt - 1))
+        if [ "$chosen_idx" -ge 0 ] && [ "$chosen_idx" -lt "${#opt_map[@]}" ]; then
+            selected_torrent="${opt_map[$chosen_idx]}"
+        else
+            selected_torrent="${opt_map[0]}"
+        fi
+    fi
+
+    local hash quality type
+    hash=$(echo "$selected_torrent" | jq -r '.hash')
+    quality=$(echo "$selected_torrent" | jq -r '.quality')
+    type=$(echo "$selected_torrent" | jq -r '.type')
+
+    local release_name="${title}${year:+ ($year)} [${quality}] [${type^^}] [YTS]"
+    local magnet
+    magnet=$(build_yts_magnet "$hash" "$release_name")
+
+    local dest_dir="${CUSTOM_DIR:-$DEFAULT_DEST_MOVIES}"
+    mkdir -p "$dest_dir"
+
+    echo -e "\n${GREEN}🚀 Iniciando download via Aria2c (P2P Multi-Peer Acelerado)...${NC}"
+    echo -e "  ${BOLD}Filme    :${NC} ${title}${year:+ ($year)}"
+    echo -e "  ${BOLD}Qualidade:${NC} ${quality} ${type^^} • Áudio Original em Inglês (AAC 5.1)"
+    echo -e "  ${BOLD}Destino  :${NC} ${dest_dir}\n"
+
+    download_torrent_or_magnet "$magnet" "$dest_dir"
+    log_history "$release_name" "$magnet" "$dest_dir" "TORRENT_YTS"
+    return 0
+}
+
+search_yts_fzf() {
+    local query="$1"
+    while true; do
+        if [ -z "$query" ]; then
+            read -rp "🎬 Digite o nome do filme em inglês (ex: Inception, Interstellar, Batman): " query
+        fi
+        if [ -z "$query" ] || [ "$query" == "q" ] || [ "$query" == "exit" ]; then
+            echo -e "${YELLOW}Busca cancelada.${NC}" >&2
+            return 1
+        fi
+
+        echo -e "${MAUVE}🔍 Pesquisando catálogo YTS BluRay para: ${BOLD}${query}${NC}..." >&2
+        local raw_json
+        raw_json=$(search_yts_api "$query" 20)
+
+        local movie_count
+        movie_count=$(echo "$raw_json" | jq -r '.data.movie_count // 0' 2>/dev/null || echo 0)
+
+        if [ "$movie_count" -eq 0 ] || [ -z "$raw_json" ]; then
+            echo -e "${RED}❌ Nenhum filme encontrado no YTS para '${query}'.${NC}" >&2
+            query=""
+            continue
+        fi
+
+        local cache_file="/tmp/yts_search_${$}.json"
+        echo "$raw_json" > "$cache_file"
+
+        local formatted_lines
+        formatted_lines=$(echo "$raw_json" | jq -r '.data.movies[]? | 
+            "🎬 " + .title + (if .year then " (" + (.year | tostring) + ")" else "" end) +
+            (if .rating then " • ⭐ " + (.rating | tostring) else "" end) +
+            " • [" + ([.torrents[]?.quality] | unique | join(", ")) + "]" +
+            "\t" + (.id | tostring)
+        ')
+
+        if ! command -v fzf >/dev/null 2>&1 || [ ! -t 0 ]; then
+            rm -f "$cache_file"
+            echo "$raw_json" | jq -r '.data.movies[0].id'
+            return 0
+        fi
+
+        local fzf_header=$'[ENTER] Baixar • [Ctrl+S] Nova Busca • [Ctrl+D/U] Rolar • [ESC] Sair'
+
+        local fzf_output
+        fzf_output=$(echo "$formatted_lines" | fzf \
+            --expect="ctrl-s,ctrl-r" \
+            --prompt="🎬 Selecione o Filme (Áudio Original Inglês) > " \
+            --header="$fzf_header" \
+            --height=75% \
+            --layout=reverse \
+            --border=rounded \
+            --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
+            --color=fg:#cdd6f4,header:#cba6f7,info:#cba6f7,pointer:#f5e0dc \
+            --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
+            --bind="ctrl-j:down,ctrl-k:up,ctrl-d:preview-page-down,ctrl-u:preview-page-up" \
+            --preview="\"$SELF_SCRIPT\" __preview_yts \"$cache_file\" {2}" \
+            --preview-window="right:48%:wrap:border-rounded" \
+            --with-nth=1 \
+            --delimiter="\t")
+
+        rm -f "$cache_file"
+
+        if [ -z "$fzf_output" ]; then
+            echo -e "${YELLOW}Busca cancelada pelo usuário.${NC}" >&2
+            return 1
+        fi
+
+        local key_pressed
+        key_pressed=$(echo "$fzf_output" | head -n1)
+        local selected
+        selected=$(echo "$fzf_output" | tail -n +2)
+
+        if [ "$key_pressed" == "ctrl-s" ] || [ "$key_pressed" == "ctrl-r" ]; then
+            echo ""
+            read -rp "🔍 Digite o novo termo de pesquisa: " query
+            continue
+        fi
+
+        local movie_id
+        movie_id=$(echo "$selected" | cut -f2)
+
+        if [ -z "$movie_id" ]; then
+            query=""
+            continue
+        fi
+
+        local selected_movie
+        selected_movie=$(echo "$raw_json" | jq -r --arg id "$movie_id" '.data.movies[]? | select((.id | tostring) == $id)')
+
+        download_yts_selected_movie "$selected_movie"
+        return 0
+    done
+}
+
+check_pomfy_stream_has_english() {
+    local stream_url="$1"
+    local stream_ref="$2"
+    if [ -z "$stream_url" ]; then return 1; fi
+
+    local hls_header
+    hls_header=$(curl -s -m 4 -H "Referer: $stream_ref" "$stream_url" | head -n 40 2>/dev/null || true)
+    if [ -z "$hls_header" ]; then return 0; fi
+
+    if echo "$hls_header" | grep -qi "TYPE=AUDIO"; then
+        if echo "$hls_header" | grep -qiE 'LANGUAGE="en"|LANGUAGE="eng"|NAME="Ingl[eê]s"|NAME="English"'; then
+            return 0
+        else
+            return 1
+        fi
+    fi
+
+    return 0
+}
+
+download_yts_fallback() {
+    local title="$1"
+    local year="$2"
+    local dest_dir="${3:-$DEFAULT_DEST_MOVIES}"
+
+    if [ -z "$title" ]; then return 1; fi
+
+    local raw_json
+    raw_json=$(search_yts_api "$title" 5)
+    local movie_count
+    movie_count=$(echo "$raw_json" | jq -r '.data.movie_count // 0' 2>/dev/null || echo 0)
+
+    if [ "$movie_count" -eq 0 ] || [ -z "$raw_json" ]; then
+        return 1
+    fi
+
+    local movie=""
+    if [ -n "$year" ]; then
+        movie=$(echo "$raw_json" | jq -r --arg y "$year" '.data.movies[]? | select((.year | tostring) == $y)' | head -n 1)
+    fi
+    if [ -z "$movie" ] || [ "$movie" == "null" ]; then
+        movie=$(echo "$raw_json" | jq -c '.data.movies[0]')
+    fi
+
+    if [ -z "$movie" ] || [ "$movie" == "null" ]; then return 1; fi
+
+    local movie_title movie_year
+    movie_title=$(echo "$movie" | jq -r '.title')
+    movie_year=$(echo "$movie" | jq -r '.year // ""')
+
+    local torrent
+    torrent=$(echo "$movie" | jq '(.torrents[] | select(.quality == "1080p")) // (.torrents[] | select(.quality == "720p")) // .torrents[0]')
+    if [ -z "$torrent" ] || [ "$torrent" == "null" ]; then return 1; fi
+
+    local hash quality type
+    hash=$(echo "$torrent" | jq -r '.hash')
+    quality=$(echo "$torrent" | jq -r '.quality')
+    type=$(echo "$torrent" | jq -r '.type')
+
+    local release_name="${movie_title}${movie_year:+ ($movie_year)} [${quality}] [${type^^}] [YTS]"
+    local magnet
+    magnet=$(build_yts_magnet "$hash" "$release_name")
+
+    echo -e "\n${GREEN}✔ [Fallback Internacional Encontrado]${NC} ${BOLD}${release_name}${NC}"
+    echo -e "${PEACH}🔊 Áudio Original em Inglês (AAC 5.1 Surround) • Download Acelerado com Aria2c${NC}\n"
+
+    download_torrent_or_magnet "$magnet" "$dest_dir"
+    log_history "$release_name" "$magnet" "$dest_dir" "TORRENT_YTS"
+    return 0
+}
+
 get_now_playing_info() {
     if ! command -v playerctl >/dev/null 2>&1; then
         return 1
@@ -1657,12 +2014,13 @@ download_streaming_pomfy() {
         return 1
     fi
 
-    local stream_url stream_ref stream_file item_type item_title item_season
+    local stream_url stream_ref stream_file item_type item_title item_season item_year
     stream_url=$(echo "$stream_json" | jq -r '.streamUrl')
     stream_ref=$(echo "$stream_json" | jq -r '.referer // "https://f7hyg4q.org/"')
     stream_file=$(echo "$stream_json" | jq -r '.fileName')
     item_type=$(echo "$stream_json" | jq -r '.type')
     item_title=$(echo "$stream_json" | jq -r '.title')
+    item_year=$(echo "$stream_json" | jq -r '.year // empty')
     item_season=$(echo "$stream_json" | jq -r '.season // empty')
 
     local final_dest_dir="$dest_base"
@@ -1684,6 +2042,19 @@ download_streaming_pomfy() {
     local clip_flags=()
     if [ -n "$CUSTOM_CLIP" ]; then
         clip_flags+=(--download-sections "*${CUSTOM_CLIP}" --force-keyframes-at-cuts)
+    fi
+
+    # Fallback inteligente se o usuário pediu áudio em Inglês ou Dual
+    if [[ "$STREAM_AUDIO_LANG" =~ ^(en|dual)$ ]] && [ "$item_type" == "filme" ]; then
+        if ! check_pomfy_stream_has_english "$stream_url" "$stream_ref"; then
+            echo -e "${YELLOW}⚠️ [Aviso de Áudio] O servidor Pomfy só disponibilizou a versão dublada em Português para este título.${NC}"
+            echo -e "${TEAL}🔄 Ativando Fallback Inteligente para YTS BluRay (Áudio Original em Inglês 5.1)...${NC}"
+            if download_yts_fallback "$item_title" "$item_year" "$final_dest_dir"; then
+                return 0
+            else
+                echo -e "${PEACH}ℹ️ Continuando com a versão do Pomfy...${NC}\n"
+            fi
+        fi
     fi
 
     echo -e "${GREEN}🎬 Título:${NC} ${BOLD}${stream_file}${NC}"
@@ -1958,7 +2329,7 @@ run_cli_mode() {
                 [ "${#short_clip}" -gt 45 ] && short_clip="${short_clip:0:42}..."
                 main_actions="0\t📋 [Clipboard] Baixar Link Copiado (${short_clip})\tProcessa e baixa automaticamente a URL encontrada na sua área de transferência com prévia da capa.\n"
             fi
-            main_actions="${main_actions}1\t🍿 Filmes & Séries no Pomfy (Catálogo TMDB 1080p)\tAbre o catálogo navegável com sinopse oficial, pôster HD e streaming direto.\n2\t🎵 Buscar Músicas no YouTube Music (Pesquisa FZF com Capas HD)\tPesquise pelo nome da música ou artista, escolha no menu FZF com capa HD e baixe em MP3 320k com tags.\n3\t🎧 Spotify (Baixar por Link ou Nome da Música)\tBaixe faixas, álbuns ou playlists do Spotify com capas HD oficiais, metadados e letras (.lrc).\n4\t🎥 Buscar / Baixar Vídeos no YouTube (1080p/4K com Capas HD)\tBusca com miniaturas ao vivo no FZF ou baixa links do YouTube com 1 tecla de confirmação.\n5\t🔗 Inserir URL ou Arquivo de Lote (.txt / .md)\tProcessa qualquer link da web, torrent/magnet ou arquivos de lote (.txt, .md).\n6\t📻 Baixar o que está tocando agora (MPRIS / Spotify)\tDetecta a música ou vídeo em reprodução no seu player do Linux e baixa na hora.\n7\t📂 Ver Histórico de Downloads\tAbre a lista de downloads anteriores pesquisável com FZF.\n8\t🔄 Atualizar Motores de Download\tVerifica e atualiza o yt-dlp, spotdl e gallery-dl.\n9\t🚪 Sair\tFecha o cockpit de mídia."
+            main_actions="${main_actions}1\t🍿 Filmes & Séries no Pomfy (Catálogo TMDB 1080p)\tAbre o catálogo navegável com sinopse oficial, pôster HD e streaming direto.\n2\t🎬 Filmes em Inglês Original (YTS BluRay 1080p / 4K)\tBusca filmes no catálogo internacional com áudio original em inglês 5.1 e alta fidelidade.\n3\t🎵 Buscar Músicas no YouTube Music (Pesquisa FZF com Capas HD)\tPesquise pelo nome da música ou artista, escolha no menu FZF com capa HD e baixe em MP3 320k com tags.\n4\t🎧 Spotify (Baixar por Link ou Nome da Música)\tBaixe faixas, álbuns ou playlists do Spotify com capas HD oficiais, metadados e letras (.lrc).\n5\t🎥 Buscar / Baixar Vídeos no YouTube (1080p/4K com Capas HD)\tBusca com miniaturas ao vivo no FZF ou baixa links do YouTube com 1 tecla de confirmação.\n6\t🔗 Inserir URL ou Arquivo de Lote (.txt / .md)\tProcessa qualquer link da web, torrent/magnet ou arquivos de lote (.txt, .md).\n7\t📻 Baixar o que está tocando agora (MPRIS / Spotify)\tDetecta a música ou vídeo em reprodução no seu player do Linux e baixa na hora.\n8\t📂 Ver Histórico de Downloads\tAbre a lista de downloads anteriores pesquisável com FZF.\n9\t🔄 Atualizar Motores de Download\tVerifica e atualiza o yt-dlp, spotdl e gallery-dl.\n10\t🚪 Sair\tFecha o cockpit de mídia."
 
             local chosen_action
             chosen_action=$(echo -e "$main_actions" | fzf \
@@ -1992,6 +2363,10 @@ run_cli_mode() {
                     exit 0
                     ;;
                 2)
+                    search_yts_fzf ""
+                    exit 0
+                    ;;
+                3)
                     local found_music
                     found_music=$(search_music_fzf "")
                     if [ -n "$found_music" ]; then
@@ -1999,7 +2374,7 @@ run_cli_mode() {
                     fi
                     exit 0
                     ;;
-                3)
+                4)
                     echo -e "\n${GREEN}${BOLD}🎧 APEX SPOTIFY SUITE • Músicas, Álbuns & Playlists${NC}"
                     echo -e "${SUBTEXT}Digite o nome da música / artista OU cole o link do Spotify:${NC}"
                     read -rp "🎵 Música ou Link: " sp_input
@@ -2034,7 +2409,7 @@ run_cli_mode() {
                         esac
                     fi
                     ;;
-                4)
+                5)
                     read -rp "🔍 Digite a busca ou cole o link do YouTube: " yt_query
                     if [ -z "$yt_query" ]; then
                         exit 0
@@ -2047,10 +2422,10 @@ run_cli_mode() {
                         [ -n "$found_yt" ] && url="$found_yt"
                     fi
                     ;;
-                5)
+                6)
                     read -rp "Cole a URL ou caminho do arquivo (.txt/.md): " url
                     ;;
-                6)
+                7)
                     local now_url
                     now_url=$(get_now_playing_info || true)
                     if [ -n "$now_url" ]; then
@@ -2060,11 +2435,11 @@ run_cli_mode() {
                         exit 1
                     fi
                     ;;
-                7)
+                8)
                     view_history "cli"
                     exit 0
                     ;;
-                8)
+                9)
                     update_engines
                     exit 0
                     ;;
@@ -2100,6 +2475,11 @@ run_cli_mode() {
             download_streaming_pomfy "$found_pomfy" "$SEASON_ARG" "$EP_ARG"
             exit 0
         fi
+        exit 0
+    fi
+
+    if [ "$url" == "y" ] || [ "$url" == "yts" ] || [ "$url" == "yify" ] || [ "$url" == "filme-en" ]; then
+        search_yts_fzf ""
         exit 0
     fi
 
@@ -2427,12 +2807,17 @@ show_help() {
     echo -e "  ${TEAL}dl --pomfy <url> --season 1 --ep 1-7${NC} Baixa lote de episódios da série no Pomfy"
     echo -e "  ${YELLOW}dl --audio <pt|en|dual>${NC}      Seleciona áudio Dublado (pt), Original (en) ou Dual Áudio"
     echo -e "  ${YELLOW}dl --dual${NC}                     Baixa vídeo com faixas Dublado + Original no mesmo arquivo"
+    echo -e "  ${YELLOW}dl -y, --yts \"<filme>\"${NC}         Busca e baixa filmes em Inglês Original (YTS BluRay 1080p/4K)"
     echo ""
 }
 
 main() {
     if [ "$1" == "__preview_thumb" ]; then
         render_preview_thumb "$2" "$3" "$4"
+        exit 0
+    fi
+    if [ "$1" == "__preview_yts" ]; then
+        render_yts_preview "$2" "$3"
         exit 0
     fi
 
@@ -2445,6 +2830,15 @@ main() {
             --help)
                 show_help
                 exit 0
+                ;;
+            -y|--yts|--yify)
+                direct_action="yts"
+                if [ -n "$2" ] && [[ ! "$2" =~ ^- ]]; then
+                    target_url="$2"
+                    shift 2
+                else
+                    shift
+                fi
                 ;;
             --rofi)
                 run_rofi_mode
@@ -2651,6 +3045,11 @@ main() {
             if [ -z "$target_url" ]; then
                 exit 0
             fi
+        fi
+
+        if [ "$direct_action" == "yts" ]; then
+            search_yts_fzf "$target_url"
+            exit 0
         fi
 
         if [ -z "$target_url" ]; then
