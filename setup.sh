@@ -192,7 +192,8 @@ setup_services() {
         "NetworkManager.service"
         "bluetooth.service"
         "sddm.service"
-        "docker.service"
+        "docker.socket"
+        "libvirtd.socket"
         "ufw.service"
         "systemd-timesyncd.service"
         "avahi-daemon.service"
@@ -200,6 +201,12 @@ setup_services() {
         "paccache.timer"
         "power-profiles-daemon.service"
     )
+
+    # Desabilitar serviços bloqueantes de boot desnecessários
+    for blocking_svc in NetworkManager-wait-online.service systemd-networkd-wait-online.service; do
+        sudo systemctl disable --now "$blocking_svc" 2>/dev/null || true
+        sudo systemctl mask "$blocking_svc" 2>/dev/null || true
+    done
 
 
     for svc in "${sys_services[@]}"; do
@@ -712,7 +719,18 @@ setup_anti_friction() {
     done
     ok "Flags de aceleração por hardware e Wayland nativo aplicadas!"
 
-    ok "Todos os antiatritos do sistema foram aplicados com sucesso!"
+    # 15. Aceleração de Boot NVMe & Bootloader Limine
+    if [ -f /boot/limine.conf ]; then
+        info "Otimizando timeout do bootloader Limine (1s)..."
+        sudo sed -i 's/^timeout: [0-9]\+/timeout: 1/' /boot/limine.conf 2>/dev/null || true
+        # Adiciona parâmetros de boot rápido do kernel se não estiverem presentes
+        if ! grep -q "8250.nr_uarts=0" /boot/limine.conf 2>/dev/null; then
+            sudo sed -i '/cmdline:.*quiet/ s|quiet nowatchdog splash rw|quiet nowatchdog splash rw fbcon=nodefer 8250.nr_uarts=0|' /boot/limine.conf 2>/dev/null || true
+        fi
+        ok "Bootloader Limine e kernel configurados para boot ultra-rápido!"
+    fi
+
+    ok "Todos os antiatritos e acelerações do sistema foram aplicados com sucesso!"
 }
 
 
