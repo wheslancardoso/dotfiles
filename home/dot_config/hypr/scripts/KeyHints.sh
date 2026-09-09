@@ -77,7 +77,7 @@ GDK_BACKEND=$BACKEND yad \
 " CTRL SPACE ou Play/Pause" "Play / Pause Global de Mídia (OSD Visual)" "MediaControl.sh --play-pause" \
 " CTRL ] ou Next Track" "Próxima Faixa de Mídia" "MediaControl.sh --next" \
 " CTRL [ ou Prev Track" "Faixa Anterior de Mídia" "MediaControl.sh --prev" \
-" ALT L" "Alternar Letras Sincronizadas / Karaokê (sptlrx)" "lyrics-toggle.sh" \
+" SHIFT L" "Alternar Letras Sincronizadas / Karaokê (sptlrx)" "lyrics-toggle.sh" \
 " M" "Spotify Dropdown Player (Scratchpad Flutuante)" "spotify-toggle.sh" \
 "Space (no Amberol)" "Play / Pause no Player Amberol" "Amberol Local" \
 "Left / Right (no Amberol)" "Avançar / Voltar 5 Segundos" "Amberol Local" \

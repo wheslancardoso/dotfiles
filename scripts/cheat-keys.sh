@@ -45,7 +45,7 @@ SUPER + M	Hyprland	Spotify Dropdown Scratchpad	Desce o Spotify em janela flutuan
 SUPER + CTRL + Space	Hyprland	Play / Pause Global de Mídia	Pausa ou continua qualquer áudio/vídeo rodando (Amberol, Spotify, navegador).
 SUPER + CTRL + ]	Hyprland	Próxima Faixa de Mídia	Avança para a próxima música em reprodução.
 SUPER + CTRL + [	Hyprland	Faixa Anterior de Mídia	Retorna para a música anterior em reprodução.
-SUPER + ALT + L	Hyprland	Letras Sincronizadas (Karaokê)	Abre janela flutuante com letras em tempo real (sptlrx) para Amberol e Spotify.
+SUPER + SHIFT + L	Hyprland	Letras Sincronizadas (Karaokê)	Abre janela flutuante com letras em tempo real (sptlrx) para Amberol e Spotify.
 Space (Amberol)	Mídia	Play / Pause no Amberol	Pausa ou reproduz o áudio local no player Amberol.
 Left / Right (Amberol)	Mídia	Avançar / Voltar 5s no Amberol	Avança ou retrocede 5 segundos na música.
 CTRL + Left/Right	Mídia	Mudar Faixa no Amberol	Muda para a faixa anterior ou próxima no Amberol.

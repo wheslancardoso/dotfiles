@@ -46,7 +46,7 @@
 - `M` + `s`      : **Backup Saves** (`sync-ludusavi.sh backup`)
 - `M` + `g`      : **Abrir Lazygit** na pasta atual
 - `M` + `t`      : **Abrir Terminal** na pasta atual
-- `Enter` em áudios : **Toca no Amberol Hi-Fi Player** (`SUPER + ALT + L` abre letras/karaokê)
+- `Enter` em áudios : **Toca no Amberol Hi-Fi Player** (`SUPER + SHIFT + L` abre letras/karaokê)
 
 
 ---
