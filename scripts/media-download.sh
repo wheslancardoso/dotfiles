@@ -854,19 +854,31 @@ download_torrent_or_magnet() {
     local url="$1"
     local dest_dir="${2:-$DEFAULT_DEST_VIDEO}"
     mkdir -p "$dest_dir"
-    echo -e "${PEACH}🧲 Baixando via Torrent/Magnet com Aria2c (P2P Multi-peer)...${NC}"
+    echo -e "${PEACH}🧲 Baixando via Torrent/Magnet com Aria2c Turbo (DHT + Multi-Peer 16 Conexões)...${NC}"
     if command -v aria2c >/dev/null 2>&1; then
+        local fast_trackers="udp://tracker.opentrackr.org:1337/announce,udp://open.demonii.com:1337/announce,udp://open.stealth.si:80/announce,udp://tracker.torrent.eu.org:451/announce,udp://tracker.moeking.me:6969/announce,udp://explodie.org:6969/announce,udp://p4p.arenabg.ch:1337/announce"
+
         aria2c --dir="$dest_dir" \
             --seed-time=0 \
             --max-connection-per-server=16 \
             --split=16 \
             --min-split-size=1M \
-            --summary-interval=5 \
+            --summary-interval=3 \
+            --enable-dht=true \
+            --enable-dht6=true \
+            --bt-enable-lpd=true \
+            --bt-max-peers=120 \
+            --bt-tracker="$fast_trackers" \
+            --disk-cache=64M \
+            --file-allocation=falloc \
+            --optimize-concurrent-downloads=true \
+            --max-overall-download-limit=0 \
             "$url"
         notify_completion "Torrent / Magnet Baixado" "$dest_dir"
     else
         echo -e "${RED}❌ aria2c não encontrado para download de torrents.${NC}"
-        exit 1
+        echo -e "${YELLOW}Instale com: sudo pacman -S aria2 (ou sudo apt install aria2)${NC}"
+        return 1
     fi
 }
 
