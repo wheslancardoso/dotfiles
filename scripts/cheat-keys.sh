@@ -51,6 +51,8 @@ SUPER + SHIFT + T	Hyprland	Screen OCR (Copiar Texto da Tela)	Permite selecionar 
 SUPER + SHIFT + P	Hyprland	Conta-Gotas / Color Picker	Mapeia qualquer pixel da tela e copia a cor HEX diretamente para a área de transferência.
 SUPER + SHIFT + A	Hyprland	Alternar Saída de Som (Audio Sink)	Alterna o som instantaneamente entre Caixas de Som e Fones de Ouvido via PipeWire.
 SUPER + ALT + M	Hyprland	Silenciar / Ativar Microfone	Muta ou desmuta o microfone do sistema com notificação visual.
+SUPER + SHIFT + F	Hyprland	Busca Instantânea de Arquivos (FSearch)	Abre o FSearch para encontrar qualquer arquivo no sistema em 0,001s (estilo Everything).
+SUPER + ALT + F	Hyprland	Busca Instantânea de Arquivos (FSearch)	Atalho alternativo para abrir o buscador FSearch.
 SUPER + ALT + B	Hyprland	Bluetooth Rápido (Rofi Bluetooth)	Ligue/desligue bluetooth e conecte fones sem abrir janelas de configurações.
 SUPER + ALT + W	Hyprland	Wi-Fi Rápido (Rofi Wi-Fi)	Conecte-se a redes Wi-Fi e visualize o sinal com medidor gráfico no Rofi.
 SUPER + ALT + G	Hyprland	Google Drive 5TB Virtual (Rclone)	Conecta ou desconecta a unidade na nuvem de 5TB em ~/gdrive via streaming VFS on-demand.
@@ -116,16 +118,23 @@ mobile	Zsh / Shell	Layout Mobile Dev (Zellij)	Inicia layout com LazyVim + IA + E
 lg	Zsh / Shell	Abrir LazyGit	Interface TUI de alta produtividade para commits, diffs, branches e merges.
 ld	Zsh / Shell	Abrir LazyDocker	Gerenciador TUI para inspecionar e controlar contêineres e imagens Docker.
 z <pasta>	Zsh / Shell	Salto Inteligente de Diretório	Navegue para qualquer pasta usando histórico de uso do Zoxide (ex: z docs, z dev).
+yf [termo]	Zsh / Shell	Busca Pá-Pum com Yazi (FZF Jump)	Pesquisa arquivos no sistema via FZF e abre o Yazi focado diretamente no arquivo selecionado.
+Z (Shift + Z)	Yazi	Busca Recursiva FZF Turbo	Busca cirúrgica com FZF dentro do Yazi, preview dinâmico e toggle de ocultos (Ctrl+H).
+z (minúsculo)	Yazi	Salto Inteligente Zoxide no Yazi	Aperte z, digite o nome de qualquer pasta (ex: down, mus) e pule na hora dentro do Yazi.
+s	Yazi	Buscar Arquivos por Nome (fd)	Busca nativa recursiva via fd listando os resultados direto no painel do Yazi.
+S	Yazi	Buscar Conteúdo em Arquivos (ripgrep)	Busca textual profunda em tempo real com ripgrep dentro do Yazi.
+f	Yazi	Filtro Instantâneo na Pasta	Filtra os arquivos da pasta atual em tempo real enquanto digita.
 c z	Yazi	Compactar para .ZIP	No Yazi, compacta os arquivos selecionados para arquivo .zip.
 c 7	Yazi	Compactar para .7Z	No Yazi, compacta com máxima taxa de compressão LZMA2.
 c t	Yazi	Compactar para .TAR.GZ	No Yazi, compacta para o formato padrão do ecossistema Linux.
 X (maiúsculo)	Yazi	Extrair para Subpasta Limpa	Extrai arquivo compactado diretamente em uma nova pasta com o nome do arquivo.
 e s	Yazi	Extrair para Subpasta	Atalho alternativo para extrair sem espalhar arquivos.
 e x	Yazi	Extrair Aqui (Extract Here)	Extrai o conteúdo do arquivo compactado na pasta atual.
-g i	Yazi	Saltar para 00_Inbox	Navega instantaneamente para a pasta de downloads e triagem.
+g i	Yazi	Saltar para 00_Inbox (Downloads)	Navega instantaneamente para a pasta de downloads e triagem.
 g p	Yazi	Saltar para 01_Pessoal	Navega para pasta de documentos pessoais, saúde e finanças.
 g e	Yazi	Saltar para 03_Estudos	Navega para pasta de estudos, livros e carreira.
 g v	Yazi	Saltar para 04_Dev	Navega para a pasta de desenvolvimento e repositórios Git.
+g m	Yazi	Saltar para 05_Midias	Navega para a pasta de músicas, fotos e vídeos.
 g j	Yazi	Saltar para 06.4_Games	Navega para a pasta de jogos e emuladores.
 g G	Yazi	Saltar para Google Drive 5TB	Navega direto para a raiz do Google Drive virtual montado (~/gdrive).
 g .	Yazi	Saltar para Dotfiles	Navega para a pasta de configurações ~/dotfiles.

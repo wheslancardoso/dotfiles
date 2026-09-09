@@ -43,7 +43,7 @@ prepend_keymap = [
 	# 🔍 BUSCA FUZZY, NAVEGAÇÃO & PLUGINS DE ELITE
 	# --------------------------------------------------------------------------
 	{ on = "z",          run = "plugin zoxide", desc = "Pulo Rápido Inteligente (Zoxide)" },
-	{ on = "Z",          run = "plugin fzf", desc = "Busca Recursiva de Arquivos (FZF)" },
+	{ on = "Z",          run = 'shell "bash $HOME/dotfiles/scripts/yazi-fzf.sh" --block', desc = "Busca Recursiva FZF Turbo (Toggle Ocultos Ctrl+H + Previews)" },
 	{ on = "<C-d>",      run = "plugin diff", desc = "Comparar Diferenças (Diff com Arquivo Selecionado)" },
 	{ on = [ "c", "m" ], run = "plugin chmod", desc = "Alterar Permissões (Chmod Interativo)" },
 	{ on = [ "M", "m" ], run = "plugin mount", desc = "Gerenciador de Discos / Montagem / Ejeção (Mount Manager)" },

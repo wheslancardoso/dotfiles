@@ -16,6 +16,16 @@
 
 ---
 
+## 🔍 Busca Cirúrgica & Navegação Instantânea
+- `Z` *(Shift+Z)* : **Busca Recursiva FZF Turbo** (com `Ctrl+H` alterna ocultos, `Ctrl+D` só pastas, `Ctrl+F` só arquivos, preview Bat/Tree)
+- `z` *(minúsc)* : **Salto Zoxide no Yazi** (Digite `down`, `mus`, `dev` e dê Enter para pular instantaneamente)
+- `s`            : **Busca por Nome (`fd`)** (Lista os arquivos encontrados diretamente na árvore do Yazi)
+- `S`            : **Busca por Conteúdo (`ripgrep`)** (Pesquisa texto dentro dos arquivos recursivamente)
+- `f`            : **Filtro Rápido** (Filtra a pasta atual em tempo real enquanto você digita)
+- `yf [termo]`   : *(No Terminal)* **Busca Pá-Pum** (Abre o Yazi focado diretamente no arquivo selecionado)
+
+---
+
 ## 🚀 Saltos Rápidos (GOTO no /mnt/dados)
 - `g` + `i`      : `00_Inbox` (Downloads)
 - `g` + `p`      : `01_Pessoal` (Documentos / Finanças)

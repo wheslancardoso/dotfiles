@@ -46,8 +46,7 @@ GDK_BACKEND=$BACKEND yad \
 " Shift Q" "Forçar Encerramento da Janela (Kill)" "killactive" \
 " F" "Tela Cheia Total (Fullscreen)" "fullscreen 0" \
 " CTRL F" "Maximizar Janela (Mantém Waybar e Gaps)" "fullscreen 1" \
-" SHIFT F" "Buscar Arquivos (Menu Rofi Instantâneo)" "rofi-file-search.sh" \
-" ALT F" "Busca Instantânea FSearch (Estilo Everything)" "fsearch" \
+" SHIFT F ou  ALT F" "Busca Instantânea FSearch (Estilo Everything)" "fsearch" \
 " SHIFT SPACE" "Alternar Janela Ativa Flutuante / Tiling" "togglefloating" \
 " ALT SPACE" "Alternar Todas as Janelas para Flutuante" "togglefloating (all)" \
 "CTRL ALT L" "Bloquear Tela" "hyprlock" \
