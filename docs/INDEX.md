@@ -28,6 +28,7 @@
 │   ├── [GUIA_DROPDOWN_SCRATCHPADS_HYPRLAND.md](./GUIA_DROPDOWN_SCRATCHPADS_HYPRLAND.md) # ⚡ Blueprint de Dropdown Scratchpads (TecConcursos, WebApps & Quake)
 │   ├── [GUIA_GAMES_EMULADORES_LUDUSAVI.md](./GUIA_GAMES_EMULADORES_LUDUSAVI.md) # 🎮 Emuladores Switch/PCSX2 e backup de saves
 │   ├── [GUIA_GAMING_STREAMING_LINUX.md](./GUIA_GAMING_STREAMING_LINUX.md) # 🎮 Gaming, FitGirl Repacks, RTX 5060, Vesktop & Áudio IA
+│   ├── [ROADMAP_AUDIO_NOISE_SUPPRESSION_IA.md](./ROADMAP_AUDIO_NOISE_SUPPRESSION_IA.md) # 🎙️ Roadmap Áudio IA: DeepFilterNet, PipeWire & EasyEffects
 │   └── [GUIA_BACKUP_PRE_FORMATACAO.md](./GUIA_BACKUP_PRE_FORMATACAO.md) # Checklist seguro de backup (SSH, saves, configs)
 │
 ├── 🏢 SUPORTE CORPORATIVO & ACTIVE DIRECTORY
