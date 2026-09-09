@@ -1452,20 +1452,20 @@ download_streaming_pomfy() {
     local ytdlp_audio_args=()
     local audio_label=""
     case "${STREAM_AUDIO_LANG,,}" in
-        dual|ambos|2)
+        dual|ambos|3)
             audio_label="${YELLOW}Dual Áudio (Português + Inglês)${NC}"
             ytdlp_audio_args=(
                 --audio-multistreams
                 -f "bv*+ba[language=pt]+ba[language=en]/bv*+ba[language=por]+ba[language=eng]/bv*+ba[language=pt]/bv*+ba[language=en]/bv*+ba/b"
             )
             ;;
-        en|original|ingles|inglês)
+        en|original|ingles|inglês|2)
             audio_label="${BLUE}Áudio Original (Inglês)${NC}"
             ytdlp_audio_args=(
                 -f "bv*+ba[language=en]/bv*+ba[language=eng]/bv*+ba/b"
             )
             ;;
-        pt|dublado|portugues|português|*)
+        pt|dublado|portugues|português|1|*)
             audio_label="${GREEN}Dublado (Português)${NC}"
             ytdlp_audio_args=(
                 -f "bv*+ba[language=pt]/bv*+ba[language=por]/bv*+ba/b"
