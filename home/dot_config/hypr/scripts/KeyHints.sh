@@ -80,7 +80,7 @@ GDK_BACKEND=$BACKEND yad \
 "ALT M" "Alternar Modo Imersão (Acelerar vs Pular Silêncio)" "sub-skip mode" \
 "SHIFT V" "Forced-Sub Killer (Mata forçadas e filtra trilhas limpas)" "forced-sub-killer" \
 "CTRL Z" "Sincronização por Voz Universal (Embutida e Externa)" "ffsubsync" \
-"CTRL [ ou CTRL ]" "Correção Instantânea de FPS Drift (25 <-> 23.976 fps)" "fps-drift-fix" \
+"ALT F" "Smart FPS Auto-Detect (Lê FPS do vídeo e corrige drift)" "smart-fps-fix" \
 "CTRL S" "Download Automático de Legendas (OpenSubtitles 1 toque)" "sub-download" \
 "TAB" "Pular Abertura / Vinheta de Série (Netflix Style)" "skip-intro" \
 "z  ou  Z" "Ajuste Fino de Legenda em Tempo Real (50ms)" "sub-delay +/-" \

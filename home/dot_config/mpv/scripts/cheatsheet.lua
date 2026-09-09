@@ -25,7 +25,7 @@ local function build_hud_text()
         "  • {\\b1\\1c&H00A6E3A1&}v{\\b0} : Ligar / Desligar visibilidade da legenda normal\\N",
         "  • {\\b1\\1c&H00A6E3A1&}Shift + V{\\b0} : {\\b1}Forced-Sub Killer{\\b0} (Mata forçadas e cicla só trilhas limpas)\\N",
         "  • {\\b1\\1c&H00A6E3A1&}Ctrl + z{\\b0} : {\\b1}Sincronização por Voz{\\b0} (Universal: embutida ou externa via ffsubsync)\\N",
-        "  • {\\b1\\1c&H00A6E3A1&}Ctrl + [ / ]{\\b0} : {\\b1}Correção de Framerate Drift{\\b0} (25.0 <-> 23.976 FPS instantâneo)\\N",
+        "  • {\\b1\\1c&H00A6E3A1&}Alt + f{\\b0} : {\\b1}Smart FPS Auto-Detect{\\b0} (Lê FPS do vídeo e corrige drift com 1 tecla!)\\N",
         "  • {\\b1\\1c&H00A6E3A1&}Ctrl + s{\\b0} : {\\b1}Baixar Legenda Automática{\\b0} (OpenSubtitles via 1 clique)\\N",
         "  • {\\b1\\1c&H00A6E3A1&}z{\\b0} / {\\b1\\1c&H00A6E3A1&}Z{\\b0} : Atrasar / Adiantar legenda em 50ms (ajuste manual)\\N",
         "  • {\\b1\\1c&H00A6E3A1&}Alt + z{\\b0} : Resetar atraso de legenda a 0.0s\\N",

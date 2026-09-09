@@ -1,17 +1,19 @@
 -- ==============================================================================
--- 🎙️ Sub-Sync Universal — Sincronizador Acústico Inteligente de Legendas
+-- 🎙️ Sub-Sync Universal God Mode — Sincronizador Acústico Inteligente
 -- ==============================================================================
--- Resolve 100% dos problemas de sincronização:
--- 1. Legenda Externa (.srt): Sincroniza via ffsubsync escutando o áudio.
--- 2. Legenda Embutida (MKV/MP4): Extrai a trilha do container em 1s e sincroniza.
--- 3. Correção de Framerate Drift: Corrige deriva de 23.976fps <-> 25.0fps instantaneamente.
--- 4. Cache Inteligente: Lembra de legendas já sincronizadas em ~/.cache/mpv_synced_subs/
+-- Você NÃO precisa adivinhar nada:
+-- 1. Ctrl+z: Sincronização por IA Acústica (ouve as vozes e alinha sozinho,
+--    tanto para legendas externas quanto para faixas internas do MKV/MP4).
+-- 2. Alt+f: Smart Auto-Detect de Framerate (lê o FPS real do vídeo e aplica
+--    a correção matemática certa automaticamente com 1 tecla!).
+-- 3. Cache Automático: Carrega silenciosamente legendas já sincronizadas antes.
 -- ==============================================================================
 
 local mp = require 'mp'
 local utils = require 'mp.utils'
 
 local CACHE_DIR = os.getenv("HOME") .. "/.cache/mpv_synced_subs"
+local FPS_CYCLE_STATE = 0
 
 local function ensure_cache_dir()
     mp.command_native({
@@ -28,6 +30,22 @@ local function get_cache_path(video_path, sub_id)
         sanitized = sanitized:sub(-100)
     end
     return string.format("%s/%s_track%s.synced.srt", CACHE_DIR, sanitized, tostring(sub_id or 1))
+end
+
+-- Carrega automaticamente do cache na abertura do arquivo se já tiver sido sincronizado
+local function auto_load_cached_sub()
+    local video_path = mp.get_property("path", "")
+    if not video_path or video_path == "" or video_path:find("^%a[%a%d_]+://") then return end
+
+    local current_sid = mp.get_property_number("sid", 1)
+    local cached = get_cache_path(video_path, current_sid)
+
+    local f = io.open(cached, "r")
+    if f then
+        f:close()
+        mp.commandv("sub-add", cached, "select")
+        mp.osd_message("⚡ [Auto-Sync] Legenda perfeitamente sincronizada carregada do cache!", 3.0)
+    end
 end
 
 local function sync_subtitle()
@@ -92,16 +110,16 @@ local function sync_subtitle()
     -- Se for legenda externa
     if current_track.external and current_track["external-filename"] then
         local sub_file = current_track["external-filename"]
-        mp.osd_message("🎙️ [Sub-Sync] Escutando áudio e alinhando fala... (Aguarde)", 4.0)
+        mp.osd_message("🎙️ [Sub-Sync] Escutando áudio e alinhando fala... (Aguarde alguns segundos)", 4.0)
 
         mp.command_native_async({
             name = "subprocess",
             playback_only = false,
             args = { "ffsubsync", video_path, "-i", sub_file, "-o", synced_output }
-        }, function(success, res, err)
+        }, function(success, res)
             if success and res.status == 0 then
                 mp.commandv("sub-add", synced_output, "select")
-                mp.osd_message("✔ [Sub-Sync] Legenda perfeitamente alinhada por voz!", 3.5)
+                mp.osd_message("✔ [Sub-Sync] Legenda perfeitamente alinhada por voz e salva em cache!", 3.5)
             else
                 mp.osd_message("❌ [Sub-Sync] Falha no alinhamento acústico.", 3.0)
             end
@@ -140,29 +158,43 @@ local function sync_subtitle()
     end
 end
 
--- --- Correção Rápida de Deriva de Framerate (23.976 <-> 25.0 FPS) ---
-local function fix_fps_pal_to_ntsc()
-    -- Converte de 25 fps para 23.976 fps (atrasa progressivamente 4.1%)
-    local current_speed = mp.get_property_number("sub-speed", 1.0)
-    local new_speed = current_speed * 0.95904
-    mp.set_property_number("sub-speed", new_speed)
-    mp.osd_message(string.format("⏱️ [FPS Fix] Ajustado: 25.0 ➔ 23.976 FPS (sub-speed: %.4f)", new_speed), 3.0)
+-- --- SMART AUTO-DETECT & CICLO DE FRAMERATE (ALT + F) ---
+-- Você não precisa saber nada: o script lê o FPS do vídeo e escolhe o melhor!
+local function smart_fps_cycle()
+    local video_fps = mp.get_property_number("container-fps", 0)
+    if video_fps == 0 then
+        video_fps = mp.get_property_number("estimated-vf-fps", 23.976)
+    end
+
+    FPS_CYCLE_STATE = (FPS_CYCLE_STATE + 1) % 3
+
+    if FPS_CYCLE_STATE == 1 then
+        -- Se o vídeo for ~23.976 fps, a causa mais provável é legenda de 25fps rodando rápido
+        -- Se o vídeo for ~25.0 fps, a causa é o inverso
+        if math.abs(video_fps - 23.976) < 0.2 or math.abs(video_fps - 24.0) < 0.2 then
+            local speed = 0.95904
+            mp.set_property_number("sub-speed", speed)
+            mp.osd_message(string.format("💡 [Smart FPS Fix] Vídeo é %.3f FPS (Cinema)\n➜ Aplicado: 25.0 ➔ 23.976 FPS (sub-speed: %.4f)", video_fps, speed), 4.0)
+        else
+            local speed = 1.04271
+            mp.set_property_number("sub-speed", speed)
+            mp.osd_message(string.format("💡 [Smart FPS Fix] Vídeo é %.3f FPS (TV/PAL)\n➜ Aplicado: 23.976 ➔ 25.0 FPS (sub-speed: %.4f)", video_fps, speed), 4.0)
+        end
+    elseif FPS_CYCLE_STATE == 2 then
+        -- Modo inverso para teste rápido
+        local speed = 1.04271
+        if mp.get_property_number("sub-speed", 1.0) == 1.04271 then
+            speed = 0.95904
+        end
+        mp.set_property_number("sub-speed", speed)
+        mp.osd_message(string.format("💡 [Smart FPS Fix] Alternado para modo secundário: sub-speed %.4f", speed), 3.5)
+    else
+        -- Reset para 1.0
+        mp.set_property_number("sub-speed", 1.0)
+        mp.osd_message("💡 [Smart FPS Fix] Velocidade da legenda restaurada para 1.0 (Original)", 3.0)
+    end
 end
 
-local function fix_fps_ntsc_to_pal()
-    -- Converte de 23.976 fps para 25 fps (acelera progressivamente 4.3%)
-    local current_speed = mp.get_property_number("sub-speed", 1.0)
-    local new_speed = current_speed * 1.04271
-    mp.set_property_number("sub-speed", new_speed)
-    mp.osd_message(string.format("⏱️ [FPS Fix] Ajustado: 23.976 ➔ 25.0 FPS (sub-speed: %.4f)", new_speed), 3.0)
-end
-
-local function reset_fps_speed()
-    mp.set_property_number("sub-speed", 1.0)
-    mp.osd_message("⏱️ [FPS Fix] Velocidade da legenda restaurada para 1.0", 2.5)
-end
-
+mp.register_event("file-loaded", auto_load_cached_sub)
 mp.add_key_binding(nil, "sync_current", sync_subtitle)
-mp.add_key_binding(nil, "fps_pal_to_ntsc", fix_fps_pal_to_ntsc)
-mp.add_key_binding(nil, "fps_ntsc_to_pal", fix_fps_ntsc_to_pal)
-mp.add_key_binding(nil, "fps_reset", reset_fps_speed)
+mp.add_key_binding(nil, "smart_fps_cycle", smart_fps_cycle)
