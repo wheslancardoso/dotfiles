@@ -403,66 +403,74 @@ end
 
 local pipeline_running = false
 
-local function run_auto_pipeline()
+local function run_pipeline_for_lang(target_lang, audio_lang_label, callback)
     local video_path = mp.get_property("path", "")
-    if not is_local_file(video_path) then return end
-    if pipeline_running then return end
-    pipeline_running = true
+    if not is_local_file(video_path) then
+        if callback then callback(false) end
+        return
+    end
 
-    msg.info("Smart-Lang: Pipeline auto iniciado para: " .. video_path)
+    target_lang = target_lang or "en"
+    local a_label = (audio_lang_label or "AUDIO"):upper()
 
-    -- 1. Determinar idioma-alvo baseado no áudio
-    local audio_lang = get_current_audio_lang()
-    local target_lang = map_audio_to_sub_lang(audio_lang)
-    msg.info(string.format("Smart-Lang: Audio=%s → Target sub=%s", audio_lang or "?", target_lang))
+    msg.info(string.format("Smart-Lang: Pipeline para target_sub=%s (áudio=%s)", target_lang, a_label))
 
-    -- 2. Cache hit? → Carrega instantaneamente e encerra
+    -- 1. Cache hit? → Carrega instantaneamente (<100ms)
     ensure_cache_dir()
     local cached = get_cache_path(video_path, target_lang)
     if file_exists(cached) then
         mp.commandv("sub-add", cached, "select")
-        mp.osd_message(string.format("⚡ [Smart-Lang] Legenda %s sincronizada (cache)", target_lang:upper()), 2.5)
+        mp.osd_message(string.format("⚡ [Smart-Lang] Áudio %s → Legenda %s sincronizada (cache)",
+            a_label, target_lang:upper()), 2.5)
         pipeline_running = false
+        if callback then callback(true) end
         return
     end
 
-    -- 3. Buscar a melhor legenda existente no arquivo
+    -- 2. Buscar a melhor legenda existente no arquivo
     local pref = get_sub_prefs(target_lang)
     local best, best_score = find_best_sub(pref)
 
     if best and best_score > 0 then
-        -- Tem legenda boa → seleciona e sincroniza
+        -- Tem legenda boa → seleciona e roda auto-sync acústico
         mp.set_property_number("sid", best.id)
         local label = best.lang or best.title or ("Track " .. best.id)
-        msg.info(string.format("Smart-Lang: Selecionada legenda: %s (score: %d)", label, best_score))
+        mp.osd_message(string.format("🧠 [Smart-Lang] Áudio %s → Legenda: %s", a_label, label), 2.5)
+        msg.info(string.format("Smart-Lang: Selecionada legenda: %s (score: %d). Auto-sync em andamento...", label, best_score))
 
-        -- Auto-sync em background
-        mp.add_timeout(1.5, function()
+        -- Auto-sync em background com delay para estabilizar reprodução
+        mp.add_timeout(1.2, function()
             sync_track(video_path, best, target_lang)
             pipeline_running = false
+            if callback then callback(true) end
         end)
     else
-        -- Sem legenda boa → download automático
-        msg.info("Smart-Lang: Nenhuma legenda adequada encontrada. Iniciando download...")
-        download_and_sync(video_path, target_lang, function()
+        -- Sem legenda boa → download automático via subliminal + auto-sync
+        msg.info(string.format("Smart-Lang: Nenhuma legenda %s no arquivo. Iniciando download...", target_lang))
+        download_and_sync(video_path, target_lang, function(dl_ok)
             pipeline_running = false
+            if callback then callback(dl_ok) end
         end)
     end
 end
 
+local function run_auto_pipeline()
+    if pipeline_running then return end
+    pipeline_running = true
+
+    local audio_lang = get_current_audio_lang()
+    local target_lang = map_audio_to_sub_lang(audio_lang)
+    run_pipeline_for_lang(target_lang, audio_lang or "EN")
+end
+
 -- ==============================================================================
--- 🔗 Dual Audio Link — Troca de áudio sincroniza legenda junto
+-- 🔗 Dual Audio Link — Troca de áudio sincroniza legenda junto (Full Auto)
 -- ==============================================================================
 
 local last_audio_id = nil
+local audio_change_timer = nil
 
-local function on_audio_change(_, aid)
-    if not aid then return end
-    local new_aid = tonumber(aid) or 0
-    if new_aid == last_audio_id then return end
-    last_audio_id = new_aid
-    if new_aid == 0 then return end
-
+local function handle_audio_switch(new_aid)
     local video_path = mp.get_property("path", "")
     if not is_local_file(video_path) then return end
 
@@ -479,28 +487,31 @@ local function on_audio_change(_, aid)
 
     local target_lang = map_audio_to_sub_lang(audio_lang)
 
-    -- Cache hit? → Carrega a versão sincronizada para este idioma
-    local cached = get_cache_path(video_path, target_lang)
-    if file_exists(cached) then
-        mp.commandv("sub-add", cached, "select")
-        mp.osd_message(string.format("🧠 [Smart-Lang] Áudio %s → Legenda %s (cache)",
-            audio_lang:upper(), target_lang:upper()), 2.5)
-        return
+    -- Executa o pipeline completo para o novo idioma (cache → seleção → download → sync)
+    pipeline_running = false
+    run_pipeline_for_lang(target_lang, audio_lang)
+end
+
+local function on_audio_change(_, aid)
+    if not aid then return end
+    local new_aid = tonumber(aid) or 0
+    if new_aid == last_audio_id then return end
+    last_audio_id = new_aid
+    if new_aid == 0 then return end
+
+    -- Se o caminho do vídeo ainda não está carregado, o file-loaded cuidará
+    local path = mp.get_property("path", "")
+    if not is_local_file(path) then return end
+
+    -- Debounce de 0.6s: se o usuário ciclar faixas rapidamente (a, a, a), só processa a faixa final
+    if audio_change_timer then
+        audio_change_timer:kill()
+        audio_change_timer = nil
     end
 
-    -- Sem cache: busca a melhor legenda disponível
-    local pref = get_sub_prefs(target_lang)
-    local best = find_best_sub(pref)
-
-    if best then
-        mp.set_property_number("sid", best.id)
-        local label = best.lang or best.title or ("Track " .. best.id)
-        mp.osd_message(string.format("🧠 [Smart-Lang] Áudio %s → Legenda: %s",
-            audio_lang:upper(), label), 2.5)
-    else
-        mp.osd_message(string.format("🧠 [Smart-Lang] Áudio %s → Sem legenda %s disponível",
-            audio_lang:upper(), target_lang:upper()), 2.5)
-    end
+    audio_change_timer = mp.add_timeout(0.6, function()
+        handle_audio_switch(new_aid)
+    end)
 end
 
 -- ==============================================================================

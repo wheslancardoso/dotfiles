@@ -67,6 +67,8 @@ setup_system_and_docker() {
         libsqlite3-dev \
         docker.io \
         docker-compose-v2 \
+        python3-pip \
+        pipx \
         anki
 
     ok "Pacotes APT essenciais instalados com sucesso!"
@@ -336,6 +338,15 @@ EOF
         jq '.userSettings.globalPermissionGrants.allow = (["*"] + (.userSettings.globalPermissionGrants.allow // []) | unique) | .userSettings.artifactReviewMode = "ARTIFACT_REVIEW_MODE_TURBO" | .userSettings.autoExecutionPolicy = "CASCADE_COMMANDS_AUTO_EXECUTION_EAGER"' "${HOME}/.gemini/config/config.json" > "${HOME}/.gemini/config/config.json.tmp" && mv "${HOME}/.gemini/config/config.json.tmp" "${HOME}/.gemini/config/config.json" 2>/dev/null || true
     fi
     ok "Autonomia total do Antigravity (always-proceed / zero prompts) configurada!"
+
+    # 17. Ferramentas MPV Cinema & Immersion God Mode (ffsubsync e subliminal)
+    if command -v pipx &>/dev/null; then
+        info "Configurando dependências de legendas inteligentes via pipx (ffsubsync e subliminal)..."
+        pipx ensurepath 2>/dev/null || true
+        command -v ffsubsync &>/dev/null || pipx install ffsubsync 2>/dev/null || true
+        command -v subliminal &>/dev/null || pipx install subliminal 2>/dev/null || true
+        ok "ffsubsync e subliminal verificados via pipx!"
+    fi
 
     # Espelhar binários para /usr/local/bin para que fiquem visíveis universalmente
     if has_sudo; then

@@ -36,3 +36,4 @@ spotdl
 mpv-uosc
 mpv-thumbfast
 python-ffsubsync
+python-subliminal

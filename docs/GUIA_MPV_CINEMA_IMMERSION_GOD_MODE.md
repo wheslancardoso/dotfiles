@@ -97,12 +97,33 @@
 ### 7. Modo Binge-Watch Automático (Estilo Netflix)
 * Script `auto-next.lua`: Quando um episódio de série atinge os 3 segundos finais, surge uma contagem na tela e o próximo episódio da pasta é iniciado automaticamente (pressione `Esc` para cancelar).
 
-### 8. 🧠 Smart-Lang: Inteligência de Dual Audio & Seleção de Idioma
-* **O Problema:** Ao baixar filmes/séries dual audio (EN+PT ou JA+EN), o MPV seleciona aleatoriamente a trilha de áudio e legenda, ignorando o contexto de aprendizado.
-* **A Solução:** O `smart-lang.lua` entende o seu objetivo:
-  * **Ao abrir o vídeo:** Seleciona automaticamente a melhor legenda em inglês usando um sistema de pontuação inteligente que descarta forçadas, SDH e comentários.
-  * **Ao trocar áudio (`a`):** A legenda troca junto para o idioma correspondente. Sem cliques extras.
-  * **`Alt+e` (Immersion):** 1 tecla → Áudio EN + Legenda EN. Foco total.
-  * **`Alt+p` (Native):** 1 tecla → Áudio PT + Legenda PT. Relaxar.
-  * **`Ctrl+e` (Dual Sub):** Legenda EN embaixo + PT em cima. Estudo comparativo.
+### 8. 🧠 Smart-Lang: Inteligência de Dual Audio & Seleção de Idioma (100% Full Auto)
+* **O Problema:** Em vídeos Dual Audio (ex: Inglês e Português), ao trocar a faixa de áudio, a legenda continuava no idioma antigo ou desincronizada, obrigando o usuário a procurar trilhas e sincronizar manualmente.
+* **A Solução:** O `smart-lang.lua` gerencia o ciclo completo de pontuação, download, alinhamento acústico e cache de forma **100% FULL AUTOMÁTICA (Zero Teclas Extras)**:
+  * **Ao abrir o vídeo:** Identifica o áudio inicial (ex: EN). Se já assistiu antes, puxa a legenda sincronizada do cache em <100ms. Se for a 1ª vez, seleciona a melhor legenda em inglês (sem forçadas/comentários) e dispara o `ffsubsync` em background para cachear. Se o vídeo não tiver legenda, baixa pelo `subliminal`, sincroniza e projeta na tela.
+  * **Ao trocar áudio (`a` ou botão direito uosc):**
+    * Detecta a troca de trilha instantaneamente (com debounce inteligente para evitar spam se ciclar faixas).
+    * Mapeia automaticamente o idioma: **Áudio EN → Legenda EN** | **Áudio PT → Legenda PT** | **Áudio JA → Legenda EN**.
+    * Se já houver cache dessa legenda: carrega instantaneamente (<100ms).
+    * Se não houver cache: seleciona a melhor trilha desse idioma e alinha em background com `ffsubsync` salvando no cache. Se o vídeo não tiver nenhuma legenda desse idioma, baixa via `subliminal` em background e sincroniza com a nova trilha de áudio!
+  * **Atalhos Rápidos de Modo de Foco:**
+    * **`Alt+e` (Immersion):** 1 tecla → Áudio EN + Legenda EN sincronizada. Foco total em fluência.
+    * **`Alt+p` (Native):** 1 tecla → Áudio PT + Legenda PT sincronizada. Modo descanso.
+    * **`Ctrl+e` (Dual Sub):** Legenda EN embaixo + PT no topo. Estudo comparativo.
+
+---
+
+## 📦 Dependências Registradas para Instalação Automática
+
+Todas as ferramentas necessárias para a experiência MPV God Mode estão devidamente integradas e registradas nos scripts do ecossistema de dotfiles:
+
+1. **Pacotes Nativos (`packages/pacman-native.txt`):**
+   * `mpv`, `mpv-mpris`, `ffmpeg`, `python-pip`, `python-pipx`.
+2. **Pacotes AUR (`packages/pacman-aur.txt`):**
+   * `mpv-uosc` (interface moderna), `mpv-thumbfast` (miniaturas na timeline), `python-ffsubsync`, `python-subliminal`.
+3. **Instalador Geral (`setup.sh`):**
+   * Provisiona `ffsubsync` e `subliminal` automaticamente via `pipx` para isolamento e estabilidade total sem conflitos de sistema.
+4. **Instalador WSL/Ubuntu (`scripts/setup-ubuntu-wsl.sh`):**
+   * Inclui `python3-pip`, `pipx` e configuração automática de `ffsubsync` e `subliminal`.
+
 

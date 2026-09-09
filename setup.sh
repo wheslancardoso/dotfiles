@@ -576,6 +576,20 @@ setup_extras() {
         ok "SpotDL instalado com sucesso via pipx."
     fi
 
+    # Garantir dependências do MPV Cinema & Immersion God Mode (ffsubsync e subliminal) via pipx
+    if command -v pipx &>/dev/null; then
+        if ! command -v ffsubsync &>/dev/null; then
+            info "Instalando ffsubsync via pipx (sincronização acústica de legendas do MPV)..."
+            pipx install ffsubsync 2>/dev/null || true
+            ok "ffsubsync instalado com sucesso via pipx."
+        fi
+        if ! command -v subliminal &>/dev/null; then
+            info "Instalando subliminal via pipx (download inteligente de legendas do MPV)..."
+            pipx install subliminal 2>/dev/null || true
+            ok "subliminal instalado com sucesso via pipx."
+        fi
+    fi
+
     # Inicializar e sincronizar plugins do Yazi via package manager 'ya'
     if command -v ya &>/dev/null; then
         info "Sincronizando plugins do Yazi..."
