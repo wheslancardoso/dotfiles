@@ -583,9 +583,9 @@ download_batch() {
     if [ "$mode" == "transcript" ]; then
         mkdir -p "$dest"
         touch "$trans_archive"
-        # Pré-carrega links e IDs já transcritos a partir dos arquivos .md existentes
+        # Pré-carrega links e IDs já transcritos a partir dos arquivos .md existentes (inclusive em subpastas Markdown/)
         if [ -d "$dest" ]; then
-            grep -h -oP '(?<=\*\*Fonte:\*\* ).*' "$dest"/*.md 2>/dev/null | tr -d ' \r' | awk 'NF' >> "$trans_archive"
+            grep -r -h -oP '(?<=\*\*Fonte:\*\* ).*' "$dest" 2>/dev/null | tr -d ' \r' | awk 'NF' >> "$trans_archive"
             grep -oP '(?:v=|youtu\.be/|shorts/|embed/)[a-zA-Z0-9_-]{11}' "$trans_archive" 2>/dev/null | grep -oP '[a-zA-Z0-9_-]{11}' >> "$trans_archive"
             awk '!seen[$0]++' "$trans_archive" > "${trans_archive}.tmp" 2>/dev/null && mv "${trans_archive}.tmp" "$trans_archive"
         fi
@@ -1531,7 +1531,13 @@ download_transcript() {
     else
         clean_title=$(echo "$title" | sed 's/[/\\?%*:|"<>]/_/g')
     fi
-    local md_output="${dest}/${clean_title} [Transcricao IA].md"
+
+    local md_dir="${dest}/Markdown"
+    local txt_dir="${dest}/Texto_Puro"
+    mkdir -p "$md_dir" "$txt_dir"
+
+    local md_output="${md_dir}/${clean_title} [Transcricao IA].md"
+    local txt_output="${txt_dir}/${clean_title} [Transcricao IA].txt"
     local date_now
     date_now=$(date '+%Y-%m-%d %H:%M:%S')
 
@@ -1545,6 +1551,7 @@ uploader = sys.argv[3]
 url = sys.argv[4]
 date_now = sys.argv[5]
 md_out = sys.argv[6]
+txt_out = sys.argv[7]
 
 with open(sub_path, "r", encoding="utf-8", errors="replace") as f:
     content = f.read()
@@ -1630,14 +1637,12 @@ Com base na transcrição fiel deste vídeo que envio abaixo, elabore:
 with open(md_out, "w", encoding="utf-8") as f:
     f.write(header + body + "\n")
 
-# Salva arquivo de texto puro (.txt) apenas com os paragrafos limpos
-txt_out = md_out.rsplit(".", 1)[0] + ".txt"
+# Salva arquivo de texto puro (.txt) apenas com os parágrafos limpos na pasta Texto_Puro
 with open(txt_out, "w", encoding="utf-8") as f:
     f.write(body + "\n")
-' "$best_sub" "$title" "$uploader" "$url" "$date_now" "$md_output"
+' "$best_sub" "$title" "$uploader" "$url" "$date_now" "$md_output" "$txt_output"
 
     # Copia para área de transferência APENAS se não for em lote
-    local txt_output="${md_output%.*}.txt"
     if [ "$is_batch" != true ] && [ -f "$txt_output" ]; then
         if command -v wl-copy >/dev/null 2>&1; then
             cat "$txt_output" | wl-copy
