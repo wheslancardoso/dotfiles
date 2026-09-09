@@ -1,0 +1,20 @@
+player: mpris
+
+mpris:
+  players: []
+
+local:
+  folder: ""
+
+style:
+  hAlignment: center
+  before:
+    foreground: "#a6adc8"
+    bold: false
+    faint: true
+  current:
+    foreground: "#a6e3a1"
+    bold: true
+  after:
+    foreground: "#6c7086"
+    faint: true
