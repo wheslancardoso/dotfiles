@@ -33,3 +33,5 @@ ripdrag-git
 spotify
 spicetify-cli
 spotdl
+mpv-uosc
+mpv-thumbfast

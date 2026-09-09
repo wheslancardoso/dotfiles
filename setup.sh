@@ -417,6 +417,19 @@ apply_dotfiles() {
         [ -f "$DOTFILES_DIR/home/dot_config/vesktop/settings/settings.json" ] && cp -n "$DOTFILES_DIR/home/dot_config/vesktop/settings/settings.json" "$HOME/.config/vesktop/settings/settings.json" 2>/dev/null || true
     fi
 
+    # Pre-deploy das configurações do MPV God Mode (Imersão, uosc, legendas inteligentes)
+    if [ -d "$DOTFILES_DIR/home/dot_config/mpv" ]; then
+        mkdir -p "$HOME/.config/mpv/scripts" "$HOME/.config/mpv/script-opts"
+        ln -sf "$DOTFILES_DIR/home/dot_config/mpv/mpv.conf" "$HOME/.config/mpv/mpv.conf"
+        ln -sf "$DOTFILES_DIR/home/dot_config/mpv/input.conf" "$HOME/.config/mpv/input.conf"
+        for s in "$DOTFILES_DIR/home/dot_config/mpv/scripts"/*.lua; do
+            [ -f "$s" ] && ln -sf "$s" "$HOME/.config/mpv/scripts/$(basename "$s")"
+        done
+        for o in "$DOTFILES_DIR/home/dot_config/mpv/script-opts"/*.conf; do
+            [ -f "$o" ] && ln -sf "$o" "$HOME/.config/mpv/script-opts/$(basename "$o")"
+        done
+    fi
+
     # Garantir que todos os scripts utilitários estejam no PATH (~/.local/bin)
     mkdir -p "$HOME/.local/bin"
     for f in "$DOTFILES_DIR"/scripts/*.sh; do
