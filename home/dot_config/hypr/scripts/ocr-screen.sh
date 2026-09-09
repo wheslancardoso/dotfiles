@@ -70,9 +70,10 @@ if command -v magick &>/dev/null || command -v convert &>/dev/null; then
     IM_BIN="magick"
     command -v magick &>/dev/null || IM_BIN="convert"
 
-    # Upscale 2.5x com interpolação, escala de cinza, auto-level e unsharp
+    # Upscale 3x com interpolação, padding de borda, escala de cinza, auto-level e unsharp
     $IM_BIN "$tmp_raw" \
-        -filter Mitchell -resize 250% \
+        -bordercolor black -border 10 \
+        -filter Mitchell -resize 300% \
         -colorspace Gray \
         -auto-level \
         -unsharp 0x1+1+0.05 \
@@ -82,16 +83,16 @@ else
 fi
 
 # ------------------------------------------------------------------------------
-# 3. EXTRAÇÃO MULTI-PSM COM TESSERACT
+# 3. EXTRAÇÃO MULTI-PSM COM TESSERACT (DPI 300 + PRESERVAÇÃO DE ESPAÇOS)
 # ------------------------------------------------------------------------------
-text=$(tesseract "$tmp_proc" stdout -l por+eng --oem 1 --psm 6 2>/dev/null || true)
+text=$(tesseract "$tmp_proc" stdout -l por+eng --dpi 300 --oem 1 --psm 6 -c preserve_interword_spaces=1 2>/dev/null || true)
 if [[ -z "${text//[[:space:]]/}" ]]; then
     # Fallback para PSM 3 (Segmentação de página completa)
-    text=$(tesseract "$tmp_proc" stdout -l por+eng --oem 1 --psm 3 2>/dev/null || true)
+    text=$(tesseract "$tmp_proc" stdout -l por+eng --dpi 300 --oem 1 --psm 3 -c preserve_interword_spaces=1 2>/dev/null || true)
 fi
 if [[ -z "${text//[[:space:]]/}" ]]; then
     # Fallback para PSM 11 (Texto esparso)
-    text=$(tesseract "$tmp_proc" stdout -l por+eng --oem 1 --psm 11 2>/dev/null || true)
+    text=$(tesseract "$tmp_proc" stdout -l por+eng --dpi 300 --oem 1 --psm 11 -c preserve_interword_spaces=1 2>/dev/null || true)
 fi
 
 rm -f "$tmp_raw" "$tmp_proc"
