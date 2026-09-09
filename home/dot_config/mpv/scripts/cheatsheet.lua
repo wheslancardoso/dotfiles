@@ -42,10 +42,12 @@ local function build_hud_text()
         "  • {\\b1\\1c&H00F5C2E7&}Auto:{\\b0} Cache permanente — 2ª vez carrega em <100ms, NUNCA dessincroniza\\N\\N",
 
         "{\\b1\\1c&H0089B4FA&}📺 SÉRIES & NAVEGAÇÃO BINGE-WATCH:{\\b0\\1c&H00BAC2DE&}\\N",
+        "  • {\\b1\\1c&H00A6E3A1&}H{\\b0} : {\\b1}Continuar Assistindo{\\b0} (HUD de séries e filmes recentes no MPV)\\N",
         "  • {\\b1\\1c&H00A6E3A1&}TAB{\\b0} : {\\b1}Pular Abertura / Intro{\\b0} (Estilo Netflix / Crunchyroll)\\N",
         "  • {\\b1\\1c&H00A6E3A1&}ENTER{\\b0} : Abrir menu visual com a lista de episódios da temporada\\N",
         "  • {\\b1\\1c&H00A6E3A1&}>{\\b0} / {\\b1\\1c&H00A6E3A1&}<{\\b0} : Próximo episódio / Episódio anterior\\N",
-        "  • {\\b1\\1c&H00A6E3A1&}Auto-Next{\\b0} : Próximo episódio toca sozinho faltando 3s (Esc cancela)\\N",
+        "  • {\\b1\\1c&H00A6E3A1&}Auto-Next{\\b0} : Próximo episódio toca sozinho (inclui próximas temporadas!)\\N",
+        "  • {\\b1\\1c&H00A6E3A1&}Auto-Skip{\\b0} : Episódio já visto (>85%) salta pro próximo com aviso cancelável [Esc]\\N",
         "  • {\\b1\\1c&H00A6E3A1&}Setas Dir/Esq{\\b0} : Avançar / Retroceder 5 segundos\\N",
         "  • {\\b1\\1c&H00A6E3A1&}Setas Cima/Baixo{\\b0} : Avançar / Retroceder 30 segundos\\N\\N",
 

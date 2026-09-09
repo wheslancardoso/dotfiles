@@ -74,6 +74,8 @@ end
 alias cleanup="bash $HOME/dotfiles/scripts/sys-maintenance.sh cleanup"
 alias sys-update="bash $HOME/dotfiles/scripts/sys-maintenance.sh update"
 alias dl="bash $HOME/dotfiles/scripts/media-download.sh"
+alias continuar="bash $HOME/dotfiles/scripts/continuar.sh"
+alias recentes="bash $HOME/dotfiles/scripts/continuar.sh"
 
 # 🎧 Presets de Áudio (EasyEffects & Graves Hip-Hop)
 alias bass="bash $HOME/dotfiles/scripts/audio-preset-switch.sh bass"

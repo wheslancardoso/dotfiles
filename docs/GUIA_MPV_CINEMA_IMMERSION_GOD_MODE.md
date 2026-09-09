@@ -110,10 +110,23 @@
     * **`Alt+e` (Immersion):** 1 tecla → Áudio EN + Legenda EN sincronizada. Foco total em fluência.
     * **`Alt+p` (Native):** 1 tecla → Áudio PT + Legenda PT sincronizada. Modo descanso.
     * **`Ctrl+e` (Dual Sub):** Legenda EN embaixo + PT no topo. Estudo comparativo.
-
----
-
-## 📦 Dependências Registradas para Instalação Automática
+### 9. 🍿 Smart-Resume & Multi-Temporadas Binge-Watch (Zero Perda de Episódio)
+* **O Problema:** Esquecer em qual episódio de uma série parou (após dias sem assistir), abrir arquivos nos créditos pretos (>90%) por causa do resume tradicional, ou ter que navegar pastas manualmente quando uma temporada acaba.
+* **A Solução:**
+  * **Auto-Save Periódico:** O `smart-resume.lua` grava o progresso continuamente a cada 8s em `~/.local/state/mpv/watch_history.json`.
+  * **Regra dos 85% com Salto Cancelável:**
+    * Se você já assistiu mais de 85% de um episódio (hora dos créditos) e abrir ele novamente:
+    * O MPV **não** abre nos créditos pretos. Ele emite um aviso no OSD com contagem regressiva de 4 segundos:  
+      `⏭️ Episódio anterior já concluído (88%)! Saltando para o próximo em 4s... [Esc ou Espaço para cancelar]`
+    * Se você apertar **`Esc`** ou **`Espaço`**: o salto é cancelado e você assiste a cena pós-créditos.
+    * Se não apertar nada: ele salta automaticamente para o próximo episódio a partir de `00:00`!
+  * **Multi-Temporadas Contínuas (`autoload.lua`):**
+    * Se sua série estiver dividida em pastas (`Season 1`, `Season 2`, `Temporada 1`, etc.), ao abrir qualquer episódio (ex: S01E03), o MPV enfileira todos os episódios seguintes da Temporada 1 **E** da Temporada 2, 3...
+    * Ao terminar o último episódio da Temporada 1, o player já avança direto para a Temporada 2 Episódio 1!
+  * **Dashboard `continuar` (Terminal & Rofi):**
+    * **No Terminal:** Comando `continuar` ou `recentes` abre um menu FZF Catppuccin com progresso em tempo real e atalho para o próximo episódio.
+    * **No Hyprland:** Atalho **`Super + Ctrl + C`** ou **`Super + Alt + P`** abre a lista no Rofi para retomar séries com 1 clique.
+    * **No MPV:** Tecla **`H`** (Shift+h) abre o HUD visual de histórico na tela.
 
 Todas as ferramentas necessárias para a experiência MPV God Mode estão devidamente integradas e registradas nos scripts do ecossistema de dotfiles:
 

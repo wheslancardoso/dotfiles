@@ -2341,7 +2341,7 @@ run_cli_mode() {
                 [ "${#short_clip}" -gt 45 ] && short_clip="${short_clip:0:42}..."
                 main_actions="0\t📋 [Clipboard] Baixar Link Copiado (${short_clip})\tProcessa e baixa automaticamente a URL encontrada na sua área de transferência com prévia da capa.\n"
             fi
-            main_actions="${main_actions}1\t🍿 Filmes & Séries no Pomfy (Catálogo TMDB 1080p)\tAbre o catálogo navegável com sinopse oficial, pôster HD e streaming direto.\n2\t🎬 Filmes em Inglês Original (YTS BluRay 1080p / 4K)\tBusca filmes no catálogo internacional com áudio original em inglês 5.1 e alta fidelidade.\n3\t🎵 Buscar Músicas no YouTube Music (Pesquisa FZF com Capas HD)\tPesquise pelo nome da música ou artista, escolha no menu FZF com capa HD e baixe em MP3 320k com tags.\n4\t🎧 Spotify (Baixar por Link ou Nome da Música)\tBaixe faixas, álbuns ou playlists do Spotify com capas HD oficiais, metadados e letras (.lrc).\n5\t🎥 Buscar / Baixar Vídeos no YouTube (1080p/4K com Capas HD)\tBusca com miniaturas ao vivo no FZF ou baixa links do YouTube com 1 tecla de confirmação.\n6\t🔗 Inserir URL ou Arquivo de Lote (.txt / .md)\tProcessa qualquer link da web, torrent/magnet ou arquivos de lote (.txt, .md).\n7\t📻 Baixar o que está tocando agora (MPRIS / Spotify)\tDetecta a música ou vídeo em reprodução no seu player do Linux e baixa na hora.\n8\t📂 Ver Histórico de Downloads\tAbre a lista de downloads anteriores pesquisável com FZF.\n9\t🔄 Atualizar Motores de Download\tVerifica e atualiza o yt-dlp, spotdl e gallery-dl.\n10\t🚪 Sair\tFecha o cockpit de mídia."
+            main_actions="${main_actions}1\t🍿 Filmes & Séries no Pomfy (Catálogo TMDB 1080p)\tAbre o catálogo navegável com sinopse oficial, pôster HD e streaming direto.\n2\t🎬 Filmes em Inglês Original (YTS BluRay 1080p / 4K)\tBusca filmes no catálogo internacional com áudio original em inglês 5.1 e alta fidelidade.\n3\t📺 Continuar Assistindo (Séries e Filmes Recentes)\tAbre o cockpit de histórico inteligente: retoma episódios e avança automaticamente.\n4\t🎵 Buscar Músicas no YouTube Music (Pesquisa FZF com Capas HD)\tPesquise pelo nome da música ou artista, escolha no menu FZF com capa HD e baixe em MP3 320k com tags.\n5\t🎧 Spotify (Baixar por Link ou Nome da Música)\tBaixe faixas, álbuns ou playlists do Spotify com capas HD oficiais, metadados e letras (.lrc).\n6\t🎥 Buscar / Baixar Vídeos no YouTube (1080p/4K com Capas HD)\tBusca com miniaturas ao vivo no FZF ou baixa links do YouTube com 1 tecla de confirmação.\n7\t🔗 Inserir URL ou Arquivo de Lote (.txt / .md)\tProcessa qualquer link da web, torrent/magnet ou arquivos de lote (.txt, .md).\n8\t📻 Baixar o que está tocando agora (MPRIS / Spotify)\tDetecta a música ou vídeo em reprodução no seu player do Linux e baixa na hora.\n9\t📂 Ver Histórico de Downloads\tAbre a lista de downloads anteriores pesquisável com FZF.\n10\t🔄 Atualizar Motores de Download\tVerifica e atualiza o yt-dlp, spotdl e gallery-dl.\n11\t🚪 Sair\tFecha o cockpit de mídia."
 
             local chosen_action
             chosen_action=$(echo -e "$main_actions" | fzf \
@@ -2379,6 +2379,10 @@ run_cli_mode() {
                     exit 0
                     ;;
                 3)
+                    bash "$HOME/dotfiles/scripts/continuar.sh"
+                    exit 0
+                    ;;
+                4)
                     local found_music
                     found_music=$(search_music_fzf "")
                     if [ -n "$found_music" ]; then
@@ -2386,7 +2390,7 @@ run_cli_mode() {
                     fi
                     exit 0
                     ;;
-                4)
+                5)
                     echo -e "\n${GREEN}${BOLD}🎧 APEX SPOTIFY SUITE • Músicas, Álbuns & Playlists${NC}"
                     echo -e "${SUBTEXT}Digite o nome da música / artista OU cole o link do Spotify:${NC}"
                     read -rp "🎵 Música ou Link: " sp_input
@@ -2421,7 +2425,7 @@ run_cli_mode() {
                         esac
                     fi
                     ;;
-                5)
+                6)
                     read -rp "🔍 Digite a busca ou cole o link do YouTube: " yt_query
                     if [ -z "$yt_query" ]; then
                         exit 0
@@ -2434,10 +2438,10 @@ run_cli_mode() {
                         [ -n "$found_yt" ] && url="$found_yt"
                     fi
                     ;;
-                6)
+                7)
                     read -rp "Cole a URL ou caminho do arquivo (.txt/.md): " url
                     ;;
-                7)
+                8)
                     local now_url
                     now_url=$(get_now_playing_info || true)
                     if [ -n "$now_url" ]; then
@@ -2447,11 +2451,11 @@ run_cli_mode() {
                         exit 1
                     fi
                     ;;
-                8)
+                9)
                     view_history "cli"
                     exit 0
                     ;;
-                9)
+                10)
                     update_engines
                     exit 0
                     ;;
@@ -2862,6 +2866,10 @@ main() {
                 ;;
             -h|--history)
                 view_history "cli"
+                exit 0
+                ;;
+            --continuar|--recentes)
+                bash "$HOME/dotfiles/scripts/continuar.sh"
                 exit 0
                 ;;
             -o|--output|--name)
