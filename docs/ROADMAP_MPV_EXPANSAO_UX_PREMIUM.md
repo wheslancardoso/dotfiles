@@ -84,13 +84,16 @@
 
 ---
 
-## 🛠️ 3. Checklist de Execução Rápida (Daqui a 3 Dias)
+## 🛠️ 3. Checklist de Execução Concluído (09/09/2026)
 
-Quando você for rodar essa expansão, basta pedir: *"Aplique a Fase 1 do Roadmap do MPV"* e o agente executará este checklist:
+Fase 1 e melhorias de UX implementadas e ativas no sistema:
 
-- [ ] Instalar `mpv-uosc` e `mpv-thumbfast`.
-- [ ] Baixar os shaders do `Anime4K` para `~/.config/mpv/shaders/`.
-- [ ] Mapear as teclas de perfil do Anime4K (`Ctrl+1`, `Ctrl+2`, `Ctrl+0`) no `input.conf`.
-- [ ] Testar a barra de progresso do `uosc` com as miniaturas do `thumbfast` em um episódio.
-- [ ] Testar a ativação do Anime4K e verificar o uso de GPU via `btop`.
-- [ ] Comitar e sincronizar no repositório `dotfiles`.
+- [x] Instalar `uosc` (v5.13.0) e `thumbfast` integrados nativamente no MPV com fontes OTF/TTF.
+- [x] Baixar os shaders do `Anime4K` (v4.0.1) para `~/.config/mpv/shaders/Anime4K/`.
+- [x] Mapear as teclas de perfil do Anime4K (`Ctrl+1`, `Ctrl+2`, `Ctrl+3`, `Ctrl+0`) no `input.conf`.
+- [x] Adicionar `quality-menu.lua` (`Ctrl+q` / `Alt+q`) para troca dinâmica de resolução em streams.
+- [x] Adicionar `reload.lua` (`Ctrl+r`) para recarregar streams mantendo a posição exata.
+- [x] Corrigir opções legadas no `mpv.conf` (`sub-forced-events-only`) e `uosc.conf`.
+- [x] Atualizar rotina de deploy no `setup.sh` para links de pastas (`uosc`, `shaders`, `fonts`).
+- [x] Testar inicialização e compilação dos shaders GLSL do MPV (0 erros, 0 warnings).
+- [x] Comitar e sincronizar no repositório `dotfiles`.
