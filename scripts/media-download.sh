@@ -119,6 +119,7 @@ render_preview_thumb() {
     local target_url="$2"
     local media_type="${3:-Mídia}"
 
+    local tab=$'\t'
     local line=""
     if [ -f "$cache_tsv" ] && [ -n "$target_url" ]; then
         line=$(grep -F -m 1 "$target_url" "$cache_tsv" 2>/dev/null || true)
@@ -126,12 +127,12 @@ render_preview_thumb() {
 
     local title_disp="" url="" thumb_url="" title="" channel="" duration=""
     if [ -n "$line" ]; then
-        title_disp=$(echo "$line" | cut -f1)
-        url=$(echo "$line" | cut -f2)
-        thumb_url=$(echo "$line" | cut -f3)
-        title=$(echo "$line" | cut -f4)
-        channel=$(echo "$line" | cut -f5)
-        duration=$(echo "$line" | cut -f6)
+        title_disp=$(echo "$line" | cut -d"$tab" -f1)
+        url=$(echo "$line" | cut -d"$tab" -f2)
+        thumb_url=$(echo "$line" | cut -d"$tab" -f3)
+        title=$(echo "$line" | cut -d"$tab" -f4)
+        channel=$(echo "$line" | cut -d"$tab" -f5)
+        duration=$(echo "$line" | cut -d"$tab" -f6)
     fi
 
     # 1. Limpa qualquer imagem residual do protocolo gráfico Kitty
@@ -195,8 +196,9 @@ search_youtube_fzf() {
     local query="$1"
     echo -e "${MAUVE}🔍 Pesquisando vídeos no YouTube para: ${BOLD}${query}${NC}..." >&2
 
+    local tab=$'\t'
     local raw_results
-    raw_results=$(yt-dlp --no-warnings --print "%(title)s [%(duration>%H:%M:%S)s] • %(channel)s\t%(webpage_url)s\t%(thumbnail)s\t%(title)s\t%(channel)s\t%(duration>%H:%M:%S)s" "ytsearch10:${query}" 2>/dev/null || true)
+    raw_results=$(yt-dlp --no-warnings --print "%(title)s [%(duration>%H:%M:%S)s] • %(channel)s${tab}%(webpage_url)s${tab}%(thumbnail)s${tab}%(title)s${tab}%(channel)s${tab}%(duration>%H:%M:%S)s" "ytsearch10:${query}" 2>/dev/null || true)
 
     if [ -z "$raw_results" ]; then
         echo -e "${RED}❌ Nenhum vídeo encontrado para a busca '${query}'.${NC}" >&2
@@ -204,7 +206,7 @@ search_youtube_fzf() {
     fi
 
     if ! command -v fzf >/dev/null 2>&1 || [ ! -t 0 ]; then
-        echo "$raw_results" | head -n1 | cut -f2
+        echo "$raw_results" | head -n1 | cut -d"$tab" -f2
         return 0
     fi
 
@@ -225,7 +227,7 @@ search_youtube_fzf() {
         --preview="\"$SELF_SCRIPT\" __preview_thumb \"$search_cache\" {2} 'YouTube Vídeo'" \
         --preview-window="right:48%:wrap:border-rounded" \
         --with-nth=1 \
-        --delimiter="\t")
+        --delimiter="$tab")
 
     printf '\033_Ga=d,d=a\033\\' 2>/dev/null || true
     rm -f "$search_cache"
@@ -235,7 +237,7 @@ search_youtube_fzf() {
         return 1
     fi
 
-    echo "$selected" | cut -f2
+    echo "$selected" | cut -d"$tab" -f2
 }
 
 search_music_fzf() {
@@ -249,8 +251,9 @@ search_music_fzf() {
 
     echo -e "${MAUVE}🔍 Pesquisando músicas no YouTube Music para: ${BOLD}${query}${NC}..." >&2
 
+    local tab=$'\t'
     local raw_results
-    raw_results=$(yt-dlp --no-warnings --print "%(title)s [%(duration>%H:%M:%S)s] • %(channel)s\t%(webpage_url)s\t%(thumbnail)s\t%(title)s\t%(channel)s\t%(duration>%H:%M:%S)s" "ytsearch10:${query} audio" 2>/dev/null || true)
+    raw_results=$(yt-dlp --no-warnings --print "%(title)s [%(duration>%H:%M:%S)s] • %(channel)s${tab}%(webpage_url)s${tab}%(thumbnail)s${tab}%(title)s${tab}%(channel)s${tab}%(duration>%H:%M:%S)s" "ytsearch10:${query} audio" 2>/dev/null || true)
 
     if [ -z "$raw_results" ]; then
         echo -e "${RED}❌ Nenhuma música encontrada para a busca '${query}'.${NC}" >&2
@@ -258,7 +261,7 @@ search_music_fzf() {
     fi
 
     if ! command -v fzf >/dev/null 2>&1 || [ ! -t 0 ]; then
-        echo "$raw_results" | head -n1 | cut -f2
+        echo "$raw_results" | head -n1 | cut -d"$tab" -f2
         return 0
     fi
 
@@ -279,7 +282,7 @@ search_music_fzf() {
         --preview="\"$SELF_SCRIPT\" __preview_thumb \"$search_cache\" {2} 'YouTube Music'" \
         --preview-window="right:48%:wrap:border-rounded" \
         --with-nth=1 \
-        --delimiter="\t")
+        --delimiter="$tab")
 
     printf '\033_Ga=d,d=a\033\\' 2>/dev/null || true
     rm -f "$search_cache"
@@ -289,7 +292,7 @@ search_music_fzf() {
         return 1
     fi
 
-    echo "$selected" | cut -f2
+    echo "$selected" | cut -d"$tab" -f2
 }
 
 get_pomfy_extractor() {
