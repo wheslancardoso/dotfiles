@@ -150,6 +150,51 @@ search_youtube_fzf() {
     echo "$selected" | cut -f2
 }
 
+search_music_fzf() {
+    local query="$1"
+    if [ -z "$query" ]; then
+        read -rp "🎵 Digite o nome da música ou artista (ex: Skillet Hero): " query
+    fi
+    if [ -z "$query" ]; then
+        return 1
+    fi
+
+    echo -e "${MAUVE}🔍 Pesquisando músicas no YouTube Music para: ${BOLD}${query}${NC}..." >&2
+
+    local raw_results
+    raw_results=$(yt-dlp --print "%(title)s [%(duration>%H:%M:%S)s] • %(channel)s	%(webpage_url)s" "ytsearch10:${query} audio" 2>/dev/null || true)
+
+    if [ -z "$raw_results" ]; then
+        echo -e "${RED}❌ Nenhuma música encontrada para a busca '${query}'.${NC}" >&2
+        return 1
+    fi
+
+    if ! command -v fzf >/dev/null 2>&1 || [ ! -t 0 ]; then
+        echo "$raw_results" | head -n1 | cut -f2
+        return 0
+    fi
+
+    local selected
+    selected=$(echo "$raw_results" | fzf \
+        --prompt="🎵 Escolha a Música para Baixar (MP3 320k) > " \
+        --header="[ENTER] Baixar MP3 320k • [Ctrl+J/K] Navegar • [ESC] Sair" \
+        --height=50% \
+        --layout=reverse \
+        --border=rounded \
+        --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
+        --color=fg:#cdd6f4,header:#a6e3a1,info:#a6e3a1,pointer:#f5e0dc \
+        --color=marker:#b4befe,fg+:#cdd6f4,prompt:#a6e3a1,hl+:#f38ba8 \
+        --with-nth=1 \
+        --delimiter="\t")
+
+    if [ -z "$selected" ]; then
+        echo -e "${YELLOW}Busca cancelada.${NC}" >&2
+        return 1
+    fi
+
+    echo "$selected" | cut -f2
+}
+
 get_pomfy_extractor() {
     local base_dir
     base_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -659,6 +704,7 @@ download_video() {
     local dest="$3"
     local clip_range="${4:-$CUSTOM_CLIP}"
     local is_batch="${5:-false}"
+    local silent="${6:-}"
     local dl_args
     dl_args=$(get_downloader_args)
 
@@ -692,7 +738,7 @@ download_video() {
         output_tpl="%(playlist_title,playlist)s/%(playlist_index)02d - %(title)s.%(ext)s"
     fi
 
-    if [ "$is_batch" = false ]; then
+    if [ "$is_batch" = false ] && [ "$silent" != "silent_card" ]; then
         local yt_meta yt_title yt_author yt_thumb
         if [[ "$url" =~ (youtube\.com|youtu\.be) ]]; then
             yt_meta=$(curl -s -m 2 "https://www.youtube.com/oembed?url=${url}&format=json" 2>/dev/null || true)
@@ -824,6 +870,7 @@ download_audio() {
     local dest="$2"
     local clip_range="${3:-$CUSTOM_CLIP}"
     local is_batch="${4:-false}"
+    local silent="${5:-}"
     local dl_args
     dl_args=$(get_downloader_args)
 
@@ -847,7 +894,7 @@ download_audio() {
         output_tpl="%(playlist_title,playlist)s/%(playlist_index)02d - %(title)s.%(ext)s"
     fi
 
-    if [ "$is_batch" = false ]; then
+    if [ "$is_batch" = false ] && [ "$silent" != "silent_card" ]; then
         local yt_meta yt_title yt_author yt_thumb
         if [[ "$url" =~ (youtube\.com|youtu\.be) ]]; then
             yt_meta=$(curl -s -m 2 "https://www.youtube.com/oembed?url=${url}&format=json" 2>/dev/null || true)
@@ -990,7 +1037,7 @@ download_spotify() {
     [[ "$url" =~ /album/ ]] && item_type="Álbum"
     [[ "$url" =~ /artist/ ]] && item_type="Discografia do Artista"
 
-    [ "$mode" != "rofi" ] && render_media_card "${sp_title:-Spotify $item_type}" "Spotify Oficial" "$sp_thumb" "Spotify Engine (spotDL)" "${format^^} (320kbps + Letras .lrc + Capa HD)" "$dest"
+    [ "$mode" != "rofi" ] && [ "$mode" != "silent_card" ] && render_media_card "${sp_title:-Spotify $item_type}" "Spotify Oficial" "$sp_thumb" "Spotify Engine (spotDL)" "${format^^} (320kbps + Letras .lrc + Capa HD)" "$dest"
     if [ "$mode" == "rofi" ]; then
         spotdl download "$url" \
             --format "$format" \
@@ -998,6 +1045,7 @@ download_spotify() {
             --audio youtube-music youtube soundcloud \
             --output "$output_tpl" \
             --sponsor-block \
+            --log-level ERROR \
             --generate-lrc >/dev/null 2>&1 || true
     else
         spotdl download "$url" \
@@ -1006,6 +1054,7 @@ download_spotify() {
             --audio youtube-music youtube soundcloud \
             --output "$output_tpl" \
             --sponsor-block \
+            --log-level ERROR \
             --simple-tui \
             --generate-lrc || true
     fi
@@ -1790,14 +1839,15 @@ run_cli_mode() {
     if [ -z "$url" ]; then
         local clip_url
         clip_url=$(get_clipboard_url)
-        if [ -n "$clip_url" ]; then
-            echo -e "${BLUE}📋 URL detectada na Área de Transferência:${NC}"
-            echo -e "   ${TEXT}${clip_url}${NC}"
-            echo ""
-            read -rp "Pressione [Enter] para usar esta URL ou digite outra (ou 'p' para Pomfy): " input_url
-            url="${input_url:-$clip_url}"
-        elif command -v fzf >/dev/null 2>&1 && [ -t 0 ]; then
-            local main_actions="1\t🍿 Pesquisar Filmes & Séries no Catálogo Pomfy\tAbre o navegador de filmes e séries com sinopse oficial, notas TMDB e download 1080p.\n2\t🎧 Baixar / Pesquisar Músicas & Álbuns (Spotify & YouTube)\tPesquise por nome da música/álbum ou cole links do Spotify/YouTube para baixar em MP3 320k/FLAC.\n3\t🔍 Pesquisar Vídeos no YouTube (FZF)\tBusca vídeos diretamente pelo terminal com seletor interativo.\n4\t🔗 Inserir URL ou Arquivo de Lote (.txt / .md)\tDigita ou cola qualquer link da internet ou caminho de arquivo de lote (.txt, .md).\n5\t📻 Baixar o que está tocando agora (MPRIS / Spotify)\tDetecta a música ou vídeo em reprodução no seu sistema e baixa na hora.\n6\t📂 Ver Histórico de Downloads\tAbre a lista de downloads anteriores pesquisável com FZF.\n7\t🔄 Atualizar Motores de Download\tVerifica e atualiza o yt-dlp, spotdl e gallery-dl.\n8\t🚪 Sair\tFecha o cockpit de mídia."
+
+        if command -v fzf >/dev/null 2>&1 && [ -t 0 ]; then
+            local main_actions=""
+            if [ -n "$clip_url" ]; then
+                local short_clip="$clip_url"
+                [ "${#short_clip}" -gt 45 ] && short_clip="${short_clip:0:42}..."
+                main_actions="0\t📋 [Clipboard] Baixar Link Copiado (${short_clip})\tProcessa e baixa automaticamente a URL encontrada na sua área de transferência com prévia da capa.\n"
+            fi
+            main_actions="${main_actions}1\t🍿 Filmes & Séries no Pomfy (Catálogo TMDB 1080p)\tAbre o catálogo navegável com sinopse oficial, pôster e streaming direto.\n2\t🎵 Buscar Músicas no YouTube Music (Pesquisa FZF)\tPesquise pelo nome da música ou artista, escolha no menu FZF e baixe em MP3 320k com capa e tags.\n3\t🎧 Spotify (Baixar Músicas, Álbuns & Playlists por Link)\tCole links do Spotify para baixar faixas, álbuns ou playlists com capas HD, tags e letras (.lrc).\n4\t🎥 Buscar / Baixar Vídeos no YouTube (1080p/4K)\tBusca vídeos diretamente pelo terminal ou baixa links do YouTube com 1 tecla de confirmação.\n5\t🔗 Inserir URL ou Arquivo de Lote (.txt / .md)\tProcessa qualquer link da web, torrent/magnet ou arquivos de lote (.txt, .md).\n6\t📻 Baixar o que está tocando agora (MPRIS / Spotify)\tDetecta a música ou vídeo em reprodução no seu player do Linux e baixa na hora.\n7\t📂 Ver Histórico de Downloads\tAbre a lista de downloads anteriores pesquisável com FZF.\n8\t🔄 Atualizar Motores de Download\tVerifica e atualiza o yt-dlp, spotdl e gallery-dl.\n9\t🚪 Sair\tFecha o cockpit de mídia."
 
             local chosen_action
             chosen_action=$(echo -e "$main_actions" | fzf \
@@ -1819,84 +1869,52 @@ run_cli_mode() {
             act_num=$(echo "$chosen_action" | cut -f1)
 
             case "$act_num" in
+                0)
+                    url="$clip_url"
+                    ;;
                 1)
                     local found_pomfy
                     found_pomfy=$(search_pomfy_fzf "")
                     if [ -n "$found_pomfy" ]; then
                         download_streaming_pomfy "$found_pomfy" "$SEASON_ARG" "$EP_ARG"
-                        exit 0
                     fi
                     exit 0
                     ;;
                 2)
-                    echo -e "\n${MAUVE}${BOLD}🎧 APEX MUSIC ENGINE • Spotify & YouTube Audio${NC}"
-                    echo -e "${SUBTEXT}Digite o nome da música / álbum / artista OU cole o link (música, álbum ou playlist):${NC}"
-                    read -rp "🎵 Música ou Link: " music_query
-
-                    if [ -z "$music_query" ]; then
-                        exit 0
+                    local found_music
+                    found_music=$(search_music_fzf "")
+                    if [ -n "$found_music" ]; then
+                        download_audio "$found_music" "$dest_a"
                     fi
-
-                    music_query="${music_query/#\~/$HOME}"
-
-                    if [[ "$music_query" =~ (open\.spotify\.com|spotify:) ]]; then
-                        url="$music_query"
-                    elif [[ "$music_query" =~ ^https?:// ]]; then
-                        download_audio "$music_query" "$dest_a"
-                        exit 0
-                    else
-                        local music_engine_choice="1\t🔴 Pesquisar no YouTube Music (Seletor Interativo FZF)\tExibe os resultados com duração e canal para você escolher a faixa ideal.\n2\t🟢 Baixar direto do Spotify (spotDL)\tBusca no catálogo do Spotify e baixa com capa em HD, tags ID3 e letras .lrc."
-                        local chosen_engine
-                        chosen_engine=$(echo -e "$music_engine_choice" | fzf \
-                            --prompt="🎧 Escolha a fonte de áudio > " \
-                            --header="[ENTER] Confirmar • [ESC] Cancelar" \
-                            --height=35% \
-                            --layout=reverse \
-                            --border=rounded \
-                            --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
-                            --color=fg:#cdd6f4,header:#a6e3a1,info:#a6e3a1,pointer:#f5e0dc \
-                            --color=marker:#b4befe,fg+:#cdd6f4,prompt:#a6e3a1,hl+:#f38ba8 \
-                            --with-nth=2 \
-                            --delimiter="\t" \
-                            --preview='echo -e "\n\033[1;38;2;166;227;161m╭────────────────────────────────────────╮\033[0m\n\033[1;38;2;166;227;161m│ {2}\033[0m\n\033[1;38;2;166;227;161m╰────────────────────────────────────────╯\033[0m\n\n\033[38;2;205;214;244m{3}\033[0m"' \
-                            --preview-window="right:45%:wrap:border-rounded")
-
-                        local eng_num
-                        eng_num=$(echo "$chosen_engine" | cut -f1)
-
-                        case "$eng_num" in
-                            1)
-                                local found_yt
-                                found_yt=$(search_youtube_fzf "$music_query")
-                                if [ -n "$found_yt" ]; then
-                                    download_audio "$found_yt" "$dest_a"
-                                fi
-                                exit 0
-                                ;;
-                            2)
-                                download_spotify "$music_query" "mp3" "$dest_a" "cli"
-                                exit 0
-                                ;;
-                            *)
-                                exit 0
-                                ;;
-                        esac
-                    fi
+                    exit 0
                     ;;
                 3)
-                    read -rp "🔍 Digite o que deseja buscar no YouTube: " yt_query
-                    if [ -n "$yt_query" ]; then
-                        local found_yt
-                        found_yt=$(search_youtube_fzf "$yt_query")
-                        [ -n "$found_yt" ] && url="$found_yt"
+                    echo -e "\n${GREEN}${BOLD}🎧 APEX SPOTIFY SUITE • Músicas, Álbuns & Playlists${NC}"
+                    echo -e "${SUBTEXT}Cole o link da faixa, álbum ou playlist do Spotify:${NC}"
+                    read -rp "🔗 Link do Spotify: " sp_input
+                    if [ -n "$sp_input" ]; then
+                        url="$sp_input"
                     else
                         exit 0
                     fi
                     ;;
                 4)
-                    read -rp "Cole a URL ou caminho do arquivo (.txt/.md): " url
+                    read -rp "🔍 Digite a busca ou cole o link do YouTube: " yt_query
+                    if [ -z "$yt_query" ]; then
+                        exit 0
+                    fi
+                    if [[ "$yt_query" =~ ^https?:// ]]; then
+                        url="$yt_query"
+                    else
+                        local found_yt
+                        found_yt=$(search_youtube_fzf "$yt_query")
+                        [ -n "$found_yt" ] && url="$found_yt"
+                    fi
                     ;;
                 5)
+                    read -rp "Cole a URL ou caminho do arquivo (.txt/.md): " url
+                    ;;
+                6)
                     local now_url
                     now_url=$(get_now_playing_info || true)
                     if [ -n "$now_url" ]; then
@@ -1906,11 +1924,11 @@ run_cli_mode() {
                         exit 1
                     fi
                     ;;
-                6)
+                7)
                     view_history "cli"
                     exit 0
                     ;;
-                7)
+                8)
                     update_engines
                     exit 0
                     ;;
@@ -1960,10 +1978,6 @@ run_cli_mode() {
 
     # Roteamento especial para links do Spotify
     if [[ "$url" =~ (open\.spotify\.com|spotify:) ]]; then
-        echo -e "${GREEN}${BOLD}🎧 Link do Spotify Detectado!${NC}"
-        echo -e "${SUBTEXT}O spotDL vai extrair metadados oficiais, capa em alta resolução e letras sincronizadas (.lrc).${NC}"
-        echo ""
-
         if ! command -v spotdl >/dev/null 2>&1; then
             echo -e "${PEACH}⚠️ 'spotdl' não está instalado no sistema.${NC}"
             echo -e "O spotdl é o motor que baixa músicas, álbuns e playlists do Spotify com capas e tags em 320kbps."
@@ -1985,69 +1999,44 @@ run_cli_mode() {
             fi
         fi
 
-        echo -e "${BLUE}📂 Pasta de Destino:${NC} ${dest_a}"
         echo ""
-        local sp_opt=""
-        if command -v fzf >/dev/null 2>&1 && [ -t 0 ]; then
-            local sp_menu_in="1\t🎵 MP3 320kbps (Capa Oficial + Tags ID3 + Letras .lrc)\tFormato universal com qualidade máxima (320kbps CBR), capa em alta definição e letras sincronizadas (.lrc).\n2\t💎 FLAC Lossless (Áudio Estúdio sem perdas)\tÁudio 100% puro e sem compressão com máxima fidelidade sonora para audiófilos.\n3\t⚡ M4A AAC (Stream Nativo Rápido)\tCodec de alta eficiência da Apple/Spotify, menor tempo de download e processamento."
-
-            local sp_chosen
-            sp_chosen=$(echo -e "$sp_menu_in" | fzf \
-                --prompt="🎧 Escolha o Formato Spotify > " \
-                --header="[ENTER] Confirmar • [Ctrl+J/K] Navegar • [ESC] Cancelar" \
-                --height=45% \
-                --layout=reverse \
-                --border=rounded \
-                --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
-                --color=fg:#cdd6f4,header:#a6e3a1,info:#a6e3a1,pointer:#f5e0dc \
-                --color=marker:#b4befe,fg+:#cdd6f4,prompt:#a6e3a1,hl+:#f38ba8 \
-                --bind="ctrl-j:down,ctrl-k:up" \
-                --with-nth=2 \
-                --delimiter="\t" \
-                --preview='echo -e "\n\033[1;38;2;166;227;161m╭────────────────────────────────────────╮\033[0m\n\033[1;38;2;166;227;161m│ {2}\033[0m\n\033[1;38;2;166;227;161m╰────────────────────────────────────────╯\033[0m\n\n\033[38;2;205;214;244m{3}\033[0m"' \
-                --preview-window="right:45%:wrap:border-rounded")
-
-            if [ -z "$sp_chosen" ]; then
-                echo -e "\n${RED}Cancelado.${NC}"
-                exit 0
-            fi
-            sp_opt=$(echo "$sp_chosen" | cut -f1)
-        else
-            echo -e "${BOLD}Escolha o Formato de Áudio:${NC}"
-            echo -e "  ${BLUE}[1]${NC} 🎵 MP3 320kbps (Capa Oficial + Tags ID3 + Letras .lrc) [Padrão]"
-            echo -e "  ${GREEN}[2]${NC} 💎 FLAC Lossless (Áudio Estúdio sem perdas)"
-            echo -e "  ${PEACH}[3]${NC} ⚡ M4A AAC (Stream Nativo Rápido)"
-            echo -e "  ${RED}[q]${NC} Cancelar"
-            echo ""
-            read -rp "Opção [1-3, padrão: 1]: " sp_opt
-            sp_opt="${sp_opt:-1}"
+        echo -e "${SUBTEXT}🔍 Conectando ao Spotify e obtendo metadados oficiais...${NC}"
+        local sp_meta sp_title sp_thumb sp_type
+        sp_meta=$(curl -s -m 2 "https://open.spotify.com/oembed?url=${url}" 2>/dev/null || true)
+        if [ -n "$sp_meta" ]; then
+            sp_title=$(echo "$sp_meta" | jq -r '.title // empty' 2>/dev/null || true)
+            sp_thumb=$(echo "$sp_meta" | jq -r '.thumbnail_url // empty' 2>/dev/null || true)
         fi
 
-        case "$sp_opt" in
-            1)
-                echo -e "\n${BLUE}🚀 Baixando do Spotify em MP3 320kbps com capa e letras...${NC}\n"
-                download_spotify "$url" "mp3" "$dest_a" "cli"
+        sp_type="Música"
+        [[ "$url" =~ /playlist/ ]] && sp_type="Playlist"
+        [[ "$url" =~ /album/ ]] && sp_type="Álbum"
+        [[ "$url" =~ /artist/ ]] && sp_type="Discografia do Artista"
+
+        render_media_card "${sp_title:-Spotify $sp_type}" "Spotify Oficial" "$sp_thumb" "Spotify Engine (spotDL)" "MP3 320kbps (Capa HD + Tags ID3 + .lrc)" "$dest_a"
+
+        echo -e "  ${BOLD}⚡ Confirmar Download:${NC}"
+        echo -e "  [${GREEN}ENTER${NC}] Baixar (MP3 320k)  •  [${BLUE}f${NC}] FLAC Lossless  •  [${YELLOW}m${NC}] M4A  •  [${RED}q${NC}] Cancelar"
+        read -r -s -n 1 sp_key
+        echo ""
+        case "$sp_key" in
+            f|F)
+                echo -e "${GREEN}💎 Baixando em FLAC Lossless...${NC}\n"
+                download_spotify "$url" "flac" "$dest_a" "silent_card"
                 ;;
-            2)
-                echo -e "\n${GREEN}💎 Baixando do Spotify em FLAC Lossless...${NC}\n"
-                download_spotify "$url" "flac" "$dest_a" "cli"
-                ;;
-            3)
-                echo -e "\n${PEACH}⚡ Baixando do Spotify em M4A AAC...${NC}\n"
-                download_spotify "$url" "m4a" "$dest_a" "cli"
+            m|M)
+                echo -e "${PEACH}⚡ Baixando em M4A AAC...${NC}\n"
+                download_spotify "$url" "m4a" "$dest_a" "silent_card"
                 ;;
             q|Q)
-                echo -e "\n${RED}Cancelado.${NC}"
+                echo -e "${RED}Cancelado.${NC}"
                 exit 0
                 ;;
             *)
-                echo -e "\n${RED}Opção inválida.${NC}"
-                exit 1
+                echo -e "${BLUE}🚀 Baixando em MP3 320kbps com capa e letras...${NC}\n"
+                download_spotify "$url" "mp3" "$dest_a" "silent_card"
                 ;;
         esac
-
-        echo ""
-        echo -e "${GREEN}${BOLD}✔ Mídia do Spotify baixada com sucesso!${NC}"
         exit 0
     fi
 
@@ -2067,9 +2056,27 @@ run_cli_mode() {
 
     echo ""
     echo -e "${SUBTEXT}🔍 Conectando e obtendo metadados oficiais...${NC}"
-    local info_title
-    info_title=$(yt-dlp --get-title "$url" 2>/dev/null | head -n1 || echo "Mídia Online")
-    echo -e "${GREEN}🎬 Título:${NC} ${BOLD}${info_title}${NC}"
+    local yt_meta yt_title yt_author yt_thumb
+    if [[ "$url" =~ (youtube\.com|youtu\.be) ]]; then
+        yt_meta=$(curl -s -m 2 "https://www.youtube.com/oembed?url=${url}&format=json" 2>/dev/null || true)
+        if [ -n "$yt_meta" ]; then
+            yt_title=$(echo "$yt_meta" | jq -r '.title // empty' 2>/dev/null || true)
+            yt_author=$(echo "$yt_meta" | jq -r '.author_name // empty' 2>/dev/null || true)
+            yt_thumb=$(echo "$yt_meta" | jq -r '.thumbnail_url // empty' 2>/dev/null || true)
+        fi
+    fi
+
+    if [ -z "$yt_title" ]; then
+        yt_title=$(yt-dlp --get-title "$url" 2>/dev/null | head -n1 || echo "Mídia Online")
+    fi
+
+    local is_playlist=false
+    [[ "$url" =~ list= ]] && is_playlist=true
+
+    local card_type="Vídeo Web (1080p MP4)"
+    [ "$is_playlist" = true ] && card_type="Playlist Completa"
+
+    render_media_card "${yt_title:-Mídia Online}" "${yt_author:-Canal Oficial}" "$yt_thumb" "Video Turbo Suite (yt-dlp)" "$card_type" "$dest_v"
 
     if [ -n "$CUSTOM_DIR" ]; then
         echo -e "${BLUE}📂 Pasta de Destino:${NC} ${CUSTOM_DIR}"
@@ -2078,16 +2085,57 @@ run_cli_mode() {
         echo -e "${PEACH}🏷️ Nome Personalizado:${NC} ${CUSTOM_NAME}"
     fi
 
-    # Detecção de Playlist
-    if [[ "$url" =~ list= ]]; then
-        echo -e "\n${PEACH}⚡ URL de Playlist detectada!${NC}"
-        echo -e "Deseja baixar a playlist inteira ou apenas o vídeo atual?"
-        echo -e "  ${BLUE}[1]${NC} 📂 Playlist Completa (Vídeos numerados ordenadamente)"
-        echo -e "  ${GREEN}[2]${NC} 🎬 Apenas este vídeo único"
-        read -rp "Opção [1/2, padrão: 1]: " pl_opt
-        if [ "$pl_opt" == "2" ]; then
-            url="${url%%&list=*}"
-        fi
+    if [ "$is_playlist" = true ]; then
+        echo -e "  ${BOLD}⚡ Playlist Detectada - O que deseja fazer?${NC}"
+        echo -e "  [${GREEN}ENTER${NC}] Baixar Playlist em MP3 (320k)  •  [${BLUE}v${NC}] Playlist em Vídeo (1080p)  •  [${YELLOW}1${NC}] Apenas este vídeo  •  [${RED}q${NC}] Cancelar"
+        read -r -s -n 1 pl_key
+        echo ""
+        case "$pl_key" in
+            v|V)
+                echo -e "\n${BLUE}🚀 Baixando Playlist em Vídeo (1080p)...${NC}\n"
+                download_video "$url" "best" "$dest_v" "" false "silent_card"
+                exit 0
+                ;;
+            1)
+                url="${url%%&list=*}"
+                echo -e "\n${GREEN}🎬 Baixando apenas o vídeo individual...${NC}\n"
+                download_video "$url" "best" "$dest_v" "" false "silent_card"
+                exit 0
+                ;;
+            q|Q)
+                echo -e "${RED}Cancelado.${NC}"
+                exit 0
+                ;;
+            *)
+                echo -e "\n${GREEN}🎵 Baixando Playlist em MP3 320kbps com Capas e Tags...${NC}\n"
+                download_audio "$url" "$dest_a" "" false "silent_card"
+                exit 0
+                ;;
+        esac
+    else
+        echo -e "  ${BOLD}⚡ Confirmar Download:${NC}"
+        echo -e "  [${GREEN}ENTER${NC}] Vídeo 1080p (MP4)  •  [${BLUE}a${NC}] Áudio MP3 320k  •  [${YELLOW}m${NC}] Menu Completo (Formatos/Cortes)  •  [${RED}q${NC}] Cancelar"
+        read -r -s -n 1 vid_key
+        echo ""
+        case "$vid_key" in
+            a|A)
+                echo -e "\n${GREEN}🎵 Extraindo áudio em MP3 320kbps com capa...${NC}\n"
+                download_audio "$url" "$dest_a" "" false "silent_card"
+                exit 0
+                ;;
+            m|M)
+                # Opens full format menu below
+                ;;
+            q|Q)
+                echo -e "${RED}Cancelado.${NC}"
+                exit 0
+                ;;
+            *)
+                echo -e "\n${BLUE}🚀 Baixando vídeo em alta qualidade 1080p...${NC}\n"
+                download_video "$url" "best" "$dest_v" "" false "silent_card"
+                exit 0
+                ;;
+        esac
     fi
 
     local opt=""
@@ -2137,40 +2185,40 @@ run_cli_mode() {
     case "$opt" in
         1)
             echo -e "\n${BLUE}🚀 Baixando com 16 conexões paralelas e legendas...${NC}\n"
-            download_video "$url" "best" "$dest_v"
+            download_video "$url" "best" "$dest_v" "" false "silent_card"
             ;;
         2)
             echo -e "\n${GREEN}🎵 Extraindo áudio em MP3 320kbps com capa...${NC}\n"
-            download_audio "$url" "$dest_a"
+            download_audio "$url" "$dest_a" "" false "silent_card"
             ;;
         3)
             echo -e "\n${PEACH}⚡ Baixando vídeo leve 720p...${NC}\n"
-            download_video "$url" "720" "$dest_v"
+            download_video "$url" "720" "$dest_v" "" false "silent_card"
             ;;
         4)
             echo ""
             read -rp "Digite o intervalo do trecho (ex: 01:20-02:40): " clip_input
             if [ -n "$clip_input" ]; then
                 echo -e "\n${TEAL}✂️ Baixando apenas o trecho $clip_input...${NC}\n"
-                download_video "$url" "best" "$dest_v" "$clip_input"
+                download_video "$url" "best" "$dest_v" "$clip_input" false "silent_card"
             fi
             ;;
         5)
             echo -e "\n${YELLOW}🗜️ Baixando e comprimindo para Discord/WhatsApp...${NC}\n"
             COMPRESS_TARGET="10"
-            download_video "$url" "720" "$dest_v"
+            download_video "$url" "720" "$dest_v" "" false "silent_card"
             ;;
         6)
             echo ""
             read -rp "Digite o trecho para o GIF (ex: 00:05-00:15): " gif_clip
             MAKE_GIF=true
             echo -e "\n${MAUVE}🎞️ Baixando trecho e gerando GIF de alta qualidade...${NC}\n"
-            download_video "$url" "720" "$dest_v" "$gif_clip"
+            download_video "$url" "720" "$dest_v" "$gif_clip" false "silent_card"
             ;;
         7)
             echo -e "\n${TEAL}⏩ Modo Estudo: Baixando áudio, cortando silêncios e acelerando 1.5x...${NC}\n"
             STUDY_SPEED="1.5"
-            download_audio "$url" "$dest_a"
+            download_audio "$url" "$dest_a" "" false "silent_card"
             ;;
         8)
             echo -e "\n${MAUVE}🤖 Extraindo transcrição e gerando resumo limpo em Markdown para IA...${NC}\n"
@@ -2179,7 +2227,7 @@ run_cli_mode() {
         9)
             echo -e "\n${SUBTEXT}📝 Extraindo apenas as legendas (.srt)...${NC}\n"
             SUB_ONLY=true
-            download_video "$url" "best" "$dest_v"
+            download_video "$url" "best" "$dest_v" "" false "silent_card"
             ;;
         10)
             echo -e "\n${SUBTEXT}🖼️ Baixando a thumbnail/capa em alta resolução...${NC}\n"
