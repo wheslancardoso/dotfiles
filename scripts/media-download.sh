@@ -421,363 +421,6 @@ search_pomfy_fzf() {
     done
 }
 
-# ------------------------------------------------------------------------------
-# 🎬 MOTOR INTERNACIONAL DE FILMES (YTS BLURAY 1080P/4K • ÁUDIO ORIGINAL EM INGLÊS)
-# ------------------------------------------------------------------------------
-get_yts_api_base() {
-    local endpoints=(
-        "https://movies-api.accel.li/api/v2"
-        "https://yts.ag/api/v2"
-        "https://yts.lt/api/v2"
-        "https://yts.do/api/v2"
-    )
-    for ep in "${endpoints[@]}"; do
-        if curl -sL -m 2 -f "$ep/list_movies.json?limit=1" >/dev/null 2>&1; then
-            echo "$ep"
-            return 0
-        fi
-    done
-    echo "https://movies-api.accel.li/api/v2"
-}
-
-search_yts_api() {
-    local query="$1"
-    local limit="${2:-20}"
-    local base_url
-    base_url="$(get_yts_api_base)"
-    local encoded
-    encoded=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1]))" "$query" 2>/dev/null || echo "$query")
-    curl -sL -m 8 "${base_url}/list_movies.json?query_term=${encoded}&sort_by=seeds&order_by=desc&limit=${limit}" 2>/dev/null || true
-}
-
-build_yts_magnet() {
-    local hash="$1"
-    local name="$2"
-    local encoded_name
-    encoded_name=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1]))" "$name" 2>/dev/null || echo "$name")
-    local trackers=(
-        "udp://open.demonii.com:1337/announce"
-        "udp://tracker.openbittorrent.com:80"
-        "udp://tracker.coppersurfer.tk:6969"
-        "udp://glotorrents.pw:6969/announce"
-        "udp://tracker.opentrackr.org:1337/announce"
-        "udp://torrent.gresille.org:80/announce"
-        "udp://p4p.arenabg.ch:1337"
-        "udp://tracker.internetwarriors.net:1337"
-    )
-    local tr_str=""
-    for tr in "${trackers[@]}"; do
-        tr_str="${tr_str}&tr=${tr}"
-    done
-    echo "magnet:?xt=urn:btih:${hash}&dn=${encoded_name}${tr_str}"
-}
-
-render_yts_preview() {
-    local cache_file="$1"
-    local movie_id="$2"
-    if [ ! -f "$cache_file" ] || [ -z "$movie_id" ]; then return 0; fi
-
-    local movie
-    movie=$(jq -r --arg id "$movie_id" '.data.movies[]? | select((.id | tostring) == $id)' "$cache_file" 2>/dev/null || true)
-    if [ -z "$movie" ]; then return 0; fi
-
-    printf '\033_Ga=d,d=a\033\\' 2>/dev/null || true
-
-    local title year rating runtime genres summary thumb_url
-    title=$(echo "$movie" | jq -r '.title // "Filme"')
-    year=$(echo "$movie" | jq -r '.year // ""')
-    rating=$(echo "$movie" | jq -r '.rating // "0"')
-    runtime=$(echo "$movie" | jq -r '.runtime // 0')
-    genres=$(echo "$movie" | jq -r '[.genres[]? // empty] | join(" • ")')
-    summary=$(echo "$movie" | jq -r '.summary // .description_full // "Sem sinopse disponível."')
-    thumb_url=$(echo "$movie" | jq -r '.medium_cover_image // empty')
-
-    local c_mauve="\033[1;38;2;203;166;247m"
-    local c_green="\033[38;2;166;227;161m"
-    local c_blue="\033[38;2;137;180;250m"
-    local c_peach="\033[38;2;250;179;135m"
-    local c_yellow="\033[38;2;249;226;175m"
-    local c_text="\033[38;2;205;214;244m"
-    local c_bold="\033[1m"
-    local c_nc="\033[0m"
-
-    echo -e "${c_mauve}╭─────────────────────────────────────────────────────────────╮${c_nc}"
-    echo -e "${c_mauve}│  🎬 FILME (ÁUDIO ORIGINAL INGLÊS): ${title}${year:+ ($year)}${c_nc}"
-    echo -e "${c_mauve}╰─────────────────────────────────────────────────────────────╯${c_nc}"
-
-    if [ -n "$thumb_url" ] && command -v chafa >/dev/null 2>&1; then
-        local poster_dir="/tmp/yts_posters"
-        mkdir -p "$poster_dir"
-        local poster_file="$poster_dir/${movie_id}.jpg"
-        if [ ! -s "$poster_file" ]; then
-            curl -s -f -m 3 "$thumb_url" -o "$poster_file" 2>/dev/null || true
-        fi
-        if [ -s "$poster_file" ]; then
-            local cols="${FZF_PREVIEW_COLUMNS:-40}"
-            local img_w=$(( cols > 6 ? cols - 4 : 30 ))
-            local img_h=11
-            if [ "$TERM" = "xterm-kitty" ] || [ -n "$KITTY_WINDOW_ID" ] || [ -n "$GHOSTTY_RESOURCES_DIR" ] || [ "$TERM_PROGRAM" = "ghostty" ] || [ "$TERM_PROGRAM" = "WezTerm" ]; then
-                chafa --probe=off -f kitty --size="${img_w}x${img_h}" "$poster_file" 2>/dev/null || \
-                chafa --probe=off -f symbols --size="${img_w}x${img_h}" --symbols=sextant+quad+block+half --color-space=rgb "$poster_file" 2>/dev/null || true
-                for ((p=0; p<img_h; p++)); do printf "\n"; done
-            else
-                chafa --probe=off -f symbols --size="${img_w}x${img_h}" --symbols=sextant+quad+block+half --color-space=rgb "$poster_file" 2>/dev/null || true
-            fi
-            echo ""
-        fi
-    fi
-
-    [ -n "$genres" ] && echo -e "  ${c_peach}🏷️ Gêneros  :${c_nc} ${genres}"
-    if [ "$rating" != "0" ] && [ -n "$rating" ]; then
-        local num_stars
-        num_stars=$(python3 -c "print('★' * min(10, max(0, round(float('$rating')))))" 2>/dev/null || echo "★")
-        echo -e "  ${c_yellow}⭐ Avaliação:${c_nc} ${c_bold}${num_stars} ${rating}/10${c_nc}"
-    fi
-    [ "$runtime" -gt 0 ] && echo -e "  ${c_blue}⏱️ Duração  :${c_nc} ${runtime} minutos"
-
-    echo -e "\n  ${c_green}${c_bold}💎 Qualidades Disponíveis (Áudio Original Inglês AAC/5.1):${c_nc}"
-    echo "$movie" | jq -r '.torrents[]? | "     • " + .quality + " " + (.type | ascii_upcase) + " (" + .size + ") — " + (.seeds | tostring) + " seeds [5.1 Surround]"' 2>/dev/null
-
-    echo -e "\n  ${c_blue}${c_bold}📖 SINOPSE:${c_nc}"
-    echo -e "  ${c_text}${summary}${c_nc}\n"
-    echo -e "  ${c_green}✔ Pressione [ENTER] para escolher a resolução e baixar.${c_nc}"
-}
-
-download_yts_selected_movie() {
-    local movie="$1"
-    if [ -z "$movie" ] || [ "$movie" == "null" ]; then return 1; fi
-
-    local title year torrents_json
-    title=$(echo "$movie" | jq -r '.title // "Filme"')
-    year=$(echo "$movie" | jq -r '.year // ""')
-    torrents_json=$(echo "$movie" | jq '.torrents')
-
-    local torrent_count
-    torrent_count=$(echo "$torrents_json" | jq 'length')
-    if [ "$torrent_count" -eq 0 ]; then
-        echo -e "${RED}❌ Nenhum torrent disponível para este filme.${NC}"
-        return 1
-    fi
-
-    local selected_torrent=""
-    if [ "$torrent_count" -eq 1 ] || [ ! -t 0 ]; then
-        selected_torrent=$(echo "$movie" | jq '(.torrents[] | select(.quality == "1080p")) // .torrents[0]')
-    else
-        echo -e "\n${BOLD}${MAUVE}🎬 ${title}${year:+ ($year)}${NC}"
-        echo -e "${BOLD}Escolha a Resolução para Download:${NC}"
-        local idx=1
-        local opt_map=()
-        while IFS= read -r t; do
-            local q type sz seeds
-            q=$(echo "$t" | jq -r '.quality')
-            type=$(echo "$t" | jq -r '.type | ascii_upcase')
-            sz=$(echo "$t" | jq -r '.size')
-            seeds=$(echo "$t" | jq -r '.seeds')
-            local rec=""
-            [ "$q" == "1080p" ] && rec=" ${GREEN}[Recomendado • Áudio 5.1]${NC}"
-            [ "$q" == "2160p" ] && rec=" ${YELLOW}[4K Ultra HD]${NC}"
-            echo -e "  [${BLUE}${idx}${NC}] ${BOLD}${q} ${type}${NC} (${sz}) • ${seeds} seeds${rec}"
-            opt_map+=("$t")
-            ((idx++))
-        done < <(echo "$torrents_json" | jq -c '.[]')
-
-        read -rp "Opção [1-$((idx-1)), padrão: 1]: " user_opt
-        user_opt="${user_opt:-1}"
-        local chosen_idx=$((user_opt - 1))
-        if [ "$chosen_idx" -ge 0 ] && [ "$chosen_idx" -lt "${#opt_map[@]}" ]; then
-            selected_torrent="${opt_map[$chosen_idx]}"
-        else
-            selected_torrent="${opt_map[0]}"
-        fi
-    fi
-
-    local hash quality type
-    hash=$(echo "$selected_torrent" | jq -r '.hash')
-    quality=$(echo "$selected_torrent" | jq -r '.quality')
-    type=$(echo "$selected_torrent" | jq -r '.type')
-
-    local release_name="${title}${year:+ ($year)} [${quality}] [${type^^}] [YTS]"
-    local magnet
-    magnet=$(build_yts_magnet "$hash" "$release_name")
-
-    local dest_dir="${CUSTOM_DIR:-$DEFAULT_DEST_MOVIES}"
-    mkdir -p "$dest_dir"
-
-    echo -e "\n${GREEN}🚀 Iniciando download via Aria2c (P2P Multi-Peer Acelerado)...${NC}"
-    echo -e "  ${BOLD}Filme    :${NC} ${title}${year:+ ($year)}"
-    echo -e "  ${BOLD}Qualidade:${NC} ${quality} ${type^^} • Áudio Original em Inglês (AAC 5.1)"
-    echo -e "  ${BOLD}Destino  :${NC} ${dest_dir}\n"
-
-    download_torrent_or_magnet "$magnet" "$dest_dir"
-    log_history "$release_name" "$magnet" "$dest_dir" "TORRENT_YTS"
-    return 0
-}
-
-search_yts_fzf() {
-    local query="$1"
-    while true; do
-        if [ -z "$query" ]; then
-            read -rp "🎬 Digite o nome do filme em inglês (ex: Inception, Interstellar, Batman): " query
-        fi
-        if [ -z "$query" ] || [ "$query" == "q" ] || [ "$query" == "exit" ]; then
-            echo -e "${YELLOW}Busca cancelada.${NC}" >&2
-            return 1
-        fi
-
-        echo -e "${MAUVE}🔍 Pesquisando catálogo YTS BluRay para: ${BOLD}${query}${NC}..." >&2
-        local raw_json
-        raw_json=$(search_yts_api "$query" 20)
-
-        local movie_count
-        movie_count=$(echo "$raw_json" | jq -r '.data.movie_count // 0' 2>/dev/null || echo 0)
-
-        if [ "$movie_count" -eq 0 ] || [ -z "$raw_json" ]; then
-            echo -e "${RED}❌ Nenhum filme encontrado no YTS para '${query}'.${NC}" >&2
-            query=""
-            continue
-        fi
-
-        local cache_file="/tmp/yts_search_${$}.json"
-        echo "$raw_json" > "$cache_file"
-
-        local formatted_lines
-        formatted_lines=$(echo "$raw_json" | jq -r '.data.movies[]? | 
-            "🎬 " + .title + (if .year then " (" + (.year | tostring) + ")" else "" end) +
-            (if .rating then " • ⭐ " + (.rating | tostring) else "" end) +
-            " • [" + ([.torrents[]?.quality] | unique | join(", ")) + "]" +
-            "\t" + (.id | tostring)
-        ')
-
-        if ! command -v fzf >/dev/null 2>&1 || [ ! -t 0 ]; then
-            rm -f "$cache_file"
-            echo "$raw_json" | jq -r '.data.movies[0].id'
-            return 0
-        fi
-
-        local fzf_header=$'[ENTER] Baixar • [Ctrl+S] Nova Busca • [Ctrl+D/U] Rolar • [ESC] Sair'
-
-        local fzf_output
-        fzf_output=$(echo "$formatted_lines" | fzf \
-            --expect="ctrl-s,ctrl-r" \
-            --prompt="🎬 Selecione o Filme (Áudio Original Inglês) > " \
-            --header="$fzf_header" \
-            --height=75% \
-            --layout=reverse \
-            --border=rounded \
-            --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
-            --color=fg:#cdd6f4,header:#cba6f7,info:#cba6f7,pointer:#f5e0dc \
-            --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
-            --bind="ctrl-j:down,ctrl-k:up,ctrl-d:preview-page-down,ctrl-u:preview-page-up" \
-            --preview="\"$SELF_SCRIPT\" __preview_yts \"$cache_file\" {2}" \
-            --preview-window="right:48%:wrap:border-rounded" \
-            --with-nth=1 \
-            --delimiter="\t")
-
-        rm -f "$cache_file"
-
-        if [ -z "$fzf_output" ]; then
-            echo -e "${YELLOW}Busca cancelada pelo usuário.${NC}" >&2
-            return 1
-        fi
-
-        local key_pressed
-        key_pressed=$(echo "$fzf_output" | head -n1)
-        local selected
-        selected=$(echo "$fzf_output" | tail -n +2)
-
-        if [ "$key_pressed" == "ctrl-s" ] || [ "$key_pressed" == "ctrl-r" ]; then
-            echo ""
-            read -rp "🔍 Digite o novo termo de pesquisa: " query
-            continue
-        fi
-
-        local movie_id
-        movie_id=$(echo "$selected" | cut -f2)
-
-        if [ -z "$movie_id" ]; then
-            query=""
-            continue
-        fi
-
-        local selected_movie
-        selected_movie=$(echo "$raw_json" | jq -r --arg id "$movie_id" '.data.movies[]? | select((.id | tostring) == $id)')
-
-        download_yts_selected_movie "$selected_movie"
-        return 0
-    done
-}
-
-check_pomfy_stream_has_english() {
-    local stream_url="$1"
-    local stream_ref="$2"
-    if [ -z "$stream_url" ]; then return 1; fi
-
-    local hls_header
-    hls_header=$(curl -s -m 4 -H "Referer: $stream_ref" "$stream_url" | head -n 40 2>/dev/null || true)
-    if [ -z "$hls_header" ]; then return 0; fi
-
-    if echo "$hls_header" | grep -qi "TYPE=AUDIO"; then
-        if echo "$hls_header" | grep -qiE 'LANGUAGE="en"|LANGUAGE="eng"|NAME="Ingl[eê]s"|NAME="English"'; then
-            return 0
-        else
-            return 1
-        fi
-    fi
-
-    return 0
-}
-
-download_yts_fallback() {
-    local title="$1"
-    local year="$2"
-    local dest_dir="${3:-$DEFAULT_DEST_MOVIES}"
-
-    if [ -z "$title" ]; then return 1; fi
-
-    local raw_json
-    raw_json=$(search_yts_api "$title" 5)
-    local movie_count
-    movie_count=$(echo "$raw_json" | jq -r '.data.movie_count // 0' 2>/dev/null || echo 0)
-
-    if [ "$movie_count" -eq 0 ] || [ -z "$raw_json" ]; then
-        return 1
-    fi
-
-    local movie=""
-    if [ -n "$year" ]; then
-        movie=$(echo "$raw_json" | jq -r --arg y "$year" '.data.movies[]? | select((.year | tostring) == $y)' | head -n 1)
-    fi
-    if [ -z "$movie" ] || [ "$movie" == "null" ]; then
-        movie=$(echo "$raw_json" | jq -c '.data.movies[0]')
-    fi
-
-    if [ -z "$movie" ] || [ "$movie" == "null" ]; then return 1; fi
-
-    local movie_title movie_year
-    movie_title=$(echo "$movie" | jq -r '.title')
-    movie_year=$(echo "$movie" | jq -r '.year // ""')
-
-    local torrent
-    torrent=$(echo "$movie" | jq '(.torrents[] | select(.quality == "1080p")) // (.torrents[] | select(.quality == "720p")) // .torrents[0]')
-    if [ -z "$torrent" ] || [ "$torrent" == "null" ]; then return 1; fi
-
-    local hash quality type
-    hash=$(echo "$torrent" | jq -r '.hash')
-    quality=$(echo "$torrent" | jq -r '.quality')
-    type=$(echo "$torrent" | jq -r '.type')
-
-    local release_name="${movie_title}${movie_year:+ ($movie_year)} [${quality}] [${type^^}] [YTS]"
-    local magnet
-    magnet=$(build_yts_magnet "$hash" "$release_name")
-
-    echo -e "\n${GREEN}✔ [Fallback Internacional Encontrado]${NC} ${BOLD}${release_name}${NC}"
-    echo -e "${PEACH}🔊 Áudio Original em Inglês (AAC 5.1 Surround) • Download Acelerado com Aria2c${NC}\n"
-
-    download_torrent_or_magnet "$magnet" "$dest_dir"
-    log_history "$release_name" "$magnet" "$dest_dir" "TORRENT_YTS"
-    return 0
-}
-
 get_now_playing_info() {
     if ! command -v playerctl >/dev/null 2>&1; then
         return 1
@@ -854,31 +497,19 @@ download_torrent_or_magnet() {
     local url="$1"
     local dest_dir="${2:-$DEFAULT_DEST_VIDEO}"
     mkdir -p "$dest_dir"
-    echo -e "${PEACH}🧲 Baixando via Torrent/Magnet com Aria2c Turbo (DHT + Multi-Peer 16 Conexões)...${NC}"
+    echo -e "${PEACH}🧲 Baixando via Torrent/Magnet com Aria2c (P2P Multi-peer)...${NC}"
     if command -v aria2c >/dev/null 2>&1; then
-        local fast_trackers="udp://tracker.opentrackr.org:1337/announce,udp://open.demonii.com:1337/announce,udp://open.stealth.si:80/announce,udp://tracker.torrent.eu.org:451/announce,udp://tracker.moeking.me:6969/announce,udp://explodie.org:6969/announce,udp://p4p.arenabg.ch:1337/announce"
-
         aria2c --dir="$dest_dir" \
             --seed-time=0 \
             --max-connection-per-server=16 \
             --split=16 \
             --min-split-size=1M \
-            --summary-interval=3 \
-            --enable-dht=true \
-            --enable-dht6=true \
-            --bt-enable-lpd=true \
-            --bt-max-peers=120 \
-            --bt-tracker="$fast_trackers" \
-            --disk-cache=64M \
-            --file-allocation=falloc \
-            --optimize-concurrent-downloads=true \
-            --max-overall-download-limit=0 \
+            --summary-interval=5 \
             "$url"
         notify_completion "Torrent / Magnet Baixado" "$dest_dir"
     else
         echo -e "${RED}❌ aria2c não encontrado para download de torrents.${NC}"
-        echo -e "${YELLOW}Instale com: sudo pacman -S aria2 (ou sudo apt install aria2)${NC}"
-        return 1
+        exit 1
     fi
 }
 
@@ -929,13 +560,23 @@ download_batch() {
         exit 0
     fi
 
-    echo -e "${MAUVE}${BOLD}╭──────────────────────────────────────────────────────────────╮${NC}"
-    echo -e "${MAUVE}${BOLD}│       📦 DOWNLOAD EM LOTE APEX V2 (BATCH MODE ATIVADO)       │${NC}"
-    echo -e "${MAUVE}${BOLD}╰──────────────────────────────────────────────────────────────╯${NC}"
-    echo -e "  ${BOLD}Arquivo Fonte  :${NC} $file_name (${file_ext^^})"
-    echo -e "  ${BOLD}Fila de Mídias :${NC} ${BOLD}$total links válidos detectados${NC}"
-    echo -e "  ${BLUE}Pasta Destino  :${NC} $dest"
-    echo -e "  ${SUBTEXT}Multi-thread 16 conexões ativas + detecção automática de duplicados.${NC}\n"
+    if [ "$mode" == "transcript" ]; then
+        echo -e "${MAUVE}${BOLD}╭──────────────────────────────────────────────────────────────╮${NC}"
+        echo -e "${MAUVE}${BOLD}│     🤖 TRANSCRIÇÃO IA EM LOTE APEX V2 (BATCH TRANSCRIPT)     │${NC}"
+        echo -e "${MAUVE}${BOLD}╰──────────────────────────────────────────────────────────────╯${NC}"
+        echo -e "  ${BOLD}Arquivo Fonte  :${NC} $file_name (${file_ext^^})"
+        echo -e "  ${BOLD}Fila de Mídias :${NC} ${BOLD}$total links válidos detectados${NC}"
+        echo -e "  ${BLUE}Pasta Destino  :${NC} $dest"
+        echo -e "  ${SUBTEXT}Extrai legendas/transcrições sem baixar vídeo → .md + .txt limpos para IA.${NC}\n"
+    else
+        echo -e "${MAUVE}${BOLD}╭──────────────────────────────────────────────────────────────╮${NC}"
+        echo -e "${MAUVE}${BOLD}│       📦 DOWNLOAD EM LOTE APEX V2 (BATCH MODE ATIVADO)       │${NC}"
+        echo -e "${MAUVE}${BOLD}╰──────────────────────────────────────────────────────────────╯${NC}"
+        echo -e "  ${BOLD}Arquivo Fonte  :${NC} $file_name (${file_ext^^})"
+        echo -e "  ${BOLD}Fila de Mídias :${NC} ${BOLD}$total links válidos detectados${NC}"
+        echo -e "  ${BLUE}Pasta Destino  :${NC} $dest"
+        echo -e "  ${SUBTEXT}Multi-thread 16 conexões ativas + detecção automática de duplicados.${NC}\n"
+    fi
 
     local current=0
     local success_new=0
@@ -969,6 +610,8 @@ download_batch() {
             download_spotify "$u" "mp3" "$item_dest" "cli" || res=1
         elif is_gallery_domain "$u"; then
             download_gallery "$u" "$item_dest" || res=1
+        elif [ "$mode" == "transcript" ]; then
+            download_transcript "$u" "$item_dest" || res=1
         elif [ "$mode" == "audio" ]; then
             download_audio "$u" "$item_dest" "" true || res=1
         else
@@ -976,19 +619,24 @@ download_batch() {
         fi
 
         if [ "$res" -eq 0 ]; then
-            local lines_after=0
-            [ -f "$archive_file" ] && lines_after=$(wc -l < "$archive_file" 2>/dev/null || echo 0)
-            if [ "$lines_after" -gt "$lines_before" ]; then
+            if [ "$mode" == "transcript" ]; then
                 success_new=$((success_new + 1))
-                echo -e "   ${GREEN}✔ [SUCESSO] Baixado e convertido para MP4 com sucesso!${NC}"
+                echo -e "   ${GREEN}✔ [SUCESSO] Transcrição limpa (.md + .txt) gerada e salva!${NC}"
             else
-                already_downloaded=$((already_downloaded + 1))
-                echo -e "   ${TEAL}⏭️  [JÁ EXISTE] Já registrado no histórico local (arquivo preservado).${NC}"
+                local lines_after=0
+                [ -f "$archive_file" ] && lines_after=$(wc -l < "$archive_file" 2>/dev/null || echo 0)
+                if [ "$lines_after" -gt "$lines_before" ]; then
+                    success_new=$((success_new + 1))
+                    echo -e "   ${GREEN}✔ [SUCESSO] Baixado e convertido com sucesso!${NC}"
+                else
+                    already_downloaded=$((already_downloaded + 1))
+                    echo -e "   ${TEAL}⏭️  [JÁ EXISTE] Já registrado no histórico local (arquivo preservado).${NC}"
+                fi
             fi
         else
             failed=$((failed + 1))
             failed_urls+=("$u")
-            echo -e "   ${RED}❌ [FALHA] Link indisponível, excluído ou protegido (404/410).${NC}"
+            echo -e "   ${RED}❌ [FALHA] Legenda ou link indisponível.${NC}"
         fi
         echo ""
     done
@@ -997,9 +645,15 @@ download_batch() {
     echo -e "${MAUVE}${BOLD}│             📊 RESUMO DO PROCESSAMENTO EM LOTE               │${NC}"
     echo -e "${MAUVE}${BOLD}╰──────────────────────────────────────────────────────────────╯${NC}"
     echo -e "  ${BOLD}Total de URLs processadas :${NC} $total"
-    echo -e "  ${GREEN}✅ Baixados com sucesso   :${NC} ${BOLD}$success_new${NC}"
-    echo -e "  ${TEAL}⏭️  Já existiam (pulados)  :${NC} ${BOLD}$already_downloaded${NC}"
-    echo -e "  ${RED}❌ Links indisponíveis    :${NC} ${BOLD}$failed${NC}"
+    if [ "$mode" == "transcript" ]; then
+        echo -e "  ${GREEN}✅ Transcrições geradas   :${NC} ${BOLD}$success_new${NC}"
+        echo -e "  ${RED}❌ Falhas / Sem legendas  :${NC} ${BOLD}$failed${NC}"
+    else
+        echo -e "  ${GREEN}✅ Baixados com sucesso   :${NC} ${BOLD}$success_new${NC}"
+        echo -e "  ${TEAL}⏭️  Já existiam (pulados)  :${NC} ${BOLD}$already_downloaded${NC}"
+        echo -e "  ${RED}❌ Links indisponíveis    :${NC} ${BOLD}$failed${NC}"
+    fi
+    echo -e "  ${BLUE}📁 Pasta de destino       :${NC} $dest"
     echo -e "${MAUVE}────────────────────────────────────────────────────────────────${NC}"
 
     if [ "$failed" -gt 0 ]; then
@@ -1008,7 +662,145 @@ download_batch() {
         echo -e "${YELLOW}📝 Lista dos links que falharam salva em:${NC} $fail_file\n"
     fi
 
-    notify_completion "Lote Concluído: $success_new novos, $already_downloaded pulados, $failed falhas" "$dest"
+    if [ "$mode" == "transcript" ]; then
+        notify_completion "Transcrições em Lote: $success_new concluídas, $failed falhas" "$dest"
+    else
+        notify_completion "Lote Concluído: $success_new novos, $already_downloaded pulados, $failed falhas" "$dest"
+    fi
+}
+
+choose_batch_action_fzf() {
+    local batch_file="$1"
+    if [ ! -f "$batch_file" ]; then
+        echo -e "${RED}❌ Arquivo não encontrado:${NC} $batch_file"
+        exit 1
+    fi
+
+    local total_links
+    total_links=$(grep -oP '(https?://[^\s\)\"\>\]]+|magnet:\?[^\s\)\"\>\]]+)' "$batch_file" 2>/dev/null | awk '!seen[$0]++' | wc -l || echo 0)
+
+    local file_name
+    file_name=$(basename "$batch_file")
+
+    if command -v fzf >/dev/null 2>&1 && [ -t 0 ]; then
+        local batch_menu="1\t🤖 Extrair Transcrições Limpas para IA (.md / .txt)\tExtrai texto e legendas de todos os links sem baixar os vídeos. Salva em Markdown rico com prompts para LLMs.\n2\t🎥 Baixar Todos em Vídeo MP4 (1080p / Full HD)\tBaixa os vídeos completos em máxima resolução com 16 conexões simultâneas e legendas embutidas.\n3\t🎵 Baixar Todos em Áudio MP3 (320kbps + Capas + Tags)\tExtrai as faixas de áudio em MP3 320k com metadados e capas oficiais embutidas.\n4\t🚪 Cancelar\tRetorna sem processar."
+
+        local chosen
+        chosen=$(echo -e "$batch_menu" | fzf \
+            --prompt="📦 Ação para ${file_name} (${total_links} links) > " \
+            --header="[ENTER] Confirmar • [Ctrl+J/K] Navegar • [ESC] Cancelar" \
+            --height=45% \
+            --layout=reverse \
+            --border=rounded \
+            --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
+            --color=fg:#cdd6f4,header:#cba6f7,info:#cba6f7,pointer:#f5e0dc \
+            --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
+            --bind="ctrl-j:down,ctrl-k:up" \
+            --with-nth=2 \
+            --delimiter="\t" \
+            --preview='echo -e "\n\033[1;38;2;203;166;247m╭────────────────────────────────────────╮\033[0m\n\033[1;38;2;203;166;247m│ {2}\033[0m\n\033[1;38;2;203;166;247m╰────────────────────────────────────────╯\033[0m\n\n\033[38;2;205;214;244m{3}\033[0m"' \
+            --preview-window="right:45%:wrap:border-rounded")
+
+        local act
+        act=$(echo "$chosen" | cut -f1)
+        case "$act" in
+            1)
+                download_batch "$batch_file" "${CUSTOM_DIR:-$DEFAULT_DEST_TRANSCRIPT}" "transcript"
+                ;;
+            2)
+                download_batch "$batch_file" "${CUSTOM_DIR:-$DEFAULT_DEST_VIDEO}" "video"
+                ;;
+            3)
+                download_batch "$batch_file" "${CUSTOM_DIR:-$DEFAULT_DEST_AUDIO}" "audio"
+                ;;
+            *)
+                echo -e "${RED}Operação cancelada.${NC}"
+                exit 0
+                ;;
+        esac
+    else
+        echo -e "\n${BOLD}Como deseja processar o lote de $file_name ($total_links links)?${NC}"
+        echo -e "  [1] 🤖 Extrair Transcrições Limpas para IA (.md / .txt - Sem Baixar Vídeo)"
+        echo -e "  [2] 🎥 Baixar Todos em Vídeo MP4 (1080p)"
+        echo -e "  [3] 🎵 Baixar Todos em Áudio MP3 (320kbps)"
+        echo -e "  [q] Cancelar"
+        read -rp "Opção [1-3, padrão: 1]: " b_opt
+        case "$b_opt" in
+            2) download_batch "$batch_file" "${CUSTOM_DIR:-$DEFAULT_DEST_VIDEO}" "video" ;;
+            3) download_batch "$batch_file" "${CUSTOM_DIR:-$DEFAULT_DEST_AUDIO}" "audio" ;;
+            q|Q) exit 0 ;;
+            *) download_batch "$batch_file" "${CUSTOM_DIR:-$DEFAULT_DEST_TRANSCRIPT}" "transcript" ;;
+        esac
+    fi
+}
+
+select_batch_file_fzf() {
+    local candidate=""
+    if command -v fzf >/dev/null 2>&1 && [ -t 0 ]; then
+        # Coleta arquivos .txt e .md de locais prováveis
+        local files_list=""
+        for search_dir in "$HOME" "/mnt/dados" "$DEFAULT_DEST_VIDEO" "$DEFAULT_DEST_TRANSCRIPT" "$DEFAULT_DEST_PRIVATE"; do
+            if [ -d "$search_dir" ]; then
+                if command -v fd >/dev/null 2>&1; then
+                    files_list+="$(fd -t f -e txt -e md --max-depth 4 \
+                        --exclude '.git' --exclude '.cache' --exclude '.gemini' \
+                        --exclude 'node_modules' --exclude '.cargo' --exclude '.rustup' \
+                        --exclude '.local/share' --exclude '.oh-my-zsh' \
+                        . "$search_dir" 2>/dev/null)\n"
+                fi
+            fi
+        done
+
+        # Deduplica e filtra linhas vazias
+        local sorted_files
+        sorted_files=$(echo -e "$files_list" | awk 'NF && !seen[$0]++' | sort)
+
+        local fzf_output
+        fzf_output=$(echo "$sorted_files" | fzf \
+            --prompt="📄 Selecione o Arquivo ou Cole URL > " \
+            --header=$'[ENTER] Selecionar arquivo • Digite URL para processá-la\n[Ctrl+J/K] Navegar • [ESC] Cancelar' \
+            --height=55% \
+            --layout=reverse \
+            --border=rounded \
+            --print-query \
+            --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
+            --color=fg:#cdd6f4,header:#cba6f7,info:#cba6f7,pointer:#f5e0dc \
+            --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
+            --bind="ctrl-j:down,ctrl-k:up" \
+            --preview='if [ -f "{}" ]; then
+                links=$(grep -oP "(https?://[^\s\)\"\>\]]+)" "{}" 2>/dev/null | awk "!seen[\$0]++" | wc -l)
+                echo -e "\033[1;38;2;166;227;161m📄 Arquivo: {}\033[0m"
+                echo -e "\033[38;2;137;180;250m🔗 Links detectados: ${links}\033[0m\n"
+                head -n 30 "{}"
+            else
+                echo -e "\033[38;2;249;226;175mDigite ou cole uma URL na barra de busca acima.\033[0m"
+                echo -e "\033[38;2;205;214;244mOu selecione um arquivo .txt / .md da lista.\033[0m"
+            fi' \
+            --preview-window="right:50%:wrap:border-rounded" || true)
+
+        # --print-query retorna: linha 1 = query digitada, linha 2 = item selecionado
+        local query selected
+        query=$(echo "$fzf_output" | head -n1)
+        selected=$(echo "$fzf_output" | tail -n +2 | head -n1)
+
+        if [ -n "$selected" ] && [ -f "$selected" ]; then
+            candidate="$selected"
+        elif [ -n "$query" ]; then
+            # Usuário digitou algo: pode ser um caminho ou URL
+            local expanded="${query/#\~/$HOME}"
+            if [ -f "$expanded" ]; then
+                candidate="$expanded"
+            else
+                # Retorna como URL para o chamador tratar
+                candidate="$query"
+            fi
+        fi
+    else
+        read -rp "📄 Cole a URL ou o caminho do arquivo (.txt/.md): " candidate
+        candidate="${candidate/#\~/$HOME}"
+    fi
+
+    echo "$candidate"
 }
 
 
@@ -1821,20 +1613,20 @@ download_streaming_pomfy() {
     local ytdlp_audio_args=()
     local audio_label=""
     case "${STREAM_AUDIO_LANG,,}" in
-        dual|ambos|3)
+        dual|ambos|2)
             audio_label="${YELLOW}Dual Áudio (Português + Inglês)${NC}"
             ytdlp_audio_args=(
                 --audio-multistreams
                 -f "bv*+ba[language=pt]+ba[language=en]/bv*+ba[language=por]+ba[language=eng]/bv*+ba[language=pt]/bv*+ba[language=en]/bv*+ba/b"
             )
             ;;
-        en|original|ingles|inglês|2)
+        en|original|ingles|inglês)
             audio_label="${BLUE}Áudio Original (Inglês)${NC}"
             ytdlp_audio_args=(
                 -f "bv*+ba[language=en]/bv*+ba[language=eng]/bv*+ba/b"
             )
             ;;
-        pt|dublado|portugues|português|1|*)
+        pt|dublado|portugues|português|*)
             audio_label="${GREEN}Dublado (Português)${NC}"
             ytdlp_audio_args=(
                 -f "bv*+ba[language=pt]/bv*+ba[language=por]/bv*+ba/b"
@@ -2026,13 +1818,12 @@ download_streaming_pomfy() {
         return 1
     fi
 
-    local stream_url stream_ref stream_file item_type item_title item_season item_year
+    local stream_url stream_ref stream_file item_type item_title item_season
     stream_url=$(echo "$stream_json" | jq -r '.streamUrl')
     stream_ref=$(echo "$stream_json" | jq -r '.referer // "https://f7hyg4q.org/"')
     stream_file=$(echo "$stream_json" | jq -r '.fileName')
     item_type=$(echo "$stream_json" | jq -r '.type')
     item_title=$(echo "$stream_json" | jq -r '.title')
-    item_year=$(echo "$stream_json" | jq -r '.year // empty')
     item_season=$(echo "$stream_json" | jq -r '.season // empty')
 
     local final_dest_dir="$dest_base"
@@ -2054,19 +1845,6 @@ download_streaming_pomfy() {
     local clip_flags=()
     if [ -n "$CUSTOM_CLIP" ]; then
         clip_flags+=(--download-sections "*${CUSTOM_CLIP}" --force-keyframes-at-cuts)
-    fi
-
-    # Fallback inteligente se o usuário pediu áudio em Inglês ou Dual
-    if [[ "$STREAM_AUDIO_LANG" =~ ^(en|dual)$ ]] && [ "$item_type" == "filme" ]; then
-        if ! check_pomfy_stream_has_english "$stream_url" "$stream_ref"; then
-            echo -e "${YELLOW}⚠️ [Aviso de Áudio] O servidor Pomfy só disponibilizou a versão dublada em Português para este título.${NC}"
-            echo -e "${TEAL}🔄 Ativando Fallback Inteligente para YTS BluRay (Áudio Original em Inglês 5.1)...${NC}"
-            if download_yts_fallback "$item_title" "$item_year" "$final_dest_dir"; then
-                return 0
-            else
-                echo -e "${PEACH}ℹ️ Continuando com a versão do Pomfy...${NC}\n"
-            fi
-        fi
     fi
 
     echo -e "${GREEN}🎬 Título:${NC} ${BOLD}${stream_file}${NC}"
@@ -2341,7 +2119,7 @@ run_cli_mode() {
                 [ "${#short_clip}" -gt 45 ] && short_clip="${short_clip:0:42}..."
                 main_actions="0\t📋 [Clipboard] Baixar Link Copiado (${short_clip})\tProcessa e baixa automaticamente a URL encontrada na sua área de transferência com prévia da capa.\n"
             fi
-            main_actions="${main_actions}1\t🍿 Filmes & Séries no Pomfy (Catálogo TMDB 1080p)\tAbre o catálogo navegável com sinopse oficial, pôster HD e streaming direto.\n2\t🎬 Filmes em Inglês Original (YTS BluRay 1080p / 4K)\tBusca filmes no catálogo internacional com áudio original em inglês 5.1 e alta fidelidade.\n3\t📺 Continuar Assistindo (Séries e Filmes Recentes)\tAbre o cockpit de histórico inteligente: retoma episódios e avança automaticamente.\n4\t🎵 Buscar Músicas no YouTube Music (Pesquisa FZF com Capas HD)\tPesquise pelo nome da música ou artista, escolha no menu FZF com capa HD e baixe em MP3 320k com tags.\n5\t🎧 Spotify (Baixar por Link ou Nome da Música)\tBaixe faixas, álbuns ou playlists do Spotify com capas HD oficiais, metadados e letras (.lrc).\n6\t🎥 Buscar / Baixar Vídeos no YouTube (1080p/4K com Capas HD)\tBusca com miniaturas ao vivo no FZF ou baixa links do YouTube com 1 tecla de confirmação.\n7\t🔗 Inserir URL ou Arquivo de Lote (.txt / .md)\tProcessa qualquer link da web, torrent/magnet ou arquivos de lote (.txt, .md).\n8\t📻 Baixar o que está tocando agora (MPRIS / Spotify)\tDetecta a música ou vídeo em reprodução no seu player do Linux e baixa na hora.\n9\t📂 Ver Histórico de Downloads\tAbre a lista de downloads anteriores pesquisável com FZF.\n10\t🔄 Atualizar Motores de Download\tVerifica e atualiza o yt-dlp, spotdl e gallery-dl.\n11\t🚪 Sair\tFecha o cockpit de mídia."
+            main_actions="${main_actions}1\t🍿 Filmes & Séries no Pomfy (Catálogo TMDB 1080p)\tAbre o catálogo navegável com sinopse oficial, pôster HD e streaming direto.\n2\t🎵 Buscar Músicas no YouTube Music (Pesquisa FZF com Capas HD)\tPesquise pelo nome da música ou artista, escolha no menu FZF com capa HD e baixe em MP3 320k com tags.\n3\t🎧 Spotify (Baixar por Link ou Nome da Música)\tBaixe faixas, álbuns ou playlists do Spotify com capas HD oficiais, metadados e letras (.lrc).\n4\t🎥 Buscar / Baixar Vídeos no YouTube (1080p/4K com Capas HD)\tBusca com miniaturas ao vivo no FZF ou baixa links do YouTube com 1 tecla de confirmação.\n5\t🔗 Inserir URL ou Arquivo de Lote (.txt / .md)\tProcessa qualquer link da web, torrent/magnet ou arquivos de lote (.txt, .md).\n6\t📻 Baixar o que está tocando agora (MPRIS / Spotify)\tDetecta a música ou vídeo em reprodução no seu player do Linux e baixa na hora.\n7\t📂 Ver Histórico de Downloads\tAbre a lista de downloads anteriores pesquisável com FZF.\n8\t🔄 Atualizar Motores de Download\tVerifica e atualiza o yt-dlp, spotdl e gallery-dl.\n9\t🚪 Sair\tFecha o cockpit de mídia."
 
             local chosen_action
             chosen_action=$(echo -e "$main_actions" | fzf \
@@ -2375,14 +2153,6 @@ run_cli_mode() {
                     exit 0
                     ;;
                 2)
-                    search_yts_fzf ""
-                    exit 0
-                    ;;
-                3)
-                    bash "$HOME/dotfiles/scripts/continuar.sh"
-                    exit 0
-                    ;;
-                4)
                     local found_music
                     found_music=$(search_music_fzf "")
                     if [ -n "$found_music" ]; then
@@ -2390,7 +2160,7 @@ run_cli_mode() {
                     fi
                     exit 0
                     ;;
-                5)
+                3)
                     echo -e "\n${GREEN}${BOLD}🎧 APEX SPOTIFY SUITE • Músicas, Álbuns & Playlists${NC}"
                     echo -e "${SUBTEXT}Digite o nome da música / artista OU cole o link do Spotify:${NC}"
                     read -rp "🎵 Música ou Link: " sp_input
@@ -2425,7 +2195,7 @@ run_cli_mode() {
                         esac
                     fi
                     ;;
-                6)
+                4)
                     read -rp "🔍 Digite a busca ou cole o link do YouTube: " yt_query
                     if [ -z "$yt_query" ]; then
                         exit 0
@@ -2438,10 +2208,20 @@ run_cli_mode() {
                         [ -n "$found_yt" ] && url="$found_yt"
                     fi
                     ;;
-                7)
-                    read -rp "Cole a URL ou caminho do arquivo (.txt/.md): " url
+                5)
+                    local chosen_file
+                    chosen_file=$(select_batch_file_fzf)
+                    if [ -n "$chosen_file" ] && [ -f "$chosen_file" ]; then
+                        choose_batch_action_fzf "$chosen_file"
+                    elif [ -n "$chosen_file" ]; then
+                        # Usuário digitou uma URL em vez de selecionar arquivo
+                        url="$chosen_file"
+                    fi
+                    if [ -z "$url" ]; then
+                        exit 0
+                    fi
                     ;;
-                8)
+                6)
                     local now_url
                     now_url=$(get_now_playing_info || true)
                     if [ -n "$now_url" ]; then
@@ -2451,11 +2231,11 @@ run_cli_mode() {
                         exit 1
                     fi
                     ;;
-                9)
+                7)
                     view_history "cli"
                     exit 0
                     ;;
-                10)
+                8)
                     update_engines
                     exit 0
                     ;;
@@ -2480,7 +2260,7 @@ run_cli_mode() {
         batch_file_candidate="$DEFAULT_DEST_PRIVATE/$batch_file_candidate"
     fi
     if [ -f "$batch_file_candidate" ]; then
-        download_batch "$batch_file_candidate" "$dest_v" "video"
+        choose_batch_action_fzf "$batch_file_candidate"
         exit 0
     fi
 
@@ -2491,11 +2271,6 @@ run_cli_mode() {
             download_streaming_pomfy "$found_pomfy" "$SEASON_ARG" "$EP_ARG"
             exit 0
         fi
-        exit 0
-    fi
-
-    if [ "$url" == "y" ] || [ "$url" == "yts" ] || [ "$url" == "yify" ] || [ "$url" == "filme-en" ]; then
-        search_yts_fzf ""
         exit 0
     fi
 
@@ -2823,17 +2598,12 @@ show_help() {
     echo -e "  ${TEAL}dl --pomfy <url> --season 1 --ep 1-7${NC} Baixa lote de episódios da série no Pomfy"
     echo -e "  ${YELLOW}dl --audio <pt|en|dual>${NC}      Seleciona áudio Dublado (pt), Original (en) ou Dual Áudio"
     echo -e "  ${YELLOW}dl --dual${NC}                     Baixa vídeo com faixas Dublado + Original no mesmo arquivo"
-    echo -e "  ${YELLOW}dl -y, --yts \"<filme>\"${NC}         Busca e baixa filmes em Inglês Original (YTS BluRay 1080p/4K)"
     echo ""
 }
 
 main() {
     if [ "$1" == "__preview_thumb" ]; then
         render_preview_thumb "$2" "$3" "$4"
-        exit 0
-    fi
-    if [ "$1" == "__preview_yts" ]; then
-        render_yts_preview "$2" "$3"
         exit 0
     fi
 
@@ -2847,15 +2617,6 @@ main() {
                 show_help
                 exit 0
                 ;;
-            -y|--yts|--yify)
-                direct_action="yts"
-                if [ -n "$2" ] && [[ ! "$2" =~ ^- ]]; then
-                    target_url="$2"
-                    shift 2
-                else
-                    shift
-                fi
-                ;;
             --rofi)
                 run_rofi_mode
                 exit 0
@@ -2866,10 +2627,6 @@ main() {
                 ;;
             -h|--history)
                 view_history "cli"
-                exit 0
-                ;;
-            --continuar|--recentes)
-                bash "$HOME/dotfiles/scripts/continuar.sh"
                 exit 0
                 ;;
             -o|--output|--name)
@@ -3043,6 +2800,10 @@ main() {
         [ "$FORCE_PRIVATE" = true ] && dest_batch="$DEFAULT_DEST_PRIVATE/Videos_e_Cenas"
         local mode="video"
         [ "$direct_action" == "audio" ] && mode="audio"
+        if [ "$direct_action" == "transcript" ]; then
+            mode="transcript"
+            dest_batch="${CUSTOM_DIR:-$DEFAULT_DEST_TRANSCRIPT}"
+        fi
         download_batch "$batch_candidate" "$dest_batch" "$mode"
         exit 0
     fi
@@ -3065,11 +2826,6 @@ main() {
             if [ -z "$target_url" ]; then
                 exit 0
             fi
-        fi
-
-        if [ "$direct_action" == "yts" ]; then
-            search_yts_fzf "$target_url"
-            exit 0
         fi
 
         if [ -z "$target_url" ]; then
