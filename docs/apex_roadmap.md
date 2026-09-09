@@ -54,3 +54,14 @@ Para garantir que o módulo de Filmes & Séries nunca fique indisponível caso o
 ## 📦 5. Integração com Webhooks e Notificações Remotas
 - [ ] **Notificação no Telegram / Discord**:
   - Parâmetro `--notify-webhook` para avisar no celular quando um download pesado (temporada inteira de série ou lote grande de vídeos) terminar.
+
+---
+
+## ⛩️ 6. APEX Anime Engine (Multi-Áudio & Dublagens Flexíveis)
+*Planejamento detalhado em: [APEX_ANIME_ENGINE_ROADMAP.md](file:///home/lanwsl/dotfiles/docs/APEX_ANIME_ENGINE_ROADMAP.md)*
+- [ ] **Seletor Universal de Idioma para Animes (`dl -a "Nome"`)**:
+  - 🇧🇷 **Dublado em Português (PT-BR)**: Releases dublados oficiais via stream/scrapers.
+  - 🇬🇧 **Dublado em Inglês (EN Dub)**: Imersão auditiva com dublagem em inglês de alta velocidade.
+  - 🇧🇷 **Legendado em Português (PT-BR)**: Áudio original Japonês + Legenda PT-BR.
+  - 🇬🇧 **Legendado em Inglês (EN Sub)**: Áudio original Japonês + Legenda EN (Nyaa.si).
+  - 💎 **Multi-Audio / Dual Audio Master**: Releases em MKV contendo faixas de áudio e legendas múltiplas para controle total pelo MPV (`Alt+e`, `Alt+p`, `Ctrl+e`).
