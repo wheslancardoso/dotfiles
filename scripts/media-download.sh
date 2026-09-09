@@ -157,14 +157,17 @@ render_preview_thumb() {
         if [ -s "$cache_img" ]; then
             local cols="${FZF_PREVIEW_COLUMNS:-40}"
             local lines="${FZF_PREVIEW_LINES:-20}"
-            local img_w=$(( cols > 4 ? cols - 2 : 36 ))
-            local img_h=$(( lines > 14 ? (lines / 2) - 1 : 12 ))
-            [ "$img_h" -lt 8 ] && img_h=8
-            [ "$img_h" -gt 22 ] && img_h=22
+            local img_w=$(( cols > 6 ? cols - 4 : 32 ))
+            local img_h=11
+            [ "$lines" -lt 24 ] && img_h=8
+            [ "$lines" -gt 35 ] && img_h=13
 
             if [ "$TERM" = "xterm-kitty" ] || [ -n "$KITTY_WINDOW_ID" ] || [ -n "$GHOSTTY_RESOURCES_DIR" ] || [ "$TERM_PROGRAM" = "ghostty" ] || [ "$TERM_PROGRAM" = "WezTerm" ]; then
                 chafa --probe=off -f kitty --size="${img_w}x${img_h}" "$cache_img" 2>/dev/null || \
                 chafa --probe=off -f symbols --size="${img_w}x${img_h}" --symbols=sextant+quad+block+half --color-space=rgb "$cache_img" 2>/dev/null || true
+                for ((p=0; p<img_h; p++)); do
+                    printf "\n"
+                done
             else
                 chafa --probe=off -f symbols --size="${img_w}x${img_h}" --symbols=sextant+quad+block+half --color-space=rgb "$cache_img" 2>/dev/null || true
             fi
@@ -793,6 +796,9 @@ render_media_card() {
                 printf '\033_Ga=d,d=a\033\\' 2>/dev/null || true
                 chafa --probe=off -f kitty --size=36x18 "$cache_img" 2>/dev/null || \
                 chafa --probe=off -f symbols --size=32x16 --symbols=sextant+quad+block+half --color-space=rgb "$cache_img" 2>/dev/null || true
+                for ((p=0; p<18; p++)); do
+                    printf "\n"
+                done
             else
                 chafa --probe=off -f symbols --size=32x16 --symbols=sextant+quad+block+half --color-space=rgb "$cache_img" 2>/dev/null || true
             fi
