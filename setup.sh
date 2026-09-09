@@ -430,6 +430,12 @@ apply_dotfiles() {
         done
     fi
 
+    # Pre-deploy das configurações do qBittorrent Turbo (alta performance & trackers ao vivo)
+    if [ -d "$DOTFILES_DIR/home/dot_config/qBittorrent" ]; then
+        mkdir -p "$HOME/.config/qBittorrent"
+        ln -sf "$DOTFILES_DIR/home/dot_config/qBittorrent/qBittorrent.conf" "$HOME/.config/qBittorrent/qBittorrent.conf"
+    fi
+
     # Garantir que todos os scripts utilitários estejam no PATH (~/.local/bin)
     mkdir -p "$HOME/.local/bin"
     for f in "$DOTFILES_DIR"/scripts/*.sh; do
@@ -588,6 +594,13 @@ setup_extras() {
             pipx install subliminal 2>/dev/null || true
             ok "subliminal instalado com sucesso via pipx."
         fi
+    fi
+
+    # Configurar qBittorrent Turbo (Catppuccin Mocha + Trackers globais + Motores de busca)
+    if [ -f "$DOTFILES_DIR/scripts/setup-qbittorrent.sh" ]; then
+        info "Configurando qBittorrent Turbo (Catppuccin Mocha + Trackers globais)..."
+        bash "$DOTFILES_DIR/scripts/setup-qbittorrent.sh" >/dev/null 2>&1 || true
+        ok "qBittorrent Turbo configurado com sucesso!"
     fi
 
     # Inicializar e sincronizar plugins do Yazi via package manager 'ya'
