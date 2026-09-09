@@ -128,8 +128,9 @@ def sanitize_code_and_text(t):
     if not non_empty:
         return ""
     
-    # 2. Remoção inteligente de números de linha de tutoriais / IDEs (ex: 1 | def test():, 01: import os)
-    line_num_pattern = re.compile(r"^\s*\d{1,4}\s*([\|\:\.\)\]]|\s{2,})\s*")
+    # 2. Remoção inteligente de números de linha restrita a IDE Gutters (ex: 1 | def test():, 01: import os, 1   const x)
+    # Preserva listas numeradas normais de texto como 1. Item ou 1) Item
+    line_num_pattern = re.compile(r"^\s*\d{1,4}\s*([\|:]|\s{2,})\s*")
     matches = sum(1 for l in non_empty if line_num_pattern.match(l))
     if len(non_empty) > 1 and (matches / len(non_empty)) >= 0.5:
         lines = [line_num_pattern.sub("", l) for l in lines]
