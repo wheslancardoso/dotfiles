@@ -538,6 +538,7 @@ download_batch() {
     local file="$1"
     local dest="$2"
     local mode="${3:-video}"
+    local quality="${4:-best}"
 
     if [ ! -f "$file" ]; then
         echo -e "${RED}❌ Arquivo de lote não encontrado:${NC} $file"
@@ -615,7 +616,7 @@ download_batch() {
         elif [ "$mode" == "audio" ]; then
             download_audio "$u" "$item_dest" "" true || res=1
         else
-            download_video "$u" "best" "$item_dest" "" true || res=1
+            download_video "$u" "$quality" "$item_dest" "" true || res=1
         fi
 
         if [ "$res" -eq 0 ]; then
@@ -683,7 +684,7 @@ choose_batch_action_fzf() {
     file_name=$(basename "$batch_file")
 
     if command -v fzf >/dev/null 2>&1 && [ -t 0 ]; then
-        local batch_menu="1\t🤖 Extrair Transcrições Limpas para IA (.md / .txt)\tExtrai texto e legendas de todos os links sem baixar os vídeos. Salva em Markdown rico com prompts para LLMs.\n2\t🎥 Baixar Todos em Vídeo MP4 (1080p / Full HD)\tBaixa os vídeos completos em máxima resolução com 16 conexões simultâneas e legendas embutidas.\n3\t🎵 Baixar Todos em Áudio MP3 (320kbps + Capas + Tags)\tExtrai as faixas de áudio em MP3 320k com metadados e capas oficiais embutidas.\n4\t🚪 Cancelar\tRetorna sem processar."
+        local batch_menu="1\t🤖 Extrair Transcrições Limpas para IA (.md / .txt)\tExtrai texto e legendas de todos os links sem baixar os vídeos. Salva em Markdown rico com prompts para LLMs.\n2\t🎥 Baixar Todos em Vídeo MP4\tBaixa os vídeos completos com 16 conexões simultâneas e legendas embutidas. Você escolhe a qualidade.\n3\t🎵 Baixar Todos em Áudio MP3 (320kbps + Capas + Tags)\tExtrai as faixas de áudio em MP3 320k com metadados e capas oficiais embutidas.\n4\t🚪 Cancelar\tRetorna sem processar."
 
         local chosen
         chosen=$(echo -e "$batch_menu" | fzf \
@@ -708,7 +709,36 @@ choose_batch_action_fzf() {
                 download_batch "$batch_file" "${CUSTOM_DIR:-$DEFAULT_DEST_TRANSCRIPT}" "transcript"
                 ;;
             2)
-                download_batch "$batch_file" "${CUSTOM_DIR:-$DEFAULT_DEST_VIDEO}" "video"
+                # Seletor de qualidade de vídeo
+                local quality_menu="1\t⚡ 720p Leve e Rápido (Recomendado para Lotes)\tEquilíbrio perfeito: downloads ~3x mais rápidos, ~70% menos espaço. Ideal para lotes grandes.\n2\t🎥 1080p Full HD\tResolução nítida para a maioria dos conteúdos. Bom para tutoriais e apresentações.\n3\t📱 480p Ultra-Leve\tMenor tamanho possível. Ideal para vídeos de estudo ou áudio-focados.\n4\t🔥 Máxima Qualidade (4K se disponível)\tMáxima resolução original. AVISO: pode gerar arquivos de 500MB+ por vídeo."
+
+                local chosen_q
+                chosen_q=$(echo -e "$quality_menu" | fzf \
+                    --prompt="🎬 Qualidade de Vídeo para o Lote > " \
+                    --header="[ENTER] Confirmar • [ESC] Cancelar" \
+                    --height=40% \
+                    --layout=reverse \
+                    --border=rounded \
+                    --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
+                    --color=fg:#cdd6f4,header:#cba6f7,info:#cba6f7,pointer:#f5e0dc \
+                    --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
+                    --bind="ctrl-j:down,ctrl-k:up" \
+                    --with-nth=2 \
+                    --delimiter="\t" \
+                    --preview='echo -e "\n\033[1;38;2;203;166;247m╭────────────────────────────────────────╮\033[0m\n\033[1;38;2;203;166;247m│ {2}\033[0m\n\033[1;38;2;203;166;247m╰────────────────────────────────────────╯\033[0m\n\n\033[38;2;205;214;244m{3}\033[0m"' \
+                    --preview-window="right:45%:wrap:border-rounded")
+
+                local q_num
+                q_num=$(echo "$chosen_q" | cut -f1)
+                local vid_quality="720"
+                case "$q_num" in
+                    1) vid_quality="720" ;;
+                    2) vid_quality="1080" ;;
+                    3) vid_quality="480" ;;
+                    4) vid_quality="best" ;;
+                    *) echo -e "${RED}Cancelado.${NC}"; exit 0 ;;
+                esac
+                download_batch "$batch_file" "${CUSTOM_DIR:-$DEFAULT_DEST_VIDEO}" "video" "$vid_quality"
                 ;;
             3)
                 download_batch "$batch_file" "${CUSTOM_DIR:-$DEFAULT_DEST_AUDIO}" "audio"
@@ -721,12 +751,27 @@ choose_batch_action_fzf() {
     else
         echo -e "\n${BOLD}Como deseja processar o lote de $file_name ($total_links links)?${NC}"
         echo -e "  [1] 🤖 Extrair Transcrições Limpas para IA (.md / .txt - Sem Baixar Vídeo)"
-        echo -e "  [2] 🎥 Baixar Todos em Vídeo MP4 (1080p)"
+        echo -e "  [2] 🎥 Baixar Todos em Vídeo MP4"
         echo -e "  [3] 🎵 Baixar Todos em Áudio MP3 (320kbps)"
         echo -e "  [q] Cancelar"
         read -rp "Opção [1-3, padrão: 1]: " b_opt
         case "$b_opt" in
-            2) download_batch "$batch_file" "${CUSTOM_DIR:-$DEFAULT_DEST_VIDEO}" "video" ;;
+            2)
+                echo -e "\n${BOLD}Qualidade do Vídeo:${NC}"
+                echo -e "  [1] ⚡ 720p Leve (Recomendado para Lotes)"
+                echo -e "  [2] 🎥 1080p Full HD"
+                echo -e "  [3] 📱 480p Ultra-Leve"
+                echo -e "  [4] 🔥 Máxima (4K se disponível)"
+                read -rp "Qualidade [1-4, padrão: 1]: " q_opt
+                local vid_q="720"
+                case "$q_opt" in
+                    2) vid_q="1080" ;;
+                    3) vid_q="480" ;;
+                    4) vid_q="best" ;;
+                    *) vid_q="720" ;;
+                esac
+                download_batch "$batch_file" "${CUSTOM_DIR:-$DEFAULT_DEST_VIDEO}" "video" "$vid_q"
+                ;;
             3) download_batch "$batch_file" "${CUSTOM_DIR:-$DEFAULT_DEST_AUDIO}" "audio" ;;
             q|Q) exit 0 ;;
             *) download_batch "$batch_file" "${CUSTOM_DIR:-$DEFAULT_DEST_TRANSCRIPT}" "transcript" ;;
