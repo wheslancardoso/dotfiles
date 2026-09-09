@@ -13,9 +13,9 @@ image/gif=imv.desktop;org.gnome.Loupe.desktop;viewnior.desktop;
 video/mp4=io.github.celluloid_player.Celluloid.desktop
 video/mkv=io.github.celluloid_player.Celluloid.desktop
 video/webm=io.github.celluloid_player.Celluloid.desktop
-audio/mpeg=mpv.desktop;
-audio/flac=mpv.desktop;
-audio/x-wav=mpv.desktop;
+audio/mpeg=io.bassi.Amberol.desktop
+audio/flac=io.bassi.Amberol.desktop
+audio/x-wav=io.bassi.Amberol.desktop
 text/plain=nvim.desktop;kitty.desktop;
 video/x-matroska=io.github.celluloid_player.Celluloid.desktop
 video/quicktime=io.github.celluloid_player.Celluloid.desktop
@@ -28,6 +28,12 @@ application/vnd.ms-powerpoint=onlyoffice-desktopeditors.desktop
 application/vnd.openxmlformats-officedocument.presentationml.presentation=onlyoffice-desktopeditors.desktop
 x-scheme-handler/antigravity=antigravity.desktop
 x-scheme-handler/discord=vesktop.desktop
+audio/mp4=io.bassi.Amberol.desktop
+audio/x-m4a=io.bassi.Amberol.desktop
+audio/ogg=io.bassi.Amberol.desktop
+audio/aac=io.bassi.Amberol.desktop
+audio/opus=io.bassi.Amberol.desktop
+audio/webm=io.bassi.Amberol.desktop
 
 [Added Associations]
 inode/directory=yazi.desktop;

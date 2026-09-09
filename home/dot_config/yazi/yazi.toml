@@ -44,6 +44,12 @@ pdf = [
 	{ run = 'zathura %s', orphan = true, desc = "Zathura (Vim PDF Rápido)" },
 	{ run = 'okular %s', orphan = true, desc = "Okular (PDF & Anotações)" },
 ]
+audio = [
+	{ run = 'amberol %s', orphan = true, desc = "Amberol (Player Hi-Fi com Capa e Letras)" },
+	{ run = 'mpv %s', orphan = true, desc = "MPV (Áudio Direto)" },
+	{ run = 'mpv --no-video %s', block = true, desc = "Tocar no Terminal (CLI)" },
+	{ run = 'xdg-open %s1', orphan = true, desc = "Abrir com Player Padrão" },
+]
 video = [
 	{ run = 'celluloid %s', orphan = true, desc = "Celluloid (Player Moderno)" },
 	{ run = 'mpv %s', orphan = true, desc = "MPV (Aceleração GPU NVDEC)" },
@@ -78,7 +84,7 @@ rules = [
 	{ mime = "text/*", use = [ "edit", "open" ] },
 	{ mime = "image/*", use = [ "image", "open" ] },
 	{ mime = "video/*", use = [ "video", "open" ] },
-	{ mime = "audio/*", use = [ "video", "open" ] },
+	{ mime = "audio/*", use = [ "audio", "open" ] },
 	{ mime = "application/pdf", use = [ "pdf", "open" ] },
 	{ mime = "application/vnd.openxmlformats-officedocument.*", use = [ "office", "open" ] },
 	{ mime = "application/msword", use = [ "office", "open" ] },
