@@ -37,7 +37,7 @@
 - [x] **5. Inteligência de Legendas & Fim das Legendas Forçadas**
   - [x] **Fim das Legendas Forçadas Indesejadas:**
     - `sub-forced-only=no` no `mpv.conf`.
-    - Script e atalho inteligente (`Alt+v`) para forçar o descarte de qualquer trilha marcada como `forced` ou `default`.
+    - Script e atalho inteligente (`Shift+v` / `V`) para forçar o descarte de qualquer trilha marcada como `forced` ou `default` (sem conflito com CopyQ).
   - [x] **Sincronização Fácil e Inteligente:**
     - Ajuste fino rápido em tempo real (`z` atrasa 50ms, `Z` adianta 50ms).
     - Tecla `Alt+z` para resetar o delay de legenda a zero.
