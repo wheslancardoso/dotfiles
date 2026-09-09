@@ -1,10 +1,14 @@
 player: mpris
 
 mpris:
-  players: []
+  players:
+    - spotify
+    - amberol
+    - Amberol
+    - io.bassi.Amberol
 
 local:
-  folder: ""
+  folder: "/mnt/dados/05_Midias_Design_e_Criacao/Musicas_e_Audios/Downloads"
 
 style:
   hAlignment: center
