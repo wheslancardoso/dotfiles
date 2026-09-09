@@ -32,7 +32,8 @@
 | `Super + 1` a `9` | Mudar para a Área de Trabalho (Workspace) correspondente |
 | `Super + Shift + S` ou `Print` | Captura de região com anotações, setas, blur e edição (**Flameshot**) |
 | `Super + Shift + R` | Gravação de tela em MP4/GIF com áudio (**wf-recorder**) |
-| `Super + Shift + T` | Extração de texto da tela via OCR (**Tesseract**) |
+| `Super + Shift + T` | Extração de texto / QR Code da tela via OCR (**Tesseract + zbarimg**) |
+| `Super + Alt + T` | OCR com **Tradução Instantânea para PT-BR** direto no clipboard |
 | `Super + Shift + P` | Conta-gotas / Seletor de cor HEX da tela (**Hyprpicker**) |
 | `Super + Shift + A` / `Super + Alt + A` | Alternar saída de áudio (Caixas de Som <-> Fone/Headset) |
 | `Super + Alt + M` | Silenciar / Ativar Microfone globalmente (**Mic Mute Toggle**) |

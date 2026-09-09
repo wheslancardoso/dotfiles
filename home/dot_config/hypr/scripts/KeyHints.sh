@@ -113,7 +113,8 @@ GDK_BACKEND=$BACKEND yad \
 " CTRL SHIFT Print" "Captura com Timer de 10 Segundos" "ScreenShot.sh --in10" \
 " SHIFT R ou  ALT R" "Gravação de Tela em Vídeo/GIF com Áudio" "screen-record.sh" \
 " SHIFT P" "Conta-gotas de Cor Hex direto pro Clipboard" "hyprpicker" \
-" SHIFT T" "Screen OCR (Copiar texto de qualquer imagem/vídeo)" "ocr-screen.sh" \
+" SHIFT T" "Screen OCR (Copiar texto / QR Code de imagem/vídeo)" "ocr-screen.sh" \
+" ALT T" "Screen OCR com Tradução Instantânea para PT-BR" "ocr-screen.sh --translate" \
 "" "" "" \
 "── 🪟 NAVEGAÇÃO E JANELAS ──" "── VIM KEYS E MULTITAREFA ──" "────────────────────────" \
 "ALT Tab" "Alternar Workspace Anterior (Bate-e-Volta 0ms)" "workspace previous" \
