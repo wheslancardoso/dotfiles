@@ -9,6 +9,7 @@
 
 set -eo pipefail
 export PATH="$HOME/.local/bin:$PATH"
+SELF_SCRIPT="$(realpath "${BASH_SOURCE[0]}")"
 
 # ------------------------------------------------------------------------------
 # DIRETÓRIOS CANÔNICOS DE DESTINO
@@ -113,12 +114,89 @@ is_url_or_file() {
     return 1
 }
 
+render_preview_thumb() {
+    local cache_tsv="$1"
+    local target_url="$2"
+    local media_type="${3:-Mídia}"
+
+    local line=""
+    if [ -f "$cache_tsv" ] && [ -n "$target_url" ]; then
+        line=$(grep -F -m 1 "$target_url" "$cache_tsv" 2>/dev/null || true)
+    fi
+
+    local title_disp="" url="" thumb_url="" title="" channel="" duration=""
+    if [ -n "$line" ]; then
+        title_disp=$(echo "$line" | cut -f1)
+        url=$(echo "$line" | cut -f2)
+        thumb_url=$(echo "$line" | cut -f3)
+        title=$(echo "$line" | cut -f4)
+        channel=$(echo "$line" | cut -f5)
+        duration=$(echo "$line" | cut -f6)
+    fi
+
+    # 1. Limpa qualquer imagem residual do protocolo gráfico Kitty
+    printf '\033_Ga=d,d=a\033\\' 2>/dev/null || true
+
+    # 2. Renderiza a miniatura / capa com resolução nativa se disponível
+    if [ -n "$thumb_url" ] && command -v chafa >/dev/null 2>&1; then
+        local cache_dir="/tmp/apex_thumb_cache"
+        mkdir -p "$cache_dir"
+        local thumb_hash
+        thumb_hash=$(echo -n "$thumb_url" | md5sum 2>/dev/null | cut -d' ' -f1 || echo "thumb_${$}")
+        local cache_img="$cache_dir/${thumb_hash}.jpg"
+
+        if [ ! -s "$cache_img" ]; then
+            if ! curl -s -f -m 2 "$thumb_url" -o "$cache_img" 2>/dev/null; then
+                if [[ "$thumb_url" =~ maxresdefault\.jpg ]]; then
+                    curl -s -f -m 2 "${thumb_url/maxresdefault/hqdefault}" -o "$cache_img" 2>/dev/null || true
+                fi
+            fi
+        fi
+
+        if [ -s "$cache_img" ]; then
+            local cols="${FZF_PREVIEW_COLUMNS:-40}"
+            local lines="${FZF_PREVIEW_LINES:-20}"
+            local img_w=$(( cols > 4 ? cols - 2 : 36 ))
+            local img_h=$(( lines > 14 ? (lines / 2) - 1 : 12 ))
+            [ "$img_h" -lt 8 ] && img_h=8
+            [ "$img_h" -gt 22 ] && img_h=22
+
+            if [ "$TERM" = "xterm-kitty" ] || [ -n "$KITTY_WINDOW_ID" ] || [ -n "$GHOSTTY_RESOURCES_DIR" ] || [ "$TERM_PROGRAM" = "ghostty" ] || [ "$TERM_PROGRAM" = "WezTerm" ]; then
+                chafa --probe=off -f kitty --size="${img_w}x${img_h}" "$cache_img" 2>/dev/null || \
+                chafa --probe=off -f symbols --size="${img_w}x${img_h}" --symbols=sextant+quad+block+half --color-space=rgb "$cache_img" 2>/dev/null || true
+            else
+                chafa --probe=off -f symbols --size="${img_w}x${img_h}" --symbols=sextant+quad+block+half --color-space=rgb "$cache_img" 2>/dev/null || true
+            fi
+            echo ""
+        fi
+    fi
+
+    # 3. Card de informações formatado e estilizado abaixo da miniatura
+    local c_mauve="\033[1;38;2;203;166;247m"
+    local c_green="\033[38;2;166;227;161m"
+    local c_blue="\033[38;2;137;180;250m"
+    local c_peach="\033[38;2;250;179;135m"
+    local c_sub="\033[38;2;166;173;200m"
+    local c_bold="\033[1m"
+    local c_nc="\033[0m"
+
+    echo -e "${c_mauve}╭─────────────────────────────────────────────────────────────╮${c_nc}"
+    echo -e "${c_mauve}│   ⚡ APEX PREVIEW • ${media_type}${c_nc}"
+    echo -e "${c_mauve}╰─────────────────────────────────────────────────────────────╯${c_nc}"
+    echo -e "  ${c_bold}🎬 Título  :${c_nc} ${c_green}${title:-$title_disp}${c_nc}"
+    [ -n "$channel" ]  && echo -e "  ${c_bold}👤 Artista :${c_nc} ${c_blue}${channel}${c_nc}"
+    [ -n "$duration" ] && echo -e "  ${c_bold}⏱️ Duração :${c_nc} ${c_peach}${duration}${c_nc}"
+    [ -n "$url" ]      && echo -e "  ${c_bold}🔗 Link    :${c_nc} ${c_sub}${url}${c_nc}"
+    echo ""
+    echo -e "  ${c_green}✔ Pressione [ENTER] para baixar.${c_nc}"
+}
+
 search_youtube_fzf() {
     local query="$1"
     echo -e "${MAUVE}🔍 Pesquisando vídeos no YouTube para: ${BOLD}${query}${NC}..." >&2
 
     local raw_results
-    raw_results=$(yt-dlp --print "%(title)s [%(duration>%H:%M:%S)s] • %(channel)s	%(webpage_url)s" "ytsearch10:${query}" 2>/dev/null || true)
+    raw_results=$(yt-dlp --no-warnings --print "%(title)s [%(duration>%H:%M:%S)s] • %(channel)s\t%(webpage_url)s\t%(thumbnail)s\t%(title)s\t%(channel)s\t%(duration>%H:%M:%S)s" "ytsearch10:${query}" 2>/dev/null || true)
 
     if [ -z "$raw_results" ]; then
         echo -e "${RED}❌ Nenhum vídeo encontrado para a busca '${query}'.${NC}" >&2
@@ -130,17 +208,27 @@ search_youtube_fzf() {
         return 0
     fi
 
+    local search_cache="/tmp/apex_search_yt_${$}.tsv"
+    echo "$raw_results" > "$search_cache"
+
     local selected
     selected=$(echo "$raw_results" | fzf \
         --prompt="🎬 Selecione o vídeo para baixar > " \
-        --height=50% \
+        --header="[ENTER] Baixar Vídeo • [Ctrl+J/K] Navegar • [Ctrl+D/U] Rolar • [ESC] Sair" \
+        --height=75% \
         --layout=reverse \
         --border=rounded \
         --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
         --color=fg:#cdd6f4,header:#cba6f7,info:#cba6f7,pointer:#f5e0dc \
         --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
+        --bind="ctrl-j:down,ctrl-k:up,ctrl-d:preview-page-down,ctrl-u:preview-page-up" \
+        --preview="\"$SELF_SCRIPT\" __preview_thumb \"$search_cache\" {2} 'YouTube Vídeo'" \
+        --preview-window="right:48%:wrap:border-rounded" \
         --with-nth=1 \
         --delimiter="\t")
+
+    printf '\033_Ga=d,d=a\033\\' 2>/dev/null || true
+    rm -f "$search_cache"
 
     if [ -z "$selected" ]; then
         echo -e "${YELLOW}Busca cancelada pelo usuário.${NC}" >&2
@@ -162,7 +250,7 @@ search_music_fzf() {
     echo -e "${MAUVE}🔍 Pesquisando músicas no YouTube Music para: ${BOLD}${query}${NC}..." >&2
 
     local raw_results
-    raw_results=$(yt-dlp --print "%(title)s [%(duration>%H:%M:%S)s] • %(channel)s	%(webpage_url)s" "ytsearch10:${query} audio" 2>/dev/null || true)
+    raw_results=$(yt-dlp --no-warnings --print "%(title)s [%(duration>%H:%M:%S)s] • %(channel)s\t%(webpage_url)s\t%(thumbnail)s\t%(title)s\t%(channel)s\t%(duration>%H:%M:%S)s" "ytsearch10:${query} audio" 2>/dev/null || true)
 
     if [ -z "$raw_results" ]; then
         echo -e "${RED}❌ Nenhuma música encontrada para a busca '${query}'.${NC}" >&2
@@ -174,18 +262,27 @@ search_music_fzf() {
         return 0
     fi
 
+    local search_cache="/tmp/apex_search_music_${$}.tsv"
+    echo "$raw_results" > "$search_cache"
+
     local selected
     selected=$(echo "$raw_results" | fzf \
         --prompt="🎵 Escolha a Música para Baixar (MP3 320k) > " \
-        --header="[ENTER] Baixar MP3 320k • [Ctrl+J/K] Navegar • [ESC] Sair" \
-        --height=50% \
+        --header="[ENTER] Baixar MP3 320k • [Ctrl+J/K] Navegar • [Ctrl+D/U] Rolar • [ESC] Sair" \
+        --height=75% \
         --layout=reverse \
         --border=rounded \
         --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
         --color=fg:#cdd6f4,header:#a6e3a1,info:#a6e3a1,pointer:#f5e0dc \
         --color=marker:#b4befe,fg+:#cdd6f4,prompt:#a6e3a1,hl+:#f38ba8 \
+        --bind="ctrl-j:down,ctrl-k:up,ctrl-d:preview-page-down,ctrl-u:preview-page-up" \
+        --preview="\"$SELF_SCRIPT\" __preview_thumb \"$search_cache\" {2} 'YouTube Music'" \
+        --preview-window="right:48%:wrap:border-rounded" \
         --with-nth=1 \
         --delimiter="\t")
+
+    printf '\033_Ga=d,d=a\033\\' 2>/dev/null || true
+    rm -f "$search_cache"
 
     if [ -z "$selected" ]; then
         echo -e "${YELLOW}Busca cancelada.${NC}" >&2
@@ -686,9 +783,16 @@ render_media_card() {
 
     if [ -n "$thumb_url" ] && command -v chafa >/dev/null 2>&1; then
         local cache_img="/tmp/apex_media_cover_${$}.jpg"
-        if curl -s -f -m 3 "$thumb_url" -o "$cache_img" 2>/dev/null; then
+        if curl -s -f -m 3 "$thumb_url" -o "$cache_img" 2>/dev/null || \
+           ([[ "$thumb_url" =~ maxresdefault\.jpg ]] && curl -s -f -m 3 "${thumb_url/maxresdefault/hqdefault}" -o "$cache_img" 2>/dev/null); then
             echo ""
-            chafa --probe=off --format=symbols --size=28x14 --symbols=sextant+quad+block+half --color-space=rgb "$cache_img" 2>/dev/null || true
+            if [ "$TERM" = "xterm-kitty" ] || [ -n "$KITTY_WINDOW_ID" ] || [ -n "$GHOSTTY_RESOURCES_DIR" ] || [ "$TERM_PROGRAM" = "ghostty" ] || [ "$TERM_PROGRAM" = "WezTerm" ]; then
+                printf '\033_Ga=d,d=a\033\\' 2>/dev/null || true
+                chafa --probe=off -f kitty --size=36x18 "$cache_img" 2>/dev/null || \
+                chafa --probe=off -f symbols --size=32x16 --symbols=sextant+quad+block+half --color-space=rgb "$cache_img" 2>/dev/null || true
+            else
+                chafa --probe=off -f symbols --size=32x16 --symbols=sextant+quad+block+half --color-space=rgb "$cache_img" 2>/dev/null || true
+            fi
             rm -f "$cache_img"
         fi
     fi
@@ -1845,7 +1949,7 @@ run_cli_mode() {
                 [ "${#short_clip}" -gt 45 ] && short_clip="${short_clip:0:42}..."
                 main_actions="0\t📋 [Clipboard] Baixar Link Copiado (${short_clip})\tProcessa e baixa automaticamente a URL encontrada na sua área de transferência com prévia da capa.\n"
             fi
-            main_actions="${main_actions}1\t🍿 Filmes & Séries no Pomfy (Catálogo TMDB 1080p)\tAbre o catálogo navegável com sinopse oficial, pôster e streaming direto.\n2\t🎵 Buscar Músicas no YouTube Music (Pesquisa FZF)\tPesquise pelo nome da música ou artista, escolha no menu FZF e baixe em MP3 320k com capa e tags.\n3\t🎧 Spotify (Baixar Músicas, Álbuns & Playlists por Link)\tCole links do Spotify para baixar faixas, álbuns ou playlists com capas HD, tags e letras (.lrc).\n4\t🎥 Buscar / Baixar Vídeos no YouTube (1080p/4K)\tBusca vídeos diretamente pelo terminal ou baixa links do YouTube com 1 tecla de confirmação.\n5\t🔗 Inserir URL ou Arquivo de Lote (.txt / .md)\tProcessa qualquer link da web, torrent/magnet ou arquivos de lote (.txt, .md).\n6\t📻 Baixar o que está tocando agora (MPRIS / Spotify)\tDetecta a música ou vídeo em reprodução no seu player do Linux e baixa na hora.\n7\t📂 Ver Histórico de Downloads\tAbre a lista de downloads anteriores pesquisável com FZF.\n8\t🔄 Atualizar Motores de Download\tVerifica e atualiza o yt-dlp, spotdl e gallery-dl.\n9\t🚪 Sair\tFecha o cockpit de mídia."
+            main_actions="${main_actions}1\t🍿 Filmes & Séries no Pomfy (Catálogo TMDB 1080p)\tAbre o catálogo navegável com sinopse oficial, pôster HD e streaming direto.\n2\t🎵 Buscar Músicas no YouTube Music (Pesquisa FZF com Capas HD)\tPesquise pelo nome da música ou artista, escolha no menu FZF com capa HD e baixe em MP3 320k com tags.\n3\t🎧 Spotify (Baixar por Link ou Nome da Música)\tBaixe faixas, álbuns ou playlists do Spotify com capas HD oficiais, metadados e letras (.lrc).\n4\t🎥 Buscar / Baixar Vídeos no YouTube (1080p/4K com Capas HD)\tBusca com miniaturas ao vivo no FZF ou baixa links do YouTube com 1 tecla de confirmação.\n5\t🔗 Inserir URL ou Arquivo de Lote (.txt / .md)\tProcessa qualquer link da web, torrent/magnet ou arquivos de lote (.txt, .md).\n6\t📻 Baixar o que está tocando agora (MPRIS / Spotify)\tDetecta a música ou vídeo em reprodução no seu player do Linux e baixa na hora.\n7\t📂 Ver Histórico de Downloads\tAbre a lista de downloads anteriores pesquisável com FZF.\n8\t🔄 Atualizar Motores de Download\tVerifica e atualiza o yt-dlp, spotdl e gallery-dl.\n9\t🚪 Sair\tFecha o cockpit de mídia."
 
             local chosen_action
             chosen_action=$(echo -e "$main_actions" | fzf \
@@ -1888,12 +1992,37 @@ run_cli_mode() {
                     ;;
                 3)
                     echo -e "\n${GREEN}${BOLD}🎧 APEX SPOTIFY SUITE • Músicas, Álbuns & Playlists${NC}"
-                    echo -e "${SUBTEXT}Cole o link da faixa, álbum ou playlist do Spotify:${NC}"
-                    read -rp "🔗 Link do Spotify: " sp_input
-                    if [ -n "$sp_input" ]; then
+                    echo -e "${SUBTEXT}Digite o nome da música / artista OU cole o link do Spotify:${NC}"
+                    read -rp "🎵 Música ou Link: " sp_input
+                    if [ -z "$sp_input" ]; then
+                        exit 0
+                    fi
+                    if [[ "$sp_input" =~ ^https?:// ]] || [[ "$sp_input" =~ ^spotify: ]]; then
                         url="$sp_input"
                     else
-                        exit 0
+                        echo -e "\n  ${BOLD}Como deseja buscar '${sp_input}'?${NC}"
+                        echo -e "  [${GREEN}1${NC}] 🔍 Pesquisar no Catálogo com Capas HD (Menu FZF)"
+                        echo -e "  [${BLUE}2${NC}] ⚡ Baixar direto via Spotify Engine (spotDL)"
+                        echo -e "  [${RED}q${NC}] Cancelar"
+                        read -r -s -n 1 sp_mode_choice
+                        echo ""
+                        case "$sp_mode_choice" in
+                            2)
+                                download_spotify "$sp_input" "mp3" "$dest_a"
+                                exit 0
+                                ;;
+                            q|Q)
+                                exit 0
+                                ;;
+                            *)
+                                local found_music
+                                found_music=$(search_music_fzf "$sp_input")
+                                if [ -n "$found_music" ]; then
+                                    download_audio "$found_music" "$dest_a"
+                                fi
+                                exit 0
+                                ;;
+                        esac
                     fi
                     ;;
                 4)
@@ -2293,6 +2422,11 @@ show_help() {
 }
 
 main() {
+    if [ "$1" == "__preview_thumb" ]; then
+        render_preview_thumb "$2" "$3" "$4"
+        exit 0
+    fi
+
     local target_url=""
     local run_mode="interactive"
     local direct_action=""

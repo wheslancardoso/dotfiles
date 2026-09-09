@@ -446,9 +446,15 @@ async function main() {
         if (fs.existsSync(posterFile)) {
           try {
             const { execSync } = require('child_process');
-            const chafaArt = execSync(`chafa --probe=off --format=symbols --size=30x20 --symbols=sextant+quad+block+half --color-space=rgb "${posterFile}"`, { encoding: 'utf8' });
+            const isKitty = process.env.TERM === 'xterm-kitty' || process.env.KITTY_WINDOW_ID || process.env.GHOSTTY_RESOURCES_DIR || process.env.TERM_PROGRAM === 'ghostty' || process.env.TERM_PROGRAM === 'WezTerm';
             console.log(`\n${c.subtext}🖼️  Pôster Oficial [${c.peach}Ctrl+O${c.subtext} = Ver em HD]:${c.nc}`);
-            console.log(chafaArt);
+            if (isKitty) {
+              process.stdout.write('\x1b_Ga=d,d=a\x1b\\');
+              execSync(`chafa --probe=off -f kitty --size=32x20 "${posterFile}"`, { stdio: 'inherit' });
+            } else {
+              const chafaArt = execSync(`chafa --probe=off --format=symbols --size=30x20 --symbols=sextant+quad+block+half --color-space=rgb "${posterFile}"`, { encoding: 'utf8' });
+              console.log(chafaArt);
+            }
           } catch (e) {}
         }
       }
