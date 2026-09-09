@@ -1,0 +1,13 @@
+# ==============================================================================
+# 🚀 Otimização de I/O Scheduler para NVMe M.2, SSD SATA e Discos Mecânicos
+# ==============================================================================
+
+# 1. NVMe M.2: Possui filas de hardware dedicadas em silício.
+# O scheduler 'none' elimina overhead e ciclos de CPU desnecessários do kernel.
+ACTION=="add|change", KERNEL=="nvme[0-9]*", ATTR{queue/scheduler}="none"
+
+# 2. SSD SATA ou eMMC: Beneficia de 'mq-deadline' ou 'none'
+ACTION=="add|change", KERNEL=="sd[a-z]|mmcblk[0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="mq-deadline"
+
+# 3. HDs Mecânicos rotacionais: Beneficia do algoritmo 'bfq' para evitar engasgos
+ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"

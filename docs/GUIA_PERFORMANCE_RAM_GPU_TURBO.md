@@ -1,6 +1,6 @@
-# 🚀 Guia de Performance Suprema: RAM 32GB + RTX 5060 (Orquestração Dinâmica)
+# 🚀 Guia de Performance Suprema: Ryzen 7 5700X + 32GB RAM + RTX 5060 + NVMe M.2
 
-> **Hardware:** 32 GB DDR4 (Dual Channel) + NVIDIA GeForce RTX 5060 (8 GB GDDR6)  
+> **Hardware:** AMD Ryzen 7 5700X (8C/16T, 32MB L3) + 32 GB DDR4 3600MHz + NVIDIA GeForce RTX 5060 (8 GB GDDR6) + 512 GB NVMe M.2  
 > **Filosofia:** Aproveitar 100% do poder bruto da máquina no dia a dia, com **devolução automática e instantânea** de recursos para jogos pesados, renders e máquinas virtuais.
 
 ---
@@ -11,16 +11,18 @@ Você não precisa mudar chaveamentos manuais. O sistema alterna dinamicamente e
 
 ```
 [ MODO DIA A DIA: VELOCIDADE DA LUZ ]
+ ├── AMD P-State EPP ajustando frequências em microssegundos (Zen 3 autônomo)
  ├── Navegador (Brave) rodando na memória RAM via PSD (/run/user/1000/psd)
- ├── Compilações AUR (yay) executadas no tmpfs (40+ GB/s de leitura/escrita)
+ ├── Compilações AUR (yay) executadas no tmpfs em RAM (40+ GB/s de I/O)
  ├── Cache do Kernel mantendo executáveis e bibliotecas pré-carregados
+ ├── NVMe M.2 com scheduler 'none' (filas de hardware diretas no silício)
  └── RTX 5060 em modo econômico (10-15W) usando NVDEC para decodificação 4K/AV1
                     │
                     ▼ (Quando você abre um Jogo, Render 3D ou VM Pesada)
 [ MODO CARGA BRUTA: PRIORIDADE MÁXIMA ]
  ├── Kernel BORE + Ananicy-cpp detecta a carga e eleva a prioridade da CPU para tempo real
  ├── O Linux Page Cache devolve gigabytes de RAM instantaneamente em nanossegundos
- ├── GameMode (`gamemoded`) ativa os clocks máximos da CPU e da RTX 5060
+ ├── GameMode (`gamemoded`) ativa os clocks máximos dos 16 threads e da RTX 5060
  └── Navegadores e tarefas secundárias são desaceleradas para priorizar o render/jogo
 ```
 
@@ -28,7 +30,16 @@ Você não precisa mudar chaveamentos manuais. O sistema alterna dinamicamente e
 
 ## ⚙️ 1. As Otimizações Ativas no seu Sistema
 
-### A. Navegador na RAM (Profile-Sync-Daemon - PSD)
+### A. AMD Ryzen 7 5700X: Escalonamento Autônomo por Hardware (`amd_pstate=active`)
+* **O que faz:** O parâmetro de kernel `amd_pstate=active` ativa o Energy Performance Preference (EPP) diretamente no silício da arquitetura AMD Zen 3.
+* **Vantagem:** O chaveamento de frequências dos núcleos da CPU passa de milissegundos (software do SO) para **microssegundos** (controlador do próprio chip), eliminando micro-travamentos na UI do Hyprland e elevando a resposta de jogos e cliques.
+
+### B. NVMe M.2: I/O Scheduler `none` & `fstrim.timer`
+* **O que faz:** Discos NVMe possuem mais de 64 mil filas de hardware diretamente no barramento PCIe. 
+* **Vantagem:** O scheduler de software do kernel (`bfq` ou `mq-deadline`) foi substituído por `none` via regra udev (`60-io-schedulers.rules`). O processador fala direto com o controlador NVMe com zero latência.
+* **Saúde:** O serviço `fstrim.timer` roda semanalmente em segundo plano, mantendo as células de flash limpas para velocidade máxima de escrita contínua.
+
+### C. Navegador na RAM (Profile-Sync-Daemon - PSD)
 * **O que faz:** O perfil completo do seu Brave (~900 MB de histórico, cookies, cache e bancos SQLite) foi colocado na **memória RAM** (`tmpfs`).
 * **Vantagem:** Abrir 50 abas, pesquisar histórico ou alternar janelas é instantâneo. Zero desgaste do seu SSD NVMe.
 * **Segurança:** O serviço `psd.service` sincroniza tudo de volta para o SSD silenciosamente a cada hora e automaticamente antes de reiniciar ou desligar o PC.
@@ -37,12 +48,12 @@ Você não precisa mudar chaveamentos manuais. O sistema alterna dinamicamente e
   psd status
   ```
 
-### B. Compilações do AUR no Disco de RAM (`BUILDDIR=/tmp/makepkg`)
+### D. Compilações do AUR no Disco de RAM (`BUILDDIR=/tmp/makepkg`)
 * **O que faz:** Toda vez que você usa o `yay` para instalar ou compilar programas do AUR, o código é descompactado e compilado dentro do seu `/tmp` (RAM).
-* **Vantagem:** A compilação é até 3x mais rápida e economiza dezenas de gigabytes de escrita no SSD.
+* **Vantagem:** Com 32GB RAM e 16 threads do Ryzen 7, a compilação é até 3x mais rápida e economiza dezenas de gigabytes de escrita no SSD.
 * **Elasticidade:** Ao terminar a compilação, o diretório é apagado e a memória RAM volta a ficar 100% livre.
 
-### C. Agendador Dinâmico de Processos (`ananicy-cpp`)
+### E. Agendador Dinâmico de Processos (`ananicy-cpp` + `ananicy-rules-cachyos`)
 * **O que faz:** O daemon `ananicy-cpp` do CachyOS monitora todos os processos em tempo real.
 * **Regras automáticas aplicadas:**
   - **Jogos e Emuladores:** Recebem prioridade `Nice -10` e alta prioridade de I/O.
@@ -50,13 +61,18 @@ Você não precisa mudar chaveamentos manuais. O sistema alterna dinamicamente e
   - **Blender, DaVinci Resolve, OBS Studio:** Ganham prioridade de tempo real e CPU burst.
   - **Processos de fundo (indexadores, downloads):** São rebaixados para `Nice 19` para não roubar nem 1 FPS do seu jogo.
 
-### D. Feral GameMode (`gamemoded`)
+### F. Feral GameMode (`gamemoded`)
 * O serviço `gamemoded.service` do systemd já está **ativo e habilitado**.
 * Quando você roda um jogo (Steam, Lutris, Heroic) ou programa pesado com `gamemoderun`:
   - O governador da CPU trava em `performance`.
   - A placa de vídeo NVIDIA RTX 5060 sobe os clocks de VRAM e Core para o teto (Performance Level 3).
   - Bloqueia descansos de tela e hibernação.
   - Ao fechar o jogo, tudo volta ao modo econômico automaticamente.
+
+### G. Turbo Network Stack (Sysctl BBR + FQ_CoDel + Buffers Gigabit)
+* `tcp_fastopen = 3`: Handshake acelerado enviando dados no pacote inicial SYN.
+* `tcp_slow_start_after_idle = 0`: Mantém a velocidade máxima mesmo após pausas no tráfego.
+* Buffers de janela TCP ampliados para 16MB para saturação total da banda em downloads e torrents.
 
 ---
 

@@ -100,10 +100,17 @@ setup_makepkg_turbo() {
             echo "MAKEFLAGS=\"-j${cores}\"" | sudo tee -a /etc/makepkg.conf >/dev/null
         fi
 
+        # Compilar pacotes do AUR diretamente na memória RAM (tmpfs) - até 3x mais rápido e zero desgaste do NVMe
+        if grep -q "^#BUILDDIR=/tmp" /etc/makepkg.conf; then
+            sudo sed -i 's|^#BUILDDIR=/tmp.*|BUILDDIR=/tmp/makepkg|' /etc/makepkg.conf
+        elif ! grep -q "^BUILDDIR=" /etc/makepkg.conf; then
+            echo 'BUILDDIR=/tmp/makepkg' | sudo tee -a /etc/makepkg.conf >/dev/null
+        fi
+
         # Otimizar compressão Zstd e Xz para usar todas as threads da CPU
         sudo sed -i "s/^COMPRESSZST=.*/COMPRESSZST=(zstd -c -z -q --threads=0 -)/" /etc/makepkg.conf 2>/dev/null || true
         sudo sed -i "s/^COMPRESSXZ=.*/COMPRESSXZ=(xz -c -z - --threads=0)/" /etc/makepkg.conf 2>/dev/null || true
-        ok "Makepkg Turbo configurado com $cores núcleos (até 10x mais rápido no AUR)!"
+        ok "Makepkg Turbo configurado com $cores núcleos e compilação em RAM (tmpfs)!"
     fi
 }
 
@@ -199,6 +206,7 @@ setup_services() {
         "avahi-daemon.service"
         "ananicy-cpp.service"
         "paccache.timer"
+        "fstrim.timer"
         "power-profiles-daemon.service"
     )
 
@@ -680,12 +688,12 @@ setup_anti_friction() {
         ok "Wake-on-LAN desativado no NetworkManager!"
     fi
 
-    # 7. Regras Udev Anti-Wakeup Espúrio (movimentos acidentais ou poeira no sensor do mouse)
-    if [ -f "$sys_src/udev/rules.d/90-disable-spurious-mouse-wakeup.rules" ]; then
+    # 7. Regras Udev Anti-Wakeup Espúrio e I/O Schedulers para NVMe (None) e SSD
+    if [ -d "$sys_src/udev/rules.d" ]; then
         sudo mkdir -p /etc/udev/rules.d
-        sudo cp -f "$sys_src/udev/rules.d/90-disable-spurious-mouse-wakeup.rules" /etc/udev/rules.d/
+        sudo cp -f "$sys_src/udev/rules.d/"*.rules /etc/udev/rules.d/
         sudo udevadm control --reload-rules 2>/dev/null || true
-        ok "Regras udev anti-wakeup espúrio no mouse instaladas!"
+        ok "Regras udev (anti-wakeup de mouse e scheduler NVMe none) instaladas!"
     fi
 
     # 8. Script e Serviço para desativar gatilhos espúrios em /proc/acpi/wakeup (GLAN, XHC)
@@ -764,9 +772,11 @@ setup_anti_friction() {
         info "Otimizando timeout do bootloader Limine (1s) e removendo splash screen..."
         sudo sed -i 's/^timeout: [0-9]\+/timeout: 1/' /boot/limine.conf 2>/dev/null || true
         sudo sed -i 's/splash //g; s/ splash//g' /boot/limine.conf 2>/dev/null || true
-        # Adiciona parâmetros de boot rápido do kernel se não estiverem presentes
+        # Adiciona parâmetros de boot rápido do kernel e AMD P-State (Ryzen) se não estiverem presentes
         if ! grep -q "8250.nr_uarts=0" /boot/limine.conf 2>/dev/null; then
-            sudo sed -i '/cmdline:.*quiet/ s|quiet nowatchdog rw|quiet nowatchdog rw fbcon=nodefer 8250.nr_uarts=0|' /boot/limine.conf 2>/dev/null || true
+            sudo sed -i '/cmdline:.*quiet/ s|quiet nowatchdog rw|quiet nowatchdog rw fbcon=nodefer 8250.nr_uarts=0 amd_pstate=active|' /boot/limine.conf 2>/dev/null || true
+        elif ! grep -q "amd_pstate=active" /boot/limine.conf 2>/dev/null; then
+            sudo sed -i '/cmdline:.*quiet/ s|quiet|quiet amd_pstate=active|' /boot/limine.conf 2>/dev/null || true
         fi
         # Remover hook plymouth do mkinitcpio para boot direto
         if [ -f /etc/mkinitcpio.conf ] && grep -q "plymouth" /etc/mkinitcpio.conf; then
