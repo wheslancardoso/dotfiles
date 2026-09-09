@@ -566,7 +566,7 @@ notify_completion() {
             -A "folder=📂 Abrir Pasta" \
             -A "drag=🚀 Arrastar (ripdrag)" \
             "✅ Download Concluído!" \
-            "$title") || true
+            "$title" 2>/dev/null) || true
 
         case "$action" in
             play)
@@ -1054,8 +1054,6 @@ download_spotify() {
             --audio youtube-music youtube soundcloud \
             --output "$output_tpl" \
             --sponsor-block \
-            --log-level ERROR \
-            --simple-tui \
             --generate-lrc || true
     fi
 
