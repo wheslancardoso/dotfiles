@@ -14,9 +14,10 @@ local function build_hud_text()
     local ass = {
         "{\\an7\\pos(45,35)\\fs26\\fnInter\\bord1.5\\shad1\\b1\\1c&H00F5C2E7&}🎬 MPV GOD MODE — GUIA RÁPIDO DE ATALHOS{\\b0\\1c&H00CDD6F4&}\\N\\N",
         
-        "{\\b1\\1c&H0089B4FA&}⚡ VELOCIDADE & ESTUDO (Áudio Natural sem voz de esquilo):{\\b0\\1c&H00BAC2DE&}\\N",
-        "  • {\\b1\\1c&H00A6E3A1&}[{\\b0} / {\\b1\\1c&H00A6E3A1&}]{\\b0} : Diminuir / Aumentar velocidade (1.1x, 1.25x, 1.5x)\\N",
-        "  • {\\b1\\1c&H00A6E3A1&}BS{\\b0} (Backspace) : Voltar para 1.0x instantaneamente\\N",
+        "{\\b1\\1c&H0089B4FA&}⚡ VELOCIDADE & ESTUDO (Passos Redondos / Pitch Natural):{\\b0\\1c&H00BAC2DE&}\\N",
+        "  • {\\b1\\1c&H00A6E3A1&}[{\\b0} / {\\b1\\1c&H00A6E3A1&}]{\\b0} : Ajuste fino de velocidade ±0.1x (1.0x, 1.1x, 1.2x...)\\N",
+        "  • {\\b1\\1c&H00A6E3A1&}{\\b0} / {\\b1\\1c&H00A6E3A1&}}{\\b0} : Passos de ±0.25x (1.00x, 1.25x, 1.50x, 1.75x, 2.00x)\\N",
+        "  • {\\b1\\1c&H00A6E3A1&}BS{\\b0} (Backspace) : Voltar para 1.0x cravado instantaneamente\\N",
         "  • {\\b1\\1c&H00A6E3A1&}Alt + i{\\b0} ou {\\b1\\1c&H00A6E3A1&}Ctrl + n{\\b0} : Ligar/Desligar {\\b1}Imersão de Inglês{\\b0} (Acelera nos silêncios)\\N",
         "  • {\\b1\\1c&H00A6E3A1&}Alt + m{\\b0} : Alternar modo de imersão (Acelerar no silêncio vs Pular direto)\\N",
         "  • {\\b1\\1c&H00A6E3A1&}Alt + [ / ]{\\b0} : Regular velocidade rápida do silêncio (2.0x a 4.0x)\\N\\N",
