@@ -45,6 +45,14 @@
   - [x] **Solução para Hardsub (Legenda Queimada no Vídeo):**
     - Filtro de máscara sutil (`drawbox` com opacidade/blur) ativável por tecla (`Alt+b`) para cobrir legendas queimadas que atrapalham a leitura de uma segunda legenda em inglês.
 
+- [x] **5.5. 🧠 Smart-Lang: Super-Inteligência de Idioma & Dual Audio (`smart-lang.lua`)**
+  - [x] **Auto-Select Inteligente:** Ao abrir qualquer vídeo, pontua e seleciona automaticamente a MELHOR legenda para imersão em inglês (prioriza EN Full > EN SDH > EN qualquer > PT). Descarta forçadas, comentários e Signs/Songs automaticamente.
+  - [x] **Dual Audio Link Automático:** Ao trocar de áudio com `a`/`A`, a legenda troca JUNTO para o idioma correspondente. Áudio EN → Legenda EN. Áudio PT → Legenda PT. Áudio JA → Legenda EN.
+  - [x] **Modo Imersão (`Alt+e`):** Configura tudo em 1 tecla: Áudio EN + Legenda EN. Zero cliques extras.
+  - [x] **Modo Nativo (`Alt+p`):** Configura tudo em 1 tecla: Áudio PT + Legenda PT.
+  - [x] **Dual Subtitles (`Ctrl+e`):** Ativa legendas duplas lado a lado: EN embaixo + PT em cima. Perfeito para estudo comparativo.
+  - [x] **Auto-Download:** Se o vídeo não tem nenhuma legenda boa, o script tenta baixar automaticamente via `subliminal` em background (sem apertar nada!).
+
 - [x] **6. Mapeamento Mestre de Atalhos (`home/dot_config/mpv/input.conf`)**
   - [x] Atalhos ergonômicos, intuitivos e sem conflitos com o Hyprland.
   - [x] Controle de velocidade nos colchetes (`[` e `]`), volta com `BS`.
@@ -71,8 +79,9 @@
 * **Ajuste Manual Fino em Tempo Real:** `z` e `Z` (passos de 50ms), e `Alt + z` para zerar.
 * **Cache Inteligente:** Legendas sincronizadas ficam salvas em `~/.cache/mpv_synced_subs/` para abrirem instantaneamente nas próximas vezes.
 
-### 3. Download Automático de Legendas (1 Clique)
+### 3. Download Automático de Legendas (1 Clique + Automático)
 * Tecla **`Ctrl + s`**: Consulta a API do OpenSubtitles buscando a melhor legenda em Inglês ou Português compatível com o release do vídeo e já aplica na tela.
+* **Smart-Lang Auto-Download:** Se ao abrir um vídeo ele não tiver NENHUMA legenda em EN ou PT, o `smart-lang.lua` baixa automaticamente via `subliminal` sem você apertar nada.
 
 ### 4. Pular Aberturas e Encerramentos (Netflix Style)
 * Script `skip-intro.lua`: Ao detectar capítulos de abertura (*Opening, Intro, Abertura, Recap*), avisa na tela e permite pular instantaneamente pressionando **`Tab`**.
@@ -87,3 +96,13 @@
 
 ### 7. Modo Binge-Watch Automático (Estilo Netflix)
 * Script `auto-next.lua`: Quando um episódio de série atinge os 3 segundos finais, surge uma contagem na tela e o próximo episódio da pasta é iniciado automaticamente (pressione `Esc` para cancelar).
+
+### 8. 🧠 Smart-Lang: Inteligência de Dual Audio & Seleção de Idioma
+* **O Problema:** Ao baixar filmes/séries dual audio (EN+PT ou JA+EN), o MPV seleciona aleatoriamente a trilha de áudio e legenda, ignorando o contexto de aprendizado.
+* **A Solução:** O `smart-lang.lua` entende o seu objetivo:
+  * **Ao abrir o vídeo:** Seleciona automaticamente a melhor legenda em inglês usando um sistema de pontuação inteligente que descarta forçadas, SDH e comentários.
+  * **Ao trocar áudio (`a`):** A legenda troca junto para o idioma correspondente. Sem cliques extras.
+  * **`Alt+e` (Immersion):** 1 tecla → Áudio EN + Legenda EN. Foco total.
+  * **`Alt+p` (Native):** 1 tecla → Áudio PT + Legenda PT. Relaxar.
+  * **`Ctrl+e` (Dual Sub):** Legenda EN embaixo + PT em cima. Estudo comparativo.
+
