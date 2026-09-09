@@ -62,17 +62,28 @@
 * **Softsub Forced:** Arquivos MKV que vêm com a flag `forced=1` na legenda em português. O MPV normalmente obedece essa flag ignorando a escolha do usuário. Com `sub-forced-only=no` e sanitização de trilha, o MPV respeita a prioridade do usuário (ou nenhuma legenda, ou inglês).
 * **Hardsub:** Vídeos com legenda gravada direto nos pixels. Criamos um filtro de máscara dinâmico ajustável com `Alt+b` para ofuscar o rodapé inferior caso o usuário queira sobrepor legenda limpa em inglês.
 
-### 2. O Problema da Desincronização
-* Permite ajuste manual instantâneo por milissegundos sem pausar a reprodução (`z` e `Z`).
-* Integração com algoritmos de correlação acústica (`ffsubsync`) via `Ctrl+Shift+z` para sincronizar automaticamente arquivos `.srt` com a voz dos atores.
+### 2. O Problema da Desincronização Resolvido em Definitivo
+* **Sincronização por Voz Universal (`Ctrl + z`):** Funciona tanto com arquivos `.srt` externos quanto com **legendas embutidas dentro do MKV/MP4** (o script extrai a trilha interna e roda o alinhador acústico `ffsubsync` sem você abrir terminal).
+* **Correção Instantânea de Framerate Drift (`Ctrl + [` e `Ctrl + ]`):**
+  * `Ctrl + [`: Converte de **25.0 fps para 23.976 fps** (atraso progressivo de 4.1%).
+  * `Ctrl + ]`: Converte de **23.976 fps para 25.0 fps** (avanço progressivo de 4.3%).
+  * `Ctrl + Backspace`: Reseta a velocidade da legenda.
+* **Ajuste Manual Fino em Tempo Real:** `z` e `Z` (passos de 50ms), e `Alt + z` para zerar.
+* **Cache Inteligente:** Legendas sincronizadas ficam salvas em `~/.cache/mpv_synced_subs/` para abrirem instantaneamente nas próximas vezes.
 
-### 3. O Problema de Memorizar os Atalhos (Zero Esforço)
+### 3. Download Automático de Legendas (1 Clique)
+* Tecla **`Ctrl + s`**: Consulta a API do OpenSubtitles buscando a melhor legenda em Inglês ou Português compatível com o release do vídeo e já aplica na tela.
+
+### 4. Pular Aberturas e Encerramentos (Netflix Style)
+* Script `skip-intro.lua`: Ao detectar capítulos de abertura (*Opening, Intro, Abertura, Recap*), avisa na tela e permite pular instantaneamente pressionando **`Tab`**.
+
+### 5. O Problema de Memorizar os Atalhos (Zero Esforço)
 * **HUD Visual Integrado:** Pressione **`?`** ou **`F1`** ou **`h`** durante o vídeo e veja uma tela semi-transparente com todos os atalhos organizados por categoria.
 * **Menu de Contexto do Mouse:** Clique com o botão direito (`MBTN_RIGHT`) para controlar áudio, legendas, velocidade e capítulos graficamente via `uosc`.
 * **Central de Atalhos do Hyprland:** O menu `SUPER + H` (`KeyHints.sh`) agora lista todos os atalhos do MPV God Mode.
 
-### 4. Modo Noturno (Speech Clarity)
+### 6. Modo Noturno (Speech Clarity)
 * Tecla **`n`**: Aplica o filtro dinâmico de áudio (`dynaudnorm`) que nivela o volume: vozes sussurradas ficam cristalinas e explosões estrondosas são suavizadas.
 
-### 5. Modo Binge-Watch Automático (Estilo Netflix)
+### 7. Modo Binge-Watch Automático (Estilo Netflix)
 * Script `auto-next.lua`: Quando um episódio de série atinge os 3 segundos finais, surge uma contagem na tela e o próximo episódio da pasta é iniciado automaticamente (pressione `Esc` para cancelar).

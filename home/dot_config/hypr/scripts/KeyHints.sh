@@ -79,8 +79,11 @@ GDK_BACKEND=$BACKEND yad \
 "ALT I ou CTRL N" "Imersão em Inglês (Acelera nos silêncios)" "sub-skip" \
 "ALT M" "Alternar Modo Imersão (Acelerar vs Pular Silêncio)" "sub-skip mode" \
 "SHIFT V" "Forced-Sub Killer (Mata forçadas e filtra trilhas limpas)" "forced-sub-killer" \
+"CTRL Z" "Sincronização por Voz Universal (Embutida e Externa)" "ffsubsync" \
+"CTRL [ ou CTRL ]" "Correção Instantânea de FPS Drift (25 <-> 23.976 fps)" "fps-drift-fix" \
+"CTRL S" "Download Automático de Legendas (OpenSubtitles 1 toque)" "sub-download" \
+"TAB" "Pular Abertura / Vinheta de Série (Netflix Style)" "skip-intro" \
 "z  ou  Z" "Ajuste Fino de Legenda em Tempo Real (50ms)" "sub-delay +/-" \
-"CTRL SHIFT Z" "Sincronização Automática de Legenda por Voz" "ffsubsync" \
 "ALT B" "Máscara Hardsub (Cobre legendas queimadas no vídeo)" "hardsub-mask" \
 "N" "Modo Noturno (Vozes nítidas e explosões suavizadas)" "dynaudnorm" \
 "ENTER" "Menu Visual da Playlist / Episódios da Série" "uosc/playlist" \
