@@ -103,13 +103,50 @@ if [[ -z "${text//[[:space:]]/}" ]]; then
 fi
 
 # ------------------------------------------------------------------------------
-# 4. HIGIENIZAÇÃO & TRADUÇÃO INTELIGENTE EM PYTHON
+# 4. HIGIENIZAÇÃO, AUTO-HEAL DE CÓDIGO/URLS & TRADUÇÃO INTELIGENTE EM PYTHON
 # ------------------------------------------------------------------------------
 json_result=$(python3 -c '
 import sys, re, urllib.request, urllib.parse, json
 
 mode = sys.argv[1]
 raw_text = sys.argv[2]
+
+def auto_heal_line(l):
+    # 1. Corrige protocolos quebrados (https :// -> https://)
+    l = re.sub(r"(https?|ftp|file|magnet|git|ssh)\s*:\s*//\s*", r"\1://", l, flags=re.IGNORECASE)
+    l = re.sub(r"www\s*\.\s*", "www.", l, flags=re.IGNORECASE)
+    
+    # 2. Se a linha contiver URL com espaços quebrados, higieniza a URL
+    if "http://" in l or "https://" in l:
+        def clean_url(m):
+            u = m.group(0)
+            u = re.sub(r"\s+", "", u)
+            return u
+        l = re.sub(r"https?://[a-zA-Z0-9_.\-\s\/\?\=\&\%\#\:\;]+(?=(\s[A-Z][a-z]|\s\n|$))", clean_url, l)
+    
+    # 3. Corrige underscores em variáveis e identificadores (ex: snake _ case -> snake_case, user _ id -> user_id)
+    l = re.sub(r"([a-zA-Z0-9])\s*_\s*([a-zA-Z0-9])", r"\1_\2", l)
+    
+    # 4. Corrige flags duplas de CLI: - -help -> --help, - -verbose -> --verbose
+    l = re.sub(r"(\s|^)-\s+-(?=[a-zA-Z0-9])", r"\1--", l)
+    
+    # 5. Corrige caminhos do Linux: ~ / -> ~/ e / usr / bin -> /usr/bin
+    l = re.sub(r"(\s|^)~\s*/\s*", r"\1~/", l)
+    l = re.sub(r"(?<=/)\s+([a-zA-Z0-9_.-]+)", r"\1", l)
+    l = re.sub(r"([a-zA-Z0-9_.-]+)\s+/(?=[a-zA-Z0-9_.-])", r"\1/", l)
+    
+    # 6. Corrige operadores de código: - > -> ->, = > -> =>, : : -> ::
+    l = re.sub(r"-\s+>", "->", l)
+    l = re.sub(r"=\s+>", "=>", l)
+    l = re.sub(r":\s+:", "::", l)
+    
+    # 7. Corrige chamadas de métodos: obj . method() -> obj.method()
+    l = re.sub(r"([a-zA-Z0-9_])\s*\.\s*([a-zA-Z0-9_]+\s*\()", r"\1.\2", l)
+    
+    # 8. Corrige extensões de arquivos quebradas: file . txt -> file.txt, main . py -> main.py
+    l = re.sub(r"([a-zA-Z0-9_.-]+)\s*\.\s*(py|js|ts|jsx|tsx|lua|rs|go|java|c|cpp|h|hpp|sh|bash|zsh|json|yaml|yml|toml|md|txt|html|css|scss|conf|ini|sql|png|jpg|jpeg|webp|gif|svg|mp4|mkv|mp3|flac|zip|tar|gz|7z)\b", r"\1.\2", l, flags=re.IGNORECASE)
+    
+    return l
 
 lines = raw_text.splitlines()
 clean_lines = []
@@ -121,6 +158,10 @@ for line in lines:
     line = re.sub(r"^[\s\-_\|\.\,\;\:\~\`\^\(\)]+", "", line)
     line = re.sub(r"[\s\-_\|\.\,\;\:\~\`\^\(\)]+$", "", line)
     line = re.sub(r"[ \t]+", " ", line)
+    
+    # Aplica motor Auto-Heal
+    line = auto_heal_line(line)
+    
     if line:
         clean_lines.append(line)
 
