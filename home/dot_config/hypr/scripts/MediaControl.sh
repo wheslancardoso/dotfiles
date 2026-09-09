@@ -13,9 +13,20 @@ mkdir -p "$COVER_DIR"
 DEFAULT_ICON="$HOME/.config/swaync/icons/music.png"
 [ -f "$DEFAULT_ICON" ] || DEFAULT_ICON="media-playback-start"
 
-# Prioriza Spotify se estiver em execução, para evitar colisão com vídeos do YouTube
+# Detecta o player ativo (prioriza o que estiver tocando: Amberol, Spotify, etc.)
 TARGET_PLAYER=""
-if playerctl -l 2>/dev/null | grep -qi "spotify"; then
+active_p=$(playerctl -l 2>/dev/null | while read -r p; do
+    if [ "$(playerctl -p "$p" status 2>/dev/null)" = "Playing" ]; then
+        echo "$p"
+        break
+    fi
+done || true)
+
+if [ -n "$active_p" ]; then
+    TARGET_PLAYER="-p $active_p"
+elif playerctl -l 2>/dev/null | grep -qi "amberol"; then
+    TARGET_PLAYER="-p amberol"
+elif playerctl -l 2>/dev/null | grep -qi "spotify"; then
     TARGET_PLAYER="-p spotify"
 fi
 

@@ -42,9 +42,14 @@ SUPER + D	Hyprland	Menu de Aplicativos (Launcher)	Abre o lançador de aplicativo
 SUPER + V	Hyprland	Histórico Rápido do Clipboard (2ms)	Abre o histórico de textos copiados do Cliphist via Rofi para colar com 1 toque.
 ALT + V	Hyprland	Área de Transferência Avançada (CopyQ)	Painel de clipboard com abas, imagens salvas e histórico permanente.
 SUPER + M	Hyprland	Spotify Dropdown Scratchpad	Desce o Spotify em janela flutuante com blur Catppuccin e esconde ao teclar de novo.
-SUPER + CTRL + Space	Hyprland	Play / Pause Global de Mídia	Pausa ou continua qualquer áudio/vídeo rodando (Spotify, navegador, etc.).
-SUPER + CTRL + ]	Hyprland	Próxima Faixa de Mídia	Avança a música ou vídeo em reprodução.
-SUPER + CTRL + [	Hyprland	Faixa Anterior de Mídia	Volta a música ou vídeo em reprodução.
+SUPER + CTRL + Space	Hyprland	Play / Pause Global de Mídia	Pausa ou continua qualquer áudio/vídeo rodando (Amberol, Spotify, navegador).
+SUPER + CTRL + ]	Hyprland	Próxima Faixa de Mídia	Avança para a próxima música em reprodução.
+SUPER + CTRL + [	Hyprland	Faixa Anterior de Mídia	Retorna para a música anterior em reprodução.
+SUPER + ALT + L	Hyprland	Letras Sincronizadas (Karaokê)	Abre janela flutuante com letras em tempo real (sptlrx) para Amberol e Spotify.
+Space (Amberol)	Mídia	Play / Pause no Amberol	Pausa ou reproduz o áudio local no player Amberol.
+Left / Right (Amberol)	Mídia	Avançar / Voltar 5s no Amberol	Avança ou retrocede 5 segundos na música.
+CTRL + Left/Right	Mídia	Mudar Faixa no Amberol	Muda para a faixa anterior ou próxima no Amberol.
+CTRL + P (Amberol)	Mídia	Alternar Playlist no Amberol	Abre ou fecha a barra lateral com a fila de reprodução do Amberol.
 SUPER + SHIFT + S	Hyprland	Captura de Tela (Flameshot)	Abre a ferramenta de screenshot com anotações, setas, blur e upload.
 SUPER + SHIFT + R	Hyprland	Gravação de Tela (MP4/GIF)	Inicia ou encerra a gravação de tela com áudio do sistema ou microfone.
 SUPER + SHIFT + T	Hyprland	Screen OCR (Copiar Texto da Tela)	Permite selecionar qualquer região com texto na tela e copia o texto pro clipboard via Tesseract.

@@ -62,21 +62,32 @@ GDK_BACKEND=$BACKEND yad \
 " ALT C" "Calculadora Científica e Financeira" "qalculate-gtk" \
 " ;" "Seletor de Emojis e Símbolos Rápidos" "RofiEmoji.sh" \
 " SPACE" "Trocar Layout do Teclado (US-Intl / PT-BR / US-Dev)" "KeyboardLayout.sh" \
-" SHIFT A" "Alternar Saída de Som (Caixas ↔ Headset)" "audio-switch.sh" \
-" ALT A" "Presets de Áudio e Graves (EasyEffects)" "audio-preset-switch.sh menu" \
-" ALT M" "Silenciar / Ativar Microfone (Mic Mute)" "Volume.sh --toggle-mic" \
 " ALT B" "Menu Bluetooth Rápido (Conectar Fones)" "rofi-bluetooth.sh" \
 " ALT W" "Menu Wi-Fi Rápido (Redes sem abrir abas)" "rofi-wifi.sh" \
 " SHIFT D" "Upload Rápido de Documentos (CNH, RG, etc)" "open-acesso-rapido.sh" \
 " ALT S" "Sincronizar Saves de Jogos na Nuvem" "sync-ludusavi.sh" \
 " ALT G" "Google Drive 5TB Virtual (Montar/Desmontar)" "gdrive-mount.sh toggle" \
-" ALT D" "Download de Vídeo ou Música do Clipboard" "media-download.sh" \
-" CTRL D" "Baixar Música que está Tocando Agora" "media-download.sh --now" \
 " ALT U" "Atualização Blindada do Sistema (safe-update)" "safe-update.sh" \
 " ALT O" "Organizador Master (Auditoria, Triagem, Limpeza)" "organizador-menu.sh" \
 " ALT N" "Menu de Temperaturas de Luz Noturna (Presets f.lux)" "Hyprsunset.sh menu" \
 " N" "Luz Noturna f.lux (Pausar / Retomar Cores Reais)" "Hyprsunset.sh toggle" \
 " W" "Mudar Wallpaper + Paleta de Cores do Sistema (Wallust)" "Rofi Wallpapers" \
+"" "" "" \
+"── 🎵 CONTROLE DE MÍDIA, ÁUDIO & LETRAS ──" "── PLAYER & KARAOKÊ ──" "────────────────────────" \
+" CTRL SPACE ou Play/Pause" "Play / Pause Global de Mídia (OSD Visual)" "MediaControl.sh --play-pause" \
+" CTRL ] ou Next Track" "Próxima Faixa de Mídia" "MediaControl.sh --next" \
+" CTRL [ ou Prev Track" "Faixa Anterior de Mídia" "MediaControl.sh --prev" \
+" ALT L" "Alternar Letras Sincronizadas / Karaokê (sptlrx)" "lyrics-toggle.sh" \
+" M" "Spotify Dropdown Player (Scratchpad Flutuante)" "spotify-toggle.sh" \
+"Space (no Amberol)" "Play / Pause no Player Amberol" "Amberol Local" \
+"Left / Right (no Amberol)" "Avançar / Voltar 5 Segundos" "Amberol Local" \
+"CTRL Left/Right (Amberol)" "Faixa Anterior / Próxima Faixa" "Amberol Local" \
+"CTRL P (no Amberol)" "Alternar Fila de Reprodução (Playlist)" "Amberol Local" \
+" ALT D" "Apex Downloader: Baixar Vídeo/Música do Clipboard" "media-download.sh" \
+" CTRL D" "Apex Downloader: Baixar Música Tocando Agora" "media-download.sh --now" \
+" SHIFT A" "Alternar Saída de Som (Caixas ↔ Headset)" "audio-switch.sh" \
+" ALT A" "Presets de Áudio e Graves (EasyEffects)" "audio-preset-switch.sh menu" \
+" ALT M" "Silenciar / Ativar Microfone (Mic Mute)" "Volume.sh --toggle-mic" \
 "" "" "" \
 "── 📸 CAPTURAS DE TELA E GRAVAÇÃO ──" "── SCREENSHOTS E MÍDIA ──" "────────────────────────" \
 " SHIFT S ou Print" "Captura com Anotações, Setas e Destaque" "flameshot gui" \
@@ -141,6 +152,7 @@ GDK_BACKEND=$BACKEND yad \
 "g G / g ." "Pulos Rápidos: Google Drive 5TB / ~/dotfiles" "cd ~/gdrive | ~/dotfiles" \
 "M o" "Organizar Downloads / Inbox Agora" "organizar --all" \
 "M d" "Diagnóstico do Sistema de Arquivos" "organizar --doctor" \
+"M a ou M y" "Apex Downloader: Baixar Mídia na Pasta Atual" "dl --dir $PWD" \
 "M u" "Destravar / Reparar Pen-drive Danificado" "fix-pendrive.sh" \
 "M s" "Backup Saves de Jogos na Nuvem" "sync-ludusavi.sh" \
 "M g" "Abrir Lazygit na Pasta Atual" "lazygit" \

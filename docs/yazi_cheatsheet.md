@@ -42,9 +42,12 @@
 ## ⚡ Ações Master (`Shift+M`)
 - `M` + `o`      : **Organizar Agora** (`organizar --all`)
 - `M` + `d`      : **Doctor Diagnóstico** (`organizar --doctor`)
+- `M` + `a` / `y`: **Apex Downloader** (Baixar mídia direto na pasta atual)
 - `M` + `s`      : **Backup Saves** (`sync-ludusavi.sh backup`)
 - `M` + `g`      : **Abrir Lazygit** na pasta atual
 - `M` + `t`      : **Abrir Terminal** na pasta atual
+- `Enter` em áudios : **Toca no Amberol Hi-Fi Player** (`SUPER + ALT + L` abre letras/karaokê)
+
 
 ---
 
