@@ -579,6 +579,18 @@ download_batch() {
         echo -e "  ${SUBTEXT}Multi-thread 16 conexões ativas + detecção automática de duplicados.${NC}\n"
     fi
 
+    local trans_archive="${dest}/.transcript_archive.txt"
+    if [ "$mode" == "transcript" ]; then
+        mkdir -p "$dest"
+        touch "$trans_archive"
+        # Pré-carrega links e IDs já transcritos a partir dos arquivos .md existentes
+        if [ -d "$dest" ]; then
+            grep -h -oP '(?<=\*\*Fonte:\*\* ).*' "$dest"/*.md 2>/dev/null | tr -d ' \r' | awk 'NF' >> "$trans_archive"
+            grep -oP '(?:v=|youtu\.be/|shorts/|embed/)[a-zA-Z0-9_-]{11}' "$trans_archive" 2>/dev/null | grep -oP '[a-zA-Z0-9_-]{11}' >> "$trans_archive"
+            awk '!seen[$0]++' "$trans_archive" > "${trans_archive}.tmp" 2>/dev/null && mv "${trans_archive}.tmp" "$trans_archive"
+        fi
+    fi
+
     local current=0
     local success_new=0
     local already_downloaded=0
@@ -589,6 +601,23 @@ download_batch() {
         current=$((current + 1))
         local pct=$(( current * 100 / total ))
         echo -e "${PEACH}[$current/$total] (${pct}%) ⬇️ Processando:${NC} $u"
+
+        local vid_id=""
+        if [[ "$u" =~ (v=|youtu\.be/|shorts/|embed/)([a-zA-Z0-9_-]{11}) ]]; then
+            vid_id="${BASH_REMATCH[2]}"
+        fi
+
+        # Verificação inteligente de continuidade (Smart-Resume para transcrições)
+        if [ "$mode" == "transcript" ]; then
+            if [ -f "$trans_archive" ]; then
+                if grep -qF "$u" "$trans_archive" || { [ -n "$vid_id" ] && grep -qF "$vid_id" "$trans_archive"; }; then
+                    already_downloaded=$((already_downloaded + 1))
+                    echo -e "   ${TEAL}⏭️  [JÁ EXISTE] Transcrição já realizada anteriormente. Pulando...${NC}\n"
+                    continue
+                fi
+            fi
+        fi
+
         local item_dest="$dest"
         if is_sensitive_domain "$u" || [ "$FORCE_PRIVATE" = true ]; then
             item_dest="$DEFAULT_DEST_PRIVATE/Videos_e_Cenas"
@@ -612,7 +641,7 @@ download_batch() {
         elif is_gallery_domain "$u"; then
             download_gallery "$u" "$item_dest" || res=1
         elif [ "$mode" == "transcript" ]; then
-            download_transcript "$u" "$item_dest" || res=1
+            download_transcript "$u" "$item_dest" true || res=1
         elif [ "$mode" == "audio" ]; then
             download_audio "$u" "$item_dest" "" true || res=1
         else
@@ -622,6 +651,8 @@ download_batch() {
         if [ "$res" -eq 0 ]; then
             if [ "$mode" == "transcript" ]; then
                 success_new=$((success_new + 1))
+                echo "$u" >> "$trans_archive"
+                [ -n "$vid_id" ] && echo "$vid_id" >> "$trans_archive"
                 echo -e "   ${GREEN}✔ [SUCESSO] Transcrição limpa (.md + .txt) gerada e salva!${NC}"
             else
                 local lines_after=0
@@ -647,8 +678,9 @@ download_batch() {
     echo -e "${MAUVE}${BOLD}╰──────────────────────────────────────────────────────────────╯${NC}"
     echo -e "  ${BOLD}Total de URLs processadas :${NC} $total"
     if [ "$mode" == "transcript" ]; then
-        echo -e "  ${GREEN}✅ Transcrições geradas   :${NC} ${BOLD}$success_new${NC}"
-        echo -e "  ${RED}❌ Falhas / Sem legendas  :${NC} ${BOLD}$failed${NC}"
+        echo -e "  ${GREEN}✅ Novas transcrições geradas :${NC} ${BOLD}$success_new${NC}"
+        echo -e "  ${TEAL}⏭️  Já existiam (puladas)       :${NC} ${BOLD}$already_downloaded${NC}"
+        echo -e "  ${RED}❌ Falhas                    :${NC} ${BOLD}$failed${NC}"
     else
         echo -e "  ${GREEN}✅ Baixados com sucesso   :${NC} ${BOLD}$success_new${NC}"
         echo -e "  ${TEAL}⏭️  Já existiam (pulados)  :${NC} ${BOLD}$already_downloaded${NC}"
@@ -1412,49 +1444,69 @@ download_gallery() {
 download_transcript() {
     local url="$1"
     local dest="${2:-$DEFAULT_DEST_TRANSCRIPT}"
+    local is_batch="${3:-false}"
     [ -z "$dest" ] && dest="/mnt/dados/05_Midias_Design_e_Criacao/Videos/Transcrições"
     [ ! -d "/mnt/dados" ] && dest="$HOME/Videos/Transcrições"
 
     mkdir -p "$dest"
 
-    echo -e "${MAUVE}🤖 Conectando e obtendo transcrição limpa para IA...${NC}"
-    local title
-    title=$(yt-dlp --get-title "$url" 2>/dev/null | head -n1 || echo "Transcricao")
-    local uploader
-    uploader=$(yt-dlp --print "%(uploader,channel)s" "$url" 2>/dev/null | head -n1 || echo "Canal")
+    [ "$is_batch" != true ] && echo -e "${MAUVE}🤖 Conectando e obtendo transcrição limpa para IA...${NC}"
 
     local tmp_dir
     tmp_dir=$(mktemp -d "/tmp/dl_trans_XXXXXX")
     local out_tpl="${tmp_dir}/sub.%(ext)s"
 
-    # 1. Tentativa anônima com sub-formatos abrangentes
-    yt-dlp \
+    # 1. Execução única ultrarrápida: extrai título, canal e baixa legendas em 1 única conexão (3x mais rápido)
+    local meta_output
+    meta_output=$(yt-dlp \
         --skip-download \
+        --no-simulate \
         --write-auto-subs \
         --write-subs \
         --sub-lang "pt-orig,pt,pt-BR,pt-PT,en-orig,en,en-US,es" \
         --sub-format "vtt/srt/best" \
+        --print "METATITLE:%(title)s" \
+        --print "METAAUTHOR:%(uploader,channel)s" \
         -o "$out_tpl" \
         --no-warnings \
         --ignore-errors \
-        "$url" >/dev/null 2>&1 || true
+        "$url" 2>/dev/null || true)
+
+    local title
+    title=$(echo "$meta_output" | grep "^METATITLE:" | head -n1 | sed 's/^METATITLE://' || true)
+    local uploader
+    uploader=$(echo "$meta_output" | grep "^METAAUTHOR:" | head -n1 | sed 's/^METAAUTHOR://' || true)
+    [ -z "$title" ] && title="Transcricao"
+    [ -z "$uploader" ] && uploader="Canal"
 
     # 2. Se nenhuma legenda foi baixada, tenta com cookies do Brave
     local sub_count
     sub_count=$(find "$tmp_dir" -type f \( -name "*.vtt" -o -name "*.srt" \) 2>/dev/null | wc -l)
     if [ "$sub_count" -eq 0 ]; then
-        echo -e "${YELLOW}⚠️ Nenhuma legenda na tentativa inicial. Tentando com cookies do Brave...${NC}"
-        yt-dlp \
+        [ "$is_batch" != true ] && echo -e "${YELLOW}⚠️ Nenhuma legenda na tentativa inicial. Tentando com cookies do Brave...${NC}"
+        local meta_fb
+        meta_fb=$(yt-dlp \
             --cookies-from-browser brave \
             --skip-download \
+            --no-simulate \
             --write-auto-subs \
             --write-subs \
             --sub-lang "pt-orig,pt,pt-BR,pt-PT,en-orig,en,en-US,es" \
             --sub-format "vtt/srt/best" \
+            --print "METATITLE:%(title)s" \
+            --print "METAAUTHOR:%(uploader,channel)s" \
             -o "$out_tpl" \
             --no-warnings \
             --ignore-errors \
-            "$url" >/dev/null 2>&1 || true
+            "$url" 2>/dev/null || true)
+        if [ "$title" == "Transcricao" ]; then
+            local fb_title
+            fb_title=$(echo "$meta_fb" | grep "^METATITLE:" | head -n1 | sed 's/^METATITLE://' || true)
+            local fb_uploader
+            fb_uploader=$(echo "$meta_fb" | grep "^METAAUTHOR:" | head -n1 | sed 's/^METAAUTHOR://' || true)
+            [ -n "$fb_title" ] && title="$fb_title"
+            [ -n "$fb_uploader" ] && uploader="$fb_uploader"
+        fi
     fi
 
     # Seleciona o melhor arquivo de legenda baixado (priorizando pt-orig, pt, en)
@@ -1584,8 +1636,9 @@ with open(txt_out, "w", encoding="utf-8") as f:
     f.write(body + "\n")
 ' "$best_sub" "$title" "$uploader" "$url" "$date_now" "$md_output"
 
+    # Copia para área de transferência APENAS se não for em lote
     local txt_output="${md_output%.*}.txt"
-    if [ -f "$txt_output" ]; then
+    if [ "$is_batch" != true ] && [ -f "$txt_output" ]; then
         if command -v wl-copy >/dev/null 2>&1; then
             cat "$txt_output" | wl-copy
         elif command -v xclip >/dev/null 2>&1; then
@@ -1595,23 +1648,28 @@ with open(txt_out, "w", encoding="utf-8") as f:
 
     rm -rf "$tmp_dir"
 
-    echo -e "\n${GREEN}${BOLD}┌──────────────────────────────────────────────────────────────┐${NC}"
-    echo -e "${GREEN}${BOLD}│  ✅ TRANSCRIÇÃO LIMPA EXTRAÍDA COM SUCESSO!                  │${NC}"
-    echo -e "${GREEN}${BOLD}└──────────────────────────────────────────────────────────────┘${NC}"
-    echo -e "  ${BLUE}🎬 Título  :${NC} ${BOLD}${title}${NC}"
-    echo -e "  ${BLUE}👤 Canal   :${NC} ${uploader}"
-    echo -e "  ${BLUE}📄 Arquivo :${NC} ${md_output}"
-    echo -e "  ${PEACH}📋 STATUS  : Copiada para o Clipboard (pronto para colar na IA)${NC}\n"
+    if [ "$is_batch" != true ]; then
+        echo -e "\n${GREEN}${BOLD}┌──────────────────────────────────────────────────────────────┐${NC}"
+        echo -e "${GREEN}${BOLD}│  ✅ TRANSCRIÇÃO LIMPA EXTRAÍDA COM SUCESSO!                  │${NC}"
+        echo -e "${GREEN}${BOLD}└──────────────────────────────────────────────────────────────┘${NC}"
+        echo -e "  ${BLUE}🎬 Título  :${NC} ${BOLD}${title}${NC}"
+        echo -e "  ${BLUE}👤 Canal   :${NC} ${uploader}"
+        echo -e "  ${BLUE}📄 Arquivo :${NC} ${md_output}"
+        echo -e "  ${PEACH}📋 STATUS  : Copiada para o Clipboard (pronto para colar na IA)${NC}\n"
 
-    # Exibe preview dos primeiros 400 caracteres
-    if [ -f "$md_output" ]; then
-        echo -e "${SUBTEXT}Prévia da transcrição limpa:${NC}"
-        echo -e "${TEXT}$(tail -n +10 "$md_output" | head -n 8)${NC}"
-        echo -e "${SUBTEXT}... (continua no arquivo e na área de transferência)${NC}\n"
+        # Exibe preview dos primeiros 400 caracteres
+        if [ -f "$md_output" ]; then
+            echo -e "${SUBTEXT}Prévia da transcrição limpa:${NC}"
+            echo -e "${TEXT}$(tail -n +10 "$md_output" | head -n 8)${NC}"
+            echo -e "${SUBTEXT}... (continua no arquivo e na área de transferência)${NC}\n"
+        fi
+
+        log_history "$title [Transcricao IA]" "$url" "$md_output" "TRANSCRIPT"
+        notify_completion "$title [Transcrição IA]" "$dest" "$md_output"
+    else
+        log_history "$title [Transcricao IA]" "$url" "$md_output" "TRANSCRIPT"
+        echo -e "   ${BLUE}🎬 Título  :${NC} ${BOLD}${title}${NC}"
     fi
-
-    log_history "$title [Transcricao IA]" "$url" "$md_output" "TRANSCRIPT"
-    notify_completion "$title [Transcrição IA]" "$dest" "$md_output"
 }
 
 # ------------------------------------------------------------------------------
