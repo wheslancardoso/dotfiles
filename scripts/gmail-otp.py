@@ -204,67 +204,88 @@ def fetch_account_otps(account_info):
         ctx = ssl.create_default_context()
         mail = imaplib.IMAP4_SSL("imap.gmail.com", 993, ssl_context=ctx, timeout=7)
         mail.login(email_addr, pwd)
-        mail.select("INBOX", readonly=True)
-
-        # Search recent emails (last 10-15 messages)
-        status, search_data = mail.search(None, "ALL")
-        if status != "OK" or not search_data[0]:
+        status, count_data = mail.select("INBOX", readonly=True)
+        if status != "OK" or not count_data or not count_data[0]:
             mail.logout()
             return []
 
-        all_ids = search_data[0].split()
-        # Take the most recent 12 emails
-        recent_ids = all_ids[-12:]
-        recent_ids.reverse()  # Newest first
+        total_msgs = int(count_data[0].decode('utf-8', errors='ignore'))
+        if total_msgs == 0:
+            mail.logout()
+            return []
 
-        for msg_id in recent_ids:
-            try:
-                res, msg_data = mail.fetch(msg_id, "(RFC822)")
-                if res != "OK" or not msg_data:
-                    continue
+        # ⚡ TURBO INSTANT RANGE: Skip SEARCH entirely! Direct fetch of last 6 messages
+        start_seq = max(1, total_msgs - 5)
+        seq_range = f"{start_seq}:{total_msgs}"
+        res, headers_data = mail.fetch(seq_range, '(BODY.PEEK[HEADER.FIELDS (SUBJECT FROM DATE)])')
 
-                raw_email = msg_data[0][1]
-                msg = email.message_from_bytes(raw_email)
 
-                subject = decode_mime_text(msg.get("Subject", ""))
-                from_header = decode_mime_text(msg.get("From", ""))
-                sender_name = clean_sender_name(from_header)
-                date_str = msg.get("Date", "")
-
-                # Quick relevance filter: Does Subject or Sender match verification keywords?
-                is_otp_candidate = bool(RE_SUBJECT_MATCH.search(subject) or RE_SUBJECT_MATCH.search(from_header))
-                
-                html_body, text_body = extract_body(msg)
-
-                # Even if subject didn't match, body might be a verification email
-                if not is_otp_candidate:
-                    if RE_SUBJECT_MATCH.search(text_body[:500]) or RE_SUBJECT_MATCH.search(html_body[:1000]):
-                        is_otp_candidate = True
-
-                if not is_otp_candidate:
-                    continue
-
-                code = extract_otp(subject, html_body, text_body)
-                if code:
-                    # Parse date timestamp for accurate sorting
-                    ts = 0
+        candidates = []
+        if res == "OK":
+            for item in headers_data:
+                if isinstance(item, tuple):
                     try:
-                        date_tuple = email.utils.parsedate_to_datetime(date_str)
-                        ts = date_tuple.timestamp()
+                        msg_id = item[0].split()[0]
+                        hmsg = email.message_from_bytes(item[1])
+                        subject = decode_mime_text(hmsg.get("Subject", ""))
+                        from_header = decode_mime_text(hmsg.get("From", ""))
+                        date_str = hmsg.get("Date", "")
+                        
+                        # Fast relevance check on headers
+                        is_relevant = bool(RE_SUBJECT_MATCH.search(subject) or RE_SUBJECT_MATCH.search(from_header))
+                        candidates.append((msg_id, subject, from_header, date_str, is_relevant))
                     except Exception:
                         pass
 
+        # Sort candidates newest first
+        candidates.reverse()
+
+        # Prioritize relevant emails, then check others if needed
+        ordered_to_inspect = [c for c in candidates if c[4]] + [c for c in candidates if not c[4]]
+
+        for msg_id, subject, from_header, date_str, is_candidate in ordered_to_inspect:
+            try:
+                # First check if the code is already right there in the Subject!
+                code_in_subject = extract_otp(subject, "", "")
+                sender_name = clean_sender_name(from_header)
+
+                ts = 0
+                try:
+                    date_tuple = email.utils.parsedate_to_datetime(date_str)
+                    ts = date_tuple.timestamp()
+                except Exception:
+                    pass
+
+                if code_in_subject:
                     results.append({
                         "account": name,
                         "email": email_addr,
                         "service": sender_name,
                         "subject": subject,
-                        "code": code,
+                        "code": code_in_subject,
                         "timestamp": ts,
                         "date_str": date_str
                     })
-                    # Found the latest code for this account, continue checking or break if sufficient
-                    if len(results) >= 2:
+                    break
+
+                # If not in subject, fetch the body for this specific candidate
+                res_body, msg_body_data = mail.fetch(msg_id, "(RFC822)")
+                if res_body == "OK" and msg_body_data:
+                    raw_email = msg_body_data[0][1]
+                    msg = email.message_from_bytes(raw_email)
+                    html_body, text_body = extract_body(msg)
+
+                    code = extract_otp(subject, html_body, text_body)
+                    if code:
+                        results.append({
+                            "account": name,
+                            "email": email_addr,
+                            "service": sender_name,
+                            "subject": subject,
+                            "code": code,
+                            "timestamp": ts,
+                            "date_str": date_str
+                        })
                         break
             except Exception:
                 continue
