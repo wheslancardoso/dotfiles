@@ -10,6 +10,7 @@
 ```
 ~/dotfiles/docs/
 ├── 💻 DESENVOLVIMENTO & POWER USER
+│   ├── [CHECKLIST_SISTEMA_E_RECURSOS_MESTRE.md](./CHECKLIST_SISTEMA_E_RECURSOS_MESTRE.md) # 📋 Checklist Mestre: Todos os superpoderes, scripts e otimizações
 │   ├── [GUIA_COMFORT_ZERO_ATRITO_SENIOR.md](./GUIA_COMFORT_ZERO_ATRITO_SENIOR.md) # 🧘 Setup Senior: Zero atritos, Bluetooth/Wi-Fi, Spotify e Manutenção
 │   ├── [GUIA_MEDIA_DOWNLOADER_UNIVERSAL.md](./GUIA_MEDIA_DOWNLOADER_UNIVERSAL.md) # 📥 Downloader Universal: YouTube, Spotify, TikTok, 1800+ sites e spotDL
 │   ├── [GUIA_POWERUSER_DEV.md](./GUIA_POWERUSER_DEV.md)           # Zero atritos, Dadbod SQL, Kulala REST, Surround
@@ -54,6 +55,7 @@
 
 | Documento | Foco Principal | Quando Consultar? |
 |---|---|---|
+| [**CHECKLIST_SISTEMA_E_RECURSOS_MESTRE.md**](./CHECKLIST_SISTEMA_E_RECURSOS_MESTRE.md) | Inventário completo de todos os recursos, scripts, keybinds e otimizações do sistema | Para ter uma visão panorâmica de tudo que o setup possui de interessante |
 | [**GUIA_COMFORT_ZERO_ATRITO_SENIOR.md**](./GUIA_COMFORT_ZERO_ATRITO_SENIOR.md) | Ergonomia máxima, Bluetooth/Wi-Fi rápido, Spotify e faxina Arch | O playbook supremo do conforto, hiperfoco e zero atritos |
 | [**GUIA_MEDIA_DOWNLOADER_UNIVERSAL.md**](./GUIA_MEDIA_DOWNLOADER_UNIVERSAL.md) | Downloader Universal Apex (YouTube, Spotify, cortes, GIFs, MPRIS) | Para baixar e arquivar qualquer mídia sem abrir navegadores |
 | [**GUIA_POWERUSER_DEV.md**](./GUIA_POWERUSER_DEV.md) | Eliminação de microatritos, Surround, Dadbod SQL, Kulala REST, Diffview | No dia a dia de código para substituir ferramentas pesadas de IDE |
