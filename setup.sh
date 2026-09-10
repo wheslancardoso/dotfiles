@@ -432,6 +432,7 @@ apply_dotfiles() {
         ln -sf "$DOTFILES_DIR/home/dot_config/mpv/input.conf" "$HOME/.config/mpv/input.conf"
         [ -d "$DOTFILES_DIR/home/dot_config/mpv/scripts/uosc" ] && ln -sfn "$DOTFILES_DIR/home/dot_config/mpv/scripts/uosc" "$HOME/.config/mpv/scripts/uosc"
         [ -d "$DOTFILES_DIR/home/dot_config/mpv/shaders/Anime4K" ] && ln -sfn "$DOTFILES_DIR/home/dot_config/mpv/shaders/Anime4K" "$HOME/.config/mpv/shaders/Anime4K"
+        [ -d "$DOTFILES_DIR/home/dot_config/mpv/shaders/Cinema" ] && ln -sfn "$DOTFILES_DIR/home/dot_config/mpv/shaders/Cinema" "$HOME/.config/mpv/shaders/Cinema"
         [ -d "$DOTFILES_DIR/home/dot_config/mpv/fonts" ] && ln -sfn "$DOTFILES_DIR/home/dot_config/mpv/fonts" "$HOME/.config/mpv/fonts"
         for s in "$DOTFILES_DIR/home/dot_config/mpv/scripts"/*.lua; do
             [ -f "$s" ] && ln -sf "$s" "$HOME/.config/mpv/scripts/$(basename "$s")"

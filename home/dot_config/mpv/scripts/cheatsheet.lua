@@ -54,8 +54,9 @@ local function build_hud_text()
 
         "{\\b1\\1c&H0089B4FA&}🔊 ÁUDIO, VÍDEO & CONFORTO:{\\b0\\1c&H00BAC2DE&}\\N",
         "  • {\\b1\\1c&H00A6E3A1&}C{\\b0} (Shift + C) : {\\b1}✂️ Dynamic Crop{\\b0} (Corte automático de barras pretas)\\N",
+        "  • {\\b1\\1c&H00A6E3A1&}Ctrl + 4 / 5{\\b0} : {\\b1}🎬 Cinema IA (FSRCNNX){\\b0} (4: Máxima Fidelidade 16-Core, 5: Rápido 8-Core)\\N",
         "  • {\\b1\\1c&H00A6E3A1&}Ctrl + 1/2/3{\\b0} : {\\b1}✨ Anime4K Shaders{\\b0} (1: Linhas HQ, 2: Suave/Antigo, 3: Denoise)\\N",
-        "  • {\\b1\\1c&H00A6E3A1&}Ctrl + 0{\\b0} : Desativar Anime4K Shaders (Voltar à fidelidade nativa)\\N",
+        "  • {\\b1\\1c&H00A6E3A1&}Ctrl + 0{\\b0} : Desativar Shaders de IA (Voltar à fidelidade nativa)\\N",
         "  • {\\b1\\1c&H00A6E3A1&}Ctrl + q{\\b0} : {\\b1}📺 Menu de Qualidade{\\b0} (Troca resolução em streams do YouTube/HLS)\\N",
         "  • {\\b1\\1c&H00A6E3A1&}Ctrl + r{\\b0} : Recarregar stream mantendo a posição exata\\N",
         "  • {\\b1\\1c&H00A6E3A1&}n{\\b0} : {\\b1}Modo Noturno{\\b0} (Compressor dinâmico: vozes nítidas sem explosão alta)\\N",
