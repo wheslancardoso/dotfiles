@@ -334,13 +334,50 @@ def main():
         # Another instance is already running right now
         sys.exit(0)
 
-    if not os.path.isfile(CONFIG_PATH):
-        print(f"Configuração não encontrada em: {CONFIG_PATH}")
-        notify("Ghost OTP Erro", "Arquivo credentials.json não encontrado.", "critical")
+    # Multi-path search for credentials: ~/.config, /mnt/dados, or ~/gdrive
+    actual_config = None
+    possible_paths = [
+        CONFIG_PATH,
+        "/mnt/dados/01_Pessoal_e_Vida/01.3_Contas_e_Financas/gmail-otp-credentials.json",
+        os.path.expanduser("~/gdrive/01_Pessoal_e_Vida/01.3_Contas_e_Financas/gmail-otp-credentials.json"),
+    ]
+
+    for p in possible_paths:
+        if os.path.isfile(p):
+            actual_config = p
+            # If found in /mnt/dados or gdrive but not in ~/.config, auto-restore it!
+            if p != CONFIG_PATH:
+                try:
+                    os.makedirs(os.path.dirname(CONFIG_PATH), exist_ok=True)
+                    import shutil
+                    shutil.copy2(p, CONFIG_PATH)
+                    os.chmod(CONFIG_PATH, 0o600)
+                except Exception:
+                    pass
+            break
+
+    if not actual_config:
+        # If in terminal and user passed --setup or running interactively
+        if sys.stdin.isatty():
+            print("\n[Ghost OTP] Nenhuma credencial encontrada.")
+            print("Caminhos verificados:")
+            for p in possible_paths:
+                print(f"  - {p}")
+            print("\nPara configurar, adicione suas credenciais em ~/.config/gmail-otp/credentials.json")
+            print("Exemplo:")
+            print('''[
+  {
+    "name": "Principal",
+    "email": "seu_email@gmail.com",
+    "pass": "xxxx xxxx xxxx xxxx"
+  }
+]''')
+        notify("Ghost OTP", "Nenhuma credencial configurada. Execute 'otp --setup' no terminal.", "normal")
         sys.exit(1)
 
-    with open(CONFIG_PATH, "r") as f:
+    with open(actual_config, "r") as f:
         accounts = json.load(f)
+
 
 
     # Concurrently fetch from all accounts
