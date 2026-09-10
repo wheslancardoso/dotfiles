@@ -26,11 +26,14 @@ LOCK_FILE = "/tmp/gmail_otp.lock"
 OTP_SUBJECT_KEYWORDS = [
     r'c[oó]digo', r'code', r'verification', r'verificação', r'verificacao',
     r'security', r'segurança', r'seguranca', r'pin', r'token', r'senha tempor[aá]ria',
-    r'confirma[cç][aã]o', r'confirm', r'one-time', r'otp', r'2fa', r'two-factor',
-    r'autentica[cç][aã]o', r'login', r'acesso', r'entrar', r'redefini[cç][aã]o',
+    r'confirma[cç][aã]o\s+de\s+(?:conta|e-?mail|acesso|cadastro|seguran[cç]a|identidade)',
+    r'confirm\s+your\s+(?:account|email|identity|login)',
+    r'one-time', r'otp', r'2fa', r'two-factor',
+    r'autentica[cç][aã]o', r'authentication', r'redefini[cç][aã]o',
     r'password reset', r'valida[cç][aã]o', r'validate'
 ]
 RE_SUBJECT_MATCH = re.compile('|'.join(OTP_SUBJECT_KEYWORDS), re.IGNORECASE)
+
 
 # Patterns for clean OTP extraction
 RE_CODE_CONTEXT = [
@@ -152,20 +155,35 @@ def extract_otp(subject, html_content, text_content):
                 if code not in BLACKLIST_PATTERNS and 4 <= len(code) <= 8:
                     return code
 
-    # Search in plain text content
+    # Search in plain text or rendered HTML text
+    # Convert HTML into clean text lines (strip script/style first)
+    extracted_text_sources = []
     if text_content:
+        extracted_text_sources.append(text_content)
+    if html_content:
+        no_scripts = re.sub(r'<(script|style)[^>]*?>.*?</\1>', '', html_content, flags=re.DOTALL|re.IGNORECASE)
+        clean_html_text = re.sub(r'<[^>]+>', '\n', no_scripts)
+        clean_html_text = html.unescape(clean_html_text)
+        extracted_text_sources.append(clean_html_text)
+
+    for body_text in extracted_text_sources:
         for pat in RE_CODE_CONTEXT:
-            m = pat.search(text_content)
+            m = pat.search(body_text)
             if m:
                 code = m.group(1).replace('-', '').replace(' ', '')
                 if code not in BLACKLIST_PATTERNS and 4 <= len(code) <= 8:
                     return code
 
-        # Search for lines containing isolated codes near OTP trigger phrases
-        lines = [line.strip() for line in text_content.splitlines() if line.strip()]
+        # Search for isolated lines containing solely the code (common in modern responsive emails like OpenAI, Discord)
+        lines = [line.strip() for line in body_text.splitlines() if line.strip()]
+        for line in lines:
+            if re.match(r'^[0-9]{4,8}$', line):
+                if line not in BLACKLIST_PATTERNS:
+                    return line
+
+        # Search surrounding lines near OTP trigger phrases
         for i, line in enumerate(lines):
             if RE_SUBJECT_MATCH.search(line):
-                # Search surrounding lines (within 3 lines)
                 window = lines[max(0, i-2):min(len(lines), i+3)]
                 for w_line in window:
                     m = re.search(r'\b([0-9]{4,8})\b', w_line)
