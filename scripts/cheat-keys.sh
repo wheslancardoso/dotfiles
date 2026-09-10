@@ -41,6 +41,7 @@ SUPER + SHIFT + E	Hyprland	Explorador de Arquivos Yazi (Float)	Abre o Yazi em um
 SUPER + D	Hyprland	Menu de Aplicativos (Launcher)	Abre o lançador de aplicativos Rofi para pesquisar qualquer programa.
 SUPER + V	Hyprland	Histórico Rápido do Clipboard (2ms)	Abre o histórico de textos copiados do Cliphist via Rofi para colar com 1 toque.
 ALT + V	Hyprland	Área de Transferência Avançada (CopyQ)	Painel de clipboard com abas, imagens salvas e histórico permanente.
+SUPER + O	Hyprland	Ghost OTP (Copiar Código 2FA Gmail)	Busca códigos de verificação nos seus Gmails e copia direto pro Ctrl+V com notificação.
 SUPER + M	Hyprland	Spotify Dropdown Scratchpad	Desce o Spotify em janela flutuante com blur Catppuccin e esconde ao teclar de novo.
 SUPER + CTRL + Space	Hyprland	Play / Pause Global de Mídia	Pausa ou continua qualquer áudio/vídeo rodando (Amberol, Spotify, navegador).
 SUPER + CTRL + ]	Hyprland	Próxima Faixa de Mídia	Avança para a próxima música em reprodução.

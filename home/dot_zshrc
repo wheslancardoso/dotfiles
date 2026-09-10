@@ -249,6 +249,7 @@ alias-help() {
    turbo          -> Ativa 10 downloads paralelos e compilação multi-core
 
  ☁️  NUVEM, MÍDIA & PRODUTIVIDADE
+   otp / otp-menu -> Puxa código 2FA/OTP dos Gmails pro Ctrl+V na hora
    gdrive         -> Gerencia o Google Drive 5TB virtual (mount/unmount/status)
    brave-sync     -> Copia o código de 25 palavras do Brave Sync pro clipboard
    dl [url]       -> Downloader universal de vídeos, músicas e clips (yt-dlp)
@@ -336,6 +337,11 @@ alias cme='chezmoi cd'
 # 👑 Vim King & Ajuda Interativa
 alias vk='$HOME/dotfiles/scripts/vim-king.sh'
 alias vim-king='$HOME/dotfiles/scripts/vim-king.sh'
+
+# 🔑 Ghost OTP: Copia códigos de verificação 2FA direto do Gmail para o Clipboard
+alias otp='$HOME/dotfiles/scripts/gmail-otp.py'
+alias otp-menu='$HOME/dotfiles/scripts/gmail-otp.py --fzf'
+
 
 # 🚀 Vibe Coding & Layouts Zellij
 alias vibe='zellij --layout vibe'
