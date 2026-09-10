@@ -478,6 +478,7 @@ apply_dotfiles() {
         (cd "$DOTFILES_DIR/scripts/stream-extractor" && npm install --omit=dev --silent 2>/dev/null || true)
     fi
     [ -f "$DOTFILES_DIR/scripts/audio-preset-switch.sh" ] && ln -sf "$DOTFILES_DIR/scripts/audio-preset-switch.sh" "$HOME/.local/bin/audio-preset-switch"
+    [ -f "$DOTFILES_DIR/scripts/gmail-otp.py" ] && ln -sf "$DOTFILES_DIR/scripts/gmail-otp.py" "$HOME/.local/bin/otp"
     if [ -f "/opt/abdownloadmanager/bin/ABDownloadManager" ]; then
         sudo ln -sf /opt/abdownloadmanager/bin/ABDownloadManager /usr/local/bin/abdownloadmanager 2>/dev/null || true
         sudo ln -sf /opt/abdownloadmanager/bin/ABDownloadManager /usr/local/bin/ab-download-manager 2>/dev/null || true
@@ -631,6 +632,16 @@ setup_extras() {
         hyprpm add https://github.com/VirtCode/hypr-dynamic-cursors 2>/dev/null || true
         hyprpm enable dynamic-cursors 2>/dev/null || true
         ok "Plugin hypr-dynamic-cursors configurado e habilitado no Hyprland."
+    fi
+
+    # Restauração automática das credenciais do Ghost OTP da partição de dados (/mnt/dados)
+    local otp_backup="/mnt/dados/01_Pessoal_e_Vida/01.3_Contas_e_Financas/gmail-otp-credentials.json"
+    if [ -f "$otp_backup" ] && [ ! -f "$HOME/.config/gmail-otp/credentials.json" ]; then
+        info "Restaurando credenciais do Ghost OTP da partição de dados..."
+        mkdir -p "$HOME/.config/gmail-otp" && chmod 700 "$HOME/.config/gmail-otp"
+        cp -f "$otp_backup" "$HOME/.config/gmail-otp/credentials.json"
+        chmod 600 "$HOME/.config/gmail-otp/credentials.json"
+        ok "Credenciais do Ghost OTP restauradas automaticamente!"
     fi
 
     ok "Associações padrão e extras configurados."
@@ -1036,6 +1047,7 @@ echo -e "  - ${BLUE}vesktop${NC}              : Discord com compartilhamento de 
 echo -e "  - ${BLUE}easyeffects${NC}          : Filtro de ruído por IA para microfone (PipeWire)"
 echo -e "  - ${BLUE}obs${NC}                  : OBS Studio com gravação NVENC (NVIDIA RTX 5060)"
 echo -e "  - ${BLUE}continuar / recentes${NC} : Cockpit 'Continuar Assistindo' (Séries e filmes no segundo exato)"
+echo -e "  - ${BLUE}otp / SUPER + O${NC}      : Puxa código 2FA do Gmail direto pro Ctrl+V"
 echo -e "  - ${BLUE}fix-pendrive${NC}         : Desbloqueia e repara pen-drives NTFS/FAT32/exFAT instantaneamente"
 echo -e "  - ${BLUE}okular / celluloid${NC}   : Melhor leitor de PDF e melhor reprodutor de vídeo"
 echo -e "  - ${BLUE}onlyoffice${NC}           : Suíte de escritório compatível 100% com Word, Excel e PowerPoint"
