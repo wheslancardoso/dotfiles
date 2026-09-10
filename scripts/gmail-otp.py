@@ -14,10 +14,13 @@ import imaplib
 import re
 import html
 import subprocess
+import fcntl
 from datetime import datetime, timezone
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 CONFIG_PATH = os.path.expanduser("~/.config/gmail-otp/credentials.json")
+LOCK_FILE = "/tmp/gmail_otp.lock"
+
 
 # Keywords in Subject or Snippets that strongly indicate a verification/OTP email
 OTP_SUBJECT_KEYWORDS = [
@@ -275,6 +278,8 @@ def notify(title, message, urgency="normal"):
             "-a", "Ghost OTP",
             "-u", urgency,
             "-i", "mail-mark-read",
+            "-r", "999888",
+            "-t", "4000",
             title,
             message
         ], check=False)
@@ -282,6 +287,14 @@ def notify(title, message, urgency="normal"):
         pass
 
 def main():
+    # Process Lock: Prevent duplicate runs if user double-presses the shortcut
+    try:
+        lock_fd = open(LOCK_FILE, "w")
+        fcntl.flock(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except (BlockingIOError, IOError):
+        # Another instance is already running right now
+        sys.exit(0)
+
     if not os.path.isfile(CONFIG_PATH):
         print(f"Configuração não encontrada em: {CONFIG_PATH}")
         notify("Ghost OTP Erro", "Arquivo credentials.json não encontrado.", "critical")
@@ -289,6 +302,7 @@ def main():
 
     with open(CONFIG_PATH, "r") as f:
         accounts = json.load(f)
+
 
     # Concurrently fetch from all accounts
     all_codes = []
