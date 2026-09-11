@@ -51,7 +51,10 @@
   },
   "regras_palavras_chave": [
     {
-      "termos": ["tce", "tce-go", "tribunal de contas", "posse tce", "protocolo de guerra"],
+      "termos": [
+        "tce", "tce-go", "tribunal de contas", "posse tce", "protocolo de guerra", "fcc", "caderno de questoes",
+        "zachman", "togaf", "dama", "dmbok", "eda", "olap", "lakehouse", "scrum", "kanban", "invest", "itil", "cobit", "cmmi", "mps.br", "bpmn", "bdat", "peti", "pdti"
+      ],
       "destino": "02_Estudos_e_Concursos/02.1_TCE-GO"
     },
     {
@@ -59,7 +62,7 @@
       "destino": "02_Estudos_e_Concursos/02.2_Senador_Canedo"
     },
     {
-      "termos": ["slide", "slides", "materialatividade", "zachman", "togaf", "dama", "dmbok", "eda", "olap", "etl", "lakehouse"],
+      "termos": ["slide", "slides", "materialatividade", "certificacao", "alura", "udemy", "dio"],
       "destino": "02_Estudos_e_Concursos/02.3_Cursos_e_Certificacoes"
     },
     {

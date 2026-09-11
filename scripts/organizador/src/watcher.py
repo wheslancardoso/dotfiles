@@ -47,13 +47,32 @@ class DirectoryWatcher:
         self._running = False
         self._known_sizes: Dict[Path, Tuple[int, float]] = {}
 
+    def is_file_open_by_process(self, file_path: Path) -> bool:
+        """Verifica de forma forense no kernel se algum processo (navegador, downloader) ainda está com o arquivo aberto."""
+        try:
+            res = subprocess.run(["fuser", "-s", str(file_path)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            return res.returncode == 0
+        except Exception:
+            return False
+
     def is_file_settled(self, file_path: Path) -> bool:
         """
         Verifica se um arquivo terminou de ser copiado/baixado comparando
-        seu tamanho e timestamp de modificação ao longo do intervalo de acomodação.
+        seu tamanho, descritores de arquivo abertos e tempo de acomodação.
         """
         try:
+            if not file_path.exists():
+                return False
+
+            # 1. Se o kernel diz que algum processo ainda está com o arquivo aberto, NÃO está pronto
+            if self.is_file_open_by_process(file_path):
+                return False
+
             current_size = file_path.stat().st_size
+            # 2. Arquivos de 0 bytes em triagem nunca são movidos automaticamente
+            if current_size == 0:
+                return False
+
             now = time.time()
 
             if file_path not in self._known_sizes:
