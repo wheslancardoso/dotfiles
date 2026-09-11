@@ -1,48 +1,47 @@
-/* ---- 💫 https://github.com/JaKooLit 💫 ---- */
-/* Main Config - For Keybinds generation */
+/* ---- Main Config - For Keybinds generation ---- */
 
 @import "~/.config/rofi/config.rasi"  
 
-
 /* ---- Mainbox ---- */
 mainbox {
-  children:
-    [ "inputbar", "message", "listview"];
+  children: [ "inputbar", "message", "listview" ];
 }
 
 /* ---- Entry ---- */
 entry {
   expand: true;
-  placeholder: " 🧮 Search Keybinds";
+  placeholder: " 🔍 Digite para buscar qualquer atalho ou comando (ex: copiar caminho, yazi, mpv, screenshot)...";
 }
 
-/* ---- Listview ---- */
+/* ---- Listview (1 Coluna Larga - Leitura Limpa sem Cortes) ---- */
 listview {
-  columns: 2;
-  lines: 8;
+  columns: 1;
+  lines: 10;
   fixed-height: false;
   scrollbar: true;
-  spacing: 6px;
+  spacing: 4px;
   cycle: true;
 }
 
 window {
-  width: 90%;
+  width: 85%;
   height: inherit;
 }
 
 /* ---- Elements ---- */
 element {
   orientation: horizontal;
+  padding: 8px 12px;
+  border-radius: 8px;
 }
 
 element-icon {
-  	size: 0%;
+  size: 0%;
 }
 
 element-text {
-    horizontal-align: 0.0;
-    vertical-align: 0.5;
-    margin: 0px;
-    padding: 0px;
+  horizontal-align: 0.0;
+  vertical-align: 0.5;
+  margin: 0px;
+  padding: 0px;
 }
