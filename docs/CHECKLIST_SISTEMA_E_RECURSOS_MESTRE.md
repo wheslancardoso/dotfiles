@@ -87,6 +87,9 @@
 - [x] **TecConcursos Scratchpad (`Super + T`):**
   - WebApp dedicado via Brave (`--app=https://www.tecconcursos.com.br`).
   - Proporção calibrada de **80% de largura por 88% de altura**, centralizado na tela para máxima legibilidade de questões.
+- [x] **Antigravity IDE & Suite de Agentes (`antigravity-ide`):**
+  - IDE nativa de inteligência artificial de próxima geração baseada em VS Code + motor de agentes autônomos.
+  - Planejamento, edição inline (`Ctrl + I`), multimodais e integração profunda de ferramentas de terminal.
 - [x] **Terminal Quake / Scratchpad de Apoio:**
   - Dropdown de terminal para tarefas rápidas de CLI sem necessidade de criar nova janela ou workspace.
 
@@ -131,6 +134,12 @@
 - [x] **Otimizações NVMe:**
   - Scheduler I/O configurado como `none` (bypass de overhead para SSDs NVMe Gen3/Gen4).
   - `fstrim.timer` ativo semanalmente para preservação das células NAND.
+- [x] **Brave GPU Turbo & Zero-Copy (Vulkan Backend):**
+  - Flags otimizadas em `~/.config/brave-flags.conf` com `--use-angle=vulkan`, `--enable-zero-copy` e `AcceleratedVideoDecodeLinuxGL`.
+  - Decodificação de vídeos (YouTube 4K60/1080p) e aceleração 2D Canvas rodando 100% no hardware da RTX 5060, com 0% a 1% de uso de CPU.
+- [x] **TCP BBR + FQ_Codel (Rede & Internet de Baixa Latência):**
+  - Algoritmo de controle de congestionamento `bbr` do Google ativo no kernel (`net.ipv4.tcp_congestion_control = bbr`).
+  - Fila `fq_codel` que previne *bufferbloat*, garantindo streams instantâneos e pings mínimos sem perda de pacotes.
 - [x] **Profile-Sync-Daemon (`psd`):**
   - O perfil do navegador Brave roda **100% carregado na memória RAM (tmpfs)**.
   - Escrita no disco reduzida em 90%, carregamento instantâneo de abas e histórico.
