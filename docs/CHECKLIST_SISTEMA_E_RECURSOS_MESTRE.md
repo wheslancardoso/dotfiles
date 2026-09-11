@@ -192,8 +192,12 @@
   - Alternância instantânea entre Caixas de Som e Headphone sem abrir painéis de controle.
 - [x] **Supressão de Ruído por IA (DeepFilterNet / EasyEffects):**
   - Filtro em tempo real para microfone eliminando ruídos de teclado mecânico, cliques e ruído ambiente no Discord/Vesktop.
-- [x] **Vesktop (Discord Wayland Nativo):**
-  - Compartilhamento de tela em 60fps com áudio do sistema funcionando perfeitamente em Wayland.
+- [x] **Hub Universal de Atalhos & Assistente IA (`SUPER + H` / `SUPER + /`):**
+  - Command Palette interativo estilo Raycast (1 coluna larga) com busca fuzzy (<1ms) de todos os atalhos do sistema (Yazi, MPV, Hyprland, LazyVim, Zellij, CLI) e botão direto de consulta com IA.
+- [x] **MPV Cinema & Streaming Turbo:**
+  - Fast seeking inteligente em streams do YouTube/Twitch com `hr-seek=default`, `cache-pause=no` e 2GB de buffer assíncrono na RAM sem travamentos.
+- [x] **Suíte Multiboot Ventoy & MediCat USB:**
+  - Ferramentas completas de recuperação, particionamento e instalador automatizado com suporte híbrido universal (UEFI Nativo + Legacy BIOS).
 
 ---
 
@@ -201,18 +205,22 @@
 
 | Atalho | Ação / Ferramenta |
 |---|---|
+| `Super + H` / `Super + /` | **Buscador Universal de Atalhos & IA** (Command Palette) |
 | `Super + Return` | Abrir Terminal Foot / Kitty |
-| `Super + Space` | Rofi Application Launcher |
+| `Super + Space` | Trocar Layout de Teclado (US-Intl / ABNT2) |
+| `Super + D` | Rofi Application Launcher |
+| `Super + E` | **Yazi File Manager** (Tiling) / `Super + Shift + E` (Popup) |
 | `Super + M` | **Spotify Scratchpad** (Dropdown) |
 | `Super + T` | **TecConcursos Scratchpad** (Dropdown 80%x88%) |
 | `Super + Shift + T` | **OCR God Mode** (Extrai texto + QR Code + Auto-Heal) |
 | `Super + Alt + T` | **OCR Tradutor** (Captura texto e traduz para PT-BR) |
-| `Super + V` | **CopyQ** (Histórico de Clipboard) |
+| `Super + V` | **Cliphist** (Histórico rápido 2ms) / `Alt + V` **CopyQ** |
 | `Super + Shift + P` | **Hyprpicker** (Conta-gotas / Color Picker) |
-| `Super + Shift + S` / `Print` | **Flameshot** (Screenshot seletivo) |
-| `Super + Shift + R` | **wf-recorder** (Gravar tela) |
+| `Super + Shift + S` / `Print` | **Flameshot** (Screenshot com anotações) |
+| `Super + Shift + R` | **wf-recorder** (Gravar tela em vídeo/GIF) |
 | `Super + Alt + G` | **Google Drive 5TB** (Montar via Rclone VFS) |
 | `Super + Alt + S` | **Ludusavi** (Sincronizar saves de jogos) |
+| `Super + Shift + A` | **Alternador de Áudio** (Caixas ↔ Fones) |
 | `Shift_R + F12` | **MangoHud** (Ativar/Desativar telemetria gamer) |
 
 ---
