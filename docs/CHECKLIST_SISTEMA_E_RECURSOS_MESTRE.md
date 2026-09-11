@@ -108,6 +108,14 @@
     - `yazi-ventoy.sh`: envio direto de ISOs para pendrive Ventoy.
     - `yazi-rsync.sh`: sincronização robusta com barra de progresso.
   - Pré-visualização de imagens, PDFs, vídeos, fontes e arquivos de código com syntax highlighting.
+- [x] **Suite de Compressão Multi-Thread Paralela (16 Threads):**
+  - **`pigz` (Parallel Gzip):** Substitui `gzip` usando todos os 16 threads do Ryzen para compactar e descompactar `.tar.gz` na velocidade máxima do NVMe.
+  - **`pbzip2` (Parallel Bzip2) & `pixz` (Parallel XZ):** Descompactação e compressão extrema paralela.
+  - Aliases ultrarrápidos no Shell: `tar-gz`, `tar-xz`, `tar-zst`, `gzip`, `gunzip`, `bzip2`, `xz`.
+- [x] **Utilitários de Diagnóstico & I/O Modernos:**
+  - **`duf`:** Visão gráfica e rápida de uso de disco (substitui o `df` clássico).
+  - **`gping`:** Ping com gráfico em tempo real de latência de rede.
+  - **`rsync-turbo` / `cp-safe` / `mv-safe`:** Cópia de arquivos com barra de progresso contínua, retomada automática e integridade garantida.
 
 ---
 

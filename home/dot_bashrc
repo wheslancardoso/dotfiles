@@ -90,6 +90,19 @@ alias cp-safe='rsync -ahP --inplace --info=progress2'
 alias mv-safe='rsync -ahP --inplace --remove-source-files --info=progress2'
 alias rsync-sync='rsync -auhP --inplace --info=progress2 --delete'
 
+# 🚀 Compressão & Descompressão Multi-Thread Paralela (16 Threads Ryzen)
+alias gzip='pigz -p 16'
+alias gunzip='pigz -d -p 16'
+alias bzip2='pbzip2 -p16'
+alias bunzip2='pbzip2 -d -p16'
+alias xz='pixz -p 16'
+alias unxz='pixz -d -p 16'
+alias tar-gz='tar -I pigz -cf'
+alias tar-xz='tar -I pixz -cf'
+alias tar-zst='tar -I "zstd -T16" -cf'
+alias df='duf'
+alias ping='gping'
+
 # 📦 Descompactador Universal (x arquivo.zip/tar/7z/rar)
 alias x='bash $HOME/dotfiles/scripts/yazi-archive.sh extract-sub'
 
