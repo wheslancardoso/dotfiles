@@ -3,7 +3,7 @@
 @import "~/.config/rofi/config.rasi"  
 
 configuration {
-  matching: "fuzzy";
+  matching: "normal";
   tokenize: true;
   normalize-match: true;
 }  
