@@ -140,6 +140,14 @@
 - [x] **TCP BBR + FQ_Codel (Rede & Internet de Baixa Latência):**
   - Algoritmo de controle de congestionamento `bbr` do Google ativo no kernel (`net.ipv4.tcp_congestion_control = bbr`).
   - Fila `fq_codel` que previne *bufferbloat*, garantindo streams instantâneos e pings mínimos sem perda de pacotes.
+- [x] **Linker Ultra-Rápido `mold`:**
+  - O linker paralelo mais rápido do mundo instalado nativamente (`mold`). Acelera a etapa final de linkagem em compilações C/C++, Rust e pacotes pesados usando todos os 16 threads do Ryzen 7.
+- [x] **Cache Inteligente de Compilações `ccache`:**
+  - Cache de 10GB ativo no `makepkg.conf` e ambiente dev. Recompilações e atualizações do AUR com poucas alterações terminam em questão de segundos.
+- [x] **Balanceamento de Interrupções de Hardware `irqbalance`:**
+  - Serviço ativo que distribui dinamicamente as interrupções de hardware (NVMe, GPU RTX 5060, Rede, USB) entre os 8 núcleos da CPU, eliminando gargalos no Core 0 e reduzindo latência de input.
+- [x] **Otimizações de I/O de Disco & USB Dirty Pages:**
+  - `vm.dirty_background_bytes = 64MB` e `vm.dirty_bytes = 256MB` configurados em `/etc/sysctl.d/99-anti-friction-limits.conf`. Evita congelamento de interface durante transferências pesadas e cópias em pendrives.
 - [x] **Profile-Sync-Daemon (`psd`):**
   - O perfil do navegador Brave roda **100% carregado na memória RAM (tmpfs)**.
   - Escrita no disco reduzida em 90%, carregamento instantâneo de abas e histórico.
