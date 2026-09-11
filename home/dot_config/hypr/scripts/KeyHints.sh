@@ -6,6 +6,11 @@
 # Atalho: SUPER + H (ou SUPER + SHIFT + H / SUPER + /)
 # ==============================================================================
 
+# Se cheat-keys.sh existir, dispara a busca interativa e rápida via Rofi
+if [ -x "$HOME/dotfiles/scripts/cheat-keys.sh" ]; then
+    exec "$HOME/dotfiles/scripts/cheat-keys.sh" --rofi "$@"
+fi
+
 BACKEND=wayland
 
 # Se o Cheat Sheet (yad) já estiver aberto, fecha imediatamente (toggle limpo) e sai
