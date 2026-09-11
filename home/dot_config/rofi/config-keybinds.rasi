@@ -2,6 +2,12 @@
 
 @import "~/.config/rofi/config.rasi"  
 
+configuration {
+  matching: "fuzzy";
+  tokenize: true;
+  normalize-match: true;
+}  
+
 /* ---- Mainbox ---- */
 mainbox {
   children: [ "inputbar", "message", "listview" ];

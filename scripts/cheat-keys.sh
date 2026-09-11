@@ -175,9 +175,9 @@ if [ "$MODE" = "rofi" ]; then
     theme_arg=(-theme "$HOME/.config/rofi/config-search.rasi")
   fi
 
-  # Renderiza a lista formatada
+  # Renderiza a lista formatada com suporte total a busca sem acentos (normalize-match)
   selected=$(generate_database | awk -F'\t' '{printf "%-26s │ %-14s │ %-45s │ %s\n", $1, $2, $3, $4}' | \
-    rofi -dmenu -i "${theme_arg[@]}" -p "🔍 Atalhos / Perguntar (Digite qualquer coisa):") || exit 0
+    rofi -dmenu -i -normalize-match -matching fuzzy "${theme_arg[@]}" -p "🔍 Atalhos / Perguntar (Digite qualquer coisa):") || exit 0
 
   if [ -z "$selected" ]; then
     exit 0
