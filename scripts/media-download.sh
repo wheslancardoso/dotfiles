@@ -2818,6 +2818,10 @@ main() {
                 SKIP_SPONSORS=true
                 shift
                 ;;
+            --priv|--vault|--secret)
+                exec "$HOME/.local/bin/apex-vault"
+                exit 0
+                ;;
             -p|--private)
                 FORCE_PRIVATE=true
                 shift
