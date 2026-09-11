@@ -36,11 +36,40 @@ class TestOrganizadorMaster(unittest.TestCase):
                 "00_inbox": "00_Inbox_Triagem",
                 "01_pessoal": "01_Pessoal_e_Vida",
                 "02_estudos": "02_Estudos_e_Concursos",
+                "05_design": "05_Design_Midia_e_Criacao",
             },
             "subpastas_padrao": {
                 "01_Pessoal_e_Vida": ["01.1_Identidade_e_Documentos", "01.2_Carreira_e_Curriculos"],
                 "02_Estudos_e_Concursos": ["02.1_TCE-GO"],
+                "05_Design_Midia_e_Criacao": ["05.4_Filmes_e_Series"],
             },
+            "regras_avancadas": [
+                {
+                    "id": "cadernos_regex",
+                    "prioridade": 100,
+                    "padroes_regex": ["^(0[1-9]|1[0-2])\\.\\d{2}"],
+                    "destino": "02_Estudos_e_Concursos/02.1_TCE-GO"
+                },
+                {
+                    "id": "tce_materias",
+                    "prioridade": 90,
+                    "termos": ["tce-go", "edital tce", "scrum", "cobit"],
+                    "destino": "02_Estudos_e_Concursos/02.1_TCE-GO"
+                },
+                {
+                    "id": "curriculos",
+                    "prioridade": 85,
+                    "termos": ["curriculo", "currículo"],
+                    "destino": "01_Pessoal_e_Vida/01.2_Carreira_e_Curriculos"
+                },
+                {
+                    "id": "filmes",
+                    "prioridade": 50,
+                    "extensoes": [".mp4", ".mkv", ".avi"],
+                    "termos": ["1080p", "720p", "bluray"],
+                    "destino": "05_Design_Midia_e_Criacao/05.4_Filmes_e_Series"
+                }
+            ],
             "regras_palavras_chave": [
                 {"termos": ["tce-go", "edital tce"], "destino": "02_Estudos_e_Concursos/02.1_TCE-GO"},
                 {"termos": ["curriculo", "currículo"], "destino": "01_Pessoal_e_Vida/01.2_Carreira_e_Curriculos"},
@@ -269,6 +298,37 @@ class TestOrganizadorMaster(unittest.TestCase):
         self.assertEqual(len(stale), 1)
         self.assertEqual(stale[0]["name"], "nota_fiscal_esquecida.pdf")
         self.assertGreaterEqual(stale[0]["age_days"], 10)
+
+    def test_v3_regex_caderno_classification(self):
+        caderno_file = self.test_dir / "04.01 - Ciclos de Vida e Metodologias Ageis.pdf"
+        dest = self.engine.classify_file(caderno_file)
+        self.assertIsNotNone(dest)
+        self.assertTrue("02.1_TCE-GO" in str(dest))
+
+        caderno_09 = self.test_dir / "09.12 - COBIT 2019 e Governanca.docx"
+        dest_09 = self.engine.classify_file(caderno_09)
+        self.assertIsNotNone(dest_09)
+        self.assertTrue("02.1_TCE-GO" in str(dest_09))
+
+    def test_v3_notebooklm_raw_ignored_in_inbox(self):
+        self.assertTrue(self.engine.should_ignore(Path("09.mp4")))
+        self.assertTrue(self.engine.should_ignore(Path("09 (1).mp4")))
+        self.assertTrue(self.engine.should_ignore(Path("04.m4a")))
+        self.assertTrue(self.engine.should_ignore(Path("10.wav")))
+        self.assertFalse(self.engine.should_ignore(Path("09.01 - Framework Zachman vs TOGAF (curto).mp4")))
+
+    def test_v3_media_safety_movie_tags(self):
+        # Vídeo com tag de filme/série -> Filmes_e_Series
+        movie_file = self.test_dir / "Inception_2010_1080p_bluray_x264.mkv"
+        dest_movie = self.engine.classify_file(movie_file)
+        self.assertIsNotNone(dest_movie)
+        self.assertTrue("05.4_Filmes_e_Series" in str(dest_movie))
+
+        # Vídeo de aula do TCE -> TCE-GO
+        tce_video = self.test_dir / "Aula_Scrum_TCE_GO_2026.mp4"
+        dest_tce = self.engine.classify_file(tce_video)
+        self.assertIsNotNone(dest_tce)
+        self.assertTrue("02.1_TCE-GO" in str(dest_tce))
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 {
-  "versao_config": "2.0.0",
-  "descricao": "Regras de classificação e organização automática de arquivos para PC e Google Drive",
+  "versao_config": "3.0.0",
+  "descricao": "Organizador Master V3 — Taxonomia Inteligente com Regex, Prioridades, Metadados e Deep Sniffing",
   "diretorios_mestre": {
     "00_inbox": "00_Inbox_Triagem",
     "01_pessoal": "01_Pessoal_e_Vida",
@@ -49,117 +49,194 @@
       "06.4_Games_e_Emuladores"
     ]
   },
-  "regras_palavras_chave": [
+  "regras_avancadas": [
     {
-      "termos": [
-        "tce", "tce-go", "tribunal de contas", "posse tce", "protocolo de guerra", "fcc", "caderno de questoes",
-        "zachman", "togaf", "dama", "dmbok", "eda", "olap", "lakehouse", "scrum", "kanban", "invest", "itil", "cobit", "cmmi", "mps.br", "bpmn", "bdat", "peti", "pdti"
+      "id": "concurso_tce_cadernos_regex",
+      "descricao": "Arquivos com prefixo oficial de cadernos do edital TCE-GO (ex: 04.01, 09.01, 10.03)",
+      "prioridade": 100,
+      "padroes_regex": [
+        "^(0[1-9]|1[0-2])\\.\\d{2}"
       ],
       "destino": "02_Estudos_e_Concursos/02.1_TCE-GO"
     },
     {
+      "id": "concurso_tce_materias_e_edital",
+      "descricao": "Termos técnicos e matérias específicas do edital TCE-GO (FCC)",
+      "prioridade": 95,
+      "termos": [
+        "tce", "tce-go", "tribunal de contas", "posse tce", "protocolo de guerra", "fcc", "caderno de questoes",
+        "zachman", "togaf", "dama", "dmbok", "eda", "olap", "lakehouse", "scrum", "kanban", "invest", "itil",
+        "cobit", "cmmi", "mps.br", "bpmn", "bdat", "peti", "pdti", "mccabe", "solid", "clean code",
+        "in 94", "lei 14.133", "iso 31000", "coso erm", "tres linhas", "iGovTI", "balanced scorecard"
+      ],
+      "sniff_conteudo": true,
+      "destino": "02_Estudos_e_Concursos/02.1_TCE-GO"
+    },
+    {
+      "id": "concurso_senador_canedo",
+      "descricao": "Materiais do concurso Câmara Senador Canedo",
+      "prioridade": 90,
       "termos": ["senador canedo", "camara senador", "edital 001", "cronograma senador"],
       "destino": "02_Estudos_e_Concursos/02.2_Senador_Canedo"
     },
     {
-      "termos": ["slide", "slides", "materialatividade", "certificacao", "alura", "udemy", "dio"],
-      "destino": "02_Estudos_e_Concursos/02.3_Cursos_e_Certificacoes"
+      "id": "identidade_e_documentos_civis",
+      "descricao": "Documentos pessoais, identidade, títulos e comprovantes de residência",
+      "prioridade": 90,
+      "termos": [
+        "cnh", "carteira de habilitacao", "carteira nacional", "comprovante_endereco", "comprovante de endereco",
+        "comprovante_residencia", "comprovante de residencia", "titulo_eleitor", "titulo de eleitor", "cartao_sus",
+        "cartao do sus", "reservista", "rg", "cpf", "certidao de nascimento", "certidao de casamento", "identidade"
+      ],
+      "destino": "01_Pessoal_e_Vida/01.1_Identidade_e_Documentos/01_Acesso_Rapido_Dia_a_Dia"
     },
     {
+      "id": "financas_e_contas",
+      "descricao": "Extratos bancários, faturas de cartão, boletos e declarações fiscais",
+      "prioridade": 85,
+      "termos": [
+        "sap02", "sap3", "planilha_de_custos", "extrato", "fatura", "imposto de renda", "nuconta",
+        "nubank", "inter", "comprovante_pix", "pagamento realizado", "boleto", "recibo"
+      ],
+      "destino": "01_Pessoal_e_Vida/01.5_Financas_e_Contas"
+    },
+    {
+      "id": "carreira_e_curriculos",
+      "descricao": "Currículos, cartas de apresentação e portfólios profissionais",
+      "prioridade": 85,
       "termos": ["curriculo", "currículo", "curriculum", "resume", "cv.pdf"],
       "destino": "01_Pessoal_e_Vida/01.2_Carreira_e_Curriculos"
     },
     {
-      "termos": ["certificado", "comprovante", "comprovante_endereco", "declaracao", "rg", "cpf"],
-      "destino": "01_Pessoal_e_Vida/01.1_Identidade_e_Documentos"
-    },
-    {
-      "termos": ["frequencia", "frequência", "sfr", "viagem", "viagens", "diaria", "ponto"],
+      "id": "frequencia_e_viagens_agr",
+      "descricao": "Relatórios de frequência, diárias de viagem e ponto da AGR",
+      "prioridade": 80,
+      "termos": ["frequencia", "frequência", "sfr", "viagem", "viagens", "diaria", "ponto", "agr"],
       "destino": "01_Pessoal_e_Vida/01.3_Frequencia_e_Viagens"
     },
     {
+      "id": "clareza_desenvolvimento_e_metas",
+      "descricao": "Manuais de clareza, listas de metas, hábitos e reflexões",
+      "prioridade": 75,
+      "termos": [
+        "checklist", "checklists", "minhas metas", "metas 2026", "metas 2025", "watchlist",
+        "lista de compras", "rotina diaria", "rastreador de habitos", "planejamento semanal",
+        "personalidade", "clareza", "homem exemplar", "habitos", "hábitos", "pilares milenares", "jornada de wheslan"
+      ],
+      "destino": "01_Pessoal_e_Vida/01.4_Clareza_e_Desenvolvimento_Pessoal/Listas_e_Metas"
+    },
+    {
+      "id": "wfix_automacoes_n8n",
+      "descricao": "Fluxos e webhooks n8n do ecossistema WFIX",
+      "prioridade": 75,
       "termos": ["n8n", "fluxo", "webhook", "blocos_intencao", "blocos_fluxo"],
       "destino": "03_Profissional_WFIX/03.2_Automacoes_e_n8n"
     },
     {
+      "id": "wfix_prompts_e_sops",
+      "descricao": "Prompts de IA, playbooks de atendimento e engenharia de prompts",
+      "prioridade": 75,
       "termos": ["atendimento", "playbook", "guia atendimento", "engenheiro de seguranca", "ia para atendimento", "chatgpt-", "conversas_ia", "prompts"],
       "destino": "03_Profissional_WFIX/03.1_IA_Prompts_e_SOPs"
     },
     {
+      "id": "wfix_aulas_e_treinamentos",
+      "descricao": "Gravações e materiais de treinamento comercial/atendimento",
+      "prioridade": 75,
       "termos": ["atendimento_aula", "negociacao_aula", "treinamento", "gravacao_aula"],
       "destino": "03_Profissional_WFIX/03.5_Aulas_e_Treinamentos"
     },
     {
-      "termos": ["conversa do whatsapp", "cliente", "transcricao"],
+      "id": "wfix_conversas_clientes",
+      "descricao": "Transcrições e registros de clientes do WhatsApp",
+      "prioridade": 70,
+      "termos": ["conversa do whatsapp", "transcricao"],
       "destino": "03_Profissional_WFIX/03.4_Clientes_e_Whats"
     },
     {
-      "termos": ["cartaz", "palestra", "aniversario", "aniversário", "cavalete", "elevador", "ouvidoria", "convite", "post instagram", "agosto lilas", "agosto lilás"],
-      "destino": "05_Design_Midia_e_Criacao/05.1_Artes_e_Wallpapers"
+      "id": "dev_projetos_web_e_apps",
+      "descricao": "Projetos de software, interfaces web e protótipos",
+      "prioridade": 75,
+      "termos": ["finance ia", "mixtape252", "satori", "noise overlay", "wtech", "dynamic-water", "spring-boot", "angular", "fastapi", "govshield", "titanstream", "dataforge"],
+      "destino": "04_Desenvolvimento_e_Codigo/04.1_Projetos_Web_e_Apps"
     },
     {
-      "termos": ["carl johnson", "king von", "whatsapp ptt", "whatsapp audio", "slowed", "voz", "sample", "soundtrack"],
-      "destino": "05_Design_Midia_e_Criacao/05.2_Audios_e_Midias"
-    },
-    {
-      "termos": [".mrimgx", "backup-codes", "snapshot", "backup"],
-      "destino": "06_Backups_ISOs_e_Sistemas/06.2_Backups_e_Snapshots"
-    },
-    {
-      "termos": ["linux essentials", "senai", "cabeamento", "servicos de rede", "redes topologia", "dns", "camada de rede", "camada de aplicacao"],
+      "id": "cursos_e_certificacoes_senai_e_redes",
+      "descricao": "Material de cursos, redes, SENAI e certificações",
+      "prioridade": 70,
+      "termos": ["linux essentials", "senai", "cabeamento", "servicos de rede", "redes topologia", "dns", "camada de rede", "camada de aplicacao", "alura", "udemy", "dio"],
       "destino": "02_Estudos_e_Concursos/02.3_Cursos_e_Certificacoes"
     },
     {
+      "id": "ads_tcc_senai",
+      "descricao": "Artigos e monografias da graduação em ADS",
+      "prioridade": 70,
       "termos": ["tcc", "artigo cientifico", "artigo científico", "minhas financas"],
       "destino": "02_Estudos_e_Concursos/02.3_Cursos_e_Certificacoes/ADS_TCC"
     },
     {
-      "termos": ["fresh news", "freshnews", "redacao agentica", "redação agêntica", "blueprint", "database camaleao"],
-      "destino": "03_Profissional_WFIX/03.1_IA_Prompts_e_SOPs/Fresh_News"
+      "id": "design_artes_e_wallpapers",
+      "descricao": "Cartazes, posts de redes sociais, apresentações e artes gráficas",
+      "prioridade": 65,
+      "termos": ["cartaz", "palestra", "aniversario", "aniversário", "cavalete", "elevador", "ouvidoria", "convite", "post instagram", "agosto lilas", "agosto lilás", "wallpaper"],
+      "destino": "05_Design_Midia_e_Criacao/05.1_Artes_e_Wallpapers"
     },
     {
-      "termos": ["finance ia", "mixtape252", "satori", "noise overlay", "wtech", "dynamic-water"],
-      "destino": "04_Desenvolvimento_e_Codigo/04.1_Projetos_Web_e_Apps"
+      "id": "design_audios_e_samples",
+      "descricao": "Samples musicais, trilhas, slowed e efeitos sonoros",
+      "prioridade": 60,
+      "termos": ["carl johnson", "king von", "whatsapp ptt", "whatsapp audio", "slowed", "sample", "soundtrack"],
+      "destino": "05_Design_Midia_e_Criacao/05.2_Audios_e_Midias"
     },
     {
-      "termos": ["sap02", "sap3", "planilha_de_custos", "extrato", "fatura", "imposto de renda", "nuconta"],
-      "destino": "01_Pessoal_e_Vida/01.5_Financas_e_Contas"
-    },
-    {
-      "termos": ["personalidade", "clareza", "homem exemplar", "habitos", "hábitos", "pilares milenares", "jornada de wheslan", "estilo"],
-      "destino": "01_Pessoal_e_Vida/01.4_Clareza_e_Desenvolvimento_Pessoal"
-    },
-    {
-      "termos": ["driver booster", "aida 64", "aida64", "crystaldisk", "hdtune", "hwmonitor", "hwinfo", "occt", "throttlestop", "treesize", "dism++", "dismplusplus", "revo uninstaller", "ccleaner", "winaero", "startallback"],
-      "destino": "06_Backups_ISOs_e_Sistemas/06.1_Instaladores_e_APKs/Ferramentas_TI"
-    },
-    {
-      "termos": ["epson", "resetter", "almofadas", "l3210", "l3250", "l4260", "l4261", "l4267", "spooler"],
-      "destino": "06_Backups_ISOs_e_Sistemas/06.1_Instaladores_e_APKs/Ferramentas_TI/05_Impressoras_e_Resets"
-    },
-    {
-      "termos": ["cnh", "carteira de habilitacao", "carteira nacional", "comprovante_endereco", "comprovante de endereco", "comprovante_residencia", "comprovante de residencia", "titulo_eleitor", "titulo de eleitor", "cartao_sus", "cartao do sus", "reservista"],
-      "destino": "01_Pessoal_e_Vida/01.1_Identidade_e_Documentos/01_Acesso_Rapido_Dia_a_Dia"
-    },
-    {
-      "termos": ["checklist", "checklists", "minhas metas", "metas 2026", "metas 2025", "watchlist", "lista de compras", "rotina diaria", "rastreador de habitos", "planejamento semanal"],
-      "destino": "01_Pessoal_e_Vida/01.4_Clareza_e_Desenvolvimento_Pessoal/Listas_e_Metas"
-    },
-    {
+      "id": "filmes_e_series_completos",
+      "descricao": "Filmes e séries com tags de release e resolução",
+      "prioridade": 50,
+      "extensoes": [".mp4", ".mkv", ".avi", ".mov", ".srt"],
       "termos": ["1080p", "720p", "2160p", "4k", "bluray", "webrip", "web-dl", "x264", "x265", "hevc", "dublado", "legendado", "filme", "temporada", "season 1", "season 2", "s01e", "s02e", "yify"],
       "destino": "05_Design_Midia_e_Criacao/05.4_Filmes_e_Series"
     },
     {
+      "id": "ferramentas_ti_e_diagnostico",
+      "descricao": "Utilitários de manutenção e hardware",
+      "prioridade": 65,
+      "termos": ["driver booster", "aida 64", "aida64", "crystaldisk", "hdtune", "hwmonitor", "hwinfo", "occt", "throttlestop", "treesize", "dism++", "dismplusplus", "revo uninstaller", "ccleaner", "winaero", "startallback"],
+      "destino": "06_Backups_ISOs_e_Sistemas/06.1_Instaladores_e_APKs/Ferramentas_TI"
+    },
+    {
+      "id": "ferramentas_impressoras_resets",
+      "descricao": "Resetters e utilitários de impressoras Epson/HP",
+      "prioridade": 65,
+      "termos": ["epson", "resetter", "almofadas", "l3210", "l3250", "l4260", "l4261", "l4267", "spooler"],
+      "destino": "06_Backups_ISOs_e_Sistemas/06.1_Instaladores_e_APKs/Ferramentas_TI/05_Impressoras_e_Resets"
+    },
+    {
+      "id": "emuladores_saves_ludusavi",
+      "descricao": "Backups de saves de jogos",
+      "prioridade": 60,
       "termos": ["ludusavi", "savegame", "gamesave", "savestate", "lupisave"],
       "destino": "06_Backups_ISOs_e_Sistemas/06.4_Games_e_Emuladores/01_Saves_e_Backups/Ludusavi_Backups"
     },
     {
+      "id": "emuladores_pcsx2",
+      "descricao": "BIOS e memcards do PlayStation 2",
+      "prioridade": 60,
       "termos": ["pcsx2", "mcd001", "mcd002", "scph-", "scph10000", "scph39001", "scph77000"],
       "destino": "06_Backups_ISOs_e_Sistemas/06.4_Games_e_Emuladores/03_Emuladores/PCSX2_PlayStation_2"
     },
     {
+      "id": "emuladores_nintendo_switch",
+      "descricao": "Keys, mods e firmwares de Switch",
+      "prioridade": 60,
       "termos": ["yuzu", "ryujinx", "sudachi", "prod.keys", "title.keys", "switch mod", "switch save"],
       "destino": "06_Backups_ISOs_e_Sistemas/06.4_Games_e_Emuladores/03_Emuladores/Nintendo_Switch"
+    },
+    {
+      "id": "backups_e_snapshots_sistema",
+      "descricao": "Imagens de disco Macrium e códigos de backup",
+      "prioridade": 55,
+      "termos": [".mrimgx", "backup-codes", "snapshot", "backup"],
+      "destino": "06_Backups_ISOs_e_Sistemas/06.2_Backups_e_Snapshots"
     }
   ],
   "regras_extensoes": {
@@ -176,14 +253,6 @@
     ".ps1": "04_Desenvolvimento_e_Codigo/04.3_Scripts_e_Automacoes",
     ".sh": "04_Desenvolvimento_e_Codigo/04.3_Scripts_e_Automacoes",
     ".py": "04_Desenvolvimento_e_Codigo/04.3_Scripts_e_Automacoes",
-    ".mp3": "05_Design_Midia_e_Criacao/05.2_Audios_e_Midias",
-    ".ogg": "05_Design_Midia_e_Criacao/05.2_Audios_e_Midias",
-    ".wav": "05_Design_Midia_e_Criacao/05.2_Audios_e_Midias",
-    ".flac": "05_Design_Midia_e_Criacao/05.2_Audios_e_Midias",
-    ".mkv": "05_Design_Midia_e_Criacao/05.4_Filmes_e_Series",
-    ".avi": "05_Design_Midia_e_Criacao/05.4_Filmes_e_Series",
-    ".mov": "05_Design_Midia_e_Criacao/05.4_Filmes_e_Series",
-    ".srt": "05_Design_Midia_e_Criacao/05.4_Filmes_e_Series",
     ".nsp": "06_Backups_ISOs_e_Sistemas/06.4_Games_e_Emuladores/04_ROMs_e_ISOs",
     ".xci": "06_Backups_ISOs_e_Sistemas/06.4_Games_e_Emuladores/04_ROMs_e_ISOs",
     ".chd": "06_Backups_ISOs_e_Sistemas/06.4_Games_e_Emuladores/04_ROMs_e_ISOs",

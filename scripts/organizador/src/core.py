@@ -66,11 +66,40 @@ class FileOrganizerEngine:
         self.downloads = (self.root_user / "downloads") if (self.root_user / "downloads").exists() else (self.root_user / "Downloads")
 
         self.ignored = set(self.config.get("arquivos_ignorados", []))
-        self.keyword_rules = self.config.get("regras_palavras_chave", [])
         self.extension_rules = self.config.get("regras_extensoes", {})
+        self.advanced_rules = self._load_advanced_rules()
+        self.keyword_rules = self.config.get("regras_palavras_chave", [])
 
         self.history_manager = history_manager or HistoryManager()
         self.recorded_operations: List[Dict] = []
+
+    def _load_advanced_rules(self) -> List[Dict]:
+        """Carrega regras avançadas V3 (ou converte regras legadas), pré-compila regexes e ordena por prioridade."""
+        raw_rules = self.config.get("regras_avancadas", [])
+        if not raw_rules:
+            # Fallback gracioso para regras_palavras_chave legadas
+            raw_rules = self.config.get("regras_palavras_chave", [])
+
+        compiled_rules = []
+        for r in raw_rules:
+            rule_copy = dict(r)
+            priority = rule_copy.get("prioridade", 50)
+            rule_copy["prioridade"] = priority
+
+            # Compila padrões regex se existirem
+            regex_list = rule_copy.get("padroes_regex", [])
+            compiled_regex = []
+            for pat in regex_list:
+                try:
+                    compiled_regex.append(re.compile(pat, re.IGNORECASE))
+                except re.error as e:
+                    log_warning(f"Erro ao compilar regex '{pat}' na regra '{rule_copy.get('id', 'sem_id')}': {e}")
+            rule_copy["_compiled_regex"] = compiled_regex
+            compiled_rules.append(rule_copy)
+
+        # Ordena da maior prioridade para a menor
+        compiled_rules.sort(key=lambda x: x["prioridade"], reverse=True)
+        return compiled_rules
 
     def should_ignore(self, path: Path) -> bool:
         """Verifica se o arquivo ou diretório deve ser ignorado (ex: desktop.ini, .git, atalhos, downloads em andamento)."""
@@ -155,22 +184,62 @@ class FileOrganizerEngine:
 
     def classify_file(self, file_path: Path) -> Optional[Path]:
         """
-        Classifica um arquivo com base nas regras de palavras-chave, deep content sniffing,
-        OCR em imagens, similaridade fuzzy e extensões. Retorna o caminho de destino absoluto.
+        Motor de Classificação V3.0:
+        1. Regras Avançadas por Prioridade (Regex, Termos, Extensões e Filtros de Tamanho)
+        2. Deep Content Sniffing em Documentos (.docx, .txt, .md, .pdf)
+        3. Visual OCR Sniffing em Imagens (.png, .jpg, .webp)
+        4. Similaridade Fuzzy Estrita (apenas palavras >= 6 letras e ratio >= 0.90)
+        5. Extensões Estruturadas Seguras
+        6. Fallback Inteligente e Seguro para 00_Inbox_Triagem
         """
-        name_normalized = normalize_text(file_path.name)
+        raw_name = file_path.name
+        name_normalized = normalize_text(raw_name)
         ext = file_path.suffix.lower()
 
-        # 1. Checagem por palavras-chave exatas no nome do arquivo (prioridade mais alta)
-        for rule in self.keyword_rules:
-            terms = rule.get("termos", [])
+        file_size_mb = 0.0
+        try:
+            if file_path.exists() and file_path.is_file():
+                file_size_mb = file_path.stat().st_size / (1024 * 1024)
+        except OSError:
+            pass
+
+        # 1. Regras Avançadas Ordenadas por Prioridade (100 -> 10)
+        for rule in self.advanced_rules:
             dest_rel = rule.get("destino", "")
+            if not dest_rel:
+                continue
+
+            # Filtro 1: Extensões permitidas (se a regra exigir)
+            allowed_exts = rule.get("extensoes")
+            if allowed_exts and ext not in allowed_exts:
+                continue
+
+            # Filtro 2: Tamanho mínimo e máximo em MB
+            min_mb = rule.get("min_size_mb")
+            if min_mb is not None and file_size_mb < min_mb:
+                continue
+            max_mb = rule.get("max_size_mb")
+            if max_mb is not None and file_size_mb > max_mb:
+                continue
+
+            # Filtro 3: Termos de exclusão (NOT lógico)
+            exclude_terms = rule.get("termos_excluir", [])
+            if any(normalize_text(exc) in name_normalized for exc in exclude_terms):
+                continue
+
+            # Checagem A: Padrões Regex no Nome (ex: cadernos 04.01, 09.01)
+            compiled_regexes = rule.get("_compiled_regex", [])
+            if any(pat.search(raw_name) or pat.search(name_normalized) for pat in compiled_regexes):
+                return self.dest_root / dest_rel
+
+            # Checagem B: Termos no Nome
+            terms = rule.get("termos", [])
             for term in terms:
                 term_normalized = normalize_text(term)
                 if term_normalized in name_normalized:
                     return self.dest_root / dest_rel
 
-        # 2. Deep Content Sniffing: se o nome for genérico ou for documento de texto/docx/pdf, inspeciona o interior
+        # 2. Deep Content Sniffing em Documentos de Texto / PDF / DOCX
         is_generic = any(g in name_normalized for g in [
             "sem titulo", "sem nome", "documento", "apresentacao", "arquivo",
             "ticket", "novo", "comprovante", "fatura", "extrato", "declaracao",
@@ -179,15 +248,15 @@ class FileOrganizerEngine:
         if is_generic or ext in [".docx", ".txt", ".md", ".pdf"]:
             content_snippet = self.sniff_file_content(file_path)
             if content_snippet:
-                for rule in self.keyword_rules:
-                    terms = rule.get("termos", [])
+                for rule in self.advanced_rules:
                     dest_rel = rule.get("destino", "")
+                    terms = rule.get("termos", [])
                     for term in terms:
                         term_normalized = normalize_text(term)
                         if len(term_normalized) > 3 and term_normalized in content_snippet:
                             return self.dest_root / dest_rel
 
-        # 2.5 Visual OCR Sniffing em Imagens e Prints (Comprovantes Pix, Boletos, Documentos)
+        # 3. Visual OCR Sniffing em Imagens e Prints (Comprovantes Pix, Boletos, Documentos)
         is_image = ext in [".png", ".jpg", ".jpeg", ".webp", ".bmp"]
         is_scan_or_photo = any(s in name_normalized for s in [
             "screenshot", "captura", "whatsapp", "img", "image", "photo", "foto", "pic", "scan", "scan_", "comprovante", "boleto", "doc"
@@ -196,7 +265,6 @@ class FileOrganizerEngine:
         if is_image and (is_scan_or_photo or is_generic):
             ocr_text = self.sniff_image_content(file_path)
             if ocr_text:
-                # Regra 1: Comprovantes Bancários, Pix e Contas
                 if any(w in ocr_text for w in [
                     "comprovante", "transferencia", "pix", "valor pago", "pagador",
                     "favorecido", "autenticacao", "nubank", "inter", "caixa", "bradesco",
@@ -204,49 +272,45 @@ class FileOrganizerEngine:
                 ]):
                     return self.dest_root / "01_Pessoal_e_Vida/01.5_Financas_e_Contas"
 
-                # Regra 2: Documentos Pessoais & Identidade
                 if any(w in ocr_text for w in [
                     "republica federativa", "carteira nacional", "identidade", "cpf",
                     "registro geral", "titulo de eleitor", "certidao de nascimento",
                     "certidao de casamento", "reservista", "habilitacao"
                 ]):
-                    return self.dest_root / "01_Pessoal_e_Vida/01.1_Identidade_e_Documentos"
+                    return self.dest_root / "01_Pessoal_e_Vida/01.1_Identidade_e_Documentos/01_Acesso_Rapido_Dia_a_Dia"
 
-                # Regra 3: Concursos & Estudos
                 if any(w in ocr_text for w in [
                     "gabarito", "tce-go", "caderno de questoes", "prova objetiva", "folha de respostas", "edital de abertura"
                 ]):
                     return self.dest_root / "02_Estudos_e_Concursos/02.1_TCE-GO"
 
-                # Regra 4: Checagem geral nas palavras-chave configuradas
-                for rule in self.keyword_rules:
-                    terms = rule.get("termos", [])
+                for rule in self.advanced_rules:
                     dest_rel = rule.get("destino", "")
+                    terms = rule.get("termos", [])
                     for term in terms:
                         term_normalized = normalize_text(term)
                         if len(term_normalized) > 3 and term_normalized in ocr_text:
                             return self.dest_root / dest_rel
 
-        # 3. Classificação por Similaridade Fuzzy (tolerância a pequenos erros de digitação no nome)
+        # 4. Similaridade Fuzzy Estrita (apenas palavras com >= 6 letras e ratio >= 0.90)
         words_in_name = re.findall(r"[a-z0-9]+", name_normalized)
-        for rule in self.keyword_rules:
-            terms = rule.get("termos", [])
+        for rule in self.advanced_rules:
             dest_rel = rule.get("destino", "")
+            terms = rule.get("termos", [])
             for term in terms:
                 term_normalized = normalize_text(term)
-                # Aplicamos fuzzy apenas a termos consistentes (>= 5 letras sem espaços) para evitar falsos positivos
-                if len(term_normalized) >= 5 and " " not in term_normalized:
+                if len(term_normalized) >= 6 and " " not in term_normalized:
                     for word in words_in_name:
                         if abs(len(word) - len(term_normalized)) <= 2:
-                            if SequenceMatcher(None, term_normalized, word).ratio() >= 0.85:
+                            if SequenceMatcher(None, term_normalized, word).ratio() >= 0.90:
                                 return self.dest_root / dest_rel
 
-        # 4. Checagem por extensão
+        # 5. Checagem por Extensão Estruturada Segura
         if ext in self.extension_rules:
             dest_rel = self.extension_rules[ext]
             return self.dest_root / dest_rel
 
-        # 5. Fallback inteligente: se for documento solto não identificado, envia para 00_Inbox_Triagem
+        # 6. Fallback Inteligente: se for documento solto não identificado, envia para 00_Inbox_Triagem
         if ext in [".pdf", ".docx", ".xlsx", ".txt", ".md", ".json", ".zip", ".rar", ".7z", ".csv", ".pptx"]:
             return self.dest_root / "00_Inbox_Triagem"
 
