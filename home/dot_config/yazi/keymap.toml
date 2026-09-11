@@ -90,6 +90,8 @@ prepend_keymap = [
 	# --------------------------------------------------------------------------
 	# 'r': Limpa o nome mantendo a extensão (.mp4/.pdf) e abre com cursor no início pronto pra digitar/colar
 	{ on = "r", run = "rename --empty=stem --cursor=start", desc = "Renomear (Nome limpo, mantém extensão)" },
+	# 'r e': Mudar a EXTENSÃO do arquivo (.mkv -> .mp4, .txt -> .md, etc.)
+	{ on = [ "r", "e" ], run = "rename --empty=all --cursor=end", desc = "Mudar Extensão / Renomear Completo" },
 	# 'R': Renomear tradicional (mantém nome original com cursor antes da extensão)
 	{ on = "R", run = "rename --cursor=before_ext", desc = "Renomear (Editar nome original)" },
 	# 'F2': Atalho universal padrão Windows/GUI (também limpa e preserva extensão)
@@ -99,7 +101,16 @@ prepend_keymap = [
 	{ on = [ "r", "p" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-rename-smart.sh paste %s" --confirm', desc = "Colar Título do Clipboard (Preserva Extensão)" },
 	# 'r i': Prompt interativo alternativo com suporte nativo a Ctrl+V e readline
 	{ on = [ "r", "i" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-rename-smart.sh prompt %s" --block', desc = "Renomear Interativo (Prompt Shell / Ctrl+V)" },
+
+	# --------------------------------------------------------------------------
+	# 📁 CRIAÇÃO DE PASTAS & ARQUIVOS (Sem atrito de digitar barra '/')
+	# --------------------------------------------------------------------------
+	# 'k' ou 'M k': Cria pasta direta sem precisar colocar '/' no final!
+	{ on = [ "c", "k" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-mkdir.sh \"$PWD\"" --block', desc = "Criar Nova Pasta (Sem Barra)" },
+	{ on = [ "m", "k" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-mkdir.sh \"$PWD\"" --block', desc = "Criar Nova Pasta (Sem Barra)" },
+	{ on = "<C-n>",      run = 'shell "bash $HOME/dotfiles/scripts/yazi-mkdir.sh \"$PWD\"" --block', desc = "Criar Nova Pasta (Ctrl+N)" },
 ]
+
 
 # ==============================================================================
 # ⌨️ INPUT COMPONENT (Caixas de texto de renomear / criar arquivo)
