@@ -65,7 +65,12 @@
 - `v`            : Seleção visual contínua
 - `y` / `x` / `p`: Copiar / Recortar / Colar
 - `a`            : Criar arquivo (termine com `/` para criar pasta)
-- `r` / `R`      : Renomear / Bulk Rename com Neovim
+- `r` ou `<F2>`  : **Renomear Inteligente** (Limpa o nome, mantém a extensão original e põe o cursor no início pronto pra digitar/colar)
+- `c` + `r`      : **Colar do Clipboard** (Pega o título copiado no `Ctrl+C` do navegador e renomeia DIRETO preservando a extensão!)
+- `r` + `p`      : Atalho alternativo para colar título do clipboard direto
+- `r` + `i`      : Prompt interativo tradicional (estilo shell/bash com suporte a `Ctrl+V`)
+- `R`            : Renomear tradicional (mantém nome original com cursor antes da extensão)
 - `d` / `D`      : Enviar para Lixeira / Deletar permanente
 - `.`            : Mostrar/Ocultar arquivos ocultos
 - `q`            : Sair do Yazi
+

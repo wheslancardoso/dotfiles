@@ -84,4 +84,41 @@ prepend_keymap = [
 	# 💡 AJUDA E DIAGNÓSTICO
 	# --------------------------------------------------------------------------
 	{ on = "<F12>", run = 'shell "notify-send -a Yazi \"Yazi Power-User\" \"Configuração carregada com sucesso! Pressione ? para ajuda.\"" --confirm', desc = "Status / Teste Yazi" },
+
+	# --------------------------------------------------------------------------
+	# 🪄 RENOMEAR INTELIGENTE (ZERO RUÍDO VIM & PROTEÇÃO DE EXTENSÃO)
+	# --------------------------------------------------------------------------
+	# 'r': Limpa o nome mantendo a extensão (.mp4/.pdf) e abre com cursor no início pronto pra digitar/colar
+	{ on = "r", run = "rename --empty=stem --cursor=start", desc = "Renomear (Nome limpo, mantém extensão)" },
+	# 'R': Renomear tradicional (mantém nome original com cursor antes da extensão)
+	{ on = "R", run = "rename --cursor=before_ext", desc = "Renomear (Editar nome original)" },
+	# 'F2': Atalho universal padrão Windows/GUI (também limpa e preserva extensão)
+	{ on = "<F2>", run = "rename --empty=stem --cursor=start", desc = "Renomear (F2 Universal)" },
+	# 'P' ou 'c r': Pega o título no Clipboard (wl-paste) e renomeia DIRETO preservando a extensão original!
+	{ on = [ "c", "r" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-rename-smart.sh paste %s" --confirm', desc = "Colar Título do Clipboard (Preserva Extensão)" },
+	{ on = [ "r", "p" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-rename-smart.sh paste %s" --confirm', desc = "Colar Título do Clipboard (Preserva Extensão)" },
+	# 'r i': Prompt interativo alternativo com suporte nativo a Ctrl+V e readline
+	{ on = [ "r", "i" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-rename-smart.sh prompt %s" --block', desc = "Renomear Interativo (Prompt Shell / Ctrl+V)" },
 ]
+
+# ==============================================================================
+# ⌨️ INPUT COMPONENT (Caixas de texto de renomear / criar arquivo)
+# ==============================================================================
+# Elimina ruídos do modo Vim no prompt de renomeação e adiciona atalhos universais
+[input]
+prepend_keymap = [
+	# Cancelar imediatamente com ESC sem precisar de dois toques
+	{ on = "<Esc>",   run = "close",          desc = "Cancelar renomeação" },
+	{ on = "<C-c>",   run = "close",          desc = "Cancelar renomeação" },
+
+	# Atalhos universais modernos de edição (Windows/Mac/GUI)
+	{ on = "<C-v>",   run = "paste",          desc = "Colar texto do Clipboard" },
+	{ on = "<C-a>",   run = "move bol",       desc = "Início da linha (Home)" },
+	{ on = "<C-e>",   run = "move eol",       desc = "Fim da linha (End)" },
+	{ on = "<C-u>",   run = "kill bol",       desc = "Limpar tudo para trás" },
+	{ on = "<C-k>",   run = "kill eol",       desc = "Limpar tudo para frente" },
+	{ on = "<C-w>",   run = "kill backward",  desc = "Apagar palavra anterior" },
+	{ on = "<C-Backspace>", run = "kill backward", desc = "Apagar palavra anterior" },
+	{ on = "<C-Delete>",    run = "kill forward",  desc = "Apagar palavra seguinte" },
+]
+
