@@ -83,6 +83,9 @@ class FileOrganizerEngine:
         suffix_lower = path.suffix.lower()
         if suffix_lower in TEMP_DOWNLOAD_EXTENSIONS:
             return True
+        # Ignora arquivos numéricos ou temporários típicos de downloads do NotebookLM (ex: 09.mp4, 09 (1).mp4, 04.m4a)
+        if re.match(r"^\d{1,2}(\s*\(\d+\))?\.(mp4|m4a|wav|webm|mp3)$", name, re.IGNORECASE):
+            return True
         # No Desktop, nunca movemos atalhos de programas (.lnk, .url)
         if suffix_lower in [".lnk", ".url"]:
             return True

@@ -37,7 +37,7 @@ class DirectoryWatcher:
         engine: FileOrganizerEngine,
         auto_namer: Optional[AutoNamer] = None,
         poll_interval: float = 2.0,
-        settle_time: float = 1.5,
+        settle_time: float = 3.5,
     ):
         self.watch_dir = watch_dir
         self.engine = engine
