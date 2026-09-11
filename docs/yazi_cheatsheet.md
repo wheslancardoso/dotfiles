@@ -72,6 +72,7 @@
 - `r` + `p`      : Atalho alternativo para colar título do clipboard direto
 - `r` + `i`      : Prompt interativo tradicional (estilo shell/bash com suporte a `Ctrl+V`)
 - `R`            : Renomear tradicional (mantém nome original com cursor antes da extensão)
+- `u` ou `Ctrl+Z`: **Desfazer Última Renomeação (Undo)** (Volta o nome anterior instantaneamente se você errar!)
 - `d` / `D`      : Enviar para Lixeira / Deletar permanente
 - `.`            : Mostrar/Ocultar arquivos ocultos
 - `q`            : Sair do Yazi

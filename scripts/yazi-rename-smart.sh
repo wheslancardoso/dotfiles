@@ -29,12 +29,12 @@ fi
 
 case "$ACTION" in
     paste)
-        # Pega texto do clipboard (Wayland / X11)
-        CLIP=$(wl-paste --no-newline 2>/dev/null || xclip -selection clipboard -o 2>/dev/null || true)
-        CLEAN_CLIP=$(echo "$CLIP" | tr '\n\r/' '   ' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+        # Sanitização profunda do texto copiado para nome de arquivo Linux/NTFS
+        # Remove caracteres proibidos: ? * : | " < > e quebras de linha/barras
+        CLEAN_CLIP=$(echo "$CLIP" | tr '\n\r/' '   ' | sed -e 's/[?*:|"<>]/_/g' -e 's/^[[:space:]_]*//' -e 's/[[:space:]_]*$//')
 
         if [ -z "$CLEAN_CLIP" ]; then
-            notify-send -a Yazi -u low "Renomear (Colar)" "Clipboard vazio!"
+            notify-send -a Yazi -u low "Renomear (Colar)" "Clipboard vazio ou inválido!"
             exit 0
         fi
 
@@ -57,6 +57,8 @@ case "$ACTION" in
         fi
 
         mv "$FILE" "$NEW_PATH"
+        # Grava log atômico para possibilitar UNDO (desfazer com 'u')
+        printf "%s\n%s\n" "$FILE" "$NEW_PATH" > /tmp/yazi_last_rename.log
         notify-send -a Yazi -i "emblem-default" "Arquivo Renomeado com Sucesso!" "De: $BASENAME\nPara: $NEW_BASENAME"
         ;;
 
@@ -98,5 +100,6 @@ case "$ACTION" in
         fi
 
         mv "$FILE" "$NEW_PATH"
+        printf "%s\n%s\n" "$FILE" "$NEW_PATH" > /tmp/yazi_last_rename.log
         ;;
 esac

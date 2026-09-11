@@ -109,7 +109,14 @@ prepend_keymap = [
 	{ on = [ "c", "k" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-mkdir.sh \"$PWD\"" --block', desc = "Criar Nova Pasta (Sem Barra)" },
 	{ on = [ "m", "k" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-mkdir.sh \"$PWD\"" --block', desc = "Criar Nova Pasta (Sem Barra)" },
 	{ on = "<C-n>",      run = 'shell "bash $HOME/dotfiles/scripts/yazi-mkdir.sh \"$PWD\"" --block', desc = "Criar Nova Pasta (Ctrl+N)" },
+
+	# --------------------------------------------------------------------------
+	# ↩️ DESFAZER INTELIGENTE (UNDO RENOMEAÇÃO COM 'u' OU 'Ctrl+Z')
+	# --------------------------------------------------------------------------
+	{ on = "u",     run = 'shell "bash $HOME/dotfiles/scripts/yazi-undo.sh" --confirm', desc = "Desfazer Última Renomeação (Undo)" },
+	{ on = "<C-z>", run = 'shell "bash $HOME/dotfiles/scripts/yazi-undo.sh" --confirm', desc = "Desfazer Última Renomeação (Ctrl+Z)" },
 ]
+
 
 
 # ==============================================================================
