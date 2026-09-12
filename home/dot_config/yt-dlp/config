@@ -7,5 +7,4 @@
 --fragment-retries 10
 --no-check-certificates
 --force-ipv4
---extractor-args "youtube:player_client=android,web"
 --downloader-args "ffmpeg:-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5"
