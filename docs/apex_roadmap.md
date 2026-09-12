@@ -31,13 +31,18 @@ Para garantir que o módulo de Filmes & Séries nunca fique indisponível caso o
 
 ---
 
-## 🎵 3. Cockpit de Áudio e Letras (Amberol + sptlrx + Music Tagging)
+## 🎵 3. Cockpit de Áudio e Letras (MPV + Amberol + LRCLIB + Anki)
+- [x] **Auto-Download de Letras Sincronizadas (.lrc) via LRCLIB & spotDL**:
+  - Toda música baixada pelo Apex (Spotify ou YouTube Music) agora recebe automaticamente o arquivo de letra sincronizada `.lrc`.
+- [x] **Modo Estudo de Inglês & Shadowing (`dl -e` ou opção `e` no menu FZF)**:
+  - Integração profunda com MPV (`music-study.lua`): atalhos de replay de versos (`r`), shadowing loop contínuo (`l`) e mineração de áudio fatiado com 1 clique para o Anki (`M`).
 - [ ] **Auto-Embed de Letras Sincronizadas (.lrc)**:
   - Adicionar opção para embutir as letras `.lrc` diretamente dentro dos metadados ID3/MP4 do arquivo de áudio (SYLT frame) para reprodutores compatíveis.
 - [ ] **Painel TUI de Letras Integrado no Próprio APEX**:
   - Comando `dl --lyrics` ou tecla de atalho dentro da busca FZF para visualizar a letra completa da música antes mesmo de iniciar o download.
 - [ ] **Modo Playlist Inteligente**:
   - Ao baixar uma playlist do Spotify ou YouTube, gerar automaticamente o arquivo `.m3u8` ordenado na pasta de destino para carregar tudo no Amberol com 1 clique.
+
 
 ---
 

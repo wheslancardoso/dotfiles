@@ -63,6 +63,7 @@ SEASON_ARG=""
 EP_ARG=""
 STREAM_AUDIO_LANG="pt"
 STREAM_AUDIO_LANG_SET=false
+STUDY_ENGLISH_MODE=false
 
 
 # ------------------------------------------------------------------------------
@@ -1214,6 +1215,43 @@ download_video() {
 }
 
 # ------------------------------------------------------------------------------
+# BUSCA DE LETRAS SINCRONIZADAS (.LRC) VIA LRCLIB (ESTUDO DE INGLÊS / SHADOWING)
+# ------------------------------------------------------------------------------
+fetch_synced_lyrics() {
+    local target_audio="$1"
+    local hint_title="$2"
+    [ -z "$target_audio" ] || [ ! -f "$target_audio" ] && return 0
+
+    local lrc_file="${target_audio%.*}.lrc"
+    if [ -f "$lrc_file" ] && [ -s "$lrc_file" ]; then
+        return 0
+    fi
+
+    local query="$hint_title"
+    if [ -z "$query" ]; then
+        query=$(basename "$target_audio")
+        query="${query%.*}"
+    fi
+
+    query=$(echo "$query" | sed -E 's/\(Official Video\)|\(Official Music Video\)|\(Official Audio\)|\(Lyric Video\)|\(Visualizer\)|\(Audio\)//gI' | sed -E 's/\[[^]]*\]//g' | sed -E 's/4K|HD|HQ//g' | xargs)
+
+    echo -e "  ${MAUVE}🎤 Buscando letra sincronizada (.lrc) no LRCLIB...${NC}"
+    local json_resp
+    json_resp=$(curl -s -m 6 -G "https://lrclib.net/api/search" --data-urlencode "q=${query}" 2>/dev/null || true)
+    
+    if [ -n "$json_resp" ] && command -v jq >/dev/null 2>&1; then
+        local synced_lyrics
+        synced_lyrics=$(echo "$json_resp" | jq -r '[.[] | select(.syncedLyrics != null)][0].syncedLyrics // empty' 2>/dev/null || true)
+        if [ -n "$synced_lyrics" ] && [ "$synced_lyrics" != "null" ] && [ -n "$synced_lyrics" ]; then
+            echo "$synced_lyrics" > "$lrc_file"
+            echo -e "  ${GREEN}✨ Letra sincronizada (.lrc) vinculada com sucesso!${NC}"
+            return 0
+        fi
+    fi
+    return 1
+}
+
+# ------------------------------------------------------------------------------
 # MOTOR DE DOWNLOAD (ÁUDIO / YT-DLP)
 # ------------------------------------------------------------------------------
 download_audio() {
@@ -1335,6 +1373,9 @@ download_audio() {
     fi
     log_history "$title" "$url" "$final_target" "AUDIO"
 
+    # Buscar e vincular letra sincronizada (.lrc) automaticamente
+    fetch_synced_lyrics "$final_target" "$title"
+
     if [ "$is_batch" = false ]; then
         local f_size=""
         [ -n "$final_target" ] && [ -f "$final_target" ] && f_size=$(du -h "$final_target" | cut -f1 2>/dev/null || echo "")
@@ -1344,10 +1385,20 @@ download_audio() {
         echo -e "  ${BLUE}🎵 Arquivo :${NC} ${BOLD}$(basename "$final_target")${NC}"
         echo -e "  ${BLUE}📂 Destino :${NC} ${dest}"
         [ -n "$f_size" ] && echo -e "  ${BLUE}📊 Tamanho :${NC} ${f_size}"
+        if [ -f "${final_target%.*}.lrc" ]; then
+            echo -e "  ${BLUE}🎤 Letras  :${NC} ${GREEN}Sincronizadas (.lrc ativadas para MPV / Anki)${NC}"
+        fi
         echo ""
         notify_completion "$title" "$dest" "$final_target"
+
+        if [ "$STUDY_ENGLISH_MODE" = true ] && [ -n "$final_target" ] && [ -f "$final_target" ]; then
+            echo -e "${CYAN}${BOLD}🎧 Iniciando MPV no Modo Estudo de Inglês & Shadowing...${NC}"
+            echo -e "${PEACH}💡 Controles: 'r' = Replay Verso | 'l' = Shadowing Loop | 'M' = Mine to Anki${NC}\n"
+            mpv "$final_target"
+        fi
     fi
 }
+
 
 # ------------------------------------------------------------------------------
 # MOTOR DE DOWNLOAD (SPOTIFY / SPOTDL)
@@ -1410,9 +1461,17 @@ download_spotify() {
 
     local latest_file
     latest_file=$(find "$dest" -maxdepth 2 -type f \( -name "*.mp3" -o -name "*.flac" -o -name "*.m4a" \) -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -1 | cut -f2- -d" ")
+    fetch_synced_lyrics "$latest_file" "$sp_title"
     log_history "Spotify Download" "$url" "$latest_file" "SPOTIFY"
     notify_completion "Música/Álbum do Spotify Baixado" "$dest" "$latest_file"
+
+    if [ "$STUDY_ENGLISH_MODE" = true ] && [ -n "$latest_file" ] && [ -f "$latest_file" ]; then
+        echo -e "${CYAN}${BOLD}🎧 Iniciando MPV no Modo Estudo de Inglês & Shadowing...${NC}"
+        echo -e "${PEACH}💡 Controles: 'r' = Replay Verso | 'l' = Shadowing Loop | 'M' = Mine to Anki${NC}\n"
+        mpv "$latest_file"
+    fi
 }
+
 
 # ------------------------------------------------------------------------------
 # MOTOR DE DOWNLOAD DE GALERIAS DE FOTOS (GALLERY-DL)
@@ -2227,7 +2286,7 @@ run_cli_mode() {
                 [ "${#short_clip}" -gt 45 ] && short_clip="${short_clip:0:42}..."
                 main_actions="0\t📋 [Clipboard] Baixar Link Copiado (${short_clip})\tProcessa e baixa automaticamente a URL encontrada na sua área de transferência com prévia da capa.\n"
             fi
-            main_actions="${main_actions}1\t🍿 Filmes & Séries no Pomfy (Catálogo TMDB 1080p)\tAbre o catálogo navegável com sinopse oficial, pôster HD e streaming direto.\n2\t🎵 Buscar Músicas no YouTube Music (Pesquisa FZF com Capas HD)\tPesquise pelo nome da música ou artista, escolha no menu FZF com capa HD e baixe em MP3 320k com tags.\n3\t🎧 Spotify (Baixar por Link ou Nome da Música)\tBaixe faixas, álbuns ou playlists do Spotify com capas HD oficiais, metadados e letras (.lrc).\n4\t🎥 Buscar / Baixar Vídeos no YouTube (1080p/4K com Capas HD)\tBusca com miniaturas ao vivo no FZF ou baixa links do YouTube com 1 tecla de confirmação.\n5\t🔗 Inserir URL ou Arquivo de Lote (.txt / .md)\tProcessa qualquer link da web, torrent/magnet ou arquivos de lote (.txt, .md).\n6\t📻 Baixar o que está tocando agora (MPRIS / Spotify)\tDetecta a música ou vídeo em reprodução no seu player do Linux e baixa na hora.\n7\t📂 Ver Histórico de Downloads\tAbre a lista de downloads anteriores pesquisável com FZF.\n8\t🔄 Atualizar Motores de Download\tVerifica e atualiza o yt-dlp, spotdl e gallery-dl.\n9\t🚪 Sair\tFecha o cockpit de mídia."
+            main_actions="${main_actions}1\t🍿 Filmes & Séries no Pomfy (Catálogo TMDB 1080p)\tAbre o catálogo navegável com sinopse oficial, pôster HD e streaming direto.\n2\t🎵 Buscar Músicas no YouTube Music (Pesquisa FZF com Capas HD)\tPesquise pelo nome da música ou artista, escolha no menu FZF com capa HD e baixe em MP3 320k com tags.\n3\t🎧 Spotify (Baixar por Link ou Nome da Música)\tBaixe faixas, álbuns ou playlists do Spotify com capas HD oficiais, metadados e letras (.lrc).\ne\t🇬🇧 Estudo de Inglês com Música (MPV Lyrics + Shadowing + Anki)\tBusca músicas em inglês, baixa com letra sincronizada (.lrc) e abre direto no MPV com atalhos de repetição e Anki Miner.\n4\t🎥 Buscar / Baixar Vídeos no YouTube (1080p/4K com Capas HD)\tBusca com miniaturas ao vivo no FZF ou baixa links do YouTube com 1 tecla de confirmação.\n5\t🔗 Inserir URL ou Arquivo de Lote (.txt / .md)\tProcessa qualquer link da web, torrent/magnet ou arquivos de lote (.txt, .md).\n6\t📻 Baixar o que está tocando agora (MPRIS / Spotify)\tDetecta a música ou vídeo em reprodução no seu player do Linux e baixa na hora.\n7\t📂 Ver Histórico de Downloads\tAbre a lista de downloads anteriores pesquisável com FZF.\n8\t🔄 Atualizar Motores de Download\tVerifica e atualiza o yt-dlp, spotdl e gallery-dl.\n9\t🚪 Sair\tFecha o cockpit de mídia."
 
             local chosen_action
             chosen_action=$(echo -e "$main_actions" | fzf \
@@ -2252,6 +2311,21 @@ run_cli_mode() {
                 0)
                     url="$clip_url"
                     ;;
+                e)
+                    STUDY_ENGLISH_MODE=true
+                    echo -e "\n${CYAN}${BOLD}🇬🇧 APEX ENGLISH IMMERSION • Músicas, Letras & Shadowing${NC}"
+                    echo -e "${SUBTEXT}Digite o nome da música / artista (ex: Coldplay The Scientist, Adele, Ed Sheeran):${NC}"
+                    read -rp "🎵 Música para Estudo: " en_input
+                    if [ -z "$en_input" ]; then
+                        exit 0
+                    fi
+                    local found_music
+                    found_music=$(search_music_fzf "$en_input")
+                    if [ -n "$found_music" ]; then
+                        download_audio "$found_music" "$dest_a"
+                    fi
+                    exit 0
+                    ;;
                 1)
                     local found_pomfy
                     found_pomfy=$(search_pomfy_fzf "")
@@ -2260,6 +2334,7 @@ run_cli_mode() {
                     fi
                     exit 0
                     ;;
+
                 2)
                     local found_music
                     found_music=$(search_music_fzf "")
@@ -2770,6 +2845,12 @@ main() {
                     shift
                 fi
                 ;;
+            -e|--study-en|--english)
+                STUDY_ENGLISH_MODE=true
+                direct_action="audio"
+                shift
+                ;;
+
             --spotify)
                 direct_action="spotify"
                 shift

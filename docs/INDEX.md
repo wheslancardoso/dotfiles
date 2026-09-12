@@ -58,6 +58,7 @@
 | [**CHECKLIST_SISTEMA_E_RECURSOS_MESTRE.md**](./CHECKLIST_SISTEMA_E_RECURSOS_MESTRE.md) | Inventário completo de todos os recursos, scripts, keybinds e otimizações do sistema | Para ter uma visão panorâmica de tudo que o setup possui de interessante |
 | [**GUIA_COMFORT_ZERO_ATRITO_SENIOR.md**](./GUIA_COMFORT_ZERO_ATRITO_SENIOR.md) | Ergonomia máxima, Bluetooth/Wi-Fi rápido, Spotify e faxina Arch | O playbook supremo do conforto, hiperfoco e zero atritos |
 | [**GUIA_MEDIA_DOWNLOADER_UNIVERSAL.md**](./GUIA_MEDIA_DOWNLOADER_UNIVERSAL.md) | Downloader Universal Apex (YouTube, Spotify, cortes, GIFs, MPRIS) | Para baixar e arquivar qualquer mídia sem abrir navegadores |
+| [**GUIA_INGLES_MUSICA_SHADOWING.md**](./GUIA_INGLES_MUSICA_SHADOWING.md) | Imersão em Inglês com Músicas (MPV Lyrics, Shadowing Loop, 1-Click Anki Miner) | Para aprender inglês com música, connected speech e fatiar áudios para Anki |
 | [**GUIA_POWERUSER_DEV.md**](./GUIA_POWERUSER_DEV.md) | Eliminação de microatritos, Surround, Dadbod SQL, Kulala REST, Diffview | No dia a dia de código para substituir ferramentas pesadas de IDE |
 | [**GUIA_FULLSTACK_WORKFLOWS.md**](./GUIA_FULLSTACK_WORKFLOWS.md) | Passo a passo por linguagem (Java Spring, React, Mobile, Python, Rust) | Ao iniciar ou configurar projetos em qualquer stack |
 | [**GUIA_LAZYVIM_ANTIGRAVITY.md**](./GUIA_LAZYVIM_ANTIGRAVITY.md) | Integração da IA autônoma com Neovim e Zellij | Para dominar o fluxo de Vibe Coding com agentes |
