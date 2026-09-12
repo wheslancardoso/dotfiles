@@ -205,6 +205,7 @@ setup_services() {
         "systemd-timesyncd.service"
         "avahi-daemon.service"
         "ananicy-cpp.service"
+        "irqbalance.service"
         "paccache.timer"
         "fstrim.timer"
         "power-profiles-daemon.service"
@@ -978,7 +979,13 @@ EOF
         ok "LazyVim pronto para uso instantâneo."
     fi
 
-    # 4. Git core.editor
+    # 4. Configuração de Cache do Compilador Turbo (ccache 10GB)
+    if command -v ccache &>/dev/null; then
+        ccache -M 10G >/dev/null 2>&1 || true
+        ok "Cache do ccache configurado para 10GB!"
+    fi
+
+    # 5. Git core.editor
     git config --global core.editor "nvim"
     git config --global color.ui true
 
