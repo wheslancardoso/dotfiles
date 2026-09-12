@@ -248,12 +248,15 @@ profile-sync-daemon
 pv
 python
 python-defusedxml
+python-jeepney
+python-keyring
 python-packaging
 python-pip
 python-pipx
 python-pypdf
 python-pyquery
 python-requests
+python-secretstorage
 qalculate-gtk
 qbittorrent
 qemu-desktop
