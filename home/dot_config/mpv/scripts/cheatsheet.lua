@@ -14,6 +14,11 @@ local function build_hud_text()
     local ass = {
         "{\\an7\\pos(45,35)\\fs26\\fnInter\\bord1.5\\shad1\\b1\\1c&H00F5C2E7&}🎬 MPV GOD MODE — GUIA RÁPIDO DE ATALHOS{\\b0\\1c&H00CDD6F4&}\\N\\N",
         
+        "{\\b1\\1c&H00F5C2E7&}🇬🇧 IMERSÃO EM INGLÊS & ANKI MINER (MÚSICA & CINEMA):{\\b0\\1c&H00BAC2DE&}\\N",
+        "  • {\\b1\\1c&H00A6E3A1&}r{\\b0} / {\\b1\\1c&H00A6E3A1&}Alt + r{\\b0} : {\\b1}⏮️ Replay da Fala / Verso{\\b0} (Volta ao início da frase na hora)\\N",
+        "  • {\\b1\\1c&H00A6E3A1&}l{\\b0} / {\\b1\\1c&H00A6E3A1&}Alt + l{\\b0} : {\\b1}🔁 Shadowing Loop{\\b0} (A-B loop contínuo na fala/verso para treinar pronúncia)\\N",
+        "  • {\\b1\\1c&H00A6E3A1&}M{\\b0} (Shift + M) : {\\b1}⚡ Mine to Anki{\\b0} (Fatia o áudio exato da cena e cria o card no Anki!)\\N\\N",
+
         "{\\b1\\1c&H0089B4FA&}⚡ VELOCIDADE & ESTUDO (Passos Redondos / Pitch Natural):{\\b0\\1c&H00BAC2DE&}\\N",
         "  • {\\b1\\1c&H00A6E3A1&}[{\\b0} / {\\b1\\1c&H00A6E3A1&}]{\\b0} : Ajuste fino de velocidade ±0.1x (1.0x, 1.1x, 1.2x...)\\N",
         "  • {\\b1\\1c&H00A6E3A1&}{\\b0} / {\\b1\\1c&H00A6E3A1&}}{\\b0} : Passos de ±0.25x (1.00x, 1.25x, 1.50x, 1.75x, 2.00x)\\N",

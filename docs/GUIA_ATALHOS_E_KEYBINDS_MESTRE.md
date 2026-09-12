@@ -262,6 +262,44 @@
 | `fix-suspend` | Diagnóstico e proteção para o PC nunca acordar sozinho |
 | `perf` / `quiet` | Alterna entre performance máxima e silêncio das ventoinhas |
 
+---
 
+## 🎬 6. MPV Cinema & English Immersion God Mode
 
+> 📖 **Guias Dedicados**: Veja [GUIA_MPV_CINEMA_IMMERSION_GOD_MODE.md](file:///home/lan/dotfiles/docs/GUIA_MPV_CINEMA_IMMERSION_GOD_MODE.md) e [GUIA_INGLES_MUSICA_SHADOWING.md](file:///home/lan/dotfiles/docs/GUIA_INGLES_MUSICA_SHADOWING.md).
 
+### 🇬🇧 Imersão em Inglês, Shadowing & Mineração Anki (Músicas & Filmes)
+| Atalho | Ação | Comportamento |
+|---|---|---|
+| **`r`** ou `Alt + r` | **Replay da Frase** | Volta instantaneamente ao início da frase da legenda atual (música ou diálogo de ator). |
+| **`l`** ou `Alt + l` | **Shadowing Loop** | Ativa A-B Loop contínuo no verso/fala para treinar a pronúncia e ritmo até cravar a dicção. |
+| **`M`** (Shift + M) | **⚡ Mine to Anki** | **1-Click**: Fatia o áudio exato da fala/música via ffmpeg e cria o flashcard no Anki com som e texto! |
+| **`Alt + i`** / `Ctrl + n` | **Acelerar Silêncios** | Modo Imersão (`sub-skip`): acelera cenas sem fala e volta a 1.0x na fala dos personagens. |
+| **`Alt + m`** | **Modo Silêncio** | Alterna entre Acelerar nos silêncios (2.0x a 4.0x) ou Pular direto para a próxima fala. |
+| **`Alt + e`** | **Modo Imersão Total** | 1 tecla: Coloca **Áudio em Inglês + Legenda em Inglês** perfeitamente sincronizada. |
+| **`Alt + p`** | **Modo Nativo** | 1 tecla: Áudio PT-BR + Legenda PT-BR (Modo descanso). |
+| **`Ctrl + e`** | **Dual Subtitles** | Estudo Comparativo: Legenda em inglês embaixo + português no topo da tela. |
+
+### 🛡️ Inteligência de Legendas & Áudio
+| Atalho | Ação | Comportamento |
+|---|---|---|
+| `Ctrl + z` | **Sincronização por Voz** | Alinha o áudio com a legenda acusticamente usando IA (`ffsubsync`). |
+| `Alt + f` | **Smart FPS Auto-Detect** | Detecta o framerate do vídeo e corrige o drift de 23.976fps para 25fps em 1 clique. |
+| `Ctrl + s` | **Baixar Legenda** | Busca e baixa legendas do OpenSubtitles automaticamente. |
+| `Shift + V` | **Forced-Sub Killer** | Elimina legendas forçadas indesejadas e mantém apenas trilhas limpas. |
+| `z` / `Z` | **Ajuste Fino de Legenda** | Adianta ou atrasa a legenda em passos de 50ms (`Alt + z` para zerar). |
+| `Alt + b` | **Máscara Hardsub** | Tapa legendas queimadas na imagem para sobrepor legenda limpa em inglês. |
+| `n` | **Modo Noturno** | Normalização dinâmica (`dynaudnorm`): vozes sussurradas nítidas sem explosões ensurdecedoras. |
+| `a` / `A` | **Trocar Áudio** | Troca faixa sonora (o `smart-lang` sincroniza a legenda do idioma automaticamente). |
+
+### 📺 Navegação de Filmes, Séries & Visual
+| Atalho | Ação | Comportamento |
+|---|---|---|
+| `?` / `F1` / `h` | **HUD Cheatsheet** | Abre guia visual semitransparente com todos os atalhos diretamente sobre o vídeo. |
+| `H` (Shift + H) | **Continuar Assistindo** | Menu HUD com histórico recente de séries e filmes. |
+| `TAB` | **Pular Abertura** | Pula abertura / recapitulação (estilo Netflix / Crunchyroll). |
+| `[` / `]` | **Velocidade Fina** | Altera a velocidade em passos redondos de ±0.1x (`BS` reseta para 1.0x). |
+| `{` / `}` | **Velocidade Rápida** | Altera a velocidade em passos de ±0.25x. |
+| `C` (Shift + C) | **Dynamic Crop** | Detecta e remove barras pretas letterbox dinamicamente. |
+| `Ctrl + 4 / 5` | **IA Cinema Shaders** | Super-resolução neural FSRCNNX (4: Fidelidade Máxima 16-Core, 5: Fast 8-Core). |
+| `Botão Direito` | **Menu uosc** | Menu gráfico moderno para controle de timeline, áudios e capítulos. |

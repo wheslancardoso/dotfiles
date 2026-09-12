@@ -154,5 +154,20 @@ O ecossistema foi desenhado para eliminar 100% do atrito de ponta a ponta:
 3. **Reprodução e Imersão Instantânea (MPV):**
    * Ao abrir o arquivo no MPV, o `smart-lang.lua` reconhece a faixa em inglês, busca a legenda correspondente, faz o alinhamento acústico com `ffsubsync` em background e armazena em cache permanente.
 
+---
 
+## 🏛️ 10. 🇬🇧 English Cinema Immersion & Anki Miner (O Dojo de Cinema)
 
+Agora, qualquer sessão de filme ou série da sua lista cultural do **Timeless Life** se transforma em um laboratório de inglês nativo:
+
+| Tecla | Ação | Como Usar no Cinema |
+|---|---|---|
+| **`r`** | **Replay da Fala** | O ator falou rápido, com sotaque forte ou reduziu palavras? Aperte `r` para voltar imediatamente ao início daquela fala. |
+| **`l`** | **Shadowing Loop** | O diálogo é uma frase de impacto ou expressão rica? Aperte `l` para travar a fala do ator em loop contínuo. Repita imitando a prosódia, respiração e pausas do ator. |
+| **`M`** | **⚡ Mine to Anki** | **1-Click**: Aperte `M` durante a cena e o áudio daquela fala é recortado com `ffmpeg` e injetado diretamente no seu Anki com a fala em texto e som original! |
+| **`Alt + i`** | **Acelerar Silêncios** | Ativa o `sub-skip`: em momentos sem fala ou cenas longas de ação, o MPV acelera para até 3.0x e **reduz para 1.0x na velocidade normal no exato instante em que o personagem abre a boca**! |
+| **`Alt + e`** | **Modo Imersão Total** | Áudio em Inglês + Legenda em Inglês (sem forçadas) alinhada via IA. |
+| **`Ctrl + e`** | **Dual Subtitles** | Legenda em inglês embaixo + português no topo para conferir vocabulário complexo. |
+
+> 📁 **Organização dos Decks**: Todos os cards minerados são salvos automaticamente na sua partição de dados em:  
+> `/mnt/dados/02_Estudos_e_Concursos/02.5_Ingles_e_Imersao/Anki_Decks/English_Immersion_Deck.tsv`
