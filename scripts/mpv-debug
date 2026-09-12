@@ -1,0 +1,248 @@
+#!/usr/bin/env python3
+"""
+==============================================================================
+🔍 MPV APEX DEBUGGER & DIAGNOSTIC DOCTOR
+==============================================================================
+Monitor em tempo real, telemetria cirúrgica e detector automático de problemas
+para reprodução e streaming no MPV.
+==============================================================================
+"""
+
+import sys
+import os
+import socket
+import json
+import time
+import shutil
+
+SOCKET_PATH = "/tmp/mpv-socket"
+
+# ANSI Colors & Formatting
+C_RESET = "\033[0m"
+C_BOLD = "\033[1m"
+C_DIM = "\033[2m"
+C_RED = "\033[1;31m"
+C_GREEN = "\033[1;32m"
+C_YELLOW = "\033[1;33m"
+C_BLUE = "\033[1;34m"
+C_MAGENTA = "\033[1;35m"
+C_CYAN = "\033[1;36m"
+C_WHITE = "\033[1;37m"
+BG_RED = "\033[41;1;37m"
+BG_GREEN = "\033[42;1;30m"
+BG_YELLOW = "\033[43;1;30m"
+
+def send_ipc_query(sock, prop):
+    cmd = {"command": ["get_property", prop]}
+    try:
+        sock.sendall((json.dumps(cmd) + "\n").encode('utf-8'))
+        raw = b""
+        while True:
+            chunk = sock.recv(4096)
+            if not chunk:
+                break
+            raw += chunk
+            if b"\n" in raw:
+                break
+        for line in raw.decode('utf-8', errors='ignore').strip().split('\n'):
+            if line:
+                try:
+                    res = json.loads(line)
+                    if res.get("error") == "success":
+                        return res.get("data")
+                except Exception:
+                    pass
+    except Exception:
+        return None
+    return None
+
+def format_bytes(b):
+    if b is None or not isinstance(b, (int, float)):
+        return "N/A"
+    if b < 1024:
+        return f"{b:.0f} B"
+    elif b < 1024 * 1024:
+        return f"{b / 1024:.1f} KB"
+    elif b < 1024 * 1024 * 1024:
+        return f"{b / (1024 * 1024):.2f} MB"
+    else:
+        return f"{b / (1024 * 1024 * 1024):.2f} GB"
+
+def format_time(seconds):
+    if seconds is None or not isinstance(seconds, (int, float)):
+        return "--:--:--"
+    m, s = divmod(int(seconds), 60)
+    h, m = divmod(m, 60)
+    if h > 0:
+        return f"{h:02d}:{m:02d}:{s:02d}"
+    return f"{m:02d}:{s:02d}"
+
+def render_bar(current, maximum, length=30, fill_color=C_GREEN, empty_color=C_DIM):
+    if not maximum or maximum <= 0 or current is None:
+        return empty_color + ("░" * length) + C_RESET
+    ratio = min(max(current / maximum, 0.0), 1.0)
+    filled_len = int(ratio * length)
+    return fill_color + ("█" * filled_len) + empty_color + ("░" * (length - filled_len)) + C_RESET
+
+def main():
+    sock = None
+    prev_drops = 0
+    prev_vo_drops = 0
+
+    while True:
+        if sock is None:
+            if not os.path.exists(SOCKET_PATH):
+                os.system("clear")
+                print(f"{C_CYAN}{C_BOLD}🎬 MPV APEX DIAGNOSTIC COCKPIT v2.0{C_RESET}\n")
+                print(f"{C_YELLOW}⏳ Aguardando abertura de vídeo no MPV...{C_RESET}")
+                print(f"{C_DIM}(O MPV cria o socket {SOCKET_PATH} automaticamente quando abre){C_RESET}\n")
+                print(f"{C_WHITE}Pressione Ctrl+C para sair.{C_RESET}")
+                time.sleep(1)
+                continue
+            try:
+                sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+                sock.settimeout(1.5)
+                sock.connect(SOCKET_PATH)
+            except Exception:
+                sock = None
+                time.sleep(0.5)
+                continue
+
+        # Fetch Data via IPC
+        try:
+            path = send_ipc_query(sock, "path")
+            media_title = send_ipc_query(sock, "media-title") or path or "Desconhecido"
+            time_pos = send_ipc_query(sock, "time-pos")
+            duration = send_ipc_query(sock, "duration")
+            speed = send_ipc_query(sock, "speed") or 1.0
+            paused = send_ipc_query(sock, "pause")
+            paused_cache = send_ipc_query(sock, "paused-for-cache")
+            
+            # Cache & Network
+            cache_dur = send_ipc_query(sock, "demuxer-cache-duration") or 0.0
+            cache_state = send_ipc_query(sock, "demuxer-cache-state") or {}
+            raw_rate = cache_state.get("raw-input-rate", 0)
+            cached_bytes = cache_state.get("total-bytes", 0)
+            fw_bytes = cache_state.get("fw-bytes", 0)
+            underrun = cache_state.get("underrun", False)
+            eof = cache_state.get("eof", False)
+            
+            # Video & GPU
+            vo = send_ipc_query(sock, "current-vo") or "gpu-next"
+            hwdec = send_ipc_query(sock, "hwdec-current") or "no"
+            hwdec_active = send_ipc_query(sock, "hwdec-active")
+            vcodec = send_ipc_query(sock, "video-format") or "N/A"
+            w = send_ipc_query(sock, "width")
+            h = send_ipc_query(sock, "height")
+            fps = send_ipc_query(sock, "container-fps") or send_ipc_query(sock, "estimated-vf-fps") or 0
+            v_bitrate = send_ipc_query(sock, "video-bitrate")
+            
+            # Drops & Performance
+            frame_drops = send_ipc_query(sock, "frame-drop-count") or 0
+            vo_drops = send_ipc_query(sock, "vo-drop-frame-count") or 0
+            display_fps = send_ipc_query(sock, "display-fps") or 0
+            avsync = send_ipc_query(sock, "avsync") or 0.0
+            
+            # Audio
+            acodec = send_ipc_query(sock, "audio-codec-name") or "N/A"
+            a_samplerate = send_ipc_query(sock, "audio-samplerate")
+            a_channels = send_ipc_query(sock, "audio-channels")
+        except Exception:
+            try:
+                sock.close()
+            except Exception:
+                pass
+            sock = None
+            continue
+
+        # Render Terminal UI
+        os.system("clear")
+        cols = shutil.get_terminal_size().columns
+        sep = "─" * min(cols, 80)
+
+        print(f"{C_CYAN}{C_BOLD}🎬 MPV APEX DIAGNOSTIC DOCTOR & TELEMETRY{C_RESET} {C_DIM}• IPC Socket Ativo{C_RESET}")
+        print(sep)
+        
+        # Section 1: Media & Position
+        status_tag = f"{BG_YELLOW} PAUSADO {C_RESET}" if paused else (f"{BG_RED} BUFFERING {C_RESET}" if paused_cache else f"{BG_GREEN} REPRODUZINDO {C_RESET}")
+        print(f"{C_BOLD}Título:{C_RESET} {C_WHITE}{str(media_title)[:65]}{C_RESET}  {status_tag}")
+        
+        time_str = f"{format_time(time_pos)} / {format_time(duration)}"
+        pct = (time_pos / duration * 100) if (time_pos and duration and duration > 0) else 0.0
+        bar = render_bar(time_pos, duration, length=32, fill_color=C_CYAN)
+        print(f"{C_BOLD}Linha do Tempo:{C_RESET} [{bar}] {C_CYAN}{time_str}{C_RESET} ({pct:.1f}%) | {C_YELLOW}{speed:.2f}x{C_RESET}")
+        print(sep)
+
+        # Section 2: Network & Demuxer Cache
+        print(f"{C_BOLD}{C_BLUE}🚀 MOTOR DE REDE & CACHE (BUFFER EM RAM){C_RESET}")
+        
+        cache_color = C_GREEN if cache_dur > 60 else (C_YELLOW if cache_dur > 10 else C_RED)
+        rate_str = f"{format_bytes(raw_rate)}/s"
+        rate_color = C_GREEN if raw_rate > 1024*1024 else (C_YELLOW if raw_rate > 200*1024 else C_RED)
+        
+        print(f"  • {C_BOLD}Buffer Carregado em RAM:{C_RESET} {cache_color}{cache_dur:.1f}s{C_RESET} (Total: {format_bytes(cached_bytes)} | Adiante: {format_bytes(fw_bytes)})")
+        print(f"  • {C_BOLD}Taxa de Download Atual:{C_RESET} {rate_color}{rate_str}{C_RESET} | {C_BOLD}Demuxer EOF:{C_RESET} {'Sim' if eof else 'Não'} | {C_BOLD}Underrun:{C_RESET} {'Sim' if underrun else 'Não'}")
+        
+        cache_bar = render_bar(cache_dur, 300.0, length=24, fill_color=C_BLUE)
+        print(f"  • {C_BOLD}Nível do Buffer (300s):{C_RESET} [{cache_bar}] {cache_color}{min(cache_dur/300.0*100, 100):.0f}%{C_RESET}")
+        print(sep)
+
+        # Section 3: Video Engine & GPU Acceleration
+        print(f"{C_BOLD}{C_MAGENTA}🎮 ENGINE DE VÍDEO & PLACA GRÁFICA (GPU / NVDEC){C_RESET}")
+        
+        res_str = f"{w}x{h} @ {fps:.1f}fps" if (w and h) else "N/A"
+        hwdec_color = C_GREEN if (hwdec != "no" and hwdec_active) else (C_YELLOW if hwdec != "no" else C_RED)
+        hwdec_status = f"{hwdec_color}{hwdec} (Ativo){C_RESET}" if hwdec_active else f"{C_RED}Inativo / Software CPU{C_RESET}"
+        
+        print(f"  • {C_BOLD}Resolução & Codec:{C_RESET} {C_WHITE}{res_str}{C_RESET} ({C_CYAN}{vcodec}{C_RESET}) | {C_BOLD}Bitrate:{C_RESET} {format_bytes(v_bitrate)}/s")
+        print(f"  • {C_BOLD}Renderizador (VO):{C_RESET} {C_WHITE}{vo}{C_RESET} | {C_BOLD}Aceleração HWDEC:{C_RESET} {hwdec_status}")
+        
+        drops_color = C_GREEN if (frame_drops == 0 and vo_drops == 0) else C_RED
+        print(f"  • {C_BOLD}Quadros Perdidos (Drops):{C_RESET} {drops_color}Decoder: {frame_drops} | VO/Apresentação: {vo_drops}{C_RESET} | {C_BOLD}Display:{C_RESET} {display_fps:.1f}Hz")
+        print(sep)
+
+        # Section 4: Audio Engine & Sync
+        print(f"{C_BOLD}{C_YELLOW}🔊 ENGINE DE ÁUDIO & SINCRONISMO (A/V){C_RESET}")
+        sync_color = C_GREEN if abs(avsync) < 0.030 else (C_YELLOW if abs(avsync) < 0.080 else C_RED)
+        print(f"  • {C_BOLD}Codec & Taxa:{C_RESET} {C_WHITE}{acodec}{C_RESET} ({a_samplerate}Hz {a_channels}ch) | {C_BOLD}Desvio A/V:{C_RESET} {sync_color}{avsync*1000:+.1f} ms{C_RESET}")
+        print(sep)
+
+        # Section 5: DIAGNOSTIC DOCTOR
+        print(f"{C_BOLD}{C_WHITE}🩺 DIAGNÓSTICO INTELIGENTE & ANÁLISE DE SAÚDE:{C_RESET}")
+        
+        issues = []
+        if paused_cache or (cache_dur < 1.0 and not eof and not paused):
+            if raw_rate < 50 * 1024 and not eof:
+                issues.append((C_RED, "🚨 ESTRANGULAMENTO DE REDE (Throttling / Banda Baixa)", "O servidor ou protocolo está limitando o envio de dados a menos de 50 KB/s."))
+            else:
+                issues.append((C_YELLOW, "⚠️ BUFFER RECARREGANDO", "O reprodutor está aguardando dados da rede para manter a velocidade."))
+        
+        if frame_drops > prev_drops or vo_drops > prev_vo_drops:
+            issues.append((C_RED, "🚨 GARGALO DE RENDERIZAÇÃO (GPU/Compositor)", "Estão ocorrendo perdas de quadros. Verifique o driver ou sincronismo."))
+            
+        if not hwdec_active and (h and h >= 1080):
+            issues.append((C_YELLOW, "⚠️ DECODIFICAÇÃO POR CPU ATIVA", "A GPU não assumiu a decodificação de hardware (NVDEC)."))
+
+        if abs(avsync) > 0.100:
+            issues.append((C_YELLOW, "⚠️ DESSINCRONISMO DE ÁUDIO/VÍDEO", f"Desvio de {avsync*1000:.0f}ms detectado."))
+
+        if not issues:
+            print(f"  {C_GREEN}✔ SAÚDE PERFEITA:{C_RESET} Reprodução 100% fluida, aceleração por GPU ativa e buffer seguro.")
+        else:
+            for tag_color, title, desc in issues:
+                print(f"  {tag_color}{title}{C_RESET}")
+                print(f"    {C_DIM}↳ {desc}{C_RESET}")
+
+        prev_drops = frame_drops
+        prev_vo_drops = vo_drops
+        
+        print(sep)
+        print(f"{C_DIM}Atualização a cada 0.5s • Pressione Ctrl+C para encerrar{C_RESET}")
+        time.sleep(0.5)
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        print(f"\n{C_GREEN}Cockpit de diagnóstico encerrado.{C_RESET}")
+        sys.exit(0)
