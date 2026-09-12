@@ -6,9 +6,34 @@
 # WARNING! If you remove packages here, dotfiles may not work properly.
 # and also, ensure that packages are present in AUR and official Arch Repo
 
-# add packages wanted here
+# add packages wanted here (Performance & Power-User Suite)
 Extra=(
-
+  mold
+  ccache
+  irqbalance
+  sysstat
+  pigz
+  pbzip2
+  pixz
+  gping
+  duf
+  ntfsprogs
+  exfatprogs
+  dosfstools
+  parted
+  pv
+  aria2
+  yazi
+  zoxide
+  fzf
+  ripgrep
+  fd
+  bat
+  eza
+  lazygit
+  flameshot
+  hyprpicker
+  wf-recorder
 )
 
 hypr_package=( 
