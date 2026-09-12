@@ -842,6 +842,7 @@ def main_tui(stdscr, custom_snippets=None, target_ghost=200.0, is_master=False):
 
 def main():
     parser = argparse.ArgumentParser(description="⚡ DEVTYPE v3.0 — The Apex Developer Typing Engine")
+    parser.add_argument("mode", nargs="?", default=None, help="Modo direto: 1-10, symbols, ts, py, sql, camel, eng, pt, vim, adapt, bigram ou quick")
     parser.add_argument("-f", "--file", help="Carregar arquivo de código customizado para praticar")
     parser.add_argument("-d", "--dir", help="Escanear pasta de projeto para treinar com código real")
     parser.add_argument("-s", "--stats", action="store_true", help="Exibir painel de estatísticas e mapa de calor")
@@ -875,6 +876,57 @@ def main():
         if not custom_snippets:
             print(f"❌ Não foram encontrados arquivos de código em {args.dir}")
             sys.exit(1)
+
+    # DIRECT INSTANT MODE LAUNCH
+    if args.mode:
+        m_str = args.mode.lower().strip()
+        modes_list = list(DATASETS.keys())
+        target_name = None
+        target_snips = None
+        
+        if m_str in ("1", "symbols", "simbolos", "sym"):
+            target_name = modes_list[0]
+            target_snips = DATASETS[target_name]
+        elif m_str in ("2", "ts", "typescript", "react", "js"):
+            target_name = modes_list[1]
+            target_snips = DATASETS[target_name]
+        elif m_str in ("3", "py", "python", "rust", "go"):
+            target_name = modes_list[2]
+            target_snips = DATASETS[target_name]
+        elif m_str in ("4", "sql", "bash", "devops", "sh"):
+            target_name = modes_list[3]
+            target_snips = DATASETS[target_name]
+        elif m_str in ("5", "case", "camel", "snake"):
+            target_name = modes_list[4]
+            target_snips = DATASETS[target_name]
+        elif m_str in ("6", "eng", "english", "prose"):
+            target_name = modes_list[5]
+            target_snips = DATASETS[target_name]
+        elif m_str in ("7", "pt", "br", "portugues"):
+            target_name = modes_list[6]
+            target_snips = DATASETS[target_name]
+        elif m_str in ("8", "vim", "modal"):
+            target_name = modes_list[7]
+            target_snips = DATASETS[target_name]
+        elif m_str in ("9", "adapt", "adaptive", "ia"):
+            target_name = "🧬 Adaptive Weak-Key Gauntlet"
+            target_snips = [generate_adaptive_drill() for _ in range(5)]
+        elif m_str in ("10", "bigram", "trigram", "bi", "tri"):
+            target_name = "⚡ Bigram & Trigram Neural Blitz"
+            target_snips = [generate_bigram_drill() for _ in range(5)]
+        elif m_str in ("q", "quick", "fast", "random", "play"):
+            # Instant random dev drill
+            all_dev_modes = modes_list[:4]
+            target_name = random.choice(all_dev_modes)
+            target_snips = DATASETS[target_name]
+        
+        if target_snips:
+            try:
+                curses.wrapper(lambda stdscr: run_typing_session(stdscr, target_name, target_snips, args.ghost, args.master))
+            except KeyboardInterrupt:
+                pass
+            print("\n⚡ Treino finalizado! Mantenha a consistência diária.")
+            return
 
     try:
         curses.wrapper(lambda stdscr: main_tui(stdscr, custom_snippets=custom_snippets, target_ghost=args.ghost, is_master=args.master))
