@@ -56,7 +56,7 @@ require "mp.options"
 -- options
 local options = {
     -- behavior
-    mode = 4, -- [0-4] more details above
+    mode = 0, -- [0-4] 0 = desativado por padrão / ativável sob demanda com tecla C (Shift+c)
     start_delay = 0, -- delay in seconds used to skip intro (usefull with mode 2)
     prevent_change_timer = 30, -- seconds
     prevent_change_mode = 0, -- [0-3], more details above
