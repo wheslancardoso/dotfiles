@@ -400,6 +400,35 @@ local function process_json(json)
         table.sort(audio_formats, comp(sort_audio, reverse_audio))
     end
 
+    -- Deduplicar resoluções de vídeo: mantém apenas a melhor opção (maior bitrate/codec) por resolução
+    local unique_video_formats = {}
+    local seen_resolutions = {}
+    for _, format in ipairs(video_formats) do
+        local height_str = tostring(format.height or (format.resolution and format.resolution:match('x(%d+)') or ''))
+        local fps_str = format.fps and format.fps > 30 and (format.fps .. 'fps') or ''
+        local res_key = height_str .. 'p' .. fps_str
+        if res_key == 'p' then
+            res_key = format.format_id or 'unknown'
+        end
+        if not seen_resolutions[res_key] then
+            seen_resolutions[res_key] = true
+            unique_video_formats[#unique_video_formats + 1] = format
+        end
+    end
+    video_formats = unique_video_formats
+
+    -- Deduplicar áudio: mantém apenas a melhor qualidade por idioma
+    local unique_audio_formats = {}
+    local seen_audio = {}
+    for _, format in ipairs(audio_formats) do
+        local lang_key = tostring(format.language or 'default') .. tostring(format.acodec or '')
+        if not seen_audio[lang_key] then
+            seen_audio[lang_key] = true
+            unique_audio_formats[#unique_audio_formats + 1] = format
+        end
+    end
+    audio_formats = unique_audio_formats
+
     ---@param size integer
     ---@return string
     local function scale_filesize(size)
