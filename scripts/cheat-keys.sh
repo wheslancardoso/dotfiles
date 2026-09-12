@@ -30,6 +30,7 @@ QUERY="$(echo "$QUERY" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
 generate_database() {
 cat << 'EOF'
 🤖 Perguntar para a IA	🧠 Assistente	Tirar Dúvida com IA do Sistema	Abre o assistente de IA para responder qualquer dúvida de comandos ou atalhos.	ia duvida ajuda pergunta prompt sistema comando terminal	terminal_ia
+devtype	⚡ Digitação	Treino de Digitação Dev (200+ WPM)	Apex Developer Typing Engine com foco em símbolos, TypeScript, Rust, SQLite e heatmap.	devtype typing monkeytype digitacao velocidade wpm treino velocidade codigo simbolos teclado k380s	terminal_cmd
 c p	📂 Yazi	Copiar Caminho Absoluto	Copia o caminho completo (ex: /mnt/dados/pasta/arquivo.iso) direto pro Clipboard.	copiar caminho path localizacao pasta arquivo absoluto fullpath endereco clipboard wayland wl-copy yazi	copy_key
 c f	📂 Yazi	Copiar Nome do Arquivo	Copia apenas o nome do arquivo com a extensão (ex: video.mp4).	copiar nome filename title nome arquivo name clipboard yazi	copy_key
 c d	📂 Yazi	Copiar Caminho da Pasta	Copia o diretório/pasta onde você está navegando no Yazi.	copiar pasta dirpath dirname diretorio caminho pasta localizacao yazi	copy_key
