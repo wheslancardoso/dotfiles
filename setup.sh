@@ -706,6 +706,12 @@ setup_anti_friction() {
         ok "Wake-on-LAN desativado no NetworkManager!"
     fi
 
+    # 6.5. Otimização de Rota de Rede: Priorizar IPv4 no getaddrinfo (/etc/gai.conf) para evitar gargalos/perda de pacotes em CDNs
+    if [ -f /etc/gai.conf ]; then
+        sudo sed -i 's/#precedence ::ffff:0:0\/96  100/precedence ::ffff:0:0\/96  100/' /etc/gai.conf 2>/dev/null || true
+        ok "Precedência de IPv4 ativada no /etc/gai.conf (elimina travamentos de CDN IPv6)!"
+    fi
+
     # 7. Regras Udev Anti-Wakeup Espúrio e I/O Schedulers para NVMe (None) e SSD
     if [ -d "$sys_src/udev/rules.d" ]; then
         sudo mkdir -p /etc/udev/rules.d
