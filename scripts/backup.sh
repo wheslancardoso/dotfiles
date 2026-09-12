@@ -65,6 +65,8 @@ step_backup_configs() {
         zellij
         starship.toml
         xdg-desktop-portal-termfilechooser
+        mpv
+        yt-dlp
     )
 
     for f in "${folders[@]}"; do
