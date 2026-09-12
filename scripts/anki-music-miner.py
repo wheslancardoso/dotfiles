@@ -119,13 +119,17 @@ def main():
     # Estrutura do Card (FRENTE e VERSO)
     card_front = f"<div style='font-size: 22px; font-weight: 600; text-align: center; color: #89b4fa; margin-bottom: 12px;'>🎵 {verse_text}</div><div style='text-align: center;'>{sound_tag}</div>"
     
+    is_video = audio_file.suffix.lower() in [".mkv", ".mp4", ".avi", ".webm", ".mov", ".m4v"]
+    media_label = "🎬 Obra / Filme" if is_video else "🎵 Faixa"
+    tips_label = "Diálogo & Entonação do Personagem" if is_video else "Shadowing & Connected Speech"
+    
     card_back = (
         f"<div style='text-align: center; margin-bottom: 10px; font-size: 14px; color: #a6adc8;'>"
-        f"<b>Faixa:</b> {song_title}" + (f" • <b>Artista:</b> {artist}" if artist else "") +
+        f"<b>{media_label}:</b> {song_title}" + (f" • <b>Artista:</b> {artist}" if artist else "") +
         f"</div>"
         f"<div style='background: rgba(137, 180, 250, 0.08); border-left: 4px solid #89b4fa; padding: 10px; border-radius: 6px; font-size: 15px; color: #cdd6f4; text-align: left;'>"
-        f"<b>🎧 Shadowing & Connected Speech:</b><br/>"
-        f"Preste atenção no ritmo, nas elisões consonant-vowel e reduções naturais na velocidade real do cantor."
+        f"<b>🎧 {tips_label}:</b><br/>"
+        f"Preste atenção na velocidade real dos nativos, na modulação da voz e nas conexões de palavras."
         f"</div>"
     )
 
@@ -146,7 +150,7 @@ def main():
                     "allowDuplicate": False,
                     "duplicateScope": "deck"
                 },
-                "tags": ["english", "music", "shadowing", "apex"]
+                "tags": ["english", "cinema" if is_video else "music", "shadowing", "apex"]
             }
             add_res = anki_connect_request("addNote", note=note_payload)
             if add_res and add_res.get("result"):
@@ -154,9 +158,10 @@ def main():
     except Exception:
         pass
 
-    tsv_line = f"{card_front}\t{card_back}\tenglish music shadowing apex\n"
+    tsv_line = f"{card_front}\t{card_back}\tenglish {'cinema' if is_video else 'music'} shadowing apex\n"
     
     deck_files = [
+        Path("/mnt/dados/02_Estudos_e_Concursos/02.5_Ingles_e_Imersao/Anki_Decks/English_Immersion_Deck.tsv"),
         Path.home() / "dotfiles/docs/anki/Music_Anki_Deck.tsv",
         Path.home() / "timeless_life/09 - Maestria em Inglês de Elite & Imersão Global/Music_Anki_Deck.tsv"
     ]
@@ -168,6 +173,7 @@ def main():
                     f.write(tsv_line)
             except Exception:
                 pass
+
 
     status_str = "Card injetado no Anki!" if card_added else "Áudio salvo e card preparado para Anki!"
     notify_user(
