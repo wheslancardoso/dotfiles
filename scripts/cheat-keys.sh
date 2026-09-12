@@ -28,10 +28,7 @@ QUERY="$(echo "$QUERY" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
 generate_database() {
 cat << 'EOF'
 🤖 Perguntar para a IA	🧠 Assistente	Tirar Dúvida com IA do Sistema	Abre o assistente de IA para responder qualquer dúvida de comandos ou atalhos.	ia duvida ajuda pergunta prompt sistema comando terminal	terminal_ia
-mpv-debug	🎬 MPV	Cockpit de Telemetria e Diagnóstico MPV	Painel em tempo real: buffer em RAM, taxa de download, drops, NVDEC e saúde de reprodução.	mpv debug telemetria diagnostico travamento video streaming cache gpu nvdec drops	kitty --title="MPV Diagnostic Doctor" -e mpv-debug
-dl	🎬 Mídias	APEX Media Cockpit & English Immersion	Baixa vídeos do YouTube/Instagram, áudio do Spotify e cria cards do Anki com áudio e letras.	dl baixar download video musica youtube spotify instagram anki ingles immersion	kitty --title="APEX Media Cockpit" -e dl
-lyrics	🎵 Músicas	Letras Sincronizadas Flutuantes	Exibe letras de músicas sincronizadas (.lrc) em tempo real no monitor.	lyrics letras musicas sincronizadas lrc spotify mpv amberol	$HOME/dotfiles/scripts/lyrics-toggle.sh
-monitores	🖥️ Monitores	Cockpit de Monitores & Workspaces	Menu 1-toque para restaurar padrão ouro (DP-1 100Hz + HDMI), modo dinâmico ou nwg-displays.	monitores fix-monitors telas display desconfigurou workspace hdmi dp-1 arrumar	$HOME/dotfiles/scripts/monitores-setup.sh --rofi
+monitores	🖥️ Monitores	Cockpit de Monitores & Workspaces	Menu 1-toque para restaurar padrão ouro, modo dinâmico ou abrir nwg-displays.	monitores fix-monitors telas display desconfigurou workspace hdmi dp-1 arrumar	$HOME/dotfiles/scripts/monitores-setup.sh --rofi
 SUPER + SHIFT + M	🖥️ Monitores	Configurar Monitores (nwg-displays)	Gerenciador gráfico para ajustar resolução, taxa de Hz, espelhamento e ordem dos monitores.	monitores telas nwg-displays display resolucao hz 100hz dp-1 hdmi primario	nwg-displays
 SUPER + CTRL + ,	⚙️ JaKooLit	Menu de Opções do JaKooLit (KooL)	Quick Settings do JaKooLit: nwg-look, qt6ct, animações, temas e customizações do sistema.	opcoes jakoolit kool quick settings configuracoes animacoes bordas customizacoes	/home/lan/.config/hypr/scripts/Kool_Quick_Settings.sh
 devtype	⚡ Digitação	Treino de Digitação Dev (200+ WPM)	Apex Developer Typing Engine v3.0 com Ghost Pacer, IKL, Ranks RPG, Símbolos e TypeScript.	devtype typing monkeytype digitacao velocidade wpm treino velocidade codigo simbolos teclado k380s	kitty --title="DevType Apex" -e devtype
@@ -74,6 +71,7 @@ SUPER + ALT + W	🚀 Hyprland	Menu Wi-Fi Rápido	Gerencia e conecta redes sem fi
 SUPER + ALT + D	🚀 Hyprland	Baixar Vídeo/Música do Clipboard	Baixa mídias de links copiados (YouTube, Instagram, TikTok, Spotify) via yt-dlp.	baixar download video musica youtube link clipboard yt-dlp	/home/lan/.config/hypr/scripts/media-download.sh --rofi
 SUPER + CTRL + D	🚀 Hyprland	Baixar Música Tocando Agora	Captura a faixa em reprodução no Spotify/Browser e faz download em MP3/FLAC.	baixar musica atual tocando agora spotify download	/home/lan/.config/hypr/scripts/media-download.sh --now
 SUPER + CTRL + C	🚀 Hyprland	Continuar Assistindo Séries/Filmes	Menu com histórico de episódios e animes para retomar de onde parou no MPV.	continuar assistindo series filmes animes historico mpv	/home/lan/dotfiles/scripts/continuar.sh --rofi
+SUPER + Shift + L	🚀 Hyprland	Letras Sincronizadas (Karaokê)	Exibe letras de músicas em tempo real sincronizadas com o som (sptlrx).	letras lyrics musica spotify amberol karaoke sincronizada sptlrx	/home/lan/.config/hypr/scripts/lyrics-toggle.sh
 SUPER + Shift + N	🚀 Hyprland	Central de Notificações SwayNC	Abre o painel lateral com histórico de alertas e controles rápidos.	notificacoes swaync avisos alertas central lateral	swaync-client -t -sw
 SUPER + N	🚀 Hyprland	Luz Noturna f.lux (Pausar/Retomar)	Alterna o filtro de luz azul para descanso visual noturno.	luz noturna flux filtro azul noite descanso visual	/home/lan/.config/hypr/scripts/Hyprsunset.sh toggle
 SUPER + ALT + N	🚀 Hyprland	Temperatura da Tela (Presets)	Escolha a temperatura de cor da tela (3000K, 4000K, 5000K).	temperatura tela cores calor quente fria luz noturna	/home/lan/.config/hypr/scripts/Hyprsunset.sh menu
@@ -99,29 +97,6 @@ CTRL + ALT + L	🚀 Hyprland	Bloquear Sessão (Hyprlock)	Bloqueia a sessão com 
 CTRL + ALT + Del	🚀 Hyprland	Sair do Hyprland (Logout)	Encerra a sessão gráfica e retorna ao display manager.	sair logout fechar sessao encerrar hyprland	hyprctl dispatch exit 0
 SUPER + ALT + U	🚀 Hyprland	Atualização Blindada do Sistema	Roda o safe-update com snapshots e checagem de integridade de pacotes.	atualizacao segura update pacup safe-update pacman yay	ghostty --class=safe-update -e bash /home/lan/dotfiles/scripts/safe-update.sh
 SUPER + ALT + O	🚀 Hyprland	Organizador Master Cockpit	Menu interativo para auditoria, triagem e categorização de pastas.	organizador triagem auditoria inbox downloads arrumar	/home/lan/dotfiles/scripts/organizador-menu.sh
-M (no MPV)	🎬 Inglês	Gerar Flashcard Anki (Áudio + Frase)	Cria card instantâneo no Anki com corte de áudio da música/vídeo, frase em inglês e tradução.	anki flashcard ingles musica shadowing frase audio cortar mpv	copy_key
-Ctrl + Q (no MPV)	🎬 MPV	Seletor Limpo de Resolução	Menu OSD para selecionar resolução (1080p, 720p, 480p) sem opções duplicadas.	qualidade resolucao 1080p 720p 480p format bitrate mpv	copy_key
-H (Shift+H no MPV)	🎬 MPV	Histórico de Séries e Filmes Recentes	HUD visual com as últimas mídias assistidas para trocar de episódio com 1 tecla.	historico series filmes animes recent smart resume mpv	copy_key
-Alt + I ou Ctrl + N	🎬 MPV	Modo Imersão (sub-skip)	Acelera automaticamente nos momentos de silêncio e desacelera nas falas.	imersao ingles silencio acelerar silencios subskip sub-skip mpv	copy_key
-TAB (no MPV)	🎬 MPV	Pular Abertura / Intro	Salta a vinheta inicial de séries e animes com 1 tecla estilo Netflix.	pular abertura intro vinheta netflix anime serie skip intro mpv	copy_key
-V (Shift + V no MPV)	🎬 MPV	Remover Legenda Forçada	Mata legendas forçadas indesejadas e filtra apenas trilhas limpas.	legenda forcada forced sub killer limpar sumir legenda mpv	copy_key
-Ctrl + Z (no MPV)	🎬 MPV	Sincronizar Legenda por Voz	Reconhecimento de áudio (ffsubsync) para sincronizar legendas atrasadas/adiantadas.	sincronizar legenda audio voz atrasada adiantada ffsubsync sync mpv	copy_key
-Ctrl + S (no MPV)	🎬 MPV	Baixar Legendas Online	Busca e baixa legendas em português/inglês direto do OpenSubtitles.	baixar legenda download subtitles opensubtitles legenda pt legendas mpv	copy_key
-N (no MPV)	🎬 MPV	Modo Noturno de Áudio	Comprime explosões e clareia sussurros e diálogos (Dynamic Range Compression).	modo noturno normalizar volume audio noite vozes explosoes mpv	copy_key
-Alt + B (no MPV)	🎬 MPV	Máscara Anti-Hardsub	Gera tarja preta sobre legendas gravadas no vídeo para sobrepor novas.	hardsub mascara tarja preta cobrir legenda gravada mpv	copy_key
-Ctrl + 1 / 2 / 3	🎬 MPV	Shaders Anime4K	Aplica redes neurais para restaurar traços e upscaling em tempo real de animes.	anime4k shaders anime qualidade imagem upscaling ia desenho mpv	copy_key
-Ctrl + 4 / 5	🎬 MPV	Shaders Cinema IA (FSRCNNX)	Super-resolução neural 16-Core para filmes e séries live-action.	cinema shaders filme serie fsrcnnx ia upscaling 4k hd mpv	copy_key
-F1 ou ? (no MPV)	🎬 MPV	Ajuda HUD do Player	Abre painel na tela do vídeo com todas as teclas do MPV.	ajuda cheatsheet teclas atalhos hud tela player mpv	copy_key
-→ (Seta Direita)	🎬 MPV	Avançar 10 Segundos	Seek ultra-rápido de 10s otimizado para YouTube e vídeos locais.	avancar pular adiantar frente 10s dez segundos youtube seek mpv	copy_key
-← (Seta Esquerda)	🎬 MPV	Voltar 10 Segundos	Retrocede 10s no player sem engasgos.	voltar retroceder tras 10s dez segundos youtube seek mpv	copy_key
-↑ (Seta Cima)	🎬 MPV	Avançar 30 Segundos	Pula 30 segundos à frente no vídeo.	avancar pular adiantar frente 30s trinta segundos seek mpv	copy_key
-↓ (Seta Baixo)	🎬 MPV	Voltar 30 Segundos	Retrocede 30 segundos no vídeo.	voltar retroceder tras 30s trinta segundos seek mpv	copy_key
-Shift + →	🎬 MPV	Avançar 1 Minuto (60s)	Salto de 1 minuto na linha do tempo.	avancar pular frente 1m 60s um minuto seek mpv	copy_key
-Shift + ←	🎬 MPV	Voltar 1 Minuto (60s)	Retrocesso de 1 minuto na linha do tempo.	voltar retroceder tras 1m 60s um minuto seek mpv	copy_key
-Ctrl + →	🎬 MPV	Avançar 5 Minutos (300s)	Salto longo de 5 minutos com carregamento assíncrono.	avancar pular frente 5m 300s cinco minutos seek mpv	copy_key
-Ctrl + ←	🎬 MPV	Voltar 5 Minutos (300s)	Retrocesso longo de 5 minutos direto da memória RAM.	voltar retroceder tras 5m 300s cinco minutos seek mpv	copy_key
-[ ou ]	🎬 MPV	Ajustar Velocidade	Ajusta a velocidade (1.1x, 1.25x...) com correção de pitch (sem voz de esquilo).	velocidade acelerar desacelerar rapido devagar speed 1.25x 1.5x 2x mpv	copy_key
-BS (Backspace)	🎬 MPV	Resetar Velocidade (1.0x)	Retorna a reprodução para a velocidade normal instantaneamente.	resetar velocidade normal 1.0x padrao padronizar mpv	copy_key
 c p	📂 Yazi	Copiar Caminho Absoluto	Copia o caminho completo (ex: /mnt/dados/pasta/arquivo.iso) direto pro Clipboard.	copiar caminho path localizacao pasta arquivo absoluto fullpath endereco clipboard wayland wl-copy yazi	copy_key
 c f	📂 Yazi	Copiar Nome do Arquivo	Copia apenas o nome do arquivo com a extensão (ex: video.mp4).	copiar nome filename title nome arquivo name clipboard yazi	copy_key
 c d	📂 Yazi	Copiar Caminho da Pasta	Copia o diretório/pasta onde você está navegando no Yazi.	copiar pasta dirpath dirname diretorio caminho pasta localizacao yazi	copy_key
@@ -177,20 +152,48 @@ gS	💻 LazyVim	Alternar Array/Objeto Multilinha	Alterna estruturas de código e
 Ctrl + p (Zellij)	💻 Zellij	Modo Painéis (Panes)	n (novo painel), x (fechar), f (fullscreen), setas (redimensionar).	paineis panes split dividir tela zellij	copy_key
 Ctrl + t (Zellij)	💻 Zellij	Modo Abas (Tabs)	n (nova aba), x (fechar aba), 1..9 (trocar de aba).	abas tabs nova aba zellij	copy_key
 ALT + h / j / k / l	💻 Zellij	Navegação entre Painéis	Muda o foco entre os painéis do terminal sem apertar prefixos.	navegar paineis foco terminal zellij	copy_key
-organizar --all	⚡ Terminal	Organização Master de Arquivos	Triagem e categorização automática em lote de toda a Inbox.	organizar arrumar triagem inbox downloads classificar pastas	kitty --title="Organizador Master" -e organizar --all
-organizar --doctor	⚡ Terminal	Diagnóstico de Pastas (Doctor)	Audita e pontua a taxonomia do sistema no padrão ouro.	doctor diagnostico integridade pastas auditoria	kitty --title="Doctor Pastas" -e organizar --doctor
-organizar --dedup	⚡ Terminal	Deduplicação de Arquivos	Localiza arquivos duplicados e envia cópias excedentes para a quarentena.	duplicados dedup apagar copias hash sha256	kitty --title="Deduplicação" -e organizar --dedup
-vincular-linux	⚡ Terminal	Vincular Atalhos Linux no HD	Cria links simbólicos elegantes de Documentos, Mídias e Projetos em /mnt/dados.	vincular linux atalhos symlinks links mnt dados	$HOME/dotfiles/scripts/organizador/vincular_linux.sh
-sys-update	⚡ Terminal	Atualização do Arch Linux	Atualização completa com snapshot Snapper prévio e checagem de chaves.	atualizar sistema pacman yay update upgrade arch safe update	ghostty --class=safe-update -e bash /home/lan/dotfiles/scripts/safe-update.sh
-cleanup	⚡ Terminal	Faxina Inteligente do Sistema	Limpa caches antigos do pacman, arquivos temporários e logs antigos.	limpar faxina lixo cache pacman orfaos espaco em disco	kitty --title="Faxina do Sistema" -e sys-maintenance.sh
-fix-pendrive	⚡ Terminal	Reparar Pen-drives e Discos	Corrige dirty-bit e erros de sistema de arquivos em pen-drives sem formatar.	reparar destravar consertar pendrive disco ntfs fat exfat	kitty --title="Reparar Pen-drives" -e fix-pendrive.sh
+→ (Seta Direita)	🎬 MPV	Avançar 10 Segundos	Seek ultra-rápido de 10s otimizado para YouTube e vídeos locais.	avancar pular adiantar frente 10s dez segundos youtube seek mpv	copy_key
+← (Seta Esquerda)	🎬 MPV	Voltar 10 Segundos	Retrocede 10s no player sem engasgos.	voltar retroceder tras 10s dez segundos youtube seek mpv	copy_key
+↑ (Seta Cima)	🎬 MPV	Avançar 30 Segundos	Pula 30 segundos à frente no vídeo.	avancar pular adiantar frente 30s trinta segundos seek mpv	copy_key
+↓ (Seta Baixo)	🎬 MPV	Voltar 30 Segundos	Retrocede 30 segundos no vídeo.	voltar retroceder tras 30s trinta segundos seek mpv	copy_key
+Shift + →	🎬 MPV	Avançar 1 Minuto (60s)	Salto de 1 minuto na linha do tempo.	avancar pular frente 1m 60s um minuto seek mpv	copy_key
+Shift + ←	🎬 MPV	Voltar 1 Minuto (60s)	Retrocesso de 1 minuto na linha do tempo.	voltar retroceder tras 1m 60s um minuto seek mpv	copy_key
+Ctrl + →	🎬 MPV	Avançar 5 Minutos (300s)	Salto longo de 5 minutos com carregamento assíncrono.	avancar pular frente 5m 300s cinco minutos seek mpv	copy_key
+Ctrl + ←	🎬 MPV	Voltar 5 Minutos (300s)	Retrocesso longo de 5 minutos direto da memória RAM.	voltar retroceder tras 5m 300s cinco minutos seek mpv	copy_key
+[ ou ]	🎬 MPV	Ajustar Velocidade	Ajusta a velocidade (1.1x, 1.25x...) com correção de pitch (sem voz de esquilo).	velocidade acelerar desacelerar rapido devagar speed 1.25x 1.5x 2x mpv	copy_key
+BS (Backspace)	🎬 MPV	Resetar Velocidade (1.0x)	Retorna a reprodução para a velocidade normal instantaneamente.	resetar velocidade normal 1.0x padrao padronizar mpv	copy_key
+Alt + I ou Ctrl + N	🎬 MPV	Modo Imersão (sub-skip)	Acelera automaticamente nos momentos de silêncio e desacelera nas falas.	imersao ingles silencio acelerar silencios subskip sub-skip mpv	copy_key
+TAB	🎬 MPV	Pular Abertura / Intro	Salta a vinheta inicial de séries e animes com 1 tecla estilo Netflix.	pular abertura intro vinheta netflix anime serie skip intro mpv	copy_key
+V (Shift + v)	🎬 MPV	Remover Legenda Forçada	Mata legendas forçadas indesejadas e filtra apenas trilhas limpas.	legenda forcada forced sub killer limpar sumir legenda mpv	copy_key
+Ctrl + Z	🎬 MPV	Sincronizar Legenda por Voz	Reconhecimento de áudio (ffsubsync) para sincronizar legendas atrasadas/adiantadas.	sincronizar legenda audio voz atrasada adiantada ffsubsync sync mpv	copy_key
+Ctrl + S	🎬 MPV	Baixar Legendas Online	Busca e baixa legendas em português/inglês direto do OpenSubtitles.	baixar legenda download subtitles opensubtitles legenda pt legendas mpv	copy_key
+N	🎬 MPV	Modo Noturno de Áudio	Comprime explosões e clareia sussurros e diálogos (Dynamic Range Compression).	modo noturno normalizar volume audio noite vozes explosoes mpv	copy_key
+Alt + B	🎬 MPV	Máscara Anti-Hardsub	Gera tarja preta sobre legendas gravadas no vídeo para sobrepor novas.	hardsub mascara tarja preta cobrir legenda gravada mpv	copy_key
+M (no MPV)	🎬 MPV	Gerar Flashcard Anki (Áudio + Frase)	Fatia o áudio do verso/legenda e gera card de estudo com 1 tecla no Anki.	anki flashcard card ingles frase audio captura miner mpv	copy_key
+Ctrl + Q (no MPV)	🎬 MPV	Seletor de Resolução / Qualidade	Menu interativo para trocar resolução (1080p, 720p, 4K) em streams do YouTube.	qualidade resolucao stream youtube twitch 1080p 720p 4k mpv	copy_key
+H (no MPV)	🎬 MPV	Histórico HUD de Vídeos e Séries	Exibe lista dos últimos vídeos assistidos para retomar de onde parou.	historico resume continuar assistir series filmes animes mpv	copy_key
+Alt + E (no MPV)	🎬 MPV	Modo Imersão (Áudio EN + Leg EN)	Muda automaticamente o áudio e a legenda para inglês simultaneamente.	imersao ingles audio legenda english smart-lang mpv	copy_key
+Ctrl + E (no MPV)	🎬 MPV	Legenda Dupla (Dual Subs EN+PT)	Exibe inglês embaixo e português no topo para estudo acelerado.	dual subs legenda dupla ingles portugues estudo bilingue mpv	copy_key
+Ctrl + 1 / 2 / 3	🎬 MPV	Shaders Anime4K	Aplica redes neurais para restaurar traços e upscaling em tempo real de animes.	anime4k shaders anime qualidade imagem upscaling ia desenho mpv	copy_key
+Ctrl + 4 / 5	🎬 MPV	Shaders Cinema IA (FSRCNNX)	Super-resolução neural 16-Core para filmes e séries live-action.	cinema shaders filme serie fsrcnnx ia upscaling 4k hd mpv	copy_key
+F1 ou ?	🎬 MPV	Ajuda HUD do Player	Abre painel na tela do vídeo com todas as teclas do MPV.	ajuda cheatsheet teclas atalhos hud tela player mpv	copy_key
+mpv-debug <url>	⚡ Terminal	Cockpit de Diagnóstico MPV	Monitor em tempo real de buffer, cache, hardware decoding (NVDEC) e codecs.	mpv-debug telemetria diagnostico streaming buffer cache nvdec gpu video	kitty --title="MPV Debugger" -e mpv-debug
+lyrics	⚡ Terminal	Letras Sincronizadas no Terminal	Abre o visualizador de letras sincronizadas em tempo real (sptlrx).	lyrics letras musica terminal spotify amberol karaoke	kitty --title="Lyrics" -e sptlrx -p mpris
+organizar --all	⚡ Terminal	Organização Master de Arquivos	Triagem e categorização automática em lote de toda a Inbox.	organizar arrumar triagem inbox downloads classificar pastas	organizar --all
+organizar --doctor	⚡ Terminal	Diagnóstico de Pastas (Doctor)	Audita e pontua a taxonomia do sistema no padrão ouro.	doctor diagnostico integridade pastas auditoria	organizar --doctor
+organizar --dedup	⚡ Terminal	Deduplicação de Arquivos	Localiza arquivos duplicados e envia cópias excedentes para a quarentena.	duplicados dedup apagar copias hash sha256	organizar --dedup
+sys-update	⚡ Terminal	Atualização do Arch Linux	Atualização completa com snapshot Snapper prévio e checagem de chaves.	atualizar sistema pacman yay update upgrade arch safe update	sys-maintenance.sh
+cleanup	⚡ Terminal	Faxina Inteligente do Sistema	Limpa caches antigos do pacman, arquivos temporários e logs antigos.	limpar faxina lixo cache pacman orfaos espaco em disco	sys-maintenance.sh
+dl <url>	⚡ Terminal	Download de Vídeo / Áudio (yt-dlp)	Baixa vídeos (YouTube, Instagram, TikTok) ou áudio do Spotify em alta qualidade.	baixar video download musica youtube spotify instagram tiktok dl	dl
+fix-pendrive	⚡ Terminal	Reparar Pen-drives e Discos	Corrige dirty-bit e erros de sistema de arquivos em pen-drives sem formatar.	reparar destravar consertar pendrive disco ntfs fat exfat	fix-pendrive.sh
 fix-audio	⚡ Terminal	Reiniciar Servidor de Som	Restaura o áudio caso ocorra travamento, estalos ou desconexão.	reiniciar som audio estalo travar pipewire wireplumber	fix-audio.sh
 fix-pacman	⚡ Terminal	Destravar Pacman (db.lck)	Remove travas residuais de instalações interrompidas do Pacman.	destravar pacman db.lck lock travado erro pacman	fix-pacman.sh
-fix-keys	⚡ Terminal	Reparar Chaves PGP do Arch	Atualiza e recarrega os chaveiros de segurança do sistema.	chaves pgp erro chave assinatura keyring arch linux	kitty --title="Reparar Chaves PGP" -e fix-keys.sh
-gdrive-sync	⚡ Terminal	Sincronização Nuvem (5TB)	Sincroniza as pastas principais de trabalho e vida com o Google Drive.	sincronizar nuvem backup google drive gdrive rclone	kitty --title="Google Drive Sync" -e gdrive-sync.sh
-rsync-turbo	⚡ Terminal	Transferência com Retomada	Cópia ultra-rápida imune a quedas de cabo ou energia com barra real.	copiar rsync turbo transferencia segura barra progresso	kitty --title="Rsync Turbo" -e rsync-turbo
+fix-keys	⚡ Terminal	Reparar Chaves PGP do Arch	Atualiza e recarrega os chaveiros de segurança do sistema.	chaves pgp erro chave assinatura keyring arch linux	fix-keys.sh
+gdrive-sync	⚡ Terminal	Sincronização Nuvem (5TB)	Sincroniza as pastas principais de trabalho e vida com o Google Drive.	sincronizar nuvem backup google drive gdrive rclone	gdrive-sync.sh
+rsync-turbo	⚡ Terminal	Transferência com Retomada	Cópia ultra-rápida imune a quedas de cabo ou energia com barra real.	copiar rsync turbo transferencia segura barra progresso	rsync-turbo
 pdf-edit <doc.pdf>	⚡ Terminal	Editor Profissional de PDF	Abre o Master PDF Editor para editar texto, imagens e assinaturas.	pdf editor editar assinar preencher texto master pdf	masterpdfeditor5
-remover-marca-dagua	⚡ Terminal	Remover Marcas d'Água de PDF	Limpeza visual de editais, CPFs e apostilas em lote.	marca dagua cpf edital apostila pdf remover limpar	kitty --title="Remover Marca D'Água" -e remover-marca-dagua.py
+remover-marca-dagua	⚡ Terminal	Remover Marcas d'Água de PDF	Limpeza visual de editais, CPFs e apostilas em lote.	marca dagua cpf edital apostila pdf remover limpar	remover-marca-dagua.py
+vincular-linux	⚡ Terminal	Vincular Atalhos Linux no HD	Cria links simbólicos e mapeamento de diretórios do sistema no HD.	vincular symlinks atalhos hd linux pastas criar	vincular-linux
 EOF
 }
 
@@ -210,8 +213,7 @@ if [ "$MODE" = "rofi" ]; then
     theme_arg=(-theme "$HOME/.config/rofi/config-search.rasi")
   fi
 
-  selected=$(generate_database | awk -F'	' '{printf "%-26s │ %-14s │ %-38s │ %s  [30m[%s][0m
-", $1, $2, $3, $4, $5}' |     rofi -dmenu -i -normalize-match -matching normal "${theme_arg[@]}" -p "🔍 Buscar atalho ou comando:") || exit 0
+  selected=$(generate_database | awk -F'\t' '{printf "%-26s │ %-14s │ %-38s │ %s  \033[30m[%s]\033[0m\n", $1, $2, $3, $4, $5}' |     rofi -dmenu -i -normalize-match -matching normal -tokenize "${theme_arg[@]}" -p "🔍 Buscar qualquer atalho, comando ou ferramenta:") || exit 0
 
   if [ -z "$selected" ]; then
     exit 0
@@ -221,11 +223,7 @@ if [ "$MODE" = "rofi" ]; then
     question=$(rofi -dmenu -i -p "🤖 Pergunte qualquer dúvida sobre atalhos/sistema:")
     if [ -n "$question" ]; then
       notify-send -u normal -i help-browser "Assistente IA" "Consultando: $question..."
-      kitty --title="IA Quick Assistant" -e bash -c "echo -e '[1;36m=== 🤖 RESPOSTA DA IA ===[0m
-'; if command -v agy &>/dev/null; then agy "$question"; else echo -e 'Pergunta: $question
-
-Verifique os atalhos com SUPER+H ou consulte a documentação em ~/dotfiles/docs/'; fi; echo -e '
-[0;90mPressione ENTER para fechar...[0m'; read" &
+      kitty --title="IA Quick Assistant" -e bash -c "echo -e '\033[1;36m=== 🤖 RESPOSTA DA IA ===\033[0m\n'; if command -v agy &>/dev/null; then agy \"$question\"; else echo -e 'Pergunta: $question\n\nVerifique os atalhos com SUPER+H ou consulte a documentação em ~/dotfiles/docs/'; fi; echo -e '\n\033[0;90mPressione ENTER para fechar...\033[0m'; read" &
     fi
     exit 0
   fi
@@ -243,17 +241,15 @@ Verifique os atalhos com SUPER+H ou consulte a documentação em ~/dotfiles/docs
 
   if command -v wl-copy &>/dev/null; then
     echo -n "$key" | wl-copy
-    notify-send -u low -i input-keyboard "Atalho Copiado!" "Tecla: $key
-$desc"
+    notify-send -u low -i input-keyboard "Atalho Copiado!" "Tecla: $key\n$desc"
   fi
   exit 0
 fi
 
 # Modo Terminal (FZF God-Mode)
 if ! command -v fzf &>/dev/null; then
-  echo -e "[1;36m=== ⌨️  BUSCADOR DE ATALHOS & COMANDOS ===[0m"
-  generate_database | awk -F'	' '{printf "[1;33m%-24s[0m [1;34m[%-10s][0m %s
-", $1, $2, $3}'
+  echo -e "\033[1;36m=== ⌨️  BUSCADOR DE ATALHOS & COMANDOS ===\033[0m"
+  generate_database | awk -F'\t' '{printf "\033[1;33m%-24s\033[0m \033[1;34m[%-10s]\033[0m %s\n", $1, $2, $3}'
   exit 0
 fi
 
@@ -263,30 +259,30 @@ preview_cmd='
   ctx=$(echo "$line" | cut -f2)
   desc=$(echo "$line" | cut -f3)
   det=$(echo "$line" | cut -f4)
-  echo -e "[1;35m════════════════════════════════════════════════════════════════[0m"
-  echo -e " [1;32mTecla / Comando:[0m  [1;37m$key[0m"
-  echo -e " [1;34mContexto:[0m         [1;36m$ctx[0m"
-  echo -e " [1;33mResumo:[0m           [1;37m$desc[0m"
-  echo -e "[1;35m────────────────────────────────────────────────────────────────[0m"
-  echo -e " [1;37mDetalhes & Uso:[0m"
+  echo -e "\033[1;35m════════════════════════════════════════════════════════════════\033[0m"
+  echo -e " \033[1;32mTecla / Comando:\033[0m  \033[1;37m$key\033[0m"
+  echo -e " \033[1;34mContexto:\033[0m         \033[1;36m$ctx\033[0m"
+  echo -e " \033[1;33mResumo:\033[0m           \033[1;37m$desc\033[0m"
+  echo -e "\033[1;35m────────────────────────────────────────────────────────────────\033[0m"
+  echo -e " \033[1;37mDetalhes & Uso:\033[0m"
   echo -e " $det"
-  echo -e "[1;35m════════════════════════════════════════════════════════════════[0m"
+  echo -e "\033[1;35m════════════════════════════════════════════════════════════════\033[0m"
   echo ""
-  echo -e "[0;90m[Enter] Copiar atalho/comando pro Clipboard  |  [Esc] Sair[0m"
+  echo -e "\033[0;90m[Enter] Copiar atalho/comando pro Clipboard  |  [Esc] Sair\033[0m"
 '
 
-selected=$(generate_database | fzf   --delimiter='	'   --with-nth=1,2,3   --query="$QUERY"   --prompt="⌨️  Buscar atalho/comando: "   --header="Pressione ENTER para copiar o atalho ou ESC para sair"   --header-first   --preview="$preview_cmd"   --preview-window=right:55%:wrap   --height=60%   --layout=reverse   --border)
+selected=$(generate_database | fzf   --delimiter='\t'   --with-nth=1,2,3   --query="$QUERY"   --prompt="⌨️  Buscar atalho/comando: "   --header="Pressione ENTER para copiar o atalho ou ESC para sair"   --header-first   --preview="$preview_cmd"   --preview-window=right:55%:wrap   --height=60%   --layout=reverse   --border)
 
 if [ -n "$selected" ]; then
   key_cmd=$(echo "$selected" | cut -f1)
   desc=$(echo "$selected" | cut -f3)
   if command -v wl-copy &>/dev/null; then
     echo -n "$key_cmd" | wl-copy
-    echo -e "[1;32m✔ Copiado para a área de transferência:[0m [1;37m$key_cmd[0m ($desc)"
+    echo -e "\033[1;32m✔ Copiado para a área de transferência:\033[0m \033[1;37m$key_cmd\033[0m ($desc)"
   elif command -v xclip &>/dev/null; then
     echo -n "$key_cmd" | xclip -selection clipboard
-    echo -e "[1;32m✔ Copiado para a área de transferência:[0m [1;37m$key_cmd[0m ($desc)"
+    echo -e "\033[1;32m✔ Copiado para a área de transferência:\033[0m \033[1;37m$key_cmd\033[0m ($desc)"
   else
-    echo -e "[1;33mAtalho selecionado:[0m $key_cmd ($desc)"
+    echo -e "\033[1;33mAtalho selecionado:\033[0m $key_cmd ($desc)"
   fi
 fi
