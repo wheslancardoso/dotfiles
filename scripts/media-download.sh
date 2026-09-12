@@ -233,7 +233,7 @@ search_youtube_fzf() {
         --with-nth=1 \
         --delimiter="$tab")
 
-    printf '\033_Ga=d,d=a\033\\' 2>/dev/null || true
+    printf '\033_Ga=d,d=a\033\\' >/dev/tty 2>/dev/null || printf '\033_Ga=d,d=a\033\\' >&2 2>/dev/null || true
     rm -f "$search_cache"
 
     if [ -z "$selected" ]; then
@@ -241,7 +241,11 @@ search_youtube_fzf() {
         return 1
     fi
 
-    echo "$selected" | cut -d"$tab" -f2
+    local out_url
+    out_url=$(echo "$selected" | cut -d"$tab" -f2)
+    # Remove qualquer sequência de escape que possa ter sobrado
+    out_url=$(echo "$out_url" | sed -E $'s/\x1b_Ga=d,d=a\x1b\\\\//g' | tr -d '\r' | xargs)
+    echo "$out_url"
 }
 
 search_music_fzf() {
@@ -288,7 +292,7 @@ search_music_fzf() {
         --with-nth=1 \
         --delimiter="$tab")
 
-    printf '\033_Ga=d,d=a\033\\' 2>/dev/null || true
+    printf '\033_Ga=d,d=a\033\\' >/dev/tty 2>/dev/null || printf '\033_Ga=d,d=a\033\\' >&2 2>/dev/null || true
     rm -f "$search_cache"
 
     if [ -z "$selected" ]; then
@@ -296,7 +300,10 @@ search_music_fzf() {
         return 1
     fi
 
-    echo "$selected" | cut -d"$tab" -f2
+    local out_url
+    out_url=$(echo "$selected" | cut -d"$tab" -f2)
+    out_url=$(echo "$out_url" | sed -E $'s/\x1b_Ga=d,d=a\x1b\\\\//g' | tr -d '\r' | xargs)
+    echo "$out_url"
 }
 
 get_pomfy_extractor() {
@@ -1252,9 +1259,211 @@ fetch_synced_lyrics() {
 }
 
 # ------------------------------------------------------------------------------
+# SUPORTE A ÁLBUNS & BIBLIOTECA LOCAL DE ESTUDO DE INGLÊS (SHADOWING NO MPV)
+# ------------------------------------------------------------------------------
+ensure_album_lyrics() {
+    local album_dir="$1"
+    [ ! -d "$album_dir" ] && return 0
+    echo -e "  ${MAUVE}🔍 Verificando letras sincronizadas (.lrc) para as faixas do álbum...${NC}"
+    local track_count=0
+    local lrc_fetched=0
+    while IFS= read -r -d '' track; do
+        ((track_count++))
+        local lrc_file="${track%.*}.lrc"
+        if [ ! -f "$lrc_file" ] || [ ! -s "$lrc_file" ]; then
+            local t_name
+            t_name=$(basename "$track")
+            t_name="${t_name%.*}"
+            t_name=$(echo "$t_name" | sed -E 's/^[0-9]+[ ._-]+//')
+            if fetch_synced_lyrics "$track" "$t_name"; then
+                ((lrc_fetched++))
+            fi
+        fi
+    done < <(find "$album_dir" -maxdepth 2 -type f \( -name "*.mp3" -o -name "*.flac" -o -name "*.m4a" \) -print0 2>/dev/null)
+
+    if [ "$lrc_fetched" -gt 0 ]; then
+        echo -e "  ${GREEN}✨ ${lrc_fetched} letras (.lrc) novas vinculadas ao álbum!${NC}"
+    fi
+}
+
+browse_local_music_fzf() {
+    local search_dirs=()
+    [ -d "$DEFAULT_DEST_AUDIO" ] && search_dirs+=("$DEFAULT_DEST_AUDIO")
+    [ -d "$HOME/Music/Downloads" ] && search_dirs+=("$HOME/Music/Downloads")
+    [ -d "$HOME/Music" ] && search_dirs+=("$HOME/Music")
+
+    local tab=$'\t'
+    local items=""
+
+    # 1. Pastas de álbuns
+    for s_dir in "${search_dirs[@]}"; do
+        while IFS= read -r -d '' dir; do
+            [ "$dir" == "$s_dir" ] && continue
+            local audio_count
+            audio_count=$(find "$dir" -maxdepth 1 -type f \( -name "*.mp3" -o -name "*.flac" -o -name "*.m4a" \) 2>/dev/null | wc -l)
+            if [ "$audio_count" -ge 2 ]; then
+                local album_name
+                album_name=$(basename "$dir")
+                local lrc_count
+                lrc_count=$(find "$dir" -maxdepth 1 -type f -name "*.lrc" 2>/dev/null | wc -l)
+                items="${items}💿 [ÁLBUM] ${album_name} (${audio_count} faixas • ${lrc_count} letras)${tab}${dir}${tab}album\n"
+            fi
+        done < <(find "$s_dir" -maxdepth 2 -type d -print0 2>/dev/null)
+    done
+
+    # 2. Faixas avulsas
+    for s_dir in "${search_dirs[@]}"; do
+        while IFS= read -r -d '' file; do
+            local base_f
+            base_f=$(basename "$file")
+            local lrc_f="${file%.*}.lrc"
+            local lrc_tag="[🎤 Letra OK]"
+            [ ! -f "$lrc_f" ] && lrc_tag="[⚡ Letra Auto]"
+            items="${items}🎵 [MÚSICA] ${base_f%.*} ${lrc_tag}${tab}${file}${tab}track\n"
+        done < <(find "$s_dir" -maxdepth 2 -type f \( -name "*.mp3" -o -name "*.flac" -o -name "*.m4a" \) -print0 2>/dev/null)
+    done
+
+    if [ -z "$items" ]; then
+        echo -e "${YELLOW}Nenhuma música encontrada nas pastas locais (${search_dirs[*]}).${NC}" >&2
+        return 1
+    fi
+
+    local selected
+    selected=$(echo -e "$items" | fzf \
+        --prompt="📂 Selecione Música ou Álbum para Estudo > " \
+        --header="[ENTER] Abrir no MPV • [Ctrl+J/K] Navegar • [ESC] Voltar" \
+        --height=70% \
+        --layout=reverse \
+        --border=rounded \
+        --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
+        --color=fg:#cdd6f4,header:#89b4fa,info:#89b4fa,pointer:#f5e0dc \
+        --color=marker:#b4befe,fg+:#cdd6f4,prompt:#89b4fa,hl+:#f38ba8 \
+        --bind="ctrl-j:down,ctrl-k:up" \
+        --with-nth=1 \
+        --delimiter="$tab" \
+        --preview='echo -e "\n\033[1;38;2;137;180;250m╭────────────────────────────────────────╮\033[0m\n\033[1;38;2;137;180;250m│ {1}\033[0m\n\033[1;38;2;137;180;250m╰────────────────────────────────────────╯\033[0m\n\n\033[38;2;205;214;244m📂 Caminho:\033[0m {2}\n\033[38;2;205;214;244m🏷️ Tipo:\033[0m {3}"' \
+        --preview-window="right:45%:wrap:border-rounded")
+
+    if [ -z "$selected" ]; then
+        return 1
+    fi
+
+    local target_path target_type
+    target_path=$(echo "$selected" | cut -d"$tab" -f2)
+    target_type=$(echo "$selected" | cut -d"$tab" -f3)
+
+    if [ "$target_type" == "album" ]; then
+        ensure_album_lyrics "$target_path"
+    else
+        fetch_synced_lyrics "$target_path" ""
+    fi
+
+    echo -e "\n${CYAN}${BOLD}🎧 Abrindo no MPV em Modo Estudo de Inglês & Shadowing...${NC}"
+    echo -e "${PEACH}💡 Atalhos: 'r' = Replay Verso | 'l' = Shadowing Loop | 'M' = Mine to Anki${NC}\n"
+    mpv "$target_path"
+    return 0
+}
+
+run_study_english_hub() {
+    local initial_query="$1"
+    local dest_a="${CUSTOM_DIR:-$DEFAULT_DEST_AUDIO}"
+
+    if [ -n "$initial_query" ]; then
+        # Se for arquivo ou pasta local
+        if [ -e "$initial_query" ]; then
+            if [ -d "$initial_query" ]; then
+                ensure_album_lyrics "$initial_query"
+            else
+                fetch_synced_lyrics "$initial_query" ""
+            fi
+            echo -e "\n${CYAN}${BOLD}🎧 Abrindo no MPV em Modo Estudo de Inglês & Shadowing...${NC}"
+            echo -e "${PEACH}💡 Atalhos: 'r' = Replay Verso | 'l' = Shadowing Loop | 'M' = Mine to Anki${NC}\n"
+            mpv "$initial_query"
+            return 0
+        fi
+
+        # Se for link do Spotify
+        if [[ "$initial_query" =~ (open\.spotify\.com|spotify:) ]]; then
+            STUDY_ENGLISH_MODE=true
+            download_spotify "$initial_query" "mp3" "$dest_a"
+            return 0
+        fi
+
+        # Se for link do YouTube
+        if [[ "$initial_query" =~ (youtube\.com|youtu\.be) ]]; then
+            STUDY_ENGLISH_MODE=true
+            download_audio "$initial_query" "$dest_a"
+            return 0
+        fi
+
+        # Se for texto de busca, consulta via YouTube Music
+        local found_music
+        found_music=$(search_music_fzf "$initial_query")
+        if [ -n "$found_music" ]; then
+            STUDY_ENGLISH_MODE=true
+            download_audio "$found_music" "$dest_a"
+        fi
+        return 0
+    fi
+
+    # Menu TUI do Hub de Estudo
+    local hub_options="1\t📂 Minha Biblioteca Local (Músicas & Álbuns Já Baixados)\tNavegue pelas músicas e álbuns no seu disco. Se faltar letra, o Apex baixa na hora.\n2\t🎧 Spotify (Buscar ou Colar Link de Música / Álbum)\tBaixe faixas ou álbuns do Spotify com capas HD e letras sincronizadas (.lrc nativo) e abra no MPV.\n3\t🎵 YouTube Music (Pesquisa no Catálogo com Capas HD)\tBusque qualquer música pelo nome com miniaturas em alta resolução e letra .lrc.\n4\t🔗 Inserir Link da Web ou Caminho de Arquivo Local\tCole qualquer URL do Spotify/YouTube ou caminho de arquivo/pasta local."
+
+    local chosen_hub
+    chosen_hub=$(echo -e "$hub_options" | fzf \
+        --prompt="🇬🇧 Apex English Immersion > " \
+        --header="[ENTER] Selecionar • [Ctrl+J/K] Navegar • [ESC] Voltar ao Menu Principal" \
+        --height=50% \
+        --layout=reverse \
+        --border=rounded \
+        --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
+        --color=fg:#cdd6f4,header:#89b4fa,info:#89b4fa,pointer:#f5e0dc \
+        --color=marker:#b4befe,fg+:#cdd6f4,prompt:#89b4fa,hl+:#f38ba8 \
+        --bind="ctrl-j:down,ctrl-k:up" \
+        --with-nth=2 \
+        --delimiter="\t" \
+        --preview='echo -e "\n\033[1;38;2;137;180;250m╭────────────────────────────────────────╮\033[0m\n\033[1;38;2;137;180;250m│ {2}\033[0m\n\033[1;38;2;137;180;250m╰────────────────────────────────────────╯\033[0m\n\n\033[38;2;205;214;244m{3}\033[0m"' \
+        --preview-window="right:45%:wrap:border-rounded")
+
+    local hub_act
+    hub_act=$(echo "$chosen_hub" | cut -f1)
+
+    case "$hub_act" in
+        1)
+            browse_local_music_fzf
+            ;;
+        2)
+            echo -e "\n${GREEN}${BOLD}🎧 SPOTIFY ENGLISH IMMERSION • Músicas & Álbuns${NC}"
+            echo -e "${SUBTEXT}Digite o nome da música / artista OU cole o link do Spotify (faixa ou álbum):${NC}"
+            read -rp "🎵 Spotify Música ou Link: " sp_in
+            [ -z "$sp_in" ] && return 0
+            STUDY_ENGLISH_MODE=true
+            download_spotify "$sp_in" "mp3" "$dest_a"
+            ;;
+        3)
+            echo -e "\n${MAUVE}${BOLD}🎵 YOUTUBE MUSIC ENGLISH IMMERSION${NC}"
+            read -rp "🔍 Digite a música ou artista: " yt_in
+            [ -z "$yt_in" ] && return 0
+            local found_music
+            found_music=$(search_music_fzf "$yt_in")
+            if [ -n "$found_music" ]; then
+                STUDY_ENGLISH_MODE=true
+                download_audio "$found_music" "$dest_a"
+            fi
+            ;;
+        4)
+            read -rp "🔗 Digite a URL ou caminho do arquivo/pasta: " custom_in
+            [ -z "$custom_in" ] && return 0
+            run_study_english_hub "$custom_in"
+            ;;
+    esac
+}
+
+# ------------------------------------------------------------------------------
 # MOTOR DE DOWNLOAD (ÁUDIO / YT-DLP)
 # ------------------------------------------------------------------------------
 download_audio() {
+
     local url="$1"
     local dest="$2"
     local clip_range="${3:-$CUSTOM_CLIP}"
@@ -2312,18 +2521,7 @@ run_cli_mode() {
                     url="$clip_url"
                     ;;
                 e)
-                    STUDY_ENGLISH_MODE=true
-                    echo -e "\n${CYAN}${BOLD}🇬🇧 APEX ENGLISH IMMERSION • Músicas, Letras & Shadowing${NC}"
-                    echo -e "${SUBTEXT}Digite o nome da música / artista (ex: Coldplay The Scientist, Adele, Ed Sheeran):${NC}"
-                    read -rp "🎵 Música para Estudo: " en_input
-                    if [ -z "$en_input" ]; then
-                        exit 0
-                    fi
-                    local found_music
-                    found_music=$(search_music_fzf "$en_input")
-                    if [ -n "$found_music" ]; then
-                        download_audio "$found_music" "$dest_a"
-                    fi
+                    run_study_english_hub ""
                     exit 0
                     ;;
                 1)
@@ -2966,6 +3164,12 @@ main() {
                 ;;
         esac
     done
+
+    # Modo Estudo de Inglês com Música (Local, Spotify, YouTube Music ou Álbuns)
+    if [ "$STUDY_ENGLISH_MODE" = true ]; then
+        run_study_english_hub "$target_url"
+        exit 0
+    fi
 
     # Se target_url não for URL nem arquivo existente, interpreta como busca rápida no YouTube (exceto se for pomfy)
     if [ "$direct_action" != "pomfy" ] && [ -n "$target_url" ] && ! is_url_or_file "$target_url"; then
