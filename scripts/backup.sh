@@ -72,13 +72,14 @@ step_backup_configs() {
     done
 }
 
-# 4. Arquivos na Home
+# 4. Arquivos na Home e Dados Persistentes
 step_backup_home() {
     local files=(
         .zshrc
         .bashrc
         .ideavimrc
         .gitconfig
+        .local/share/devtype/history.db
     )
     for f in "${files[@]}"; do
         chezmoi_add "$HOME/$f"
