@@ -28,6 +28,7 @@ QUERY="$(echo "$QUERY" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
 generate_database() {
 cat << 'EOF'
 🤖 Perguntar para a IA	🧠 Assistente	Tirar Dúvida com IA do Sistema	Abre o assistente de IA para responder qualquer dúvida de comandos ou atalhos.	ia duvida ajuda pergunta prompt sistema comando terminal	terminal_ia
+monitores	🖥️ Monitores	Cockpit de Monitores & Workspaces	Menu 1-toque para restaurar padrão ouro, modo dinâmico ou abrir nwg-displays.	monitores fix-monitors telas display desconfigurou workspace hdmi dp-1 arrumar	$HOME/dotfiles/scripts/monitores-setup.sh --rofi
 SUPER + SHIFT + M	🖥️ Monitores	Configurar Monitores (nwg-displays)	Gerenciador gráfico para ajustar resolução, taxa de Hz, espelhamento e ordem dos monitores.	monitores telas nwg-displays display resolucao hz 100hz dp-1 hdmi primario	nwg-displays
 SUPER + CTRL + ,	⚙️ JaKooLit	Menu de Opções do JaKooLit (KooL)	Quick Settings do JaKooLit: nwg-look, qt6ct, animações, temas e customizações do sistema.	opcoes jakoolit kool quick settings configuracoes animacoes bordas customizacoes	/home/lan/.config/hypr/scripts/Kool_Quick_Settings.sh
 devtype	⚡ Digitação	Treino de Digitação Dev (200+ WPM)	Apex Developer Typing Engine v3.0 com Ghost Pacer, IKL, Ranks RPG, Símbolos e TypeScript.	devtype typing monkeytype digitacao velocidade wpm treino velocidade codigo simbolos teclado k380s	kitty --title="DevType Apex" -e devtype
