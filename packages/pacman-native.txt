@@ -63,6 +63,7 @@ cryptsetup
 curl
 curlie
 dbeaver
+ddrescue
 device-mapper
 diffutils
 dmidecode
@@ -295,6 +296,7 @@ tealdeer
 tesseract
 tesseract-data-eng
 tesseract-data-por
+testdisk
 texinfo
 thunar
 thunar-archive-plugin
