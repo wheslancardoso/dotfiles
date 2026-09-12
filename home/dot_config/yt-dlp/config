@@ -5,6 +5,13 @@
 --buffer-size 16M
 --retries 10
 --fragment-retries 10
+--extractor-retries 10
+--file-access-retries 10
+--retry-sleep fragment:1
+--retry-sleep extractor:1
 --no-check-certificates
 --force-ipv4
+--legacy-server-connect
+--user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+--referer "https://www.google.com/"
 --downloader-args "ffmpeg:-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5"
