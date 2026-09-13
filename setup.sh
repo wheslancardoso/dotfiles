@@ -1043,6 +1043,11 @@ setup_extras
 setup_anti_friction
 setup_default_theme_and_wallpaper
 
+# Otimizações dedicadas ao Lenovo ThinkPad T480 (TLP, Throttled, Intel VA-API, Baterias)
+if [ -f "$DOTFILES_DIR/scripts/setup-t480.sh" ]; then
+    bash "$DOTFILES_DIR/scripts/setup-t480.sh" || true
+fi
+
 # Configuração do ambiente de desenvolvimento
 if [ "$NON_INTERACTIVE" = true ]; then
     setup_development_environment
