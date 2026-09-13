@@ -8,6 +8,7 @@ alsa-plugins
 alsa-utils
 amd-ucode
 android-udev
+amberol
 anki
 aria2
 atuin
@@ -88,6 +89,7 @@ fastfetch
 fd
 ffmpeg
 ffmpegthumbnailer
+firefox
 flameshot
 flatpak
 fsarchiver
@@ -131,6 +133,8 @@ hyprpolkitagent
 hyprsunset
 imv
 inetutils
+intel-media-driver
+intel-ucode
 iptables
 irqbalance
 iwd
@@ -265,10 +269,13 @@ qrencode
 qt5ct
 qt5-quickcontrols2
 qt6ct
+qt6-5compat
+qt6-svg
 qt6-virtualkeyboard
 quickshell
 rclone
 rebuild-detector
+realtime-privileges
 reflector
 ripgrep
 rnnoise
@@ -305,6 +312,8 @@ texinfo
 thunar
 thunar-archive-plugin
 thunar-volman
+tlp
+tlp-rdw
 tokei
 trash-cli
 tree-sitter-cli
@@ -339,6 +348,7 @@ virt-viewer
 vkd3d
 vlc-plugins-all
 vulkan-icd-loader
+vulkan-intel
 w3m
 waybar
 wf-recorder

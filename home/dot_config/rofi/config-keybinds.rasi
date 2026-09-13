@@ -30,7 +30,7 @@ listview {
 }
 
 window {
-  width: 85%;
+  width: 65%;
   height: inherit;
 }
 

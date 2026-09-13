@@ -33,6 +33,8 @@ ripdrag-git
 spicetify-cli
 spotdl
 spotify
+sptlrx-bin
+throttled
 ttf-ms-win11-auto
 ttf-victor-mono
 unionfs-fuse

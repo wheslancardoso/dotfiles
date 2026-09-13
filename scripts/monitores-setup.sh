@@ -104,6 +104,50 @@ CONF
     notify "Telas Espelhadas" "HDMI-A-1 agora espelha exatamente a tela do DP-1."
 }
 
+apply_t480_setup() {
+    # Perfil ThinkPad T480: Tela integrada eDP-1 (1920x1080@60) com Workspaces 1-10
+    cat << 'CONF' > "$MONITORS_CONF"
+# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  #
+# 🖥️ Configuração de Monitores (ThinkPad T480 Display)
+monitor = eDP-1, 1920x1080@60, 0x0, 1
+monitor = , preferred, auto, 1
+CONF
+
+    cat << 'CONF' > "$WORKSPACES_CONF"
+# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  #
+# 🪟 Regras de Workspaces ThinkPad T480 (Workspaces 1 a 10 no eDP-1)
+workspace = 1, monitor:eDP-1, default:true
+workspace = 2, monitor:eDP-1
+workspace = 3, monitor:eDP-1
+workspace = 4, monitor:eDP-1
+workspace = 5, monitor:eDP-1
+workspace = 6, monitor:eDP-1
+workspace = 7, monitor:eDP-1
+workspace = 8, monitor:eDP-1
+workspace = 9, monitor:eDP-1
+workspace = 10, monitor:eDP-1
+CONF
+
+    hyprctl reload || true
+    for ws in 1 2 3 4 5 6 7 8 9 10; do
+        hyprctl dispatch moveworkspacetomonitor "$ws" eDP-1 2>/dev/null || true
+    done
+    hyprctl dispatch workspace 1 2>/dev/null || true
+    notify "ThinkPad T480 Configurado" "eDP-1 Principal (Workspaces 1-10)"
+}
+
+if [[ "${1:-}" == "--t480" ]]; then
+    apply_t480_setup
+    exit 0
+fi
+
+if [[ "${1:-}" == "--t480-auto" ]]; then
+    if grep -q "DP-1" "$WORKSPACES_CONF" 2>/dev/null || ! grep -q "eDP-1" "$WORKSPACES_CONF" 2>/dev/null; then
+        apply_t480_setup
+    fi
+    exit 0
+fi
+
 open_gui() {
     if command -v nwg-displays >/dev/null 2>&1; then
         nwg-displays &
@@ -114,7 +158,7 @@ open_gui() {
 
 # --- MENU ROFI ---
 if [[ "$MODE" == "rofi" ]]; then
-    OPTIONS="1. ⚡ Restaurar Padrão Ouro (DP-1 Principal [2-10] + HDMI Lateral [1])\n2. 🔀 Modo Dinâmico (Workspaces abrem onde o mouse estiver)\n3. 🖥️ Apenas DP-1 (Desligar HDMI temporariamente)\n4. 🪞 Espelhar Telas (Clone DP-1 -> HDMI)\n5. 🎨 Abrir Gerenciador Visual (nwg-displays)"
+    OPTIONS="1. ⚡ Restaurar Padrão Ouro (DP-1 Principal [2-10] + HDMI Lateral [1])\n2. 🔀 Modo Dinâmico (Workspaces abrem onde o mouse estiver)\n3. 🖥️ Apenas DP-1 (Desligar HDMI temporariamente)\n4. 🪞 Espelhar Telas (Clone DP-1 -> HDMI)\n5. 💻 Perfil ThinkPad T480 (eDP-1 Nativo [1-10])\n6. 🎨 Abrir Gerenciador Visual (nwg-displays)"
     
     CHOICE=$(echo -e "$OPTIONS" | rofi -dmenu -i -p "🖥️ Gerenciador de Monitores:" -theme-str 'window {width: 680px;}')
     
@@ -123,6 +167,7 @@ if [[ "$MODE" == "rofi" ]]; then
         *"Modo Dinâmico"*) apply_dynamic_setup ;;
         *"Apenas DP-1"*) apply_dp1_only ;;
         *"Espelhar Telas"*) apply_mirror ;;
+        *"ThinkPad T480"*) apply_t480_setup ;;
         *"Abrir Gerenciador Visual"*) open_gui ;;
         *) exit 0 ;;
     esac
@@ -137,16 +182,18 @@ echo -e "  \033[1;32m[1]\033[0m ⚡ Restaurar Padrão Ouro (DP-1 Principal [2-10
 echo -e "  \033[1;32m[2]\033[0m 🔀 Modo Dinâmico (Workspaces livres em qualquer tela)"
 echo -e "  \033[1;32m[3]\033[0m 🖥️ Apenas Monitor DP-1 (Desliga HDMI lateral)"
 echo -e "  \033[1;32m[4]\033[0m 🪞 Espelhar Telas (Clonar imagem do DP-1 no HDMI)"
-echo -e "  \033[1;32m[5]\033[0m 🎨 Abrir nwg-displays (Configurador Gráfico Visual)"
+echo -e "  \033[1;32m[5]\033[0m 💻 Perfil ThinkPad T480 (eDP-1 Nativo [1-10])"
+echo -e "  \033[1;32m[6]\033[0m 🎨 Abrir nwg-displays (Configurador Gráfico Visual)"
 echo -e "  \033[1;31m[q]\033[0m Sair"
 echo -e "\033[1;36m----------------------------------------------------------------\033[0m"
-read -rp "👉 Escolha uma opção [1-5]: " OPT
+read -rp "👉 Escolha uma opção [1-6]: " OPT
 
 case "$OPT" in
     1) apply_gold_setup ;;
     2) apply_dynamic_setup ;;
     3) apply_dp1_only ;;
     4) apply_mirror ;;
-    5) open_gui ;;
+    5) apply_t480_setup ;;
+    6) open_gui ;;
     *) echo "Operação cancelada." ;;
 esac

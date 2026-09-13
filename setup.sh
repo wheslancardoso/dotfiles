@@ -480,6 +480,12 @@ apply_dotfiles() {
     fi
     [ -f "$DOTFILES_DIR/scripts/audio-preset-switch.sh" ] && ln -sf "$DOTFILES_DIR/scripts/audio-preset-switch.sh" "$HOME/.local/bin/audio-preset-switch"
     [ -f "$DOTFILES_DIR/scripts/gmail-otp.py" ] && ln -sf "$DOTFILES_DIR/scripts/gmail-otp.py" "$HOME/.local/bin/otp"
+    [ -f "$DOTFILES_DIR/scripts/mpv-debug" ] && ln -sf "$DOTFILES_DIR/scripts/mpv-debug" "$HOME/.local/bin/mpv-debug"
+    [ -f "$DOTFILES_DIR/scripts/devtype.py" ] && ln -sf "$DOTFILES_DIR/scripts/devtype.py" "$HOME/.local/bin/devtype"
+    [ -f "$DOTFILES_DIR/scripts/lyrics-toggle.sh" ] && ln -sf "$DOTFILES_DIR/scripts/lyrics-toggle.sh" "$HOME/.local/bin/lyrics"
+    [ -f "$DOTFILES_DIR/scripts/anki-auth-status.sh" ] && ln -sf "$DOTFILES_DIR/scripts/anki-auth-status.sh" "$HOME/.local/bin/anki-auth-status"
+    [ -f "$DOTFILES_DIR/scripts/cheat-keys.sh" ] && ln -sf "$DOTFILES_DIR/scripts/cheat-keys.sh" "$HOME/.local/bin/keys" && ln -sf "$DOTFILES_DIR/scripts/cheat-keys.sh" "$HOME/.local/bin/ajuda"
+    [ -f "$DOTFILES_DIR/scripts/switch-profile.sh" ] && ln -sf "$DOTFILES_DIR/scripts/switch-profile.sh" "$HOME/.local/bin/perfil" && ln -sf "$DOTFILES_DIR/scripts/switch-profile.sh" "$HOME/.local/bin/switch-profile"
     if [ -f "/opt/abdownloadmanager/bin/ABDownloadManager" ]; then
         sudo ln -sf /opt/abdownloadmanager/bin/ABDownloadManager /usr/local/bin/abdownloadmanager 2>/dev/null || true
         sudo ln -sf /opt/abdownloadmanager/bin/ABDownloadManager /usr/local/bin/ab-download-manager 2>/dev/null || true
