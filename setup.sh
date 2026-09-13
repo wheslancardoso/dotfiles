@@ -813,7 +813,7 @@ setup_anti_friction() {
     fi
 
     # 14. Flags de aceleração GPU por hardware e Wayland nativo para navegadores e apps Electron
-    for f in chrome-flags.conf chromium-flags.conf electron-flags.conf code-flags.conf brave-flags.conf; do
+    for f in chrome-flags.conf chromium-flags.conf electron-flags.conf code-flags.conf brave-flags.conf spotify-flags.conf; do
         if [ -f "$DOTFILES_DIR/home/dot_config/$f" ] && [ ! -e "$HOME/.config/$f" ]; then
             ln -sf "$DOTFILES_DIR/home/dot_config/$f" "$HOME/.config/$f"
         fi

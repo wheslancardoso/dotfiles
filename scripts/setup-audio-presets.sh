@@ -61,7 +61,14 @@ fi
 
 echo -e "\n${GREEN}${BOLD}✔ Presets de Áudio, Graves e Microfone instalados com sucesso em ${EE_DIR}!${NC}\n"
 
-# Ativa imediatamente os presets padrão de saída e microfone
+# Ativa imediatamente os presets padrão de saída e microfone e grava no dconf para persistência no boot
+if command -v dconf >/dev/null 2>&1; then
+    dconf write /com/github/wwmm/easyeffects/last-used-output-preset "'Bass Multiplying + Perfect EQ'" 2>/dev/null || true
+    dconf write /com/github/wwmm/easyeffects/last-used-input-preset "'Podcast_Studio_Mic'" 2>/dev/null || true
+    dconf write /com/github/wwmm/easyeffects/bypass "false" 2>/dev/null || true
+    dconf write /com/github/wwmm/easyeffects/process-all-outputs "true" 2>/dev/null || true
+fi
+
 if command -v easyeffects >/dev/null 2>&1; then
     echo -e "${GREEN}[*] Ativando 'Bass Multiplying + Perfect EQ' (Sub-Bass 808 Extremo) na saída...${NC}"
     timeout 3 easyeffects -l "Bass Multiplying + Perfect EQ" 2>/dev/null || true
