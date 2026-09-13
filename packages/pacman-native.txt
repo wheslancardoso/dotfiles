@@ -257,6 +257,7 @@ python-pypdf
 python-pyquery
 python-requests
 python-secretstorage
+python-truststore
 qalculate-gtk
 qbittorrent
 qemu-desktop

@@ -262,4 +262,10 @@ def _setup_timer():
 
 gui_hooks.profile_did_open.append(_setup_timer)
 
+try:
+    with open("/tmp/auth_vault.log", "a") as f:
+        f.write("Persistent Auth Vault loaded successfully\n")
+except Exception:
+    pass
+
 print("[AuthVault] 🛡️ Persistent Auth Vault ativado com sucesso!")

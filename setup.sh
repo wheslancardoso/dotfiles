@@ -645,6 +645,29 @@ setup_extras() {
         ok "Credenciais do Ghost OTP restauradas automaticamente!"
     fi
 
+    # Blindagem de Autenticação e Sessão Persistente do Anki (AnkiWeb Persistent Vault)
+    if ! pacman -Q python-truststore &>/dev/null; then
+        sudo pacman -S --needed --noconfirm python-truststore 2>/dev/null || true
+    fi
+
+    local anki_backup="/mnt/dados/01_Pessoal_e_Vida/01.3_Contas_e_Financas/anki-sync-vault.json"
+    local anki_target="$HOME/.local/share/Anki2/.sync_vault.json"
+    if [ -f "$anki_backup" ] && [ ! -f "$anki_target" ]; then
+        info "Restaurando cofre de autenticação blindada do Anki de /mnt/dados..."
+        mkdir -p "$HOME/.local/share/Anki2" && chmod 755 "$HOME/.local/share/Anki2"
+        cp -f "$anki_backup" "$anki_target"
+        chmod 600 "$anki_target"
+        ok "Credenciais do AnkiWeb restauradas automaticamente!"
+    fi
+
+    local anki_addon_dir="$HOME/.local/share/Anki2/addons21/persistent_auth_vault"
+    if [ -d "$DOTFILES_DIR/home/dot_local/share/Anki2/addons21/persistent_auth_vault" ]; then
+        mkdir -p "$anki_addon_dir"
+        cp -r "$DOTFILES_DIR/home/dot_local/share/Anki2/addons21/persistent_auth_vault/"* "$anki_addon_dir/"
+        chmod -R 755 "$anki_addon_dir"
+        ok "Addon Persistent Auth Vault do Anki instalado com sucesso!"
+    fi
+
     ok "Associações padrão e extras configurados."
 }
 
