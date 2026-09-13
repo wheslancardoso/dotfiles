@@ -136,6 +136,11 @@ CONF
     notify "ThinkPad T480 Configurado" "eDP-1 Principal (Workspaces 1-10)"
 }
 
+if [[ "${1:-}" == "--desktop" || "${1:-}" == "--gold" ]]; then
+    apply_gold_setup
+    exit 0
+fi
+
 if [[ "${1:-}" == "--t480" ]]; then
     apply_t480_setup
     exit 0

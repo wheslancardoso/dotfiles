@@ -55,7 +55,7 @@ EOF
 
     # 2. Monitores e Workspaces Desktop
     if [ -f "$DOTFILES_DIR/scripts/monitores-setup.sh" ]; then
-        bash "$DOTFILES_DIR/scripts/monitores-setup.sh" >/dev/null 2>&1 || true
+        bash "$DOTFILES_DIR/scripts/monitores-setup.sh" --desktop >/dev/null 2>&1 || true
     fi
 
     # 3. Sincronizar com ~/.config se não for symlink direto
