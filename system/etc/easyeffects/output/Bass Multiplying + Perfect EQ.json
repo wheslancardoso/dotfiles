@@ -1,11 +1,11 @@
 {
     "output": {
         "bass_enhancer": {
-            "amount": 5.0,
+            "amount": 2.5,
             "blend": 0.0,
             "floor": 20.0,
-            "floor-active": false,
-            "harmonics": 8.5,
+            "floor-active": true,
+            "harmonics": 3.5,
             "input-gain": 0.0,
             "output-gain": 0.0,
             "scope": 80.0
@@ -24,7 +24,7 @@
             "output-gain": 0.0
         },
         "equalizer": {
-            "input-gain": -2.0,
+            "input-gain": -4.0,
             "left": {
                 "band0": {
                     "frequency": 32.0,
@@ -235,7 +235,7 @@
             "split-channels": false
         },
         "maximizer": {
-            "ceiling": 0.0,
+            "ceiling": -0.8,
             "release": 3.149999999999997,
             "threshold": -3.0000000000000013
         },
