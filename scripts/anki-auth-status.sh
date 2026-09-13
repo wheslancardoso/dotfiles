@@ -36,8 +36,9 @@ import json
 with open("'"$VAULT"'") as f:
     data = json.load(f)
 for prof, info in data.items():
+    user = info.get("syncUser", "-")
     if info.get("syncKey"):
-        print(f"✔ Blindagem Ativa: Perfil \"{prof}\" salvo com usuário {info.get(\"syncUser\", \"-\")}")
+        print(f"✔ Blindagem Ativa: Perfil \"{prof}\" salvo com usuário {user}")
     else:
         print(f"✖ Blindagem Vazia: Perfil \"{prof}\" sem token")
 ' 2>/dev/null || echo "Vault vazio ou inválido")
