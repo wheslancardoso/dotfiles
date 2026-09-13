@@ -6,9 +6,9 @@ alacritty
 alsa-firmware
 alsa-plugins
 alsa-utils
+amberol
 amd-ucode
 android-udev
-amberol
 anki
 aria2
 atuin
@@ -188,6 +188,7 @@ man-pages
 mariadb-clients
 maven
 mdadm
+mda.lv2
 meld
 mercurial
 mesa-utils
@@ -268,14 +269,14 @@ qemu-desktop
 qrencode
 qt5ct
 qt5-quickcontrols2
-qt6ct
 qt6-5compat
+qt6ct
 qt6-svg
 qt6-virtualkeyboard
 quickshell
 rclone
-rebuild-detector
 realtime-privileges
+rebuild-detector
 reflector
 ripgrep
 rnnoise
@@ -372,8 +373,8 @@ yad
 yay
 yazi
 yt-dlp
+zam-plugins-lv2
 zathura
 zathura-pdf-mupdf
 zellij
-zoxide
 zram-generator

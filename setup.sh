@@ -182,7 +182,7 @@ install_packages() {
 # 4. Configurar grupos de usuário
 setup_groups() {
     info "Adicionando usuário aos grupos necessários..."
-    for group in wheel audio input lp storage video users rfkill docker adbusers nopasswdlogin gamemode; do
+    for group in wheel audio realtime input lp storage video users rfkill docker adbusers nopasswdlogin gamemode; do
         if getent group "$group" >/dev/null; then
             sudo gpasswd -a "$USER" "$group" >/dev/null
         else
