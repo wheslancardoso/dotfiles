@@ -809,6 +809,7 @@ class ApexFinanceApp(App):
         Binding("d", "delete_tx", "Excluir [d]", show=True),
         Binding("s", "open_sim", "Simulador", show=False),
         Binding("p", "pay_invoice", "Pagar Fatura", show=True),
+        Binding("b", "backup", "Backup", show=True),
         Binding("r", "refresh_data", "Atualizar", show=True),
         Binding("e", "export_excel", "Excel", show=True),
         Binding("h", "prev_month", "Mês Anterior", show=False),
@@ -851,6 +852,7 @@ class ApexFinanceApp(App):
             yield Button("Próx. Mês [l] ▶", id="btn-next-month")
             yield Button("🔒 Selar Mês", id="btn-seal-month")
             yield Button("📜 Snapshots", id="btn-view-snapshots")
+            yield Button("💾 Backup [b]", id="btn-backup-tui")
             yield Button("⚖️ Ajustar Fatura", id="btn-open-adj-fat")
             yield Button("🏦 Reconciliar Saldo", id="btn-open-rec")
             yield Button("⚡ Ritual Domingo", id="btn-open-ritual")
@@ -1287,6 +1289,8 @@ class ApexFinanceApp(App):
             self.action_pay_card_selected()
         elif bid == "btn-adj-card-sel":
             self.action_adj_card_selected()
+        elif bid == "btn-backup-tui":
+            self.action_backup()
         elif bid == "btn-export-tab":
             self.action_export_excel()
         elif bid == "btn-open-ritual":
@@ -1437,6 +1441,16 @@ class ApexFinanceApp(App):
     def action_refresh_data(self) -> None:
         self.refresh_all_data()
         self.notify("Dados atualizados com sucesso!")
+
+    def action_backup(self) -> None:
+        try:
+            res = core_engine.fazer_backup()
+            msg = f"✔ Backup realizado com sucesso!\n• SQLite: {res['db_file']}\n• Excel: {res['excel_file']}"
+            if res['mirrors']:
+                msg += f"\n• Espelhos: {len(res['mirrors'])} destino(s)"
+            self.notify(msg, severity="information", timeout=6)
+        except Exception as e:
+            self.notify(f"Erro ao gerar backup: {e}", severity="error")
 
     def action_export_excel(self) -> None:
         out = core_engine.exportar_para_excel()

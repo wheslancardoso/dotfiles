@@ -1024,6 +1024,19 @@ EOF
     git config --global core.editor "nvim"
     git config --global color.ui true
 
+    # 6. Provisão do APEX Finance (Cockpit Soberano de Finanças e SSOT)
+    info "Provisionando APEX Finance (Textual TUI, Plotext e SQLite)..."
+    if command -v pip &>/dev/null; then
+        pip install --upgrade --quiet textual textual-plotext plotext rich openpyxl 2>/dev/null || true
+    elif command -v python3 &>/dev/null; then
+        python3 -m pip install --upgrade --quiet textual textual-plotext plotext rich openpyxl 2>/dev/null || true
+    fi
+    mkdir -p "$HOME/.local/share/apex-finance/data" "$HOME/backups/finance"
+    chmod +x "$HOME/.local/bin/apex-finance" 2>/dev/null || true
+    chmod +x "$HOME/.local/bin/apex-finance-backup" 2>/dev/null || true
+    chmod +x "$HOME/.local/share/apex-finance/tui_app.py" 2>/dev/null || true
+    ok "APEX Finance provisionado com sucesso (atalhos: fin, financas, apex-finance)!"
+
     ok "Ambiente de desenvolvimento configurado com sucesso!"
 }
 
@@ -1100,6 +1113,7 @@ echo -e "  - ${BLUE}fix-suspend${NC}          : Diagnóstico e proteção para o
 echo -e "  - ${BLUE}pacup / safe-update${NC}  : Atualização blindada (atualiza chaveiro PGP antes e previne quebras)"
 echo -e "  - ${BLUE}fix-pacman / fix-keys${NC}: Destrava db.lck e repara chaves PGP corrompidas"
 echo -e "  - ${BLUE}fix-mirrors / fix-audio${NC}: Ranquear mirrors mais rápidos do Brasil e reiniciar áudio"
+echo -e "  - ${BLUE}fin / financas${NC}        : APEX Finance TUI (Cockpit Soberano de Gestão, Time Machine & SSOT)"
 echo -e "  - ${BLUE}perf / balanced / quiet${NC}: Alterna perfil de energia da CPU/GPU e ruído de ventoinhas"
 echo -e "Por favor, reinicie a sessão ou o computador para aplicar todas as mudanças."
 

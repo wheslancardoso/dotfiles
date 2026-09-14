@@ -43,6 +43,8 @@
 │   ├── [GUIA_GOOGLE_DRIVE_5TB_RCLONE.md](./GUIA_GOOGLE_DRIVE_5TB_RCLONE.md) # ☁️ Google Drive 5TB Rclone VFS & Pacman Turbo
 │   ├── [GUIA_GOOGLE_DRIVE.md](./GUIA_GOOGLE_DRIVE.md)             # Limpeza, sincronização e organização na nuvem
 │   └── [ARCHITECTURE_ORGANIZADOR.md](./ARCHITECTURE_ORGANIZADOR.md) # Arquitetura do motor Python do organizador
+├── 💰 FINANÇAS SOBERANAS & PATRIMÔNIO (APEX FINANCE)
+│   └── [GUIA_APEX_FINANCE_SOBERANO.md](./GUIA_APEX_FINANCE_SOBERANO.md) # 🏛️ Cockpit Soberano: Gestão SSOT, Time Machine, Faturas, Simulação e Snapshots
 │
 └── 🌐 RECURSOS & FAVORITOS
     └── [favoritos_organizados.html](./favoritos_organizados.html) # Backup curado de favoritos de navegação
@@ -100,6 +102,12 @@
 | [**GUIA_BUSCA_INSTANTANEA.md**](./GUIA_BUSCA_INSTANTANEA.md) | Ferramentas de busca ultrarrápidas no terminal | Para localizar qualquer arquivo em menos de 1 segundo |
 | [**GUIA_GOOGLE_DRIVE.md**](./GUIA_GOOGLE_DRIVE.md) | Passo a passo de limpeza do Drive | Para organizar suas contas de nuvem no fim de semana |
 | [**ARCHITECTURE_ORGANIZADOR.md**](./ARCHITECTURE_ORGANIZADOR.md) | Estrutura dos módulos Python do organizador | Para estender ou customizar regras de organização |
+
+### 💰 5. Finanças Soberanas & Patrimônio
+
+| Documento | Foco Principal | Quando Consultar? |
+|---|---|---|
+| [**GUIA_APEX_FINANCE_SOBERANO.md**](./GUIA_APEX_FINANCE_SOBERANO.md) | Cockpit Soberano de Finanças TUI, SQLite SSOT, Time Machine, Faturas de Cartão, Caixinhas e Snapshots | Para auditoria semanal, planejar compras, acompanhar a Alforria 2028 e gerenciar cartões sem atritos |
 
 ---
 

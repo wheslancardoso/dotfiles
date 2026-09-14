@@ -1166,8 +1166,106 @@ def exportar_para_excel(filepath=None):
     conn.close()
     return filepath
 
+# ----------------------------------------------------------------------
+# BACKUP ATÔMICO & RESTAURAÇÃO (ONLINE SQLITE SNAPSHOT)
+# ----------------------------------------------------------------------
+def fazer_backup(destino_dir=None):
+    """
+    Realiza backup online seguro e atômico do SQLite (zero lock contention).
+    Gera snapshot com timestamp no diretório padrão ~/backups/finance/
+    e também salva a planilha Excel sincronizada.
+    """
+    import shutil
+    from datetime import datetime
+    
+    if not destino_dir:
+        destino_dir = os.path.expanduser("~/backups/finance")
+    os.makedirs(destino_dir, exist_ok=True)
+    
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H%M%S")
+    db_backup_file = os.path.join(destino_dir, f"finance_backup_{timestamp}.db")
+    
+    # 1. Backup online nativo do SQLite (consistência total mesmo com app em execução)
+    source_conn = get_connection()
+    dest_conn = sqlite3.connect(db_backup_file)
+    source_conn.backup(dest_conn)
+    dest_conn.close()
+    source_conn.close()
+    
+    # 2. Exportar Excel correspondente ao ponto no tempo
+    excel_backup_file = os.path.join(destino_dir, f"finance_backup_{timestamp}.xlsx")
+    exportar_para_excel(excel_backup_file)
+    
+    # 3. Se existir diretório privado no Google Drive ou /mnt/dados, espelha lá também
+    mirror_dirs = [
+        os.path.expanduser("~/drive-organizacao/01_Pessoal_e_Vida/Backups/Finance"),
+        "/mnt/dados/01_Pessoal_e_Vida/Backups/Finance"
+    ]
+    mirrors_saved = []
+    for md in mirror_dirs:
+        if os.path.isdir(os.path.dirname(md)):
+            try:
+                os.makedirs(md, exist_ok=True)
+                shutil.copy2(db_backup_file, os.path.join(md, f"finance_backup_{timestamp}.db"))
+                shutil.copy2(excel_backup_file, os.path.join(md, f"finance_backup_{timestamp}.xlsx"))
+                mirrors_saved.append(md)
+            except Exception:
+                pass
+
+    return {
+        "timestamp": timestamp,
+        "db_file": db_backup_file,
+        "excel_file": excel_backup_file,
+        "mirrors": mirrors_saved
+    }
+
+def restaurar_backup(db_backup_file):
+    """
+    Restaura o banco a partir de um arquivo .db de backup,
+    gerando um backup de segurança do estado atual antes da substituição.
+    """
+    import shutil
+    if not os.path.exists(db_backup_file):
+        raise FileNotFoundError(f"Arquivo de backup não encontrado: {db_backup_file}")
+        
+    # Backup de segurança antes da restauração
+    fazer_backup()
+    
+    # Restaura o banco principal
+    shutil.copy2(db_backup_file, DB_PATH)
+    return True
+
+def listar_backups(destino_dir=None):
+    if not destino_dir:
+        destino_dir = os.path.expanduser("~/backups/finance")
+    if not os.path.isdir(destino_dir):
+        return []
+    arquivos = [f for f in os.listdir(destino_dir) if f.startswith("finance_backup_") and f.endswith(".db")]
+    arquivos.sort(reverse=True)
+    resultado = []
+    for a in arquivos:
+        caminho = os.path.join(destino_dir, a)
+        tam = os.path.getsize(caminho)
+        mtime = os.path.getmtime(caminho)
+        resultado.append({
+            "arquivo": a,
+            "caminho": caminho,
+            "tamanho_kb": round(tam / 1024, 1),
+            "data": datetime.fromtimestamp(mtime).strftime("%Y-%m-%d %H:%M:%S")
+        })
+    return resultado
+
 if __name__ == "__main__":
-    init_database()
-    print("Database initialized successfully.")
-    out = exportar_para_excel()
-    print(f"Planilha exportada com sucesso em: {out}")
+    import sys
+    if "--backup" in sys.argv:
+        res = fazer_backup()
+        print("✔ Backup do APEX Finance realizado com sucesso!")
+        print(f"  • Banco SQLite : {res['db_file']}")
+        print(f"  • Planilha XLSX: {res['excel_file']}")
+        if res['mirrors']:
+            print(f"  • Espelhos     : {', '.join(res['mirrors'])}")
+    else:
+        init_database()
+        print("Database initialized successfully.")
+        out = exportar_para_excel()
+        print(f"Planilha exportada com sucesso em: {out}")

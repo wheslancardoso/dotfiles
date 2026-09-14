@@ -88,12 +88,22 @@ step_backup_home() {
     done
 }
 
+# 5. Backup Atômico do APEX Finance (Base SQLite e Planilhas)
+step_backup_finance() {
+    if [ -f "$HOME/.local/bin/apex-finance" ]; then
+        info "Executando backup atômico e sincronização do APEX Finance..."
+        "$HOME/.local/bin/apex-finance" backup || warn "Falha ao gerar backup do Apex Finance."
+        ok "Backup do APEX Finance concluído em ~/backups/finance/"
+    fi
+}
+
 # Execução
 step_export_packages
 step_backup_configs
 step_backup_home
+step_backup_finance
 
 info "Garantindo aplicação em modo symlink..."
 chezmoi apply --mode symlink --force
 
-ok "Backup concluído via Chezmoi! Verifique $DOTFILES_DIR"
+ok "Backup concluído com sucesso! Verifique $DOTFILES_DIR e ~/backups/finance/"

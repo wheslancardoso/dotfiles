@@ -70,6 +70,7 @@ conn.close()
             "6. 🏦 Ajustar Saldo de Conta / Nova Conta Bancária"
             "7. 📑 Exportar Banco Completo para Excel (.xlsx)"
             "8. 🕯️ Ritual de Domingo à Noite (Auditoria Rápida)"
+            "9. 💾 Fazer Backup Atômico do Banco & Excel"
             "q. 🚪 Sair do Apex Finance"
         )
 
@@ -94,9 +95,19 @@ conn.close()
             "6."*) gerenciar_contas_fzf ;;
             "7."*) exportar_excel_cli ;;
             "8."*) ritual_domingo ;;
+            "9."*) fazer_backup_cli ;;
             "q."*) echo -e "${GREEN}Até logo, guerreiro. Mantenha a guarda alta!${NC}"; exit 0 ;;
         esac
     done
+}
+
+fazer_backup_cli() {
+    clear 2>/dev/null || true
+    header_banner
+    echo -e "${BLUE}${BOLD}💾  BACKUP ATÔMICO DO BANCO & PLANILHA EXCEL${NC}\n"
+    python3 "$CORE_ENGINE" --backup
+    echo ""
+    read -rp "Pressione [ENTER] para voltar ao menu..."
 }
 
 ver_dashboard_mensal() {
@@ -545,6 +556,14 @@ ritual_domingo() {
 # Entrada do script
 if [ "$1" == "export" ]; then
     python3 -c "import sys; sys.path.append('$HOME/.local/share/apex-finance'); import core_engine; print(f'✔ Planilha gerada com sucesso: {core_engine.exportar_para_excel()}')"
+elif [ "$1" == "backup" ]; then
+    python3 "$HOME/.local/share/apex-finance/core_engine.py" --backup
+elif [ "$1" == "restore" ]; then
+    if [ -z "$2" ]; then
+        echo -e "${RED}Uso: apex-finance restore /caminho/para/arquivo.db${NC}"
+        exit 1
+    fi
+    python3 -c "import sys; sys.path.append('$HOME/.local/share/apex-finance'); import core_engine; core_engine.restaurar_backup('$2'); print('✔ Banco restaurado com sucesso!')"
 elif [ "$1" == "dash" ] || [ "$1" == "status" ]; then
     IS_SUBCOMMAND=1 ver_dashboard_mensal
 elif [ "$1" == "fzf" ] || [ "$1" == "menu" ]; then

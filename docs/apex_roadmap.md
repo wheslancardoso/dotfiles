@@ -70,3 +70,17 @@ Para garantir que o módulo de Filmes & Séries nunca fique indisponível caso o
   - 🇧🇷 **Legendado em Português (PT-BR)**: Áudio original Japonês + Legenda PT-BR.
   - 🇬🇧 **Legendado em Inglês (EN Sub)**: Áudio original Japonês + Legenda EN (Nyaa.si).
   - 💎 **Multi-Audio / Dual Audio Master**: Releases em MKV contendo faixas de áudio e legendas múltiplas para controle total pelo MPV (`Alt+e`, `Alt+p`, `Ctrl+e`).
+
+---
+
+## 🏛️ 7. Suíte APEX Finance (Cockpit Soberano de Gestão & SSOT)
+*Documentação detalhada em: [GUIA_APEX_FINANCE_SOBERANO.md](./GUIA_APEX_FINANCE_SOBERANO.md)*
+- [x] **Motor Local de Alta Fidelidade (SQLite + Python 3.12)**:
+  - Eliminação total de complexidades web/next.js. Single Source of Truth (SSOT).
+- [x] **CRUD Completo de Transações, Contas, Caixinhas e Cartões**:
+  - Reajuste no centavo, conciliação e exclusão atômica de séries parceladas.
+- [x] **Time Machine Mês a Mês & Snapshots Auditáveis**:
+  - Navegação fluida com `h`/`l`, selagem patrimonial (`[🔒 Selar Mês]`) e histórico imutável (`[📜 Snapshots]`).
+- [x] **Suíte de Backups em 1 Toque**:
+  - Backup online e atômico via tecla `b`, CLI (`apex-finance backup`) e sincronizado no script mestre `scripts/backup.sh`.
+
