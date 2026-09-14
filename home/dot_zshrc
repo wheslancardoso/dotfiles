@@ -596,12 +596,15 @@ alias sys-update='bash $HOME/dotfiles/scripts/sys-maintenance.sh update'
 alias dl='bash $HOME/dotfiles/scripts/media-download.sh'
 alias continuar='bash $HOME/dotfiles/scripts/continuar.sh'
 alias recentes='bash $HOME/dotfiles/scripts/continuar.sh'
-alias brave-sync='bash $HOME/dotfiles/scripts/brave-sync.sh'
 alias gdrive='bash $HOME/dotfiles/scripts/gdrive-mount.sh'
 alias gdrive-setup='bash $HOME/dotfiles/scripts/gdrive-mount.sh setup'
 alias notebooklm='python3 $HOME/dotfiles/scripts/notebooklm-sync.py'
 alias notebooklm-watch='python3 $HOME/dotfiles/scripts/notebooklm-sync.py --watch'
 alias notebooklm-local='python3 $HOME/dotfiles/scripts/notebooklm-sync.py --local-only'
+
+# 🏛️ Apex Finance — Cockpit Financeiro Soberano (Vim/FZF & SQLite)
+alias fin='apex-finance'
+alias financas='apex-finance'
 
 
 # Keyring & Secrets Integration
