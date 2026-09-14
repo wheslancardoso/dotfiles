@@ -1,0 +1,555 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# 🏛️ APEX FINANCE CLI / TUI — O COCKPIT DO HOMEM ROCHA (VIM-STYLE & FZF)
+# ==============================================================================
+# Terminal Finance Suite integrado ao Linux:
+# - Navegação fluida com FZF (estilo Vim: j/k, / busca, Enter seleciona, ESC volta)
+# - Contas, Cartões, Caixinhas, Faturas, Transações e Projeções de 24 Meses
+# - Exportação instantânea para Excel (.xlsx) sem quebrar nada
+# ==============================================================================
+
+set -eo pipefail
+export PATH="$HOME/.local/bin:$PATH"
+
+CORE_ENGINE="$HOME/.local/share/apex-finance/core_engine.py"
+DB_PATH="$HOME/.local/share/apex-finance/data/finance.db"
+
+# Cores Catppuccin Mocha
+MAUVE='\033[38;2;203;166;247m'
+BLUE='\033[38;2;137;180;250m'
+GREEN='\033[38;2;166;227;161m'
+PEACH='\033[38;2;250;179;135m'
+RED='\033[38;2;243;139;168m'
+YELLOW='\033[38;2;249;226;175m'
+TEAL='\033[38;2;148;226;213m'
+TEXT='\033[38;2;205;214;244m'
+SUBTEXT='\033[38;2;166;173;200m'
+BOLD='\033[1m'
+NC='\033[0m'
+
+# Inicializa banco de dados se necessário
+python3 -c "import sys; sys.path.append('$HOME/.local/share/apex-finance'); import core_engine; core_engine.init_database()" 2>/dev/null || true
+
+header_banner() {
+    clear 2>/dev/null || true
+    echo -e "${MAUVE}${BOLD}╭──────────────────────────────────────────────────────────────────────────╮${NC}"
+    echo -e "${MAUVE}${BOLD}│         🏛️  APEX FINANCE • O COCKPIT DE INTELIGÊNCIA SOBERANA            │${NC}"
+    echo -e "${MAUVE}${BOLD}│      Navegação Vim-Style (j/k / Enter / Esc) • SQLite FTS5 & Excel       │${NC}"
+    echo -e "${MAUVE}${BOLD}╰──────────────────────────────────────────────────────────────────────────╯${NC}"
+}
+
+menu_principal() {
+    while true; do
+        header_banner
+
+        # Obter saldos rápidos
+        local resumo_saldos
+        resumo_saldos=$(python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+conn = core_engine.get_connection()
+c = conn.cursor()
+c.execute('SELECT SUM(saldo) FROM contas')
+contas = c.fetchone()[0] or 0.0
+c.execute('SELECT SUM(saldo_atual) FROM caixinhas')
+caixinhas = c.fetchone()[0] or 0.0
+c.execute('SELECT SUM(valor) FROM transacoes WHERE cartao_id IS NOT NULL AND mes_fatura = ?', (core_engine.calcular_mes_fatura(str(core_engine.date.today()), 20),))
+fatura_atual = c.fetchone()[0] or 0.0
+print(f'Disponível: R$ {contas:,.2f} | Caixinhas: R$ {caixinhas:,.2f} | Fatura Atual: R$ {fatura_atual:,.2f}')
+conn.close()
+")
+
+        echo -e "  ${TEXT}💰 ${BOLD}${resumo_saldos}${NC}\n"
+
+        local options=(
+            "1. 📊 Visão Geral do Mês & Dashboard do Orçamento (R$ 2.234)"
+            "2. ➕ Registrar Nova Despesa ou Receita (Conta / Cartão Caixa)"
+            "3. 💳 Gestão de Cartões de Crédito & Faturas (Pagar / Ver Parcelas)"
+            "4. 🏰 Caixinhas do Nubank & Aporte da Alforria (R$ 1.000/mês)"
+            "5. 📈 Projeção da Alforria até Agosto/2028 (Simulação Mês a Mês)"
+            "6. 🏦 Ajustar Saldo de Conta / Nova Conta Bancária"
+            "7. 📑 Exportar Banco Completo para Excel (.xlsx)"
+            "8. 🕯️ Ritual de Domingo à Noite (Auditoria Rápida)"
+            "q. 🚪 Sair do Apex Finance"
+        )
+
+        local chosen
+        chosen=$(printf "%s\n" "${options[@]}" | fzf \
+            --prompt="⚡ Escolha uma Operação > " \
+            --header="[j/k ou ↑/↓] Navegar • [/] Filtrar • [Enter] Selecionar • [Esc] Sair" \
+            --height=50% \
+            --layout=reverse \
+            --border=rounded \
+            --color=header:italic,spinner:#f5e0dc,hl:#f38ba8 \
+            --color=fg:#cdd6f4,header:#cba6f7,info:#cba6f7,pointer:#f5e0dc \
+            --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
+            --bind="ctrl-j:down,ctrl-k:up") || exit 0
+
+        case "$chosen" in
+            "1."*) ver_dashboard_mensal ;;
+            "2."*) registrar_transacao_fzf ;;
+            "3."*) gerenciar_cartoes_fzf ;;
+            "4."*) gerenciar_caixinhas_fzf ;;
+            "5."*) ver_projecao_alforria ;;
+            "6."*) gerenciar_contas_fzf ;;
+            "7."*) exportar_excel_cli ;;
+            "8."*) ritual_domingo ;;
+            "q."*) echo -e "${GREEN}Até logo, guerreiro. Mantenha a guarda alta!${NC}"; exit 0 ;;
+        esac
+    done
+}
+
+ver_dashboard_mensal() {
+    clear 2>/dev/null || true
+    header_banner
+    python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+conn = core_engine.get_connection()
+c = conn.cursor()
+
+print('🏛️  QUADRO DE CONTAS CORRENTES & CARTEIRA:')
+c.execute('SELECT id, nome, instituicao, saldo FROM contas')
+for r in c.fetchall():
+    print(f'   • [{r[\"id\"]}] {r[\"nome\"]} ({r[\"instituicao\"]}) -> R$ {r[\"saldo\"]:,.2f}')
+
+print('\n🏰  CAIXINHAS NUBANK (ALFORRIA & RESERVAS):')
+c.execute('SELECT id, nome, saldo_atual, meta_total, aporte_mensal, tipo_rendimento FROM caixinhas')
+for r in c.fetchall():
+    pct = (r['saldo_atual'] / r['meta_total'] * 100) if r['meta_total'] > 0 else 0
+    print(f'   • [{r[\"id\"]}] {r[\"nome\"]} -> R$ {r[\"saldo_atual\"]:,.2f} / R$ {r[\"meta_total\"]:,.2f} ({pct:.1f}%) | Aporte: R$ {r[\"aporte_mensal\"]:,.2f}/mês ({r[\"tipo_rendimento\"]})')
+
+print('\n💳  CARTÕES DE CRÉDITO & FATURAS ABERTAS:')
+c.execute('SELECT id, nome, limite, dia_fechamento, dia_vencimento FROM cartoes')
+for r in c.fetchall():
+    mes_fat = core_engine.calcular_mes_fatura(str(core_engine.date.today()), r['dia_fechamento'])
+    c.execute('SELECT SUM(valor) FROM transacoes WHERE cartao_id = ? AND mes_fatura = ?', (r['id'], mes_fat))
+    total_fat = c.fetchone()[0] or 0.0
+    print(f'   • {r[\"nome\"]} -> Fatura Atual ({mes_fat}): R$ {total_fat:,.2f} | Limite Total: R$ {r[\"limite\"]:,.2f} (Fecha dia {r[\"dia_fechamento\"]}, Vence dia {r[\"dia_vencimento\"]})')
+
+print('\n📋  ÚLTIMAS 8 TRANSAÇÕES REGISTRADAS:')
+c.execute('''
+    SELECT data, descricao, valor, tipo, categoria FROM transacoes
+    ORDER BY data DESC, id DESC LIMIT 8
+''')
+for r in c.fetchall():
+    sinal = '+' if r['tipo'] == 'receita' else '-'
+    print(f'   {r[\"data\"]} | {sinal} R$ {r[\"valor\"]:8.2f} | {r[\"categoria\"]:25} | {r[\"descricao\"]}')
+
+conn.close()
+"
+    echo ""
+    if [ "$IS_SUBCOMMAND" != "1" ] && [ -t 0 ]; then
+        read -rp "Pressione [ENTER] para voltar ao menu..." || true
+    fi
+}
+
+registrar_transacao_fzf() {
+    header_banner
+    echo -e "${BLUE}${BOLD}➕ REGISTRAR NOVA TRANSAÇÃO${NC}\n"
+
+    echo -e "Onde ocorreu esse gasto/receita?"
+    local meio
+    meio=$(printf "1. No Cartão de Crédito (Caixa ou Nubank)\n2. Direto na Conta / Débito / Pix / Dinheiro\n3. Cancelar" | fzf --prompt="Meio de Pagamento > " --height=30% --layout=reverse --border=rounded)
+
+    if [[ "$meio" =~ "Cancelar" ]] || [ -z "$meio" ]; then return; fi
+
+    read -rp "📝 Descrição (ex: Gasolina CG 160 / Carnes açougue / Minoxidil): " desc
+    [ -z "$desc" ] && return
+
+    read -rp "💰 Valor Total (ex: 90.00): " val_str
+    val_str="${val_str//,/.}"
+    val_str=$(echo "$val_str" | tr -dc '0-9.')
+    [ -z "$val_str" ] && return
+
+    # Categorias
+    local categorias_raw
+    categorias_raw=$(python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+conn = core_engine.get_connection()
+c = conn.cursor()
+for r in c.execute('SELECT nome FROM categorias ORDER BY id').fetchall():
+    print(r['nome'])
+conn.close()
+")
+    local cat_escolhida
+    cat_escolhida=$(echo "$categorias_raw" | fzf --prompt="🏷️ Categoria do Gasto > " --height=40% --layout=reverse --border=rounded)
+    [ -z "$cat_escolhida" ] && cat_escolhida="Outros / Manobra"
+
+    read -rp "📅 Data da compra [AAAA-MM-DD, padrão hoje: $(date +%Y-%m-%d)]: " dt_input
+    [ -z "$dt_input" ] && dt_input=$(date +%Y-%m-%d)
+
+    if [[ "$meio" =~ "Cartão" ]]; then
+        local cartoes_list
+        cartoes_list=$(python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+conn = core_engine.get_connection()
+for r in conn.execute('SELECT id, nome FROM cartoes').fetchall():
+    print(f'{r[\"id\"]}. {r[\"nome\"]}')
+conn.close()
+")
+        local cartao_sel
+        cartao_sel=$(echo "$cartoes_list" | fzf --prompt="💳 Selecione o Cartão > " --height=30% --layout=reverse --border=rounded)
+        local cid
+        cid=$(echo "$cartao_sel" | cut -d'.' -f1)
+
+        read -rp "🔢 Número de parcelas [padrão: 1]: " parc
+        parc="${parc:-1}"
+
+        python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+core_engine.registrar_compra_cartao(int('$cid'), '$dt_input', '$desc', float('$val_str'), '$cat_escolhida', int('$parc'))
+print('✔ Compra no cartão registrada e faturada com sucesso!')
+"
+    else
+        local contas_list
+        contas_list=$(python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+conn = core_engine.get_connection()
+for r in conn.execute('SELECT id, nome, saldo FROM contas').fetchall():
+    print(f'{r[\"id\"]}. {r[\"nome\"]} (Saldo: R$ {r[\"saldo\"]:,.2f})')
+conn.close()
+")
+        local conta_sel
+        conta_sel=$(echo "$contas_list" | fzf --prompt="🏦 Selecione a Conta/Carteira > " --height=30% --layout=reverse --border=rounded)
+        local ctid
+        ctid=$(echo "$conta_sel" | cut -d'.' -f1)
+
+        local tipo_tx="despesa"
+        if [[ "$cat_escolhida" =~ "Salário" ]] || [[ "$cat_escolhida" =~ "Rendimento" ]]; then
+            tipo_tx="receita"
+        fi
+
+        python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+conn = core_engine.get_connection()
+c = conn.cursor()
+val = float('$val_str')
+tipo = '$tipo_tx'
+if tipo == 'despesa':
+    c.execute('UPDATE contas SET saldo = saldo - ? WHERE id = ?', (val, int('$ctid')))
+else:
+    c.execute('UPDATE contas SET saldo = saldo + ? WHERE id = ?', (val, int('$ctid')))
+c.execute('''
+    INSERT INTO transacoes (data, descricao, valor, tipo, categoria, conta_id)
+    VALUES (?, ?, ?, ?, ?, ?)
+''', ('$dt_input', '$desc', val, tipo, '$cat_escolhida', int('$ctid')))
+conn.commit()
+conn.close()
+print('✔ Transação em conta registrada e saldo atualizado!')
+"
+    fi
+
+    echo ""
+    read -rp "Pressione [ENTER] para continuar..."
+}
+
+gerenciar_cartoes_fzf() {
+    header_banner
+    echo -e "${MAUVE}${BOLD}💳 GESTÃO DE CARTÕES & FATURAS${NC}\n"
+
+    local sub_op
+    sub_op=$(printf "1. Ver Itens e Total da Fatura Atual\n2. Ver Faturas Futuras (Parcelamentos projetados)\n3. Pagar Fatura de Cartão (Debitando da Conta)\n4. Voltar" | fzf --prompt="Operação de Cartão > " --height=30% --layout=reverse --border=rounded)
+
+    case "$sub_op" in
+        "1."*)
+            python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+conn = core_engine.get_connection()
+for cartao in conn.execute('SELECT id, nome, dia_fechamento, dia_vencimento FROM cartoes').fetchall():
+    mes_fat = core_engine.calcular_mes_fatura(str(core_engine.date.today()), cartao['dia_fechamento'])
+    print(f'════════════════════════════════════════════════════════════════════')
+    print(f'💳 {cartao[\"nome\"]} | Fatura: {mes_fat} (Vencimento: dia {cartao[\"dia_vencimento\"]})')
+    print(f'════════════════════════════════════════════════════════════════════')
+    txs = conn.execute('''
+        SELECT data, descricao, valor, categoria, parcela_atual, total_parcelas
+        FROM transacoes WHERE cartao_id = ? AND mes_fatura = ?
+    ''', (cartao['id'], mes_fat)).fetchall()
+    total = sum(t['valor'] for t in txs)
+    for t in txs:
+        print(f'  • {t[\"data\"]} | R$ {t[\"valor\"]:8.2f} | {t[\"categoria\"]:20} | {t[\"descricao\"]}')
+    print(f'  ------------------------------------------------------------------')
+    print(f'  TOTAL DA FATURA: R$ {total:,.2f}\n')
+conn.close()
+"
+            read -rp "Pressione [ENTER] para voltar..."
+            ;;
+        "2."*)
+            python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+conn = core_engine.get_connection()
+print('🔮 PROJEÇÃO DE FATURAS FUTURAS POR CARTÃO:')
+rows = conn.execute('''
+    SELECT k.nome, t.mes_fatura, SUM(t.valor) as total, COUNT(*) as qtd
+    FROM transacoes t
+    JOIN cartoes k ON t.cartao_id = k.id
+    WHERE t.mes_fatura >= ?
+    GROUP BY k.nome, t.mes_fatura
+    ORDER BY t.mes_fatura ASC, k.nome ASC
+''', (core_engine.calcular_mes_fatura(str(core_engine.date.today()), 20),)).fetchall()
+
+for r in rows:
+    print(f'  • Mês {r[\"mes_fatura\"]} | {r[\"nome\"]:22} -> R$ {r[\"total\"]:8.2f} ({r[\"qtd\"]} itens)')
+conn.close()
+"
+            read -rp "Pressione [ENTER] para voltar..."
+            ;;
+        "3."*)
+            local cartoes_list
+            cartoes_list=$(python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+conn = core_engine.get_connection()
+for r in conn.execute('SELECT id, nome, dia_fechamento FROM cartoes').fetchall():
+    mes_fat = core_engine.calcular_mes_fatura(str(core_engine.date.today()), r['dia_fechamento'])
+    print(f'{r[\"id\"]}. {r[\"nome\"]} (Fatura: {mes_fat})')
+conn.close()
+")
+            local c_sel
+            c_sel=$(echo "$cartoes_list" | fzf --prompt="💳 Cartão para pagar fatura > " --height=30% --layout=reverse --border=rounded)
+            local cid
+            cid=$(echo "$c_sel" | cut -d'.' -f1)
+            [ -z "$cid" ] && return
+
+            read -rp "📅 Mês de Referência da Fatura [AAAA-MM, ex: 2026-10]: " mes_ref
+            [ -z "$mes_ref" ] && return
+
+            local contas_list
+            contas_list=$(python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+conn = core_engine.get_connection()
+for r in conn.execute('SELECT id, nome, saldo FROM contas').fetchall():
+    print(f'{r[\"id\"]}. {r[\"nome\"]} (Saldo: R$ {r[\"saldo\"]:,.2f})')
+conn.close()
+")
+            local conta_deb
+            conta_deb=$(echo "$contas_list" | fzf --prompt="🏦 Conta para debitar o valor > " --height=30% --layout=reverse --border=rounded)
+            local conta_id
+            conta_id=$(echo "$conta_deb" | cut -d'.' -f1)
+            [ -z "$conta_id" ] && return
+
+            python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+total, msg = core_engine.pagar_fatura(int('$cid'), '$mes_ref', int('$conta_id'))
+print(f'✔ Fatura de R$ {total:,.2f} paga com sucesso e debitada da conta!')
+"
+            read -rp "Pressione [ENTER] para continuar..."
+            ;;
+        *) return ;;
+    esac
+}
+
+gerenciar_caixinhas_fzf() {
+    header_banner
+    echo -e "${TEAL}${BOLD}🏰 GESTÃO DAS CAIXINHAS NUBANK & APORTES${NC}\n"
+
+    local sub_op
+    sub_op=$(printf "1. Fazer Aporte Mensal na Caixinha (R$ 1.000 Alforria ou outras)\n2. Rodar Rendimento Mensal do CDI nas Caixinhas\n3. Ver Saldo & Metas das Caixinhas\n4. Voltar" | fzf --prompt="Caixinhas > " --height=30% --layout=reverse --border=rounded)
+
+    case "$sub_op" in
+        "1."*)
+            local cx_list
+            cx_list=$(python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+conn = core_engine.get_connection()
+for r in conn.execute('SELECT id, nome, saldo_atual, aporte_mensal FROM caixinhas').fetchall():
+    print(f'{r[\"id\"]}. {r[\"nome\"]} (Saldo: R$ {r[\"saldo_atual\"]:,.2f} | Sugerido: R$ {r[\"aporte_mensal\"]:,.2f})')
+conn.close()
+")
+            local cx_sel
+            cx_sel=$(echo "$cx_list" | fzf --prompt="🏰 Escolha a Caixinha > " --height=30% --layout=reverse --border=rounded)
+            local cx_id
+            cx_id=$(echo "$cx_sel" | cut -d'.' -f1)
+            [ -z "$cx_id" ] && return
+
+            read -rp "💰 Valor do Aporte (ex: 1000.00): " aporte_val
+            aporte_val="${aporte_val//,/.}"
+            aporte_val=$(echo "$aporte_val" | tr -dc '0-9.')
+            [ -z "$aporte_val" ] && return
+
+            local contas_list
+            contas_list=$(python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+conn = core_engine.get_connection()
+for r in conn.execute('SELECT id, nome, saldo FROM contas').fetchall():
+    print(f'{r[\"id\"]}. {r[\"nome\"]} (Saldo: R$ {r[\"saldo\"]:,.2f})')
+conn.close()
+")
+            local c_orig
+            c_orig=$(echo "$contas_list" | fzf --prompt="🏦 Conta de Origem do Dinheiro > " --height=30% --layout=reverse --border=rounded)
+            local c_orig_id
+            c_orig_id=$(echo "$c_orig" | cut -d'.' -f1)
+            [ -z "$c_orig_id" ] && return
+
+            python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+core_engine.realizar_aporte_caixinha(int('$cx_id'), int('$c_orig_id'), float('$aporte_val'))
+print('✔ Aporte sagrado realizado com sucesso na Caixinha!')
+"
+            read -rp "Pressione [ENTER] para continuar..."
+            ;;
+        "2."*)
+            python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+core_engine.aplicar_rendimento_mensal_caixinhas()
+print('✔ Rendimento mensal de 115% do CDI aplicado em todas as Caixinhas!')
+"
+            read -rp "Pressione [ENTER] para continuar..."
+            ;;
+        "3."*)
+            python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+conn = core_engine.get_connection()
+for r in conn.execute('SELECT * FROM caixinhas').fetchall():
+    pct = (r['saldo_atual'] / r['meta_total'] * 100) if r['meta_total'] > 0 else 0
+    print(f'🏰 {r[\"nome\"]} [{r[\"tipo_rendimento\"]}]')
+    print(f'   Saldo Atual : R$ {r[\"saldo_atual\"]:,.2f} / Meta: R$ {r[\"meta_total\"]:,.2f} ({pct:.1f}%)')
+    print(f'   Aporte/Mês  : R$ {r[\"aporte_mensal\"]:,.2f} | Alvo: {r[\"data_alvo\"]}')
+    print(f'   Descrição   : {r[\"descricao\"]}\n')
+conn.close()
+"
+            read -rp "Pressione [ENTER] para voltar..."
+            ;;
+        *) return ;;
+    esac
+}
+
+ver_projecao_alforria() {
+    clear 2>/dev/null || true
+    header_banner
+    python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+dados = core_engine.projetar_alforria(meses=22, aporte_mensal=1000.0)
+
+print('📈 SIMULAÇÃO CRONOLÓGICA DA ALFORRIA (NOV/2026 A AGOSTO/2028)')
+print('─'*70)
+print(f'{\"Mês\":^8} | {\"Período\":^9} | {\"Aporte\":^12} | {\"Rend. CDI\":^12} | {\"Saldo Acumulado\":^16}')
+print('─'*70)
+
+for d in dados:
+    extra_str = f' (+13º)' if d['extra'] > 0 else ''
+    destaque = ' 👑' if d['mes_num'] == 22 else ''
+    print(f'{d[\"mes_num\"]:>4}     | {d[\"mes_ano\"]:^9} | R$ {d[\"aporte\"]:8.2f}{extra_str:7} | R$ {d[\"rendimento\"]:8.2f}   | R$ {d[\"saldo\"]:12.2f}{destaque}')
+
+print('─'*70)
+tot_depositado = sum(d['aporte'] + d['extra'] for d in dados)
+tot_final = dados[-1]['saldo']
+tot_juros = tot_final - tot_depositado - dados[0]['saldo'] + dados[0]['aporte']
+
+print(f'💰 Total de Recursos Depositados : R$ {tot_depositado:,.2f}')
+print(f'🚀 Total de Juros Pagos pelo CDI  : R$ {tot_juros:,.2f}')
+print(f'👑 MONTANTE TOTAL EM AGOSTO/2028 : R$ {tot_final:,.2f}')
+print('─'*70)
+print('🔑 RESULTADO DA TRANSIÇÃO AOS 24 ANOS:')
+print('   • Desembolso Mudança (3 meses caução + móveis) : ~ R$ 8.000,00')
+print('   • RESERVA INTOCADA DE EMERGÊNCIA LIVRE         : ~ R$ 18.000,00 A R$ 19.000,00!')
+"
+    echo ""
+    read -rp "Pressione [ENTER] para voltar ao menu..."
+}
+
+gerenciar_contas_fzf() {
+    header_banner
+    echo -e "${YELLOW}${BOLD}🏦 AJUSTAR SALDO OU CRIAR NOVA CONTA${NC}\n"
+
+    local contas_list
+    contas_list=$(python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+conn = core_engine.get_connection()
+for r in conn.execute('SELECT id, nome, saldo FROM contas').fetchall():
+    print(f'{r[\"id\"]}. {r[\"nome\"]} (Saldo Atual: R$ {r[\"saldo\"]:,.2f})')
+conn.close()
+")
+    local c_sel
+    c_sel=$(echo "$contas_list" | fzf --prompt="Selecione a conta para editar > " --height=30% --layout=reverse --border=rounded)
+    local cid
+    cid=$(echo "$c_sel" | cut -d'.' -f1)
+    [ -z "$cid" ] && return
+
+    read -rp "💰 Digite o NOVO Saldo Exato (ex: 350.50): " novo_saldo
+    novo_saldo="${novo_saldo//,/.}"
+    novo_saldo=$(echo "$novo_saldo" | tr -dc '0-9.')
+    [ -z "$novo_saldo" ] && return
+
+    python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+conn = core_engine.get_connection()
+c = conn.cursor()
+c.execute('UPDATE contas SET saldo = ? WHERE id = ?', (float('$novo_saldo'), int('$cid')))
+conn.commit()
+conn.close()
+print('✔ Saldo da conta atualizado com sucesso no banco!')
+"
+    read -rp "Pressione [ENTER] para continuar..."
+}
+
+exportar_excel_cli() {
+    clear 2>/dev/null || true
+    header_banner
+    echo -e "${GREEN}${BOLD}📑 EXPORTAÇÃO NATIVA PARA PLANILHA EXCEL (.XLSX)${NC}\n"
+
+    local default_dest="$HOME/Planilha_Alforria_Homem_Rocha.xlsx"
+    read -rp "Salvar em [Padrão: $default_dest]: " dest_path
+    dest_path="${dest_path:-$default_dest}"
+
+    python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+out = core_engine.exportar_para_excel('$dest_path')
+print(f'✔ Sucesso! Planilha profissional gerada e salva em:\n   {out}')
+"
+    echo ""
+    echo -e "Você pode abrir no LibreOffice Calc, OnlyOffice ou subir direto no Google Planilhas sem quebra de fórmulas."
+    if [ -t 0 ]; then
+        read -rp "Pressione [ENTER] para continuar..." || true
+    fi
+}
+
+ritual_domingo() {
+    clear 2>/dev/null || true
+    header_banner
+    echo -e "${PEACH}${BOLD}🕯️  RITUAL DO DOMINGO À NOITE (15 MINUTOS)${NC}\n"
+    echo -e "Abra seus aplicativos (Nubank / Caixa) e audite os 4 itens com calma:\n"
+
+    echo -e "  [1] Fatura do Cartão da Caixa: Conferiu se só há gastos previstos e zero parcelas fantasmas?"
+    read -rp "      Confirmar? (s/n): " r1
+    echo -e "  [2] Caixinhas do Nubank: Caixinha da Alforria recebeu o aporte do dia 05 e está intacta?"
+    read -rp "      Confirmar? (s/n): " r2
+    echo -e "  [3] CG 160: Pneus calibrados (25/33 PSI) e nível do Motul 5100 verificado para a semana?"
+    read -rp "      Confirmar? (s/n): " r3
+    echo -e "  [4] Provisão Familiar: Há carne e proteína limpa na geladeira comprada para o irmão caçula?"
+    read -rp "      Confirmar? (s/n): " r4
+
+    echo ""
+    echo -e "${GREEN}${BOLD}✔ Ritual concluído! A sua semana começa com a mente blindada e as contas no controle.${NC}"
+    read -rp "Pressione [ENTER] para voltar ao menu..."
+}
+
+# Entrada do script
+if [ "$1" == "export" ]; then
+    python3 -c "import sys; sys.path.append('$HOME/.local/share/apex-finance'); import core_engine; print(f'✔ Planilha gerada com sucesso: {core_engine.exportar_para_excel()}')"
+elif [ "$1" == "dash" ] || [ "$1" == "status" ]; then
+    IS_SUBCOMMAND=1 ver_dashboard_mensal
+elif [ "$1" == "fzf" ] || [ "$1" == "menu" ]; then
+    menu_principal
+else
+    # Lança a interface gráfica soberana TUI (Textual + Plotext)
+    exec python3 "$HOME/.local/share/apex-finance/tui_app.py"
+fi

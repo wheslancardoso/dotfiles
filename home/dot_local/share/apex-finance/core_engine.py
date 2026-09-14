@@ -1,0 +1,1035 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+==============================================================================
+🏛️ APEX FINANCE ENGINE — CORE KERNEL DE INTELIGÊNCIA FINANCEIRA (SQLITE / FTS)
+==============================================================================
+Motor financeiro robusto com suporte a:
+- Contas correntes, saldos e histórico
+- Cartões de crédito com cálculo automático de melhor dia de compra e faturas
+- Compras parceladas automáticas vinculadas à fatura correta
+- Fechamento e pagamento de fatura debitando da conta
+- Caixinhas com cálculo de rendimento líquido em CDI (115%)
+- Projeções mensais de caixa para os próximos 24 meses
+- Exportação perfeita para planilhas Excel (.xlsx) formatadas profissionalmente
+"""
+
+import sqlite3
+import os
+import sys
+import datetime
+from datetime import date, timedelta
+import calendar
+import json
+
+DB_DIR = os.path.expanduser("~/.local/share/apex-finance/data")
+DB_PATH = os.path.join(DB_DIR, "finance.db")
+os.makedirs(DB_DIR, exist_ok=True)
+
+def get_connection():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA foreign_keys = ON")
+    return conn
+
+def init_database():
+    conn = get_connection()
+    c = conn.cursor()
+    c.executescript("""
+    CREATE TABLE IF NOT EXISTS contas (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nome TEXT NOT NULL UNIQUE,
+        tipo TEXT NOT NULL, -- 'corrente', 'poupanca', 'investimento', 'carteira'
+        instituicao TEXT NOT NULL,
+        saldo REAL NOT NULL DEFAULT 0.0,
+        cor TEXT DEFAULT '#10b981'
+    );
+
+    CREATE TABLE IF NOT EXISTS cartoes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nome TEXT NOT NULL UNIQUE,
+        instituicao TEXT NOT NULL,
+        limite REAL NOT NULL,
+        dia_fechamento INTEGER NOT NULL, -- Dia em que a fatura fecha (corte)
+        dia_vencimento INTEGER NOT NULL, -- Dia em que a fatura vence
+        conta_pagamento_id INTEGER REFERENCES contas(id)
+    );
+
+    CREATE TABLE IF NOT EXISTS caixinhas (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nome TEXT NOT NULL UNIQUE,
+        descricao TEXT,
+        meta_total REAL NOT NULL,
+        aporte_mensal REAL NOT NULL,
+        saldo_atual REAL NOT NULL DEFAULT 0.0,
+        data_alvo TEXT,
+        tipo_rendimento TEXT DEFAULT '115% CDI',
+        taxa_mensal REAL DEFAULT 0.0095
+    );
+
+    CREATE TABLE IF NOT EXISTS categorias (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nome TEXT NOT NULL UNIQUE,
+        tipo TEXT NOT NULL -- 'receita', 'despesa', 'ambos'
+    );
+
+    CREATE TABLE IF NOT EXISTS transacoes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        data TEXT NOT NULL, -- 'YYYY-MM-DD'
+        descricao TEXT NOT NULL,
+        valor REAL NOT NULL,
+        tipo TEXT NOT NULL, -- 'receita', 'despesa', 'transferencia', 'aporte_caixinha', 'fatura_cartao'
+        categoria TEXT,
+        conta_id INTEGER REFERENCES contas(id),
+        cartao_id INTEGER REFERENCES cartoes(id),
+        caixinha_id INTEGER REFERENCES caixinhas(id),
+        mes_fatura TEXT, -- 'YYYY-MM'
+        parcela_atual INTEGER DEFAULT 1,
+        total_parcelas INTEGER DEFAULT 1,
+        grupo_parcelamento_id TEXT
+    );
+
+    CREATE TABLE IF NOT EXISTS faturas (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        cartao_id INTEGER NOT NULL REFERENCES cartoes(id),
+        mes_referencia TEXT NOT NULL, -- 'YYYY-MM'
+        data_fechamento TEXT NOT NULL,
+        data_vencimento TEXT NOT NULL,
+        status TEXT NOT NULL DEFAULT 'aberta', -- 'aberta', 'fechada', 'paga'
+        valor_pago REAL DEFAULT 0.0,
+        data_pagamento TEXT,
+        UNIQUE(cartao_id, mes_referencia)
+    );
+
+    CREATE TABLE IF NOT EXISTS recorrencias (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        descricao TEXT NOT NULL,
+        valor REAL NOT NULL,
+        tipo TEXT NOT NULL, -- 'receita', 'despesa'
+        categoria TEXT,
+        conta_id INTEGER REFERENCES contas(id),
+        dia_vencimento INTEGER DEFAULT 5,
+        ativo INTEGER DEFAULT 1
+    );
+    """)
+
+    # Populate defaults if empty
+    c.execute("SELECT COUNT(*) FROM contas")
+    if c.fetchone()[0] == 0:
+        c.executescript("""
+        INSERT INTO contas (nome, tipo, instituicao, saldo) VALUES
+        ('Nubank Conta', 'corrente', 'Nubank', 174.00),
+        ('Caixa Econômica', 'corrente', 'Caixa', 0.00),
+        ('Carteira Física', 'carteira', 'Dinheiro', 50.00);
+
+        INSERT INTO cartoes (nome, instituicao, limite, dia_fechamento, dia_vencimento, conta_pagamento_id) VALUES
+        ('Cartão Caixa Elo/Visa', 'Caixa', 3500.00, 20, 28, 1),
+        ('Cartão Nubank Gold', 'Nubank', 2500.00, 25, 5, 1);
+
+        INSERT INTO caixinhas (nome, descricao, meta_total, aporte_mensal, saldo_atual, data_alvo, tipo_rendimento, taxa_mensal) VALUES
+        ('Alforria 2028 (O Meu Canto)', 'Reserva sagrada para emancipação aos 24 anos e R$ 18k livres', 27000.00, 1000.00, 1000.00, '2028-08-01', '115% CDI', 0.0095),
+        ('Máquina Zerada (CG 160)', 'Fundo IPVA R$742 + Motul 5100 + Polimento Técnico & PPF', 1500.00, 100.00, 200.00, '2027-12-31', '100% CDI', 0.0085),
+        ('Presença & Saúde Masculina', 'Minoxidil, Skincare, Óculos novos e Roupas alinhadas', 1200.00, 100.00, 150.00, '2027-06-01', '100% CDI', 0.0085);
+
+        INSERT INTO categorias (nome, tipo) VALUES
+        ('Alforria / Investimento', 'despesa'),
+        ('Provisão Casa (Carnes)', 'despesa'),
+        ('Moto (Gasolina / Óleo / IPVA)', 'despesa'),
+        ('Saúde Mental / Psiquiatria', 'despesa'),
+        ('Barbearia & Cuidados', 'despesa'),
+        ('Estética / Minoxidil / Roupas', 'despesa'),
+        ('Salário Comissionado AGR', 'receita'),
+        ('Rendimento Caixinhas', 'receita'),
+        ('Outros / Manobra', 'ambos');
+        """)
+
+    # Populate recorrencias if empty
+    c.execute("SELECT COUNT(*) FROM recorrencias")
+    if c.fetchone()[0] == 0:
+        c.executescript("""
+        INSERT INTO recorrencias (descricao, valor, tipo, categoria, conta_id, dia_vencimento, ativo) VALUES
+        ('Salário Comissionado AGR', 2234.00, 'receita', 'Salário Comissionado AGR', 1, 5, 1),
+        ('Aporte Sagrado Alforria', 1000.00, 'despesa', 'Alforria / Investimento', 1, 5, 1),
+        ('Provisão Carnes & Casa', 400.00, 'despesa', 'Provisão Casa (Carnes)', 1, 10, 1),
+        ('Psiquiatria & Vortioxetina', 200.00, 'despesa', 'Saúde Mental / Psiquiatria', 1, 15, 1),
+        ('CG 160 (Gasolina + Motul + IPVA)', 190.00, 'despesa', 'Moto (Gasolina / Óleo / IPVA)', 1, 15, 1),
+        ('Barbeiro Quinzenal', 120.00, 'despesa', 'Barbearia & Cuidados', 1, 10, 1),
+        ('Presença, Minoxidil & Skincare', 150.00, 'despesa', 'Estética / Minoxidil / Roupas', 1, 20, 1);
+        """)
+
+    conn.commit()
+    conn.close()
+
+# ----------------------------------------------------------------------
+# FATURAS E REGRAS DE CARTÃO DE CRÉDITO (SEM BUG)
+# ----------------------------------------------------------------------
+def calcular_mes_fatura(dia_compra_str, dia_fechamento):
+    """
+    Se a compra foi feita ANTES ou NO dia do fechamento, cai no mês da fatura atual.
+    Se foi feita DEPOIS do dia do fechamento, cai na fatura do mês seguinte.
+    """
+    dt = datetime.datetime.strptime(dia_compra_str, "%Y-%m-%d").date()
+    ano = dt.year
+    mes = dt.month
+    
+    if dt.day > dia_fechamento:
+        # Pula para a fatura do mês seguinte
+        if mes == 12:
+            ano += 1
+            mes = 1
+        else:
+            mes += 1
+    return f"{ano:04d}-{mes:02d}"
+
+def registrar_compra_cartao(cartao_id, data_compra, descricao, valor_total, categoria, parcelas=1):
+    conn = get_connection()
+    c = conn.cursor()
+    
+    c.execute("SELECT dia_fechamento, dia_vencimento FROM cartoes WHERE id = ?", (cartao_id,))
+    cartao = c.fetchone()
+    if not cartao:
+        conn.close()
+        raise ValueError("Cartão não encontrado.")
+        
+    dia_fechamento = cartao['dia_fechamento']
+    dia_vencimento = cartao['dia_vencimento']
+    
+    # Identificador de grupo se parcelado
+    grupo_id = f"PARC_{int(datetime.datetime.now().timestamp())}" if parcelas > 1 else None
+    valor_parcela = round(valor_total / parcelas, 2)
+    
+    # Primeiro mês de fatura
+    dt_base = datetime.datetime.strptime(data_compra, "%Y-%m-%d").date()
+    primeiro_mes = calcular_mes_fatura(data_compra, dia_fechamento)
+    ano_fat, mes_fat = map(int, primeiro_mes.split('-'))
+    
+    for p in range(1, parcelas + 1):
+        # Mês da fatura desta parcela
+        m_curr = mes_fat + (p - 1)
+        a_curr = ano_fat + (m_curr - 1) // 12
+        m_curr = ((m_curr - 1) % 12) + 1
+        mes_fatura_str = f"{a_curr:04d}-{m_curr:02d}"
+        
+        # Garante registro da fatura
+        c.execute("""
+            INSERT OR IGNORE INTO faturas (cartao_id, mes_referencia, data_fechamento, data_vencimento, status)
+            VALUES (?, ?, ?, ?, 'aberta')
+        """, (
+            cartao_id, 
+            mes_fatura_str, 
+            f"{a_curr:04d}-{m_curr:02d}-{dia_fechamento:02d}", 
+            f"{a_curr:04d}-{m_curr:02d}-{dia_vencimento:02d}"
+        ))
+        
+        desc_final = f"{descricao} ({p}/{parcelas})" if parcelas > 1 else descricao
+        c.execute("""
+            INSERT INTO transacoes (data, descricao, valor, tipo, categoria, cartao_id, mes_fatura, parcela_atual, total_parcelas, grupo_parcelamento_id)
+            VALUES (?, ?, ?, 'despesa', ?, ?, ?, ?, ?, ?)
+        """, (data_compra, desc_final, valor_parcela, categoria, cartao_id, mes_fatura_str, p, parcelas, grupo_id))
+        
+    conn.commit()
+    conn.close()
+
+def pagar_fatura(cartao_id, mes_referencia, conta_pagamento_id, data_pagamento=None):
+    if not data_pagamento:
+        data_pagamento = str(date.today())
+        
+    conn = get_connection()
+    # Verificar se fatura já foi paga
+    c.execute("SELECT status, valor_pago FROM faturas WHERE cartao_id = ? AND mes_referencia = ?", (cartao_id, mes_referencia))
+    fat_row = c.fetchone()
+    if fat_row and fat_row['status'] == 'paga':
+        conn.close()
+        return 0.0, f"A fatura de {mes_referencia} já está PAGA (Valor: R$ {fat_row['valor_pago']:,.2f}). Operação rejeitada para evitar duplicidade."
+
+    # Calcular total da fatura
+    c.execute("""
+        SELECT SUM(valor) as total FROM transacoes
+        WHERE cartao_id = ? AND mes_fatura = ?
+    """, (cartao_id, mes_referencia))
+    total = c.fetchone()['total'] or 0.0
+    
+    if total <= 0:
+        conn.close()
+        return 0.0, "Fatura com valor zero ou vazia."
+        
+    # Desconta da conta
+    c.execute("UPDATE contas SET saldo = saldo - ? WHERE id = ?", (total, conta_pagamento_id))
+    
+    # Atualiza fatura para paga
+    c.execute("""
+        UPDATE faturas SET status = 'paga', valor_pago = ?, data_pagamento = ?
+        WHERE cartao_id = ? AND mes_referencia = ?
+    """, (total, data_pagamento, cartao_id, mes_referencia))
+    
+    # Registra transação de pagamento
+    c.execute("SELECT nome FROM cartoes WHERE id = ?", (cartao_id,))
+    cartao_nome = c.fetchone()['nome']
+    c.execute("""
+        INSERT INTO transacoes (data, descricao, valor, tipo, categoria, conta_id)
+        VALUES (?, ?, ?, 'fatura_cartao', 'Pagamento Fatura', ?)
+    """, (data_pagamento, f"Pagamento Fatura {cartao_nome} ({mes_referencia})", total, conta_pagamento_id))
+    
+    conn.commit()
+    conn.close()
+    return total, "Fatura paga com sucesso!"
+
+def reajustar_fatura_cartao(cartao_id, mes_referencia, novo_valor_total, motivo="Ajuste de Fatura"):
+    """
+    Reajusta o valor total de uma fatura de cartão para bater exatamente
+    com o app do banco (ex: IOF, anuidade, taxas ou estornos esquecidos),
+    gerando uma transação de conciliação vinculada à fatura.
+    """
+    conn = get_connection()
+    c = conn.cursor()
+    
+    c.execute("SELECT nome, dia_fechamento, dia_vencimento FROM cartoes WHERE id = ?", (cartao_id,))
+    cartao = c.fetchone()
+    if not cartao:
+        conn.close()
+        raise ValueError("Cartão não encontrado.")
+        
+    c.execute("""
+        SELECT COALESCE(SUM(valor), 0.0) as total FROM transacoes
+        WHERE cartao_id = ? AND mes_fatura = ?
+    """, (cartao_id, mes_referencia))
+    total_atual = c.fetchone()['total'] or 0.0
+    
+    diferenca = round(novo_valor_total - total_atual, 2)
+    if abs(diferenca) < 0.01:
+        conn.close()
+        return 0.0, "O valor informado já coincide com o total atual da fatura."
+        
+    ano, mes = map(int, mes_referencia.split("-"))
+    c.execute("""
+        INSERT OR IGNORE INTO faturas (cartao_id, mes_referencia, data_fechamento, data_vencimento, status)
+        VALUES (?, ?, ?, ?, 'aberta')
+    """, (
+        cartao_id, mes_referencia,
+        f"{ano:04d}-{mes:02d}-{cartao['dia_fechamento']:02d}",
+        f"{ano:04d}-{mes:02d}-{cartao['dia_vencimento']:02d}"
+    ))
+    
+    tipo_tx = 'despesa' if diferenca > 0 else 'estorno'
+    desc_tx = f"{motivo}: {cartao['nome']} ({total_atual:,.2f} -> {novo_valor_total:,.2f})"
+    
+    c.execute("""
+        INSERT INTO transacoes (data, descricao, valor, tipo, categoria, cartao_id, mes_fatura)
+        VALUES (?, ?, ?, ?, 'Outros / Manobra', ?, ?)
+    """, (str(date.today()), desc_tx, diferenca, tipo_tx, cartao_id, mes_referencia))
+    
+    conn.commit()
+    conn.close()
+    return diferenca, f"Fatura {mes_referencia} reajustada com sucesso! Diferença aplicada: R$ {diferenca:+,.2f}"
+
+
+# ----------------------------------------------------------------------
+# OPERAÇÕES COMPLETAS DE CRUD (CRIAR, EDITAR, DELETAR, RESTAURAR)
+# ----------------------------------------------------------------------
+def editar_transacao(transacao_id, descricao, valor, tipo, categoria, data_str):
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("SELECT valor, tipo, conta_id, cartao_id FROM transacoes WHERE id = ?", (transacao_id,))
+    antiga = c.fetchone()
+    if not antiga:
+        conn.close()
+        raise ValueError("Transação não encontrada.")
+        
+    # Se estava vinculada a conta bancária, recalcula o saldo
+    if antiga['conta_id']:
+        sinal_ant = 1.0 if antiga['tipo'] == 'receita' else -1.0
+        c.execute("UPDATE contas SET saldo = saldo - ? WHERE id = ?", (sinal_ant * antiga['valor'], antiga['conta_id']))
+        sinal_novo = 1.0 if tipo == 'receita' else -1.0
+        c.execute("UPDATE contas SET saldo = saldo + ? WHERE id = ?", (sinal_novo * valor, antiga['conta_id']))
+        
+    c.execute("""
+        UPDATE transacoes 
+        SET descricao = ?, valor = ?, tipo = ?, categoria = ?, data = ?
+        WHERE id = ?
+    """, (descricao, valor, tipo, categoria, data_str, transacao_id))
+    
+    conn.commit()
+    conn.close()
+    return True
+
+def deletar_transacao(transacao_id, deletar_todas_parcelas=False):
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("SELECT id, valor, tipo, conta_id, cartao_id, grupo_parcelamento_id FROM transacoes WHERE id = ?", (transacao_id,))
+    tx = c.fetchone()
+    if not tx:
+        conn.close()
+        return False, "Transação não encontrada."
+        
+    if deletar_todas_parcelas and tx['grupo_parcelamento_id']:
+        c.execute("DELETE FROM transacoes WHERE grupo_parcelamento_id = ?", (tx['grupo_parcelamento_id'],))
+        conn.commit()
+        conn.close()
+        return True, "Todas as parcelas da série foram deletadas com sucesso!"
+        
+    if tx['conta_id']:
+        sinal_reverso = -1.0 if tx['tipo'] == 'receita' else 1.0
+        c.execute("UPDATE contas SET saldo = saldo + ? WHERE id = ?", (sinal_reverso * tx['valor'], tx['conta_id']))
+        
+    c.execute("DELETE FROM transacoes WHERE id = ?", (transacao_id,))
+    conn.commit()
+    conn.close()
+    return True, "Transação deletada e saldos restaurados com sucesso!"
+
+# CRUD CONTAS
+def criar_conta(nome, tipo, instituicao, saldo_inicial=0.0):
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("INSERT INTO contas (nome, tipo, instituicao, saldo) VALUES (?, ?, ?, ?)", (nome, tipo, instituicao, saldo_inicial))
+    cid = c.lastrowid
+    conn.commit()
+    conn.close()
+    return cid
+
+def editar_conta(conta_id, nome, tipo, instituicao, saldo):
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("UPDATE contas SET nome = ?, tipo = ?, instituicao = ?, saldo = ? WHERE id = ?", (nome, tipo, instituicao, saldo, conta_id))
+    conn.commit()
+    conn.close()
+    return True
+
+def deletar_conta(conta_id):
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("DELETE FROM transacoes WHERE conta_id = ?", (conta_id,))
+    c.execute("DELETE FROM contas WHERE id = ?", (conta_id,))
+    conn.commit()
+    conn.close()
+    return True
+
+# CRUD CARTÕES
+def criar_cartao(nome, instituicao, limite, dia_fechamento, dia_vencimento):
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("""
+        INSERT INTO cartoes (nome, instituicao, limite, dia_fechamento, dia_vencimento, conta_pagamento_id)
+        VALUES (?, ?, ?, ?, ?, 1)
+    """, (nome, instituicao, limite, dia_fechamento, dia_vencimento))
+    cid = c.lastrowid
+    conn.commit()
+    conn.close()
+    return cid
+
+def editar_cartao(cartao_id, nome, instituicao, limite, dia_fechamento, dia_vencimento):
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("""
+        UPDATE cartoes 
+        SET nome = ?, instituicao = ?, limite = ?, dia_fechamento = ?, dia_vencimento = ?
+        WHERE id = ?
+    """, (nome, instituicao, limite, dia_fechamento, dia_vencimento, cartao_id))
+    conn.commit()
+    conn.close()
+    return True
+
+def deletar_cartao(cartao_id):
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("DELETE FROM transacoes WHERE cartao_id = ?", (cartao_id,))
+    c.execute("DELETE FROM faturas WHERE cartao_id = ?", (cartao_id,))
+    c.execute("DELETE FROM cartoes WHERE id = ?", (cartao_id,))
+    conn.commit()
+    conn.close()
+    return True
+
+# CRUD CAIXINHAS
+def criar_caixinha(nome, descricao, meta_total, aporte_mensal, saldo_inicial=0.0, data_alvo=None):
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("""
+        INSERT INTO caixinhas (nome, descricao, meta_total, aporte_mensal, saldo_atual, data_alvo)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (nome, descricao, meta_total, aporte_mensal, saldo_inicial, data_alvo))
+    cid = c.lastrowid
+    conn.commit()
+    conn.close()
+    return cid
+
+def editar_caixinha(caixinha_id, nome, descricao, meta_total, aporte_mensal, saldo_atual, data_alvo):
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("""
+        UPDATE caixinhas 
+        SET nome = ?, descricao = ?, meta_total = ?, aporte_mensal = ?, saldo_atual = ?, data_alvo = ?
+        WHERE id = ?
+    """, (nome, descricao, meta_total, aporte_mensal, saldo_atual, data_alvo, caixinha_id))
+    conn.commit()
+    conn.close()
+    return True
+
+def deletar_caixinha(caixinha_id):
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("DELETE FROM transacoes WHERE caixinha_id = ?", (caixinha_id,))
+    c.execute("DELETE FROM caixinhas WHERE id = ?", (caixinha_id,))
+    conn.commit()
+    conn.close()
+    return True
+
+# CRUD RECORRÊNCIAS
+def criar_recorrencia(descricao, valor, tipo, categoria, dia_vencimento=5):
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("""
+        INSERT INTO recorrencias (descricao, valor, tipo, categoria, conta_id, dia_vencimento, ativo)
+        VALUES (?, ?, ?, ?, 1, ?, 1)
+    """, (descricao, valor, tipo, categoria, dia_vencimento))
+    rid = c.lastrowid
+    conn.commit()
+    conn.close()
+    return rid
+
+def editar_recorrencia(rec_id, descricao, valor, tipo, categoria, dia_vencimento, ativo=1):
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("""
+        UPDATE recorrencias 
+        SET descricao = ?, valor = ?, tipo = ?, categoria = ?, dia_vencimento = ?, ativo = ?
+        WHERE id = ?
+    """, (descricao, valor, tipo, categoria, dia_vencimento, ativo, rec_id))
+    conn.commit()
+    conn.close()
+    return True
+
+def deletar_recorrencia(rec_id):
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("DELETE FROM recorrencias WHERE id = ?", (rec_id,))
+    conn.commit()
+    conn.close()
+    return True
+
+# ----------------------------------------------------------------------
+# APORTE EM CAIXINHAS E RENDIMENTO
+# ----------------------------------------------------------------------
+def realizar_aporte_caixinha(caixinha_id, conta_origem_id, valor, data_aporte=None):
+    if not data_aporte:
+        data_aporte = str(date.today())
+        
+    conn = get_connection()
+    c = conn.cursor()
+    
+    # Desconta da conta
+    c.execute("UPDATE contas SET saldo = saldo - ? WHERE id = ?", (valor, conta_origem_id))
+    # Credita na caixinha
+    c.execute("UPDATE caixinhas SET saldo_atual = saldo_atual + ? WHERE id = ?", (valor, caixinha_id))
+    
+    c.execute("SELECT nome FROM caixinhas WHERE id = ?", (caixinha_id,))
+    cx_nome = c.fetchone()['nome']
+    
+    # Registra transação
+    c.execute("""
+        INSERT INTO transacoes (data, descricao, valor, tipo, categoria, conta_id, caixinha_id)
+        VALUES (?, ?, ?, 'aporte_caixinha', 'Aporte Caixinha', ?, ?)
+    """, (data_aporte, f"Aporte na Caixinha: {cx_nome}", valor, conta_origem_id, caixinha_id))
+    
+    conn.commit()
+    conn.close()
+
+def aplicar_rendimento_mensal_caixinhas():
+    """Roda juros mensais sobre o saldo atual das caixinhas (ex: virada de mês)"""
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("SELECT id, nome, saldo_atual, taxa_mensal FROM caixinhas")
+    caixinhas = c.fetchall()
+    
+    for cx in caixinhas:
+        rendimento = round(cx['saldo_atual'] * cx['taxa_mensal'], 2)
+        if rendimento > 0:
+            c.execute("UPDATE caixinhas SET saldo_atual = saldo_atual + ? WHERE id = ?", (rendimento, cx['id']))
+            c.execute("""
+                INSERT INTO transacoes (data, descricao, valor, tipo, categoria, caixinha_id)
+                VALUES (?, ?, ?, 'receita', 'Rendimento Caixinhas', ?)
+            """, (str(date.today()), f"Rendimento CDI: {cx['nome']}", rendimento, cx['id']))
+            
+    conn.commit()
+    conn.close()
+
+# ----------------------------------------------------------------------
+# SIMULAÇÃO & PROJEÇÃO DE 24 MESES
+# ----------------------------------------------------------------------
+def projetar_alforria(meses=22, aporte_mensal=1000.0, taxa_mensal=0.0095, bonus_13=2500.0):
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("SELECT saldo_atual FROM caixinhas WHERE nome LIKE '%Alforria%'")
+    row = c.fetchone()
+    saldo_inicial = row['saldo_atual'] if row else 1000.0
+    conn.close()
+    
+    projecao = []
+    saldo = saldo_inicial
+    dt_ref = date.today()
+    
+    for m in range(1, meses + 1):
+        # Mês calendário futuro
+        m_curr = dt_ref.month + m
+        a_curr = dt_ref.year + (m_curr - 1) // 12
+        m_curr = ((m_curr - 1) % 12) + 1
+        label = f"{calendar.month_abbr[m_curr]}/{str(a_curr)[2:]}"
+        
+        rendimento = saldo * taxa_mensal
+        extra = (bonus_13 / 2) if m_curr == 12 else 0.0
+        saldo = saldo + rendimento + aporte_mensal + extra
+        
+        projecao.append({
+            "mes_num": m,
+            "mes_ano": label,
+            "rendimento": round(rendimento, 2),
+            "aporte": aporte_mensal,
+            "extra": extra,
+            "saldo": round(saldo, 2)
+        })
+    return projecao
+
+# ----------------------------------------------------------------------
+# INTELIGÊNCIA PREDITIVA & SURVIVAL HUD (INSPIRADO NO VESPER/FINANCE-IA)
+# ----------------------------------------------------------------------
+def adicionar_transacao_conta(conta_id, data_str, descricao, valor, tipo, categoria):
+    """Adiciona receita ou despesa direta na conta e atualiza o saldo."""
+    conn = get_connection()
+    c = conn.cursor()
+    fator = 1.0 if tipo == 'receita' else -1.0
+    c.execute("UPDATE contas SET saldo = saldo + ? WHERE id = ?", (fator * valor, conta_id))
+    c.execute("""
+        INSERT INTO transacoes (data, descricao, valor, tipo, categoria, conta_id)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (data_str, descricao, valor, tipo, categoria, conta_id))
+    conn.commit()
+    conn.close()
+
+def reconciliar_saldo(conta_id, novo_saldo, motivo="Ajuste de Conciliação"):
+    """Reconcilia o saldo bancário com precisão e registra histórico."""
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("SELECT saldo, nome FROM contas WHERE id = ?", (conta_id,))
+    row = c.fetchone()
+    if not row:
+        conn.close()
+        raise ValueError("Conta não encontrada.")
+    saldo_antigo = row['saldo']
+    diferenca = novo_saldo - saldo_antigo
+    c.execute("UPDATE contas SET saldo = ? WHERE id = ?", (novo_saldo, conta_id))
+    
+    if abs(diferenca) > 0.001:
+        tipo = 'receita' if diferenca > 0 else 'despesa'
+        c.execute("""
+            INSERT INTO transacoes (data, descricao, valor, tipo, categoria, conta_id)
+            VALUES (?, ?, ?, ?, 'Outros / Manobra', ?)
+        """, (str(date.today()), f"{motivo}: {row['nome']} ({saldo_antigo:,.2f} -> {novo_saldo:,.2f})", abs(diferenca), tipo, conta_id))
+        
+    conn.commit()
+    conn.close()
+
+def get_survival_hud_metrics(mes_ref=None):
+    """
+    Calcula as métricas soberanas do Survival HUD:
+    - Liquidez Líquida Soberana (Ativos Líquidos - Dívidas Consolidadas de Cartão)
+    - Teto de Oxigênio Semanal
+    - Escudo de Liquidez & Tiers de Antifragilidade
+    """
+    if not mes_ref:
+        mes_ref = date.today().strftime("%Y-%m")
+        
+    conn = get_connection()
+    c = conn.cursor()
+    
+    # Saldos em conta
+    c.execute("SELECT SUM(saldo) FROM contas")
+    saldo_bancario = c.fetchone()[0] or 0.0
+    
+    # Saldos em caixinhas
+    c.execute("SELECT SUM(saldo_atual) FROM caixinhas")
+    saldo_caixinhas = c.fetchone()[0] or 0.0
+    
+    # Fatura atual aberta (todos os cartões no mês de referência)
+    # Fatura atual aberta (que não foi paga ainda)
+    c.execute("""
+        SELECT COALESCE(SUM(t.valor), 0.0) FROM transacoes t
+        LEFT JOIN faturas f ON (t.cartao_id = f.cartao_id AND t.mes_fatura = f.mes_referencia)
+        WHERE t.cartao_id IS NOT NULL AND t.mes_fatura = ? AND COALESCE(f.status, 'aberta') != 'paga'
+    """, (mes_ref,))
+    fatura_atual_aberta = c.fetchone()[0] or 0.0
+    
+    # Parcelas futuras projetadas após o mês de referência
+    c.execute("""
+        SELECT COALESCE(SUM(t.valor), 0.0) FROM transacoes t
+        LEFT JOIN faturas f ON (t.cartao_id = f.cartao_id AND t.mes_fatura = f.mes_referencia)
+        WHERE t.cartao_id IS NOT NULL AND t.mes_fatura > ? AND COALESCE(f.status, 'aberta') != 'paga'
+    """, (mes_ref,))
+    parcelas_futuras = c.fetchone()[0] or 0.0
+    
+    divida_consolidada = fatura_atual_aberta + parcelas_futuras
+    liquidez_liquida = saldo_bancario - divida_consolidada
+    
+    # Custos fixos mensais cadastrados nas recorrências
+    c.execute("SELECT SUM(valor) FROM recorrencias WHERE tipo = 'despesa' AND ativo = 1")
+    custo_fixo_mensal = c.fetchone()[0] or 0.0
+    
+    # Teto semanal de oxigênio (margem líquida disponível dividida por 4 semanas)
+    sobra_imediata = saldo_bancario - fatura_atual_aberta
+    teto_oxigenio_semanal = max(0.0, sobra_imediata / 4.0)
+    
+    # Meses de cobertura (Escudo de Liquidez)
+    if custo_fixo_mensal > 0:
+        meses_cobertura = round((saldo_bancario + saldo_caixinhas) / custo_fixo_mensal, 1)
+    else:
+        meses_cobertura = 99.0
+        
+    # Tier de Antifragilidade
+    if liquidez_liquida < 0:
+        health_tier = "Tier 0 • Zona de Risco (Crise de Crédito)"
+        status_cor = "red"
+    elif meses_cobertura < 3:
+        health_tier = f"Tier 1 • Sobrevivente ({meses_cobertura}m de cobertura)"
+        status_cor = "yellow"
+    elif meses_cobertura < 6:
+        health_tier = f"Tier 2 • Imune ({meses_cobertura}m de cobertura)"
+        status_cor = "blue"
+    else:
+        health_tier = f"Tier 3 • Antifrágil ({meses_cobertura}m de cobertura)"
+        status_cor = "green"
+        
+    conn.close()
+    
+    return {
+        "mes_referencia": mes_ref,
+        "saldo_bancario": saldo_bancario,
+        "saldo_caixinhas": saldo_caixinhas,
+        "total_ativos": saldo_bancario + saldo_caixinhas,
+        "fatura_atual_aberta": fatura_atual_aberta,
+        "parcelas_futuras": parcelas_futuras,
+        "divida_consolidada": divida_consolidada,
+        "liquidez_liquida": liquidez_liquida,
+        "custo_fixo_mensal": custo_fixo_mensal,
+        "teto_oxigenio_semanal": teto_oxigenio_semanal,
+        "meses_cobertura": meses_cobertura,
+        "health_tier": health_tier,
+        "status_cor": status_cor
+    }
+
+def get_time_machine_projection(meses=12, data_base=None):
+    """
+    Projeção cronológica mês a mês (Time Machine) integrando:
+    - Saldo inicial
+    - Recorrências ativas (Salário, Carnes, Moto, Psiquiatria, Barbeiro, Presença)
+    - Faturas e parcelas reais programadas em cada mês
+    - Saldo projetado final e teto de oxigênio de cada mês
+    """
+    if not data_base:
+        data_base = date.today()
+        
+    conn = get_connection()
+    c = conn.cursor()
+    
+    # Saldo bancário inicial
+    c.execute("SELECT SUM(saldo) FROM contas")
+    saldo_atual = c.fetchone()[0] or 0.0
+    
+    # Recorrências
+    c.execute("SELECT SUM(valor) FROM recorrencias WHERE tipo = 'receita' AND ativo = 1")
+    receita_recorrente = c.fetchone()[0] or 0.0
+    c.execute("SELECT SUM(valor) FROM recorrencias WHERE tipo = 'despesa' AND ativo = 1")
+    despesa_recorrente = c.fetchone()[0] or 0.0
+    
+    projection = []
+    saldo_corrente = saldo_atual
+    ano_base = data_base.year
+    mes_base = data_base.month
+    
+    for i in range(meses):
+        m_calc = mes_base + i
+        a_calc = ano_base + (m_calc - 1) // 12
+        m_calc = ((m_calc - 1) % 12) + 1
+        mes_fatura_key = f"{a_calc:04d}-{m_calc:02d}"
+        
+        # Fatura de cartão com parcelas já programadas para este mês (não pagas)
+        c.execute("""
+            SELECT COALESCE(SUM(t.valor), 0.0) FROM transacoes t
+            LEFT JOIN faturas f ON (t.cartao_id = f.cartao_id AND t.mes_fatura = f.mes_referencia)
+            WHERE t.cartao_id IS NOT NULL AND t.mes_fatura = ? AND COALESCE(f.status, 'aberta') != 'paga'
+        """, (mes_fatura_key,))
+        fatura_mes = c.fetchone()[0] or 0.0
+        
+        saldo_inicial_mes = saldo_corrente
+        sobra_mes = receita_recorrente - despesa_recorrente - fatura_mes
+        saldo_final_mes = saldo_inicial_mes + sobra_mes
+        teto_oxigenio = max(0.0, saldo_final_mes / 4.0)
+        
+        projection.append({
+            "index": i,
+            "mes_ano": mes_fatura_key,
+            "label": f"{calendar.month_abbr[m_calc]}/{str(a_calc)[2:]}",
+            "saldo_inicial": round(saldo_inicial_mes, 2),
+            "receitas": round(receita_recorrente, 2),
+            "despesas_fixas": round(despesa_recorrente, 2),
+            "fatura_cartao": round(fatura_mes, 2),
+            "saldo_final": round(saldo_final_mes, 2),
+            "teto_semanal": round(teto_oxigenio, 2)
+        })
+        saldo_corrente = saldo_final_mes
+        
+    conn.close()
+    return projection
+
+def simular_impacto_compra(valor_total, parcelas=1, tipo='cartao', cartao_id=1, data_inicio=None):
+    """
+    Simula uma compra (Time Machine Sandbox) e compara a curva de fluxo de caixa
+    original vs. impactada pela nova compra nos próximos 12 meses.
+    """
+    baseline = get_time_machine_projection(meses=12, data_base=data_inicio)
+    simulado = []
+    
+    valor_parcela = round(valor_total / parcelas, 2)
+    
+    menor_saldo = 999999.0
+    mes_menor_folga = ""
+    violou_reserva = False
+    
+    for i, base in enumerate(baseline):
+        mes_dict = dict(base)
+        impacto_neste_mes = 0.0
+        
+        if tipo == 'cartao':
+            # Impacta da parcela 1 até 'parcelas'
+            if i < parcelas:
+                impacto_neste_mes = valor_parcela
+        else:
+            # À vista na conta impacta no mês 0
+            if i == 0:
+                impacto_neste_mes = valor_total
+                
+        # Recalcular saldos com o impacto acumulado
+        if i == 0:
+            mes_dict["fatura_cartao"] = round(base["fatura_cartao"] + (impacto_neste_mes if tipo == 'cartao' else 0.0), 2)
+            mes_dict["saldo_final"] = round(base["saldo_final"] - impacto_neste_mes, 2)
+        else:
+            saldo_ant_sim = simulado[i-1]["saldo_final"]
+            mes_dict["saldo_inicial"] = saldo_ant_sim
+            mes_dict["fatura_cartao"] = round(base["fatura_cartao"] + (impacto_neste_mes if tipo == 'cartao' else 0.0), 2)
+            sobra_mes = mes_dict["receitas"] - mes_dict["despesas_fixas"] - mes_dict["fatura_cartao"]
+            mes_dict["saldo_final"] = round(saldo_ant_sim + sobra_mes, 2)
+            
+        mes_dict["teto_semanal"] = max(0.0, round(mes_dict["saldo_final"] / 4.0, 2))
+        simulado.append(mes_dict)
+        
+        if mes_dict["saldo_final"] < menor_saldo:
+            menor_saldo = mes_dict["saldo_final"]
+            mes_menor_folga = mes_dict["label"]
+            
+        if mes_dict["saldo_final"] < 0:
+            violou_reserva = True
+            
+    if violou_reserva:
+        veredicto = "PERIGO • Quebra de liquidez no período!"
+        status = "danger"
+    elif menor_saldo < 100.0:
+        veredicto = f"ATENÇÃO • Margem apertada em {mes_menor_folga} (R$ {menor_saldo:,.2f})"
+        status = "warning"
+    else:
+        veredicto = f"SEGURO • Fluxo de caixa absorve confortavelmente (Folga mín: R$ {menor_saldo:,.2f})"
+        status = "safe"
+        
+    return {
+        "valor_total": valor_total,
+        "parcelas": parcelas,
+        "valor_parcela": valor_parcela,
+        "veredicto": veredicto,
+        "status": status,
+        "menor_saldo": menor_saldo,
+        "mes_menor_folga": mes_menor_folga,
+        "baseline": baseline,
+        "simulado": simulado
+    }
+
+def efetivar_simulacao(descricao, valor_total, parcelas=1, tipo='cartao', cartao_id=1, conta_id=1, categoria="Outros / Manobra"):
+    """Converte instantaneamente a simulação em compra real no banco de dados."""
+    data_hoje = str(date.today())
+    if tipo == 'cartao':
+        registrar_compra_cartao(cartao_id, data_hoje, descricao, valor_total, categoria, parcelas=parcelas)
+    else:
+        adicionar_transacao_conta(conta_id, data_hoje, descricao, valor_total, 'despesa', categoria)
+
+# ----------------------------------------------------------------------
+# EXPORTAÇÃO EXCEL (.XLSX) PROFISSIONAL
+# ----------------------------------------------------------------------
+def exportar_para_excel(filepath=None):
+    if not filepath:
+        filepath = os.path.expanduser("~/Planilha_Alforria_Homem_Rocha.xlsx")
+        
+    import openpyxl
+    from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+    from openpyxl.utils import get_column_letter
+
+    wb = openpyxl.Workbook()
+    
+    # ------------------ ABA 1: RESUMO DO COCKPIT ------------------
+    ws1 = wb.active
+    ws1.title = "Cockpit & Saldos"
+    ws1.views.sheetView[0].showGridLines = True
+    
+    # Cores de paleta executiva
+    c_header_fill = PatternFill(start_color="1E293B", end_color="1E293B", fill_type="solid")
+    c_header_font = Font(name="Segoe UI", size=11, bold=True, color="FFFFFF")
+    c_sub_fill = PatternFill(start_color="F1F5F9", end_color="F1F5F9", fill_type="solid")
+    c_bold = Font(name="Segoe UI", size=10, bold=True)
+    c_regular = Font(name="Segoe UI", size=10)
+    c_green = Font(name="Segoe UI", size=10, bold=True, color="047857")
+    c_gold = Font(name="Segoe UI", size=10, bold=True, color="B45309")
+    thin_border = Border(
+        left=Side(style='thin', color='E2E8F0'),
+        right=Side(style='thin', color='E2E8F0'),
+        top=Side(style='thin', color='E2E8F0'),
+        bottom=Side(style='thin', color='E2E8F0')
+    )
+
+    ws1['A1'] = "COCKPIT FINANCEIRO HOMEM ROCHA — ALFORRIA 2026-2028"
+    ws1['A1'].font = Font(name="Segoe UI", size=14, bold=True, color="FFFFFF")
+    ws1['A1'].fill = c_header_fill
+    ws1.merge_cells('A1:E1')
+    ws1.row_dimensions[1].height = 30
+    ws1['A1'].alignment = Alignment(vertical="center", horizontal="left")
+
+    conn = get_connection()
+    c = conn.cursor()
+    
+    # Tabela Contas
+    ws1['A3'] = "CONTAS & DISPONIBILIDADE IMEDIATA"
+    ws1['A3'].font = Font(name="Segoe UI", size=11, bold=True, color="0F172A")
+    headers_contas = ["ID", "Conta", "Instituição", "Tipo", "Saldo Atual (R$)"]
+    for col_idx, h in enumerate(headers_contas, start=1):
+        cell = ws1.cell(row=4, column=col_idx, value=h)
+        cell.font = c_header_font
+        cell.fill = c_header_fill
+        cell.alignment = Alignment(horizontal="center" if col_idx != 2 else "left")
+
+    c.execute("SELECT id, nome, instituicao, tipo, saldo FROM contas")
+    row_num = 5
+    for row in c.fetchall():
+        ws1.cell(row=row_num, column=1, value=row['id']).alignment = Alignment(horizontal="center")
+        ws1.cell(row=row_num, column=2, value=row['nome']).font = c_bold
+        ws1.cell(row=row_num, column=3, value=row['instituicao'])
+        ws1.cell(row=row_num, column=4, value=row['tipo'].title())
+        val_cell = ws1.cell(row=row_num, column=5, value=row['saldo'])
+        val_cell.number_format = '"R$" #,##0.00'
+        val_cell.font = c_green if row['saldo'] >= 0 else Font(name="Segoe UI", size=10, bold=True, color="B91C1C")
+        for col in range(1, 6):
+            ws1.cell(row=row_num, column=col).border = thin_border
+        row_num += 1
+
+    # Tabela Caixinhas
+    row_num += 2
+    ws1.cell(row=row_num, column=1, value="CAIXINHAS NUBANK & METAS DE PATRIMÔNIO").font = Font(name="Segoe UI", size=11, bold=True, color="0F172A")
+    row_num += 1
+    headers_cx = ["Caixinha", "Meta Total (R$)", "Aporte Mensal (R$)", "Saldo Atual (R$)", "Data Alvo"]
+    for col_idx, h in enumerate(headers_cx, start=1):
+        cell = ws1.cell(row=row_num, column=col_idx, value=h)
+        cell.font = c_header_font
+        cell.fill = PatternFill(start_color="0F766E", end_color="0F766E", fill_type="solid")
+        cell.alignment = Alignment(horizontal="center" if col_idx > 1 else "left")
+
+    c.execute("SELECT nome, meta_total, aporte_mensal, saldo_atual, data_alvo FROM caixinhas")
+    row_num += 1
+    for row in c.fetchall():
+        ws1.cell(row=row_num, column=1, value=row['nome']).font = c_bold
+        c2 = ws1.cell(row=row_num, column=2, value=row['meta_total'])
+        c2.number_format = '"R$" #,##0.00'
+        c3 = ws1.cell(row=row_num, column=3, value=row['aporte_mensal'])
+        c3.number_format = '"R$" #,##0.00'
+        c4 = ws1.cell(row=row_num, column=4, value=row['saldo_atual'])
+        c4.number_format = '"R$" #,##0.00'
+        c4.font = c_gold
+        ws1.cell(row=row_num, column=5, value=row['data_alvo']).alignment = Alignment(horizontal="center")
+        for col in range(1, 6):
+            ws1.cell(row=row_num, column=col).border = thin_border
+        row_num += 1
+
+    # ------------------ ABA 2: TRANSAÇÕES & HISTÓRICO ------------------
+    ws2 = wb.create_sheet(title="Histórico de Transações")
+    ws2.views.sheetView[0].showGridLines = True
+    headers_tx = ["ID", "Data", "Descrição", "Tipo", "Categoria", "Valor (R$)", "Conta/Cartão", "Fatura Ref."]
+    for col_idx, h in enumerate(headers_tx, start=1):
+        cell = ws2.cell(row=1, column=col_idx, value=h)
+        cell.font = c_header_font
+        cell.fill = c_header_fill
+        cell.alignment = Alignment(horizontal="center" if col_idx in [1, 2, 4, 8] else "left")
+
+    c.execute("""
+        SELECT t.id, t.data, t.descricao, t.tipo, t.categoria, t.valor,
+               COALESCE(c.nome, k.nome, cx.nome, 'Geral') as origem,
+               t.mes_fatura
+        FROM transacoes t
+        LEFT JOIN contas c ON t.conta_id = c.id
+        LEFT JOIN cartoes k ON t.cartao_id = k.id
+        LEFT JOIN caixinhas cx ON t.caixinha_id = cx.id
+        ORDER BY t.data DESC, t.id DESC
+    """)
+    r_tx = 2
+    for r in c.fetchall():
+        ws2.cell(row=r_tx, column=1, value=r['id']).alignment = Alignment(horizontal="center")
+        ws2.cell(row=r_tx, column=2, value=r['data']).alignment = Alignment(horizontal="center")
+        ws2.cell(row=r_tx, column=3, value=r['descricao']).font = c_regular
+        ws2.cell(row=r_tx, column=4, value=r['tipo'].upper()).alignment = Alignment(horizontal="center")
+        ws2.cell(row=r_tx, column=5, value=r['categoria'] or '-')
+        val = ws2.cell(row=r_tx, column=6, value=r['valor'])
+        val.number_format = '"R$" #,##0.00'
+        if r['tipo'] == 'receita':
+            val.font = c_green
+        else:
+            val.font = Font(name="Segoe UI", size=10, color="B91C1C")
+        ws2.cell(row=r_tx, column=7, value=r['origem'])
+        ws2.cell(row=r_tx, column=8, value=r['mes_fatura'] or '-').alignment = Alignment(horizontal="center")
+        for col in range(1, 9):
+            ws2.cell(row=r_tx, column=col).border = thin_border
+        r_tx += 1
+
+    # ------------------ ABA 3: PROJEÇÃO 22 MESES (ALFORRIA) ------------------
+    ws3 = wb.create_sheet(title="Projeção 22 Meses (Ago-2028)")
+    ws3.views.sheetView[0].showGridLines = True
+    headers_proj = ["Mês", "Mês / Ano", "Aporte Sagrado (R$)", "Rendimento CDI (R$)", "Bônus 13º (R$)", "Saldo Acumulado (R$)"]
+    for col_idx, h in enumerate(headers_proj, start=1):
+        cell = ws3.cell(row=1, column=col_idx, value=h)
+        cell.font = c_header_font
+        cell.fill = PatternFill(start_color="B45309", end_color="B45309", fill_type="solid")
+        cell.alignment = Alignment(horizontal="center" if col_idx in [1, 2] else "right")
+
+    proj_dados = projetar_alforria(meses=22)
+    r_pr = 2
+    for p in proj_dados:
+        ws3.cell(row=r_pr, column=1, value=f"Mês {p['mes_num']:02d}").alignment = Alignment(horizontal="center")
+        ws3.cell(row=r_pr, column=2, value=p['mes_ano']).alignment = Alignment(horizontal="center")
+        c3 = ws3.cell(row=r_pr, column=3, value=p['aporte'])
+        c3.number_format = '"R$" #,##0.00'
+        c4 = ws3.cell(row=r_pr, column=4, value=p['rendimento'])
+        c4.number_format = '"R$" #,##0.00'
+        c4.font = c_green
+        c5 = ws3.cell(row=r_pr, column=5, value=p['extra'])
+        c5.number_format = '"R$" #,##0.00'
+        c6 = ws3.cell(row=r_pr, column=6, value=p['saldo'])
+        c6.number_format = '"R$" #,##0.00'
+        c6.font = Font(name="Segoe UI", size=10, bold=True, color="1E3A8A")
+        for col in range(1, 7):
+            ws3.cell(row=r_pr, column=col).border = thin_border
+        r_pr += 1
+
+    # Autoajuste de largura de colunas
+    for ws in [ws1, ws2, ws3]:
+        for col in ws.columns:
+            max_len = max(len(str(cell.value or '')) for cell in col)
+            col_letter = get_column_letter(col[0].column)
+            ws.column_dimensions[col_letter].width = max(max_len + 3, 12)
+
+    wb.save(filepath)
+    conn.close()
+    return filepath
+
+if __name__ == "__main__":
+    init_database()
+    print("Database initialized successfully.")
+    out = exportar_para_excel()
+    print(f"Planilha exportada com sucesso em: {out}")
