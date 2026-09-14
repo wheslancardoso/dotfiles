@@ -64,6 +64,9 @@ EP_ARG=""
 STREAM_AUDIO_LANG="pt"
 STREAM_AUDIO_LANG_SET=false
 STUDY_ENGLISH_MODE=false
+ORGANIZE_BY_CHANNEL=false
+CUSTOM_SUBFOLDER=""
+SUBFOLDER_OPTION_SET=false
 
 
 # ------------------------------------------------------------------------------
@@ -577,6 +580,33 @@ download_batch() {
         echo -e "  ${BOLD}Fila de Mídias :${NC} ${BOLD}$total links válidos detectados${NC}"
         echo -e "  ${BLUE}Pasta Destino  :${NC} $dest"
         echo -e "  ${SUBTEXT}Extrai legendas/transcrições sem baixar vídeo → .md + .txt limpos para IA.${NC}\n"
+
+        if [ "$SUBFOLDER_OPTION_SET" != true ] && [ -t 0 -o -e /dev/tty ]; then
+            echo -e "  ${MAUVE}📁 Organização em Subpastas (Opcional):${NC}"
+            echo -e "    ${SUBTEXT}• [ENTER]          → Salvar no diretório padrão${NC}"
+            echo -e "    ${SUBTEXT}• 'canal' (ou 'c') → Criar pastas automáticas com o Nome do Canal do YouTube${NC}"
+            echo -e "    ${SUBTEXT}• <Nome>           → Criar pasta personalizada (ex: Barbara, Podcasts, IA)${NC}"
+            local folder_input=""
+            read -r -p "    Organizar por [ENTER=Padrão / c=Canal / Nome]: " folder_input < /dev/tty 2>/dev/null || folder_input=""
+            folder_input=$(echo "$folder_input" | xargs)
+            local folder_lower
+            folder_lower=$(echo "$folder_input" | tr '[:upper:]' '[:lower:]')
+
+            if [ -z "$folder_input" ]; then
+                ORGANIZE_BY_CHANNEL=false
+                CUSTOM_SUBFOLDER=""
+                echo -e "    ${TEAL}✔ Modo Padrão:${NC} Salvar diretamente em ${dest}\n"
+            elif [[ "$folder_lower" =~ ^(c|canal|channel|yt|youtube)$ ]]; then
+                ORGANIZE_BY_CHANNEL=true
+                CUSTOM_SUBFOLDER=""
+                echo -e "    ${TEAL}✔ Modo Canal Ativado:${NC} Vídeos serão agrupados por canal em ${dest}/<Canal>/\n"
+            else
+                ORGANIZE_BY_CHANNEL=false
+                CUSTOM_SUBFOLDER="$folder_input"
+                echo -e "    ${TEAL}✔ Pasta Personalizada:${NC} Salvar em ${dest}/${CUSTOM_SUBFOLDER}/\n"
+            fi
+            SUBFOLDER_OPTION_SET=true
+        fi
     else
         echo -e "${MAUVE}${BOLD}╭──────────────────────────────────────────────────────────────╮${NC}"
         echo -e "${MAUVE}${BOLD}│       📦 DOWNLOAD EM LOTE APEX V2 (BATCH MODE ATIVADO)       │${NC}"
@@ -1800,8 +1830,20 @@ download_transcript() {
         clean_title=$(echo "$title" | sed 's/[/\\?%*:|"<>]/_/g')
     fi
 
-    local md_dir="${dest}/Markdown"
-    local txt_dir="${dest}/Texto_Puro"
+    local target_dest="$dest"
+    local clean_channel=""
+    if [ "$ORGANIZE_BY_CHANNEL" = true ]; then
+        clean_channel=$(echo "$uploader" | sed -e 's/[/\\?%*:|"<>]/_/g' -e 's/^[. ]*//' -e 's/[. ]*$//')
+        [ -z "$clean_channel" ] && clean_channel="Outros_Canais"
+        target_dest="${dest}/${clean_channel}"
+    elif [ -n "$CUSTOM_SUBFOLDER" ]; then
+        local clean_sub
+        clean_sub=$(echo "$CUSTOM_SUBFOLDER" | sed -e 's/[/\\?%*:|"<>]/_/g' -e 's/^[. ]*//' -e 's/[. ]*$//')
+        [ -n "$clean_sub" ] && target_dest="${dest}/${clean_sub}"
+    fi
+
+    local md_dir="${target_dest}/Markdown"
+    local txt_dir="${target_dest}/Texto_Puro"
     mkdir -p "$md_dir" "$txt_dir"
 
     local md_output="${md_dir}/${clean_title} [Transcricao IA].md"
@@ -1938,10 +1980,17 @@ with open(txt_out, "w", encoding="utf-8") as f:
         fi
 
         log_history "$title [Transcricao IA]" "$url" "$md_output" "TRANSCRIPT"
-        notify_completion "$title [Transcrição IA]" "$dest" "$md_output"
+        notify_completion "$title [Transcrição IA]" "$target_dest" "$md_output"
     else
         log_history "$title [Transcricao IA]" "$url" "$md_output" "TRANSCRIPT"
         echo -e "   ${BLUE}🎬 Título  :${NC} ${BOLD}${title}${NC}"
+        echo -e "   ${BLUE}👤 Canal   :${NC} ${uploader}"
+        if [ "$ORGANIZE_BY_CHANNEL" = true ]; then
+            echo -e "   ${BLUE}📂 Pasta   :${NC} ${clean_channel}/Markdown/"
+        elif [ -n "$CUSTOM_SUBFOLDER" ]; then
+            echo -e "   ${BLUE}📂 Pasta   :${NC} ${CUSTOM_SUBFOLDER}/Markdown/"
+        fi
+        echo -e "   ${BLUE}📄 Arquivo :${NC} ${md_output}"
     fi
 }
 
@@ -2958,6 +3007,8 @@ show_help() {
     echo -e "  ${GREEN}dl --spotify <url|busca>${NC}    Busca ou baixa direto do catálogo Spotify (spotDL)"
     echo -e "  ${BLUE}dl -o, --name <nome> <url>${NC}  Define nome personalizado do arquivo"
     echo -e "  ${MAUVE}dl -t, --transcript <url>${NC}   Extrai transcrição limpa em Markdown (.md) para IA/LLMs"
+    echo -e "  ${MAUVE}dl -t <batch> --channel${NC}     Organiza transcrições em subpastas por Canal do YouTube"
+    echo -e "  ${MAUVE}dl -t <batch> --folder <nome>${NC} Salva transcrições em subpasta personalizada"
     echo -e "  ${BLUE}dl -s, --subs <url>${NC}         Embuti legendas automáticas pt/en no vídeo"
     echo -e "  ${GREEN}dl --no-sponsors <url>${NC}       Remove jabás e patrocínios embutidos (SponsorBlock)"
     echo -e "  ${PEACH}dl -p <url>${NC}                 Roteia direto para a pasta .privado"
@@ -3080,6 +3131,16 @@ main() {
             -t|--transcript|--text)
                 direct_action="transcript"
                 shift
+                ;;
+            --by-channel|--channel|-C)
+                ORGANIZE_BY_CHANNEL=true
+                SUBFOLDER_OPTION_SET=true
+                shift
+                ;;
+            --folder|-F)
+                CUSTOM_SUBFOLDER="$2"
+                SUBFOLDER_OPTION_SET=true
+                shift 2
                 ;;
             -P|--pomfy|--stream)
                 direct_action="pomfy"
