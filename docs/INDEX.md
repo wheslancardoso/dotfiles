@@ -17,6 +17,7 @@
 │   ├── [GUIA_FULLSTACK_WORKFLOWS.md](./GUIA_FULLSTACK_WORKFLOWS.md) # Playbooks práticos (Java, React, Python, Mobile, Go)
 │   ├── [GUIA_MPV_CINEMA_IMMERSION_GOD_MODE.md](./GUIA_MPV_CINEMA_IMMERSION_GOD_MODE.md) # 🎬 MPV God Mode: Smart-Resume, Áudio Studio, Readahead e Imersão
 │   ├── [ROADMAP_MPV_EXPANSAO_UX_PREMIUM.md](./ROADMAP_MPV_EXPANSAO_UX_PREMIUM.md) # 🚀 Roadmap MPV UX: uosc, thumbfast, Anime4K & Anki (Fases 1 a 3)
+│   ├── [ROADMAP_WHISPER_AI_ANKI_IMMERSION.md](./ROADMAP_WHISPER_AI_ANKI_IMMERSION.md) # 🎙️ Whisper Large-v3-Turbo + Edge-TTS: Cockpit AI de Imersão e Mineração
 │   ├── [GUIA_YAZI_POWERUSER.md](./GUIA_YAZI_POWERUSER.md)         # Yazi ultra-veloz, compactação/extração e saltos no Drive
 │   └── [GUIA_ATALHOS_E_KEYBINDS_MESTRE.md](./GUIA_ATALHOS_E_KEYBINDS_MESTRE.md) # Cheat sheet geral de atalhos
 │
