@@ -111,6 +111,20 @@ def init_database():
         dia_vencimento INTEGER DEFAULT 5,
         ativo INTEGER DEFAULT 1
     );
+
+    CREATE TABLE IF NOT EXISTS monthly_snapshots (
+        mes_referencia TEXT PRIMARY KEY, -- 'YYYY-MM'
+        data_snapshot TEXT NOT NULL,
+        saldo_bancario_total REAL NOT NULL,
+        saldo_caixinhas_total REAL NOT NULL,
+        total_receitas REAL NOT NULL,
+        total_despesas REAL NOT NULL,
+        total_faturas_pagas REAL NOT NULL,
+        liquidez_liquida REAL NOT NULL,
+        teto_oxigenio REAL NOT NULL,
+        status TEXT DEFAULT 'selado', -- 'selado', 'aberto'
+        snapshot_json TEXT
+    );
     """)
 
     # Populate defaults if empty
@@ -235,6 +249,7 @@ def pagar_fatura(cartao_id, mes_referencia, conta_pagamento_id, data_pagamento=N
         data_pagamento = str(date.today())
         
     conn = get_connection()
+    c = conn.cursor()
     # Verificar se fatura já foi paga
     c.execute("SELECT status, valor_pago FROM faturas WHERE cartao_id = ? AND mes_referencia = ?", (cartao_id, mes_referencia))
     fat_row = c.fetchone()
@@ -504,6 +519,129 @@ def deletar_recorrencia(rec_id):
     conn.commit()
     conn.close()
     return True
+
+# ----------------------------------------------------------------------
+# SNAPSHOTS MENSAIS & FECHAMENTO SELADO (HISTÓRICO IMUTÁVEL)
+# ----------------------------------------------------------------------
+def criar_snapshot_mensal(mes_referencia):
+    """
+    Tira um snapshot imutável de fechamento de mês, congelando os dados
+    para histórico permanente (como no month_closing do Vesper).
+    """
+    conn = get_connection()
+    c = conn.cursor()
+    
+    hud = get_survival_hud_metrics(mes_referencia)
+    
+    # Detalhamento de contas
+    c.execute("SELECT nome, tipo, instituicao, saldo FROM contas")
+    contas = [dict(r) for r in c.fetchall()]
+    
+    # Detalhamento de caixinhas
+    c.execute("SELECT nome, meta_total, aporte_mensal, saldo_atual FROM caixinhas")
+    caixinhas = [dict(r) for r in c.fetchall()]
+    
+    # Detalhamento de cartões e faturas
+    c.execute("""
+        SELECT k.nome, f.mes_referencia, f.status, f.valor_pago,
+               COALESCE(SUM(t.valor), 0.0) as total_fatura
+        FROM cartoes k
+        LEFT JOIN faturas f ON (k.id = f.cartao_id AND f.mes_referencia = ?)
+        LEFT JOIN transacoes t ON (k.id = t.cartao_id AND t.mes_fatura = ?)
+        GROUP BY k.id
+    """, (mes_referencia, mes_referencia))
+    cartoes = [dict(r) for r in c.fetchall()]
+    
+    # Totais de receitas e despesas reais ocorridas no mês
+    c.execute("""
+        SELECT 
+            COALESCE(SUM(CASE WHEN tipo = 'receita' THEN valor ELSE 0 END), 0.0) as receitas,
+            COALESCE(SUM(CASE WHEN tipo = 'despesa' THEN valor ELSE 0 END), 0.0) as despesas,
+            COALESCE(SUM(CASE WHEN tipo = 'fatura_cartao' THEN valor ELSE 0 END), 0.0) as faturas_pagas
+        FROM transacoes
+        WHERE data LIKE ?
+    """, (f"{mes_referencia}%",))
+    row_totais = c.fetchone()
+    receitas_mes = row_totais['receitas']
+    despesas_mes = row_totais['despesas']
+    faturas_pagas_mes = row_totais['faturas_pagas']
+    
+    payload = {
+        "mes_referencia": mes_referencia,
+        "data_snapshot": str(date.today()),
+        "hud": hud,
+        "contas": contas,
+        "caixinhas": caixinhas,
+        "cartoes": cartoes,
+        "receitas_mes": receitas_mes,
+        "despesas_mes": despesas_mes,
+        "faturas_pagas_mes": faturas_pagas_mes
+    }
+    
+    c.execute("""
+        INSERT OR REPLACE INTO monthly_snapshots (
+            mes_referencia, data_snapshot, saldo_bancario_total, saldo_caixinhas_total,
+            total_receitas, total_despesas, total_faturas_pagas, liquidez_liquida,
+            teto_oxigenio, status, snapshot_json
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'selado', ?)
+    """, (
+        mes_referencia,
+        str(date.today()),
+        hud['saldo_bancario'],
+        hud['saldo_caixinhas'],
+        receitas_mes,
+        despesas_mes,
+        faturas_pagas_mes,
+        hud['liquidez_liquida'],
+        hud['teto_oxigenio_semanal'],
+        json.dumps(payload)
+    ))
+    
+    conn.commit()
+    conn.close()
+    return payload
+
+def obter_snapshot_mensal(mes_referencia):
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("SELECT * FROM monthly_snapshots WHERE mes_referencia = ?", (mes_referencia,))
+    row = c.fetchone()
+    conn.close()
+    if row:
+        return dict(row)
+    return None
+
+def listar_snapshots_historicos():
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("SELECT mes_referencia, data_snapshot, saldo_bancario_total, saldo_caixinhas_total, liquidez_liquida, teto_oxigenio, status FROM monthly_snapshots ORDER BY mes_referencia DESC")
+    rows = [dict(r) for r in c.fetchall()]
+    conn.close()
+    return rows
+
+def get_transacoes_do_mes(mes_referencia):
+    """
+    Retorna com precisão absoluta as transações que pertencem ao mês especificado:
+    - Transações diretas em conta ocorridas no mês (ex: 2026-09-XX)
+    - Compras e parcelas de cartão de crédito cuja fatura é daquele mês (mes_fatura = '2026-09')
+    """
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("""
+        SELECT t.id, t.data, t.descricao, t.valor, t.tipo, t.categoria,
+               COALESCE(k.nome, c.nome, cx.nome, 'Geral') as origem,
+               t.parcela_atual, t.total_parcelas, t.mes_fatura
+        FROM transacoes t
+        LEFT JOIN cartoes k ON t.cartao_id = k.id
+        LEFT JOIN contas c ON t.conta_id = c.id
+        LEFT JOIN caixinhas cx ON t.caixinha_id = cx.id
+        WHERE (t.cartao_id IS NOT NULL AND t.mes_fatura = ?)
+           OR (t.cartao_id IS NULL AND t.data LIKE ?)
+        ORDER BY t.data DESC, t.id DESC
+    """, (mes_referencia, f"{mes_referencia}%"))
+    rows = [dict(r) for r in c.fetchall()]
+    conn.close()
+    return rows
 
 # ----------------------------------------------------------------------
 # APORTE EM CAIXINHAS E RENDIMENTO

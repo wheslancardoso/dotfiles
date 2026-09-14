@@ -280,14 +280,21 @@ class AddTransactionModal(ModalScreen):
             yield Label("Tipo:")
             yield Select([("Despesa", "despesa"), ("Receita", "receita")], value="despesa", id="tx-tipo")
             
+            conn = core_engine.get_connection()
+            cartoes = conn.execute("SELECT id, nome, instituicao FROM cartoes ORDER BY id").fetchall()
+            contas = conn.execute("SELECT id, nome, instituicao FROM contas ORDER BY id").fetchall()
+            conn.close()
+
+            meio_options = []
+            for cr in cartoes:
+                meio_options.append((f"💳 {cr['nome']} ({cr['instituicao']})", f"cartao-{cr['id']}"))
+            for ct in contas:
+                meio_options.append((f"🏦 {ct['nome']} ({ct['instituicao']})", f"conta-{ct['id']}"))
+            if not meio_options:
+                meio_options = [("Conta Nubank", "conta-1")]
+
             yield Label("Meio de Pagamento:")
-            yield Select([
-                ("Cartão Caixa (Elo/Visa)", "cartao-1"),
-                ("Cartão Nubank (Gold)", "cartao-2"),
-                ("Nubank Conta (Débito/Pix)", "conta-1"),
-                ("Caixa Econômica (Débito)", "conta-2"),
-                ("Carteira Física (Dinheiro)", "conta-3"),
-            ], value="cartao-1", id="tx-meio")
+            yield Select(meio_options, value=meio_options[0][1], id="tx-meio")
             
             yield Label("Parcelas (se Cartão):")
             yield Select([(f"{i}x", str(i)) for i in range(1, 13)], value="1", id="tx-parc")
@@ -442,24 +449,34 @@ class DeleteTransactionModal(ModalScreen):
 # MODAL: PAGAR FATURA
 # ==============================================================================
 class PayInvoiceModal(ModalScreen):
+    def __init__(self, cartao_id: int = None, mes_ref: str = None):
+        super().__init__()
+        self.preset_cartao_id = cartao_id
+        self.preset_mes_ref = mes_ref or str(date.today())[:7]
+
     def compose(self) -> ComposeResult:
         with Vertical(classes="modal-dialog"):
             yield Label("💳 PAGAR FATURA DO CARTÃO DE CRÉDITO", classes="modal-title")
             
+            conn = core_engine.get_connection()
+            cartoes = conn.execute("SELECT id, nome, instituicao FROM cartoes ORDER BY id").fetchall()
+            contas = conn.execute("SELECT id, nome, instituicao FROM contas ORDER BY id").fetchall()
+            conn.close()
+
+            cartao_options = [(f"💳 {r['nome']} ({r['instituicao']})", str(r['id'])) for r in cartoes] or [("Cartão", "1")]
+            conta_options = [(f"🏦 {r['nome']} ({r['instituicao']})", str(r['id'])) for r in contas] or [("Conta", "1")]
+
+            default_cid = str(self.preset_cartao_id) if self.preset_cartao_id and any(o[1] == str(self.preset_cartao_id) for o in cartao_options) else cartao_options[0][1]
+            default_conta = conta_options[0][1]
+
             yield Label("Cartão:")
-            yield Select([
-                ("Cartão Caixa (Elo/Visa)", "1"),
-                ("Cartão Nubank (Gold)", "2")
-            ], value="1", id="pay-cartao")
+            yield Select(cartao_options, value=default_cid, id="pay-cartao")
             
             yield Label("Mês de Referência da Fatura (AAAA-MM):")
-            yield Input(value=str(date.today())[:7], id="pay-mes")
+            yield Input(value=self.preset_mes_ref, id="pay-mes")
             
             yield Label("Conta para Débito:")
-            yield Select([
-                ("Nubank Conta (Saldo)", "1"),
-                ("Caixa Econômica", "2")
-            ], value="1", id="pay-conta")
+            yield Select(conta_options, value=default_conta, id="pay-conta")
             
             with Horizontal(classes="modal-btn-row"):
                 yield Button("Cancelar", id="btn-pay-cancel", classes="-danger")
@@ -486,16 +503,23 @@ class PayInvoiceModal(ModalScreen):
 # MODAL: RECONCILIAR SALDO DE CONTA
 # ==============================================================================
 class ReconcileModal(ModalScreen):
+    def __init__(self, conta_id: int = None):
+        super().__init__()
+        self.preset_conta_id = conta_id
+
     def compose(self) -> ComposeResult:
         with Vertical(classes="modal-dialog"):
             yield Label("🏦 AJUSTAR SALDO BANCÁRIO REAL", classes="modal-title")
             
+            conn = core_engine.get_connection()
+            contas = conn.execute("SELECT id, nome, instituicao FROM contas ORDER BY id").fetchall()
+            conn.close()
+            conta_options = [(f"🏦 {r['nome']} ({r['instituicao']})", str(r['id'])) for r in contas] or [("Conta", "1")]
+
+            default_cid = str(self.preset_conta_id) if self.preset_conta_id and any(o[1] == str(self.preset_conta_id) for o in conta_options) else conta_options[0][1]
+
             yield Label("Conta para Reconciliação:")
-            yield Select([
-                ("Nubank Conta", "1"),
-                ("Caixa Econômica", "2"),
-                ("Carteira Física (Dinheiro)", "3")
-            ], value="1", id="rec-conta")
+            yield Select(conta_options, value=default_cid, id="rec-conta")
             
             yield Label("Novo Saldo Real Exato (R$):")
             yield Input(placeholder="Ex: 250.00", id="rec-saldo")
@@ -549,19 +573,28 @@ class SundayRitualModal(ModalScreen):
 # MODAL: REAJUSTAR FATURA DE CARTÃO
 # ==============================================================================
 class AdjustInvoiceModal(ModalScreen):
+    def __init__(self, cartao_id: int = None, mes_ref: str = None):
+        super().__init__()
+        self.preset_cartao_id = cartao_id
+        self.preset_mes_ref = mes_ref or str(date.today())[:7]
+
     def compose(self) -> ComposeResult:
         with Vertical(classes="modal-dialog"):
             yield Label("⚖️ REAJUSTAR FATURA DE CARTÃO", classes="modal-title")
             yield Static("Digite o valor exato que consta no app do banco para sincronizar a fatura:\n")
             
+            conn = core_engine.get_connection()
+            cartoes = conn.execute("SELECT id, nome, instituicao FROM cartoes ORDER BY id").fetchall()
+            conn.close()
+            cartao_options = [(f"💳 {r['nome']} ({r['instituicao']})", str(r['id'])) for r in cartoes] or [("Cartão", "1")]
+
+            default_cid = str(self.preset_cartao_id) if self.preset_cartao_id and any(o[1] == str(self.preset_cartao_id) for o in cartao_options) else cartao_options[0][1]
+
             yield Label("Cartão:")
-            yield Select([
-                ("Cartão Caixa (Elo/Visa)", "1"),
-                ("Cartão Nubank (Gold)", "2")
-            ], value="1", id="adj-cartao")
+            yield Select(cartao_options, value=default_cid, id="adj-cartao")
             
             yield Label("Mês de Referência (AAAA-MM):")
-            yield Input(value=str(date.today())[:7], id="adj-mes")
+            yield Input(value=self.preset_mes_ref, id="adj-mes")
             
             yield Label("Novo Valor Total Exato no App (R$):")
             yield Input(placeholder="Ex: 487.32", id="adj-val")
@@ -592,6 +625,172 @@ class AdjustInvoiceModal(ModalScreen):
             self.app.notify(f"Erro ao reajustar fatura: {e}", severity="error")
 
 # ==============================================================================
+# MODAL: NOVO CARTÃO DE CRÉDITO
+# ==============================================================================
+class AddCardModal(ModalScreen):
+    def compose(self) -> ComposeResult:
+        with Vertical(classes="modal-dialog"):
+            yield Label("💳 CADASTRAR NOVO CARTÃO DE CRÉDITO", classes="modal-title")
+            
+            yield Label("Nome do Cartão:")
+            yield Input(placeholder="Ex: Cartão Inter Black / C6 Carbon", id="card-nome")
+            
+            yield Label("Instituição:")
+            yield Input(placeholder="Ex: Inter / C6 / Itaú / Nubank", id="card-inst")
+            
+            yield Label("Limite Total (R$):")
+            yield Input(placeholder="Ex: 5000.00", id="card-limite")
+            
+            yield Label("Dia de Fechamento (Corte da Fatura):")
+            yield Select([(str(i), str(i)) for i in range(1, 32)], value="20", id="card-corte")
+            
+            yield Label("Dia de Vencimento:")
+            yield Select([(str(i), str(i)) for i in range(1, 32)], value="28", id="card-venc")
+            
+            with Horizontal(classes="modal-btn-row"):
+                yield Button("Cancelar", id="btn-card-cancel", classes="-danger")
+                yield Button("Salvar Cartão", id="btn-card-save", classes="-primary")
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        if event.button.id == "btn-card-cancel":
+            self.dismiss(False)
+            return
+
+        nome = self.query_one("#card-nome", Input).value.strip()
+        inst = self.query_one("#card-inst", Input).value.strip()
+        lim_str = self.query_one("#card-limite", Input).value.strip().replace(",", ".")
+        corte = int(self.query_one("#card-corte", Select).value)
+        venc = int(self.query_one("#card-venc", Select).value)
+        
+        if not nome or not inst or not lim_str:
+            self.app.notify("Preencha todos os campos do cartão!", severity="error")
+            return
+            
+        try:
+            limite = float(lim_str)
+            core_engine.criar_cartao(nome, inst, limite, corte, venc)
+            self.app.notify(f"✔ Cartão {nome} cadastrado com sucesso!", severity="information")
+            self.dismiss(True)
+        except Exception as e:
+            self.app.notify(f"Erro ao cadastrar cartão: {e}", severity="error")
+
+# ==============================================================================
+# MODAL: EDITAR CARTÃO DE CRÉDITO
+# ==============================================================================
+class EditCardModal(ModalScreen):
+    def __init__(self, card_id: int):
+        super().__init__()
+        self.card_id = card_id
+        conn = core_engine.get_connection()
+        self.card = conn.execute("SELECT * FROM cartoes WHERE id = ?", (card_id,)).fetchone()
+        conn.close()
+
+    def compose(self) -> ComposeResult:
+        with Vertical(classes="modal-dialog"):
+            nome = self.card['nome'] if self.card else ""
+            yield Label(f"✏️ EDITAR CARTÃO: {nome}", classes="modal-title")
+            
+            yield Label("Nome:")
+            yield Input(value=self.card['nome'] if self.card else "", id="ecard-nome")
+            
+            yield Label("Instituição:")
+            yield Input(value=self.card['instituicao'] if self.card else "", id="ecard-inst")
+            
+            yield Label("Limite Total (R$):")
+            yield Input(value=f"{self.card['limite']:.2f}" if self.card else "0.00", id="ecard-limite")
+            
+            yield Label("Dia de Fechamento (Corte):")
+            yield Select([(str(i), str(i)) for i in range(1, 32)], value=str(self.card['dia_fechamento']) if self.card else "20", id="ecard-corte")
+            
+            yield Label("Dia de Vencimento:")
+            yield Select([(str(i), str(i)) for i in range(1, 32)], value=str(self.card['dia_vencimento']) if self.card else "28", id="ecard-venc")
+            
+            with Horizontal(classes="modal-btn-row"):
+                yield Button("Cancelar", id="btn-ecard-cancel", classes="-danger")
+                yield Button("Salvar Alterações", id="btn-ecard-save", classes="-primary")
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        if event.button.id == "btn-ecard-cancel":
+            self.dismiss(False)
+            return
+
+        nome = self.query_one("#ecard-nome", Input).value.strip()
+        inst = self.query_one("#ecard-inst", Input).value.strip()
+        lim_str = self.query_one("#ecard-limite", Input).value.strip().replace(",", ".")
+        corte = int(self.query_one("#ecard-corte", Select).value)
+        venc = int(self.query_one("#ecard-venc", Select).value)
+        
+        try:
+            limite = float(lim_str)
+            core_engine.editar_cartao(self.card_id, nome, inst, limite, corte, venc)
+            self.app.notify(f"✔ Cartão {nome} atualizado com sucesso!", severity="information")
+            self.dismiss(True)
+        except Exception as e:
+            self.app.notify(f"Erro ao atualizar cartão: {e}", severity="error")
+
+# ==============================================================================
+# MODAL: DELETAR CARTÃO DE CRÉDITO
+# ==============================================================================
+class DeleteCardModal(ModalScreen):
+    def __init__(self, card_id: int):
+        super().__init__()
+        self.card_id = card_id
+        conn = core_engine.get_connection()
+        self.card = conn.execute("SELECT * FROM cartoes WHERE id = ?", (card_id,)).fetchone()
+        conn.close()
+
+    def compose(self) -> ComposeResult:
+        with Vertical(classes="modal-dialog"):
+            nome = self.card['nome'] if self.card else "Desconhecido"
+            yield Label(f"🗑️ EXCLUIR CARTÃO: {nome}", classes="modal-title")
+            yield Static(f"Deseja realmente apagar o cartão [bold]{nome}[/bold]?\n\n[red]⚠ ATENÇÃO: Todas as faturas e compras vinculadas a este cartão serão removidas![/red]\n")
+            
+            with Horizontal(classes="modal-btn-row"):
+                yield Button("Cancelar", id="btn-dcard-cancel")
+                yield Button("Confirmar Exclusão", id="btn-dcard-confirm", classes="-danger")
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        if event.button.id == "btn-dcard-cancel":
+            self.dismiss(False)
+            return
+            
+        core_engine.deletar_cartao(self.card_id)
+        self.app.notify(f"✔ Cartão excluído com sucesso!", severity="information")
+        self.dismiss(True)
+
+# ==============================================================================
+# MODAL: HISTÓRICO DE SNAPSHOTS MENSAIS (AUDITORIA IMUTÁVEL)
+# ==============================================================================
+class SnapshotsModal(ModalScreen):
+    def compose(self) -> ComposeResult:
+        with Vertical(classes="modal-dialog"):
+            yield Label("📜 HISTÓRICO DE SNAPSHOTS MENSAIS (FECHAMENTOS)", classes="modal-title")
+            yield Static("Fechamentos imutáveis de meses passados para auditoria patrimonial:\n")
+            yield DataTable(id="table-snapshots")
+            with Horizontal(classes="modal-btn-row"):
+                yield Button("Fechar", id="btn-snap-close", classes="-primary")
+
+    def on_mount(self) -> None:
+        table = self.query_one("#table-snapshots", DataTable)
+        table.cursor_type = "row"
+        table.zebra_stripes = True
+        table.add_columns("Mês", "Data Fechamento", "Saldo Bancos", "Caixinhas", "Liquidez", "Teto/Sem", "Status")
+        
+        snaps = core_engine.listar_snapshots_historicos()
+        for s in snaps:
+            table.add_row(
+                s['mes_referencia'], s['data_snapshot'],
+                f"R$ {s['saldo_bancario_total']:,.2f}",
+                f"R$ {s['saldo_caixinhas_total']:,.2f}",
+                f"R$ {s['liquidez_liquida']:,.2f}",
+                f"R$ {s['teto_oxigenio']:,.2f}",
+                s['status'].upper()
+            )
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        self.dismiss(True)
+
+# ==============================================================================
 # APLICAÇÃO PRINCIPAL: APEX FINANCE TUI
 # ==============================================================================
 class ApexFinanceApp(App):
@@ -617,6 +816,7 @@ class ApexFinanceApp(App):
     ]
 
     current_month_offset = 0
+    filter_month_only = True
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
@@ -647,7 +847,10 @@ class ApexFinanceApp(App):
         with Horizontal(id="time-navigator"):
             yield Button("◀ Mês Ant. [h]", id="btn-prev-month")
             yield Label("📅 2026-09 (Setembro)", id="month-display")
+            yield Label("⚡ ATIVO", id="month-status-badge", classes="hud-val-green")
             yield Button("Próx. Mês [l] ▶", id="btn-next-month")
+            yield Button("🔒 Selar Mês", id="btn-seal-month")
+            yield Button("📜 Snapshots", id="btn-view-snapshots")
             yield Button("⚖️ Ajustar Fatura", id="btn-open-adj-fat")
             yield Button("🏦 Reconciliar Saldo", id="btn-open-rec")
             yield Button("⚡ Ritual Domingo", id="btn-open-ritual")
@@ -674,6 +877,7 @@ class ApexFinanceApp(App):
                     yield Button("➕ Nova [n]", id="btn-new-tx-tab", classes="-primary")
                     yield Button("✏️ Editar [Enter]", id="btn-edit-tx-tab")
                     yield Button("🗑️ Excluir [d]", id="btn-del-tx-tab", classes="-danger")
+                    yield Button("📅 Deste Mês", id="btn-toggle-month-tx")
                     yield Button("💳 Pagar Fatura [p]", id="btn-pay-tab")
                     yield Button("📑 Exportar Excel [e]", id="btn-export-tab")
                 yield DataTable(id="table-transactions")
@@ -739,22 +943,13 @@ class ApexFinanceApp(App):
 
             # ABA 5: CARTÕES & FATURAS
             with TabPane("💳 Cartões & Faturas", id="tab-cards"):
-                with VerticalScroll():
-                    yield Label("💳 Gestão Soberana de Cartões de Crédito", classes="section-title")
-                    with Horizontal():
-                        with Vertical(classes="section-box"):
-                            yield Label("Cartão Caixa (Elo/Visa)", classes="section-title")
-                            yield Static("• Limite: R$ 3.500,00\n• Corte (Fechamento): Todo dia 20\n• Vencimento: Todo dia 28\n• Status Fatura: Aberta\n• Dica: Compras após o dia 20 caem na fatura do mês seguinte.")
-                            with Horizontal():
-                                yield Button("💳 Pagar Fatura", id="btn-pay-caixa", classes="-primary")
-                                yield Button("⚖️ Reajustar Fatura", id="btn-adj-caixa")
-                            
-                        with Vertical(classes="section-box"):
-                            yield Label("Cartão Nubank (Gold)", classes="section-title")
-                            yield Static("• Limite: R$ 2.500,00\n• Corte (Fechamento): Todo dia 25\n• Vencimento: Todo dia 05\n• Status Fatura: Aberta\n• Dica: Compras após o dia 25 caem na fatura do mês seguinte.")
-                            with Horizontal():
-                                yield Button("💳 Pagar Fatura", id="btn-pay-nubank", classes="-primary")
-                                yield Button("⚖️ Reajustar Fatura", id="btn-adj-nubank")
+                with Horizontal():
+                    yield Button("➕ Novo Cartão", id="btn-add-card", classes="-primary")
+                    yield Button("✏️ Editar Cartão [Enter]", id="btn-edit-card-sel")
+                    yield Button("🗑️ Excluir Cartão", id="btn-del-card-sel", classes="-danger")
+                    yield Button("💳 Pagar Fatura [p]", id="btn-pay-card-sel")
+                    yield Button("⚖️ Reajustar Fatura", id="btn-adj-card-sel")
+                yield DataTable(id="table-cartoes")
 
             # ABA 6: RECORRÊNCIAS & FIXOS
             with TabPane("🔁 Recorrências & Fixos", id="tab-rec"):
@@ -789,6 +984,12 @@ class ApexFinanceApp(App):
         table_rec.zebra_stripes = True
         table_rec.add_columns("ID", "Descrição", "Valor", "Tipo", "Categoria", "Dia Venc.")
 
+        # Cartões de Crédito
+        table_cards = self.query_one("#table-cartoes", DataTable)
+        table_cards.cursor_type = "row"
+        table_cards.zebra_stripes = True
+        table_cards.add_columns("ID", "Cartão", "Instituição", "Limite", "Comprometido", "Disponível", "Corte", "Vencimento", "Fatura Mês", "Status Fatura")
+
     def get_selected_month_str(self) -> str:
         hoje = date.today()
         m = hoje.month + self.current_month_offset
@@ -804,6 +1005,29 @@ class ApexFinanceApp(App):
         dt_exemplo = date(ano, mes, 1)
         nome_mes = dt_exemplo.strftime("%B").title()
         self.query_one("#month-display", Label).update(f"📅 {mes_ref} ({nome_mes})")
+
+        # Atualiza badge de status do mês
+        snap = core_engine.obter_snapshot_mensal(mes_ref)
+        badge = self.query_one("#month-status-badge", Label)
+        hoje_str = str(date.today())[:7]
+        if snap:
+            badge.update("🔒 SELADO")
+            badge.classes = "hud-val-mauve"
+        elif mes_ref < hoje_str:
+            badge.update("⏳ PASSADO")
+            badge.classes = "hud-val-yellow"
+        elif mes_ref == hoje_str:
+            badge.update("⚡ ATIVO")
+            badge.classes = "hud-val-green"
+        else:
+            badge.update("🔮 PROJEÇÃO")
+            badge.classes = "hud-val-blue"
+
+        btn_filter = self.query_one("#btn-toggle-month-tx", Button)
+        if self.filter_month_only:
+            btn_filter.label = f"📅 Mês ({mes_ref})"
+        else:
+            btn_filter.label = "🌐 Todas Transações"
 
         # 1. Survival HUD
         hud = core_engine.get_survival_hud_metrics(mes_ref)
@@ -851,17 +1075,22 @@ class ApexFinanceApp(App):
         # 3. Transações Table
         table_tx = self.query_one("#table-transactions", DataTable)
         table_tx.clear()
-        c.execute("""
-            SELECT t.id, t.data, t.descricao, t.valor, t.tipo, t.categoria,
-                   COALESCE(k.nome, c.nome, cx.nome, 'Geral') as origem,
-                   t.parcela_atual, t.total_parcelas, t.mes_fatura
-            FROM transacoes t
-            LEFT JOIN cartoes k ON t.cartao_id = k.id
-            LEFT JOIN contas c ON t.conta_id = c.id
-            LEFT JOIN caixinhas cx ON t.caixinha_id = cx.id
-            ORDER BY t.data DESC, t.id DESC LIMIT 40
-        """)
-        for r in c.fetchall():
+        if self.filter_month_only:
+            tx_rows = core_engine.get_transacoes_do_mes(mes_ref)
+        else:
+            c.execute("""
+                SELECT t.id, t.data, t.descricao, t.valor, t.tipo, t.categoria,
+                       COALESCE(k.nome, c.nome, cx.nome, 'Geral') as origem,
+                       t.parcela_atual, t.total_parcelas, t.mes_fatura
+                FROM transacoes t
+                LEFT JOIN cartoes k ON t.cartao_id = k.id
+                LEFT JOIN contas c ON t.conta_id = c.id
+                LEFT JOIN caixinhas cx ON t.caixinha_id = cx.id
+                ORDER BY t.data DESC, t.id DESC LIMIT 60
+            """)
+            tx_rows = [dict(r) for r in c.fetchall()]
+
+        for r in tx_rows:
             sinal = "+" if r['tipo'] == 'receita' else "-"
             cor_val = "green" if r['tipo'] == 'receita' else "red"
             val_fmt = f"[{cor_val}]{sinal} R$ {r['valor']:,.2f}[/]"
@@ -919,6 +1148,51 @@ class ApexFinanceApp(App):
             table_rec.add_row(
                 str(r['id']), r['descricao'], val_fmt, r['tipo'].upper(),
                 r['categoria'] or '-', f"Todo dia {r['dia_vencimento']}"
+            )
+
+        # 7. Cartões de Crédito Table
+        table_cards = self.query_one("#table-cartoes", DataTable)
+        table_cards.clear()
+        c.execute("SELECT id, nome, instituicao, limite, dia_fechamento, dia_vencimento FROM cartoes ORDER BY id")
+        cartoes_rows = c.fetchall()
+        for cr in cartoes_rows:
+            cid = cr['id']
+            limite = cr['limite']
+            # Comprometido total em faturas abertas
+            c.execute("""
+                SELECT COALESCE(SUM(t.valor), 0.0)
+                FROM transacoes t
+                LEFT JOIN faturas f ON (f.cartao_id = t.cartao_id AND f.mes_referencia = t.mes_fatura)
+                WHERE t.cartao_id = ? AND (f.status IS NULL OR f.status != 'paga')
+            """, (cid,))
+            total_devido = c.fetchone()[0] or 0.0
+            disponivel = max(0.0, limite - total_devido)
+            
+            # Fatura específica do mês selecionado
+            c.execute("""
+                SELECT COALESCE(SUM(valor), 0.0) FROM transacoes
+                WHERE cartao_id = ? AND mes_fatura = ?
+            """, (cid, mes_ref))
+            fat_mes_card = c.fetchone()[0] or 0.0
+            
+            c.execute("SELECT status FROM faturas WHERE cartao_id = ? AND mes_referencia = ?", (cid, mes_ref))
+            status_fat_row = c.fetchone()
+            status_fat = status_fat_row['status'] if status_fat_row else "aberta"
+            
+            status_fmt = "[green]PAGA[/green]" if status_fat == 'paga' else "[yellow]ABERTA[/yellow]"
+            cor_disp = "green" if disponivel > (limite * 0.3) else "red"
+            
+            table_cards.add_row(
+                str(cid),
+                cr['nome'],
+                cr['instituicao'],
+                f"R$ {limite:,.2f}",
+                f"[red]R$ {total_devido:,.2f}[/red]",
+                f"[{cor_disp}]R$ {disponivel:,.2f}[/]",
+                f"Dia {cr['dia_fechamento']}",
+                f"Dia {cr['dia_vencimento']}",
+                f"R$ {fat_mes_card:,.2f}",
+                status_fmt
             )
 
         conn.close()
@@ -985,14 +1259,34 @@ class ApexFinanceApp(App):
         elif bid == "btn-next-month":
             self.current_month_offset += 1
             self.refresh_all_data()
+        elif bid == "btn-toggle-month-tx":
+            self.filter_month_only = not self.filter_month_only
+            self.refresh_all_data()
+        elif bid == "btn-seal-month":
+            mes_ref = self.get_selected_month_str()
+            core_engine.criar_snapshot_mensal(mes_ref)
+            self.notify(f"🔒 Mês {mes_ref} selado e snapshot registrado com sucesso!", severity="information")
+            self.refresh_all_data()
+        elif bid == "btn-view-snapshots":
+            self.app.push_screen(SnapshotsModal())
         elif bid == "btn-new-tx-tab":
             self.action_new_tx()
         elif bid == "btn-edit-tx-tab":
             self.action_edit_tx()
         elif bid == "btn-del-tx-tab":
             self.action_delete_tx()
-        elif bid == "btn-pay-tab" or bid == "btn-pay-caixa" or bid == "btn-pay-nubank":
+        elif bid in ("btn-pay-tab", "btn-pay-caixa", "btn-pay-nubank"):
             self.action_pay_invoice()
+        elif bid == "btn-add-card":
+            self.push_screen(AddCardModal(), callback=self.on_modal_closed)
+        elif bid == "btn-edit-card-sel":
+            self.action_edit_card()
+        elif bid == "btn-del-card-sel":
+            self.action_delete_card()
+        elif bid == "btn-pay-card-sel":
+            self.action_pay_card_selected()
+        elif bid == "btn-adj-card-sel":
+            self.action_adj_card_selected()
         elif bid == "btn-export-tab":
             self.action_export_excel()
         elif bid == "btn-open-ritual":
@@ -1052,6 +1346,11 @@ class ApexFinanceApp(App):
             if row:
                 tx_id = int(row[0])
                 self.push_screen(EditTransactionModal(tx_id), callback=self.on_modal_closed)
+        elif event.data_table.id == "table-cartoes":
+            row = event.data_table.get_row(event.row_key)
+            if row:
+                card_id = int(row[0])
+                self.push_screen(EditCardModal(card_id), callback=self.on_modal_closed)
 
     def action_edit_tx(self) -> None:
         table = self.query_one("#table-transactions", DataTable)
@@ -1079,8 +1378,61 @@ class ApexFinanceApp(App):
         else:
             self.notify("Nenhuma transação registrada para excluir.", severity="warning")
 
+    def action_edit_card(self) -> None:
+        table = self.query_one("#table-cartoes", DataTable)
+        if table.row_count > 0:
+            try:
+                row_key, _ = table.coordinate_to_cell_key(table.cursor_coordinate)
+                row = table.get_row(row_key)
+                card_id = int(row[0])
+                self.push_screen(EditCardModal(card_id), callback=self.on_modal_closed)
+            except Exception:
+                self.notify("Selecione um cartão para editar.", severity="warning")
+        else:
+            self.notify("Nenhum cartão cadastrado.", severity="warning")
+
+    def action_delete_card(self) -> None:
+        table = self.query_one("#table-cartoes", DataTable)
+        if table.row_count > 0:
+            try:
+                row_key, _ = table.coordinate_to_cell_key(table.cursor_coordinate)
+                row = table.get_row(row_key)
+                card_id = int(row[0])
+                self.push_screen(DeleteCardModal(card_id), callback=self.on_modal_closed)
+            except Exception:
+                self.notify("Selecione um cartão para excluir.", severity="warning")
+        else:
+            self.notify("Nenhum cartão cadastrado.", severity="warning")
+
+    def action_pay_card_selected(self) -> None:
+        table = self.query_one("#table-cartoes", DataTable)
+        card_id = None
+        if table.row_count > 0:
+            try:
+                row_key, _ = table.coordinate_to_cell_key(table.cursor_coordinate)
+                row = table.get_row(row_key)
+                card_id = int(row[0])
+            except Exception:
+                pass
+        mes_ref = self.get_selected_month_str()
+        self.push_screen(PayInvoiceModal(cartao_id=card_id, mes_ref=mes_ref), callback=self.on_modal_closed)
+
+    def action_adj_card_selected(self) -> None:
+        table = self.query_one("#table-cartoes", DataTable)
+        card_id = None
+        if table.row_count > 0:
+            try:
+                row_key, _ = table.coordinate_to_cell_key(table.cursor_coordinate)
+                row = table.get_row(row_key)
+                card_id = int(row[0])
+            except Exception:
+                pass
+        mes_ref = self.get_selected_month_str()
+        self.push_screen(AdjustInvoiceModal(cartao_id=card_id, mes_ref=mes_ref), callback=self.on_modal_closed)
+
     def action_pay_invoice(self) -> None:
-        self.push_screen(PayInvoiceModal(), callback=self.on_modal_closed)
+        mes_ref = self.get_selected_month_str()
+        self.push_screen(PayInvoiceModal(mes_ref=mes_ref), callback=self.on_modal_closed)
 
     def action_refresh_data(self) -> None:
         self.refresh_all_data()
