@@ -1058,6 +1058,154 @@ class AddEditRecorrenciaModal(ModalScreen):
         self.dismiss(True)
 
 # ==============================================================================
+# MODAL: CRUD WISHLIST (CRIAR / EDITAR ITEM PLANEJADO)
+# ==============================================================================
+class AddEditWishlistModal(ModalScreen):
+    def __init__(self, item_id: int = None):
+        super().__init__()
+        self.item_id = item_id
+
+    def compose(self) -> ComposeResult:
+        with Vertical(classes="modal-dialog"):
+            title = "➕ NOVO PLANO DE COMPRA (WISHLIST)" if not self.item_id else "✏️ EDITAR PLANO DE COMPRA"
+            yield Label(title, classes="modal-title")
+
+            item_val, cat_val, val_val, parc_val, prio_val, cond_val, obs_val = "", "Estudos / Concursos", "300.00", "4", "Alta", "Após quitar faturas", ""
+            if self.item_id:
+                conn = core_engine.get_connection()
+                w = conn.execute("SELECT * FROM wishlist WHERE id = ?", (self.item_id,)).fetchone()
+                conn.close()
+                if w:
+                    item_val = w['item']
+                    cat_val = w['categoria']
+                    val_val = f"{w['valor_estimado']:.2f}"
+                    parc_val = str(w['parcelas_sugeridas'])
+                    prio_val = w['prioridade']
+                    cond_val = w['condicao_compra'] or ""
+                    obs_val = w['link_ou_obs'] or ""
+
+            yield Label("Nome do Item / Objetivo:")
+            yield Input(value=item_val, placeholder="Ex: Fone QCY H3 Pro / Garrafa Stanley", id="w-item")
+
+            yield Label("Categoria:")
+            yield Select([
+                ("Estudos / Concursos", "Estudos / Concursos"),
+                ("Tecnologia & Periféricos", "Tecnologia & Periféricos"),
+                ("Saúde & Hidratação", "Saúde & Hidratação"),
+                ("Moto (Manutenção / Peças)", "Moto (Manutenção / Peças)"),
+                ("Estética & Presença Masculina", "Estética & Presença Masculina"),
+                ("Outros / Casa", "Outros / Casa"),
+            ], value=cat_val, id="w-cat")
+
+            yield Label("Valor Estimado em R$:")
+            yield Input(value=val_val, placeholder="365.00", id="w-val")
+
+            yield Label("Parcelas Sugeridas:")
+            yield Select([(f"{i}x sem juros", str(i)) for i in range(1, 13)], value=parc_val, id="w-parc")
+
+            yield Label("Prioridade de Guerra:")
+            yield Select([
+                ("Alta (Impacto imediato em estudos/renda)", "Alta"),
+                ("Média (Conforto / Produtividade)", "Média"),
+                ("Baixa (Desejo futuro)", "Baixa"),
+                ("Estratégica (Alforria)", "Estratégica")
+            ], value=prio_val, id="w-prio")
+
+            yield Label("Gatilho / Condição para Compra:")
+            yield Input(value=cond_val, placeholder="Ex: Após quitar faturas / Após 13º salário", id="w-cond")
+
+            yield Label("Observação / Justificativa:")
+            yield Input(value=obs_val, placeholder="Ex: Cancelamento de ruído essencial para estudar", id="w-obs")
+
+            with Horizontal(classes="modal-btn-row"):
+                yield Button("Cancelar", id="btn-w-cancel", classes="-danger")
+                yield Button("Salvar no Radar", id="btn-w-save", classes="-primary")
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        if event.button.id == "btn-w-cancel":
+            self.dismiss(False)
+            return
+
+        item = self.query_one("#w-item", Input).value.strip()
+        if not item:
+            self.app.notify("Nome do item é obrigatório!", severity="error")
+            return
+        cat = self.query_one("#w-cat", Select).value
+        prio = self.query_one("#w-prio", Select).value
+        parcs = int(self.query_one("#w-parc", Select).value)
+        cond = self.query_one("#w-cond", Input).value.strip()
+        obs = self.query_one("#w-obs", Input).value.strip()
+        try:
+            val = float(self.query_one("#w-val", Input).value.strip().replace(",", "."))
+        except ValueError:
+            self.app.notify("Valor estimado inválido!", severity="error")
+            return
+
+        if self.item_id:
+            core_engine.editar_item_wishlist(self.item_id, item, cat, val, parcs, prio, cond, status="planejado", link_ou_obs=obs)
+            self.app.notify("✔ Item da Wishlist atualizado!", severity="information")
+        else:
+            core_engine.criar_item_wishlist(item, cat, val, parcs, prio, cond, obs)
+            self.app.notify("✔ Item cadastrado no radar de compras futuras!", severity="information")
+        self.dismiss(True)
+
+# ==============================================================================
+# MODAL: EFETIVAR COMPRA DA WISHLIST (SEM ATRITO)
+# ==============================================================================
+class EfetivarWishlistModal(ModalScreen):
+    def __init__(self, item_id: int):
+        super().__init__()
+        self.item_id = item_id
+        conn = core_engine.get_connection()
+        self.w = conn.execute("SELECT * FROM wishlist WHERE id = ?", (item_id,)).fetchone()
+        self.cartoes = conn.execute("SELECT id, nome, limite FROM cartoes ORDER BY id").fetchall()
+        self.contas = conn.execute("SELECT id, nome, saldo FROM contas ORDER BY id").fetchall()
+        conn.close()
+
+    def compose(self) -> ComposeResult:
+        with Vertical(classes="modal-dialog"):
+            item_nome = self.w['item'] if self.w else "Item"
+            val = self.w['valor_estimado'] if self.w else 0.0
+            parcs = self.w['parcelas_sugeridas'] if self.w else 1
+            yield Label(f"🚀 EFETIVAR COMPRA: {item_nome}", classes="modal-title")
+            yield Static(f"Valor: [bold green]R$ {val:,.2f}[/bold green] | Parcelas Sugeridas: [bold yellow]{parcs}x[/bold yellow]\n")
+
+            yield Label("Forma de Pagamento:")
+            opts = [(f"💳 Cartão {c['nome']}", f"cartao-{c['id']}") for c in self.cartoes] + \
+                   [(f"🏦 Conta {ct['nome']} (À Vista)", f"conta-{ct['id']}") for ct in self.contas]
+            yield Select(opts, value=opts[0][1], id="ef-meio")
+
+            yield Label("Número de Parcelas:")
+            yield Select([(f"{i}x (R$ {val/i:.2f}/mês)", str(i)) for i in range(1, 13)], value=str(parcs), id="ef-parc")
+
+            yield Label("Data da Compra (AAAA-MM-DD):")
+            yield Input(value=str(date.today()), id="ef-data")
+
+            with Horizontal(classes="modal-btn-row"):
+                yield Button("Cancelar", id="btn-ef-cancel", classes="-danger")
+                yield Button("Confirmar Compra Real", id="btn-ef-confirm", classes="-success")
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        if event.button.id == "btn-ef-cancel":
+            self.dismiss(False)
+            return
+
+        meio = self.query_one("#ef-meio", Select).value
+        parcs = int(self.query_one("#ef-parc", Select).value)
+        dt_compra = self.query_one("#ef-data", Input).value.strip()
+
+        cid = int(meio.split("-")[1])
+        cartao_id = cid if meio.startswith("cartao") else None
+        conta_id = cid if meio.startswith("conta") else None
+
+        try:
+            core_engine.efetivar_compra_wishlist(self.item_id, cartao_id=cartao_id, conta_id=conta_id, data_compra=dt_compra, parcelas=parcs)
+            self.app.notify(f"🚀 Compra '{self.w['item']}' efetivada com sucesso no banco!", severity="information")
+            self.dismiss(True)
+        except Exception as e:
+            self.app.notify(f"Erro ao efetivar compra: {e}", severity="error")
+
+# ==============================================================================
 # APLICAÇÃO PRINCIPAL: APEX FINANCE TUI
 # ==============================================================================
 class ApexFinanceApp(App):
@@ -1072,6 +1220,7 @@ class ApexFinanceApp(App):
         Binding("4", "tab_cx", "Caixinhas", show=True),
         Binding("5", "tab_card", "Cartões", show=True),
         Binding("6", "tab_rec", "Recorrências", show=True),
+        Binding("7", "tab_wish", "Wishlist", show=True),
         Binding("n", "new_tx", "Nova Transação", show=True),
         Binding("d", "delete_tx", "Excluir [d]", show=True),
         Binding("s", "open_sim", "Simulador", show=False),
@@ -1262,6 +1411,17 @@ class ApexFinanceApp(App):
                         yield Button("⚡ Pausar / Reativar", id="btn-toggle-rec-sel")
                     yield DataTable(id="table-recorrencias")
 
+            # ABA 7: WISHLIST & COMPRAS FUTURAS
+            with TabPane("🎯 Wishlist & Compras Futuras", id="tab-wish"):
+                with VerticalScroll():
+                    yield Label("🎯 Radar de Compras Conscientes (Planejar Agora, Executar Sem Atrito)", classes="section-title")
+                    with Horizontal():
+                        yield Button("➕ Novo Item Wishlist", id="btn-add-wish", classes="-primary")
+                        yield Button("✏️ Editar Item [Enter]", id="btn-edit-wish-sel")
+                        yield Button("🗑️ Excluir Item", id="btn-del-wish-sel", classes="-danger")
+                        yield Button("🚀 Efetivar Compra Real", id="btn-efetivar-wish-sel", classes="-success")
+                    yield DataTable(id="table-wishlist")
+
         yield Footer()
 
     def on_mount(self) -> None:
@@ -1306,6 +1466,12 @@ class ApexFinanceApp(App):
         table_cards.cursor_type = "row"
         table_cards.zebra_stripes = True
         table_cards.add_columns("ID", "Cartão", "Instituição", "Limite", "Comprometido", "Disponível", "Corte", "Vencimento", "Fatura Mês", "Status Fatura")
+
+        # Wishlist / Compras Futuras Table
+        table_wish = self.query_one("#table-wishlist", DataTable)
+        table_wish.cursor_type = "row"
+        table_wish.zebra_stripes = True
+        table_wish.add_columns("ID", "Item / Desejo", "Categoria", "Valor Estimado", "Parcelas", "Prioridade", "Condição / Gatilho", "Status", "Observações")
 
     def get_selected_month_str(self) -> str:
         hoje = date.today()
@@ -1612,6 +1778,29 @@ class ApexFinanceApp(App):
                 status_fmt
             )
 
+        # 8. Wishlist / Compras Futuras Table
+        table_wish = self.query_one("#table-wishlist", DataTable)
+        table_wish.clear()
+        c.execute("SELECT * FROM wishlist ORDER BY CASE status WHEN 'planejado' THEN 1 WHEN 'comprado' THEN 2 ELSE 3 END, id ASC")
+        w_rows = c.fetchall()
+        for w in w_rows:
+            prio = w['prioridade']
+            cor_prio = "red" if prio in ('Alta', 'Estratégica') else ("yellow" if prio == 'Média' else "blue")
+            st = w['status']
+            st_fmt = "[yellow]PLANEJADO[/yellow]" if st == 'planejado' else ("[green]COMPRADO[/green]" if st == 'comprado' else "[dim]CANCELADO[/dim]")
+            parc_txt = f"{w['parcelas_sugeridas']}x sem juros" if w['parcelas_sugeridas'] > 1 else "À Vista"
+            table_wish.add_row(
+                str(w['id']),
+                w['item'],
+                w['categoria'],
+                f"[bold green]R$ {w['valor_estimado']:,.2f}[/]",
+                parc_txt,
+                f"[{cor_prio}]{prio}[/]",
+                w['condicao_compra'] or "-",
+                st_fmt,
+                w['link_ou_obs'] or "-"
+            )
+
         conn.close()
 
     def on_select_changed(self, event: Select.Changed) -> None:
@@ -1746,6 +1935,14 @@ class ApexFinanceApp(App):
             self.action_delete_rec()
         elif bid == "btn-toggle-rec-sel":
             self.action_toggle_rec()
+        elif bid == "btn-add-wish":
+            self.push_screen(AddEditWishlistModal(), callback=self.on_modal_closed)
+        elif bid == "btn-edit-wish-sel":
+            self.action_edit_wish()
+        elif bid == "btn-del-wish-sel":
+            self.action_delete_wish()
+        elif bid == "btn-efetivar-wish-sel":
+            self.action_efetivar_wish()
         elif bid == "btn-run-sim":
             self.run_simulation()
         elif bid == "btn-commit-sim":
@@ -1788,6 +1985,9 @@ class ApexFinanceApp(App):
     def action_tab_rec(self) -> None:
         self.query_one("#main-tabs", TabbedContent).active = "tab-rec"
 
+    def action_tab_wish(self) -> None:
+        self.query_one("#main-tabs", TabbedContent).active = "tab-wish"
+
     def action_new_tx(self) -> None:
         self.push_screen(AddTransactionModal(), callback=self.on_modal_closed)
 
@@ -1812,6 +2012,53 @@ class ApexFinanceApp(App):
             if row:
                 rec_id = int(row[0])
                 self.push_screen(AddEditRecorrenciaModal(rec_id), callback=self.on_modal_closed)
+        elif event.data_table.id == "table-wishlist":
+            row = event.data_table.get_row(event.row_key)
+            if row:
+                wish_id = int(row[0])
+                self.push_screen(AddEditWishlistModal(wish_id), callback=self.on_modal_closed)
+
+    def action_edit_wish(self) -> None:
+        table = self.query_one("#table-wishlist", DataTable)
+        if table.row_count > 0:
+            try:
+                row_key, _ = table.coordinate_to_cell_key(table.cursor_coordinate)
+                row = table.get_row(row_key)
+                wish_id = int(row[0])
+                self.push_screen(AddEditWishlistModal(wish_id), callback=self.on_modal_closed)
+            except Exception:
+                self.notify("Selecione um item da wishlist para editar.", severity="warning")
+        else:
+            self.notify("Nenhum item na wishlist.", severity="warning")
+
+    def action_delete_wish(self) -> None:
+        table = self.query_one("#table-wishlist", DataTable)
+        if table.row_count > 0:
+            try:
+                row_key, _ = table.coordinate_to_cell_key(table.cursor_coordinate)
+                row = table.get_row(row_key)
+                wish_id = int(row[0])
+                item_nome = str(row[1])
+                core_engine.deletar_item_wishlist(wish_id)
+                self.notify(f"✔ Item '{item_nome}' removido da wishlist!", severity="information")
+                self.refresh_all_data()
+            except Exception as e:
+                self.notify(f"Erro ao excluir item: {e}", severity="error")
+        else:
+            self.notify("Nenhum item na wishlist.", severity="warning")
+
+    def action_efetivar_wish(self) -> None:
+        table = self.query_one("#table-wishlist", DataTable)
+        if table.row_count > 0:
+            try:
+                row_key, _ = table.coordinate_to_cell_key(table.cursor_coordinate)
+                row = table.get_row(row_key)
+                wish_id = int(row[0])
+                self.push_screen(EfetivarWishlistModal(wish_id), callback=self.on_modal_closed)
+            except Exception:
+                self.notify("Selecione um item da wishlist para efetivar.", severity="warning")
+        else:
+            self.notify("Nenhum item na wishlist para efetivar.", severity="warning")
 
     def action_edit_cx(self) -> None:
         table = self.query_one("#table-caixinhas-crud", DataTable)

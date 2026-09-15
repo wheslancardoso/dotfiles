@@ -133,6 +133,19 @@ def init_database():
         motivo TEXT,
         PRIMARY KEY (mes_referencia, caixinha_id)
     );
+
+    CREATE TABLE IF NOT EXISTS wishlist (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        item TEXT NOT NULL,
+        categoria TEXT NOT NULL, -- 'Estudos/Carreira', 'Saúde/Hidratação', 'Moto', 'Tecnologia', 'Outros'
+        valor_estimado REAL NOT NULL,
+        parcelas_sugeridas INTEGER DEFAULT 1,
+        prioridade TEXT DEFAULT 'Média', -- 'Baixa', 'Média', 'Alta', 'Estratégica'
+        condicao_compra TEXT, -- 'Após quitar faturas', 'Após 13º', 'Promoção', etc.
+        status TEXT DEFAULT 'planejado', -- 'planejado', 'comprado', 'cancelado'
+        link_ou_obs TEXT,
+        data_criacao TEXT
+    );
     """)
 
     # Populate defaults if empty
@@ -653,6 +666,90 @@ def deletar_recorrencia(rec_id):
     conn = get_connection()
     c = conn.cursor()
     c.execute("DELETE FROM recorrencias WHERE id = ?", (rec_id,))
+    conn.commit()
+    conn.close()
+    return True
+
+# ----------------------------------------------------------------------
+# CRUD WISHLIST (PLANO DE COMPRAS FUTURAS SEM ATRITO)
+# ----------------------------------------------------------------------
+def criar_item_wishlist(item, categoria, valor_estimado, parcelas_sugeridas=1, prioridade="Média", condicao_compra="", link_ou_obs=""):
+    conn = get_connection()
+    c = conn.cursor()
+    dt_criacao = str(date.today())
+    c.execute("""
+        INSERT INTO wishlist (item, categoria, valor_estimado, parcelas_sugeridas, prioridade, condicao_compra, status, link_ou_obs, data_criacao)
+        VALUES (?, ?, ?, ?, ?, ?, 'planejado', ?, ?)
+    """, (item, categoria, float(valor_estimado), int(parcelas_sugeridas), prioridade, condicao_compra, link_ou_obs, dt_criacao))
+    wid = c.lastrowid
+    conn.commit()
+    conn.close()
+    return wid
+
+def listar_wishlist(apenas_planejados=False):
+    conn = get_connection()
+    c = conn.cursor()
+    if apenas_planejados:
+        c.execute("SELECT * FROM wishlist WHERE status = 'planejado' ORDER BY CASE prioridade WHEN 'Estratégica' THEN 1 WHEN 'Alta' THEN 2 WHEN 'Média' THEN 3 ELSE 4 END, valor_estimado ASC")
+    else:
+        c.execute("SELECT * FROM wishlist ORDER BY CASE status WHEN 'planejado' THEN 1 WHEN 'comprado' THEN 2 ELSE 3 END, id DESC")
+    rows = [dict(r) for r in c.fetchall()]
+    conn.close()
+    return rows
+
+def editar_item_wishlist(item_id, item, categoria, valor_estimado, parcelas_sugeridas, prioridade, condicao_compra, status="planejado", link_ou_obs=""):
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("""
+        UPDATE wishlist 
+        SET item = ?, categoria = ?, valor_estimado = ?, parcelas_sugeridas = ?, prioridade = ?, condicao_compra = ?, status = ?, link_ou_obs = ?
+        WHERE id = ?
+    """, (item, categoria, float(valor_estimado), int(parcelas_sugeridas), prioridade, condicao_compra, status, link_ou_obs, item_id))
+    conn.commit()
+    conn.close()
+    return True
+
+def deletar_item_wishlist(item_id):
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("DELETE FROM wishlist WHERE id = ?", (item_id,))
+    conn.commit()
+    conn.close()
+    return True
+
+def efetivar_compra_wishlist(item_id, cartao_id=None, conta_id=None, data_compra=None, parcelas=None):
+    """
+    Transforma um item planejado da wishlist em compra real no banco (cartão ou conta)
+    e atualiza seu status para 'comprado'.
+    """
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("SELECT * FROM wishlist WHERE id = ?", (item_id,))
+    w = c.fetchone()
+    if not w:
+        conn.close()
+        raise ValueError("Item da wishlist não encontrado.")
+    
+    dt_compra = data_compra or str(date.today())
+    parcs = parcelas if parcelas is not None else w['parcelas_sugeridas']
+    desc = w['item']
+    val = w['valor_estimado']
+    cat = w['categoria']
+    
+    if cartao_id:
+        registrar_compra_cartao(cartao_id, dt_compra, desc, val, cat, parcelas=parcs)
+    elif conta_id:
+        adicionar_transacao_conta(conta_id, dt_compra, desc, val, 'despesa', cat)
+    else:
+        # Default: primeiro cartão disponível
+        c.execute("SELECT id FROM cartoes LIMIT 1")
+        cid = c.fetchone()['id']
+        registrar_compra_cartao(cid, dt_compra, desc, val, cat, parcelas=parcs)
+
+    # Marca como comprado
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("UPDATE wishlist SET status = 'comprado' WHERE id = ?", (item_id,))
     conn.commit()
     conn.close()
     return True
@@ -1486,6 +1583,22 @@ def exportar_contexto_ia(base_dir="/mnt/dados/01_Pessoal_e_Vida/01.5_Financas_e_
         if m_cur > 12:
             m_cur = 1
             ano_cur += 1
+
+    # Wishlist / Plano de Compras Futuras
+    c.execute("SELECT * FROM wishlist ORDER BY CASE status WHEN 'planejado' THEN 1 ELSE 2 END, id ASC")
+    wishes = c.fetchall()
+    global_md.append("\n## 6. 🎯 WISHLIST & COMPRAS FUTURAS PLANEJADAS")
+    if not wishes:
+        global_md.append("- *Nenhum item em espera no radar de compras.*")
+    else:
+        for w in wishes:
+            st_icon = "⏳ [Planejado]" if w['status'] == 'planejado' else ("✅ [Comprado]" if w['status'] == 'comprado' else "❌ [Cancelado]")
+            parc_str = f"em até {w['parcelas_sugeridas']}x" if w['parcelas_sugeridas'] > 1 else "à vista"
+            global_md.append(f"- **{w['item']}** ({w['categoria']}): `R$ {w['valor_estimado']:,.2f}` ({parc_str})")
+            global_md.append(f"  - Prioridade: `{w['prioridade']}` | Condição: *{w['condicao_compra']}* | Status: {st_icon}")
+            if w['link_ou_obs']:
+                global_md.append(f"  - Obs: {w['link_ou_obs']}")
+    global_md.append("")
 
     global_file = os.path.join(base_dir, "CONTEXTO_GLOBAL.md")
     with open(global_file, "w", encoding="utf-8") as f:
