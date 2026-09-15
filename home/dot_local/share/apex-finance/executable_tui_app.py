@@ -807,6 +807,257 @@ class SnapshotsModal(ModalScreen):
         self.dismiss(True)
 
 # ==============================================================================
+# MODAL: CRUD CAIXINHA (CRIAR / EDITAR)
+# ==============================================================================
+class AddEditCaixinhaModal(ModalScreen):
+    def __init__(self, caixinha_id: int = None):
+        super().__init__()
+        self.caixinha_id = caixinha_id
+
+    def compose(self) -> ComposeResult:
+        with Vertical(classes="modal-dialog"):
+            title = "➕ NOVA CAIXINHA DE METAS" if not self.caixinha_id else "✏️ EDITAR CAIXINHA"
+            yield Label(title, classes="modal-title")
+            
+            nome_val, desc_val, meta_val, aporte_val, saldo_val, alvo_val = "", "", "1500.00", "100.00", "0.00", "2027-12-31"
+            if self.caixinha_id:
+                conn = core_engine.get_connection()
+                cx = conn.execute("SELECT * FROM caixinhas WHERE id = ?", (self.caixinha_id,)).fetchone()
+                conn.close()
+                if cx:
+                    nome_val = cx['nome']
+                    desc_val = cx['descricao'] or ""
+                    meta_val = f"{cx['meta_total']:.2f}"
+                    aporte_val = f"{cx['aporte_mensal']:.2f}"
+                    saldo_val = f"{cx['saldo_atual']:.2f}"
+                    alvo_val = str(cx['data_alvo']) if cx['data_alvo'] else "2028-08-01"
+
+            yield Label("Nome da Caixinha / Alvo:")
+            yield Input(value=nome_val, placeholder="Ex: Reserva Alforria / Moto CG 160", id="cx-nome")
+
+            yield Label("Descrição / Objetivo:")
+            yield Input(value=desc_val, placeholder="Ex: Fundo de reserva e alforria", id="cx-desc")
+
+            yield Label("Meta Total em R$:")
+            yield Input(value=meta_val, placeholder="27000.00", id="cx-meta")
+
+            yield Label("Aporte Mensal Padrão (R$):")
+            yield Input(value=aporte_val, placeholder="1000.00", id="cx-aporte")
+
+            yield Label("Saldo Atual (R$):")
+            yield Input(value=saldo_val, placeholder="1000.00", id="cx-saldo")
+
+            yield Label("Data Alvo (AAAA-MM-DD):")
+            yield Input(value=alvo_val, placeholder="2028-08-01", id="cx-alvo")
+
+            with Horizontal(classes="modal-btn-row"):
+                yield Button("Cancelar", id="btn-cx-cancel", classes="-danger")
+                yield Button("Salvar Caixinha", id="btn-cx-save", classes="-primary")
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        if event.button.id == "btn-cx-cancel":
+            self.dismiss(False)
+            return
+
+        nome = self.query_one("#cx-nome", Input).value.strip()
+        if not nome:
+            self.app.notify("Nome da caixinha é obrigatório!", severity="error")
+            return
+        desc = self.query_one("#cx-desc", Input).value.strip()
+        try:
+            meta = float(self.query_one("#cx-meta", Input).value.strip().replace(",", "."))
+            aporte = float(self.query_one("#cx-aporte", Input).value.strip().replace(",", "."))
+            saldo = float(self.query_one("#cx-saldo", Input).value.strip().replace(",", "."))
+        except ValueError:
+            self.app.notify("Valores numéricos inválidos!", severity="error")
+            return
+        alvo = self.query_one("#cx-alvo", Input).value.strip() or None
+
+        if self.caixinha_id:
+            core_engine.editar_caixinha(self.caixinha_id, nome, desc, meta, aporte, saldo, alvo)
+            self.app.notify("✔ Caixinha atualizada com sucesso!", severity="information")
+        else:
+            core_engine.criar_caixinha(nome, desc, meta, aporte, saldo, alvo)
+            self.app.notify("✔ Nova Caixinha criada com sucesso!", severity="information")
+        self.dismiss(True)
+
+# ==============================================================================
+# MODAL: AJUSTAR APORTE DE MÊS ESPECÍFICO (MODULARIDADE / PAUSA)
+# ==============================================================================
+class AjustarAporteMesModal(ModalScreen):
+    def __init__(self, caixinha_id: int = 1, mes_ref: str = None):
+        super().__init__()
+        self.caixinha_id = caixinha_id
+        self.mes_ref = mes_ref or str(date.today())[:7]
+
+    def compose(self) -> ComposeResult:
+        with Vertical(classes="modal-dialog"):
+            yield Label("⏸️ AJUSTAR APORTE DE MÊS ESPECÍFICO", classes="modal-title")
+            
+            conn = core_engine.get_connection()
+            cx = conn.execute("SELECT nome, aporte_mensal FROM caixinhas WHERE id = ?", (self.caixinha_id,)).fetchone()
+            conn.close()
+            cx_nome = cx['nome'] if cx else "Caixinha"
+            
+            val_atual = core_engine.obter_aporte_planejado(self.mes_ref, self.caixinha_id)
+
+            yield Label(f"Caixinha: [bold cyan]{cx_nome}[/bold cyan]")
+            yield Label("Mês de Referência [AAAA-MM]:")
+            yield Input(value=self.mes_ref, placeholder="2026-10", id="aj-mes")
+
+            yield Label("Aporte Planejado para este Mês (R$) — Digite 0.00 para pausar:")
+            yield Input(value=f"{val_atual:.2f}", placeholder="0.00 ou 1000.00", id="aj-valor")
+
+            yield Label("Motivo da Alteração:")
+            yield Input(placeholder="Ex: Revisão CG 160 / Sem margem neste mês", id="aj-motivo")
+
+            with Horizontal(classes="modal-btn-row"):
+                yield Button("Cancelar", id="btn-aj-cancel", classes="-danger")
+                yield Button("Confirmar Ajuste", id="btn-aj-save", classes="-primary")
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        if event.button.id == "btn-aj-cancel":
+            self.dismiss(False)
+            return
+
+        mes_ref = self.query_one("#aj-mes", Input).value.strip()
+        motivo = self.query_one("#aj-motivo", Input).value.strip()
+        try:
+            val = float(self.query_one("#aj-valor", Input).value.strip().replace(",", "."))
+            core_engine.definir_aporte_planejado(mes_ref, self.caixinha_id, val, motivo)
+            self.app.notify(f"✔ Aporte de {mes_ref} definido como R$ {val:,.2f}!", severity="information")
+            self.dismiss(True)
+        except ValueError:
+            self.app.notify("Valor inválido!", severity="error")
+
+# ==============================================================================
+# MODAL: APORTE IMEDIATO NA CAIXINHA
+# ==============================================================================
+class AporteManualModal(ModalScreen):
+    def __init__(self, caixinha_id: int = 1):
+        super().__init__()
+        self.caixinha_id = caixinha_id
+
+    def compose(self) -> ComposeResult:
+        with Vertical(classes="modal-dialog"):
+            yield Label("💰 APORTE IMEDIATO NA CAIXINHA", classes="modal-title")
+            
+            conn = core_engine.get_connection()
+            cx = conn.execute("SELECT nome FROM caixinhas WHERE id = ?", (self.caixinha_id,)).fetchone()
+            contas = conn.execute("SELECT id, nome, saldo FROM contas ORDER BY id").fetchall()
+            conn.close()
+            
+            cx_nome = cx['nome'] if cx else "Caixinha"
+            conta_opts = [(f"🏦 {r['nome']} (Saldo: R$ {r['saldo']:,.2f})", str(r['id'])) for r in contas] or [("Nubank", "1")]
+
+            yield Label(f"Caixinha de Destino: [bold cyan]{cx_nome}[/bold cyan]")
+            yield Label("Conta para debitar o valor:")
+            yield Select(conta_opts, value=conta_opts[0][1], id="ap-conta")
+
+            yield Label("Valor do Aporte em R$:")
+            yield Input(value="1000.00", placeholder="1000.00", id="ap-val")
+
+            with Horizontal(classes="modal-btn-row"):
+                yield Button("Cancelar", id="btn-ap-cancel", classes="-danger")
+                yield Button("Confirmar Aporte", id="btn-ap-save", classes="-primary")
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        if event.button.id == "btn-ap-cancel":
+            self.dismiss(False)
+            return
+
+        conta_id = int(self.query_one("#ap-conta", Select).value)
+        try:
+            val = float(self.query_one("#ap-val", Input).value.strip().replace(",", "."))
+            res, msg = core_engine.realizar_aporte_caixinha(self.caixinha_id, val, conta_id)
+            if res:
+                self.app.notify(f"✔ Aporte de R$ {val:,.2f} realizado com sucesso!", severity="information")
+                self.dismiss(True)
+            else:
+                self.app.notify(f"Aviso: {msg}", severity="warning")
+        except ValueError:
+            self.app.notify("Valor inválido!", severity="error")
+
+# ==============================================================================
+# MODAL: CRUD RECORRÊNCIAS & FIXOS (CRIAR / EDITAR)
+# ==============================================================================
+class AddEditRecorrenciaModal(ModalScreen):
+    def __init__(self, rec_id: int = None):
+        super().__init__()
+        self.rec_id = rec_id
+
+    def compose(self) -> ComposeResult:
+        with Vertical(classes="modal-dialog"):
+            title = "➕ NOVA RECORRÊNCIA / CUSTO FIXO" if not self.rec_id else "✏️ EDITAR RECORRÊNCIA"
+            yield Label(title, classes="modal-title")
+            
+            desc_val, val_val, tipo_val, cat_val, dia_val = "", "200.00", "despesa", "Provisão Casa (Carnes)", "10"
+            if self.rec_id:
+                conn = core_engine.get_connection()
+                r = conn.execute("SELECT * FROM recorrencias WHERE id = ?", (self.rec_id,)).fetchone()
+                conn.close()
+                if r:
+                    desc_val = r['descricao']
+                    val_val = f"{r['valor']:.2f}"
+                    tipo_val = r['tipo']
+                    cat_val = r['categoria'] or "Provisão Casa (Carnes)"
+                    dia_val = str(r['dia_vencimento'])
+
+            yield Label("Descrição da Conta / Receita:")
+            yield Input(value=desc_val, placeholder="Ex: Provisão Casa / Psiquiatria / Salário", id="rec-desc")
+
+            yield Label("Valor em R$:")
+            yield Input(value=val_val, placeholder="200.00", id="rec-val")
+
+            yield Label("Tipo:")
+            yield Select([("Despesa", "despesa"), ("Receita", "receita")], value=tipo_val, id="rec-tipo")
+
+            yield Label("Dia de Vencimento (1 a 31):")
+            yield Input(value=dia_val, placeholder="10", id="rec-dia")
+
+            yield Label("Categoria:")
+            yield Select([
+                ("Provisão Casa (Carnes)", "Provisão Casa (Carnes)"),
+                ("Saúde Mental / Psiquiatria", "Saúde Mental / Psiquiatria"),
+                ("Moto (Gasolina / Óleo / IPVA)", "Moto (Gasolina / Óleo / IPVA)"),
+                ("Barbearia & Cuidados", "Barbearia & Cuidados"),
+                ("Estética / Minoxidil / Roupas", "Estética / Minoxidil / Roupas"),
+                ("Alforria / Investimento", "Alforria / Investimento"),
+                ("Salário Comissionado AGR", "Salário Comissionado AGR"),
+                ("Outros / Manobra", "Outros / Manobra"),
+            ], value=cat_val, id="rec-cat")
+
+            with Horizontal(classes="modal-btn-row"):
+                yield Button("Cancelar", id="btn-rec-cancel", classes="-danger")
+                yield Button("Salvar Recorrência", id="btn-rec-save", classes="-primary")
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        if event.button.id == "btn-rec-cancel":
+            self.dismiss(False)
+            return
+
+        desc = self.query_one("#rec-desc", Input).value.strip()
+        if not desc:
+            self.app.notify("Descrição é obrigatória!", severity="error")
+            return
+        tipo = self.query_one("#rec-tipo", Select).value
+        cat = self.query_one("#rec-cat", Select).value
+        try:
+            val = float(self.query_one("#rec-val", Input).value.strip().replace(",", "."))
+            dia = int(self.query_one("#rec-dia", Input).value.strip())
+        except ValueError:
+            self.app.notify("Valores numéricos inválidos!", severity="error")
+            return
+
+        if self.rec_id:
+            core_engine.editar_recorrencia(self.rec_id, desc, val, tipo, cat, dia, 1)
+            self.app.notify("✔ Recorrência atualizada com sucesso!", severity="information")
+        else:
+            core_engine.criar_recorrencia(desc, val, tipo, cat, dia)
+            self.app.notify("✔ Nova Recorrência criada com sucesso!", severity="information")
+        self.dismiss(True)
+
+# ==============================================================================
 # APLICAÇÃO PRINCIPAL: APEX FINANCE TUI
 # ==============================================================================
 class ApexFinanceApp(App):
@@ -951,13 +1202,24 @@ class ApexFinanceApp(App):
                     yield Static("VEREDICTO: Pronto para simular.", id="sim-verdict", classes="verdict-box")
                     
                 with Vertical(classes="section-box"):
-                    yield Label("📊 Comparativo: Fluxo de Caixa Normal (Azul) vs. Impactado (Rosa)", classes="section-title")
-                    yield PlotextPlot(id="chart-sim")
+                    yield Label("📊 Auditoria Mês a Mês: Baseline Normal vs. Compra Simulada", classes="section-title")
+                    yield DataTable(id="table-sim-impact")
 
             # ABA 4: CAIXINHAS & METAS
             with TabPane("🏰 Caixinhas & Alforria (115% CDI)", id="tab-cx"):
                 with VerticalScroll():
-                    yield Label("🏰 Metas de Patrimônio & Focos Sagrados", classes="section-title")
+                    yield Label("🏰 Gestão Soberana de Caixinhas & Focos de Alforria", classes="section-title")
+                    with Horizontal():
+                        yield Button("➕ Nova Caixinha", id="btn-add-cx", classes="-primary")
+                        yield Button("✏️ Editar Caixinha [Enter]", id="btn-edit-cx-sel")
+                        yield Button("🗑️ Excluir Caixinha", id="btn-del-cx-sel", classes="-danger")
+                        yield Button("💰 Aporte Imediato", id="btn-aporte-cx-sel", classes="-success")
+                        yield Button("⏸️ Ajustar/Pausar Mês", id="btn-ajustar-aporte-cx-sel")
+                    
+                    yield DataTable(id="table-caixinhas-crud")
+
+                    yield Rule()
+                    yield Label("🎯 Progresso Visual das Metas Principais", classes="section-title")
                     with Vertical(classes="cx-card", id="cx-1-box"):
                         yield Label("🏰 Alforria 2028 (O Meu Canto) — Meta: R$ 27.000,00 (115% CDI)", classes="hud-label")
                         yield ProgressBar(total=27000.0, show_eta=False, id="pb-alforria")
@@ -974,7 +1236,7 @@ class ApexFinanceApp(App):
                         yield Static("Acumulado: R$ 150,00 | Aporte: R$ 100,00/mês | Alvo: Junho/2027", id="lbl-presenca")
                         
                     yield Rule()
-                    yield Label("📈 Tabela de Projeção da Alforria (Mês a Mês com 115% CDI)", classes="section-title")
+                    yield Label("📈 Tabela de Projeção da Alforria (Mês a Mês com 115% CDI e Pausas)", classes="section-title")
                     yield DataTable(id="table-proj-alforria")
 
             # ABA 5: CARTÕES & FATURAS
@@ -991,6 +1253,11 @@ class ApexFinanceApp(App):
             with TabPane("🔁 Recorrências & Fixos", id="tab-rec"):
                 with VerticalScroll():
                     yield Label("🔁 Orçamento Base Mensal (R$ 2.234 Salário)", classes="section-title")
+                    with Horizontal():
+                        yield Button("➕ Nova Recorrência", id="btn-add-rec", classes="-primary")
+                        yield Button("✏️ Editar Recorrência [Enter]", id="btn-edit-rec-sel")
+                        yield Button("🗑️ Excluir Recorrência", id="btn-del-rec-sel", classes="-danger")
+                        yield Button("⚡ Pausar / Reativar", id="btn-toggle-rec-sel")
                     yield DataTable(id="table-recorrencias")
 
         yield Footer()
@@ -1008,6 +1275,18 @@ class ApexFinanceApp(App):
         table_tx.zebra_stripes = True
         table_tx.add_columns("ID", "Data", "Descrição", "Valor", "Tipo", "Categoria", "Origem/Fatura", "Parcela")
         
+        # Simulador Impacto Tabular
+        table_sim = self.query_one("#table-sim-impact", DataTable)
+        table_sim.cursor_type = "row"
+        table_sim.zebra_stripes = True
+        table_sim.add_columns("Mês", "Renda Prev.", "Sobra Atual", "Parcela Simulada", "Nova Sobra Livre", "Impacto %", "Veredicto Mensal")
+
+        # Caixinhas CRUD Table
+        table_cx = self.query_one("#table-caixinhas-crud", DataTable)
+        table_cx.cursor_type = "row"
+        table_cx.zebra_stripes = True
+        table_cx.add_columns("ID", "Caixinha / Meta", "Saldo Atual", "Meta Total", "Progresso", "Aporte Padrão", "Aporte Mês Sel.", "Data Alvo")
+
         # Projeção Alforria
         table_proj = self.query_one("#table-proj-alforria", DataTable)
         table_proj.cursor_type = "row"
@@ -1018,7 +1297,7 @@ class ApexFinanceApp(App):
         table_rec = self.query_one("#table-recorrencias", DataTable)
         table_rec.cursor_type = "row"
         table_rec.zebra_stripes = True
-        table_rec.add_columns("ID", "Descrição", "Valor", "Tipo", "Categoria", "Dia Venc.")
+        table_rec.add_columns("ID", "Descrição", "Valor", "Tipo", "Categoria", "Dia Venc.", "Status")
 
         # Cartões de Crédito
         table_cards = self.query_one("#table-cartoes", DataTable)
@@ -1041,16 +1320,16 @@ class ApexFinanceApp(App):
         badge = self.query_one("#month-status-badge", Label)
         hoje_str = str(date.today())[:7]
         if snap:
-            badge.update("🔒 SELADO")
+            badge.update(f"🔒 {mes_ref} (SELADO)")
             badge.classes = "hud-val-mauve"
         elif mes_ref < hoje_str:
-            badge.update("⏳ PASSADO")
+            badge.update(f"⏳ {mes_ref} (PASSADO)")
             badge.classes = "hud-val-yellow"
         elif mes_ref == hoje_str:
-            badge.update("⚡ ATIVO")
+            badge.update(f"⚡ {mes_ref} (MÊS ATUAL)")
             badge.classes = "hud-val-green"
         else:
-            badge.update("🔮 PROJEÇÃO")
+            badge.update(f"🔮 {mes_ref} (PROJEÇÃO)")
             badge.classes = "hud-val-blue"
 
         # Sincroniza seletor de mês na barra superior
@@ -1105,7 +1384,8 @@ class ApexFinanceApp(App):
         recs = c.fetchall()
         total_recs = sum(r[1] for r in recs)
 
-        aporte_alforria = 1000.0
+        # Aporte da Alforria (Lê override específico se configurado, ex: Outubro R$ 0)
+        aporte_alforria = core_engine.obter_aporte_planejado(mes_ref, 1)
         total_saidas = total_fats + total_recs + aporte_alforria
         sobra_depois_contas = renda - total_saidas
 
@@ -1117,7 +1397,8 @@ class ApexFinanceApp(App):
             k_mes = f'{a_cur:04d}-{m_cur:02d}'
             if k_mes == mes_ref:
                 break
-            saldo_alf = saldo_alf * (1 + taxa) + 1000.0
+            ap_mes = core_engine.obter_aporte_planejado(k_mes, 1)
+            saldo_alf = saldo_alf * (1 + taxa) + ap_mes
             if m_cur in [11, 12]:
                 saldo_alf += 600.0
             m_cur += 1
@@ -1220,29 +1501,43 @@ class ApexFinanceApp(App):
                 r['tipo'].title(), r['categoria'] or '-', origem_fat, parc_fmt
             )
 
-        # 4. Caixinhas Progress Bars
-        c.execute("SELECT id, nome, saldo_atual, meta_total, aporte_mensal FROM caixinhas")
-        for cx in c.fetchall():
+        # 4. Caixinhas CRUD Table & Progress Bars
+        table_cx = self.query_one("#table-caixinhas-crud", DataTable)
+        table_cx.clear()
+        c.execute("SELECT id, nome, descricao, meta_total, aporte_mensal, saldo_atual, data_alvo FROM caixinhas ORDER BY id")
+        all_cx = c.fetchall()
+        for cx in all_cx:
+            pct = (cx['saldo_atual'] / cx['meta_total'] * 100) if cx['meta_total'] > 0 else 0
+            ap_mes_sel = core_engine.obter_aporte_planejado(mes_ref, cx['id'])
+            tag_ap_mes = f"[bold green]R$ {ap_mes_sel:,.2f}[/]" if ap_mes_sel > 0 else "[bold red]PAUSADO (R$ 0)[/]"
+            table_cx.add_row(
+                str(cx['id']),
+                cx['nome'],
+                f"[bold cyan]R$ {cx['saldo_atual']:,.2f}[/]",
+                f"R$ {cx['meta_total']:,.2f}",
+                f"{pct:.1f}%",
+                f"R$ {cx['aporte_mensal']:,.2f}",
+                tag_ap_mes,
+                str(cx['data_alvo']) if cx['data_alvo'] else "-"
+            )
+
             if "Alforria" in cx['nome']:
                 pb = self.query_one("#pb-alforria", ProgressBar)
                 pb.progress = cx['saldo_atual']
-                pct = (cx['saldo_atual'] / cx['meta_total']) * 100
                 self.query_one("#lbl-alforria", Static).update(
-                    f"Acumulado: R$ {cx['saldo_atual']:,.2f} / R$ {cx['meta_total']:,.2f} ({pct:.1f}%) | Aporte: R$ {cx['aporte_mensal']:,.2f}/mês"
+                    f"Acumulado: R$ {cx['saldo_atual']:,.2f} / R$ {cx['meta_total']:,.2f} ({pct:.1f}%) | Aporte Padrão: R$ {cx['aporte_mensal']:,.2f}/mês | Mês {mes_ref}: R$ {ap_mes_sel:,.2f}"
                 )
             elif "CG 160" in cx['nome']:
                 pb = self.query_one("#pb-moto", ProgressBar)
                 pb.progress = cx['saldo_atual']
-                pct = (cx['saldo_atual'] / cx['meta_total']) * 100
                 self.query_one("#lbl-moto", Static).update(
-                    f"Acumulado: R$ {cx['saldo_atual']:,.2f} / R$ {cx['meta_total']:,.2f} ({pct:.1f}%) | Aporte: R$ {cx['aporte_mensal']:,.2f}/mês"
+                    f"Acumulado: R$ {cx['saldo_atual']:,.2f} / R$ {cx['meta_total']:,.2f} ({pct:.1f}%) | Aporte Padrão: R$ {cx['aporte_mensal']:,.2f}/mês | Mês {mes_ref}: R$ {ap_mes_sel:,.2f}"
                 )
             elif "Presença" in cx['nome']:
                 pb = self.query_one("#pb-presenca", ProgressBar)
                 pb.progress = cx['saldo_atual']
-                pct = (cx['saldo_atual'] / cx['meta_total']) * 100
                 self.query_one("#lbl-presenca", Static).update(
-                    f"Acumulado: R$ {cx['saldo_atual']:,.2f} / R$ {cx['meta_total']:,.2f} ({pct:.1f}%) | Aporte: R$ {cx['aporte_mensal']:,.2f}/mês"
+                    f"Acumulado: R$ {cx['saldo_atual']:,.2f} / R$ {cx['meta_total']:,.2f} ({pct:.1f}%) | Aporte Padrão: R$ {cx['aporte_mensal']:,.2f}/mês | Mês {mes_ref}: R$ {ap_mes_sel:,.2f}"
                 )
 
         # 5. Projeção Alforria Table
@@ -1260,13 +1555,14 @@ class ApexFinanceApp(App):
         # 6. Recorrências Table
         table_rec = self.query_one("#table-recorrencias", DataTable)
         table_rec.clear()
-        c.execute("SELECT id, descricao, valor, tipo, categoria, dia_vencimento FROM recorrencias ORDER BY id")
+        c.execute("SELECT id, descricao, valor, tipo, categoria, dia_vencimento, ativo FROM recorrencias ORDER BY id")
         for r in c.fetchall():
             cor = "green" if r['tipo'] == 'receita' else "red"
             val_fmt = f"[{cor}]R$ {r['valor']:,.2f}[/]"
+            status_txt = "[green]ATIVO[/green]" if r['ativo'] == 1 else "[yellow]PAUSADO[/yellow]"
             table_rec.add_row(
                 str(r['id']), r['descricao'], val_fmt, r['tipo'].upper(),
-                r['categoria'] or '-', f"Todo dia {r['dia_vencimento']}"
+                r['categoria'] or '-', f"Todo dia {r['dia_vencimento']}", status_txt
             )
 
         # 7. Cartões de Crédito Table
@@ -1346,23 +1642,40 @@ class ApexFinanceApp(App):
         lbl_v = self.query_one("#sim-verdict", Static)
         lbl_v.update(f"⚡ VEREDICTO: {res['veredicto']}")
         
-        # Gráfico comparativo
-        plot_sim = self.query_one("#chart-sim", PlotextPlot)
-        plot_sim.plt.clear_data()
-        plot_sim.plt.clear_figure()
+        # Tabela comparativa de impacto financeiro
+        table_sim = self.query_one("#table-sim-impact", DataTable)
+        table_sim.clear()
         
-        meses = [b['label'].replace("/", "-") for b in res['baseline']]
-        x_pts = list(range(len(meses)))
-        y_base = [b['saldo_final'] for b in res['baseline']]
-        y_sim = [s['saldo_final'] for s in res['simulado']]
-        
-        plot_sim.plt.theme("dark")
-        plot_sim.plt.title("Curva de Fluxo: Original (Azul) vs. Com Nova Compra (Rosa)")
-        plot_sim.plt.plot(x_pts, y_base, label="Normal", color="cyan", marker="dot")
-        plot_sim.plt.plot(x_pts, y_sim, label="Simulado", color="magenta", marker="dot")
-        plot_sim.plt.xticks(x_pts, meses)
-        plot_sim.plt.plotsize(None, 14)
-        plot_sim.refresh()
+        for b, s in zip(res['baseline'], res['simulado']):
+            m_label = b['label']
+            renda_prev = b['receitas']
+            sobra_base = b['saldo_final']
+            sobra_sim = s['saldo_final']
+            parcela_mes = s.get('parcela', val / parc if parc > 0 else val)
+            
+            # Variação / impacto
+            diff = sobra_base - sobra_sim
+            pct_impacto = (diff / sobra_base * 100) if sobra_base > 0 else 0
+            
+            if sobra_sim >= 200:
+                cor_sobra = "green"
+                veredito = "[bold black on green] TRANQUILO [/]"
+            elif sobra_sim >= 0:
+                cor_sobra = "yellow"
+                veredito = "[bold black on yellow] APERTADO [/]"
+            else:
+                cor_sobra = "red"
+                veredito = "[bold white on red] DÉFICIT DE CAIXA [/]"
+
+            table_sim.add_row(
+                m_label,
+                f"R$ {renda_prev:,.2f}",
+                f"R$ {sobra_base:,.2f}",
+                f"[yellow]R$ {parcela_mes:,.2f}[/yellow]",
+                f"[{cor_sobra}]R$ {sobra_sim:,.2f}[/]",
+                f"[dim]{pct_impacto:.1f}%[/dim]",
+                veredito
+            )
 
     # Eventos de botões e atalhos
     def on_button_pressed(self, event: Button.Pressed) -> None:
@@ -1411,6 +1724,24 @@ class ApexFinanceApp(App):
             self.app.push_screen(ReconcileModal(), callback=self.on_modal_closed)
         elif bid in ("btn-open-adj-fat", "btn-adj-caixa", "btn-adj-nubank"):
             self.app.push_screen(AdjustInvoiceModal(), callback=self.on_modal_closed)
+        elif bid == "btn-add-cx":
+            self.push_screen(AddEditCaixinhaModal(), callback=self.on_modal_closed)
+        elif bid == "btn-edit-cx-sel":
+            self.action_edit_cx()
+        elif bid == "btn-del-cx-sel":
+            self.action_delete_cx()
+        elif bid == "btn-aporte-cx-sel":
+            self.action_aporte_cx()
+        elif bid == "btn-ajustar-aporte-cx-sel":
+            self.action_ajustar_aporte_cx()
+        elif bid == "btn-add-rec":
+            self.push_screen(AddEditRecorrenciaModal(), callback=self.on_modal_closed)
+        elif bid == "btn-edit-rec-sel":
+            self.action_edit_rec()
+        elif bid == "btn-del-rec-sel":
+            self.action_delete_rec()
+        elif bid == "btn-toggle-rec-sel":
+            self.action_toggle_rec()
         elif bid == "btn-run-sim":
             self.run_simulation()
         elif bid == "btn-commit-sim":
@@ -1467,6 +1798,122 @@ class ApexFinanceApp(App):
             if row:
                 card_id = int(row[0])
                 self.push_screen(EditCardModal(card_id), callback=self.on_modal_closed)
+        elif event.data_table.id == "table-caixinhas-crud":
+            row = event.data_table.get_row(event.row_key)
+            if row:
+                cx_id = int(row[0])
+                self.push_screen(AddEditCaixinhaModal(cx_id), callback=self.on_modal_closed)
+        elif event.data_table.id == "table-recorrencias":
+            row = event.data_table.get_row(event.row_key)
+            if row:
+                rec_id = int(row[0])
+                self.push_screen(AddEditRecorrenciaModal(rec_id), callback=self.on_modal_closed)
+
+    def action_edit_cx(self) -> None:
+        table = self.query_one("#table-caixinhas-crud", DataTable)
+        if table.row_count > 0:
+            try:
+                row_key, _ = table.coordinate_to_cell_key(table.cursor_coordinate)
+                row = table.get_row(row_key)
+                cx_id = int(row[0])
+                self.push_screen(AddEditCaixinhaModal(cx_id), callback=self.on_modal_closed)
+            except Exception:
+                self.notify("Selecione uma caixinha para editar.", severity="warning")
+        else:
+            self.notify("Nenhuma caixinha cadastrada.", severity="warning")
+
+    def action_delete_cx(self) -> None:
+        table = self.query_one("#table-caixinhas-crud", DataTable)
+        if table.row_count > 0:
+            try:
+                row_key, _ = table.coordinate_to_cell_key(table.cursor_coordinate)
+                row = table.get_row(row_key)
+                cx_id = int(row[0])
+                cx_nome = str(row[1])
+                core_engine.deletar_caixinha(cx_id)
+                self.notify(f"✔ Caixinha '{cx_nome}' excluída!", severity="information")
+                self.refresh_all_data()
+            except Exception as e:
+                self.notify(f"Erro ao excluir caixinha: {e}", severity="error")
+        else:
+            self.notify("Nenhuma caixinha cadastrada.", severity="warning")
+
+    def action_aporte_cx(self) -> None:
+        table = self.query_one("#table-caixinhas-crud", DataTable)
+        cx_id = 1
+        if table.row_count > 0:
+            try:
+                row_key, _ = table.coordinate_to_cell_key(table.cursor_coordinate)
+                row = table.get_row(row_key)
+                cx_id = int(row[0])
+            except Exception:
+                pass
+        self.push_screen(AporteManualModal(cx_id), callback=self.on_modal_closed)
+
+    def action_ajustar_aporte_cx(self) -> None:
+        table = self.query_one("#table-caixinhas-crud", DataTable)
+        cx_id = 1
+        if table.row_count > 0:
+            try:
+                row_key, _ = table.coordinate_to_cell_key(table.cursor_coordinate)
+                row = table.get_row(row_key)
+                cx_id = int(row[0])
+            except Exception:
+                pass
+        mes_ref = self.get_selected_month_str()
+        self.push_screen(AjustarAporteMesModal(caixinha_id=cx_id, mes_ref=mes_ref), callback=self.on_modal_closed)
+
+    def action_edit_rec(self) -> None:
+        table = self.query_one("#table-recorrencias", DataTable)
+        if table.row_count > 0:
+            try:
+                row_key, _ = table.coordinate_to_cell_key(table.cursor_coordinate)
+                row = table.get_row(row_key)
+                rec_id = int(row[0])
+                self.push_screen(AddEditRecorrenciaModal(rec_id), callback=self.on_modal_closed)
+            except Exception:
+                self.notify("Selecione uma recorrência para editar.", severity="warning")
+        else:
+            self.notify("Nenhuma recorrência cadastrada.", severity="warning")
+
+    def action_delete_rec(self) -> None:
+        table = self.query_one("#table-recorrencias", DataTable)
+        if table.row_count > 0:
+            try:
+                row_key, _ = table.coordinate_to_cell_key(table.cursor_coordinate)
+                row = table.get_row(row_key)
+                rec_id = int(row[0])
+                rec_desc = str(row[1])
+                core_engine.deletar_recorrencia(rec_id)
+                self.notify(f"✔ Recorrência '{rec_desc}' excluída!", severity="information")
+                self.refresh_all_data()
+            except Exception as e:
+                self.notify(f"Erro ao excluir recorrência: {e}", severity="error")
+        else:
+            self.notify("Nenhuma recorrência cadastrada.", severity="warning")
+
+    def action_toggle_rec(self) -> None:
+        table = self.query_one("#table-recorrencias", DataTable)
+        if table.row_count > 0:
+            try:
+                row_key, _ = table.coordinate_to_cell_key(table.cursor_coordinate)
+                row = table.get_row(row_key)
+                rec_id = int(row[0])
+                
+                conn = core_engine.get_connection()
+                r = conn.execute("SELECT ativo, descricao FROM recorrencias WHERE id = ?", (rec_id,)).fetchone()
+                novo_st = 0 if r['ativo'] == 1 else 1
+                conn.execute("UPDATE recorrencias SET ativo = ? WHERE id = ?", (novo_st, rec_id))
+                conn.commit()
+                conn.close()
+                
+                status_label = "REATIVADA" if novo_st == 1 else "PAUSADA"
+                self.notify(f"✔ Recorrência '{r['descricao']}' {status_label}!", severity="information")
+                self.refresh_all_data()
+            except Exception as e:
+                self.notify(f"Erro ao alterar status da recorrência: {e}", severity="error")
+        else:
+            self.notify("Nenhuma recorrência cadastrada.", severity="warning")
 
     def action_edit_tx(self) -> None:
         table = self.query_one("#table-transactions", DataTable)

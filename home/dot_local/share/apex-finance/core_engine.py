@@ -125,6 +125,14 @@ def init_database():
         status TEXT DEFAULT 'selado', -- 'selado', 'aberto'
         snapshot_json TEXT
     );
+
+    CREATE TABLE IF NOT EXISTS aportes_planejados (
+        mes_referencia TEXT NOT NULL,
+        caixinha_id INTEGER NOT NULL REFERENCES caixinhas(id),
+        valor REAL NOT NULL,
+        motivo TEXT,
+        PRIMARY KEY (mes_referencia, caixinha_id)
+    );
     """)
 
     # Populate defaults if empty
@@ -574,9 +582,47 @@ def deletar_caixinha(caixinha_id):
     c = conn.cursor()
     c.execute("DELETE FROM transacoes WHERE caixinha_id = ?", (caixinha_id,))
     c.execute("DELETE FROM caixinhas WHERE id = ?", (caixinha_id,))
+    c.execute("DELETE FROM aportes_planejados WHERE caixinha_id = ?", (caixinha_id,))
     conn.commit()
     conn.close()
     return True
+
+def definir_aporte_planejado(mes_referencia, caixinha_id, valor, motivo=""):
+    """
+    Define ou altera o aporte planejado de uma caixinha para um mês específico.
+    Permite modularidade total (ex: R$ 0,00 em Outubro e R$ 1.000,00 em Novembro).
+    """
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("""
+        INSERT INTO aportes_planejados (mes_referencia, caixinha_id, valor, motivo)
+        VALUES (?, ?, ?, ?)
+        ON CONFLICT(mes_referencia, caixinha_id) DO UPDATE SET valor = excluded.valor, motivo = excluded.motivo
+    """, (mes_referencia, caixinha_id, float(valor), motivo))
+    conn.commit()
+    conn.close()
+    return True
+
+def obter_aporte_planejado(mes_referencia, caixinha_id):
+    """
+    Obtém o aporte planejado para um mês específico.
+    Se houver override configurado, retorna ele. Caso contrário, retorna o padrão da caixinha.
+    """
+    conn = get_connection()
+    c = conn.cursor()
+    try:
+        c.execute("SELECT valor FROM aportes_planejados WHERE mes_referencia = ? AND caixinha_id = ?", (mes_referencia, caixinha_id))
+        row = c.fetchone()
+        if row is not None:
+            val = row['valor']
+            conn.close()
+            return float(val)
+    except Exception:
+        pass
+    c.execute("SELECT aporte_mensal FROM caixinhas WHERE id = ?", (caixinha_id,))
+    cx = c.fetchone()
+    conn.close()
+    return float(cx['aporte_mensal']) if cx else 0.0
 
 # CRUD RECORRÊNCIAS
 def criar_recorrencia(descricao, valor, tipo, categoria, dia_vencimento=5):
@@ -786,9 +832,10 @@ def aplicar_rendimento_mensal_caixinhas():
 def projetar_alforria(meses=22, aporte_mensal=1000.0, taxa_mensal=0.0095, bonus_13=2500.0):
     conn = get_connection()
     c = conn.cursor()
-    c.execute("SELECT saldo_atual FROM caixinhas WHERE nome LIKE '%Alforria%'")
+    c.execute("SELECT id, saldo_atual, aporte_mensal FROM caixinhas WHERE nome LIKE '%Alforria%'")
     row = c.fetchone()
     saldo_inicial = row['saldo_atual'] if row else 1000.0
+    cx_id = row['id'] if row else 1
     conn.close()
     
     projecao = []
@@ -801,16 +848,20 @@ def projetar_alforria(meses=22, aporte_mensal=1000.0, taxa_mensal=0.0095, bonus_
         a_curr = dt_ref.year + (m_curr - 1) // 12
         m_curr = ((m_curr - 1) % 12) + 1
         label = f"{calendar.month_abbr[m_curr]}/{str(a_curr)[2:]}"
+        mes_fatura_str = f"{a_curr:04d}-{m_curr:02d}"
+        
+        # Respeita o aporte planejado específico para este mês
+        ap_mes = obter_aporte_planejado(mes_fatura_str, cx_id)
         
         rendimento = saldo * taxa_mensal
         extra = (bonus_13 / 2) if m_curr == 12 else 0.0
-        saldo = saldo + rendimento + aporte_mensal + extra
+        saldo = saldo + rendimento + ap_mes + extra
         
         projecao.append({
             "mes_num": m,
             "mes_ano": label,
             "rendimento": round(rendimento, 2),
-            "aporte": aporte_mensal,
+            "aporte": ap_mes,
             "extra": extra,
             "saldo": round(saldo, 2)
         })
