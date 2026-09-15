@@ -10,11 +10,19 @@ export interface HudMetricas {
 export interface Conta {
   id: number;
   nome: string;
-  tipo: 'corrente' | 'investimento' | 'cartao_credito';
+  tipo: 'corrente' | 'investimento' | 'cartao_credito' | 'carteira';
+  instituicao?: string;
   saldo_atual: number;
-  limite?: number;
-  dia_fechamento?: number;
-  dia_vencimento?: number;
+  saldo?: number;
+}
+
+export interface Cartao {
+  id: number;
+  nome: string;
+  instituicao: string;
+  limite: number;
+  dia_fechamento: number;
+  dia_vencimento: number;
 }
 
 export interface Fatura {
@@ -25,7 +33,7 @@ export interface Fatura {
   mes_fatura: string;
   total_fatura: number;
   total_pago: number;
-  status: 'aberta' | 'fechada' | 'paga';
+  status: 'aberta' | 'fechada' | 'paga' | 'zerada';
 }
 
 export interface Transacao {
@@ -35,9 +43,8 @@ export interface Transacao {
   valor: number;
   tipo: 'receita' | 'despesa';
   categoria: string;
-  conta_id: number;
   conta_nome: string;
-  serie_parcelamento_id?: string;
+  serie_parcelamento_id?: string | null;
   parcela_atual?: number;
   total_parcelas?: number;
   mes_fatura?: string;
@@ -50,6 +57,17 @@ export interface DespesaFixa {
   categoria: string;
   dia_vencimento: number;
   ativa: number | boolean;
+  tipo?: string;
+}
+
+export interface Caixinha {
+  id: number;
+  nome: string;
+  descricao: string;
+  meta_total: number;
+  aporte_mensal: number;
+  saldo_atual: number;
+  data_alvo?: string;
 }
 
 export interface WishlistItem {
@@ -58,7 +76,7 @@ export interface WishlistItem {
   categoria: string;
   valor_estimado: number;
   parcelas_sugeridas: number;
-  prioridade: 'Baixa' | 'Media' | 'Alta';
+  prioridade: 'Baixa' | 'Média' | 'Alta' | 'Estratégica';
   condicao_compra?: string;
   status: 'planejado' | 'comprado' | 'desistido';
   link_ou_obs?: string;
@@ -82,4 +100,11 @@ export interface AlforriaMes {
   aporte: number;
   saldo_final: number;
   rendimento_mensal_futuro: number;
+}
+
+export interface AportePlanejado {
+  mes: string;
+  caixinha_id: number;
+  valor: number;
+  nota: string;
 }

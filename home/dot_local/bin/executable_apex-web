@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# APEX Finance Web Cockpit Launcher
+if [ -d "$HOME/.local/share/mise/installs/python/3.12/bin" ]; then
+    export PATH="$HOME/.local/share/mise/installs/python/3.12/bin:$PATH"
+fi
+
+echo "🚀 Iniciando APEX Finance Web Cockpit em http://localhost:8000"
+echo "Para acessar no navegador: http://localhost:8000"
+
+cd "$HOME/.local/share/apex-finance/web/backend"
+exec python3 server.py

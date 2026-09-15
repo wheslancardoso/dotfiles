@@ -1,11 +1,12 @@
 import type { 
-  HudMetricas, Conta, Fatura, Transacao, DespesaFixa, 
-  WishlistItem, TimelineMes, AlforriaMes 
+  HudMetricas, Conta, Cartao, Fatura, Transacao, DespesaFixa, 
+  WishlistItem, TimelineMes, AlforriaMes, Caixinha, AportePlanejado 
 } from './types';
 
 const API_BASE = '/api';
 
 export const api = {
+  // DASHBOARD
   async getDashboard(mes?: string): Promise<{
     mes_referencia: string;
     hud: HudMetricas;
@@ -18,11 +19,67 @@ export const api = {
     return res.json();
   },
 
+  // CONTAS
   async getContas(): Promise<Conta[]> {
     const res = await fetch(`${API_BASE}/contas`);
     return res.json();
   },
+  async criarConta(conta: { nome: string; tipo: string; instituicao: string; saldo: number }) {
+    const res = await fetch(`${API_BASE}/contas`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(conta)
+    });
+    return res.json();
+  },
+  async editarConta(id: number, conta: { nome: string; tipo: string; instituicao: string; saldo: number }) {
+    const res = await fetch(`${API_BASE}/contas/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(conta)
+    });
+    return res.json();
+  },
+  async deletarConta(id: number) {
+    const res = await fetch(`${API_BASE}/contas/${id}`, { method: 'DELETE' });
+    return res.json();
+  },
 
+  // CARTÕES
+  async getCartoes(): Promise<Cartao[]> {
+    const res = await fetch(`${API_BASE}/cartoes`);
+    return res.json();
+  },
+  async criarCartao(data: { nome: string; instituicao: string; limite: number; dia_fechamento: number; dia_vencimento: number }) {
+    const res = await fetch(`${API_BASE}/cartoes`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    return res.json();
+  },
+  async editarCartao(id: number, data: { nome: string; instituicao: string; limite: number; dia_fechamento: number; dia_vencimento: number }) {
+    const res = await fetch(`${API_BASE}/cartoes/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    return res.json();
+  },
+  async deletarCartao(id: number) {
+    const res = await fetch(`${API_BASE}/cartoes/${id}`, { method: 'DELETE' });
+    return res.json();
+  },
+  async reajustarFatura(cartaoId: number, mesFatura: string, novoValorTotal: number, motivo: string) {
+    const res = await fetch(`${API_BASE}/cartoes/reajustar`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ cartao_id: cartaoId, mes_fatura: mesFatura, novo_valor_total: novoValorTotal, motivo })
+    });
+    return res.json();
+  },
+
+  // TRANSAÇÕES
   async getTransacoes(mes?: string, contaId?: number): Promise<Transacao[]> {
     let url = `${API_BASE}/transacoes?limite=150`;
     if (mes) url += `&mes=${mes}`;
@@ -30,7 +87,6 @@ export const api = {
     const res = await fetch(url);
     return res.json();
   },
-
   async criarTransacao(data: {
     descricao: string;
     valor: number;
@@ -39,7 +95,6 @@ export const api = {
     conta_id: number;
     data_transacao?: string;
     num_parcelas?: number;
-    recorrente?: boolean;
   }) {
     const res = await fetch(`${API_BASE}/transacoes`, {
       method: 'POST',
@@ -49,7 +104,21 @@ export const api = {
     if (!res.ok) throw new Error((await res.json()).detail || 'Erro ao criar transação');
     return res.json();
   },
-
+  async editarTransacao(id: number, data: {
+    descricao: string;
+    valor: number;
+    tipo: string;
+    categoria: string;
+    data_transacao: string;
+  }) {
+    const res = await fetch(`${API_BASE}/transacoes/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error((await res.json()).detail || 'Erro ao editar transação');
+    return res.json();
+  },
   async deletarTransacao(id: number, apagarSerie = true) {
     const res = await fetch(`${API_BASE}/transacoes/${id}?apagar_serie=${apagarSerie}`, {
       method: 'DELETE',
@@ -58,12 +127,12 @@ export const api = {
     return res.json();
   },
 
+  // FATURAS
   async getFaturas(mes?: string): Promise<Fatura[]> {
     const url = mes ? `${API_BASE}/faturas?mes=${mes}` : `${API_BASE}/faturas`;
     const res = await fetch(url);
     return res.json();
   },
-
   async pagarFatura(cartaoId: number, mesFatura: string, contaOrigemId: number) {
     const res = await fetch(`${API_BASE}/faturas/pagar`, {
       method: 'POST',
@@ -78,17 +147,18 @@ export const api = {
     return res.json();
   },
 
+  // RECORRÊNCIAS / DESPESAS FIXAS
   async getDespesasFixas(): Promise<DespesaFixa[]> {
     const res = await fetch(`${API_BASE}/despesas-fixas`);
     return res.json();
   },
-
   async criarDespesaFixa(data: {
     descricao: string;
     valor: number;
     categoria: string;
     dia_vencimento: number;
-    ativa: boolean;
+    tipo?: string;
+    ativo?: number;
   }) {
     const res = await fetch(`${API_BASE}/despesas-fixas`, {
       method: 'POST',
@@ -97,21 +167,80 @@ export const api = {
     });
     return res.json();
   },
-
-  async toggleDespesaFixa(id: number) {
-    const res = await fetch(`${API_BASE}/despesas-fixas/${id}/toggle`, {
-      method: 'PUT',
-    });
-    return res.json();
-  },
-
-  async deletarDespesaFixa(id: number) {
+  async editarDespesaFixa(id: number, data: {
+    descricao: string;
+    valor: number;
+    categoria: string;
+    dia_vencimento: number;
+    tipo?: string;
+    ativo?: number;
+  }) {
     const res = await fetch(`${API_BASE}/despesas-fixas/${id}`, {
-      method: 'DELETE',
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
     });
     return res.json();
   },
+  async toggleDespesaFixa(id: number) {
+    const res = await fetch(`${API_BASE}/despesas-fixas/${id}/toggle`, { method: 'PUT' });
+    return res.json();
+  },
+  async deletarDespesaFixa(id: number) {
+    const res = await fetch(`${API_BASE}/despesas-fixas/${id}`, { method: 'DELETE' });
+    return res.json();
+  },
 
+  // CAIXINHAS & ALFORRIA
+  async getCaixinhas(): Promise<Caixinha[]> {
+    const res = await fetch(`${API_BASE}/caixinhas`);
+    return res.json();
+  },
+  async criarCaixinha(cx: { nome: string; descricao: string; meta_total: number; aporte_mensal: number; saldo_atual: number; data_alvo?: string }) {
+    const res = await fetch(`${API_BASE}/caixinhas`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cx)
+    });
+    return res.json();
+  },
+  async editarCaixinha(id: number, cx: { nome: string; descricao: string; meta_total: number; aporte_mensal: number; saldo_atual: number; data_alvo?: string }) {
+    const res = await fetch(`${API_BASE}/caixinhas/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cx)
+    });
+    return res.json();
+  },
+  async deletarCaixinha(id: number) {
+    const res = await fetch(`${API_BASE}/caixinhas/${id}`, { method: 'DELETE' });
+    return res.json();
+  },
+  async aportarCaixinha(caixinhaId: number, contaOrigemId: number, valor: number, dataAporte?: string) {
+    const res = await fetch(`${API_BASE}/caixinhas/aporte`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ caixinha_id: caixinhaId, conta_origem_id: contaOrigemId, valor, data_aporte: dataAporte })
+    });
+    return res.json();
+  },
+  async definirAportePlanejado(mes: string, caixinhaId: number, valor: number, motivo = '') {
+    const res = await fetch(`${API_BASE}/caixinhas/aporte-planejado`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mes_referencia: mes, caixinha_id: caixinhaId, valor, motivo }),
+    });
+    return res.json();
+  },
+  async getAlforria(): Promise<{
+    projecao: AlforriaMes[];
+    aportes_planejados: AportePlanejado[];
+  }> {
+    const res = await fetch(`${API_BASE}/alforria`);
+    return res.json();
+  },
+
+  // SIMULADOR
   async getSimulador(params?: {
     mes_inicio?: string;
     meses_a_frente?: number;
@@ -142,37 +271,28 @@ export const api = {
     const res = await fetch(`${API_BASE}/simulador?${q.toString()}`);
     return res.json();
   },
-
-  async getAlforria(params?: {
-    saldo_inicial?: number;
-    aporte_padrao?: number;
-    taxa_cdi?: number;
-  }): Promise<{
-    projecao: AlforriaMes[];
-    aportes_planejados: { mes: string; valor: number; nota: string }[];
-  }> {
-    const q = new URLSearchParams();
-    if (params?.saldo_inicial !== undefined) q.set('saldo_inicial', String(params.saldo_inicial));
-    if (params?.aporte_padrao !== undefined) q.set('aporte_padrao', String(params.aporte_padrao));
-    if (params?.taxa_cdi !== undefined) q.set('taxa_cdi', String(params.taxa_cdi));
-    const res = await fetch(`${API_BASE}/alforria?${q.toString()}`);
-    return res.json();
-  },
-
-  async definirAportePlanejado(mes: string, valor: number, nota = '') {
-    const res = await fetch(`${API_BASE}/alforria/aporte-planejado`, {
+  async efetivarSimulacao(data: {
+    descricao: string;
+    valor_total: number;
+    parcelas: number;
+    tipo: string;
+    cartao_id: number;
+    conta_id: number;
+    categoria: string;
+  }) {
+    const res = await fetch(`${API_BASE}/simulador/efetivar`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ mes, valor, nota }),
+      body: JSON.stringify(data)
     });
     return res.json();
   },
 
+  // WISHLIST
   async getWishlist(): Promise<WishlistItem[]> {
     const res = await fetch(`${API_BASE}/wishlist`);
     return res.json();
   },
-
   async criarWishlist(item: {
     item: string;
     categoria: string;
@@ -189,14 +309,26 @@ export const api = {
     });
     return res.json();
   },
-
-  async deletarWishlist(id: number) {
+  async editarWishlist(id: number, item: {
+    item: string;
+    categoria: string;
+    valor_estimado: number;
+    parcelas_sugeridas: number;
+    prioridade: string;
+    condicao_compra?: string;
+    link_ou_obs?: string;
+  }) {
     const res = await fetch(`${API_BASE}/wishlist/${id}`, {
-      method: 'DELETE',
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(item),
     });
     return res.json();
   },
-
+  async deletarWishlist(id: number) {
+    const res = await fetch(`${API_BASE}/wishlist/${id}`, { method: 'DELETE' });
+    return res.json();
+  },
   async efetivarWishlist(id: number, contaId: number, numParcelas: number, dataCompra?: string) {
     const res = await fetch(`${API_BASE}/wishlist/${id}/efetivar`, {
       method: 'POST',
@@ -211,11 +343,21 @@ export const api = {
     return res.json();
   },
 
+  // EXPORTAÇÕES
   async exportarExcel(): Promise<{ status: string; caminho: string }> {
-    const res = await fetch(`${API_BASE}/exportar/excel`, { method: 'POST' });
-    return res.json();
+    const res = await fetch(`${API_BASE}/exportar/excel`);
+    const data = await res.json();
+    
+    // Dispara download automático no navegador
+    const a = document.createElement('a');
+    a.href = `${API_BASE}/exportar/excel/download`;
+    a.download = 'Planilha_Alforria_Homem_Rocha.xlsx';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    
+    return data;
   },
-
   async exportarIA(): Promise<{ status: string; arquivos: string[] }> {
     const res = await fetch(`${API_BASE}/exportar/contexto-ia`, { method: 'POST' });
     return res.json();

@@ -16,13 +16,18 @@ __pycache__/
 .pytest_cache/
 node_modules/
 
-# Ignorar arquivos sensíveis
+# Ignorar arquivos sensíveis e bancos de dados pessoais
 .env*
 !.env.example
 .git-credentials
 *.secret*
 *.token*
 *.key*
+*.db
+*.sqlite
+*.sqlite3
+home/dot_local/share/apex-finance/data/
+*.xlsx
 
 # Ignorar wallpapers pesados locais não rastreados (armazenados em nuvem/disco local)
 home/pictures/wallpapers/*

@@ -674,6 +674,27 @@ setup_extras() {
         ok "Addon Persistent Auth Vault do Anki instalado com sucesso!"
     fi
 
+    # Blindagem e Instalação do APEX Finance (Cockpit Financeiro Soberano)
+    info "Configurando APEX Finance (Cockpit Financeiro, Web e Banco de Dados)..."
+    local apex_dir="$HOME/.local/share/apex-finance"
+    mkdir -p "$apex_dir/data" "$HOME/backups/finance"
+    
+    # Restauração automática do banco SQLite mais recente a partir de /mnt/dados se a base local estiver vazia
+    local db_local="$apex_dir/data/finance.db"
+    if [ ! -s "$db_local" ]; then
+        local latest_backup
+        latest_backup=$(find "/mnt/dados/01_Pessoal_e_Vida/Backups/Finance" -name "finance_backup_*.db" 2>/dev/null | sort -r | head -n 1)
+        if [ -n "$latest_backup" ] && [ -f "$latest_backup" ]; then
+            info "Restaurando backup mais recente do APEX Finance de /mnt/dados: $(basename "$latest_backup")..."
+            cp -f "$latest_backup" "$db_local"
+            ok "Base do APEX Finance restaurada com sucesso a partir de /mnt/dados!"
+        fi
+    fi
+
+    # Garantir permissões de execução dos binários do APEX
+    chmod +x "$HOME/.local/bin/apex-finance" "$HOME/.local/bin/apex-finance-backup" "$HOME/.local/bin/apex-web" 2>/dev/null || true
+    ok "APEX Finance provisionado e pronto para uso (TUI, Web e Backups)."
+
     ok "Associações padrão e extras configurados."
 }
 

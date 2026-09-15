@@ -1532,7 +1532,7 @@ class ApexFinanceApp(App):
         ano_sel, m_sel = map(int, mes_ref.split('-'))
         renda = 2234.0
         desc_renda = "Salário AGR"
-        if m_sel in [11, 12]:
+        if False and m_sel in [11, 12]:
             renda += 1100.0
             desc_renda = "Salário AGR + 13º Salário"
 

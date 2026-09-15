@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   LayoutDashboard, CreditCard, Receipt, Repeat, 
-  Rocket, History, BookmarkCheck, Plus, Trash2, 
+  Rocket, History, BookmarkCheck, Plus, Trash2, Pencil, 
   CheckCircle, ArrowUpRight, ArrowDownRight, RefreshCw, 
   FileSpreadsheet, Sparkles, TrendingUp, 
   Calculator, Search, ShieldCheck, Zap
@@ -10,6 +10,7 @@ import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, 
   ResponsiveContainer
 } from 'recharts';
+import { CustomMonthPicker } from './components/CustomMonthPicker';
 import { api } from './api';
 import type { 
   HudMetricas, Conta, Fatura, Transacao, DespesaFixa, 
@@ -22,7 +23,7 @@ export function App() {
   const [toast, setToast] = useState<string | null>(null);
 
   // Dados centrais
-  const [mesRef, setMesRef] = useState<string>('2026-10');
+  const [mesRef, setMesRef] = useState<string>('2026-09');
   const [hud, setHud] = useState<HudMetricas | null>(null);
   const [contas, setContas] = useState<Conta[]>([]);
   const [faturas, setFaturas] = useState<Fatura[]>([]);
@@ -42,6 +43,17 @@ export function App() {
   const [showModalWish, setShowModalWish] = useState(false);
   const [showModalEfetivarWish, setShowModalEfetivarWish] = useState<WishlistItem | null>(null);
   const [showModalFixa, setShowModalFixa] = useState(false);
+  const [editingFixaId, setEditingFixaId] = useState<number | null>(null);
+  const [editingTxId, setEditingTxId] = useState<number | null>(null);
+  const [editingWishId, setEditingWishId] = useState<number | null>(null);
+  const [faturasMesRef, setFaturasMesRef] = useState<string>('2026-10');
+  const [faturasExibidas, setFaturasExibidas] = useState<Fatura[]>([]);
+  const [showModalEfetivarSim, setShowModalEfetivarSim] = useState(false);
+  const [simEfetivarContaId, setSimEfetivarContaId] = useState<string>('');
+  const [extratoMesFiltro, setExtratoMesFiltro] = useState<string>('TODOS');
+  const [showModalReajuste, setShowModalReajuste] = useState<Fatura | null>(null);
+  const [reajusteNovoValor, setReajusteNovoValor] = useState<string>('');
+  const [reajusteMotivo, setReajusteMotivo] = useState<string>('Ajuste para conciliar com app bancário');
 
   // Forms
   const [txForm, setTxForm] = useState({
@@ -77,16 +89,19 @@ export function App() {
     descricao: '',
     valor: '',
     parcelas: 6,
-    mes_inicio: '2026-10'
+    mes_inicio: '2026-09'
   });
   const [simResult, setSimResult] = useState<any>(null);
 
-  // Oráculo PIX vs Cartão
+  // Oráculo de Compras & Decisão Financeira
   const [oraculoForm, setOraculoForm] = useState({
     item: 'Equipamento / Peça',
     precoPix: '450',
     precoCartao: '500',
     parcelas: 5,
+    temJuros: false,
+    taxaJurosMensal: '2.5', // % a.m. se tiver juros
+    valorParcelaComJuros: '', // opcional: se o usuário já tem o valor exato da parcela (ex: 10x de 58,90)
   });
 
   // Carregar dados principais
@@ -98,7 +113,7 @@ export function App() {
       setContas(dash.contas);
       setFaturas(dash.faturas);
       
-      const txs = await api.getTransacoes(mesRef);
+      const txs = await api.getTransacoes(extratoMesFiltro === "TODOS" ? undefined : extratoMesFiltro);
       setTransacoes(txs);
 
       const fix = await api.getDespesasFixas();
@@ -128,25 +143,48 @@ export function App() {
     carregarTudo();
   }, [mesRef]);
 
+  useEffect(() => {
+    api.getFaturas(faturasMesRef).then(setFaturasExibidas).catch(console.error);
+  }, [faturasMesRef]);
+
+  useEffect(() => {
+    api.getTransacoes(extratoMesFiltro === "TODOS" ? undefined : extratoMesFiltro)
+      .then(setTransacoes)
+      .catch(console.error);
+  }, [extratoMesFiltro]);
+
   const notificar = (msg: string) => {
     setToast(msg);
     setTimeout(() => setToast(null), 4000);
   };
 
   // Handlers de Criação / Ações
-  const handleCriarTransacao = async (e: React.FormEvent) => {
+  const handleSalvarTransacao = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await api.criarTransacao({
-        descricao: txForm.descricao,
-        valor: parseFloat(txForm.valor),
-        tipo: txForm.tipo,
-        categoria: txForm.categoria,
-        conta_id: parseInt(txForm.conta_id),
-        data_transacao: txForm.data_transacao,
-        num_parcelas: parseInt(String(txForm.num_parcelas)),
-      });
+      if (editingTxId) {
+        await api.editarTransacao(editingTxId, {
+          descricao: txForm.descricao,
+          valor: parseFloat(txForm.valor),
+          tipo: txForm.tipo,
+          categoria: txForm.categoria,
+          data_transacao: txForm.data_transacao,
+        });
+        notificar("Transação atualizada com sucesso!");
+      } else {
+        await api.criarTransacao({
+          descricao: txForm.descricao,
+          valor: parseFloat(txForm.valor),
+          tipo: txForm.tipo,
+          categoria: txForm.categoria,
+          conta_id: parseInt(txForm.conta_id),
+          data_transacao: txForm.data_transacao,
+          num_parcelas: parseInt(String(txForm.num_parcelas)),
+        });
+        notificar("Transação registrada com sucesso!");
+      }
       setShowModalTx(false);
+      setEditingTxId(null);
       setTxForm({
         descricao: '',
         valor: '',
@@ -156,11 +194,24 @@ export function App() {
         data_transacao: new Date().toISOString().split('T')[0],
         num_parcelas: 1
       });
-      notificar("Transação registrada com sucesso!");
       carregarTudo();
     } catch (err: any) {
       notificar("Erro: " + err.message);
     }
+  };
+
+  const abrirEdicaoTransacao = (tx: Transacao) => {
+    setEditingTxId(tx.id);
+    setTxForm({
+      descricao: tx.descricao,
+      valor: String(tx.valor),
+      tipo: tx.tipo,
+      categoria: tx.categoria,
+      conta_id: contas[0]?.id ? String(contas[0].id) : '',
+      data_transacao: tx.data_transacao || new Date().toISOString().split('T')[0],
+      num_parcelas: tx.total_parcelas || 1
+    });
+    setShowModalTx(true);
   };
 
   const handleDeletarTransacao = async (id: number, serieId?: string) => {
@@ -174,6 +225,22 @@ export function App() {
       carregarTudo();
     } catch (err: any) {
       notificar("Erro ao excluir: " + err.message);
+    }
+  };
+
+    const handleReajustarFatura = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!showModalReajuste) return;
+    try {
+      const val = parseFloat(reajusteNovoValor);
+      const res = await api.reajustarFatura(showModalReajuste.cartao_id, showModalReajuste.mes_fatura, val, reajusteMotivo);
+      notificar(res.mensagem || 'Fatura reajustada com sucesso!');
+      setShowModalReajuste(null);
+      carregarTudo();
+      const fats = await api.getFaturas(faturasMesRef);
+      setFaturasExibidas(fats);
+    } catch (err: any) {
+      notificar('Erro ao reajustar: ' + err.message);
     }
   };
 
@@ -197,17 +264,30 @@ export function App() {
     }
   };
 
-  const handleCriarFixa = async (e: React.FormEvent) => {
+  const handleSalvarFixa = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await api.criarDespesaFixa({
-        descricao: fixaForm.descricao,
-        valor: parseFloat(fixaForm.valor),
-        categoria: fixaForm.categoria,
-        dia_vencimento: parseInt(String(fixaForm.dia_vencimento)),
-        ativa: fixaForm.ativa
-      });
+      if (editingFixaId) {
+        await api.editarDespesaFixa(editingFixaId, {
+          descricao: fixaForm.descricao,
+          valor: parseFloat(fixaForm.valor),
+          categoria: fixaForm.categoria,
+          dia_vencimento: parseInt(String(fixaForm.dia_vencimento)),
+          ativo: fixaForm.ativa ? 1 : 0
+        });
+        notificar("Despesa fixa atualizada com sucesso!");
+      } else {
+        await api.criarDespesaFixa({
+          descricao: fixaForm.descricao,
+          valor: parseFloat(fixaForm.valor),
+          categoria: fixaForm.categoria,
+          dia_vencimento: parseInt(String(fixaForm.dia_vencimento)),
+          ativo: fixaForm.ativa ? 1 : 0
+        });
+        notificar("Despesa fixa adicionada!");
+      }
       setShowModalFixa(false);
+      setEditingFixaId(null);
       setFixaForm({
         descricao: '',
         valor: '',
@@ -215,26 +295,63 @@ export function App() {
         dia_vencimento: 10,
         ativa: true
       });
-      notificar("Despesa fixa adicionada!");
       carregarTudo();
     } catch (err: any) {
       notificar("Erro: " + err.message);
     }
   };
 
-  const handleCriarWishlist = async (e: React.FormEvent) => {
+  const handleDeletarFixa = async (id: number, descricao: string) => {
+    if (!window.confirm("Deseja realmente excluir a despesa fixa '" + descricao + "'?")) return;
+    try {
+      await api.deletarDespesaFixa(id);
+      notificar("Despesa fixa excluída!");
+      carregarTudo();
+    } catch (err: any) {
+      notificar("Erro ao excluir: " + err.message);
+    }
+  };
+
+  const abrirEdicaoFixa = (df: DespesaFixa) => {
+    setEditingFixaId(df.id);
+    setFixaForm({
+      descricao: df.descricao,
+      valor: String(df.valor),
+      categoria: df.categoria,
+      dia_vencimento: df.dia_vencimento,
+      ativa: Boolean(df.ativa)
+    });
+    setShowModalFixa(true);
+  };
+
+  const handleSalvarWishlist = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await api.criarWishlist({
-        item: wishForm.item,
-        categoria: wishForm.categoria,
-        valor_estimado: parseFloat(wishForm.valor_estimado),
-        parcelas_sugeridas: parseInt(String(wishForm.parcelas_sugeridas)),
-        prioridade: wishForm.prioridade,
-        condicao_compra: wishForm.condicao_compra,
-        link_ou_obs: wishForm.link_ou_obs
-      });
+      if (editingWishId) {
+        await api.editarWishlist(editingWishId, {
+          item: wishForm.item,
+          categoria: wishForm.categoria,
+          valor_estimado: parseFloat(wishForm.valor_estimado),
+          parcelas_sugeridas: parseInt(String(wishForm.parcelas_sugeridas)),
+          prioridade: wishForm.prioridade,
+          condicao_compra: wishForm.condicao_compra,
+          link_ou_obs: wishForm.link_ou_obs
+        });
+        notificar("Item da Wishlist atualizado com sucesso!");
+      } else {
+        await api.criarWishlist({
+          item: wishForm.item,
+          categoria: wishForm.categoria,
+          valor_estimado: parseFloat(wishForm.valor_estimado),
+          parcelas_sugeridas: parseInt(String(wishForm.parcelas_sugeridas)),
+          prioridade: wishForm.prioridade,
+          condicao_compra: wishForm.condicao_compra,
+          link_ou_obs: wishForm.link_ou_obs
+        });
+        notificar("Item salvo na Wishlist!");
+      }
       setShowModalWish(false);
+      setEditingWishId(null);
       setWishForm({
         item: '',
         categoria: 'Setup / Equipamento',
@@ -244,11 +361,24 @@ export function App() {
         condicao_compra: '',
         link_ou_obs: ''
       });
-      notificar("Item salvo na Wishlist!");
       carregarTudo();
     } catch (err: any) {
       notificar("Erro: " + err.message);
     }
+  };
+
+  const abrirEdicaoWishlist = (item: WishlistItem) => {
+    setEditingWishId(item.id);
+    setWishForm({
+      item: item.item,
+      categoria: item.categoria,
+      valor_estimado: String(item.valor_estimado),
+      parcelas_sugeridas: item.parcelas_sugeridas || 1,
+      prioridade: item.prioridade || 'Media',
+      condicao_compra: item.condicao_compra || '',
+      link_ou_obs: item.link_ou_obs || ''
+    });
+    setShowModalWish(true);
   };
 
   const handleEfetivarWish = async (itemId: number, contaId: number, numParcelas: number) => {
@@ -259,6 +389,27 @@ export function App() {
       carregarTudo();
     } catch (err: any) {
       notificar("Erro ao efetivar: " + err.message);
+    }
+  };
+
+  const handleEfetivarSimulacaoReal = async () => {
+    if (!simResult || !simEfetivarContaId) return;
+    try {
+      const contaNum = parseInt(simEfetivarContaId);
+      const res = await api.efetivarSimulacao({
+        descricao: simResult.compra_simulada || simForm.descricao || 'Compra Simulada',
+        valor_total: parseFloat(simForm.valor),
+        parcelas: simResult.num_parcelas || simForm.parcelas,
+        tipo: 'despesa',
+        cartao_id: contaNum,
+        conta_id: contaNum,
+        categoria: 'Simulações & Planejamento'
+      });
+      setShowModalEfetivarSim(false);
+      notificar(res.mensagem || 'Simulação efetivada no banco com sucesso!');
+      carregarTudo();
+    } catch (err: any) {
+      notificar('Erro ao efetivar: ' + err.message);
     }
   };
 
@@ -283,34 +434,79 @@ export function App() {
     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v || 0);
   };
 
-  // Cálculo Oráculo PIX vs Cartão
+  // Cálculo Oráculo de Compras: PIX à Vista vs Parcelado (Sem ou Com Juros)
   const calcularOraculo = () => {
     const pix = parseFloat(oraculoForm.precoPix) || 0;
-    const cartao = parseFloat(oraculoForm.precoCartao) || 0;
-    const nParc = parseInt(String(oraculoForm.parcelas)) || 1;
-    const taxaCdiMensal = 0.0095; // 0.95% ao mês (115% CDI líquido aproximado)
+    const precoBase = parseFloat(oraculoForm.precoCartao) || 0;
+    const nParc = Math.max(1, parseInt(String(oraculoForm.parcelas)) || 1);
+    const taxaCdiMensal = 0.0095; // 0.95% ao mês (~115% CDI líquido na Caixinha)
     
-    // Se pagar no cartão em N parcelas, mantendo o valor do Pix no CDB rendendo enquanto paga cada parcela:
-    let saldoCdb = pix;
-    let rendimentoTotal = 0;
-    const parcela = cartao / nParc;
-    
-    for (let i = 0; i < nParc; i++) {
-      const rend = saldoCdb * taxaCdiMensal;
-      rendimentoTotal += rend;
-      saldoCdb = Math.max(0, saldoCdb + rend - parcela);
+    let parcelaReal = 0;
+    let custoTotalParcelado = 0;
+    let jurosEmbutidos = 0;
+
+    if (oraculoForm.temJuros) {
+      if (oraculoForm.valorParcelaComJuros && parseFloat(oraculoForm.valorParcelaComJuros) > 0) {
+        parcelaReal = parseFloat(oraculoForm.valorParcelaComJuros);
+        custoTotalParcelado = parcelaReal * nParc;
+        jurosEmbutidos = Math.max(0, custoTotalParcelado - precoBase);
+      } else {
+        const jurosPct = (parseFloat(oraculoForm.taxaJurosMensal) || 0) / 100;
+        if (jurosPct > 0) {
+          // Fórmula da prestação com juros Price
+          parcelaReal = precoBase * (jurosPct / (1 - Math.pow(1 + jurosPct, -nParc)));
+        } else {
+          parcelaReal = precoBase / nParc;
+        }
+        custoTotalParcelado = parcelaReal * nParc;
+        jurosEmbutidos = Math.max(0, custoTotalParcelado - precoBase);
+      }
+    } else {
+      parcelaReal = precoBase / nParc;
+      custoTotalParcelado = precoBase;
+      jurosEmbutidos = 0;
     }
 
-    const descontoPixNominal = cartao - pix;
-    const ganhoRealPixVsCartao = descontoPixNominal - rendimentoTotal;
-    const recomendePix = ganhoRealPixVsCartao >= 0;
+    // Simulação do montante rendendo no CDB 115% CDI se optar por parcelar e pagar mensalmente
+    let saldoCdb = pix;
+    let rendimentoTotal = 0;
+    const tabelaEvolucao: Array<{ mes: number; saldoInicial: number; rendimento: number; parcela: number; saldoFinal: number }> = [];
+
+    for (let i = 1; i <= nParc; i++) {
+      const rend = saldoCdb * taxaCdiMensal;
+      rendimentoTotal += rend;
+      const sFinal = Math.max(0, saldoCdb + rend - parcelaReal);
+      tabelaEvolucao.push({
+        mes: i,
+        saldoInicial: saldoCdb,
+        rendimento: rend,
+        parcela: parcelaReal,
+        saldoFinal: sFinal
+      });
+      saldoCdb = sFinal;
+    }
+
+    // Diferença real: comparar o que você desembolsa e quanto ganha no CDB
+    // Se pagar PIX: gasta  hoje.
+    // Se parcelar: paga  ao longo do tempo, mas o dinheiro rende .
+    // Custo efetivo parcelado = custoTotalParcelado - rendimentoTotal.
+    const custoEfetivoParcelado = custoTotalParcelado - rendimentoTotal;
+    const diferencaVantagem = custoEfetivoParcelado - pix;
+    
+    // Se custoEfetivoParcelado > pix => PIX é mais vantajoso (economiza )
+    // Se custoEfetivoParcelado <= pix => Parcelar é mais vantajoso (ou indiferente)
+    const recomendePix = diferencaVantagem > 0.50; // margem mínima de 50 centavos
 
     return {
-      descontoPixNominal,
+      descontoPixNominal: Math.max(0, precoBase - pix),
+      custoTotalParcelado,
+      jurosEmbutidos,
       rendimentoTotal,
-      ganhoRealPixVsCartao: Math.abs(ganhoRealPixVsCartao),
+      custoEfetivoParcelado,
+      ganhoReal: Math.abs(diferencaVantagem),
       recomendePix,
-      parcelaMensal: parcela
+      parcelaMensal: parcelaReal,
+      tabelaEvolucao
     };
   };
 
@@ -355,14 +551,14 @@ export function App() {
           {/* Navigation Links */}
           <nav className="space-y-1">
             {[
-              { id: 'dashboard', label: 'Dashboard & HUD', icon: LayoutDashboard },
-              { id: 'faturas', label: 'Cartões & Faturas', icon: CreditCard },
-              { id: 'oraculo', label: 'Oráculo de Compras', icon: Calculator, badge: 'NOVO' },
-              { id: 'transacoes', label: 'Extrato & Busca', icon: Receipt },
-              { id: 'fixas', label: 'Custos Recorrentes', icon: Repeat },
-              { id: 'alforria', label: 'Alforria (115% CDI)', icon: Rocket },
-              { id: 'simulador', label: 'Máquina do Tempo', icon: History },
-              { id: 'wishlist', label: 'Wishlist & Sonhos', icon: BookmarkCheck },
+              { id: 'dashboard', label: 'Dashboard & HUD', icon: LayoutDashboard, badge: undefined as string | undefined },
+              { id: 'faturas', label: 'Cartões & Faturas', icon: CreditCard, badge: undefined as string | undefined },
+              { id: 'oraculo', label: 'Oráculo de Compras', icon: Calculator, badge: undefined as string | undefined },
+              { id: 'transacoes', label: 'Extrato & Busca', icon: Receipt, badge: undefined as string | undefined },
+              { id: 'fixas', label: 'Custos Recorrentes', icon: Repeat, badge: undefined as string | undefined },
+              { id: 'alforria', label: 'Alforria (115% CDI)', icon: Rocket, badge: undefined as string | undefined },
+              { id: 'simulador', label: 'Máquina do Tempo', icon: History, badge: undefined as string | undefined },
+              { id: 'wishlist', label: 'Wishlist & Sonhos', icon: BookmarkCheck, badge: undefined as string | undefined },
             ].map(item => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
@@ -394,7 +590,19 @@ export function App() {
         {/* Bottom Actions */}
         <div className="space-y-2 border-t border-slate-800/80 pt-4">
           <button
-            onClick={() => setShowModalTx(true)}
+            onClick={() => {
+                  setEditingTxId(null);
+                  setTxForm({
+                    descricao: '',
+                    valor: '',
+                    tipo: 'despesa',
+                    categoria: 'Outros',
+                    conta_id: contas[0]?.id ? String(contas[0].id) : '',
+                    data_transacao: new Date().toISOString().split('T')[0],
+                    num_parcelas: 1
+                  });
+                  setShowModalTx(true);
+                }}
             className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-semibold py-2.5 px-4 rounded-xl shadow-lg shadow-indigo-600/20 text-sm transition-all active:scale-95"
           >
             <Plus className="w-4 h-4" />
@@ -404,11 +612,16 @@ export function App() {
           <div className="flex gap-2">
             <button
               onClick={async () => {
-                const res = await api.exportarExcel();
-                notificar("Planilha gerada: " + res.caminho.split('/').pop());
+                try {
+                  notificar("Gerando planilha Excel...");
+                  const res = await api.exportarExcel();
+                  notificar("Planilha baixada e salva em: " + res.caminho.split('/').pop());
+                } catch (err: any) {
+                  notificar("Erro ao gerar Excel: " + (err.message || 'Falha na conexão'));
+                }
               }}
-              title="Exportar Excel XLSX"
-              className="flex-1 flex items-center justify-center gap-1.5 bg-slate-800/80 hover:bg-slate-800 text-emerald-400 py-2 rounded-lg text-xs font-medium border border-slate-700/50"
+              title="Exportar e Baixar Excel (.xlsx)"
+              className="flex-1 flex items-center justify-center gap-1.5 bg-slate-800/80 hover:bg-slate-800 active:scale-95 text-emerald-400 py-2 rounded-lg text-xs font-medium border border-slate-700/50 transition-all"
             >
               <FileSpreadsheet className="w-3.5 h-3.5" />
               <span>Excel</span>
@@ -432,7 +645,7 @@ export function App() {
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col overflow-hidden">
         {/* Top Header */}
-        <header className="h-16 border-b border-slate-800/80 bg-[#0c101c]/60 backdrop-blur px-8 flex items-center justify-between">
+        <header className="h-16 border-b border-slate-800/80 bg-[#0c101c] z-30 px-8 flex items-center justify-between relative">
           <div className="flex items-center gap-4">
             <h2 className="text-lg font-black text-slate-100 uppercase tracking-wide flex items-center gap-2">
               {activeTab === 'dashboard' && 'Visão Executiva & Cockpit Financeiro'}
@@ -447,13 +660,8 @@ export function App() {
           </div>
 
           <div className="flex items-center gap-3">
-            <label className="text-xs text-slate-400 font-medium">Mês de Referência:</label>
-            <input
-              type="month"
-              value={mesRef}
-              onChange={(e) => setMesRef(e.target.value)}
-              className="bg-slate-900 border border-slate-700/80 rounded-lg px-3 py-1.5 text-sm font-semibold text-indigo-300 focus:outline-none focus:border-indigo-500"
-            />
+            <span className="text-xs text-slate-400 font-medium hidden sm:inline">Mês de Referência:</span>
+            <CustomMonthPicker value={mesRef} onChange={(val) => setMesRef(val)} />
             <button
               onClick={carregarTudo}
               title="Atualizar Dados"
@@ -629,29 +837,55 @@ export function App() {
             </div>
           )}
 
-          {/* TAB: ORÁCULO DE COMPRAS (PIX vs CARTÃO) */}
+          {/* TAB: ORÁCULO DE COMPRAS (PIX vs CARTÃO SEM JUROS vs COM JUROS) */}
           {activeTab === 'oraculo' && (
             <div className="space-y-6 animate-fadeIn">
               <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="p-3 bg-indigo-600/20 text-indigo-400 rounded-xl border border-indigo-500/30">
-                    <Calculator className="w-6 h-6" />
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 bg-indigo-600/20 text-indigo-400 rounded-xl border border-indigo-500/30">
+                      <Calculator className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-black text-slate-100">
+                        Oráculo Prático de Compras: PIX à Vista vs. Parcelamento
+                      </h3>
+                      <p className="text-xs text-slate-400 mt-0.5">
+                        Simule compras à vista, sem juros ou com juros embutidos (Shopee, Mercado Livre, etc.) contra o rendimento de 115% do CDI na Caixinha.
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-lg font-black text-slate-100">
-                      Oráculo da Rocha: Pagar à Vista no PIX ou Parcelar sem Juros?
-                    </h3>
-                    <p className="text-xs text-slate-400">
-                      Calcula com precisão se o desconto do PIX supera o rendimento do dinheiro aplicado no CDI (115%).
-                    </p>
+
+                  {/* Toggle Sem Juros / Com Juros */}
+                  <div className="flex items-center gap-2 bg-slate-950 p-1 rounded-xl border border-slate-800 self-start sm:self-auto">
+                    <button
+                      type="button"
+                      onClick={() => setOraculoForm({ ...oraculoForm, temJuros: false })}
+                      className={'px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ' + (
+                        !oraculoForm.temJuros ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                      )}
+                    >
+                      Parcelamento Sem Juros
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setOraculoForm({ ...oraculoForm, temJuros: true })}
+                      className={'px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ' + (
+                        oraculoForm.temJuros ? 'bg-rose-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                      )}
+                    >
+                      Parcelamento Com Juros ⚠️
+                    </button>
                   </div>
                 </div>
 
+                {/* Formulário Dinâmico */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
                   <div>
-                    <label className="text-xs text-slate-400 font-medium block mb-1">Item / Produto</label>
+                    <label className="text-xs text-slate-400 font-medium block mb-1.5">Item / Produto Desejado</label>
                     <input
                       type="text"
+                      placeholder="Ex: Celular, Pneu, Fone"
                       value={oraculoForm.item}
                       onChange={e => setOraculoForm({ ...oraculoForm, item: e.target.value })}
                       className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-indigo-500"
@@ -659,9 +893,11 @@ export function App() {
                   </div>
 
                   <div>
-                    <label className="text-xs text-slate-400 font-medium block mb-1">Preço no PIX à Vista (R$)</label>
+                    <label className="text-xs text-slate-400 font-medium block mb-1.5">Preço à Vista no PIX (R$)</label>
                     <input
                       type="number"
+                      step="0.01"
+                      placeholder="Ex: 450.00"
                       value={oraculoForm.precoPix}
                       onChange={e => setOraculoForm({ ...oraculoForm, precoPix: e.target.value })}
                       className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-indigo-500"
@@ -669,9 +905,13 @@ export function App() {
                   </div>
 
                   <div>
-                    <label className="text-xs text-slate-400 font-medium block mb-1">Preço no Cartão Sem Juros (R$)</label>
+                    <label className="text-xs text-slate-400 font-medium block mb-1.5">
+                      {oraculoForm.temJuros ? 'Preço Base à Vista (R$)' : 'Preço Total no Cartão (R$)'}
+                    </label>
                     <input
                       type="number"
+                      step="0.01"
+                      placeholder="Ex: 500.00"
                       value={oraculoForm.precoCartao}
                       onChange={e => setOraculoForm({ ...oraculoForm, precoCartao: e.target.value })}
                       className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-indigo-500"
@@ -679,7 +919,7 @@ export function App() {
                   </div>
 
                   <div>
-                    <label className="text-xs text-slate-400 font-medium block mb-1">Número de Parcelas Sem Juros</label>
+                    <label className="text-xs text-slate-400 font-medium block mb-1.5">Número de Parcelas</label>
                     <input
                       type="number"
                       min="1"
@@ -691,51 +931,116 @@ export function App() {
                   </div>
                 </div>
 
+                {/* Campos Extras quando Tem Juros */}
+                {oraculoForm.temJuros && (
+                  <div className="mt-4 p-4 bg-rose-950/20 border border-rose-500/20 rounded-xl grid grid-cols-1 md:grid-cols-2 gap-4 animate-fadeIn">
+                    <div>
+                      <label className="text-xs text-rose-300 font-medium block mb-1.5">
+                        Valor Exato da Parcela cobrada pelo site (R$) <span className="text-slate-400 font-normal">(opcional)</span>
+                      </label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        placeholder="Ex: 58.90 (se o site já calculou a parcela)"
+                        value={oraculoForm.valorParcelaComJuros}
+                        onChange={e => setOraculoForm({ ...oraculoForm, valorParcelaComJuros: e.target.value })}
+                        className="w-full bg-slate-950 border border-rose-900/50 rounded-xl px-3 py-2 text-sm text-rose-100 focus:outline-none focus:border-rose-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs text-rose-300 font-medium block mb-1.5">
+                        Ou Taxa de Juros Mensal anunciada (% a.m.)
+                      </label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        placeholder="Ex: 2.5"
+                        value={oraculoForm.taxaJurosMensal}
+                        onChange={e => setOraculoForm({ ...oraculoForm, taxaJurosMensal: e.target.value })}
+                        className="w-full bg-slate-950 border border-rose-900/50 rounded-xl px-3 py-2 text-sm text-rose-100 focus:outline-none focus:border-rose-500"
+                      />
+                    </div>
+                  </div>
+                )}
+
                 {/* Veredicto do Oráculo */}
-                <div className={`mt-8 p-6 rounded-2xl border ${
+                <div className={'mt-6 p-6 rounded-2xl border transition-all ' + (
                   resultadoOraculo.recomendePix 
-                    ? 'bg-emerald-950/20 border-emerald-500/30' 
-                    : 'bg-indigo-950/20 border-indigo-500/30'
-                }`}>
-                  <div className="flex items-center justify-between">
+                    ? 'bg-emerald-950/30 border-emerald-500/40 shadow-lg shadow-emerald-950/20' 
+                    : 'bg-indigo-950/30 border-indigo-500/40 shadow-lg shadow-indigo-950/20'
+                )}>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                      <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Veredicto Matemático:</span>
-                      <h4 className={`text-xl font-black mt-1 ${
+                      <span className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+                        Veredicto Matemático Definitivo:
+                      </span>
+                      <h4 className={'text-xl font-black mt-1 ' + (
                         resultadoOraculo.recomendePix ? 'text-emerald-400' : 'text-indigo-400'
-                      }`}>
+                      )}>
                         {resultadoOraculo.recomendePix 
-                          ? '🏆 PAGUE À VISTA NO PIX COM DESCONTO!' 
-                          : '💳 PARCELE SEM JUROS NO CARTÃO CAIXA!'}
+                          ? '🏆 FUJA DO PARCELAMENTO: PAGUE À VISTA NO PIX!' 
+                          : '💳 PODE PARCELAR! DEIXE O RESTANTE NO CDB (115% CDI)'}
                       </h4>
+                      <p className="text-xs text-slate-300 mt-1 max-w-xl">
+                        {resultadoOraculo.recomendePix
+                          ? oraculoForm.temJuros 
+                            ? 'Os juros do parcelamento superam completamente o rendimento de 115% do CDI da sua Caixinha. Parcelar com juros aqui é queimar patrimônio.'
+                            : 'O desconto à vista no PIX é maior do que o seu dinheiro renderia durante todo o tempo das parcelas. Pague no PIX e garanta a economia imediata.'
+                          : 'O desconto à vista é pequeno ou zero. Vale mais a pena manter o dinheiro rendendo no CDB a 115% do CDI na Caixinha e pagar as parcelas sem juros mês a mês.'}
+                      </p>
                     </div>
 
-                    <div className="text-right">
-                      <div className="text-xs text-slate-400">Vantagem Financeira Líquida</div>
-                      <div className="text-2xl font-black text-white">
-                        {formatBRL(resultadoOraculo.ganhoRealPixVsCartao)}
+                    <div className="text-left sm:text-right bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
+                      <div className="text-xs text-slate-400 font-medium">Economia Real Líquida</div>
+                      <div className="text-2xl font-black text-white font-mono">
+                        {formatBRL(resultadoOraculo.ganhoReal)}
                       </div>
+                      <span className="text-[10px] text-emerald-400 font-semibold">
+                        {resultadoOraculo.recomendePix ? 'Vantagem a favor do PIX' : 'Vantagem a favor do CDB'}
+                      </span>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 pt-4 border-t border-slate-800/80 text-xs">
-                    <div>
-                      <span className="text-slate-400 block">Desconto Nominal do PIX:</span>
-                      <span className="font-bold text-slate-200 text-sm">{formatBRL(resultadoOraculo.descontoPixNominal)}</span>
+                  {/* Métricas Detalhadas em Cards Rápidos */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6 pt-4 border-t border-slate-800/80 text-xs font-mono">
+                    <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800/60">
+                      <span className="text-slate-400 block text-[11px]">Desconto do PIX:</span>
+                      <span className="font-bold text-slate-100 text-sm">{formatBRL(resultadoOraculo.descontoPixNominal)}</span>
                     </div>
-                    <div>
-                      <span className="text-slate-400 block">Rendimento no CDB se parcelar:</span>
-                      <span className="font-bold text-slate-200 text-sm">+{formatBRL(resultadoOraculo.rendimentoTotal)}</span>
+
+                    <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800/60">
+                      <span className="text-slate-400 block text-[11px]">Custo Total Parcelado:</span>
+                      <span className={'font-bold text-sm ' + (resultadoOraculo.jurosEmbutidos > 0 ? 'text-rose-400' : 'text-slate-100')}>
+                        {formatBRL(resultadoOraculo.custoTotalParcelado)}
+                      </span>
+                      {resultadoOraculo.jurosEmbutidos > 0 && (
+                        <span className="text-[10px] text-rose-500 block">+{formatBRL(resultadoOraculo.jurosEmbutidos)} só de juros</span>
+                      )}
                     </div>
-                    <div>
-                      <span className="text-slate-400 block">Parcela Mensal no Cartão:</span>
-                      <span className="font-bold text-slate-200 text-sm">{oraculoForm.parcelas}x de {formatBRL(resultadoOraculo.parcelaMensal)}</span>
+
+                    <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800/60">
+                      <span className="text-slate-400 block text-[11px]">Rendimento CDB (115%):</span>
+                      <span className="font-bold text-cyan-400 text-sm">+{formatBRL(resultadoOraculo.rendimentoTotal)}</span>
+                    </div>
+
+                    <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800/60">
+                      <span className="text-slate-400 block text-[11px]">Valor de Cada Parcela:</span>
+                      <span className="font-bold text-slate-100 text-sm">
+                        {oraculoForm.parcelas}x de {formatBRL(resultadoOraculo.parcelaMensal)}
+                      </span>
                     </div>
                   </div>
 
-                  <div className="mt-4 p-3 bg-slate-900/60 rounded-xl text-xs text-slate-300">
-                    💡 <span className="font-bold">Regra do Homem Rocha:</span> {resultadoOraculo.recomendePix 
-                      ? 'O desconto do PIX é maior do que o CDI geraria durante o tempo do parcelamento. Pague à vista no PIX e não crie fatura futura!' 
-                      : 'O desconto do PIX é muito baixo ou zero. Deixe o dinheiro rendendo no CDB a 115% do CDI na Caixinha do Nubank e passe no Cartão Caixa para acumular pontuação e prazo.'}
+                  {/* Dica da Filosofia Homem Rocha */}
+                  <div className="mt-4 p-3.5 bg-slate-900/90 rounded-xl text-xs text-slate-300 border border-slate-800 flex items-start gap-2.5">
+                    <span className="text-base">🛡️</span>
+                    <div>
+                      <strong className="text-indigo-300">Regra de Ouro do Homem Rocha:</strong>{' '}
+                      {oraculoForm.temJuros 
+                        ? 'Juros compostos contra você são uma escravidão disfarçada de facilidade. Se não há desconto à vista e há juros no parcelamento, o caminho soberano é juntar o dinheiro na Caixinha antes e comprar à vista.'
+                        : 'Se o parcelamento é estritamente sem juros e o desconto no PIX for menor do que ~5% a 7%, mantenha seu dinheiro no cofre rendendo e parcele no cartão para reter a liquidez.'}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -763,19 +1068,47 @@ export function App() {
                   <select
                     value={filterBanco}
                     onChange={e => setFilterBanco(e.target.value)}
-                    className="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-indigo-500"
+                    className="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-indigo-500 cursor-pointer"
                   >
                     <option value="TODOS">Todos os Bancos</option>
                     <option value="Nubank">Nubank</option>
                     <option value="Caixa">Caixa</option>
                     <option value="PicPay">PicPay</option>
                     <option value="Inter">Inter</option>
+                    <option value="Neon">Neon</option>
                     <option value="Shopee">Shopee</option>
+                    <option value="Mercado Pago">Mercado Pago</option>
+                  </select>
+
+                  {/* Filter Mês do Extrato */}
+                  <select
+                    value={extratoMesFiltro}
+                    onChange={e => setExtratoMesFiltro(e.target.value)}
+                    className="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-indigo-300 font-semibold focus:outline-none focus:border-indigo-500 cursor-pointer"
+                  >
+                    <option value="TODOS">Todos os Meses (Histórico Geral)</option>
+                    <option value="2026-09">Setembro/2026</option>
+                    <option value="2026-10">Outubro/2026</option>
+                    <option value="2026-11">Novembro/2026</option>
+                    <option value="2026-12">Dezembro/2026</option>
+                    <option value="2027-01">Janeiro/2027</option>
                   </select>
                 </div>
 
                 <button
-                  onClick={() => setShowModalTx(true)}
+                  onClick={() => {
+                  setEditingTxId(null);
+                  setTxForm({
+                    descricao: '',
+                    valor: '',
+                    tipo: 'despesa',
+                    categoria: 'Outros',
+                    conta_id: contas[0]?.id ? String(contas[0].id) : '',
+                    data_transacao: new Date().toISOString().split('T')[0],
+                    num_parcelas: 1
+                  });
+                  setShowModalTx(true);
+                }}
                   className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2 px-3.5 rounded-lg"
                 >
                   <Plus className="w-4 h-4" />
@@ -822,13 +1155,22 @@ export function App() {
                           {tx.tipo === 'receita' ? '+' : '-'} {formatBRL(tx.valor)}
                         </td>
                         <td className="py-3 px-4 text-center">
-                          <button
-                            onClick={() => handleDeletarTransacao(tx.id, tx.serie_parcelamento_id)}
-                            title="Excluir Transação"
-                            className="p-1.5 hover:bg-rose-500/10 text-slate-500 hover:text-rose-400 rounded-lg transition-colors"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
+                          <div className="flex items-center justify-center gap-1.5">
+                            <button
+                              onClick={() => abrirEdicaoTransacao(tx)}
+                              title="Editar Lançamento"
+                              className="p-1.5 hover:bg-indigo-500/10 text-slate-400 hover:text-indigo-400 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-indigo-500/30"
+                            >
+                              <Pencil className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              onClick={() => handleDeletarTransacao(tx.id, tx.serie_parcelamento_id || undefined)}
+                              title="Excluir Transação"
+                              className="p-1.5 hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-rose-500/30"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -841,8 +1183,51 @@ export function App() {
           {/* TAB 2: FATURAS & CARTÕES */}
           {activeTab === 'faturas' && (
             <div className="space-y-6 animate-fadeIn">
+              {/* Header de Controle de Faturas */}
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                  <h3 className="text-base font-extrabold text-slate-100 flex items-center gap-2">
+                    <CreditCard className="w-5 h-5 text-indigo-400" />
+                    Controle de Faturas dos Cartões
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Como o melhor dia de compras já passou em setembro, suas faturas abertas acumulam para o vencimento de <span className="text-indigo-300 font-bold font-mono">Outubro (2026-10)</span>.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2 self-start md:self-auto">
+                  <span className="text-xs text-slate-400 font-medium">Ver Ciclo:</span>
+                  <div className="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800">
+                    <button
+                      onClick={() => setFaturasMesRef('2026-09')}
+                      className={'px-3 py-1 text-xs rounded-lg font-bold transition-all cursor-pointer ' + (
+                        faturasMesRef === '2026-09' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                      )}
+                    >
+                      Set/2026 (Passada)
+                    </button>
+                    <button
+                      onClick={() => setFaturasMesRef('2026-10')}
+                      className={'px-3 py-1 text-xs rounded-lg font-bold transition-all cursor-pointer ' + (
+                        faturasMesRef === '2026-10' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                      )}
+                    >
+                      Out/2026 (Aberta Atual)
+                    </button>
+                    <button
+                      onClick={() => setFaturasMesRef('2026-11')}
+                      className={'px-3 py-1 text-xs rounded-lg font-bold transition-all cursor-pointer ' + (
+                        faturasMesRef === '2026-11' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                      )}
+                    >
+                      Nov/2026 (Próxima)
+                    </button>
+                  </div>
+                </div>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {faturas.map(fat => (
+                {(faturasExibidas.length > 0 ? faturasExibidas : faturas).map(fat => (
                   <div key={fat.cartao_id} className="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between shadow-lg">
                     <div>
                       <div className="flex items-center justify-between mb-4">
@@ -883,17 +1268,29 @@ export function App() {
                       </div>
                     </div>
 
-                    <div className="mt-8 pt-4 border-t border-slate-800/80 flex items-center justify-between">
-                      <span className="text-xs text-slate-500 font-medium">
-                        {fat.total_fatura === 0 ? 'Sem lançamentos pendentes' : 'Aguardando liquidação'}
-                      </span>
-                      {fat.total_fatura > 0 && (
+                    <div className="mt-8 pt-4 border-t border-slate-800/80 flex items-center justify-between gap-3">
+                      <button
+                        onClick={() => {
+                          setShowModalReajuste(fat);
+                          setReajusteNovoValor(String(fat.total_fatura));
+                          setReajusteMotivo('Ajuste para conciliar com app bancário');
+                        }}
+                        className="flex items-center gap-1 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl text-xs font-semibold border border-slate-700/60 transition-all cursor-pointer"
+                        title="Ajustar valor total da fatura para bater com o banco"
+                      >
+                        <Pencil className="w-3.5 h-3.5 text-indigo-400" />
+                        <span>Reajustar Fatura</span>
+                      </button>
+
+                      {fat.total_fatura > 0 ? (
                         <button
                           onClick={() => setShowModalPagarFatura(fat)}
-                          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-sm transition-all shadow-lg shadow-emerald-600/20"
+                          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs transition-all shadow-lg shadow-emerald-600/20 cursor-pointer"
                         >
                           Pagar Fatura Agora
                         </button>
+                      ) : (
+                        <span className="text-xs text-slate-500 font-medium">Sem lançamentos pendentes</span>
                       )}
                     </div>
                   </div>
@@ -911,7 +1308,17 @@ export function App() {
                   <span className="text-xs text-slate-500">Despesas que ocorrem todo mês automaticamente na projeção</span>
                 </div>
                 <button
-                  onClick={() => setShowModalFixa(true)}
+                  onClick={() => {
+                  setEditingFixaId(null);
+                  setFixaForm({
+                    descricao: '',
+                    valor: '',
+                    categoria: 'Assinaturas & Serviços',
+                    dia_vencimento: 10,
+                    ativa: true
+                  });
+                  setShowModalFixa(true);
+                }}
                   className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2 px-3.5 rounded-lg"
                 >
                   <Plus className="w-4 h-4" />
@@ -942,10 +1349,24 @@ export function App() {
                         <div className="text-xl font-black text-amber-400 font-mono">
                           {formatBRL(df.valor)}
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            onClick={() => abrirEdicaoFixa(df)}
+                            title="Editar Despesa Fixa"
+                            className="p-1.5 hover:bg-indigo-500/10 text-slate-400 hover:text-indigo-400 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-indigo-500/30"
+                          >
+                            <Pencil className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => handleDeletarFixa(df.id, df.descricao)}
+                            title="Excluir Despesa Fixa"
+                            className="p-1.5 hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-rose-500/30"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
                           <button
                             onClick={() => handleToggleFixa(df.id)}
-                            className={`px-3 py-1 text-xs font-bold rounded-lg border transition-all ${
+                            className={`px-2.5 py-1 text-xs font-bold rounded-lg border transition-all cursor-pointer ${
                               isAtiva 
                                 ? 'bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border-amber-500/30' 
                                 : 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
@@ -1060,12 +1481,12 @@ export function App() {
 
                   <div>
                     <label className="text-xs text-slate-400 font-medium block mb-1.5">Mês de Início</label>
-                    <input
-                      type="month"
-                      value={simForm.mes_inicio}
-                      onChange={e => setSimForm({ ...simForm, mes_inicio: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-indigo-500"
-                    />
+                    <div className="w-full">
+                      <CustomMonthPicker
+                        value={simForm.mes_inicio}
+                        onChange={(val) => setSimForm({ ...simForm, mes_inicio: val })}
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -1081,9 +1502,28 @@ export function App() {
 
               {simResult && (
                 <div className="bg-slate-900 border border-indigo-500/30 rounded-2xl p-6 animate-fadeIn">
-                  <h4 className="text-sm font-extrabold text-indigo-300 uppercase tracking-wider mb-4">
-                    Resultado da Simulação: {simResult.compra_simulada} ({simResult.num_parcelas}x de {formatBRL(simResult.parcela_mensal)})
-                  </h4>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-800">
+                    <div>
+                      <h4 className="text-sm font-extrabold text-indigo-300 uppercase tracking-wider">
+                        Resultado da Simulação: {simResult.compra_simulada} ({simResult.num_parcelas}x de {formatBRL(simResult.parcela_mensal)})
+                      </h4>
+                      <p className="text-xs text-slate-400 mt-0.5">
+                        Iniciando na fatura de {simResult.mes_inicio}. Verifique se as sobras mensais permanecem positivas.
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => {
+                        if (contas.length > 0 && !simEfetivarContaId) {
+                          setSimEfetivarContaId(String(contas[0].id));
+                        }
+                        setShowModalEfetivarSim(true);
+                      }}
+                      className="flex items-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs transition-all shadow-md shadow-emerald-600/20 cursor-pointer self-start sm:self-auto"
+                    >
+                      <CheckCircle className="w-4 h-4" />
+                      <span>Efetivar Compra no Banco Real</span>
+                    </button>
+                  </div>
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs font-mono">
                       <thead className="text-slate-400 uppercase border-b border-slate-800">
@@ -1112,6 +1552,116 @@ export function App() {
                   </div>
                 </div>
               )}
+
+              {/* PROJEÇÃO TEMPORAL COMPLETA / NAVEGAÇÃO DA MÁQUINA DO TEMPO */}
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-3 border-b border-slate-800">
+                  <div>
+                    <h4 className="text-base font-black text-slate-100 flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-cyan-400" />
+                      Navegador Temporal de Fluxo Futuro (Próximos Meses)
+                    </h4>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      Clique em qualquer mês para transportar todo o painel APEX para o momento escolhido no tempo.
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-slate-400 font-medium">Mês em Foco:</span>
+                    <span className="px-3 py-1 bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 rounded-lg text-xs font-mono font-bold">
+                      {mesRef}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Carrossel / Pills de Navegação Rápida de Meses */}
+                <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-6 scrollbar-thin">
+                  {timeline.map(t => {
+                    const isSelected = t.mes === mesRef;
+                    const sobra = t.sobra_mes;
+                    return (
+                      <button
+                        key={t.mes}
+                        onClick={() => {
+                          setMesRef(t.mes);
+                          notificar('Viajando no tempo para ' + t.mes);
+                        }}
+                        className={'flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-mono transition-all border text-left cursor-pointer ' + (
+                          isSelected
+                            ? 'bg-indigo-600 border-indigo-400 text-white shadow-lg shadow-indigo-600/30 font-bold scale-105'
+                            : 'bg-slate-950/70 border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white'
+                        )}
+                      >
+                        <div className="font-bold flex items-center justify-between gap-2">
+                          <span>{t.mes}</span>
+                          {isSelected && <span className="text-[9px] bg-white/20 px-1 rounded uppercase">Ativo</span>}
+                        </div>
+                        <div className={'text-[11px] font-semibold mt-1 ' + (sobra >= 0 ? 'text-emerald-400' : 'text-rose-400')}>
+                          {formatBRL(sobra)}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Tabela Detalhada com Colunas de Receita, Fixas, Cartão e Saldo Acumulado */}
+                <div className="overflow-x-auto rounded-xl border border-slate-800">
+                  <table className="w-full text-left text-xs font-mono">
+                    <thead className="bg-slate-950/80 text-slate-400 uppercase border-b border-slate-800">
+                      <tr>
+                        <th className="py-3 px-4">Mês</th>
+                        <th className="py-3 px-4">Receitas</th>
+                        <th className="py-3 px-4">Custos Fixos</th>
+                        <th className="py-3 px-4 text-rose-400">Faturas Cartão</th>
+                        <th className="py-3 px-4">Total Saídas</th>
+                        <th className="py-3 px-4">Sobra Líquida</th>
+                        <th className="py-3 px-4 text-right">Saldo Acumulado</th>
+                        <th className="py-3 px-4 text-center">Ação</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-800/40">
+                      {timeline.map(t => {
+                        const isSelected = t.mes === mesRef;
+                        return (
+                          <tr
+                            key={t.mes}
+                            className={'transition-colors ' + (
+                              isSelected ? 'bg-indigo-950/30 font-bold' : 'hover:bg-slate-800/20'
+                            )}
+                          >
+                            <td className="py-3 px-4 font-bold text-slate-200 flex items-center gap-1.5">
+                              {t.mes}
+                              {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 inline-block"></span>}
+                            </td>
+                            <td className="py-3 px-4 text-emerald-400 font-semibold">+{formatBRL(t.receitas)}</td>
+                            <td className="py-3 px-4 text-slate-400">-{formatBRL(t.fixas)}</td>
+                            <td className="py-3 px-4 text-rose-400 font-bold">-{formatBRL(t.faturas_cartao)}</td>
+                            <td className="py-3 px-4 text-slate-300 font-semibold">-{formatBRL(t.despesas_totais)}</td>
+                            <td className={'py-3 px-4 font-bold ' + (t.sobra_mes >= 0 ? 'text-emerald-400' : 'text-rose-400')}>
+                              {formatBRL(t.sobra_mes)}
+                            </td>
+                            <td className="py-3 px-4 text-right font-black text-white">{formatBRL(t.saldo_acumulado)}</td>
+                            <td className="py-3 px-4 text-center">
+                              <button
+                                onClick={() => {
+                                  setMesRef(t.mes);
+                                  notificar('Mês ' + t.mes + ' selecionado em todo o painel!');
+                                }}
+                                className={'px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all cursor-pointer ' + (
+                                  isSelected
+                                    ? 'bg-indigo-600 text-white'
+                                    : 'bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white'
+                                )}
+                              >
+                                {isSelected ? 'Mês Atual' : 'Viajar'}
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           )}
 
@@ -1124,7 +1674,19 @@ export function App() {
                   <span className="text-xs text-slate-500">Itens congelados para comprar após quitação ou folga de caixa</span>
                 </div>
                 <button
-                  onClick={() => setShowModalWish(true)}
+                  onClick={() => {
+                  setEditingWishId(null);
+                  setWishForm({
+                    item: '',
+                    categoria: 'Setup / Equipamento',
+                    valor_estimado: '',
+                    parcelas_sugeridas: 1,
+                    prioridade: 'Media',
+                    condicao_compra: '',
+                    link_ou_obs: ''
+                  });
+                  setShowModalWish(true);
+                }}
                   className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2 px-3.5 rounded-lg"
                 >
                   <Plus className="w-4 h-4" />
@@ -1169,18 +1731,28 @@ export function App() {
                     </div>
 
                     <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
-                      <button
-                        onClick={async () => {
-                          if (window.confirm("Deseja remover este item da Wishlist?")) {
-                            await api.deletarWishlist(item.id);
-                            notificar("Item removido!");
-                            carregarTudo();
-                          }
-                        }}
-                        className="text-slate-500 hover:text-rose-400 p-1.5 rounded-lg transition-colors"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          onClick={() => abrirEdicaoWishlist(item)}
+                          title="Editar Item Wishlist"
+                          className="text-slate-400 hover:text-indigo-400 p-1.5 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-indigo-500/30"
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={async () => {
+                            if (window.confirm("Deseja realmente remover '" + item.item + "' da Wishlist?")) {
+                              await api.deletarWishlist(item.id);
+                              notificar("Item removido!");
+                              carregarTudo();
+                            }
+                          }}
+                          title="Excluir Item Wishlist"
+                          className="text-slate-400 hover:text-rose-400 p-1.5 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-rose-500/30"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
 
                       {item.status !== 'comprado' && (
                         <button
@@ -1204,8 +1776,8 @@ export function App() {
       {showModalTx && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl">
-            <h3 className="text-base font-black text-slate-100 mb-4">Novo Lançamento</h3>
-            <form onSubmit={handleCriarTransacao} className="space-y-4">
+            <h3 className="text-base font-black text-slate-100 mb-4">{editingTxId ? "Editar Lançamento" : "Novo Lançamento"}</h3>
+            <form onSubmit={handleSalvarTransacao} className="space-y-4">
               <div>
                 <label className="text-xs text-slate-400 font-medium block mb-1">Descrição</label>
                 <input
@@ -1435,8 +2007,8 @@ export function App() {
       {showModalWish && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl">
-            <h3 className="text-base font-black text-slate-100 mb-4">Adicionar à Wishlist</h3>
-            <form onSubmit={handleCriarWishlist} className="space-y-3">
+            <h3 className="text-base font-black text-slate-100 mb-4">{editingWishId ? "Editar Item da Wishlist" : "Adicionar à Wishlist"}</h3>
+            <form onSubmit={handleSalvarWishlist} className="space-y-3">
               <div>
                 <label className="text-xs text-slate-400 font-medium block mb-1">Nome do Item</label>
                 <input
@@ -1521,9 +2093,9 @@ export function App() {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl"
+                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl cursor-pointer"
                 >
-                  Salvar na Wishlist
+                  {editingWishId ? "Salvar Alterações" : "Salvar na Wishlist"}
                 </button>
               </div>
             </form>
@@ -1535,8 +2107,8 @@ export function App() {
       {showModalFixa && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl">
-            <h3 className="text-base font-black text-slate-100 mb-4">Nova Despesa Fixa</h3>
-            <form onSubmit={handleCriarFixa} className="space-y-3">
+            <h3 className="text-base font-black text-slate-100 mb-4">{editingFixaId ? "Editar Despesa Fixa" : "Nova Despesa Fixa"}</h3>
+            <form onSubmit={handleSalvarFixa} className="space-y-3">
               <div>
                 <label className="text-xs text-slate-400 font-medium block mb-1">Descrição</label>
                 <input
@@ -1596,15 +2168,143 @@ export function App() {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl"
+                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl cursor-pointer"
                 >
-                  Salvar Despesa Fixa
+                  {editingFixaId ? "Atualizar Alterações" : "Salvar Despesa Fixa"}
                 </button>
               </div>
             </form>
           </div>
         </div>
       )}
-    </div>
+          {/* MODAL: EFETIVAR SIMULAÇÃO EM TRANSAÇÃO REAL */}
+      {showModalEfetivarSim && simResult && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl animate-fadeIn">
+            <h3 className="text-base font-black text-slate-100 mb-2">Efetivar Simulação na Realidade</h3>
+            <p className="text-xs text-slate-400 mb-4">
+              Isso criará as parcelas no cartão ou conta escolhida a partir do mês programado.
+            </p>
+
+            <div className="bg-slate-950/60 border border-slate-800 rounded-xl p-3 mb-4 space-y-1.5 text-xs">
+              <div className="flex justify-between">
+                <span className="text-slate-400">Item:</span>
+                <span className="font-bold text-slate-200">{simResult.compra_simulada || simForm.descricao}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-400">Valor Total:</span>
+                <span className="font-bold text-rose-400">{formatBRL(parseFloat(simForm.valor))}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-400">Parcelas:</span>
+                <span className="font-mono font-bold text-slate-200">{simResult.num_parcelas}x de {formatBRL(simResult.parcela_mensal)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-400">Início:</span>
+                <span className="font-mono text-indigo-300">{simResult.mes_inicio}</span>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <div>
+                <label className="text-xs text-slate-400 font-medium block mb-1">Lançar em qual Cartão / Conta:</label>
+                <select
+                  value={simEfetivarContaId}
+                  onChange={e => setSimEfetivarContaId(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-indigo-500"
+                >
+                  {contas.map(c => (
+                    <option key={c.id} value={c.id}>{c.nome} ({c.instituicao})</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-2 pt-4 border-t border-slate-800 mt-5">
+              <button
+                type="button"
+                onClick={() => setShowModalEfetivarSim(false)}
+                className="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-slate-200 cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={handleEfetivarSimulacaoReal}
+                className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl cursor-pointer"
+              >
+                Confirmar e Gravar Parcelas
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* MODAL: REAJUSTAR VALOR TOTAL DA FATURA */}
+      {showModalReajuste && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl animate-fadeIn">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-3 bg-indigo-600/20 text-indigo-400 rounded-xl border border-indigo-500/30">
+                <CreditCard className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-base font-black text-slate-100">Reajustar Fatura Manualmente</h3>
+                <p className="text-xs text-slate-400">
+                  {showModalReajuste.cartao_nome} • Ciclo {showModalReajuste.mes_fatura}
+                </p>
+              </div>
+            </div>
+
+            <form onSubmit={handleReajustarFatura} className="space-y-4">
+              <div>
+                <label className="text-xs text-slate-400 font-medium block mb-1">
+                  Valor Total Real no App do Banco (R$)
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  required
+                  placeholder="0.00"
+                  value={reajusteNovoValor}
+                  onChange={e => setReajusteNovoValor(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-base font-mono font-bold text-rose-400 focus:outline-none focus:border-indigo-500"
+                />
+                <span className="text-[11px] text-slate-500 mt-1 block">
+                  Valor atual no sistema: <strong className="text-slate-300 font-mono">{formatBRL(showModalReajuste.total_fatura)}</strong>
+                </span>
+              </div>
+
+              <div>
+                <label className="text-xs text-slate-400 font-medium block mb-1">Motivo do Reajuste</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Ex: IOF, anuidade, compra não registrada"
+                  value={reajusteMotivo}
+                  onChange={e => setReajusteMotivo(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-indigo-500"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-4 border-t border-slate-800 mt-5">
+                <button
+                  type="button"
+                  onClick={() => setShowModalReajuste(null)}
+                  className="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-slate-200 cursor-pointer"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl cursor-pointer shadow-lg shadow-indigo-600/20"
+                >
+                  Confirmar e Recalcular Fatura
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+</div>
   );
 }

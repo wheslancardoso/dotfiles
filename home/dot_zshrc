@@ -605,6 +605,8 @@ alias notebooklm-local='python3 $HOME/dotfiles/scripts/notebooklm-sync.py --loca
 # 🏛️ Apex Finance — Cockpit Financeiro Soberano (Vim/FZF & SQLite)
 alias fin='apex-finance'
 alias financas='apex-finance'
+alias fin-web='apex-web'
+alias apex-web='apex-web'
 
 
 # Keyring & Secrets Integration
