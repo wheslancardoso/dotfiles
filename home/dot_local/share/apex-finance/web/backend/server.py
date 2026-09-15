@@ -169,66 +169,23 @@ def get_cartoes():
 @app.get("/api/transacoes")
 def get_transacoes(mes: Optional[str] = None, conta_id: Optional[int] = None, limite: int = 150):
     mes_ref = mes or mes_atual_str()
-    conn = ce.get_connection()
-    c = conn.cursor()
-    
-    query = """
-        SELECT t.id, t.data as data_transacao, t.descricao, t.valor, t.tipo, t.categoria,
-               COALESCE(co.nome, ca.nome, 'Geral') as conta_nome,
-               t.serie_parcelamento_id, t.parcela_atual, t.total_parcelas, t.mes_fatura,
-               t.conta_id, t.cartao_id
-        FROM transacoes t
-        LEFT JOIN contas co ON t.conta_id = co.id
-        LEFT JOIN cartoes ca ON t.cartao_id = ca.id
-        WHERE (t.mes_fatura = ? OR (t.mes_fatura IS NULL AND strftime('%Y-%m', t.data) = ?))
-    """
-    params = [mes_ref, mes_ref]
-    if conta_id:
-        query += " AND (t.conta_id = ? OR t.cartao_id = ?)"
-        params.extend([conta_id, conta_id])
-        
-    query += " ORDER BY t.data DESC LIMIT ?"
-    params.append(limite)
-    
-    c.execute(query, tuple(params))
-    rows = [dict(r) for r in c.fetchall()]
-    conn.close()
-    return rows
-
-@app.post("/api/transacoes")
-def post_transacao(tx: TransacaoIn):
-    try:
-        data_tx = tx.data_transacao or datetime.date.today().isoformat()
-        
-        # Verifica se a conta escolhida é na verdade um cartão de crédito
-        conn = ce.get_connection()
-        c = conn.cursor()
-        c.execute("SELECT id FROM cartoes WHERE id = ?", (tx.conta_id,))
-        is_cartao = c.fetchone() is not None
-        conn.close()
-
-        if is_cartao:
-            serie_id = ce.registrar_compra_cartao(
-                cartao_id=tx.conta_id,
-                descricao=tx.descricao,
-                valor=tx.valor,
-                categoria=tx.categoria,
-                data_compra=data_tx,
-                parcelas=tx.num_parcelas
-            )
-            return {"status": "ok", "tipo": "cartao", "serie_id": serie_id}
-        else:
-            tid = ce.adicionar_transacao_conta(
-                conta_id=tx.conta_id,
-                tipo=tx.tipo,
-                descricao=tx.descricao,
-                valor=tx.valor,
-                categoria=tx.categoria,
-                data=data_tx
-            )
-            return {"status": "ok", "tipo": "conta", "transacao_id": tid}
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    txs = ce.get_transacoes_do_mes(mes_ref)
+    result = []
+    for t in txs:
+        result.append({
+            "id": t["id"],
+            "data_transacao": t["data"],
+            "descricao": t["descricao"],
+            "valor": t["valor"],
+            "tipo": t["tipo"],
+            "categoria": t["categoria"],
+            "conta_nome": t["origem"],
+            "parcela_atual": t["parcela_atual"],
+            "total_parcelas": t["total_parcelas"],
+            "mes_fatura": t["mes_fatura"],
+            "serie_parcelamento_id": "PARC" if t["total_parcelas"] > 1 else None
+        })
+    return result
 
 @app.delete("/api/transacoes/{transacao_id}")
 def delete_transacao(transacao_id: int, apagar_serie: bool = True):
@@ -320,19 +277,21 @@ def get_simulador(
     sim_mes_inicio: Optional[str] = None
 ):
     mes_base = mes_inicio or mes_atual_str()
-    proj = ce.get_time_machine_projection(num_meses=meses_a_frente)
+    proj = ce.get_time_machine_projection(meses=meses_a_frente)
     
     # Formata para o padrão consumido pelo front
     timeline = []
     for item in proj:
+        tot_desp = item.get("despesas_fixas", 0.0) + item.get("fatura_cartao", 0.0)
+        sobra = item.get("receitas", 0.0) - tot_desp
         timeline.append({
-            "mes": item["mes"],
-            "receitas": item["renda_prevista"],
-            "fixas": item["recorrencias_fixas"],
-            "faturas_cartao": item["faturas_cartao"],
-            "despesas_totais": item["total_saidas"],
-            "sobra_mes": item["sobra_livre"],
-            "saldo_acumulado": item["saldo_acumulado"]
+            "mes": item.get("mes_ano", item.get("label", "")),
+            "receitas": item.get("receitas", 0.0),
+            "fixas": item.get("despesas_fixas", 0.0),
+            "faturas_cartao": item.get("fatura_cartao", 0.0),
+            "despesas_totais": tot_desp,
+            "sobra_mes": sobra,
+            "saldo_acumulado": item.get("saldo_final", 0.0)
         })
         
     simulacao = None
@@ -363,21 +322,26 @@ def get_alforria():
     aportes_planejados = []
     conn = ce.get_connection()
     c = conn.cursor()
-    c.execute("SELECT mes, valor, nota FROM aportes_planejados ORDER BY mes")
+    c.execute("SELECT mes_referencia as mes, valor, motivo as nota FROM aportes_planejados ORDER BY mes_referencia")
     for r in c.fetchall():
         aportes_planejados.append(dict(r))
     conn.close()
     
     res = []
+    saldo_ant = 1000.0
     for p in proj:
+        s_final = p.get("saldo", 0.0)
+        rend = p.get("rendimento", 0.0)
+        ap = p.get("aporte", 0.0)
         res.append({
-            "mes": p["mes"],
-            "saldo_inicial": p["saldo_anterior"],
-            "rendimento_cdi": p["rendimento_mes"],
-            "aporte": p["aporte_mes"],
-            "saldo_final": p["saldo_acumulado"],
-            "rendimento_mensal_futuro": p["rendimento_futuro_mensal"]
+            "mes": p.get("mes_ano", ""),
+            "saldo_inicial": saldo_ant,
+            "rendimento_cdi": rend,
+            "aporte": ap,
+            "saldo_final": s_final,
+            "rendimento_mensal_futuro": s_final * 0.0095
         })
+        saldo_ant = s_final
         
     return {
         "projecao": res,
