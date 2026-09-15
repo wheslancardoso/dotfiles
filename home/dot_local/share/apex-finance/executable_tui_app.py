@@ -1036,12 +1036,6 @@ class ApexFinanceApp(App):
     def refresh_all_data(self) -> None:
         mes_ref = self.get_selected_month_str()
         
-        # Atualiza etiqueta do mês
-        ano, mes = map(int, mes_ref.split("-"))
-        dt_exemplo = date(ano, mes, 1)
-        nome_mes = dt_exemplo.strftime("%B").title()
-        self.query_one("#month-display", Label).update(f"📅 {mes_ref} ({nome_mes})")
-
         # Atualiza badge de status do mês
         snap = core_engine.obter_snapshot_mensal(mes_ref)
         badge = self.query_one("#month-status-badge", Label)
