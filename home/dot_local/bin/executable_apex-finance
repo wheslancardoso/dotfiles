@@ -113,43 +113,118 @@ fazer_backup_cli() {
 ver_dashboard_mensal() {
     clear 2>/dev/null || true
     header_banner
+    echo -e "${TEAL}${BOLD}💰 SELECIONE O MÊS PARA AUDITAR O 'DEPOIS DAS CONTAS'${NC}\n"
+
+    local mes_escolhido
+    mes_escolhido=$(python3 -c "
+import datetime
+hoje = datetime.date.today()
+meses = []
+nomes = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
+a, m = 2026, 9
+for _ in range(24):
+    tag = ' (Mês Atual)' if a == hoje.year and m == hoje.month else ''
+    meses.append(f'{a:04d}-{m:02d} • {nomes[m-1]}/{a}{tag}')
+    m += 1
+    if m > 12:
+        m = 1
+        a += 1
+for item in meses:
+    print(item)
+" | fzf --prompt="📅 Mês de Análise > " --height=40% --layout=reverse --border=rounded)
+
+    local mes_ref
+    mes_ref=$(echo "$mes_escolhido" | awk '{print $1}')
+    [ -z "$mes_ref" ] && mes_ref=$(date +%Y-%m)
+
+    clear 2>/dev/null || true
+    header_banner
     python3 -c "
 import sys; sys.path.append('$HOME/.local/share/apex-finance')
 import core_engine
 conn = core_engine.get_connection()
 c = conn.cursor()
 
-print('🏛️  QUADRO DE CONTAS CORRENTES & CARTEIRA:')
-c.execute('SELECT id, nome, instituicao, saldo FROM contas')
-for r in c.fetchall():
-    print(f'   • [{r[\"id\"]}] {r[\"nome\"]} ({r[\"instituicao\"]}) -> R$ {r[\"saldo\"]:,.2f}')
+mes_sel = '$mes_ref'
+ano_sel, m_sel = map(int, mes_sel.split('-'))
 
-print('\n🏰  CAIXINHAS NUBANK (ALFORRIA & RESERVAS):')
-c.execute('SELECT id, nome, saldo_atual, meta_total, aporte_mensal, tipo_rendimento FROM caixinhas')
-for r in c.fetchall():
-    pct = (r['saldo_atual'] / r['meta_total'] * 100) if r['meta_total'] > 0 else 0
-    print(f'   • [{r[\"id\"]}] {r[\"nome\"]} -> R$ {r[\"saldo_atual\"]:,.2f} / R$ {r[\"meta_total\"]:,.2f} ({pct:.1f}%) | Aporte: R$ {r[\"aporte_mensal\"]:,.2f}/mês ({r[\"tipo_rendimento\"]})')
+renda = 2234.0
+if m_sel in [11, 12]:
+    renda += 1100.0  # Parcela 13o
 
-print('\n💳  CARTÕES DE CRÉDITO & FATURAS ABERTAS:')
-c.execute('SELECT id, nome, limite, dia_fechamento, dia_vencimento FROM cartoes')
-for r in c.fetchall():
-    mes_fat = core_engine.calcular_mes_fatura(str(core_engine.date.today()), r['dia_fechamento'])
-    c.execute('SELECT SUM(valor) FROM transacoes WHERE cartao_id = ? AND mes_fatura = ?', (r['id'], mes_fat))
-    total_fat = c.fetchone()[0] or 0.0
-    print(f'   • {r[\"nome\"]} -> Fatura Atual ({mes_fat}): R$ {total_fat:,.2f} | Limite Total: R$ {r[\"limite\"]:,.2f} (Fecha dia {r[\"dia_fechamento\"]}, Vence dia {r[\"dia_vencimento\"]})')
-
-print('\n📋  ÚLTIMAS 8 TRANSAÇÕES REGISTRADAS:')
+# Faturas deste mes
 c.execute('''
-    SELECT data, descricao, valor, tipo, categoria FROM transacoes
-    ORDER BY data DESC, id DESC LIMIT 8
-''')
-for r in c.fetchall():
-    sinal = '+' if r['tipo'] == 'receita' else '-'
-    print(f'   {r[\"data\"]} | {sinal} R$ {r[\"valor\"]:8.2f} | {r[\"categoria\"]:25} | {r[\"descricao\"]}')
+    SELECT k.nome, k.dia_vencimento, SUM(t.valor)
+    FROM transacoes t
+    JOIN cartoes k ON t.cartao_id = k.id
+    WHERE t.mes_fatura = ?
+    GROUP BY k.nome, k.dia_vencimento
+''', (mes_sel,))
+fats = c.fetchall()
+total_fats = sum(f[2] for f in fats) if fats else 0.0
+
+# Despesas fixas recorrentes (exceto Alforria)
+c.execute('SELECT descricao, valor, dia_vencimento FROM recorrencias WHERE ativo = 1 AND tipo = \"despesa\" AND descricao NOT LIKE \"%Alforria%\"')
+recs = c.fetchall()
+total_recs = sum(r[1] for r in recs)
+
+aporte_alforria = 1000.0
+total_obrigacoes = total_fats + total_recs + aporte_alforria
+sobra = renda - total_obrigacoes
+
+print(f'╔══════════════════════════════════════════════════════════════════════╗')
+print(f'║  📅 RADIOGRAFIA FINANCEIRA: {mes_sel}                                 ║')
+print(f'╚══════════════════════════════════════════════════════════════════════╝')
+
+print(f'🟢 Renda Líquida Prevista:                 R$ {renda:>9,.2f}')
+print(f'────────────────────────────────────────────────────────────────────────')
+print(f'🔴 Faturas de Cartão de Crédito:')
+if not fats:
+    print(f'   • Faturas zeradas para este mês         R$      0.00')
+else:
+    for f in fats:
+        print(f'   • {f[0]:28} (Vence dia {f[1]:02d}) -> R$ {f[2]:>8,.2f}')
+
+print(f'\n📦 Despesas Fixas & Provisão do Mês:')
+for r in recs:
+    print(f'   • {r[0]:28} (Dia {r[2]:02d})       -> R$ {r[1]:>8,.2f}')
+
+print(f'\n🟡 Aporte Sagrado Alforria (Dia 05):        R$ {aporte_alforria:>9,.2f}')
+print(f'────────────────────────────────────────────────────────────────────────')
+print(f'🔴 Total de Saídas & Aportes:              R$ {total_obrigacoes:>9,.2f}')
+print(f'════════════════════════════════════════════════════════════════════════')
+
+if sobra >= 150:
+    tag = '✅ CONFORTÁVEL'
+elif sobra >= 0:
+    tag = '⚠️ APERTADO'
+else:
+    tag = '🚨 DÉFICIT DE CAIXA'
+
+print(f'💰 SOBRA LIVRE (\"DEPOIS DAS CONTAS\"):      R$ {sobra:>9,.2f}  [{tag}]')
+print(f'════════════════════════════════════════════════════════════════════════')
+
+# Calculo de acúmulo da Alforria ate este mes
+saldo_alf = 1000.0
+taxa = 0.0095
+a_cur, m_cur = 2026, 9
+while True:
+    k = f'{a_cur:04d}-{m_cur:02d}'
+    if k == mes_sel:
+        break
+    saldo_alf = saldo_alf * (1 + taxa) + 1000.0
+    if m_cur in [11, 12]:
+        saldo_alf += 600.0
+    m_cur += 1
+    if m_cur > 12:
+        m_cur = 1
+        a_cur += 1
+
+print(f'🏰 Saldo Acumulado na Caixinha Alforria:   R$ {saldo_alf:>9,.2f} (115% CDI)')
+print(f'────────────────────────────────────────────────────────────────────────\n')
 
 conn.close()
 "
-    echo ""
     if [ "$IS_SUBCOMMAND" != "1" ] && [ -t 0 ]; then
         read -rp "Pressione [ENTER] para voltar ao menu..." || true
     fi
