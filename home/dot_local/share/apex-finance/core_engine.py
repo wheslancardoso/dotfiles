@@ -195,6 +195,97 @@ def calcular_mes_fatura(dia_compra_str, dia_fechamento):
             mes += 1
     return f"{ano:04d}-{mes:02d}"
 
+def analisar_impacto_parcelas(cartao_id, valor_total, parcelas=1, data_compra=None, teto_mensal=400.0, renda_mensal=2234.0):
+    """
+    Analisa a viabilidade de uma compra parcelada simulando o impacto mês a mês.
+    Verifica se a soma das parcelas existentes + nova parcela ultrapassa o teto de segurança.
+    """
+    if not data_compra:
+        data_compra = str(date.today())
+        
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("SELECT nome, dia_fechamento, dia_vencimento FROM cartoes WHERE id = ?", (cartao_id,))
+    cartao = c.fetchone()
+    if not cartao:
+        conn.close()
+        raise ValueError("Cartão não encontrado.")
+        
+    dia_fechamento = cartao['dia_fechamento']
+    valor_parcela = round(valor_total / parcelas, 2)
+    primeiro_mes = calcular_mes_fatura(data_compra, dia_fechamento)
+    ano_fat, mes_fat = map(int, primeiro_mes.split('-'))
+    
+    meses_analise = []
+    estourou = False
+    maior_comprometimento = 0.0
+    
+    for p in range(1, parcelas + 1):
+        m_curr = mes_fat + (p - 1)
+        a_curr = ano_fat + (m_curr - 1) // 12
+        m_curr = ((m_curr - 1) % 12) + 1
+        mes_fatura_str = f"{a_curr:04d}-{m_curr:02d}"
+        
+        # Busca faturas futuras existentes de TODOS os cartões para este mês
+        c.execute("""
+            SELECT SUM(valor) FROM transacoes 
+            WHERE cartao_id IS NOT NULL AND mes_fatura = ?
+        """, (mes_fatura_str,))
+        comp_atual = c.fetchone()[0] or 0.0
+        
+        novo_total = round(comp_atual + valor_parcela, 2)
+        if novo_total > maior_comprometimento:
+            maior_comprometimento = novo_total
+            
+        passou_do_teto = novo_total > teto_mensal
+        if passou_do_teto:
+            estourou = True
+            
+        pct_renda = round((novo_total / renda_mensal) * 100, 1)
+        
+        meses_analise.append({
+            'parcela_num': p,
+            'mes_fatura': mes_fatura_str,
+            'comprometido_atual': comp_atual,
+            'valor_parcela': valor_parcela,
+            'novo_total': novo_total,
+            'estourou': passou_do_teto,
+            'pct_renda': pct_renda
+        })
+        
+    conn.close()
+    
+    # Formatação visual do relatório
+    linhas_relatorio = []
+    linhas_relatorio.append(f"💳 Análise de Parcelamento: {cartao['nome']}")
+    linhas_relatorio.append(f"💰 Valor Total: R$ {valor_total:,.2f} em {parcelas}x de R$ {valor_parcela:,.2f}")
+    linhas_relatorio.append(f"🛡️ Teto de Segurança: R$ {teto_mensal:,.2f}/mês (~{round((teto_mensal/renda_mensal)*100)}% da renda de R$ {renda_mensal:,.2f})")
+    linhas_relatorio.append("────────────────────────────────────────────────────────────────────────")
+    
+    for m in meses_analise:
+        status_tag = "🚨 ESTOURO" if m['estourou'] else "✅ SEGURO"
+        linhas_relatorio.append(
+            f"  • Mês {m['mes_fatura']} (Parc {m['parcela_num']}/{parcelas}): "
+            f"Atual R$ {m['comprometido_atual']:>6.2f} + R$ {m['valor_parcela']:>6.2f} = "
+            f"Novo R$ {m['novo_total']:>6.2f} ({m['pct_renda']:>4.1f}% renda) [{status_tag}]"
+        )
+    linhas_relatorio.append("────────────────────────────────────────────────────────────────────────")
+    
+    if estourou:
+        linhas_relatorio.append(f"⚠️ RISCO DETECTADO: O mês mais pesado atingirá R$ {maior_comprometimento:,.2f}, estourando o teto de R$ {teto_mensal:,.2f}!")
+    else:
+        linhas_relatorio.append(f"🎯 COMPRA 100% BLINDADA: Todas as parcelas ficam rigorosamente dentro da sua margem segura.")
+        
+    return {
+        'viavel': not estourou,
+        'cartao_nome': cartao['nome'],
+        'valor_parcela': valor_parcela,
+        'teto_mensal': teto_mensal,
+        'maior_comprometimento': maior_comprometimento,
+        'meses_analise': meses_analise,
+        'relatorio': "\n".join(linhas_relatorio)
+    }
+
 def registrar_compra_cartao(cartao_id, data_compra, descricao, valor_total, categoria, parcelas=1):
     conn = get_connection()
     c = conn.cursor()

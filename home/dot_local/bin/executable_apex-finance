@@ -209,6 +209,32 @@ conn.close()
         read -rp "🔢 Número de parcelas [padrão: 1]: " parc
         parc="${parc:-1}"
 
+        if [ "$parc" -gt 1 ] 2>/dev/null; then
+            echo ""
+            local analise_status
+            python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+res = core_engine.analisar_impacto_parcelas(int('$cid'), float('$val_str'), int('$parc'), '$dt_input')
+print(res['relatorio'])
+if not res['viavel']:
+    sys.exit(10)
+"
+            analise_status=$?
+            if [ "$analise_status" -eq 10 ]; then
+                echo ""
+                echo -e "${YELLOW}${BOLD}⚠️  ALERTA: Essa compra parcelada estoura seu teto de segurança (R$ 400/mês)!${NC}"
+                read -rp "Deseja forçar o registro mesmo assim? [s/N]: " forcar
+                if [[ ! "$forcar" =~ ^[sS]$ ]]; then
+                    echo -e "${RED}Operação cancelada para preservar sua blindagem financeira.${NC}"
+                    sleep 2
+                    return
+                fi
+            else
+                echo ""
+            fi
+        fi
+
         python3 -c "
 import sys; sys.path.append('$HOME/.local/share/apex-finance')
 import core_engine
@@ -265,7 +291,7 @@ gerenciar_cartoes_fzf() {
     echo -e "${MAUVE}${BOLD}💳 GESTÃO DE CARTÕES & FATURAS${NC}\n"
 
     local sub_op
-    sub_op=$(printf "1. Ver Itens e Total da Fatura Atual\n2. Ver Faturas Futuras (Parcelamentos projetados)\n3. Pagar Fatura de Cartão (Debitando da Conta)\n4. Voltar" | fzf --prompt="Operação de Cartão > " --height=30% --layout=reverse --border=rounded)
+    sub_op=$(printf "1. Ver Itens e Total da Fatura Atual\n2. Ver Faturas Futuras (Parcelamentos projetados)\n3. 🧮 Simular Compra Parcelada (Checagem de Teto de Segurança)\n4. Pagar Fatura de Cartão (Debitando da Conta)\n5. Voltar" | fzf --prompt="Operação de Cartão > " --height=35% --layout=reverse --border=rounded)
 
     case "$sub_op" in
         "1."*)
@@ -313,6 +339,43 @@ conn.close()
             read -rp "Pressione [ENTER] para voltar..."
             ;;
         "3."*)
+            local cartoes_list
+            cartoes_list=$(python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+conn = core_engine.get_connection()
+for r in conn.execute('SELECT id, nome FROM cartoes').fetchall():
+    print(f'{r[\"id\"]}. {r[\"nome\"]}')
+conn.close()
+")
+            local cartao_sel
+            cartao_sel=$(echo "$cartoes_list" | fzf --prompt="💳 Selecione o Cartão para Simulação > " --height=30% --layout=reverse --border=rounded)
+            local cid
+            cid=$(echo "$cartao_sel" | cut -d'.' -f1)
+            [ -z "$cid" ] && return
+
+            read -rp "💰 Valor Total da Compra (ex: 600.00): " sim_val
+            sim_val="${sim_val//,/.}"
+            sim_val=$(echo "$sim_val" | tr -dc '0-9.')
+            [ -z "$sim_val" ] && return
+
+            read -rp "🔢 Número de parcelas (ex: 3, 6, 10): " sim_parc
+            sim_parc="${sim_parc:-1}"
+
+            read -rp "📅 Data estimada [AAAA-MM-DD, padrão hoje: $(date +%Y-%m-%d)]: " sim_dt
+            [ -z "$sim_dt" ] && sim_dt=$(date +%Y-%m-%d)
+
+            echo ""
+            python3 -c "
+import sys; sys.path.append('$HOME/.local/share/apex-finance')
+import core_engine
+res = core_engine.analisar_impacto_parcelas(int('$cid'), float('$sim_val'), int('$sim_parc'), '$sim_dt')
+print(res['relatorio'])
+"
+            echo ""
+            read -rp "Pressione [ENTER] para voltar..."
+            ;;
+        "4."*)
             local cartoes_list
             cartoes_list=$(python3 -c "
 import sys; sys.path.append('$HOME/.local/share/apex-finance')
