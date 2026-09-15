@@ -57,6 +57,7 @@ Screen {
     background: #181825;
     padding: 0 1;
     margin-bottom: 1;
+    grid-size: 5;
 }
 
 .hud-card {
@@ -116,11 +117,26 @@ Screen {
     align: center middle;
 }
 
+#select-month-nav {
+    width: 30;
+    height: 3;
+    border: none;
+    background: #181825;
+    color: #cba6f7;
+    text-style: bold;
+}
+
 #month-display {
     text-style: bold;
     color: #cba6f7;
-    width: 30;
+    width: 26;
     content-align: center middle;
+}
+
+#dash-depois-contas-box {
+    border: round #89b4fa;
+    background: #1e1e2e;
+    padding: 1;
 }
 
 TabbedContent {
@@ -819,48 +835,66 @@ class ApexFinanceApp(App):
     current_month_offset = 0
     filter_month_only = True
 
+    @staticmethod
+    def get_month_options() -> list:
+        nomes = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+        opts = []
+        a, m = 2026, 9
+        hoje_str = str(date.today())[:7]
+        while True:
+            mes_str = f"{a:04d}-{m:02d}"
+            tag = " (Atual)" if mes_str == hoje_str else ""
+            opts.append((f"{mes_str} • {nomes[m-1]}/{a}{tag}", mes_str))
+            if a == 2028 and m == 8:
+                break
+            m += 1
+            if m > 12:
+                m = 1
+                a += 1
+        return opts
+
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
         
         # 1. TOP SURVIVAL HUD
         with Grid(id="hud-container"):
             with Vertical(classes="hud-card"):
-                yield Label("🛡️ LIQUIDEZ LÍQUIDA", classes="hud-label")
-                yield Label("R$ 0,00", id="hud-liquidez", classes="hud-val-green")
+                yield Label("💰 DEPOIS DAS CONTAS", classes="hud-label")
+                yield Label("R$ 0,00", id="hud-depois-contas", classes="hud-val-green")
                 
             with Vertical(classes="hud-card"):
-                yield Label("💰 DISPONÍVEL BANCOS", classes="hud-label")
+                yield Label("🏦 DISPONÍVEL BANCOS", classes="hud-label")
                 yield Label("R$ 0,00", id="hud-bancos", classes="hud-val-blue")
                 
             with Vertical(classes="hud-card"):
-                yield Label("💳 DÍVIDAS CARTÕES", classes="hud-label")
-                yield Label("R$ 0,00", id="hud-dividas", classes="hud-val-red")
+                yield Label("💳 FATURAS DO MÊS", classes="hud-label")
+                yield Label("R$ 0,00", id="hud-dividas", classes="hud-val-yellow")
                 
             with Vertical(classes="hud-card"):
-                yield Label("🫁 TETO OXIGÊNIO (SEM)", classes="hud-label")
-                yield Label("R$ 0,00 /sem", id="hud-teto", classes="hud-val-mauve")
+                yield Label("🏰 RESERVA ALFORRIA", classes="hud-label")
+                yield Label("R$ 0,00", id="hud-alforria-top", classes="hud-val-mauve")
                 
             with Vertical(classes="hud-card"):
-                yield Label("🎖️ ESCUDO RESILIÊNCIA", classes="hud-label")
-                yield Label("Tier 1", id="hud-tier", classes="hud-val-yellow")
+                yield Label("🛡️ LIQUIDEZ LÍQUIDA", classes="hud-label")
+                yield Label("R$ 0,00", id="hud-liquidez", classes="hud-val-green")
 
         # 2. MONTH NAVIGATOR
         with Horizontal(id="time-navigator"):
-            yield Button("◀ Mês Ant. [h]", id="btn-prev-month")
-            yield Label("📅 2026-09 (Setembro)", id="month-display")
+            yield Button("◀ [h]", id="btn-prev-month")
+            yield Select(self.get_month_options(), value="2026-09", id="select-month-nav", allow_blank=False)
             yield Label("⚡ ATIVO", id="month-status-badge", classes="hud-val-green")
-            yield Button("Próx. Mês [l] ▶", id="btn-next-month")
-            yield Button("🔒 Selar Mês", id="btn-seal-month")
+            yield Button("[l] ▶", id="btn-next-month")
+            yield Button("🔒 Selar", id="btn-seal-month")
             yield Button("📜 Snapshots", id="btn-view-snapshots")
             yield Button("💾 Backup [b]", id="btn-backup-tui")
-            yield Button("⚖️ Ajustar Fatura", id="btn-open-adj-fat")
-            yield Button("🏦 Reconciliar Saldo", id="btn-open-rec")
-            yield Button("⚡ Ritual Domingo", id="btn-open-ritual")
+            yield Button("⚖️ Ajustar Fat", id="btn-open-adj-fat")
+            yield Button("🏦 Reconciliar", id="btn-open-rec")
+            yield Button("⚡ Ritual", id="btn-open-ritual")
 
         # 3. TABBED CONTENT
         with TabbedContent(id="main-tabs"):
             # ABA 1: DASHBOARD
-            with TabPane("📊 Dashboard & Time Machine", id="tab-dash"):
+            with TabPane("📊 'Depois das Contas' & Fluxo do Mês", id="tab-dash"):
                 with Horizontal():
                     with Vertical(classes="section-box", id="dash-summary-box"):
                         yield Label("🏛️ Resumo Consolidado do Mês", classes="section-title")
@@ -869,9 +903,9 @@ class ApexFinanceApp(App):
                         yield Label("🏦 Contas Correntes & Carteira", classes="section-title")
                         yield Static(id="dash-accounts-text")
                     
-                    with Vertical(classes="section-box"):
-                        yield Label("📈 Fluxo de Caixa Preditivo (Próximos 12 Meses)", classes="section-title")
-                        yield PlotextPlot(id="chart-projection")
+                    with VerticalScroll(classes="section-box", id="dash-depois-contas-box"):
+                        yield Label("💰 Extrato Cirúrgico: 'Depois das Contas' deste Mês", classes="section-title")
+                        yield Static(id="dash-depois-contas-text")
 
             # ABA 2: TRANSAÇÕES
             with TabPane("📝 Transações & Faturas", id="tab-tx"):
@@ -1025,6 +1059,14 @@ class ApexFinanceApp(App):
             badge.update("🔮 PROJEÇÃO")
             badge.classes = "hud-val-blue"
 
+        # Sincroniza seletor de mês na barra superior
+        try:
+            sel_nav = self.query_one("#select-month-nav", Select)
+            if sel_nav.value != mes_ref:
+                sel_nav.value = mes_ref
+        except Exception:
+            pass
+
         btn_filter = self.query_one("#btn-toggle-month-tx", Button)
         if self.filter_month_only:
             btn_filter.label = f"📅 Mês ({mes_ref})"
@@ -1033,18 +1075,8 @@ class ApexFinanceApp(App):
 
         # 1. Survival HUD
         hud = core_engine.get_survival_hud_metrics(mes_ref)
-        
-        lbl_liq = self.query_one("#hud-liquidez", Label)
-        lbl_liq.update(f"R$ {hud['liquidez_liquida']:,.2f}")
-        lbl_liq.set_class(hud['liquidez_liquida'] >= 0, "hud-val-green")
-        lbl_liq.set_class(hud['liquidez_liquida'] < 0, "hud-val-red")
-        
-        self.query_one("#hud-bancos", Label).update(f"R$ {hud['saldo_bancario']:,.2f}")
-        self.query_one("#hud-dividas", Label).update(f"R$ {hud['divida_consolidada']:,.2f}")
-        self.query_one("#hud-teto", Label).update(f"R$ {hud['teto_oxigenio_semanal']:,.2f}/sem")
-        self.query_one("#hud-tier", Label).update(hud['health_tier'])
 
-        # 2. Resumo Consolidado & Contas
+        # 2. Resumo Consolidado, Contas & Depois das Contas
         conn = core_engine.get_connection()
         c = conn.cursor()
         
@@ -1055,25 +1087,115 @@ class ApexFinanceApp(App):
             acc_text += f"• [b]{r['nome']}[/b] ({r['instituicao']}): [green]R$ {r['saldo']:,.2f}[/green]\n"
         self.query_one("#dash-accounts-text", Static).update(acc_text)
         
-        c.execute("SELECT SUM(valor) FROM recorrencias WHERE tipo = 'receita' AND ativo = 1")
-        rec_rec = c.fetchone()[0] or 0.0
-        c.execute("SELECT SUM(valor) FROM recorrencias WHERE tipo = 'despesa' AND ativo = 1")
-        desp_rec = c.fetchone()[0] or 0.0
-        c.execute("SELECT SUM(valor) FROM transacoes WHERE cartao_id IS NOT NULL AND mes_fatura = ?", (mes_ref,))
-        fat_mes = c.fetchone()[0] or 0.0
+        # Radiografia "Depois das Contas"
+        ano_sel, m_sel = map(int, mes_ref.split('-'))
+        renda = 2234.0
+        desc_renda = "Salário AGR"
+        if m_sel in [11, 12]:
+            renda += 1100.0
+            desc_renda = "Salário AGR + 13º Salário"
+
+        # Faturas do mês selecionado
+        c.execute("""
+            SELECT k.nome, k.dia_vencimento, SUM(t.valor)
+            FROM transacoes t
+            JOIN cartoes k ON t.cartao_id = k.id
+            WHERE t.mes_fatura = ?
+            GROUP BY k.nome, k.dia_vencimento
+        """, (mes_ref,))
+        fats = c.fetchall()
+        total_fats = sum(f[2] for f in fats) if fats else 0.0
+
+        # Recorrências fixas (sem Alforria)
+        c.execute("SELECT descricao, valor, dia_vencimento FROM recorrencias WHERE ativo = 1 AND tipo = 'despesa' AND descricao NOT LIKE '%Alforria%' ORDER BY dia_vencimento")
+        recs = c.fetchall()
+        total_recs = sum(r[1] for r in recs)
+
+        aporte_alforria = 1000.0
+        total_saidas = total_fats + total_recs + aporte_alforria
+        sobra_depois_contas = renda - total_saidas
+
+        # Acúmulo da Alforria até o mês selecionado
+        saldo_alf = 1000.0
+        taxa = 0.0095
+        a_cur, m_cur = 2026, 9
+        while True:
+            k_mes = f'{a_cur:04d}-{m_cur:02d}'
+            if k_mes == mes_ref:
+                break
+            saldo_alf = saldo_alf * (1 + taxa) + 1000.0
+            if m_cur in [11, 12]:
+                saldo_alf += 600.0
+            m_cur += 1
+            if m_cur > 12:
+                m_cur = 1
+                a_cur += 1
+
+        # Atualiza os 5 Cards do HUD no Topo
+        lbl_depois = self.query_one("#hud-depois-contas", Label)
+        lbl_depois.update(f"R$ {sobra_depois_contas:,.2f}")
+        lbl_depois.set_class(sobra_depois_contas >= 0, "hud-val-green")
+        lbl_depois.set_class(sobra_depois_contas < 0, "hud-val-red")
+
+        self.query_one("#hud-bancos", Label).update(f"R$ {hud['saldo_bancario']:,.2f}")
+        self.query_one("#hud-dividas", Label).update(f"R$ {total_fats:,.2f}")
+        self.query_one("#hud-alforria-top", Label).update(f"R$ {saldo_alf:,.2f}")
         
-        sobra_mes = rec_rec - desp_rec - fat_mes
-        saldo_proj_fim = hud['saldo_bancario'] + sobra_mes
-        
+        lbl_liq = self.query_one("#hud-liquidez", Label)
+        lbl_liq.update(f"R$ {hud['liquidez_liquida']:,.2f}")
+        lbl_liq.set_class(hud['liquidez_liquida'] >= 0, "hud-val-green")
+        lbl_liq.set_class(hud['liquidez_liquida'] < 0, "hud-val-red")
+
+        # Texto do Resumo Consolidado (lado esquerdo)
         resumo_str = (
             f"[italic yellow]\"Quem é fiel no pouco, sobre o muito será colocado.\" (Lc 16:10)[/italic yellow]\n\n"
-            f"• [b]Receita Mensal Projetada:[/b] [green]R$ {rec_rec:,.2f}[/green]\n"
-            f"• [b]Custos Fixos & Metas:[/b] [red]R$ {desp_rec:,.2f}[/red]\n"
-            f"• [b]Fatura Cartão ({mes_ref}):[/b] [yellow]R$ {fat_mes:,.2f}[/yellow]\n"
-            f"• [b]Margem Líquida do Mês:[/b] [{'green' if sobra_mes>=0 else 'red'}]R$ {sobra_mes:,.2f}[/]\n"
-            f"• [b]Saldo Projetado Fim de Mês:[/b] [{'green' if saldo_proj_fim>=0 else 'red'}]R$ {saldo_proj_fim:,.2f}[/]"
+            f"• [b]Renda Prevista ({mes_ref}):[/b] [green]R$ {renda:,.2f}[/green]\n"
+            f"• [b]Custos Fixos & Provisão:[/b] [red]R$ {total_recs:,.2f}[/red]\n"
+            f"• [b]Faturas dos Cartões:[/b] [yellow]R$ {total_fats:,.2f}[/yellow]\n"
+            f"• [b]Aporte Sagrado Alforria:[/b] [gold1]R$ {aporte_alforria:,.2f}[/gold1]\n"
+            f"• [b]Dinheiro Livre ('Depois das Contas'):[/b] [{'green' if sobra_depois_contas>=0 else 'red'}]R$ {sobra_depois_contas:,.2f}[/]\n"
+            f"• [b]Patrimônio Alforria Acumulado:[/b] [cyan]R$ {saldo_alf:,.2f}[/cyan]"
         )
         self.query_one("#dash-consolidated-text", Static).update(resumo_str)
+
+        # Painel Detalhado Depois das Contas (lado direito)
+        linhas = []
+        linhas.append(f"[bold cyan]💰 EXTRATO CIRÚRGICO: 'DEPOIS DAS CONTAS' ({mes_ref})[/bold cyan]\n")
+        linhas.append(f"[bold green]🟢 Renda Líquida Prevista:[/bold green]                  [bold green]R$ {renda:>9,.2f}[/bold green] [dim]({desc_renda})[/dim]")
+        linhas.append(f"[dim]──────────────────────────────────────────────────────────────[/dim]")
+        
+        linhas.append(f"[bold yellow]💳 Faturas dos Cartões de Crédito:[/bold yellow]")
+        if not fats:
+            linhas.append(f"   • Faturas zeradas neste mês                  [dim]R$      0.00[/dim]")
+        else:
+            for f in fats:
+                linhas.append(f"   • [yellow]{f[0]:28}[/yellow] (Vence {f[1]:02d}) -> [bold yellow]R$ {f[2]:>8,.2f}[/bold yellow]")
+
+        linhas.append(f"\n[bold magenta]📦 Despesas Fixas & Provisão do Lar:[/bold magenta]")
+        for r in recs:
+            linhas.append(f"   • {r[0]:28} (Dia {r[2]:02d})       -> R$ {r[1]:>8,.2f}")
+
+        linhas.append(f"\n[bold gold1]🟡 Aporte Sagrado Alforria (Dia 05):[/bold gold1]         [bold gold1]R$ {aporte_alforria:>9,.2f}[/bold gold1] [dim](CDB 115% CDI)[/dim]")
+        linhas.append(f"[dim]──────────────────────────────────────────────────────────────[/dim]")
+        linhas.append(f"[bold red]🔴 Total de Obrigações & Aportes:[/bold red]          [bold red]R$ {total_saidas:>9,.2f}[/bold red]")
+        linhas.append(f"[dim]══════════════════════════════════════════════════════════════[/dim]")
+
+        if sobra_depois_contas >= 150:
+            tag_status = "[bold black on green] ✅ CONFORTÁVEL [/]"
+            cor_sobra = "bold green"
+        elif sobra_depois_contas >= 0:
+            tag_status = "[bold black on yellow] ⚠️ APERTADO [/]"
+            cor_sobra = "bold yellow"
+        else:
+            tag_status = "[bold white on red] 🚨 DÉFICIT DE CAIXA [/]"
+            cor_sobra = "bold red"
+
+        linhas.append(f"[{cor_sobra}]💸 SOBRA LIVRE ('DEPOIS DAS CONTAS'):       R$ {sobra_depois_contas:>9,.2f}[/]  {tag_status}")
+        linhas.append(f"[dim]══════════════════════════════════════════════════════════════[/dim]\n")
+        linhas.append(f"🏰 [bold cyan]Caixinha Alforria Acumulada até este Mês:[/bold cyan] [bold yellow]R$ {saldo_alf:>9,.2f}[/bold yellow] [dim](115% CDI)[/dim]")
+        linhas.append(f"🎯 [dim]Meta: R$ 27.000 a R$ 30.000 | Progresso: {min(100, (saldo_alf/27000)*100):.1f}%[/dim]")
+
+        self.query_one("#dash-depois-contas-text", Static).update("\n".join(linhas))
 
         # 3. Transações Table
         table_tx = self.query_one("#table-transactions", DataTable)
@@ -1200,23 +1322,18 @@ class ApexFinanceApp(App):
 
         conn.close()
 
-        # 7. Renderizar Gráfico de Fluxo de Caixa no Dashboard
-        self.render_dashboard_chart()
-
-    def render_dashboard_chart(self) -> None:
-        plot = self.query_one("#chart-projection", PlotextPlot)
-        plot.plt.clear_data()
-        plot.plt.clear_figure()
-        
-        proj = core_engine.get_time_machine_projection(meses=10)
-        meses = [p['label'].replace("/", "-") for p in proj]
-        saldos = [p['saldo_final'] for p in proj]
-        
-        plot.plt.theme("dark")
-        plot.plt.title("Projeção do Saldo em Conta (10 Meses)")
-        plot.plt.bar(meses, saldos, color="green", width=0.5)
-        plot.plt.plotsize(None, 14)
-        plot.refresh()
+    def on_select_changed(self, event: Select.Changed) -> None:
+        if event.select.id == "select-month-nav" and event.value != Select.BLANK:
+            mes_str = str(event.value)
+            try:
+                ano, mes = map(int, mes_str.split("-"))
+                hoje = date.today()
+                new_offset = (ano - hoje.year) * 12 + (mes - hoje.month)
+                if new_offset != self.current_month_offset:
+                    self.current_month_offset = new_offset
+                    self.refresh_all_data()
+            except Exception:
+                pass
 
     def run_simulation(self) -> None:
         val_str = self.query_one("#sim-val", Input).value.strip().replace(",", ".")
