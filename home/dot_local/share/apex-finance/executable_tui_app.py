@@ -550,7 +550,7 @@ class SundayRitualModal(ModalScreen):
     def compose(self) -> ComposeResult:
         with Vertical(classes="modal-dialog"):
             yield Label("🕯️ RITUAL DO DOMINGO À NOITE (AUDITORIA RÁPIDA)", classes="modal-title")
-            yield Static("Abra os apps bancários e audite a sua blindagem semanal:\n")
+            yield Static("[italic yellow]\"Quem é fiel no pouco, sobre o muito será colocado.\" (Lc 16:10)[/italic yellow]\n\nAbra os apps bancários e audite a sua blindagem semanal:\n")
             
             yield Checkbox(" [1] Fatura Cartão Caixa: Apenas gastos previstos e zero surpresas?", id="c1")
             yield Checkbox(" [2] Caixinha Alforria: Aporte sagrado intacto rendendo 115% CDI?", id="c2")
@@ -1066,6 +1066,7 @@ class ApexFinanceApp(App):
         saldo_proj_fim = hud['saldo_bancario'] + sobra_mes
         
         resumo_str = (
+            f"[italic yellow]\"Quem é fiel no pouco, sobre o muito será colocado.\" (Lc 16:10)[/italic yellow]\n\n"
             f"• [b]Receita Mensal Projetada:[/b] [green]R$ {rec_rec:,.2f}[/green]\n"
             f"• [b]Custos Fixos & Metas:[/b] [red]R$ {desp_rec:,.2f}[/red]\n"
             f"• [b]Fatura Cartão ({mes_ref}):[/b] [yellow]R$ {fat_mes:,.2f}[/yellow]\n"

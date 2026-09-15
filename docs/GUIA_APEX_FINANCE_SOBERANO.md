@@ -1,6 +1,7 @@
 # 🏛️ GUIA MESTRE — APEX FINANCE (COCKPIT SOBERANO DE GESTÃO & SSOT)
 
-> **"Quem gasta o que não tem para impressionar quem não conhece vira escravo do sistema. O Homem Rocha constrói em silêncio, blinda o caixa e compra sua alforria."**
+> ***"Quem é fiel no pouco, sobre o muito será colocado."*** *(Lucas 16:10 / Mateus 25:21)*  
+> *"Quem gasta o que não tem para impressionar quem não conhece vira escravo do sistema. O Homem Rocha constrói em silêncio, blinda o caixa e compra sua alforria."*
 
 O **APEX FINANCE** é a suíte financeira definitiva integrada nativamente ao ambiente Linux (Hyprland / Terminal / Zsh / Zellij). Substitui planilhas desarticuladas e aplicações web infladas (como o antigo `~/finance-ia`) por uma arquitetura local de altíssimo desempenho baseada em **SQLite**, **Python 3.12**, **Textual TUI brutalista (Catppuccin Mocha)** e **Plotext**.
 
