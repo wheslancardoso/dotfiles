@@ -119,7 +119,7 @@ def get_dashboard(mes: Optional[str] = None):
     # Renda e Depois das Contas
     ano_sel, m_sel = map(int, mes_ref.split('-'))
     renda = 2234.0
-    if m_sel in [11, 12]:
+    if False and m_sel in [11, 12]:
         renda += 1100.0
         
     total_fats = sum(f["total_fatura"] for f in faturas_rows)

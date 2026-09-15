@@ -3,9 +3,13 @@ import {
   LayoutDashboard, CreditCard, Receipt, Repeat, 
   Rocket, History, BookmarkCheck, Plus, Trash2, 
   CheckCircle, ArrowUpRight, ArrowDownRight, RefreshCw, 
-  FileSpreadsheet, Sparkles, ChevronRight,
-  TrendingUp
+  FileSpreadsheet, Sparkles, TrendingUp, 
+  Calculator, Search, ShieldCheck, Zap
 } from 'lucide-react';
+import {
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, 
+  ResponsiveContainer
+} from 'recharts';
 import { api } from './api';
 import type { 
   HudMetricas, Conta, Fatura, Transacao, DespesaFixa, 
@@ -13,12 +17,12 @@ import type {
 } from './types';
 
 export function App() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'faturas' | 'transacoes' | 'fixas' | 'alforria' | 'simulador' | 'wishlist'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'faturas' | 'transacoes' | 'fixas' | 'alforria' | 'simulador' | 'wishlist' | 'oraculo'>('dashboard');
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState<string | null>(null);
 
   // Dados centrais
-  const [mesRef, setMesRef] = useState<string>('2026-09');
+  const [mesRef, setMesRef] = useState<string>('2026-10');
   const [hud, setHud] = useState<HudMetricas | null>(null);
   const [contas, setContas] = useState<Conta[]>([]);
   const [faturas, setFaturas] = useState<Fatura[]>([]);
@@ -27,6 +31,10 @@ export function App() {
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
   const [timeline, setTimeline] = useState<TimelineMes[]>([]);
   const [alforria, setAlforria] = useState<AlforriaMes[]>([]);
+
+  // Filtros de busca no extrato
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterBanco, setFilterBanco] = useState<string>('TODOS');
 
   // Modais
   const [showModalTx, setShowModalTx] = useState(false);
@@ -72,6 +80,14 @@ export function App() {
     mes_inicio: '2026-10'
   });
   const [simResult, setSimResult] = useState<any>(null);
+
+  // Oráculo PIX vs Cartão
+  const [oraculoForm, setOraculoForm] = useState({
+    item: 'Equipamento / Peça',
+    precoPix: '450',
+    precoCartao: '500',
+    parcelas: 5,
+  });
 
   // Carregar dados principais
   const carregarTudo = async () => {
@@ -267,8 +283,49 @@ export function App() {
     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v || 0);
   };
 
+  // Cálculo Oráculo PIX vs Cartão
+  const calcularOraculo = () => {
+    const pix = parseFloat(oraculoForm.precoPix) || 0;
+    const cartao = parseFloat(oraculoForm.precoCartao) || 0;
+    const nParc = parseInt(String(oraculoForm.parcelas)) || 1;
+    const taxaCdiMensal = 0.0095; // 0.95% ao mês (115% CDI líquido aproximado)
+    
+    // Se pagar no cartão em N parcelas, mantendo o valor do Pix no CDB rendendo enquanto paga cada parcela:
+    let saldoCdb = pix;
+    let rendimentoTotal = 0;
+    const parcela = cartao / nParc;
+    
+    for (let i = 0; i < nParc; i++) {
+      const rend = saldoCdb * taxaCdiMensal;
+      rendimentoTotal += rend;
+      saldoCdb = Math.max(0, saldoCdb + rend - parcela);
+    }
+
+    const descontoPixNominal = cartao - pix;
+    const ganhoRealPixVsCartao = descontoPixNominal - rendimentoTotal;
+    const recomendePix = ganhoRealPixVsCartao >= 0;
+
+    return {
+      descontoPixNominal,
+      rendimentoTotal,
+      ganhoRealPixVsCartao: Math.abs(ganhoRealPixVsCartao),
+      recomendePix,
+      parcelaMensal: parcela
+    };
+  };
+
+  const resultadoOraculo = calcularOraculo();
+
+  // Filtragem de transações
+  const transacoesFiltradas = transacoes.filter(tx => {
+    const matchesSearch = tx.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          tx.categoria.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesBanco = filterBanco === 'TODOS' || tx.conta_nome.toLowerCase().includes(filterBanco.toLowerCase());
+    return matchesSearch && matchesBanco;
+  });
+
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#0a0d14] text-slate-100 antialiased font-sans">
+    <div className="flex h-screen w-screen overflow-hidden bg-[#090d16] text-slate-100 antialiased font-sans">
       {/* Toast Notification */}
       {toast && (
         <div className="fixed top-5 right-5 z-50 flex items-center gap-3 bg-indigo-600 text-white px-5 py-3 rounded-xl shadow-2xl border border-indigo-400/30 animate-bounce">
@@ -278,19 +335,19 @@ export function App() {
       )}
 
       {/* Sidebar Lateral */}
-      <aside className="w-64 border-r border-slate-800/80 bg-[#0d121d] flex flex-col justify-between p-4 select-none">
+      <aside className="w-64 border-r border-slate-800/80 bg-[#0c101c] flex flex-col justify-between p-4 select-none">
         <div>
           {/* Logo Brand */}
           <div className="flex items-center gap-3 px-3 py-4 mb-4 border-b border-slate-800">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-cyan-400 flex items-center justify-center font-black text-xl text-white shadow-lg shadow-indigo-500/20">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-cyan-400 flex items-center justify-center font-black text-xl text-white shadow-lg shadow-indigo-500/20">
               ▲
             </div>
             <div>
-              <h1 className="font-extrabold text-base tracking-wider bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+              <h1 className="font-black text-base tracking-wider bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
                 APEX FINANCE
               </h1>
               <span className="text-[10px] uppercase font-bold text-indigo-400 tracking-widest">
-                Cockpit Web 2.0
+                Cockpit da Rocha 2.0
               </span>
             </div>
           </div>
@@ -300,11 +357,12 @@ export function App() {
             {[
               { id: 'dashboard', label: 'Dashboard & HUD', icon: LayoutDashboard },
               { id: 'faturas', label: 'Cartões & Faturas', icon: CreditCard },
-              { id: 'transacoes', label: 'Extrato & Lançamentos', icon: Receipt },
-              { id: 'fixas', label: 'Despesas Recorrentes', icon: Repeat },
-              { id: 'alforria', label: 'Projeto Alforria 115%', icon: Rocket },
+              { id: 'oraculo', label: 'Oráculo de Compras', icon: Calculator, badge: 'NOVO' },
+              { id: 'transacoes', label: 'Extrato & Busca', icon: Receipt },
+              { id: 'fixas', label: 'Custos Recorrentes', icon: Repeat },
+              { id: 'alforria', label: 'Alforria (115% CDI)', icon: Rocket },
               { id: 'simulador', label: 'Máquina do Tempo', icon: History },
-              { id: 'wishlist', label: 'Wishlist & Compras', icon: BookmarkCheck },
+              { id: 'wishlist', label: 'Wishlist & Sonhos', icon: BookmarkCheck },
             ].map(item => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
@@ -312,14 +370,21 @@ export function App() {
                 <button
                   key={item.id}
                   onClick={() => setActiveTab(item.id as any)}
-                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
                     isActive
                       ? 'bg-indigo-600/15 text-indigo-400 border border-indigo-500/30 shadow-sm'
                       : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-indigo-400' : 'text-slate-400'}`} />
-                  <span>{item.label}</span>
+                  <div className="flex items-center gap-3">
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-indigo-400' : 'text-slate-400'}`} />
+                    <span>{item.label}</span>
+                  </div>
+                  {item.badge && (
+                    <span className="px-1.5 py-0.5 text-[9px] font-extrabold bg-indigo-500 text-white rounded">
+                      {item.badge}
+                    </span>
+                  )}
                 </button>
               );
             })}
@@ -367,14 +432,15 @@ export function App() {
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col overflow-hidden">
         {/* Top Header */}
-        <header className="h-16 border-b border-slate-800/80 bg-[#0d121d]/50 backdrop-blur px-8 flex items-center justify-between">
+        <header className="h-16 border-b border-slate-800/80 bg-[#0c101c]/60 backdrop-blur px-8 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <h2 className="text-lg font-bold text-slate-100 uppercase tracking-wide">
+            <h2 className="text-lg font-black text-slate-100 uppercase tracking-wide flex items-center gap-2">
               {activeTab === 'dashboard' && 'Visão Executiva & Cockpit Financeiro'}
-              {activeTab === 'faturas' && 'Cartões de Crédito, Faturas & Fechamentos'}
-              {activeTab === 'transacoes' && 'Extrato Geral de Lançamentos'}
+              {activeTab === 'faturas' && 'Cartões de Crédito & Quitação das Faturas'}
+              {activeTab === 'oraculo' && 'Oráculo de Decisão: PIX à Vista vs. Cartão Sem Juros'}
+              {activeTab === 'transacoes' && 'Extrato Geral com Filtros Inteligentes'}
               {activeTab === 'fixas' && 'Custos Fixos & Assinaturas Recorrentes'}
-              {activeTab === 'alforria' && 'Projeto Alforria • Independência & CDI 115%'}
+              {activeTab === 'alforria' && 'Projeto Alforria • Independência Financeira (115% CDI)'}
               {activeTab === 'simulador' && 'Máquina do Tempo • Simulador Preditivo'}
               {activeTab === 'wishlist' && 'Wishlist Estratégica • Compras Planejadas'}
             </h2>
@@ -415,7 +481,7 @@ export function App() {
                     {formatBRL(hud.saldo_total)}
                   </div>
                   <div className="text-[11px] text-slate-500 mt-2 font-medium">
-                    Disponível nas contas correntes
+                    Disponível no banco
                   </div>
                   <div className="absolute -right-4 -bottom-4 w-20 h-20 bg-emerald-500/5 rounded-full blur-xl pointer-events-none" />
                 </div>
@@ -423,7 +489,7 @@ export function App() {
                 {/* Faturas a Vencer */}
                 <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 relative overflow-hidden shadow-sm">
                   <div className="flex items-center justify-between text-slate-400 mb-2">
-                    <span className="text-xs font-semibold uppercase tracking-wider">Faturas Pendentes ({mesRef})</span>
+                    <span className="text-xs font-semibold uppercase tracking-wider">Faturas ({mesRef})</span>
                     <ArrowDownRight className="w-4 h-4 text-rose-400" />
                   </div>
                   <div className="text-2xl font-black text-rose-400">
@@ -435,258 +501,285 @@ export function App() {
                   <div className="absolute -right-4 -bottom-4 w-20 h-20 bg-rose-500/5 rounded-full blur-xl pointer-events-none" />
                 </div>
 
-                {/* Despesas Fixas */}
+                {/* Teto de Oxigênio Semanal */}
                 <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 relative overflow-hidden shadow-sm">
                   <div className="flex items-center justify-between text-slate-400 mb-2">
-                    <span className="text-xs font-semibold uppercase tracking-wider">Compromissos Fixos</span>
-                    <Repeat className="w-4 h-4 text-amber-400" />
+                    <span className="text-xs font-semibold uppercase tracking-wider">Teto de Oxigênio / Semanal</span>
+                    <ShieldCheck className="w-4 h-4 text-cyan-400" />
                   </div>
-                  <div className="text-2xl font-black text-amber-400">
-                    {formatBRL(hud.total_despesas_fixas)}
+                  <div className="text-2xl font-black text-cyan-400">
+                    {formatBRL(Math.max(0, (2234.0 - hud.total_despesas_fixas) / 4))}
                   </div>
                   <div className="text-[11px] text-slate-500 mt-2 font-medium">
-                    Custo de vida base mensal
-                  </div>
-                  <div className="absolute -right-4 -bottom-4 w-20 h-20 bg-amber-500/5 rounded-full blur-xl pointer-events-none" />
-                </div>
-
-                {/* Sobra Livre / Taxa de Poupança */}
-                <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 relative overflow-hidden shadow-sm">
-                  <div className="flex items-center justify-between text-slate-400 mb-2">
-                    <span className="text-xs font-semibold uppercase tracking-wider">Sobra Projetada Mês</span>
-                    <TrendingUp className="w-4 h-4 text-cyan-400" />
-                  </div>
-                  <div className={`text-2xl font-black ${hud.sobra_livre >= 0 ? 'text-cyan-400' : 'text-red-500'}`}>
-                    {formatBRL(hud.sobra_livre)}
-                  </div>
-                  <div className="text-[11px] text-slate-400 mt-2 font-medium flex items-center justify-between">
-                    <span>Taxa de Poupança:</span>
-                    <span className="font-bold text-cyan-300">{hud.taxa_poupanca.toFixed(1)}%</span>
+                    Limite seguro de gastos do dia a dia
                   </div>
                   <div className="absolute -right-4 -bottom-4 w-20 h-20 bg-cyan-500/5 rounded-full blur-xl pointer-events-none" />
                 </div>
-              </div>
 
-              {/* Contas & Cartões Grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Contas Bancárias */}
-                <div className="lg:col-span-1 bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
-                  <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center justify-between">
-                    <span>Suas Contas & Saldos</span>
-                    <span className="text-xs text-indigo-400 font-mono">{contas.length} contas</span>
-                  </h3>
-                  <div className="space-y-3">
-                    {contas.map(conta => (
-                      <div key={conta.id} className="p-3.5 bg-slate-800/40 rounded-xl border border-slate-800 flex items-center justify-between">
-                        <div>
-                          <div className="font-bold text-sm text-slate-200">{conta.nome}</div>
-                          <div className="text-xs text-slate-500 capitalize">{conta.tipo.replace('_', ' ')}</div>
-                        </div>
-                        <div className={`font-mono font-bold text-sm ${conta.tipo === 'cartao_credito' ? 'text-rose-400' : 'text-emerald-400'}`}>
-                          {conta.tipo === 'cartao_credito' ? `Limite: ${formatBRL(conta.limite || 0)}` : formatBRL(conta.saldo_atual)}
-                        </div>
-                      </div>
-                    ))}
+                {/* Sobra Projetada */}
+                <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 relative overflow-hidden shadow-sm">
+                  <div className="flex items-center justify-between text-slate-400 mb-2">
+                    <span className="text-xs font-semibold uppercase tracking-wider">Sobra Mês ("Depois das Contas")</span>
+                    <TrendingUp className="w-4 h-4 text-indigo-400" />
                   </div>
-                </div>
-
-                {/* Status das Faturas do Mês Atual */}
-                <div className="lg:col-span-2 bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
-                  <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center justify-between">
-                    <span>Faturas de Cartão de Crédito ({mesRef})</span>
-                    <button 
-                      onClick={() => setActiveTab('faturas')} 
-                      className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1 font-semibold"
-                    >
-                      Ver detalhes <ChevronRight className="w-3.5 h-3.5" />
-                    </button>
-                  </h3>
-                  
-                  {faturas.length === 0 ? (
-                    <div className="text-center py-8 text-slate-500 text-sm">
-                      Nenhuma fatura encontrada para este mês.
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {faturas.map(fat => (
-                        <div key={fat.cartao_id} className="p-4 bg-slate-800/40 rounded-xl border border-slate-800 flex flex-col justify-between">
-                          <div className="flex items-start justify-between">
-                            <div>
-                              <div className="font-bold text-base text-slate-100">{fat.cartao_nome}</div>
-                              <div className="text-xs text-slate-400 mt-1">
-                                Fecha dia: <span className="font-bold text-slate-300">{fat.dia_fechamento}</span> | Vence dia: <span className="font-bold text-slate-300">{fat.dia_vencimento}</span>
-                              </div>
-                            </div>
-                            <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide ${
-                              fat.status === 'paga' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
-                              fat.status === 'fechada' ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20' :
-                              'bg-amber-500/10 text-amber-400 border border-amber-500/20'
-                            }`}>
-                              {fat.status}
-                            </span>
-                          </div>
-
-                          <div className="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between">
-                            <div>
-                              <div className="text-[10px] uppercase text-slate-400 font-semibold">Valor da Fatura</div>
-                              <div className="text-lg font-black text-rose-400">{formatBRL(fat.total_fatura)}</div>
-                            </div>
-
-                            {fat.status !== 'paga' && fat.total_fatura > 0 && (
-                              <button
-                                onClick={() => setShowModalPagarFatura(fat)}
-                                className="px-3 py-1.5 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 rounded-lg text-xs font-bold transition-all active:scale-95"
-                              >
-                                Pagar Fatura
-                              </button>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  <div className={`text-2xl font-black ${hud.sobra_livre >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                    {formatBRL(hud.sobra_livre)}
+                  </div>
+                  <div className="text-[11px] text-slate-400 mt-2 font-medium">
+                    Salário Real: R$ 2.234,00
+                  </div>
+                  <div className="absolute -right-4 -bottom-4 w-20 h-20 bg-indigo-500/5 rounded-full blur-xl pointer-events-none" />
                 </div>
               </div>
 
-              {/* Timeline Preview (Próximos 6 meses) */}
-              <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
-                <div className="flex items-center justify-between mb-4">
+              {/* GRÁFICO 1: A CURVA DO EXTERMÍNIO DE DÍVIDAS */}
+              <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-md">
+                <div className="flex items-center justify-between mb-6">
                   <div>
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400">
-                      Fluxo de Caixa Preditivo (Próximos 6 Meses)
+                    <h3 className="text-base font-black text-slate-100 flex items-center gap-2">
+                      <Zap className="w-5 h-5 text-amber-400" />
+                      A Curva do Extermínio de Dívidas (Passo a Passo)
                     </h3>
-                    <p className="text-xs text-slate-500 mt-0.5">
-                      Projeção matemática calculando parcelas já compromissadas e custos fixos
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      Visualização matemática da queda brutal das parcelas até a quitação total em 2027
                     </p>
                   </div>
-                  <button 
-                    onClick={() => setActiveTab('simulador')} 
-                    className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1 font-semibold"
-                  >
-                    Abrir Máquina do Tempo <ChevronRight className="w-3.5 h-3.5" />
-                  </button>
+                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                    Faturas Despencam 75% até Dezembro
+                  </span>
                 </div>
 
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs">
-                    <thead>
-                      <tr className="border-b border-slate-800 text-slate-400 uppercase font-semibold">
-                        <th className="py-2.5 px-3">Mês</th>
-                        <th className="py-2.5 px-3">Receita Est.</th>
-                        <th className="py-2.5 px-3">Fixas</th>
-                        <th className="py-2.5 px-3">Faturas Cartão</th>
-                        <th className="py-2.5 px-3">Total Saídas</th>
-                        <th className="py-2.5 px-3 text-right">Sobra Livre Mês</th>
-                        <th className="py-2.5 px-3 text-right">Saldo Acumulado</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-800/40">
-                      {timeline.slice(0, 6).map((item) => (
-                        <tr key={item.mes} className="hover:bg-slate-800/30 transition-colors">
-                          <td className="py-3 px-3 font-bold text-slate-200">{item.mes}</td>
-                          <td className="py-3 px-3 text-emerald-400 font-mono">{formatBRL(item.receitas)}</td>
-                          <td className="py-3 px-3 text-amber-400/90 font-mono">{formatBRL(item.fixas)}</td>
-                          <td className="py-3 px-3 text-rose-400/90 font-mono">{formatBRL(item.faturas_cartao)}</td>
-                          <td className="py-3 px-3 text-slate-400 font-mono">{formatBRL(item.despesas_totais)}</td>
-                          <td className={`py-3 px-3 text-right font-mono font-bold ${item.sobra_mes >= 0 ? 'text-cyan-400' : 'text-red-400'}`}>
-                            {formatBRL(item.sobra_mes)}
-                          </td>
-                          <td className="py-3 px-3 text-right font-mono font-extrabold text-slate-100">
-                            {formatBRL(item.saldo_acumulado)}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                <div className="h-64 w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart
+                      data={timeline.slice(0, 7)}
+                      margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                    >
+                      <defs>
+                        <linearGradient id="corFaturas" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#f43f5e" stopOpacity={0.4}/>
+                          <stop offset="95%" stopColor="#f43f5e" stopOpacity={0}/>
+                        </linearGradient>
+                        <linearGradient id="corSobra" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#10b981" stopOpacity={0.4}/>
+                          <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                      <XAxis dataKey="mes" stroke="#64748b" fontSize={11} />
+                      <YAxis stroke="#64748b" fontSize={11} />
+                      <Tooltip
+                        contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '12px' }}
+                        formatter={(val: any) => formatBRL(val)}
+                      />
+                      <Area type="monotone" dataKey="faturas_cartao" name="Faturas dos Cartões" stroke="#f43f5e" strokeWidth={2} fillOpacity={1} fill="url(#corFaturas)" />
+                      <Area type="monotone" dataKey="sobra_mes" name="Sobra Livre Mês" stroke="#10b981" strokeWidth={2} fillOpacity={1} fill="url(#corSobra)" />
+                    </AreaChart>
+                  </ResponsiveContainer>
                 </div>
               </div>
-            </div>
-          )}
 
-          {/* TAB 2: FATURAS & CARTÕES */}
-          {activeTab === 'faturas' && (
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {faturas.map(fat => (
-                  <div key={fat.cartao_id} className="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between shadow-lg">
-                    <div>
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-3">
-                          <div className="p-3 bg-indigo-600/10 text-indigo-400 rounded-xl border border-indigo-500/20">
-                            <CreditCard className="w-6 h-6" />
-                          </div>
-                          <div>
-                            <h3 className="font-extrabold text-lg text-slate-100">{fat.cartao_nome}</h3>
-                            <span className="text-xs text-slate-400">Ciclo de faturamento ativo</span>
+              {/* Faturas Grid Detalhado */}
+              <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400">
+                    Faturas Ativas em Aberto ({mesRef})
+                  </h3>
+                  <span className="text-xs text-indigo-400 font-mono">{faturas.length} faturas</span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {faturas.map(fat => (
+                    <div key={fat.cartao_id} className="p-4 bg-slate-800/40 rounded-xl border border-slate-800 flex flex-col justify-between">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <div className="font-bold text-sm text-slate-100">{fat.cartao_nome}</div>
+                          <div className="text-xs text-slate-400 mt-0.5">
+                            Fecha: <span className="text-slate-300 font-semibold">{fat.dia_fechamento}</span> | Vence: <span className="text-slate-300 font-semibold">{fat.dia_vencimento}</span>
                           </div>
                         </div>
-                        <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${
-                          fat.status === 'paga' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
-                          fat.status === 'fechada' ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20' :
-                          'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-extrabold uppercase ${
+                          fat.status === 'paga' ? 'bg-emerald-500/10 text-emerald-400' :
+                          fat.total_fatura === 0 ? 'bg-slate-800 text-slate-400' :
+                          'bg-rose-500/10 text-rose-400 border border-rose-500/20'
                         }`}>
-                          {fat.status}
+                          {fat.total_fatura === 0 ? 'Zerada' : fat.status}
                         </span>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-4 my-6 p-4 bg-slate-800/30 rounded-xl border border-slate-800">
+                      <div className="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between">
                         <div>
-                          <div className="text-xs text-slate-400">Dia de Fechamento</div>
-                          <div className="text-sm font-bold text-slate-200 mt-0.5">Dia {fat.dia_fechamento} de cada mês</div>
+                          <span className="text-[10px] text-slate-500 uppercase font-semibold">Valor</span>
+                          <div className="text-base font-black text-rose-400">{formatBRL(fat.total_fatura)}</div>
                         </div>
-                        <div>
-                          <div className="text-xs text-slate-400">Dia de Vencimento</div>
-                          <div className="text-sm font-bold text-slate-200 mt-0.5">Dia {fat.dia_vencimento} de cada mês</div>
-                        </div>
-                      </div>
 
-                      <div className="flex items-baseline justify-between">
-                        <div>
-                          <div className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Total da Fatura ({fat.mes_fatura})</div>
-                          <div className="text-3xl font-black text-rose-400 mt-1">{formatBRL(fat.total_fatura)}</div>
-                        </div>
-                        {fat.total_pago > 0 && (
-                          <div className="text-right">
-                            <div className="text-xs font-semibold text-slate-400 uppercase">Total Pago</div>
-                            <div className="text-lg font-bold text-emerald-400 mt-1">{formatBRL(fat.total_pago)}</div>
-                          </div>
+                        {fat.total_fatura > 0 && (
+                          <button
+                            onClick={() => setShowModalPagarFatura(fat)}
+                            className="px-2.5 py-1 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 rounded-lg text-xs font-bold transition-all"
+                          >
+                            Pagar
+                          </button>
                         )}
                       </div>
                     </div>
-
-                    <div className="mt-8 pt-4 border-t border-slate-800/80 flex items-center justify-between">
-                      <span className="text-xs text-slate-500 font-medium">
-                        {fat.status === 'paga' ? 'Fatura quitada no sistema' : 'Aguardando liquidação'}
-                      </span>
-                      {fat.status !== 'paga' && fat.total_fatura > 0 && (
-                        <button
-                          onClick={() => setShowModalPagarFatura(fat)}
-                          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-sm transition-all shadow-lg shadow-emerald-600/20"
-                        >
-                          Pagar Fatura Agora
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           )}
 
-          {/* TAB 3: TRANSAÇÕES / EXTRATO */}
-          {activeTab === 'transacoes' && (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-base font-bold text-slate-200">Lançamentos do Mês ({mesRef})</h3>
-                  <span className="text-xs text-slate-500">Exibindo histórico detalhado e compras parceladas</span>
+          {/* TAB: ORÁCULO DE COMPRAS (PIX vs CARTÃO) */}
+          {activeTab === 'oraculo' && (
+            <div className="space-y-6 animate-fadeIn">
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="p-3 bg-indigo-600/20 text-indigo-400 rounded-xl border border-indigo-500/30">
+                    <Calculator className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-black text-slate-100">
+                      Oráculo da Rocha: Pagar à Vista no PIX ou Parcelar sem Juros?
+                    </h3>
+                    <p className="text-xs text-slate-400">
+                      Calcula com precisão se o desconto do PIX supera o rendimento do dinheiro aplicado no CDI (115%).
+                    </p>
+                  </div>
                 </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
+                  <div>
+                    <label className="text-xs text-slate-400 font-medium block mb-1">Item / Produto</label>
+                    <input
+                      type="text"
+                      value={oraculoForm.item}
+                      onChange={e => setOraculoForm({ ...oraculoForm, item: e.target.value })}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-xs text-slate-400 font-medium block mb-1">Preço no PIX à Vista (R$)</label>
+                    <input
+                      type="number"
+                      value={oraculoForm.precoPix}
+                      onChange={e => setOraculoForm({ ...oraculoForm, precoPix: e.target.value })}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-xs text-slate-400 font-medium block mb-1">Preço no Cartão Sem Juros (R$)</label>
+                    <input
+                      type="number"
+                      value={oraculoForm.precoCartao}
+                      onChange={e => setOraculoForm({ ...oraculoForm, precoCartao: e.target.value })}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-xs text-slate-400 font-medium block mb-1">Número de Parcelas Sem Juros</label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="24"
+                      value={oraculoForm.parcelas}
+                      onChange={e => setOraculoForm({ ...oraculoForm, parcelas: parseInt(e.target.value) || 1 })}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+                </div>
+
+                {/* Veredicto do Oráculo */}
+                <div className={`mt-8 p-6 rounded-2xl border ${
+                  resultadoOraculo.recomendePix 
+                    ? 'bg-emerald-950/20 border-emerald-500/30' 
+                    : 'bg-indigo-950/20 border-indigo-500/30'
+                }`}>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Veredicto Matemático:</span>
+                      <h4 className={`text-xl font-black mt-1 ${
+                        resultadoOraculo.recomendePix ? 'text-emerald-400' : 'text-indigo-400'
+                      }`}>
+                        {resultadoOraculo.recomendePix 
+                          ? '🏆 PAGUE À VISTA NO PIX COM DESCONTO!' 
+                          : '💳 PARCELE SEM JUROS NO CARTÃO CAIXA!'}
+                      </h4>
+                    </div>
+
+                    <div className="text-right">
+                      <div className="text-xs text-slate-400">Vantagem Financeira Líquida</div>
+                      <div className="text-2xl font-black text-white">
+                        {formatBRL(resultadoOraculo.ganhoRealPixVsCartao)}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 pt-4 border-t border-slate-800/80 text-xs">
+                    <div>
+                      <span className="text-slate-400 block">Desconto Nominal do PIX:</span>
+                      <span className="font-bold text-slate-200 text-sm">{formatBRL(resultadoOraculo.descontoPixNominal)}</span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block">Rendimento no CDB se parcelar:</span>
+                      <span className="font-bold text-slate-200 text-sm">+{formatBRL(resultadoOraculo.rendimentoTotal)}</span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block">Parcela Mensal no Cartão:</span>
+                      <span className="font-bold text-slate-200 text-sm">{oraculoForm.parcelas}x de {formatBRL(resultadoOraculo.parcelaMensal)}</span>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 p-3 bg-slate-900/60 rounded-xl text-xs text-slate-300">
+                    💡 <span className="font-bold">Regra do Homem Rocha:</span> {resultadoOraculo.recomendePix 
+                      ? 'O desconto do PIX é maior do que o CDI geraria durante o tempo do parcelamento. Pague à vista no PIX e não crie fatura futura!' 
+                      : 'O desconto do PIX é muito baixo ou zero. Deixe o dinheiro rendendo no CDB a 115% do CDI na Caixinha do Nubank e passe no Cartão Caixa para acumular pontuação e prazo.'}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: EXTRATO COM BUSCA RÁPIDA */}
+          {activeTab === 'transacoes' && (
+            <div className="space-y-4 animate-fadeIn">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                {/* Search Bar */}
+                <div className="flex items-center gap-3 w-full md:w-auto">
+                  <div className="relative w-full md:w-80">
+                    <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      placeholder="Pesquisar lançamentos (ex: Shopee, Carne, Moto)..."
+                      value={searchTerm}
+                      onChange={e => setSearchTerm(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+
+                  {/* Filter Banco */}
+                  <select
+                    value={filterBanco}
+                    onChange={e => setFilterBanco(e.target.value)}
+                    className="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-indigo-500"
+                  >
+                    <option value="TODOS">Todos os Bancos</option>
+                    <option value="Nubank">Nubank</option>
+                    <option value="Caixa">Caixa</option>
+                    <option value="PicPay">PicPay</option>
+                    <option value="Inter">Inter</option>
+                    <option value="Shopee">Shopee</option>
+                  </select>
+                </div>
+
                 <button
                   onClick={() => setShowModalTx(true)}
                   className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2 px-3.5 rounded-lg"
                 >
                   <Plus className="w-4 h-4" />
-                  <span>Adicionar Lançamento</span>
+                  <span>Novo Lançamento</span>
                 </button>
               </div>
 
@@ -704,7 +797,7 @@ export function App() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800/50">
-                    {transacoes.map((tx) => (
+                    {transacoesFiltradas.map((tx) => (
                       <tr key={tx.id} className="hover:bg-slate-800/30 transition-colors">
                         <td className="py-3 px-4 font-mono text-slate-400">{tx.data_transacao}</td>
                         <td className="py-3 px-4 font-bold text-slate-200">
@@ -745,9 +838,73 @@ export function App() {
             </div>
           )}
 
+          {/* TAB 2: FATURAS & CARTÕES */}
+          {activeTab === 'faturas' && (
+            <div className="space-y-6 animate-fadeIn">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {faturas.map(fat => (
+                  <div key={fat.cartao_id} className="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between shadow-lg">
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          <div className="p-3 bg-indigo-600/10 text-indigo-400 rounded-xl border border-indigo-500/20">
+                            <CreditCard className="w-6 h-6" />
+                          </div>
+                          <div>
+                            <h3 className="font-extrabold text-lg text-slate-100">{fat.cartao_nome}</h3>
+                            <span className="text-xs text-slate-400">Ciclo de faturamento ativo</span>
+                          </div>
+                        </div>
+                        <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${
+                          fat.status === 'paga' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
+                          fat.total_fatura === 0 ? 'bg-slate-800 text-slate-400' :
+                          'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                        }`}>
+                          {fat.total_fatura === 0 ? 'Zerada' : fat.status}
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4 my-6 p-4 bg-slate-800/30 rounded-xl border border-slate-800">
+                        <div>
+                          <div className="text-xs text-slate-400">Dia de Fechamento</div>
+                          <div className="text-sm font-bold text-slate-200 mt-0.5">Dia {fat.dia_fechamento} de cada mês</div>
+                        </div>
+                        <div>
+                          <div className="text-xs text-slate-400">Dia de Vencimento</div>
+                          <div className="text-sm font-bold text-slate-200 mt-0.5">Dia {fat.dia_vencimento} de cada mês</div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-baseline justify-between">
+                        <div>
+                          <div className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Total da Fatura ({fat.mes_fatura})</div>
+                          <div className="text-3xl font-black text-rose-400 mt-1">{formatBRL(fat.total_fatura)}</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-8 pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                      <span className="text-xs text-slate-500 font-medium">
+                        {fat.total_fatura === 0 ? 'Sem lançamentos pendentes' : 'Aguardando liquidação'}
+                      </span>
+                      {fat.total_fatura > 0 && (
+                        <button
+                          onClick={() => setShowModalPagarFatura(fat)}
+                          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-sm transition-all shadow-lg shadow-emerald-600/20"
+                        >
+                          Pagar Fatura Agora
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* TAB 4: DESPESAS FIXAS */}
           {activeTab === 'fixas' && (
-            <div className="space-y-4">
+            <div className="space-y-4 animate-fadeIn">
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-base font-bold text-slate-200">Custos Fixos & Recorrentes</h3>
@@ -807,7 +964,7 @@ export function App() {
 
           {/* TAB 5: ALFORRIA & CDI */}
           {activeTab === 'alforria' && (
-            <div className="space-y-6">
+            <div className="space-y-6 animate-fadeIn">
               <div className="bg-gradient-to-r from-indigo-950/60 to-slate-900 border border-indigo-800/40 rounded-2xl p-6">
                 <div className="flex items-center gap-4">
                   <div className="p-4 bg-indigo-600 text-white rounded-2xl shadow-lg shadow-indigo-600/30">
@@ -816,7 +973,7 @@ export function App() {
                   <div>
                     <h3 className="text-xl font-black text-white">Projeto Alforria • 115% do CDI</h3>
                     <p className="text-xs text-indigo-200/80 mt-1 max-w-2xl">
-                      Simulação real de independência financeira com aportes de R$ 1.000/mês (taxa CDI 10.75% a 115% de rentabilidade líquida).
+                      Construção do patrimônio sagrado rumo aos R$ 27.000 para a moradia soberana e liberdade.
                     </p>
                   </div>
                 </div>
@@ -856,7 +1013,7 @@ export function App() {
 
           {/* TAB 6: MÁQUINA DO TEMPO / SIMULADOR */}
           {activeTab === 'simulador' && (
-            <div className="space-y-6">
+            <div className="space-y-6 animate-fadeIn">
               <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
                 <h3 className="text-base font-black text-slate-100 mb-2 flex items-center gap-2">
                   <History className="w-5 h-5 text-indigo-400" />
@@ -960,7 +1117,7 @@ export function App() {
 
           {/* TAB 7: WISHLIST & COMPRAS FUTURAS */}
           {activeTab === 'wishlist' && (
-            <div className="space-y-4">
+            <div className="space-y-4 animate-fadeIn">
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-base font-bold text-slate-200">Wishlist & Sonhos Planejados</h3>
@@ -1046,7 +1203,7 @@ export function App() {
       {/* MODAL: NOVA TRANSAÇÃO */}
       {showModalTx && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl animate-scaleIn">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl">
             <h3 className="text-base font-black text-slate-100 mb-4">Novo Lançamento</h3>
             <form onSubmit={handleCriarTransacao} className="space-y-4">
               <div>
