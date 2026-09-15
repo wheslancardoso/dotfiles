@@ -1079,6 +1079,7 @@ class ApexFinanceApp(App):
         Binding("b", "backup", "Backup", show=True),
         Binding("r", "refresh_data", "Atualizar", show=True),
         Binding("e", "export_excel", "Excel", show=True),
+        Binding("x", "export_ia", "Contexto IA", show=True),
         Binding("h", "prev_month", "Mês Anterior", show=False),
         Binding("l", "next_month", "Próximo Mês", show=False),
     ]
@@ -1140,6 +1141,7 @@ class ApexFinanceApp(App):
             yield Button("💾 Backup [b]", id="btn-backup-tui")
             yield Button("⚖️ Ajustar Fat", id="btn-open-adj-fat")
             yield Button("🏦 Reconciliar", id="btn-open-rec")
+            yield Button("🧠 Contexto IA [x]", id="btn-export-ia", classes="-success")
             yield Button("⚡ Ritual", id="btn-open-ritual")
 
         # 3. TABBED CONTENT
@@ -1718,6 +1720,8 @@ class ApexFinanceApp(App):
             self.action_backup()
         elif bid == "btn-export-tab":
             self.action_export_excel()
+        elif bid == "btn-export-ia":
+            self.action_export_ia()
         elif bid == "btn-open-ritual":
             self.app.push_screen(SundayRitualModal())
         elif bid == "btn-open-rec":
@@ -2014,6 +2018,13 @@ class ApexFinanceApp(App):
     def action_export_excel(self) -> None:
         out = core_engine.exportar_para_excel()
         self.notify(f"✔ Planilha exportada para:\n{out}", severity="information")
+
+    def action_export_ia(self) -> None:
+        try:
+            res = core_engine.exportar_contexto_ia()
+            self.notify(f"🧠 Contexto para IA atualizado em /mnt/dados!\n• {res['meses_count']} meses gerados", severity="information", timeout=6)
+        except Exception as e:
+            self.notify(f"Erro ao exportar contexto IA: {e}", severity="error")
 
     def action_prev_month(self) -> None:
         self.current_month_offset -= 1

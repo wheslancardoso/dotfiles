@@ -1377,6 +1377,197 @@ def restaurar_backup(db_backup_file):
     shutil.copy2(db_backup_file, DB_PATH)
     return True
 
+def exportar_contexto_ia(base_dir="/mnt/dados/01_Pessoal_e_Vida/01.5_Financas_e_Contas/Apex_Contexto_IA"):
+    """
+    Exporta todo o contexto financeiro consolidado em arquivos Markdown legíveis por IA,
+    estruturados hierarquicamente em /mnt/dados por anos e meses:
+    - CONTEXTO_GLOBAL.md (Visão geral de regras, contas, cartões, metas da Alforria e próximos 24 meses)
+    - YYYY/YYYY-MM.md (Extrato cirúrgico detalhado de cada mês: depois das contas, faturas, fixos e transações)
+    """
+    os.makedirs(base_dir, exist_ok=True)
+    conn = get_connection()
+    c = conn.cursor()
+
+    hoje_dt = date.today()
+    hoje_str = str(hoje_dt)
+    mes_atual = hoje_str[:7]
+
+    # 1. Obter dados de Contas
+    c.execute("SELECT id, nome, tipo, instituicao, saldo FROM contas ORDER BY id")
+    contas = c.fetchall()
+
+    # 2. Obter dados de Cartões
+    c.execute("SELECT id, nome, instituicao, limite, dia_fechamento, dia_vencimento FROM cartoes ORDER BY id")
+    cartoes = c.fetchall()
+
+    # 3. Obter Caixinhas
+    c.execute("SELECT id, nome, descricao, meta_total, aporte_mensal, saldo_atual, data_alvo, tipo_rendimento FROM caixinhas ORDER BY id")
+    caixinhas = c.fetchall()
+
+    # 4. Obter Recorrências Fixas
+    c.execute("SELECT id, descricao, valor, tipo, categoria, dia_vencimento, ativo FROM recorrencias ORDER BY dia_vencimento")
+    recorrencias = c.fetchall()
+
+    # 5. Gerar CONTEXTO_GLOBAL.md
+    global_md = []
+    global_md.append("# 🏛️ APEX FINANCE — CONTEXTO ESTRATÉGICO GLOBAL (AUDITORIA IA)")
+    global_md.append(f"> **Última Atualização:** `{hoje_str}` | **Mês Ativo de Referência:** `{mes_atual}`")
+    global_md.append("> **Regras Inegociáveis:** Renda AGR R$ 2.234 (+ 13º em Nov/Dez) | Meta Alforria 2028: R$ 27k a R$ 30k (115% CDI).\n")
+
+    global_md.append("## 1. 🏦 SALDOS BANCÁRIOS & LIQUIDEZ IMEDIATA")
+    total_bancos = 0.0
+    for ct in contas:
+        total_bancos += ct['saldo']
+        global_md.append(f"- **{ct['nome']}** ({ct['instituicao']}): `R$ {ct['saldo']:,.2f}` [{ct['tipo']}]")
+    global_md.append(f"**Total Líquido em Bancos:** `R$ {total_bancos:,.2f}`\n")
+
+    global_md.append("## 2. 🏰 CAIXINHAS DE METAS & PATRIMÔNIO")
+    total_caixinhas = 0.0
+    for cx in caixinhas:
+        total_caixinhas += cx['saldo_atual']
+        pct = (cx['saldo_atual'] / cx['meta_total'] * 100) if cx['meta_total'] > 0 else 0
+        global_md.append(f"- **{cx['nome']}**")
+        global_md.append(f"  - Saldo Atual: `R$ {cx['saldo_atual']:,.2f}` / Meta: `R$ {cx['meta_total']:,.2f}` ({pct:.1f}%)")
+        global_md.append(f"  - Aporte Padrão: `R$ {cx['aporte_mensal']:,.2f}/mês` | Alvo: `{cx['data_alvo']}` | Rendimento: `{cx['tipo_rendimento']}`")
+    global_md.append(f"**Total Acumulado em Caixinhas:** `R$ {total_caixinhas:,.2f}`\n")
+
+    global_md.append("## 3. 💳 CARTÕES DE CRÉDITO & LIMITES")
+    for cr in cartoes:
+        cid = cr['id']
+        c.execute("""
+            SELECT COALESCE(SUM(t.valor), 0.0)
+            FROM transacoes t
+            LEFT JOIN faturas f ON (f.cartao_id = t.cartao_id AND f.mes_referencia = t.mes_fatura)
+            WHERE t.cartao_id = ? AND (f.status IS NULL OR f.status != 'paga')
+        """, (cid,))
+        devido = c.fetchone()[0] or 0.0
+        disp = max(0.0, cr['limite'] - devido)
+        global_md.append(f"- **{cr['nome']}** ({cr['instituicao']}):")
+        global_md.append(f"  - Limite Total: `R$ {cr['limite']:,.2f}` | Comprometido Total: `R$ {devido:,.2f}` | Disponível: `R$ {disp:,.2f}`")
+        global_md.append(f"  - Fechamento: Dia {cr['dia_fechamento']:02d} | Vencimento: Dia {cr['dia_vencimento']:02d}")
+    global_md.append("")
+
+    global_md.append("## 4. 🔁 CUSTOS FIXOS & PROVISÃO MENSAL")
+    total_fixos = 0.0
+    for r in recorrencias:
+        if r['ativo'] == 1 and r['tipo'] == 'despesa' and 'Alforria' not in r['descricao']:
+            total_fixos += r['valor']
+        st_txt = "Ativo" if r['ativo'] == 1 else "Pausado"
+        global_md.append(f"- `{r['descricao']}`: `R$ {r['valor']:,.2f}` (Dia {r['dia_vencimento']:02d}) [{r['categoria']}] — *{st_txt}*")
+    global_md.append(f"**Total Custos Fixos Operacionais:** `R$ {total_fixos:,.2f}/mês`\n")
+
+    global_md.append("## 5. 🔮 RADIOGRAFIA 'DEPOIS DAS CONTAS' (PRÓXIMOS 12 MESES)")
+    global_md.append("| Mês | Renda Prevista | Faturas Cartão | Custos Fixos | Aporte Alforria | Sobra Livre | Status |")
+    global_md.append("| :--- | :--- | :--- | :--- | :--- | :--- | :--- |")
+
+    ano_cur, m_cur = 2026, 9
+    for _ in range(16):
+        mes_k = f"{ano_cur:04d}-{m_cur:02d}"
+        renda_k = 2234.0 + (1100.0 if m_cur in [11, 12] else 0.0)
+        
+        c.execute("SELECT COALESCE(SUM(valor), 0.0) FROM transacoes WHERE mes_fatura = ?", (mes_k,))
+        fats_k = c.fetchone()[0] or 0.0
+        
+        ap_k = obter_aporte_planejado(mes_k, 1)
+        total_saidas_k = fats_k + total_fixos + ap_k
+        sobra_k = renda_k - total_saidas_k
+        
+        if sobra_k >= 200:
+            status_k = "🟢 Confortável"
+        elif sobra_k >= 0:
+            status_k = "🟡 Apertado"
+        else:
+            status_k = "🔴 Déficit"
+
+        obs_ap = f"R$ {ap_k:,.2f}" if ap_k > 0 else "R$ 0,00 (Pausado)"
+        global_md.append(f"| `{mes_k}` | R$ {renda_k:,.2f} | R$ {fats_k:,.2f} | R$ {total_fixos:,.2f} | {obs_ap} | **R$ {sobra_k:,.2f}** | {status_k} |")
+
+        m_cur += 1
+        if m_cur > 12:
+            m_cur = 1
+            ano_cur += 1
+
+    global_file = os.path.join(base_dir, "CONTEXTO_GLOBAL.md")
+    with open(global_file, "w", encoding="utf-8") as f:
+        f.write("\n".join(global_md))
+
+    # 6. Gerar arquivos por Mês em subdiretórios por Ano (Ex: 2026/2026-09.md, 2026/2026-10.md)
+    ano_cur, m_cur = 2026, 9
+    meses_gerados = []
+    for _ in range(24):
+        mes_k = f"{ano_cur:04d}-{m_cur:02d}"
+        ano_dir = os.path.join(base_dir, str(ano_cur))
+        os.makedirs(ano_dir, exist_ok=True)
+        mes_file = os.path.join(ano_dir, f"{mes_k}.md")
+
+        renda_k = 2234.0 + (1100.0 if m_cur in [11, 12] else 0.0)
+        desc_renda = "Salário AGR" + (" + Parcela 13º" if m_cur in [11, 12] else "")
+
+        c.execute("""
+            SELECT k.nome, k.dia_vencimento, SUM(t.valor)
+            FROM transacoes t
+            JOIN cartoes k ON t.cartao_id = k.id
+            WHERE t.mes_fatura = ?
+            GROUP BY k.nome, k.dia_vencimento
+        """, (mes_k,))
+        fats_mes = c.fetchall()
+        total_fats_mes = sum(f[2] for f in fats_mes) if fats_mes else 0.0
+
+        ap_mes = obter_aporte_planejado(mes_k, 1)
+        total_saidas_mes = total_fats_mes + total_fixos + ap_mes
+        sobra_mes = renda_k - total_saidas_mes
+
+        # Transações detalhadas do mês
+        txs = get_transacoes_do_mes(mes_k)
+
+        m_md = []
+        m_md.append(f"# 📅 EXTRATO & DIAGNÓSTICO FINANCEIRO: `{mes_k}`")
+        m_md.append(f"> **Status do Mês:** `{'ATIVO' if mes_k == mes_atual else ('PASSADO' if mes_k < mes_atual else 'PROJEÇÃO')}`")
+        m_md.append(f"> **Gerado em:** `{hoje_str}`\n")
+
+        m_md.append("## 1. 💰 BALANÇO 'DEPOIS DAS CONTAS'")
+        m_md.append(f"- **Renda Líquida Prevista:** `R$ {renda_k:,.2f}` ({desc_renda})")
+        m_md.append(f"- **Faturas de Cartões:** `R$ {total_fats_mes:,.2f}`")
+        m_md.append(f"- **Despesas Fixas & Provisão:** `R$ {total_fixos:,.2f}`")
+        m_md.append(f"- **Aporte Alforria Programado:** `R$ {ap_mes:,.2f}`" + (" *(Pausado)*" if ap_mes == 0 else ""))
+        m_md.append(f"- **Total Obrigações & Aporte:** `R$ {total_saidas_mes:,.2f}`")
+        m_md.append(f"- **💸 SOBRA LIVRE ('DEPOIS DAS CONTAS'):** `R$ {sobra_mes:,.2f}`\n")
+
+        m_md.append("## 2. 💳 DETALHAMENTO DAS FATURAS")
+        if not fats_mes:
+            m_md.append("- *Zero faturas programadas para este mês.*")
+        else:
+            for f_row in fats_mes:
+                m_md.append(f"- **{f_row[0]}** (Vencimento dia {f_row[1]:02d}): `R$ {f_row[2]:,.2f}`")
+        m_md.append("")
+
+        m_md.append("## 3. 📜 LANÇAMENTOS E TRANSAÇÕES DO MÊS")
+        if not txs:
+            m_md.append("- *Nenhuma transação individual registrada.*")
+        else:
+            m_md.append("| ID | Data | Descrição | Valor | Tipo | Categoria | Origem/Fatura | Parcela |")
+            m_md.append("| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |")
+            for t in txs:
+                parc_txt = f"{t['parcela_atual']}/{t['total_parcelas']}" if t['total_parcelas'] > 1 else "-"
+                m_md.append(f"| {t['id']} | {t['data']} | {t['descricao']} | R$ {t['valor']:,.2f} | {t['tipo']} | {t['categoria']} | {t['origem']} | {parc_txt} |")
+        m_md.append("")
+
+        with open(mes_file, "w", encoding="utf-8") as f:
+            f.write("\n".join(m_md))
+        meses_gerados.append(mes_file)
+
+        m_cur += 1
+        if m_cur > 12:
+            m_cur = 1
+            ano_cur += 1
+
+    conn.close()
+    return {
+        "base_dir": base_dir,
+        "global_file": global_file,
+        "meses_count": len(meses_gerados)
+    }
+
 def listar_backups(destino_dir=None):
     if not destino_dir:
         destino_dir = os.path.expanduser("~/backups/finance")
@@ -1406,8 +1597,16 @@ if __name__ == "__main__":
         print(f"  • Planilha XLSX: {res['excel_file']}")
         if res['mirrors']:
             print(f"  • Espelhos     : {', '.join(res['mirrors'])}")
+    elif "--export-ia" in sys.argv or "--export-context" in sys.argv:
+        res = exportar_contexto_ia()
+        print("✔ Contexto para IA exportado com sucesso!")
+        print(f"  • Diretório Base : {res['base_dir']}")
+        print(f"  • Arquivo Global : {res['global_file']}")
+        print(f"  • Meses Gerados  : {res['meses_count']} arquivos detalhados")
     else:
         init_database()
         print("Database initialized successfully.")
         out = exportar_para_excel()
         print(f"Planilha exportada com sucesso em: {out}")
+        res = exportar_contexto_ia()
+        print(f"Contexto IA atualizado em: {res['base_dir']}")
