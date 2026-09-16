@@ -4,7 +4,8 @@ import {
   Rocket, History, BookmarkCheck, Plus, Trash2, Pencil, 
   CheckCircle, ArrowUpRight, ArrowDownRight, RefreshCw, 
   FileSpreadsheet, Sparkles, TrendingUp, 
-  Calculator, Search, ShieldCheck, Zap
+  Calculator, Search, ShieldCheck, Zap,
+  Home, Package, Flame
 } from 'lucide-react';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, 
@@ -103,6 +104,10 @@ export function App() {
     taxaJurosMensal: '2.5', // % a.m. se tiver juros
     valorParcelaComJuros: '', // opcional: se o usuário já tem o valor exato da parcela (ex: 10x de 58,90)
   });
+
+  // Simulador de Longo Prazo da Alforria & Independência
+  const [alforriaAporteSim, setAlforriaAporteSim] = useState<number>(1000);
+  const [alforriaMesesSim, setAlforriaMesesSim] = useState<number>(24);
 
   // Carregar dados principais
   const carregarTudo = async () => {
@@ -1384,53 +1389,339 @@ export function App() {
           )}
 
           {/* TAB 5: ALFORRIA & CDI */}
-          {activeTab === 'alforria' && (
-            <div className="space-y-6 animate-fadeIn">
-              <div className="bg-gradient-to-r from-indigo-950/60 to-slate-900 border border-indigo-800/40 rounded-2xl p-6">
-                <div className="flex items-center gap-4">
-                  <div className="p-4 bg-indigo-600 text-white rounded-2xl shadow-lg shadow-indigo-600/30">
-                    <Rocket className="w-8 h-8" />
+          {activeTab === 'alforria' && (() => {
+            // Cálculo dinâmico do simulador de longo prazo
+            const saldoBase = 1000.0;
+            const taxaMensalCDI = 0.0095; // 115% CDI (~11.5% a.a. / 12)
+            let s = saldoBase;
+            const projDinamica = [];
+            let totalAportado = 0;
+            let totalJuros = 0;
+
+            for (let i = 1; i <= alforriaMesesSim; i++) {
+              const rend = s * taxaMensalCDI;
+              s += rend + alforriaAporteSim;
+              totalAportado += alforriaAporteSim;
+              totalJuros += rend;
+              projDinamica.push({
+                mes: i,
+                rendimento: rend,
+                saldo: s,
+                rendaPassiva: s * taxaMensalCDI
+              });
+            }
+
+            const patrimonioFinal = s;
+            const rendaPassivaFinal = s * taxaMensalCDI;
+            const metaMobilia = 11500.0;
+            const metaReservaSoberana = 15500.0;
+            const metaTotalIndependencia = metaMobilia + metaReservaSoberana; // R$ 27.000
+            const progressoIndependencia = Math.min(100, Math.round((saldoBase / metaTotalIndependencia) * 100));
+
+            return (
+              <div className="space-y-8 animate-fadeIn">
+                {/* Hero Header */}
+                <div className="bg-gradient-to-r from-indigo-950/80 via-slate-900 to-slate-900 border border-indigo-800/40 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+                    <div className="flex items-center gap-4">
+                      <div className="p-4 bg-indigo-600 text-white rounded-2xl shadow-lg shadow-indigo-600/30">
+                        <Rocket className="w-8 h-8" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-black text-white flex items-center gap-2">
+                          Projeto Alforria • 115% do CDI
+                          <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30">
+                            Meta R$ 27.000
+                          </span>
+                        </h3>
+                        <p className="text-xs text-indigo-200/80 mt-1 max-w-2xl">
+                          Centro de Comando de Longo Prazo rumo à Moradia Soberana e Independência Real.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl">
+                      <div className="text-right">
+                        <div className="text-[10px] text-slate-400 font-bold uppercase">Semente Atual na Caixinha</div>
+                        <div className="text-lg font-black text-emerald-400 font-mono">R$ 1.000,00</div>
+                      </div>
+                      <ShieldCheck className="w-6 h-6 text-emerald-400" />
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-black text-white">Projeto Alforria • 115% do CDI</h3>
-                    <p className="text-xs text-indigo-200/80 mt-1 max-w-2xl">
-                      Construção do patrimônio sagrado rumo aos R$ 27.000 para a moradia soberana e liberdade.
-                    </p>
+
+                  {/* Barra de Progresso da Alforria */}
+                  <div className="mt-6 pt-5 border-t border-slate-800/80">
+                    <div className="flex justify-between text-xs font-bold mb-2">
+                      <span className="text-slate-300 flex items-center gap-1.5">
+                        <Home className="w-3.5 h-3.5 text-indigo-400" />
+                        Progresso Rumo ao "Meu Canto" (R$ 27.000):
+                      </span>
+                      <span className="text-indigo-400 font-mono">{progressoIndependencia}% Concluído</span>
+                    </div>
+                    <div className="w-full bg-slate-950 h-3 rounded-full overflow-hidden border border-slate-800">
+                      <div 
+                        className="bg-gradient-to-r from-indigo-500 via-indigo-400 to-emerald-400 h-full rounded-full transition-all duration-1000"
+                        style={{ width: `${Math.max(4, progressoIndependencia)}%` }}
+                      />
+                    </div>
+                    <div className="flex justify-between text-[10px] text-slate-500 mt-1.5 font-medium">
+                      <span>R$ 1.000 (Base Atual)</span>
+                      <span>R$ 11.500 (Mobília Paga)</span>
+                      <span>R$ 27.000 (Alforria Total + Reserva 12m)</span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Tabela de Evolução da Alforria */}
-              <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
-                <table className="w-full text-left text-xs">
-                  <thead className="bg-slate-950/60 text-slate-400 uppercase font-semibold border-b border-slate-800">
-                    <tr>
-                      <th className="py-3 px-4">Mês</th>
-                      <th className="py-3 px-4">Saldo Inicial</th>
-                      <th className="py-3 px-4">Aporte Mensal</th>
-                      <th className="py-3 px-4">Rendimento CDI (115%)</th>
-                      <th className="py-3 px-4 text-right">Patrimônio Acumulado</th>
-                      <th className="py-3 px-4 text-right">Renda Passiva Futura/mês</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-800/50 font-mono">
-                    {alforria.slice(0, 24).map((row) => (
-                      <tr key={row.mes} className="hover:bg-slate-800/30 transition-colors">
-                        <td className="py-3 px-4 font-bold text-slate-200">{row.mes}</td>
-                        <td className="py-3 px-4 text-slate-400">{formatBRL(row.saldo_inicial)}</td>
-                        <td className="py-3 px-4 text-emerald-400 font-bold">{formatBRL(row.aporte)}</td>
-                        <td className="py-3 px-4 text-cyan-400">+{formatBRL(row.rendimento_cdi)}</td>
-                        <td className="py-3 px-4 text-right font-black text-white">{formatBRL(row.saldo_final)}</td>
-                        <td className="py-3 px-4 text-right font-bold text-indigo-300">
-                          +{formatBRL(row.rendimento_mensal_futuro)}
-                        </td>
+                {/* SIMULADOR INTERATIVO DE CENÁRIOS DE LONGO PRAZO */}
+                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
+                    <div>
+                      <h4 className="text-base font-black text-slate-100 flex items-center gap-2">
+                        <Calculator className="w-5 h-5 text-indigo-400" />
+                        Simulador Estratégico de Longo Prazo (Juros Compostos)
+                      </h4>
+                      <p className="text-xs text-slate-400 mt-0.5">
+                        Alterne os valores para ver a força dos juros e projetar sua vida com o salário atual vs. aprovação no concurso.
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => { setAlforriaAporteSim(1000); setAlforriaMesesSim(24); }}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all ${
+                          alforriaAporteSim === 1000 && alforriaMesesSim === 24
+                            ? 'bg-indigo-600 text-white border-indigo-500 shadow-sm'
+                            : 'bg-slate-800 text-slate-400 border-slate-700 hover:text-slate-200'
+                        }`}
+                      >
+                        Cenário AGR (R$ 1k/mês)
+                      </button>
+                      <button
+                        onClick={() => { setAlforriaAporteSim(4000); setAlforriaMesesSim(24); }}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all ${
+                          alforriaAporteSim === 4000
+                            ? 'bg-emerald-600 text-white border-emerald-500 shadow-sm'
+                            : 'bg-slate-800 text-slate-400 border-slate-700 hover:text-slate-200'
+                        }`}
+                      >
+                        Cenário TCE-GO (R$ 4k/mês) 🚀
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Sliders de Ajuste */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-xs">
+                        <span className="text-slate-400 font-semibold">Aporte Mensal Previsto:</span>
+                        <span className="text-emerald-400 font-black font-mono text-sm">{formatBRL(alforriaAporteSim)}/mês</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="200"
+                        max="6000"
+                        step="100"
+                        value={alforriaAporteSim}
+                        onChange={(e) => setAlforriaAporteSim(Number(e.target.value))}
+                        className="w-full h-2 bg-slate-950 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+                      />
+                      <div className="flex justify-between text-[10px] text-slate-500 font-medium">
+                        <span>R$ 200</span>
+                        <span>R$ 1.000 (AGR)</span>
+                        <span>R$ 3.000</span>
+                        <span>R$ 6.000 (Posse Topo)</span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-xs">
+                        <span className="text-slate-400 font-semibold">Horizonte de Tempo:</span>
+                        <span className="text-cyan-400 font-black font-mono text-sm">{alforriaMesesSim} meses ({(alforriaMesesSim / 12).toFixed(1)} anos)</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="6"
+                        max="60"
+                        step="6"
+                        value={alforriaMesesSim}
+                        onChange={(e) => setAlforriaMesesSim(Number(e.target.value))}
+                        className="w-full h-2 bg-slate-950 rounded-lg appearance-none cursor-pointer accent-cyan-500"
+                      />
+                      <div className="flex justify-between text-[10px] text-slate-500 font-medium">
+                        <span>6 meses</span>
+                        <span>12 meses</span>
+                        <span>24 meses (2 anos)</span>
+                        <span>36 meses (3 anos)</span>
+                        <span>60 meses (5 anos)</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Cartões de Resultados Projetados */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
+                    <div className="bg-slate-950/60 border border-slate-800 rounded-xl p-4">
+                      <div className="text-[11px] text-slate-400 font-bold uppercase">Patrimônio Acumulado</div>
+                      <div className="text-2xl font-black text-white font-mono mt-1">
+                        {formatBRL(patrimonioFinal)}
+                      </div>
+                      <div className="text-[10px] text-slate-500 mt-1">Ao final de {alforriaMesesSim} meses</div>
+                    </div>
+
+                    <div className="bg-slate-950/60 border border-slate-800 rounded-xl p-4">
+                      <div className="text-[11px] text-slate-400 font-bold uppercase">Tirado do Próprio Bolso</div>
+                      <div className="text-xl font-bold text-slate-300 font-mono mt-1">
+                        {formatBRL(saldoBase + totalAportado)}
+                      </div>
+                      <div className="text-[10px] text-slate-500 mt-1">Sua economia real</div>
+                    </div>
+
+                    <div className="bg-slate-950/60 border border-slate-800 rounded-xl p-4">
+                      <div className="text-[11px] text-slate-400 font-bold uppercase">Juros Livres (115% CDI)</div>
+                      <div className="text-xl font-black text-cyan-400 font-mono mt-1">
+                        +{formatBRL(totalJuros)}
+                      </div>
+                      <div className="text-[10px] text-cyan-500/80 mt-1">Dinheiro trabalhando por você</div>
+                    </div>
+
+                    <div className="bg-slate-950/60 border border-indigo-900/40 rounded-xl p-4 bg-indigo-950/20">
+                      <div className="text-[11px] text-indigo-300 font-bold uppercase">Renda Passiva Mensal</div>
+                      <div className="text-xl font-black text-emerald-400 font-mono mt-1">
+                        +{formatBRL(rendaPassivaFinal)}/mês
+                      </div>
+                      <div className="text-[10px] text-slate-400 mt-1">Pingando todo dia 1º sem esforço</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* PLANO DE INDEPENDÊNCIA: AS 2 GAVETAS SAGRADAS */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Gaveta 1: Mobília de Elite */}
+                  <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                    <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2.5 bg-amber-500/10 text-amber-400 rounded-xl border border-amber-500/20">
+                          <Package className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h4 className="font-black text-slate-100 text-sm">Gaveta 1: Mobília & Ninho Seguro</h4>
+                          <span className="text-xs text-slate-400">Meta: R$ 11.500 (Itens topo de linha duráveis)</span>
+                        </div>
+                      </div>
+                      <span className="text-xs font-mono font-bold text-amber-400">6 Itens na Wishlist</span>
+                    </div>
+
+                    <div className="space-y-2.5">
+                      {[
+                        { nome: 'Geladeira Panasonic BT44 Inverter 391L (A+++)', preco: 2690.0, desc: 'Motor Inverter Japonês, Frost Free, Freezer Superior' },
+                        { nome: 'Lava e Seca Samsung EcoBubble 11kg Inverter', preco: 3200.0, desc: 'Motor Digital Inverter 10 anos garantia, água fria' },
+                        { nome: 'Cama Box Queen Molas Ensacadas (Castor/Guldi)', preco: 2200.0, desc: 'Pocket individual, Pillow Top hotelaria, coluna alinhada' },
+                        { nome: 'Guarda-roupa 100% MDF Portas de Correr', preco: 1400.0, desc: 'Profundidade 56cm real, corrediças telescópicas' },
+                        { nome: 'Cooktop Fischer 4 Bocas Mesa de Vidro', preco: 650.0, desc: 'Design moderno, limpa em segundos, vidro temperado' },
+                        { nome: 'Micro-ondas Panasonic 30L SmartSense', preco: 650.0, desc: 'Descongela sem cozinhar bordas, função pega fácil' },
+                      ].map((item, idx) => (
+                        <div key={idx} className="flex items-center justify-between p-3 rounded-xl bg-slate-950/60 border border-slate-800/60 text-xs">
+                          <div>
+                            <div className="font-bold text-slate-200">{item.nome}</div>
+                            <div className="text-[10px] text-slate-500">{item.desc}</div>
+                          </div>
+                          <div className="font-black font-mono text-slate-100 text-right ml-3">
+                            {formatBRL(item.preco)}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-amber-500/5 border border-amber-500/20 text-[11px] text-amber-300/90 leading-relaxed">
+                      💡 <strong>Estratégia Homem Rocha:</strong> Comprar em 10x sem juros no cartão quando você tiver o valor integral rendendo na Caixinha a 115% do CDI. Você ganha os juros do banco todo mês enquanto paga as parcelas fixas sem juros!
+                    </div>
+                  </div>
+
+                  {/* Gaveta 2: Reserva Imutável */}
+                  <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                    <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2.5 bg-indigo-500/10 text-indigo-400 rounded-xl border border-indigo-500/20">
+                          <ShieldCheck className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h4 className="font-black text-slate-100 text-sm">Gaveta 2: Alforria & Reserva de Sobrevivência</h4>
+                          <span className="text-xs text-slate-400">Meta: R$ 15.500 (O Escudo de Ferro)</span>
+                        </div>
+                      </div>
+                      <span className="text-xs font-mono font-bold text-indigo-400">12 Meses de Vida</span>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80 space-y-2">
+                        <div className="flex justify-between text-xs">
+                          <span className="text-slate-300 font-semibold">Caução & Garantia do Aluguel:</span>
+                          <span className="font-mono text-slate-100 font-bold">R$ 3.500,00</span>
+                        </div>
+                        <div className="text-[10px] text-slate-500">
+                          Reserva para o primeiro mês + 2 cauções ou seguro fiança de imobiliária.
+                        </div>
+                      </div>
+
+                      <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80 space-y-2">
+                        <div className="flex justify-between text-xs">
+                          <span className="text-slate-300 font-semibold">Escudo de 12 Meses de Custos:</span>
+                          <span className="font-mono text-emerald-400 font-bold">R$ 12.000,00</span>
+                        </div>
+                        <div className="text-[10px] text-slate-500">
+                          R$ 1.000/mês guardados gerando juros contínuos. Aconteça o que acontecer no mundo, seu teto e sua comida estão pagos por 1 ano inteiro.
+                        </div>
+                      </div>
+
+                      <div className="p-4 rounded-xl bg-indigo-950/30 border border-indigo-800/40 space-y-2">
+                        <div className="flex items-center gap-2 text-indigo-300 font-bold text-xs">
+                          <Flame className="w-4 h-4 text-indigo-400" />
+                          A Renda Passiva da Alforria (R$ 27.000):
+                        </div>
+                        <div className="text-xs text-slate-300 leading-relaxed">
+                          Quando você atingir os R$ 27.000 na Caixinha a 115% CDI, o rendimento mensal será de <strong>~R$ 270 a R$ 300 todo mês</strong>.
+                          Isso paga automaticamente o condomínio, a conta de luz e a internet do seu apartamento para sempre!
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Tabela de Evolução Mensal do Banco */}
+                <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+                  <div className="p-4 border-b border-slate-800 flex justify-between items-center">
+                    <h4 className="text-sm font-bold text-slate-200">Projeção Mensal do Banco (Timeline Real 115% CDI)</h4>
+                    <span className="text-xs text-slate-500">Próximos 24 meses calculados pelo core_engine</span>
+                  </div>
+                  <table className="w-full text-left text-xs">
+                    <thead className="bg-slate-950/60 text-slate-400 uppercase font-semibold border-b border-slate-800">
+                      <tr>
+                        <th className="py-3 px-4">Mês</th>
+                        <th className="py-3 px-4">Saldo Inicial</th>
+                        <th className="py-3 px-4">Aporte Mensal</th>
+                        <th className="py-3 px-4">Rendimento CDI (115%)</th>
+                        <th className="py-3 px-4 text-right">Patrimônio Acumulado</th>
+                        <th className="py-3 px-4 text-right">Renda Passiva Futura/mês</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y divide-slate-800/50 font-mono">
+                      {alforria.slice(0, 24).map((row) => (
+                        <tr key={row.mes} className="hover:bg-slate-800/30 transition-colors">
+                          <td className="py-3 px-4 font-bold text-slate-200">{row.mes}</td>
+                          <td className="py-3 px-4 text-slate-400">{formatBRL(row.saldo_inicial)}</td>
+                          <td className="py-3 px-4 text-emerald-400 font-bold">{formatBRL(row.aporte)}</td>
+                          <td className="py-3 px-4 text-cyan-400">+{formatBRL(row.rendimento_cdi)}</td>
+                          <td className="py-3 px-4 text-right font-black text-white">{formatBRL(row.saldo_final)}</td>
+                          <td className="py-3 px-4 text-right font-bold text-indigo-300">
+                            +{formatBRL(row.rendimento_mensal_futuro)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
 
           {/* TAB 6: MÁQUINA DO TEMPO / SIMULADOR */}
           {activeTab === 'simulador' && (
