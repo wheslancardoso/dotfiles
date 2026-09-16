@@ -73,5 +73,23 @@ O sistema deve ser 100% reproduzível:
 
 ---
 
+---
+
 ## 8. HARDWARE & RECURSOS (RTX 5060 + RYZEN 5700X)
 - Ao final de tarefas grandes ou ao interagir com o usuário, lembre-o de que ele pode liberar a VRAM da GPU a qualquer momento digitando `ia-stop`.
+
+---
+
+## 9. PROTOCOLO DE CONEXÃO RÁPIDA: RCLONE & NOTEBOOKLM
+Quando o usuário disser que quer **configurar o Google Drive / Rclone** ou **sincronizar o NotebookLM**:
+1. **Verificação Instantânea**: Teste com `rclone listremotes`. Se `gdrive:` não existir, dispare imediatamente o assistente interativo:
+   ```bash
+   bash ~/dotfiles/scripts/gdrive-mount.sh setup
+   ```
+   (O script abre o navegador para login OAuth com 1 clique, cria o remote `gdrive` e ativa o serviço systemd de montagem automática).
+2. **Sincronização para o NotebookLM (Gemini Notebook)**:
+   - Para compilar os 8 Megadocs temáticos e subir pro Google Drive:
+   ```bash
+   python3 ~/dotfiles/scripts/notebooklm-sync.py
+   ```
+   - No NotebookLM web, o usuário adiciona as fontes da pasta `NotebookLM_Context` do Google Drive.
