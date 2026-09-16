@@ -151,7 +151,30 @@ RestartSec=10
 
 ---
 
-## 🏎️ 6. Bônus: Pacman Turbo Extremo & Makepkg Multi-Core
+## 🎙️ 6. Sincronização Inteligente para o NotebookLM (Gemini Notebook)
+
+Para alimentar o **NotebookLM (Gemini Notebook)** sem estourar o limite de fontes e mantendo sincronização contínua com as anotações locais do seu ecossistema:
+
+### 🧠 Como Funciona a Esteira:
+1. O script `notebooklm-sync.py` varre as notas das Pastas `00` a `11` (+ o contexto estratégico do TCE-GO).
+2. Ele compila centenas de arquivos `.md` individuais em **8 Megadocs temáticos** ultra-organizados com índice e tags de rastreio.
+3. Via `rclone sync`, envia diretamente para a pasta `NotebookLM_Context` no seu Google Drive.
+4. No NotebookLM, você adiciona esses 8 arquivos a partir do seu Google Drive. Sempre que rodar o sync, as fontes no Drive são atualizadas.
+
+```bash
+# Compilar e sincronizar com o Google Drive:
+python3 ~/dotfiles/scripts/notebooklm-sync.py
+
+# Apenas compilar localmente para conferir os Megadocs:
+python3 ~/dotfiles/scripts/notebooklm-sync.py --local-only
+
+# Modo observador (atualiza a cada 5 minutos em background):
+python3 ~/dotfiles/scripts/notebooklm-sync.py --watch
+```
+
+---
+
+## 🏎️ 7. Bônus: Pacman Turbo Extremo & Makepkg Multi-Core
 
 Além do Google Drive, todo o gerenciamento de pacotes do Arch Linux foi turbinado para atingir a velocidade máxima de rede e CPU:
 
