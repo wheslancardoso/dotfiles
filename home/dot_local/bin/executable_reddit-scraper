@@ -1,0 +1,269 @@
+#!/usr/bin/env python3
+"""
+==============================================================================
+🏛️ REDDIT SOVEREIGN SCRAPER — CLI TÁTICO DE EXTRAÇÃO & ANÁLISE
+==============================================================================
+Extrai posts e comentários do Reddit em alta velocidade sem bloqueio 403,
+utilizando a API indexada pública Arctic Shift (com fallback para PullPush).
+
+Uso:
+  reddit-scraper <url_ou_id> [--comments N] [--out output.md]
+  reddit-scraper --file urls.txt [--comments N] [--json output.json] [--md output.md]
+==============================================================================
+"""
+
+import sys
+import os
+import re
+import json
+import time
+import argparse
+from datetime import datetime
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import requests
+
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+}
+
+def extrair_id(url_ou_id):
+    """Extrai o ID alfanumérico da submissão do Reddit a partir de URL ou string pura."""
+    url_ou_id = url_ou_id.strip()
+    match = re.search(r'/comments/([a-z0-9]+)', url_ou_id, re.IGNORECASE)
+    if match:
+        return match.group(1).lower()
+    match = re.search(r'^[a-z0-9]+$', url_ou_id, re.IGNORECASE)
+    if match:
+        return url_ou_id.lower()
+    return None
+
+def obter_submissoes_em_lote(ids_list):
+    """Busca submissões em lote via Arctic Shift (com fallback PullPush)."""
+    submissoes = {}
+    chunk_size = 50
+    for i in range(0, len(ids_list), chunk_size):
+        chunk = ids_list[i:i + chunk_size]
+        ids_str = ",".join(chunk)
+        # 1. Tentar Arctic Shift (Primário)
+        url_as = f"https://arctic-shift.photon-reddit.com/api/posts/ids?ids={ids_str}"
+        try:
+            r = requests.get(url_as, headers=HEADERS, timeout=15)
+            if r.status_code == 200:
+                data = r.json().get("data", [])
+                for item in data:
+                    pid = item.get("id")
+                    if pid:
+                        created = item.get("created_utc", 0)
+                        submissoes[pid] = {
+                            "id": pid,
+                            "title": item.get("title", ""),
+                            "author": item.get("author", "[deleted]"),
+                            "subreddit": item.get("subreddit", ""),
+                            "score": item.get("score", 0),
+                            "upvote_ratio": item.get("upvote_ratio", 1.0),
+                            "num_comments": item.get("num_comments", 0),
+                            "created_utc": created,
+                            "created_date": datetime.fromtimestamp(created).strftime("%Y-%m-%d %H:%M:%S") if created else "N/A",
+                            "selftext": item.get("selftext", ""),
+                            "url": f"https://reddit.com/r/{item.get('subreddit')}/comments/{pid}/",
+                            "comments": []
+                        }
+                continue
+        except Exception:
+            pass
+
+        # 2. Fallback PullPush se Arctic Shift falhar
+        url_pp = f"https://api.pullpush.io/reddit/submission/search/?ids={ids_str}"
+        try:
+            r = requests.get(url_pp, headers=HEADERS, timeout=15)
+            if r.status_code == 200:
+                data = r.json().get("data", [])
+                for item in data:
+                    pid = item.get("id")
+                    if pid and pid not in submissoes:
+                        created = item.get("created_utc", 0)
+                        submissoes[pid] = {
+                            "id": pid,
+                            "title": item.get("title", ""),
+                            "author": item.get("author", "[deleted]"),
+                            "subreddit": item.get("subreddit", ""),
+                            "score": item.get("score", 0),
+                            "upvote_ratio": item.get("upvote_ratio", 1.0),
+                            "num_comments": item.get("num_comments", 0),
+                            "created_utc": created,
+                            "created_date": datetime.fromtimestamp(created).strftime("%Y-%m-%d %H:%M:%S") if created else "N/A",
+                            "selftext": item.get("selftext", ""),
+                            "url": f"https://reddit.com/r/{item.get('subreddit')}/comments/{pid}/",
+                            "comments": []
+                        }
+        except Exception:
+            pass
+    return submissoes
+
+def obter_comentarios(pid, limit=10):
+    """Busca os comentários mais votados de uma submissão via Arctic Shift (fallback PullPush)."""
+    # 1. Tentar Arctic Shift
+    url = f"https://arctic-shift.photon-reddit.com/api/comments/search?link_id={pid}&limit=25"
+    try:
+        r = requests.get(url, headers=HEADERS, timeout=12)
+        if r.status_code == 200:
+            raw_comments = r.json().get("data", [])
+            comments = []
+            for c in raw_comments:
+                body = c.get("body", "").strip()
+                if body and body not in ["[deleted]", "[removed]"]:
+                    comments.append({
+                        "id": c.get("id"),
+                        "author": c.get("author", "[deleted]"),
+                        "score": c.get("score", 0) or 0,
+                        "created_utc": c.get("created_utc", 0),
+                        "body": body
+                    })
+            comments.sort(key=lambda x: x.get("score", 0), reverse=True)
+            if comments:
+                return pid, comments[:limit]
+    except Exception:
+        pass
+
+    # 2. Fallback PullPush
+    url_pp = f"https://api.pullpush.io/reddit/comment/search?link_id={pid}&limit={limit}&sort=desc&sort_type=score"
+    try:
+        r = requests.get(url_pp, headers=HEADERS, timeout=12)
+        if r.status_code == 200:
+            raw_comments = r.json().get("data", [])
+            comments = []
+            for c in raw_comments:
+                body = c.get("body", "").strip()
+                if body and body not in ["[deleted]", "[removed]"]:
+                    comments.append({
+                        "id": c.get("id"),
+                        "author": c.get("author", "[deleted]"),
+                        "score": c.get("score", 0) or 0,
+                        "created_utc": c.get("created_utc", 0),
+                        "body": body
+                    })
+            comments.sort(key=lambda x: x.get("score", 0), reverse=True)
+            return pid, comments[:limit]
+    except Exception:
+        pass
+
+    return pid, []
+
+def gerar_markdown(dados):
+    """Gera um dossiê formatado em Markdown com estatísticas e análises."""
+    linhas = []
+    linhas.append("# 🏛️ DOSSIÊ DE INTELIGÊNCIA SOCIAL: O CATIVEIRO DO QUARTO ACÚSTICO")
+    linhas.append(f"> **Gerado em:** `{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}`")
+    linhas.append(f"> **Total de Discussões Analisadas:** `{len(dados)} threads`")
+    linhas.append("> **Comunidades Mapeadas:** `r/brdev`, `r/desabafos`, `r/AskMen`, `r/conversas`, `r/brasil`, `r/Adulting`\n")
+    linhas.append("---\n")
+
+    # Sumário / Índice
+    linhas.append("## 📑 Índice de Discussões Coletadas\n")
+    for i, p in enumerate(dados, 1):
+        linhas.append(f"{i}. [**r/{p['subreddit']}**] [{p['title']}]({p['url']}) — ⭐ {p['score']} upvotes | 💬 {p['num_comments']} comentários")
+    linhas.append("\n---\n")
+
+    # Conteúdo Detalhado
+    linhas.append("## 💬 Conteúdo Detalhado & Consensos Reais\n")
+    for i, p in enumerate(dados, 1):
+        linhas.append(f"### {i}. [{p['title']}]({p['url']})")
+        linhas.append(f"- **Subreddit:** `r/{p['subreddit']}` | **Autor:** `u/{p['author']}` | **Data:** `{p['created_date']}`")
+        linhas.append(f"- **Métricas:** ⭐ `{p['score']}` upvotes | 💬 `{p['num_comments']}` comentários totais")
+        
+        if p['selftext']:
+            linhas.append(f"\n> **Texto do Post:**\n> " + p['selftext'].replace("\n", "\n> ") + "\n")
+        else:
+            linhas.append("\n> *(Post apenas com título / link externo)*\n")
+
+        if p['comments']:
+            linhas.append("#### 🗣️ Principais Comentários & Depoimentos Reais:")
+            for c in p['comments']:
+                linhas.append(f"- **u/{c['author']}** (⭐ {c['score']} upvotes):")
+                body_fmt = "\n  ".join(c['body'].splitlines())
+                linhas.append(f"  > {body_fmt}\n")
+        else:
+            linhas.append("- *Nenhum comentário coletado ou post sem comentários arquivados.*\n")
+
+        linhas.append("---\n")
+
+    return "\n".join(linhas)
+
+def main():
+    parser = argparse.ArgumentParser(description="Reddit Sovereign Scraper CLI")
+    parser.add_argument("target", nargs="?", help="URL ou ID do post no Reddit")
+    parser.add_argument("--file", "-f", help="Arquivo contendo lista de URLs ou IDs")
+    parser.add_argument("--comments", "-c", type=int, default=10, help="Quantidade de top comentários por post (padrão: 10)")
+    parser.add_argument("--out", "-o", help="Caminho do arquivo Markdown de saída")
+    parser.add_argument("--json", "-j", help="Caminho do arquivo JSON de saída")
+    parser.add_argument("--workers", "-w", type=int, default=6, help="Número de threads concorrentes (padrão: 6)")
+
+    args = parser.parse_args()
+
+    alvos = []
+    if args.file:
+        if not os.path.isfile(args.file):
+            print(f"Erro: Arquivo {args.file} não encontrado.", file=sys.stderr)
+            sys.exit(1)
+        with open(args.file, "r", encoding="utf-8") as f:
+            for line in f:
+                pid = extrair_id(line)
+                if pid and pid not in alvos:
+                    alvos.append(pid)
+    elif args.target:
+        pid = extrair_id(args.target)
+        if pid:
+            alvos.append(pid)
+        else:
+            print("Erro: URL ou ID inválido.", file=sys.stderr)
+            sys.exit(1)
+    else:
+        parser.print_help()
+        sys.exit(1)
+
+    print(f"⚡ [Reddit Scraper] Iniciando extração de {len(alvos)} discussões...")
+    t0 = time.time()
+
+    # 1. Obter metadados dos posts em lote
+    posts_map = obter_submissoes_em_lote(alvos)
+    print(f"✔ {len(posts_map)} posts recuperados com sucesso!")
+
+    # 2. Obter comentários em paralelo
+    print(f"⚡ Buscando até {args.comments} top comentários por thread com {args.workers} workers...")
+    with ThreadPoolExecutor(max_workers=args.workers) as executor:
+        futures = {executor.submit(obter_comentarios, pid, args.comments): pid for pid in posts_map.keys()}
+        completos = 0
+        for f in as_completed(futures):
+            pid, comments = f.result()
+            if pid in posts_map:
+                posts_map[pid]["comments"] = comments
+            completos += 1
+            if completos % 10 == 0 or completos == len(posts_map):
+                print(f"  • Progresso: {completos}/{len(posts_map)} threads processadas...")
+
+    dados_ordenados = list(posts_map.values())
+    dados_ordenados.sort(key=lambda x: x.get("score", 0), reverse=True)
+
+    tempo_total = time.time() - t0
+    print(f"✔ Extração concluída em {tempo_total:.2f}s!")
+
+    # Salvar JSON se solicitado
+    if args.json:
+        os.makedirs(os.path.dirname(os.path.abspath(args.json)), exist_ok=True)
+        with open(args.json, "w", encoding="utf-8") as f:
+            json.dump(dados_ordenados, f, ensure_ascii=False, indent=2)
+        print(f"💾 Base JSON salva em: {args.json}")
+
+    # Salvar Markdown se solicitado
+    if args.out:
+        os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
+        md_content = gerar_markdown(dados_ordenados)
+        with open(args.out, "w", encoding="utf-8") as f:
+            f.write(md_content)
+        print(f"📑 Dossiê Markdown salvo em: {args.out}")
+
+    if not args.json and not args.out:
+        print(gerar_markdown(dados_ordenados))
+
+if __name__ == "__main__":
+    main()
