@@ -1674,10 +1674,48 @@ def exportar_contexto_ia(base_dir="/mnt/dados/01_Pessoal_e_Vida/01.5_Financas_e_
             m_cur = 1
             ano_cur += 1
 
+    # 7. Gerar DUMP_COMPLETO_APEX.md (SSOT Consolidado para IA em arquivo único)
+    dump_completo_file = os.path.join(base_dir, "DUMP_COMPLETO_APEX.md")
+    # Copia o resumo global e anexa a visão detalhada das faturas e parcelas
+    dump_lines = list(global_md)
+    dump_lines.append("\n## 7. 💳 CRONOGRAMA INTEGRAL DE FATURAS & PARCELAMENTOS FUTUROS")
+    c.execute("""
+        SELECT t.mes_fatura, t.descricao, t.valor, t.parcela_atual, t.total_parcelas, COALESCE(k.nome, 'Conta/Outro')
+        FROM transacoes t
+        LEFT JOIN cartoes k ON t.cartao_id = k.id
+        WHERE t.mes_fatura >= ?
+        ORDER BY t.mes_fatura, t.valor DESC
+    """, (mes_atual,))
+    futuras = c.fetchall()
+    if futuras:
+        dump_lines.append("| Mês Fatura | Descrição / Item | Valor | Parcela | Cartão / Origem |")
+        dump_lines.append("| :--- | :--- | :--- | :--- | :--- |")
+        for f in futuras:
+            p_str = f"{f[3]}/{f[4]}" if f[4] > 1 else "À vista"
+            dump_lines.append(f"| `{f[0]}` | {f[1]} | R$ {f[2]:,.2f} | {p_str} | {f[5]} |")
+    else:
+        dump_lines.append("- *Zero parcelas ou faturas futuras pendentes.*")
+
+    dump_lines.append("\n---")
+    dump_lines.append(f"> *Arquivo gerado automaticamente pelo APEX Finance Core Engine em {hoje_str}. SSOT Soberano.*")
+
+    with open(dump_completo_file, "w", encoding="utf-8") as f:
+        f.write("\n".join(dump_lines))
+
+    # Também espelha uma cópia de fácil acesso em ~/.local/share/apex-finance/DUMP_COMPLETO_APEX.md
+    local_mirror = os.path.expanduser("~/.local/share/apex-finance/DUMP_COMPLETO_APEX.md")
+    try:
+        with open(local_mirror, "w", encoding="utf-8") as f:
+            f.write("\n".join(dump_lines))
+    except Exception:
+        pass
+
     conn.close()
     return {
         "base_dir": base_dir,
         "global_file": global_file,
+        "dump_completo": dump_completo_file,
+        "local_mirror": local_mirror,
         "meses_count": len(meses_gerados)
     }
 
@@ -1710,11 +1748,13 @@ if __name__ == "__main__":
         print(f"  • Planilha XLSX: {res['excel_file']}")
         if res['mirrors']:
             print(f"  • Espelhos     : {', '.join(res['mirrors'])}")
-    elif "--export-ia" in sys.argv or "--export-context" in sys.argv:
+    elif "--export-ia" in sys.argv or "--export-context" in sys.argv or "--dump" in sys.argv:
         res = exportar_contexto_ia()
         print("✔ Contexto para IA exportado com sucesso!")
         print(f"  • Diretório Base : {res['base_dir']}")
         print(f"  • Arquivo Global : {res['global_file']}")
+        print(f"  • Dump Completo  : {res['dump_completo']}")
+        print(f"  • Espelho Local  : {res['local_mirror']}")
         print(f"  • Meses Gerados  : {res['meses_count']} arquivos detalhados")
     else:
         init_database()

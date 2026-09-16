@@ -702,6 +702,8 @@ elif [ "$1" == "restore" ]; then
         exit 1
     fi
     python3 -c "import sys; sys.path.append('$HOME/.local/share/apex-finance'); import core_engine; core_engine.restaurar_backup('$2'); print('✔ Banco restaurado com sucesso!')"
+elif [ "$1" == "dump" ] || [ "$1" == "--dump" ] || [ "$1" == "context" ]; then
+    python3 "$HOME/.local/share/apex-finance/core_engine.py" --dump
 elif [ "$1" == "dash" ] || [ "$1" == "status" ]; then
     IS_SUBCOMMAND=1 ver_dashboard_mensal
 elif [ "$1" == "fzf" ] || [ "$1" == "menu" ]; then
