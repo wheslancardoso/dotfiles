@@ -320,6 +320,11 @@ fi
 # Git & Dev
 alias lg='lazygit'
 alias ld='lazydocker'
+
+# 🥋 Dojo AGR & Cockpit de Desenvolvimento
+alias dojo="bash /home/lan/projects/04.1_Projetos_Web_e_Apps/fiscalizacao-dojo/start-cockpit.sh"
+alias dojo-dir="cd /home/lan/projects/04.1_Projetos_Web_e_Apps/fiscalizacao-dojo"
+alias dojo-down="docker compose -f /home/lan/projects/04.1_Projetos_Web_e_Apps/fiscalizacao-dojo/docker/docker-compose.yml down"
 alias gs='git status -sb'
 alias gp='git push'
 alias gl='git log --oneline --graph --decorate'

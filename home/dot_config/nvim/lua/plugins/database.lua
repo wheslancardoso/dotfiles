@@ -22,6 +22,9 @@ return {
       vim.g.db_ui_show_database_icon = 1
       vim.g.db_ui_force_echo_notifications = 1
       vim.g.db_ui_winwidth = 35
+      vim.g.dbs = {
+        fiscalizacao = "mysql://root:root@127.0.0.1:3306/fiscalizacao",
+      }
       vim.g.db_ui_table_helpers = {
         postgresql = {
           Count = "select count(*) from {table}",
