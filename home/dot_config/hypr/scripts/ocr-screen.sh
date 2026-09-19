@@ -63,22 +63,24 @@ if command -v zbarimg &>/dev/null; then
 fi
 
 # ------------------------------------------------------------------------------
-# 2. MOTOR OCR DE ALTA FIDELIDADE (TESSDATA_BEST + FALLBACK MULTI-PASS)
+# 2. MOTOR OCR DE ALTA FIDELIDADE (TESSDATA_BEST MULTI-IDIOMA + FALLBACK ADAPTATIVO)
 # ------------------------------------------------------------------------------
-# Se existir tessdata_best no cache do usuário, utiliza para máxima acurácia neural
 TESS_DATA_DIR="/usr/share/tessdata"
+LANGS="por+eng"
 if [[ -d "$HOME/.local/share/tessdata_best" ]] && [[ -f "$HOME/.local/share/tessdata_best/por.traineddata" ]]; then
     TESS_DATA_DIR="$HOME/.local/share/tessdata_best"
+    # Adiciona suporte nativo universal (Português, Inglês, Espanhol, Francês, Italiano, Alemão)
+    LANGS="por+eng+spa+fra+ita+deu"
 fi
 
 extract_text() {
     local img="$1"
     local psm="$2"
-    tesseract --tessdata-dir "$TESS_DATA_DIR" "$img" stdout -l por+eng --psm "$psm" -c preserve_interword_spaces=1 2>/dev/null || true
+    tesseract --tessdata-dir "$TESS_DATA_DIR" "$img" stdout -l "$LANGS" --psm "$psm" -c preserve_interword_spaces=1 2>/dev/null || true
 }
 
-# Passo 1: Extração direta da imagem nítida capturada (sem artefatos de compressão)
-# Testa PSM 6 (bloco uniforme) -> PSM 3 (página com colunas) -> PSM 11 (texto esparso/UI) -> PSM 7 (linha única)
+# Passo 1: Extração direta Pixel-Perfect (sem alterar geometria)
+# Modos: PSM 6 (bloco uniforme) -> PSM 3 (páginas/colunas) -> PSM 11 (texto esparso/UI) -> PSM 7 (linha única)
 text=""
 for psm_mode in 6 3 11 7; do
     res=$(extract_text "$tmp_raw" "$psm_mode")
@@ -88,7 +90,22 @@ for psm_mode in 6 3 11 7; do
     fi
 done
 
-# Passo 2: Se ainda assim nada for detectado, aplicar Upscale limpo 2x suave (ideal para fontes minúsculas de terminal)
+# Passo 2: Fallback com Padding Adaptativo de Borda (caso a seleção manual tenha cortado rente à primeira/última letra)
+if [[ -z "${text//[[:space:]]/}" ]] && command -v magick &>/dev/null; then
+    tmp_padded=$(mktemp --suffix=.png /tmp/ocr_pad_XXXXXX)
+    bg_color=$(magick "$tmp_raw" -format "%[pixel:p{0,0}]" info: 2>/dev/null || echo "black")
+    magick "$tmp_raw" -bordercolor "$bg_color" -border 15 "$tmp_padded" 2>/dev/null || cp "$tmp_raw" "$tmp_padded"
+    for psm_mode in 6 3 11 7; do
+        res=$(extract_text "$tmp_padded" "$psm_mode")
+        if [[ -n "${res//[[:space:]]/}" ]]; then
+            text="$res"
+            break
+        fi
+    done
+    rm -f "$tmp_padded"
+fi
+
+# Passo 3: Fallback com Upscale Limpo 2x (ideal para fontes minúsculas de terminal e subpixels)
 if [[ -z "${text//[[:space:]]/}" ]] && command -v magick &>/dev/null; then
     tmp_proc=$(mktemp --suffix=.png /tmp/ocr_proc_XXXXXX)
     magick "$tmp_raw" -resize 200% "$tmp_proc" 2>/dev/null || cp "$tmp_raw" "$tmp_proc"
@@ -168,6 +185,7 @@ def sanitize_code_and_text(t):
         l = re.sub(r"-\s+>", "->", l)
         l = re.sub(r"=\s+>", "=>", l)
         l = re.sub(r":\s+:", "::", l)
+        l = re.sub(r"\b0[xX][0-9a-fA-F]+\b", lambda m: m.group(0), l)
         l = re.sub(r"([a-zA-Z0-9_])\s*\.\s*([a-zA-Z0-9_]+)\s*(\()", r"\1.\2\3", l)
         l = re.sub(r"([a-zA-Z0-9_.-]+)\s*\.\s*(py|js|ts|jsx|tsx|lua|rs|go|java|c|cpp|h|hpp|sh|bash|zsh|json|yaml|yml|toml|md|txt|html|css|scss|conf|ini|sql|png|jpg|jpeg|webp|gif|svg|mp4|mkv|mp3|flac|zip|tar|gz|7z)\b", r"\1.\2", l, flags=re.IGNORECASE)
         return l
