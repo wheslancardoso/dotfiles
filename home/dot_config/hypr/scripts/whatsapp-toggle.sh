@@ -31,26 +31,36 @@ if [[ -n "$active_mon" ]]; then
     exit 0
 fi
 
-# Se não está visível, localiza janela do WhatsApp
-wa_addr=$(hyprctl clients -j | jq -r '.[] | select(.class | test("whatsapp|brave-web.whatsapp"; "i") or (.title | test("WhatsApp"; "i"))) | .address' | head -n 1)
+# Busca endereço da janela do WhatsApp com proteção contra nós vazios do jq
+find_wa_address() {
+    hyprctl clients -j | jq -r '
+        .[] | 
+        select(
+            ((.class? // "") | test("whatsapp"; "i")) or 
+            ((.initialClass? // "") | test("whatsapp"; "i")) or 
+            ((.title? // "") | test("WhatsApp"; "i"))
+        ) | .address
+    ' | head -n 1
+}
+
+wa_addr=$(find_wa_address)
 
 if [[ -z "$wa_addr" ]]; then
-    # Inicia o WhatsApp em modo WebApp dedicado
+    # Inicia como WebApp com perfil isolado para não misturar com o Brave principal
     if command -v brave &>/dev/null; then
-        hyprctl dispatch exec "[workspace special:whatsapp silent] brave --app=https://web.whatsapp.com --class=whatsapp-webapp"
+        hyprctl dispatch exec "[workspace special:whatsapp silent] brave --app=https://web.whatsapp.com --class=whatsapp-webapp --user-data-dir=$HOME/.config/brave-whatsapp-app"
     elif command -v google-chrome-stable &>/dev/null; then
-        hyprctl dispatch exec "[workspace special:whatsapp silent] google-chrome-stable --app=https://web.whatsapp.com --class=whatsapp-webapp"
+        hyprctl dispatch exec "[workspace special:whatsapp silent] google-chrome-stable --app=https://web.whatsapp.com --class=whatsapp-webapp --user-data-dir=$HOME/.config/chrome-whatsapp-app"
     elif command -v chromium &>/dev/null; then
-        hyprctl dispatch exec "[workspace special:whatsapp silent] chromium --app=https://web.whatsapp.com --class=whatsapp-webapp"
+        hyprctl dispatch exec "[workspace special:whatsapp silent] chromium --app=https://web.whatsapp.com --class=whatsapp-webapp --user-data-dir=$HOME/.config/chromium-whatsapp-app"
     else
         notify-send -a "WhatsApp" -i "dialog-error" "Navegador não encontrado" "Instale o Brave ou Chrome."
         exit 1
     fi
 
-    # Aguarda a janela aparecer
-    for _ in {1..25}; do
+    for _ in {1..30}; do
         sleep 0.15
-        wa_addr=$(hyprctl clients -j | jq -r '.[] | select(.class | test("whatsapp|brave-web.whatsapp"; "i") or (.title | test("WhatsApp"; "i"))) | .address' | head -n 1)
+        wa_addr=$(find_wa_address)
         if [[ -n "$wa_addr" ]]; then
             break
         fi
