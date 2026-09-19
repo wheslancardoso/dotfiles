@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# 💬 WHATSAPP WEB DROPDOWN SCRATCHPAD PARA HYPRLAND
+# 💬 WHATSAPP WEB DROPDOWN SCRATCHPAD PARA HYPRLAND (Perfil Principal)
 # ==============================================================================
-# Alterna instantaneamente o WhatsApp no special workspace 'whatsapp'.
-# Modo WebApp flutuante centralizado e focado.
+# Usa o perfil Default do Brave (suas contas, login e extensões ativas,
+# como a extensão de privacidade do WhatsApp).
 # ==============================================================================
 
 set -euo pipefail
@@ -14,10 +14,7 @@ if ! flock -n 200; then
     exit 0
 fi
 
-# Monitor focado atualmente
 current_mon=$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | .name')
-
-# Verifica se special:whatsapp está ativo em QUALQUER monitor
 active_mon=$(hyprctl monitors -j | jq -r '.[] | select(.specialWorkspace.name == "special:whatsapp") | .name')
 
 if [[ -n "$active_mon" ]]; then
@@ -31,7 +28,6 @@ if [[ -n "$active_mon" ]]; then
     exit 0
 fi
 
-# Busca endereço da janela do WhatsApp com proteção contra nós vazios do jq
 find_wa_address() {
     hyprctl clients -j | jq -r '
         .[] | 
@@ -46,19 +42,10 @@ find_wa_address() {
 wa_addr=$(find_wa_address)
 
 if [[ -z "$wa_addr" ]]; then
-    # Inicia como WebApp com perfil isolado para não misturar com o Brave principal
-    if command -v brave &>/dev/null; then
-        hyprctl dispatch exec "[workspace special:whatsapp silent] brave --app=https://web.whatsapp.com --class=whatsapp-webapp --user-data-dir=$HOME/.config/brave-whatsapp-app"
-    elif command -v google-chrome-stable &>/dev/null; then
-        hyprctl dispatch exec "[workspace special:whatsapp silent] google-chrome-stable --app=https://web.whatsapp.com --class=whatsapp-webapp --user-data-dir=$HOME/.config/chrome-whatsapp-app"
-    elif command -v chromium &>/dev/null; then
-        hyprctl dispatch exec "[workspace special:whatsapp silent] chromium --app=https://web.whatsapp.com --class=whatsapp-webapp --user-data-dir=$HOME/.config/chromium-whatsapp-app"
-    else
-        notify-send -a "WhatsApp" -i "dialog-error" "Navegador não encontrado" "Instale o Brave ou Chrome."
-        exit 1
-    fi
+    # Inicia com o perfil principal (--profile-directory="Default") para carregar todas as extensões e logins
+    hyprctl dispatch exec "[workspace special:whatsapp silent] brave --profile-directory=\"Default\" --app=https://web.whatsapp.com"
 
-    for _ in {1..30}; do
+    for _ in {1..35}; do
         sleep 0.15
         wa_addr=$(find_wa_address)
         if [[ -n "$wa_addr" ]]; then

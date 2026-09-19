@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# 🤖 ORÁCULO DE IA DROPDOWN SCRATCHPAD PARA HYPRLAND
-# ==============================================================================
-# Alterna instantaneamente a janela de IA no special workspace 'ai_oracle'.
+# 🤖 ORÁCULO DE IA DROPDOWN SCRATCHPAD PARA HYPRLAND (Perfil Principal)
 # ==============================================================================
 
 set -euo pipefail
@@ -29,16 +27,24 @@ if [[ -n "$active_mon" ]]; then
     exit 0
 fi
 
-# Localiza janela já aberta (por classe ou título de pesquisa)
-ai_addr=$(hyprctl clients -j | jq -r '.[] | select(.class | test("brave-www.google.com__search|ai-oracle"; "i")) | .address' | head -n 1)
+find_ai_address() {
+    hyprctl clients -j | jq -r '
+        .[] | 
+        select(
+            ((.class? // "") | test("brave-www.google.com__search|ai-oracle"; "i")) or 
+            ((.title? // "") | test("Pesquisa Google|Google Search"; "i"))
+        ) | .address
+    ' | head -n 1
+}
+
+ai_addr=$(find_ai_address)
 
 if [[ -z "$ai_addr" ]]; then
-    # Inicia como webapp com a URL solicitada
-    hyprctl dispatch exec "[workspace special:ai_oracle silent] brave --app=\"$AI_URL\" --user-data-dir=$HOME/.config/brave-ai-oracle"
+    hyprctl dispatch exec "[workspace special:ai_oracle silent] brave --profile-directory=\"Default\" --app=\"$AI_URL\""
 
-    for _ in {1..25}; do
+    for _ in {1..35}; do
         sleep 0.15
-        ai_addr=$(hyprctl clients -j | jq -r '.[] | select((.class | test("brave-www.google.com__search|ai-oracle"; "i")) or (.title | test("Pesquisa Google|Google Search"; "i"))) | .address' | head -n 1)
+        ai_addr=$(find_ai_address)
         if [[ -n "$ai_addr" ]]; then
             break
         fi
