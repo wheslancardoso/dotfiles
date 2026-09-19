@@ -4,6 +4,8 @@
     "plugins_order": [
       "deepfilternet#0",
       "equalizer#0",
+      "exciter#0",
+      "deesser#0",
       "compressor#0",
       "limiter#0"
     ],
@@ -22,7 +24,7 @@
       "output-gain": 0.0,
       "left": {
         "band0": {
-          "frequency": 90.0,
+          "frequency": 85.0,
           "gain": 0.0,
           "mode": "HighPass",
           "q": 0.707,
@@ -32,7 +34,7 @@
         },
         "band1": {
           "frequency": 200.0,
-          "gain": -1.0,
+          "gain": -1.5,
           "mode": "Bell",
           "q": 1.0,
           "slope": "x1",
@@ -67,6 +69,35 @@
           "type": "HighShelf"
         }
       }
+    },
+    "exciter#0": {
+      "amount": 1.5,
+      "blend": 0.0,
+      "bypass": false,
+      "ceil": 16000.0,
+      "ceil-active": false,
+      "harmonics": 2.0,
+      "input-gain": 0.0,
+      "listen": false,
+      "output-gain": 0.0,
+      "scope": 5000.0
+    },
+    "deesser#0": {
+      "bypass": false,
+      "detection": "RMS",
+      "f1-freq": 6000.0,
+      "f1-level": 0.0,
+      "f2-freq": 8000.0,
+      "f2-level": 6.0,
+      "f2-q": 1.0,
+      "input-gain": 0.0,
+      "laxity": 15.0,
+      "makeup": 0.0,
+      "mode": "Wide",
+      "output-gain": 0.0,
+      "ratio": 4.0,
+      "sc-listen": false,
+      "threshold": -18.0
     },
     "compressor#0": {
       "attack": 12.0,
