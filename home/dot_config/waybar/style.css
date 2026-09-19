@@ -109,24 +109,9 @@ window#waybar.empty #window {
     border-radius: 10px;
 }
 
-/* Workspace ativo no monitor secundário (Visível na outra tela, sem roubar foco) */
-#workspaces button.active,
-#workspaces button.visible {
-    color: @color14;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    border-radius: 10px;
-    min-width: 32px;
-    font-weight: 700;
-    box-shadow: none;
-}
-
-/* Workspace ativo no monitor atual (Foco Principal Soberano) */
-#workspaces button.active.current_output,
-#workspaces button.active.hosting-monitor {
+#workspaces button.active {
     color: #111419;
     background: linear-gradient(135deg, @color12 0%, @color14 100%);
-    border: none;
     border-radius: 10px;
     min-width: 32px;
     font-weight: 900;
