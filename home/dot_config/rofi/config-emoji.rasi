@@ -7,6 +7,9 @@
 
 /*****----- Configuration (Vim Navigation) -----*****/
 configuration {
+    kb-remove-to-eol:           "";
+    kb-remove-to-sol:           "";
+    kb-remove-char-forward:     "Delete";
     kb-row-up:                  "Up,Control+k,Control+p";
     kb-row-down:                "Down,Control+j,Control+n";
     kb-page-prev:               "Page_Up,Control+u";
