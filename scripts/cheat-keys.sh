@@ -194,6 +194,10 @@ rsync-turbo	⚡ Terminal	Transferência com Retomada	Cópia ultra-rápida imune 
 pdf-edit <doc.pdf>	⚡ Terminal	Editor Profissional de PDF	Abre o Master PDF Editor para editar texto, imagens e assinaturas.	pdf editor editar assinar preencher texto master pdf	masterpdfeditor5
 remover-marca-dagua	⚡ Terminal	Remover Marcas d'Água de PDF	Limpeza visual de editais, CPFs e apostilas em lote.	marca dagua cpf edital apostila pdf remover limpar	remover-marca-dagua.py
 vincular-linux	⚡ Terminal	Vincular Atalhos Linux no HD	Cria links simbólicos e mapeamento de diretórios do sistema no HD.	vincular symlinks atalhos hd linux pastas criar	vincular-linux
+fin / financas	💰 Finanças	APEX Finance TUI (Cockpit Soberano)	Gestão financeira, caixinhas de alforria, faturas, wishlist e simulação de compras.	fin financas apex finance dinheiro orcamento compras caixinhas cartao	kitty --title="APEX Finance" -e fin
+pacup / safe-update	⚡ Terminal	Atualização Blindada do Sistema	Atualiza chaveiro PGP antes, previne quebras e atualiza pacotes oficiais e AUR.	pacup safe-update atualizar sistema update upgrade pacman yay	ghostty --class=safe-update -e bash /home/lan/dotfiles/scripts/safe-update.sh
+quickgui	🖥️ Máquinas Virtuais	QuickGUI (Windows 11 em VM KVM)	Interface gráfica para rodar e gerenciar máquinas virtuais KVM/QEMU com 1 clique.	quickgui quickemu vm maquina virtual windows kvm	quickgui
+emoji	😀 Emojis	Apex Emoji Engine via Terminal	Abre o seletor universal de emojis com busca inteligente em português do Brasil.	emoji carinha simbolo rofi seletor pt-br	/home/lan/dotfiles/home/dot_config/hypr/scripts/RofiEmoji.sh
 EOF
 }
 
