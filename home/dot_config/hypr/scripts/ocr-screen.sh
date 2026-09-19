@@ -69,8 +69,8 @@ TESS_DATA_DIR="/usr/share/tessdata"
 LANGS="por+eng"
 if [[ -d "$HOME/.local/share/tessdata_best" ]] && [[ -f "$HOME/.local/share/tessdata_best/por.traineddata" ]]; then
     TESS_DATA_DIR="$HOME/.local/share/tessdata_best"
-    # Adiciona suporte nativo universal (Português, Inglês, Espanhol, Francês, Italiano, Alemão)
-    LANGS="por+eng+spa+fra+ita+deu"
+    # Prioriza Português e Inglês com suporte a Espanhol (evita que o Alemão troque ã por ä)
+    LANGS="por+eng+spa"
 fi
 
 extract_text() {
@@ -147,23 +147,29 @@ def sanitize_code_and_text(t):
     t = re.sub(r"–", "-", t)
     t = t.replace("×", "*").replace("÷", "/")
     
+    # 2. Correção de colisão de trema germânica em português (ex: Correçäo -> Correção, näo -> não, säo -> são)
+    t = re.sub(r"çä", "çã", t)
+    t = re.sub(r"çÄ", "çÃ", t)
+    t = re.sub(r"\b([NnSsTtMmvV])ä([oO]s?)\b", r"\1ã\2", t)
+    t = re.sub(r"\b([A-Za-z]+)çä([oO]s?)\b", r"\1çã\2", t)
+    
     lines = t.splitlines()
     non_empty = [l for l in lines if l.strip()]
     if not non_empty:
         return ""
     
-    # 2. Remoção inteligente de números de linha restrita a IDE Gutters (ex: 1 | def test():, 01: import os, 1   const x)
+    # 3. Remoção inteligente de números de linha restrita a IDE Gutters (ex: 1 | def test():, 01: import os, 1   const x)
     # Preserva listas numeradas normais de texto como 1. Item ou 1) Item
     line_num_pattern = re.compile(r"^\s*\d{1,4}\s*([\|:]|\s{2,})\s*")
     matches = sum(1 for l in non_empty if line_num_pattern.match(l))
     if len(non_empty) > 1 and (matches / len(non_empty)) >= 0.5:
         lines = [line_num_pattern.sub("", l) for l in lines]
     
-    # 3. Remoção de prompts de terminal ($ sudo ..., >>> print(...), # apt ...)
+    # 4. Remoção de prompts de terminal ($ sudo ..., >>> print(...), # apt ...)
     prompt_pattern = re.compile(r"^\s*(\$|\#|>{2,3}|\.{2,3})\s+(?=[a-zA-Z0-9_\-\.\/])")
     lines = [prompt_pattern.sub("", l) for l in lines]
     
-    # 4. Auto-Heal por linha (URLs, variáveis, flags, caminhos, métodos)
+    # 5. Auto-Heal por linha (URLs, variáveis, flags, caminhos, métodos)
     def auto_heal_line(l):
         l = re.sub(r"(https?|ftp|file|magnet|git|ssh)\s*:\s*//\s*", r"\1://", l, flags=re.IGNORECASE)
         l = re.sub(r"www\s*\.\s*", "www.", l, flags=re.IGNORECASE)
@@ -182,7 +188,7 @@ def sanitize_code_and_text(t):
         l = re.sub(r"(\s|^)~\s*/\s*", r"\1~/", l)
         l = re.sub(r"(?<=/)\s+([a-zA-Z0-9_.-]+)", r"\1", l)
         l = re.sub(r"([a-zA-Z0-9_.-]+)\s+/(?=[a-zA-Z0-9_.-])", r"\1/", l)
-        # Fix bullet points & markers
+        # Fix bullet points & markers (+, =, ~, *)
         l = re.sub(r"^([\s]*)[+\=~*]\s+(?=[A-Z0-9a-záéíóúÁÉÍÓÚâêîôûÂÊÎÔÛãõÃÕ])", r"\1• ", l)
         
         # Correção inteligente de acentos circunflexos em português (evita confusão de agudo por modelos spa/fra)
@@ -190,6 +196,7 @@ def sanitize_code_and_text(t):
         l = re.sub(r"\bIngl[eé]s\b", "Inglês", l, flags=re.IGNORECASE)
         l = re.sub(r"\bFranc[eé]s\b", "Francês", l, flags=re.IGNORECASE)
         l = re.sub(r"\blingua\b", "língua", l, flags=re.IGNORECASE)
+        l = re.sub(r"\btessdata\s+best\b", "tessdata_best", l, flags=re.IGNORECASE)
         
         # Remove espaços desnecessários dentro de parênteses/colchetes
         l = re.sub(r"\(\s+", "(", l)
@@ -206,15 +213,15 @@ def sanitize_code_and_text(t):
         l = re.sub(r"([a-zA-Z0-9_.-]+)\s*\.\s*(py|js|ts|jsx|tsx|lua|rs|go|java|c|cpp|h|hpp|sh|bash|zsh|json|yaml|yml|toml|md|txt|html|css|scss|conf|ini|sql|png|jpg|jpeg|webp|gif|svg|mp4|mkv|mp3|flac|zip|tar|gz|7z)\b", r"\1.\2", l, flags=re.IGNORECASE)
         return l
     
-    # 5. Higienização de bordas mantendo indentação interna
+    # 6. Preservação de indentação e limpeza sutil de ruído nas bordas
     healed_lines = []
     for line in lines:
         if line.strip():
             indent_len = len(line) - len(line.lstrip(" "))
             indent = line[:indent_len]
             content = line.strip()
-            content = re.sub(r"^[\|\~\`\^]+", "", content)
-            content = re.sub(r"[\|\~\`\^]+$", "", content)
+            content = re.sub(r"^[\|`^]+", "", content)
+            content = re.sub(r"[\|`^]+$", "", content)
             content = auto_heal_line(content)
             healed_lines.append(indent + content)
         else:
