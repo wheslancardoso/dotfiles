@@ -2,38 +2,71 @@
   "input": {
     "blocklist": [],
     "plugins_order": [
-      "rnnoise#0",
+      "deepfilternet#0",
       "equalizer#0",
       "compressor#0",
       "limiter#0"
     ],
-    "rnnoise#0": {
+    "deepfilternet#0": {
+      "attenuation-limit": 100.0,
       "bypass": false,
-      "enable-vad": false,
-      "model-name": "",
-      "release": 20.0,
-      "vad-thres": 50.0,
-      "wet": 0.0
+      "max-df-processing-threshold": 20.0,
+      "max-erb-processing-threshold": 30.0,
+      "min-processing-buffer": 0,
+      "min-processing-threshold": -10.0,
+      "post-filter-beta": 0.02
     },
     "equalizer#0": {
       "bypass": false,
-      "input-gain": 0.0,
+      "input-gain": 3.0,
       "output-gain": 0.0,
       "left": {
-        "band0": { "frequency": 80.0, "gain": 0.0, "mode": "HighPass", "q": 0.707, "slope": "x1", "solo": false, "type": "Butterworth" },
-        "band1": { "frequency": 250.0, "gain": -2.0, "mode": "Bell", "q": 1.4, "slope": "x1", "solo": false, "type": "Bell" },
-        "band2": { "frequency": 3500.0, "gain": 2.5, "mode": "Bell", "q": 1.0, "slope": "x1", "solo": false, "type": "Bell" },
-        "band3": { "frequency": 10000.0, "gain": 1.5, "mode": "HighShelf", "q": 0.707, "slope": "x1", "solo": false, "type": "HighShelf" }
+        "band0": {
+          "frequency": 80.0,
+          "gain": 0.0,
+          "mode": "HighPass",
+          "q": 0.707,
+          "slope": "x1",
+          "solo": false,
+          "type": "Butterworth"
+        },
+        "band1": {
+          "frequency": 250.0,
+          "gain": -1.5,
+          "mode": "Bell",
+          "q": 1.4,
+          "slope": "x1",
+          "solo": false,
+          "type": "Bell"
+        },
+        "band2": {
+          "frequency": 3500.0,
+          "gain": 3.0,
+          "mode": "Bell",
+          "q": 1.0,
+          "slope": "x1",
+          "solo": false,
+          "type": "Bell"
+        },
+        "band3": {
+          "frequency": 10000.0,
+          "gain": 2.0,
+          "mode": "HighShelf",
+          "q": 0.707,
+          "slope": "x1",
+          "solo": false,
+          "type": "HighShelf"
+        }
       }
     },
     "compressor#0": {
-      "attack": 20.0,
+      "attack": 15.0,
       "bypass": false,
       "knee": -6.0,
-      "makeup": 2.0,
-      "ratio": 3.0,
+      "makeup": 6.0,
+      "ratio": 4.0,
       "release": 100.0,
-      "threshold": -18.0
+      "threshold": -24.0
     },
     "limiter#0": {
       "alr": false,
