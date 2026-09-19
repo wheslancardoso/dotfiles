@@ -311,21 +311,43 @@ class FileOrganizerEngine:
             return self.dest_root / dest_rel
 
         # 6. Fallback Inteligente: se for documento solto não identificado, envia para 00_Inbox_Triagem
+        # Se o arquivo já estiver no Inbox ou no destino, NÃO tenta mover para ele mesmo
         if ext in [".pdf", ".docx", ".xlsx", ".txt", ".md", ".json", ".zip", ".rar", ".7z", ".csv", ".pptx"]:
-            return self.dest_root / "00_Inbox_Triagem"
+            inbox_dir = self.dest_root / "00_Inbox_Triagem"
+            try:
+                if file_path.parent.resolve() == inbox_dir.resolve():
+                    return None
+            except OSError:
+                pass
+            return inbox_dir
 
         return None
 
     def move_item(self, source_path: Path, target_dir: Path, dry_run: bool = False) -> Tuple[bool, str]:
         """
         Move um arquivo ou pasta de forma segura, criando subpastas se necessário e evitando colisões.
+        Protege contra auto-movimentação e auto-renomeação se o arquivo já estiver na pasta correta.
         """
         if not source_path.exists():
             return False, "Origem não encontrada"
 
+        # Se o arquivo já estiver dentro do diretório de destino, não toca nele
+        try:
+            if source_path.parent.resolve() == target_dir.resolve():
+                return True, "Item já está no diretório correto"
+        except OSError:
+            pass
+
         # Garante diretório de destino
         target_dir.mkdir(parents=True, exist_ok=True)
-        final_dest = get_unique_destination_path(target_dir / source_path.name)
+        final_dest = get_unique_destination_path(target_dir / source_path.name, source_path=source_path)
+
+        # Se o destino único for o próprio arquivo de origem, já está no lugar certo
+        try:
+            if final_dest.resolve() == source_path.resolve():
+                return True, "Item já está no destino"
+        except OSError:
+            pass
 
         if dry_run:
             log_dry_run(f"{source_path.name} ➔ {final_dest}")

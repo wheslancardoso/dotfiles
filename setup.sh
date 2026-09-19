@@ -232,7 +232,6 @@ setup_services() {
         "pipewire-pulse.service"
         "wireplumber.service"
         "xdg-user-dirs.service"
-        "organizador-watcher.service"
         "rclone-gdrive.service"
         "capslock-indicator.service"
         "udiskie.service"

@@ -112,6 +112,11 @@ class DirectoryWatcher:
         # 2. Classifica e move para a taxonomia mestre
         dest_dir = self.engine.classify_file(file_path)
         if dest_dir:
+            try:
+                if file_path.parent.resolve() == dest_dir.resolve():
+                    return False
+            except OSError:
+                pass
             orig_name = file_path.name
             success, final_path = self.engine.move_item(file_path, dest_dir)
             if success:

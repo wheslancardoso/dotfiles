@@ -1,6 +1,6 @@
 {
-  "versao_config": "3.0.0",
-  "descricao": "Organizador Master V3 — Taxonomia Inteligente com Regex, Prioridades, Metadados e Deep Sniffing",
+  "versao_config": "3.1.0",
+  "descricao": "Organizador Master V3.1 — Taxonomia de Alta Precisão (TCE-GO, Alforria, Sabedoria, Dev e TI)",
   "diretorios_mestre": {
     "00_inbox": "00_Inbox_Triagem",
     "01_pessoal": "01_Pessoal_e_Vida",
@@ -52,10 +52,12 @@
   "regras_avancadas": [
     {
       "id": "concurso_tce_cadernos_regex",
-      "descricao": "Arquivos com prefixo oficial de cadernos do edital TCE-GO (ex: 04.01, 09.01, 10.03)",
+      "descricao": "Arquivos e pastas com prefixo oficial de cadernos do edital TCE-GO (ex: 04.01, 10.03, Aulas_Caderno_10)",
       "prioridade": 100,
       "padroes_regex": [
-        "^(0[1-9]|1[0-2])\\.\\d{2}"
+        "^(0[1-9]|1[0-2])\\.\\d{2}",
+        "^aulas?_caderno_\\d+",
+        "^caderno_\\d+"
       ],
       "destino": "02_Estudos_e_Concursos/02.1_TCE-GO"
     },
@@ -64,178 +66,382 @@
       "descricao": "Termos técnicos e matérias específicas do edital TCE-GO (FCC)",
       "prioridade": 95,
       "termos": [
-        "tce", "tce-go", "tribunal de contas", "posse tce", "protocolo de guerra", "fcc", "caderno de questoes",
-        "zachman", "togaf", "dama", "dmbok", "eda", "olap", "lakehouse", "scrum", "kanban", "invest", "itil",
-        "cobit", "cmmi", "mps.br", "bpmn", "bdat", "peti", "pdti", "mccabe", "solid", "clean code",
-        "in 94", "lei 14.133", "iso 31000", "coso erm", "tres linhas", "iGovTI", "balanced scorecard"
+        "tce-go",
+        "tribunal de contas",
+        "posse tce",
+        "protocolo de guerra",
+        "banca fcc",
+        "caderno de questoes",
+        "auditor ti",
+        "zachman",
+        "togaf",
+        "dama dmbok",
+        "dmbok",
+        "data lakehouse",
+        "invest scrum",
+        "itil v4",
+        "cobit 2019",
+        "cmmi v2",
+        "mps.br",
+        "bpmn 2.0",
+        "peti tce",
+        "pdti tce",
+        "mccabe",
+        "lei 14.133",
+        "iso 31000",
+        "coso erm",
+        "modelo das tres linhas",
+        "igovti",
+        "balanced scorecard tce"
       ],
       "sniff_conteudo": true,
       "destino": "02_Estudos_e_Concursos/02.1_TCE-GO"
     },
     {
-      "id": "concurso_senador_canedo",
-      "descricao": "Materiais do concurso Câmara Senador Canedo",
+      "id": "sabedoria_modelos_mentais",
+      "descricao": "Textos, anotações e reflexões de sabedoria prática (Cadar, Homem Rocha, Bárbara, 48 Leis)",
+      "prioridade": 92,
+      "termos": [
+        "cadar",
+        "homem rocha",
+        "desfigurado",
+        "barbara timeless",
+        "timeless wisdom",
+        "48 leis do poder",
+        "homem exemplar",
+        "pilares milenares",
+        "jornada de wheslan"
+      ],
+      "destino": "01_Pessoal_e_Vida/01.4_Clareza_e_Desenvolvimento_Pessoal"
+    },
+    {
+      "id": "financas_alforria_e_contas",
+      "descricao": "Planilhas de Alforria, APEX Finance, extratos bancários, faturas e IRPF",
       "prioridade": 90,
-      "termos": ["senador canedo", "camara senador", "edital 001", "cronograma senador"],
-      "destino": "02_Estudos_e_Concursos/02.2_Senador_Canedo"
+      "termos": [
+        "alforria",
+        "planilha_alforria",
+        "apex finance",
+        "apex_finance",
+        "nuconta",
+        "nubank",
+        "banco inter",
+        "extrato bancario",
+        "fatura cartao",
+        "fatura_cartao",
+        "comprovante pix",
+        "comprovante_pix",
+        "imposto de renda",
+        "declaracao irpf",
+        "declaracao_irpf"
+      ],
+      "destino": "01_Pessoal_e_Vida/01.5_Financas_e_Contas"
     },
     {
       "id": "identidade_e_documentos_civis",
-      "descricao": "Documentos pessoais, identidade, títulos e comprovantes de residência",
-      "prioridade": 90,
+      "descricao": "Documentos pessoais civis oficiais (CNH, RG, CPF, Título, Residência)",
+      "prioridade": 88,
       "termos": [
-        "cnh", "carteira de habilitacao", "carteira nacional", "comprovante_endereco", "comprovante de endereco",
-        "comprovante_residencia", "comprovante de residencia", "titulo_eleitor", "titulo de eleitor", "cartao_sus",
-        "cartao do sus", "reservista", "rg", "cpf", "certidao de nascimento", "certidao de casamento", "identidade"
+        "cnh",
+        "carteira de habilitacao",
+        "carteira nacional",
+        "comprovante de endereco",
+        "comprovante de residencia",
+        "comprovante_endereco",
+        "comprovante_residencia",
+        "titulo de eleitor",
+        "titulo_eleitor",
+        "cartao do sus",
+        "cartao_sus",
+        "certificado de reservista",
+        "certidao de nascimento",
+        "certidao de casamento",
+        "registro geral"
       ],
       "destino": "01_Pessoal_e_Vida/01.1_Identidade_e_Documentos/01_Acesso_Rapido_Dia_a_Dia"
     },
     {
-      "id": "financas_e_contas",
-      "descricao": "Extratos bancários, faturas de cartão, boletos e declarações fiscais",
+      "id": "concurso_senador_canedo",
+      "descricao": "Materiais específicos do concurso Câmara Senador Canedo",
+      "prioridade": 86,
+      "termos": [
+        "senador canedo",
+        "camara senador canedo",
+        "edital senador canedo"
+      ],
+      "destino": "02_Estudos_e_Concursos/02.2_Senador_Canedo"
+    },
+    {
+      "id": "frequencia_e_viagens_agr",
+      "descricao": "Relatórios de frequência, diárias de viagem e termos oficiais da AGR Goiás",
       "prioridade": 85,
       "termos": [
-        "sap02", "sap3", "planilha_de_custos", "extrato", "fatura", "imposto de renda", "nuconta",
-        "nubank", "inter", "comprovante_pix", "pagamento realizado", "boleto", "recibo"
+        "relatorio de frequencia",
+        "folha de ponto",
+        "diaria de viagem",
+        "diarias de viagem",
+        "sfr agr",
+        "viagem agr",
+        "termo de fiscalizacao",
+        "fiscalizacao agr",
+        "escala agr"
       ],
-      "destino": "01_Pessoal_e_Vida/01.5_Financas_e_Contas"
+      "destino": "01_Pessoal_e_Vida/01.3_Frequencia_e_Viagens"
     },
     {
       "id": "carreira_e_curriculos",
       "descricao": "Currículos, cartas de apresentação e portfólios profissionais",
       "prioridade": 85,
-      "termos": ["curriculo", "currículo", "curriculum", "resume", "cv.pdf"],
+      "termos": [
+        "curriculo",
+        "curriculo vitae",
+        "curriculum vitae",
+        "resume",
+        "cv_wheslan",
+        "curriculo_wheslan"
+      ],
       "destino": "01_Pessoal_e_Vida/01.2_Carreira_e_Curriculos"
     },
     {
-      "id": "frequencia_e_viagens_agr",
-      "descricao": "Relatórios de frequência, diárias de viagem e ponto da AGR",
+      "id": "midia_youtube_e_transcricoes",
+      "descricao": "Transcrições, comentários e análises de vídeos do YouTube",
       "prioridade": 80,
-      "termos": ["frequencia", "frequência", "sfr", "viagem", "viagens", "diaria", "ponto", "agr"],
-      "destino": "01_Pessoal_e_Vida/01.3_Frequencia_e_Viagens"
-    },
-    {
-      "id": "clareza_desenvolvimento_e_metas",
-      "descricao": "Manuais de clareza, listas de metas, hábitos e reflexões",
-      "prioridade": 75,
       "termos": [
-        "checklist", "checklists", "minhas metas", "metas 2026", "metas 2025", "watchlist",
-        "lista de compras", "rotina diaria", "rastreador de habitos", "planejamento semanal",
-        "personalidade", "clareza", "homem exemplar", "habitos", "hábitos", "pilares milenares", "jornada de wheslan"
+        "youtube_comments",
+        "comentarios youtube",
+        "comentarios_youtube",
+        "transcricao youtube",
+        "transcricao_youtube",
+        "youtube transcript"
       ],
-      "destino": "01_Pessoal_e_Vida/01.4_Clareza_e_Desenvolvimento_Pessoal/Listas_e_Metas"
+      "destino": "05_Design_Midia_e_Criacao/05.2_Audios_e_Midias"
     },
     {
       "id": "wfix_automacoes_n8n",
       "descricao": "Fluxos e webhooks n8n do ecossistema WFIX",
       "prioridade": 75,
-      "termos": ["n8n", "fluxo", "webhook", "blocos_intencao", "blocos_fluxo"],
+      "termos": [
+        "n8n workflow",
+        "n8n fluxo",
+        "fluxo n8n",
+        "webhook n8n",
+        "blocos_intencao",
+        "blocos_fluxo"
+      ],
       "destino": "03_Profissional_WFIX/03.2_Automacoes_e_n8n"
     },
     {
       "id": "wfix_prompts_e_sops",
-      "descricao": "Prompts de IA, playbooks de atendimento e engenharia de prompts",
+      "descricao": "Prompts de IA e playbooks comerciais da WFIX",
       "prioridade": 75,
-      "termos": ["atendimento", "playbook", "guia atendimento", "engenheiro de seguranca", "ia para atendimento", "chatgpt-", "conversas_ia", "prompts"],
+      "termos": [
+        "playbook atendimento",
+        "guia atendimento wfix",
+        "ia para atendimento",
+        "engenharia de prompts wfix"
+      ],
       "destino": "03_Profissional_WFIX/03.1_IA_Prompts_e_SOPs"
     },
     {
       "id": "wfix_aulas_e_treinamentos",
       "descricao": "Gravações e materiais de treinamento comercial/atendimento",
       "prioridade": 75,
-      "termos": ["atendimento_aula", "negociacao_aula", "treinamento", "gravacao_aula"],
+      "termos": [
+        "atendimento_aula",
+        "negociacao_aula",
+        "treinamento wfix",
+        "gravacao_aula"
+      ],
       "destino": "03_Profissional_WFIX/03.5_Aulas_e_Treinamentos"
     },
     {
       "id": "wfix_conversas_clientes",
-      "descricao": "Transcrições e registros de clientes do WhatsApp",
+      "descricao": "Transcrições e registros de clientes do WhatsApp WFIX",
       "prioridade": 70,
-      "termos": ["conversa do whatsapp", "transcricao"],
+      "termos": [
+        "cliente wfix",
+        "atendimento wfix",
+        "suporte wfix"
+      ],
       "destino": "03_Profissional_WFIX/03.4_Clientes_e_Whats"
     },
     {
       "id": "dev_projetos_web_e_apps",
       "descricao": "Projetos de software, interfaces web e protótipos",
       "prioridade": 75,
-      "termos": ["finance ia", "mixtape252", "satori", "noise overlay", "wtech", "dynamic-water", "spring-boot", "angular", "fastapi", "govshield", "titanstream", "dataforge"],
+      "termos": [
+        "finance ia",
+        "mixtape252",
+        "satori",
+        "noise overlay",
+        "wtech",
+        "dynamic-water",
+        "spring-boot",
+        "angular",
+        "fastapi",
+        "govshield",
+        "titanstream",
+        "dataforge"
+      ],
       "destino": "04_Desenvolvimento_e_Codigo/04.1_Projetos_Web_e_Apps"
     },
     {
       "id": "cursos_e_certificacoes_senai_e_redes",
       "descricao": "Material de cursos, redes, SENAI e certificações",
       "prioridade": 70,
-      "termos": ["linux essentials", "senai", "cabeamento", "servicos de rede", "redes topologia", "dns", "camada de rede", "camada de aplicacao", "alura", "udemy", "dio"],
+      "termos": [
+        "linux essentials",
+        "senai",
+        "cabeamento estruturado",
+        "servicos de rede",
+        "redes topologia",
+        "alura",
+        "udemy",
+        "dio"
+      ],
       "destino": "02_Estudos_e_Concursos/02.3_Cursos_e_Certificacoes"
     },
     {
-      "id": "ads_tcc_senai",
-      "descricao": "Artigos e monografias da graduação em ADS",
-      "prioridade": 70,
-      "termos": ["tcc", "artigo cientifico", "artigo científico", "minhas financas"],
-      "destino": "02_Estudos_e_Concursos/02.3_Cursos_e_Certificacoes/ADS_TCC"
-    },
-    {
       "id": "design_artes_e_wallpapers",
-      "descricao": "Cartazes, posts de redes sociais, apresentações e artes gráficas",
+      "descricao": "Cartazes, apresentações e artes gráficas",
       "prioridade": 65,
-      "termos": ["cartaz", "palestra", "aniversario", "aniversário", "cavalete", "elevador", "ouvidoria", "convite", "post instagram", "agosto lilas", "agosto lilás", "wallpaper"],
+      "termos": [
+        "cartaz",
+        "palestra",
+        "cavalete",
+        "elevador",
+        "ouvidoria",
+        "convite",
+        "post instagram",
+        "agosto lilas",
+        "wallpaper"
+      ],
       "destino": "05_Design_Midia_e_Criacao/05.1_Artes_e_Wallpapers"
     },
     {
       "id": "design_audios_e_samples",
       "descricao": "Samples musicais, trilhas, slowed e efeitos sonoros",
       "prioridade": 60,
-      "termos": ["carl johnson", "king von", "whatsapp ptt", "whatsapp audio", "slowed", "sample", "soundtrack"],
+      "termos": [
+        "whatsapp ptt",
+        "whatsapp audio",
+        "slowed",
+        "sample",
+        "soundtrack"
+      ],
       "destino": "05_Design_Midia_e_Criacao/05.2_Audios_e_Midias"
     },
     {
       "id": "filmes_e_series_completos",
       "descricao": "Filmes e séries com tags de release e resolução",
       "prioridade": 50,
-      "extensoes": [".mp4", ".mkv", ".avi", ".mov", ".srt"],
-      "termos": ["1080p", "720p", "2160p", "4k", "bluray", "webrip", "web-dl", "x264", "x265", "hevc", "dublado", "legendado", "filme", "temporada", "season 1", "season 2", "s01e", "s02e", "yify"],
+      "extensoes": [
+        ".mp4",
+        ".mkv",
+        ".avi",
+        ".mov",
+        ".srt"
+      ],
+      "termos": [
+        "1080p",
+        "720p",
+        "2160p",
+        "4k",
+        "bluray",
+        "webrip",
+        "web-dl",
+        "x264",
+        "x265",
+        "hevc",
+        "dublado",
+        "legendado",
+        "s01e",
+        "s02e",
+        "yify"
+      ],
       "destino": "05_Design_Midia_e_Criacao/05.4_Filmes_e_Series"
     },
     {
       "id": "ferramentas_ti_e_diagnostico",
       "descricao": "Utilitários de manutenção e hardware",
       "prioridade": 65,
-      "termos": ["driver booster", "aida 64", "aida64", "crystaldisk", "hdtune", "hwmonitor", "hwinfo", "occt", "throttlestop", "treesize", "dism++", "dismplusplus", "revo uninstaller", "ccleaner", "winaero", "startallback"],
+      "termos": [
+        "driver booster",
+        "aida64",
+        "crystaldisk",
+        "hdtune",
+        "hwmonitor",
+        "hwinfo",
+        "occt",
+        "throttlestop",
+        "treesize",
+        "dism++",
+        "revo uninstaller",
+        "ccleaner",
+        "winaero"
+      ],
       "destino": "06_Backups_ISOs_e_Sistemas/06.1_Instaladores_e_APKs/Ferramentas_TI"
     },
     {
       "id": "ferramentas_impressoras_resets",
       "descricao": "Resetters e utilitários de impressoras Epson/HP",
       "prioridade": 65,
-      "termos": ["epson", "resetter", "almofadas", "l3210", "l3250", "l4260", "l4261", "l4267", "spooler"],
+      "termos": [
+        "resetter epson",
+        "almofadas epson",
+        "epson l3210",
+        "epson l3250",
+        "epson l4260"
+      ],
       "destino": "06_Backups_ISOs_e_Sistemas/06.1_Instaladores_e_APKs/Ferramentas_TI/05_Impressoras_e_Resets"
     },
     {
       "id": "emuladores_saves_ludusavi",
       "descricao": "Backups de saves de jogos",
       "prioridade": 60,
-      "termos": ["ludusavi", "savegame", "gamesave", "savestate", "lupisave"],
+      "termos": [
+        "ludusavi",
+        "savegame",
+        "gamesave",
+        "savestate"
+      ],
       "destino": "06_Backups_ISOs_e_Sistemas/06.4_Games_e_Emuladores/01_Saves_e_Backups/Ludusavi_Backups"
     },
     {
       "id": "emuladores_pcsx2",
       "descricao": "BIOS e memcards do PlayStation 2",
       "prioridade": 60,
-      "termos": ["pcsx2", "mcd001", "mcd002", "scph-", "scph10000", "scph39001", "scph77000"],
+      "termos": [
+        "pcsx2",
+        "mcd001",
+        "mcd002",
+        "scph-"
+      ],
       "destino": "06_Backups_ISOs_e_Sistemas/06.4_Games_e_Emuladores/03_Emuladores/PCSX2_PlayStation_2"
     },
     {
       "id": "emuladores_nintendo_switch",
       "descricao": "Keys, mods e firmwares de Switch",
       "prioridade": 60,
-      "termos": ["yuzu", "ryujinx", "sudachi", "prod.keys", "title.keys", "switch mod", "switch save"],
+      "termos": [
+        "yuzu",
+        "ryujinx",
+        "sudachi",
+        "prod.keys",
+        "title.keys"
+      ],
       "destino": "06_Backups_ISOs_e_Sistemas/06.4_Games_e_Emuladores/03_Emuladores/Nintendo_Switch"
     },
     {
       "id": "backups_e_snapshots_sistema",
       "descricao": "Imagens de disco Macrium e códigos de backup",
       "prioridade": 55,
-      "termos": [".mrimgx", "backup-codes", "snapshot", "backup"],
+      "termos": [
+        ".mrimgx",
+        "backup-codes",
+        "snapshot",
+        "backup"
+      ],
       "destino": "06_Backups_ISOs_e_Sistemas/06.2_Backups_e_Snapshots"
     }
   ],

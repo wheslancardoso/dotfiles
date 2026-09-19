@@ -3,9 +3,11 @@ Utilitários de log, sanitização e formatação visual para o Organizador Mast
 """
 
 import os
+import re
 import sys
 import unicodedata
 from pathlib import Path
+from typing import Optional
 
 
 class Colors:
@@ -51,22 +53,43 @@ def normalize_text(text: str) -> str:
     return "".join(c for c in normalized if not unicodedata.combining(c)).lower().strip()
 
 
-def get_unique_destination_path(target_path: Path) -> Path:
+def get_unique_destination_path(target_path: Path, source_path: Optional[Path] = None) -> Path:
     """
     Garante que não haverá sobrescrita acidental se já existir arquivo com mesmo nome,
     adicionando sufixo incremental _1, _2, etc.
+    Limpa sufixos repetidos em cadeia (_1_1_1 -> _1, _2) e protege contra auto-colisão.
     """
     if not target_path.exists():
         return target_path
+
+    # Se a origem e o destino forem o mesmo arquivo físico, retorna sem alterar
+    if source_path and source_path.exists():
+        try:
+            if target_path.resolve() == source_path.resolve() or target_path.samefile(source_path):
+                return target_path
+        except OSError:
+            pass
 
     parent = target_path.parent
     stem = target_path.stem
     suffix = target_path.suffix
 
+    # Limpa sufixos repetidos como _1_1_1_1
+    base_stem = re.sub(r"(_\d+)+$", "", stem)
+    if not base_stem:
+        base_stem = stem
+
     counter = 1
-    new_path = parent / f"{stem}_{counter}{suffix}"
+    new_path = parent / f"{base_stem}_{counter}{suffix}"
     while new_path.exists():
+        if source_path and source_path.exists():
+            try:
+                if new_path.resolve() == source_path.resolve() or new_path.samefile(source_path):
+                    return new_path
+            except OSError:
+                pass
         counter += 1
-        new_path = parent / f"{stem}_{counter}{suffix}"
+        new_path = parent / f"{base_stem}_{counter}{suffix}"
 
     return new_path
+
