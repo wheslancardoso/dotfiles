@@ -5,7 +5,8 @@
 # Otimiza o hardware da C270 diretamente no driver V4L2 do kernel Linux:
 # - Desliga o dynamic framerate (Garante 30 FPS reais sem efeito fantasma/slow-motion)
 # - Trava a frequência em 60Hz (Anti-flicker contra luz LED)
-# - Ajusta nitidez, saturação e contraste para imagem vívida e sem borrão
+# - Reduz ganho e brilho excessivo (Cores mais ricas, pretos mais profundos, sem estourar luz)
+# - Aumenta contraste e saturação para tom de pele vivo e caloroso
 # ==============================================================================
 
 set -euo pipefail
@@ -28,15 +29,16 @@ if [ ! -e "$DEV" ]; then
     exit 0
 fi
 
-# Aplica parâmetros ideais de estúdio
+# Aplica parâmetros ideais: Menos estouro de luz, mais contraste e cores mais vivas
 v4l2-ctl -d "$DEV" \
     --set-ctrl=exposure_dynamic_framerate=0 \
     --set-ctrl=power_line_frequency=2 \
-    --set-ctrl=sharpness=32 \
-    --set-ctrl=contrast=36 \
-    --set-ctrl=saturation=36 \
-    --set-ctrl=brightness=128 \
-    --set-ctrl=backlight_compensation=1 \
+    --set-ctrl=brightness=110 \
+    --set-ctrl=contrast=45 \
+    --set-ctrl=saturation=48 \
+    --set-ctrl=gain=0 \
+    --set-ctrl=sharpness=35 \
+    --set-ctrl=backlight_compensation=0 \
     >/dev/null 2>&1 || true
 
-echo "Webcam Logitech C270 calibrada com sucesso em $DEV (30 FPS travados e cores corrigidas)!"
+echo "Webcam Logitech C270 calibrada com sucesso em $DEV (Tom vivo, sem superexposição e 30 FPS)!"
