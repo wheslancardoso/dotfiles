@@ -1,40 +1,48 @@
 /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
-/* Main Config - emoji */
+/* Apex Emoji Engine - Catppuccin Mocha Glassmorphic Style */
 
 @import "~/.config/rofi/config.rasi" 
 
 /* ---- Mainbox ---- */
 mainbox {
-  children:
-    [ "inputbar", "message", "listview"];
+  padding: 20px;
+  spacing: 12px;
+  children: [ "inputbar", "message", "listview" ];
 }
 
-/* ---- Window ---- */
+/* ---- Window (Spacious & Frosted Glass) ---- */
 window {
-  width: inherit;
-  height: inherit;
+  width: 58%;
+  border: 2px;
+  border-radius: 18px;
+  border-color: rgba(255, 255, 255, 0.12);
+  background-color: rgba(24, 24, 37, 0.88);
 }
 
 /* ---- Entry ---- */
 entry {
-  width: 37%;
-  placeholder: " 󰞅  Pesquisar Emojis...";
+  expand: true;
+  placeholder: "Buscar emoji em PT-BR (ex: joinha, fogo, cafe, coracao, choro) ou Alt+1..9...";
+  placeholder-color: #6c7086;
   horizontal-align: 0.0;
 }
 
-/* ---- Listview ---- */
+/* ---- Listview (1 Coluna Ampla - Zero Cortes de Texto) ---- */
 listview {
-  columns: 2;
-  lines: 7;
+  columns: 1;
+  lines: 9;
   fixed-height: true;
   scrollbar: true;
-  spacing: 6px;
+  spacing: 4px;
+  padding: 4px 0px;
   cycle: true;
 }
 
 /* ---- Elements ---- */
 element {
   orientation: horizontal;
+  padding: 8px 14px;
+  border-radius: 10px;
 }
 
 element-icon {
@@ -44,6 +52,6 @@ element-icon {
 element-text {
   horizontal-align: 0.0;
   vertical-align: 0.5;
-  padding: 0px;
   margin: 0px;
+  padding: 0px;
 }

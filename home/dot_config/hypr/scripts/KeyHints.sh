@@ -65,7 +65,7 @@ GDK_BACKEND=$BACKEND yad \
 " T" "TecConcursos Dropdown (Treinador de Questões 60s)" "tecconcursos-toggle.sh" \
 " C" "Calculadora Gnome (Moedas, Unidades ao vivo)" "gnome-calculator" \
 " ALT C" "Calculadora Científica e Financeira" "qalculate-gtk" \
-" ;" "Seletor de Emojis e Símbolos Rápidos" "RofiEmoji.sh" \
+" ; ou  ." "Seletor de Emojis Apex (PT-BR, WhatsApp, Gírias)" "RofiEmoji.sh" \
 " SPACE" "Trocar Layout do Teclado (US-Intl / PT-BR / US-Dev)" "KeyboardLayout.sh" \
 " ALT B" "Menu Bluetooth Rápido (Conectar Fones)" "rofi-bluetooth.sh" \
 " ALT W" "Menu Wi-Fi Rápido (Redes sem abrir abas)" "rofi-wifi.sh" \
