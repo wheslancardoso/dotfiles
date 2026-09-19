@@ -86,11 +86,28 @@ SLANG_MAP = {
     "💡": ["ideia", "lampada", "pensamento", "eureka", "genial", "luz"],
     "🧠": ["cerebro", "inteligente", "mente", "pensar", "qi"],
     "❤️‍🔥": ["coracao em chamas", "paixao ardente", "fogo", "amor quente"],
-    "💔": ["coracao partido", "tristeza", "termino", "bad", "choro", "sofrimento"],
-    "😭": ["choro", "chorando", "desespero", "triste", "lagrimas", "pranto"],
-    "😢": ["choro triste", "lagrima", "tristeza", "depressao"],
-    "😡": ["raiva", "bravo", "furioso", "pistola", "vermelho de raiva"],
-    "🤬": ["palavrao", "xingando", "puto", "revoltado", "censurado"],
+    "💔": ["coracao partido", "triste", "tristeza", "termino", "bad", "choro", "sofrimento", "dor"],
+    "😭": ["choro", "chorando", "desespero", "triste", "tristeza", "lagrimas", "pranto", "bad"],
+    "😢": ["choro", "choro triste", "lagrima", "triste", "tristeza", "depressao", "bad"],
+    "😔": ["triste", "tristeza", "deprimido", "abatido", "bad", "desanimado", "chateado", "pra baixo"],
+    "😞": ["triste", "tristeza", "decepcionado", "desapontado", "chateado", "bad"],
+    "🙁": ["triste", "tristeza", "tristinho", "chateado", "pra baixo"],
+    "☹️": ["triste", "tristeza", "descontente", "chateado"],
+    "😥": ["triste", "tristeza", "aliviado", "chateado"],
+    "🥺": ["triste", "implorando", "pidom", "do", "dó", "carecia", "por favor"],
+    "😟": ["triste", "preocupado", "chateado", "apreensivo"],
+    "😿": ["triste", "tristeza", "gato chorando", "choro"],
+    "😀": ["feliz", "alegre", "sorriso", "contente", "riso", "positivo"],
+    "😃": ["feliz", "alegre", "sorridente", "contente", "animado"],
+    "😄": ["feliz", "alegre", "sorrindo", "contente", "radiante"],
+    "😁": ["feliz", "sorrisao", "alegre", "dentes"],
+    "😆": ["feliz", "kkk", "gargalhada", "engracado", "rir"],
+    "😱": ["medo", "susto", "assustado", "panico", "chocado"],
+    "😨": ["medo", "assustado", "receio", "apavorado"],
+    "😰": ["ansiedade", "ansioso", "medo", "nervoso", "suor frio"],
+    "😡": ["raiva", "bravo", "furioso", "pistola", "vermelho de raiva", "odio", "puto"],
+    "😠": ["bravo", "irritado", "nervoso", "raiva"],
+    "🤬": ["palavrao", "xingando", "puto", "revoltado", "censurado", "odio"],
     "🤮": ["vomito", "vomitando", "enjoo", "nojo", "eca"],
     "🤢": ["nausea", "nojo", "verde", "enjoado"],
     "😎": ["oculos escuros", "estiloso", "cool", "foda", "chefao", "tranquilo"],
@@ -107,6 +124,11 @@ SLANG_MAP = {
     "📱": ["celular", "iphone", "smartphone", "zap", "telefone"],
     "💻": ["notebook", "computador", "laptop", "pc", "trabalho", "programar"],
     "⌨️": ["teclado", "digitar", "codigo", "dev"],
+}
+
+NOISE_CLEANUP = {
+    "😮‍💨": ["triste"], # É alívio / exalação / cansaço
+    "🪊": ["triste"],   # É instrumento musical trombone
 }
 
 def strip_accents(text: str) -> str:
@@ -189,6 +211,13 @@ def main():
                         for s in slang:
                             all_kw.add(s.lower())
 
+                        # Limpa ruídos indesejados
+                        noise_words = NOISE_CLEANUP.get(char, [])
+                        if not noise_words and char_novs in NOISE_CLEANUP:
+                            noise_words = NOISE_CLEANUP[char_novs]
+                        for nw in noise_words:
+                            all_kw.discard(nw.lower())
+
                         # Gera termos sem acento para busca perfeita
                         search_terms = set()
                         for term in all_kw:
@@ -196,6 +225,10 @@ def main():
                             stripped = strip_accents(term)
                             if stripped != term:
                                 search_terms.add(stripped)
+
+                        for nw in noise_words:
+                            search_terms.discard(nw.lower())
+                            search_terms.discard(strip_accents(nw))
 
                         # Verifica se é variação de tom de pele
                         has_skin_tone = any(st in char for st in skin_tones)

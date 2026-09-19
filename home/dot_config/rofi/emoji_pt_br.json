@@ -15,9 +15,13 @@
       "riso",
       "rosto",
       "rosto risonho",
-      "sorridente"
+      "sorridente",
+      "alegre",
+      "sorriso",
+      "contente",
+      "positivo"
     ],
-    "search_text": "engracado engraçado feliz grinning face lol rindo risada riso rosto rosto risonho sorridente",
+    "search_text": "alegre contente engracado engraçado feliz grinning face lol positivo rindo risada riso rosto rosto risonho sorridente sorriso",
     "has_skin_tone": false
   },
   {
@@ -39,9 +43,12 @@
       "rosto sorrindo com boca aberta",
       "sorridente",
       "sorrindo",
-      "sorriso"
+      "sorriso",
+      "alegre",
+      "contente",
+      "animado"
     ],
-    "search_text": "aberto boca feliz grinning face with big eyes olhos arregalados risada risonho rosto rosto risonho com olhos bem abertos rosto sorrindo com boca aberta sorridente sorrindo sorriso",
+    "search_text": "aberto alegre animado boca contente feliz grinning face with big eyes olhos arregalados risada risonho rosto rosto risonho com olhos bem abertos rosto sorrindo com boca aberta sorridente sorrindo sorriso",
     "has_skin_tone": false
   },
   {
@@ -63,9 +70,13 @@
       "risonho",
       "rosto risonho com olhos sorridentes",
       "sorridente",
-      "sorriso"
+      "sorriso",
+      "alegre",
+      "sorrindo",
+      "contente",
+      "radiante"
     ],
-    "search_text": "aberta boca engracado engraçado feliz grinning face with smiling eyes haha lol risada riso risonho rosto risonho com olhos sorridentes sorridente sorriso",
+    "search_text": "aberta alegre boca contente engracado engraçado feliz grinning face with smiling eyes haha lol radiante risada riso risonho rosto risonho com olhos sorridentes sorridente sorrindo sorriso",
     "has_skin_tone": false
   },
   {
@@ -86,9 +97,12 @@
       "sorridente",
       "sorrindo",
       "sorriso",
-      "sorriso aberto"
+      "sorriso aberto",
+      "sorrisao",
+      "alegre",
+      "dentes"
     ],
-    "search_text": "beaming face with smiling eyes feliz olho olhos sorrindo rindo rosto rosto contente com olhos sorridentes rosto rindo com olhos sorridentes sorridente sorrindo sorriso sorriso aberto",
+    "search_text": "alegre beaming face with smiling eyes dentes feliz olho olhos sorrindo rindo rosto rosto contente com olhos sorridentes rosto rindo com olhos sorridentes sorridente sorrindo sorrisao sorriso sorriso aberto",
     "has_skin_tone": false
   },
   {
@@ -108,9 +122,11 @@
       "rosto",
       "rosto risonho com olhos semicerrados",
       "sorriso com olhos fechados",
-      "sorriso estilo xd"
+      "sorriso estilo xd",
+      "feliz",
+      "engracado"
     ],
-    "search_text": "gargalhada gargalhando grinning squinting face hahaha kkk olhos fechados rir rosto rosto risonho com olhos semicerrados sorriso com olhos fechados sorriso estilo xd",
+    "search_text": "engracado feliz gargalhada gargalhando grinning squinting face hahaha kkk olhos fechados rir rosto rosto risonho com olhos semicerrados sorriso com olhos fechados sorriso estilo xd",
     "has_skin_tone": false
   },
   {
@@ -161,9 +177,10 @@
       "rolando",
       "rolando de rir",
       "rolando no chão de rir",
-      "rolling on the floor laughing"
+      "rolling on the floor laughing",
+      "engracado"
     ],
-    "search_text": "capotando chao choro chão engracada engraçada feliz gargalhada gargalhar haha kkk lagrimas lágrimas morrendo de rir muito bom rindo rir risada rofl rolando rolando de rir rolando no chao de rir rolando no chão de rir rolling on the floor laughing",
+    "search_text": "capotando chao choro chão engracada engracado engraçada feliz gargalhada gargalhar haha kkk lagrimas lágrimas morrendo de rir muito bom rindo rir risada rofl rolando rolando de rir rolando no chao de rir rolando no chão de rir rolling on the floor laughing",
     "has_skin_tone": false
   },
   {
@@ -191,9 +208,10 @@
       "risada",
       "rosto",
       "rosto chorando de rir",
-      "rosto com lágrimas de alegria"
+      "rosto com lágrimas de alegria",
+      "haha"
     ],
-    "search_text": "alegria chorando de rir engracada engracado engraçada engraçado face with tears of joy gargalhada hahaha kkk kkkk lagrimas lagrimas de alegria lol lágrimas lágrimas de alegria morrendo de rir rir risada rosto rosto chorando de rir rosto com lagrimas de alegria rosto com lágrimas de alegria",
+    "search_text": "alegria chorando de rir engracada engracado engraçada engraçado face with tears of joy gargalhada haha hahaha kkk kkkk lagrimas lagrimas de alegria lol lágrimas lágrimas de alegria morrendo de rir rir risada rosto rosto chorando de rir rosto com lagrimas de alegria rosto com lágrimas de alegria",
     "has_skin_tone": false
   },
   {
@@ -1059,10 +1077,9 @@
       "face exhaling",
       "fumaça",
       "rosto exalando",
-      "suspiro",
-      "triste"
+      "suspiro"
     ],
-    "search_text": "alivio alívio assobio assopro cansaco cansada cansaço choque exalar exausta face exhaling fumaca fumaça rosto exalando suspiro triste",
+    "search_text": "alivio alívio assobio assopro cansaco cansada cansaço choque exalar exausta face exhaling fumaca fumaça rosto exalando suspiro",
     "has_skin_tone": false
   },
   {
@@ -1174,9 +1191,12 @@
       "pensive face",
       "pra baixo",
       "rosto",
-      "rosto deprimido"
+      "rosto deprimido",
+      "triste",
+      "tristeza",
+      "bad"
     ],
-    "search_text": "abatido chateado deprimido desanimado pensativo pensive face pra baixo rosto rosto deprimido",
+    "search_text": "abatido bad chateado deprimido desanimado pensativo pensive face pra baixo rosto rosto deprimido triste tristeza",
     "has_skin_tone": false
   },
   {
@@ -1717,9 +1737,12 @@
       "preocupado",
       "rosto",
       "rosto preocupado",
-      "worried face"
+      "worried face",
+      "triste",
+      "chateado",
+      "apreensivo"
     ],
-    "search_text": "decepcionado preocupado rosto rosto preocupado worried face",
+    "search_text": "apreensivo chateado decepcionado preocupado rosto rosto preocupado triste worried face",
     "has_skin_tone": false
   },
   {
@@ -1734,9 +1757,11 @@
       "slightly frowning face",
       "triste",
       "tristeza",
-      "tristinho"
+      "tristinho",
+      "chateado",
+      "pra baixo"
     ],
-    "search_text": "rosto rosto meio triste slightly frowning face triste tristeza tristinho",
+    "search_text": "chateado pra baixo rosto rosto meio triste slightly frowning face triste tristeza tristinho",
     "has_skin_tone": false
   },
   {
@@ -1754,9 +1779,12 @@
       "rosto",
       "rosto de desaprovação",
       "rosto descontente",
-      "triste"
+      "triste",
+      "tristeza",
+      "chateado",
+      "para baixo"
     ],
-    "search_text": "decepcao decepcionado decepção descontente frowning face insatisfeito rosto rosto de desaprovacao rosto de desaprovação rosto descontente triste",
+    "search_text": "chateado decepcao decepcionado decepção descontente frowning face insatisfeito para baixo rosto rosto de desaprovacao rosto de desaprovação rosto descontente triste tristeza",
     "has_skin_tone": false
   },
   {
@@ -1874,9 +1902,11 @@
       "rosto",
       "rosto implorando",
       "suplica",
-      "triste"
+      "triste",
+      "dó",
+      "carecia"
     ],
-    "search_text": "coitado do fofo implorando olhar de cachorrinho olhar de gatinho olhos grandes perdao perdão pidom pleading face por favor por que nao por que não pq nao pq não rosto rosto implorando suplica triste",
+    "search_text": "carecia coitado do dó fofo implorando olhar de cachorrinho olhar de gatinho olhos grandes perdao perdão pidom pleading face por favor por que nao por que não pq nao pq não rosto rosto implorando suplica triste",
     "has_skin_tone": false
   },
   {
@@ -1954,9 +1984,11 @@
       "medo",
       "preocupado",
       "rosto",
-      "rosto amedrontado"
+      "rosto amedrontado",
+      "receio",
+      "apavorado"
     ],
-    "search_text": "ansiedade assustado com medo fearful face medo preocupado rosto rosto amedrontado",
+    "search_text": "ansiedade apavorado assustado com medo fearful face medo preocupado receio rosto rosto amedrontado",
     "has_skin_tone": false
   },
   {
@@ -1973,9 +2005,12 @@
       "rosto ansioso com gota de suor",
       "rosto azul com suor frio",
       "suando frio",
-      "suor frio"
+      "suor frio",
+      "ansiedade",
+      "ansioso",
+      "medo"
     ],
-    "search_text": "anxious face with sweat boca aberta nervoso rosto rosto ansioso com gota de suor rosto azul com suor frio suando frio suor frio",
+    "search_text": "ansiedade ansioso anxious face with sweat boca aberta medo nervoso rosto rosto ansioso com gota de suor rosto azul com suor frio suando frio suor frio",
     "has_skin_tone": false
   },
   {
@@ -1992,9 +2027,11 @@
       "rosto triste, mas aliviado",
       "sad but relieved face",
       "triste",
-      "ufa"
+      "ufa",
+      "tristeza",
+      "chateado"
     ],
-    "search_text": "aliviado decepcionado nao não rosto rosto triste, mas aliviado sad but relieved face triste ufa",
+    "search_text": "aliviado chateado decepcionado nao não rosto rosto triste, mas aliviado sad but relieved face triste tristeza ufa",
     "has_skin_tone": false
   },
   {
@@ -2014,9 +2051,12 @@
       "rosto",
       "rosto chorando",
       "triste",
-      "tristeza"
+      "tristeza",
+      "bad",
+      "depre",
+      "depressivo"
     ],
-    "search_text": "chorando choro choro triste crying face depressao lagrima lagrimas lágrimas rosto rosto chorando triste tristeza",
+    "search_text": "bad chorando choro choro triste crying face depre depressao depressivo lagrima lagrimas lágrimas rosto rosto chorando triste tristeza",
     "has_skin_tone": false
   },
   {
@@ -2038,9 +2078,12 @@
       "pranto",
       "rosto",
       "rosto chorando aos berros",
-      "triste"
+      "triste",
+      "tristeza",
+      "chorando muito",
+      "bad"
     ],
-    "search_text": "chorando chorando alto chorar choro desespero infeliz lagrimas loudly crying face lágrimas pranto rosto rosto chorando aos berros triste",
+    "search_text": "bad chorando chorando alto chorando muito chorar choro desespero infeliz lagrimas loudly crying face lágrimas pranto rosto rosto chorando aos berros triste tristeza",
     "has_skin_tone": false
   },
   {
@@ -2059,9 +2102,11 @@
       "rosto",
       "rosto gritando de medo",
       "susto",
-      "temeroso"
+      "temeroso",
+      "panico",
+      "chocado"
     ],
-    "search_text": "assustada assustado face screaming in fear gritando grito medo rosto rosto gritando de medo susto temeroso",
+    "search_text": "assustada assustado chocado face screaming in fear gritando grito medo panico rosto rosto gritando de medo susto temeroso",
     "has_skin_tone": false
   },
   {
@@ -2116,9 +2161,13 @@
       "rosto",
       "rosto decepcionado",
       "rosto desapontado",
-      "triste"
+      "triste",
+      "tristeza",
+      "decepcionado",
+      "chateado",
+      "bad"
     ],
-    "search_text": "decepcao decepção desapontado desapontamento disappointed face rosto rosto decepcionado rosto desapontado triste",
+    "search_text": "bad chateado decepcao decepcionado decepção desapontado desapontamento disappointed face rosto rosto decepcionado rosto desapontado triste tristeza",
     "has_skin_tone": false
   },
   {
@@ -2240,9 +2289,11 @@
       "rosto furioso",
       "vermelho",
       "vermelho de raiva",
-      "zangado"
+      "zangado",
+      "odio",
+      "puto"
     ],
-    "search_text": "bravo enraged face furioso irado pistola raiva rosto rosto furioso vermelho vermelho de raiva zangado",
+    "search_text": "bravo enraged face furioso irado odio pistola puto raiva rosto rosto furioso vermelho vermelho de raiva zangado",
     "has_skin_tone": false
   },
   {
@@ -2256,9 +2307,13 @@
       "irado",
       "rosto",
       "rosto zangado",
-      "zangado"
+      "zangado",
+      "bravo",
+      "irritado",
+      "nervoso",
+      "raiva"
     ],
-    "search_text": "angry face irado rosto rosto zangado zangado",
+    "search_text": "angry face bravo irado irritado nervoso raiva rosto rosto zangado zangado",
     "has_skin_tone": false
   },
   {
@@ -2280,9 +2335,11 @@
       "rosto com símbolos na boca",
       "rude",
       "símbolos",
-      "xingando"
+      "xingando",
+      "xingar",
+      "odio"
     ],
-    "search_text": "boca censurado face with symbols on mouth fala mal palavrao puto revoltado rosto rosto com simbolos na boca rosto com símbolos na boca rude simbolos símbolos xingando",
+    "search_text": "boca censurado face with symbols on mouth fala mal odio palavrao puto revoltado rosto rosto com simbolos na boca rosto com símbolos na boca rude simbolos símbolos xingando xingar",
     "has_skin_tone": false
   },
   {
@@ -2701,9 +2758,11 @@
       "lágrima",
       "rosto",
       "rosto de gato chorando",
-      "triste"
+      "triste",
+      "tristeza",
+      "gato chorando"
     ],
-    "search_text": "chorando choro crying cat gato lagrima lágrima rosto rosto de gato chorando triste",
+    "search_text": "chorando choro crying cat gato gato chorando lagrima lágrima rosto rosto de gato chorando triste tristeza",
     "has_skin_tone": false
   },
   {
@@ -3010,9 +3069,10 @@
       "sofrimento",
       "termino",
       "triste",
-      "tristeza"
+      "tristeza",
+      "dor"
     ],
-    "search_text": "amorosa bad broken heart choro coracao coracao partido coração coração partido decepcao decepção desilusao desilusão emocao emoção partido quebrado rompimento s2 sofrendo sofrimento termino triste tristeza",
+    "search_text": "amorosa bad broken heart choro coracao coracao partido coração coração partido decepcao decepção desilusao desilusão dor emocao emoção partido quebrado rompimento s2 sofrendo sofrimento termino triste tristeza",
     "has_skin_tone": false
   },
   {
@@ -22527,10 +22587,9 @@
       "jazz",
       "música",
       "sopro",
-      "triste",
       "trombone"
     ],
-    "search_text": "instrumento jazz musica música sopro triste trombone",
+    "search_text": "instrumento jazz musica música sopro trombone",
     "has_skin_tone": false
   },
   {
