@@ -23,7 +23,7 @@
 | `Alt + V` | Gerenciador e histórico avançado com abas e imagens (**CopyQ**) |
 | `Super + F` | Janela em tela cheia (**Fullscreen Toggle**) |
 | `Super + Space` | Alternar layout de teclado (US-Intl, PT-BR ABNT2, US-Dev) |
-| `Super + ;` | Seletor de Emojis e Símbolos especiais (**RofiEmoji**) |
+| `Super + .` ou `Super + ;` | **Apex Emoji Engine** (Busca PT-BR, Abas WhatsApp `Alt+1..0`, Vim `Ctrl+j/k`, Auto-type `wtype`) |
 | `Super + Shift + H` ou `Super + /` | **Cheat Sheet Mestre** com todos os atalhos do sistema (KeyHints HUD) |
 | `Super + Shift + /` ou `Super + ?` | **Buscador Universal de Atalhos** (cheat-keys via Rofi com busca em tempo real) |
 | `Super + Shift + Space` | Alternar janela flutuante (**Floating Toggle**) |

@@ -73,6 +73,7 @@ hypr_package=(
   wl-clipboard
   wlogout
   wlsunset
+  wtype
   xdg-user-dirs
   xdg-utils 
   yad

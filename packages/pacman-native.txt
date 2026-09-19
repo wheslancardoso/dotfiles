@@ -361,6 +361,7 @@ wireplumber
 wl-clipboard
 wlogout
 wlsunset
+wtype
 wpa_supplicant
 xarchiver
 xdg-desktop-portal-gtk
