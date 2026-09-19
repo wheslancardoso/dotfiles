@@ -58,12 +58,14 @@ notify() {
 
 stop_all() {
     pkill -x wlsunset >/dev/null 2>&1 || true
-    if pgrep -x hyprsunset >/dev/null 2>&1; then
-        pkill -x hyprsunset >/dev/null 2>&1 || true
-        if command -v hyprsunset >/dev/null 2>&1; then
-            nohup hyprsunset -i >/dev/null 2>&1 &
-            sleep 0.2 && pkill -x hyprsunset >/dev/null 2>&1 || true
-        fi
+    pkill -9 -x hyprsunset >/dev/null 2>&1 || true
+    sleep 0.1
+    if command -v hyprsunset >/dev/null 2>&1; then
+        hyprsunset -i </dev/null >/dev/null 2>&1 &
+        local pid=$!
+        sleep 0.2
+        kill -9 $pid 2>/dev/null || true
+        wait $pid 2>/dev/null || true
     fi
 }
 
@@ -76,15 +78,17 @@ start_auto() {
     local lat="${loc%%,*}"
     local lon="${loc##*,}"
 
-    if command -v wlsunset >/dev/null 2>&1; then
-        wlsunset -l "$lat" -L "$lon" -t "$target_temp" -T "$DAY_TEMP" -d "$FADE_DURATION" </dev/null >/dev/null 2>&1 & disown || true
-    elif command -v hyprsunset >/dev/null 2>&1; then
-        # Fallback se wlsunset não estiver instalado
+    # No Hyprland com NVIDIA/Wayland moderno, hyprsunset usa CTM nativo da GPU
+    if command -v hyprsunset >/dev/null 2>&1; then
         local hour
         hour=$(date +%H)
         if [ "$hour" -ge 18 ] || [ "$hour" -lt 6 ]; then
-            hyprsunset -t "$target_temp" </dev/null >/dev/null 2>&1 & disown || true
+            hyprsunset -t "$target_temp" </dev/null >/dev/null 2>&1 & disown
+        else
+            hyprsunset -t "$DAY_TEMP" </dev/null >/dev/null 2>&1 & disown
         fi
+    elif command -v wlsunset >/dev/null 2>&1; then
+        wlsunset -l "$lat" -L "$lon" -t "$target_temp" -T "$DAY_TEMP" -d "$FADE_DURATION" </dev/null >/dev/null 2>&1 & disown || true
     fi
 
     echo "auto:$target_temp" > "$STATE_FILE"
@@ -94,11 +98,10 @@ start_forced() {
     local target_temp="$1"
     stop_all
 
-    if command -v wlsunset >/dev/null 2>&1; then
-        # Força temperatura constante noite e dia
+    if command -v hyprsunset >/dev/null 2>&1; then
+        hyprsunset -t "$target_temp" </dev/null >/dev/null 2>&1 & disown
+    elif command -v wlsunset >/dev/null 2>&1; then
         wlsunset -t "$target_temp" -T "$((target_temp + 1))" -S 23:59 -s 00:00 </dev/null >/dev/null 2>&1 & disown || true
-    elif command -v hyprsunset >/dev/null 2>&1; then
-        hyprsunset -t "$target_temp" </dev/null >/dev/null 2>&1 & disown || true
     fi
 
     echo "forced:$target_temp" > "$STATE_FILE"
