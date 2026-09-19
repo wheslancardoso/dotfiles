@@ -27,31 +27,31 @@ if not DATABASE_FILE.exists():
 HISTORY_FILE = Path.home() / ".local/share/rofi-emoji-history.json"
 
 CATEGORIES = [
-    ("TODOS", "🌐", "Todos os Emojis", "Exibe a biblioteca completa com busca global"),
-    ("RECENTES", "⭐", "Mais Usados / Recentes", "Seus emojis favoritos e frequentes"),
-    ("😀 Rostos & Emoções", "😀", "Rostos & Emoções", "Sorrisos, sentimentos, palhaço, zumbis"),
-    ("👋 Pessoas & Gestos", "👋", "Pessoas & Gestos", "Mãos, joinha, palmas, profissões, famílias"),
-    ("🐶 Animais & Natureza", "🐶", "Animais & Natureza", "Bichos, plantas, flores, clima"),
-    ("🍕 Comidas & Bebidas", "🍕", "Comidas & Bebidas", "Pizza, café, cerveja, frutas, lanches"),
-    ("✈️ Viagens & Lugares", "✈️", "Viagens & Lugares", "Fogo, carros, aviões, prédios, mapa"),
-    ("⚽ Atividades & Esportes", "⚽", "Atividades & Esportes", "Futebol, jogos, academia, medalhas"),
-    ("💡 Objetos", "💡", "Objetos", "Celular, computador, ferramentas, dinheiro"),
-    ("🔣 Símbolos", "🔣", "Símbolos", "Corações, setas, signos, números"),
-    ("🇧🇷 Bandeiras", "🇧🇷", "Bandeiras", "Bandeira do Brasil e do mundo inteiro"),
+    ("TODOS", "🌐", "Todos os Emojis (Alt+1)", "Exibe a biblioteca completa com busca global"),
+    ("RECENTES", "⭐", "Mais Usados / Recentes (Alt+2)", "Seus emojis favoritos e frequentes"),
+    ("😀 Rostos & Emoções", "😀", "Rostos & Emoções (Alt+3)", "Sorrisos, sentimentos, palhaço, zumbis"),
+    ("👋 Pessoas & Gestos", "👋", "Pessoas & Gestos (Alt+4)", "Mãos, joinha, palmas, profissões, famílias"),
+    ("🐶 Animais & Natureza", "🐶", "Animais & Natureza (Alt+5)", "Bichos, plantas, flores, clima"),
+    ("🍕 Comidas & Bebidas", "🍕", "Comidas & Bebidas (Alt+6)", "Pizza, café, cerveja, frutas, lanches"),
+    ("✈️ Viagens & Lugares", "✈️", "Viagens & Lugares (Alt+7)", "Fogo, carros, aviões, prédios, mapa"),
+    ("⚽ Atividades & Esportes", "⚽", "Atividades & Esportes (Alt+8)", "Futebol, jogos, academia, medalhas"),
+    ("💡 Objetos", "💡", "Objetos (Alt+9)", "Celular, computador, ferramentas, dinheiro"),
+    ("🔣 Símbolos", "🔣", "Símbolos (Alt+0)", "Corações, setas, signos, números"),
+    ("🇧🇷 Bandeiras", "🇧🇷", "Bandeiras (Alt+-)", "Bandeira do Brasil e do mundo inteiro"),
 ]
 
 HOTKEY_TO_CAT = {
-    10: "RECENTES",
-    11: "😀 Rostos & Emoções",
-    12: "👋 Pessoas & Gestos",
-    13: "🐶 Animais & Natureza",
-    14: "🍕 Comidas & Bebidas",
-    15: "✈️ Viagens & Lugares",
-    16: "⚽ Atividades & Esportes",
-    17: "💡 Objetos",
-    18: "🔣 Símbolos",
-    19: "🇧🇷 Bandeiras",
-    20: "TODOS",
+    10: "TODOS",
+    11: "RECENTES",
+    12: "😀 Rostos & Emoções",
+    13: "👋 Pessoas & Gestos",
+    14: "🐶 Animais & Natureza",
+    15: "🍕 Comidas & Bebidas",
+    16: "✈️ Viagens & Lugares",
+    17: "⚽ Atividades & Esportes",
+    18: "💡 Objetos",
+    19: "🔣 Símbolos",
+    20: "🇧🇷 Bandeiras",
 }
 
 def load_database():
@@ -150,7 +150,9 @@ def main():
         else:
             # Modo Global: Primeiro adiciona o menu de categorias estilo WhatsApp
             for cat_id, icon, label, desc in CATEGORIES:
-                lines.append(f"{icon}   <b>[{label.upper()}]</b>   <span color=\"#a6adc8\">· {html.escape(desc)}</span>")
+                esc_label = html.escape(label.upper())
+                esc_desc = html.escape(desc)
+                lines.append(f"{icon}   <b>[{esc_label}]</b>   <span color=\"#a6adc8\">· {esc_desc}</span>")
 
             lines.append("──────────────────────────────────────────────────────────────────────────")
 
@@ -169,9 +171,9 @@ def main():
                 lines.append(format_emoji_line(item))
 
         # Configura mensagem explicativa
-        msg = "💡 <b>Dica:</b> Digite em português (ex: <i>joinha, fogo, cafe, coracao</i>)  |  <b>Alt+1..9</b> p/ Categorias"
+        msg = "💡 <b>Dica:</b> Digite em português (ex: <i>joinha, fogo, cafe, coracao</i>)  |  <b>Alt+1..0</b> Categorias"
         if current_category != "TODOS":
-            msg = f"📂 Categoria ativa: <b>{current_category}</b>  |  Selecione [VOLTAR] para busca geral"
+            msg = f"📂 Categoria ativa: <b>{html.escape(current_category)}</b>  |  Selecione [VOLTAR] para busca geral"
 
         prompt = "󰞅 Emojis" if current_category == "TODOS" else f"󰞅 {current_category.split()[0]}"
 
@@ -186,17 +188,7 @@ def main():
             "-tokenize",
             "-p", prompt,
             "-mesg", msg,
-            "-kb-custom-1", "Alt+1",
-            "-kb-custom-2", "Alt+2",
-            "-kb-custom-3", "Alt+3",
-            "-kb-custom-4", "Alt+4",
-            "-kb-custom-5", "Alt+5",
-            "-kb-custom-6", "Alt+6",
-            "-kb-custom-7", "Alt+7",
-            "-kb-custom-8", "Alt+8",
-            "-kb-custom-9", "Alt+9",
-            "-kb-custom-10", "Alt+0",
-            "-kb-custom-11", "Alt+grave",
+            "-kb-custom-11", "Alt+minus",
         ]
 
         if ROFI_CONFIG.exists():
