@@ -5,7 +5,7 @@
 
 set -euo pipefail
 
-ROFI_THEME="$HOME/.config/rofi/config-search.rasi"
+ROFI_THEME="$HOME/.config/rofi/config.rasi"
 [ -f "$ROFI_THEME" ] || ROFI_THEME=""
 
 notify() {
