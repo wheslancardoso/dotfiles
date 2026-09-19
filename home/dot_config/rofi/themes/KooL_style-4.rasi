@@ -116,11 +116,11 @@ prompt {
 }
 textbox-prompt-colon {
     enabled:                     true;
-    padding:                     4px 0px;
+    padding:                     4px 6px 4px 2px;
     expand:                      false;
-    str:                         " 🔎";
-    background-color:            inherit;
-    text-color:                  #a6adc8;
+    str:                         "";
+    background-color:            transparent;
+    text-color:                  @selected;
 }
 entry {
     enabled:                     true;
@@ -128,7 +128,7 @@ entry {
     background-color:            transparent;
     text-color:                  #cdd6f4;
     cursor:                      text;
-    placeholder:                 "Search...";
+    placeholder:                 "Pesquisar...";
     placeholder-color:           #6c7086;
 }
 num-filtered-rows {

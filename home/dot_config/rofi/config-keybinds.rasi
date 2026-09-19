@@ -27,7 +27,7 @@ mainbox {
 /* ---- Entry ---- */
 entry {
   expand: true;
-  placeholder: " 🔍 Buscar atalho, comando ou ferramenta (ex: yazi, som, screenshot, devtype)...";
+  placeholder: "Buscar atalho, comando ou ferramenta (ex: yazi, som, devtype)...";
   placeholder-color: #6c7086;
 }
 
