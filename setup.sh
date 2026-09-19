@@ -485,6 +485,8 @@ apply_dotfiles() {
     [ -f "$DOTFILES_DIR/scripts/anki-auth-status.sh" ] && ln -sf "$DOTFILES_DIR/scripts/anki-auth-status.sh" "$HOME/.local/bin/anki-auth-status"
     [ -f "$DOTFILES_DIR/scripts/cheat-keys.sh" ] && ln -sf "$DOTFILES_DIR/scripts/cheat-keys.sh" "$HOME/.local/bin/keys" && ln -sf "$DOTFILES_DIR/scripts/cheat-keys.sh" "$HOME/.local/bin/ajuda"
     [ -f "$DOTFILES_DIR/scripts/switch-profile.sh" ] && ln -sf "$DOTFILES_DIR/scripts/switch-profile.sh" "$HOME/.local/bin/perfil" && ln -sf "$DOTFILES_DIR/scripts/switch-profile.sh" "$HOME/.local/bin/switch-profile"
+    [ -f "$DOTFILES_DIR/home/dot_config/hypr/scripts/RofiEmoji.sh" ] && ln -sf "$DOTFILES_DIR/home/dot_config/hypr/scripts/RofiEmoji.sh" "$HOME/.local/bin/emoji"
+    [ -f "$DOTFILES_DIR/home/dot_config/hypr/scripts/rofi_emoji_engine.py" ] && chmod +x "$DOTFILES_DIR/home/dot_config/hypr/scripts/rofi_emoji_engine.py"
     if [ -f "/opt/abdownloadmanager/bin/ABDownloadManager" ]; then
         sudo ln -sf /opt/abdownloadmanager/bin/ABDownloadManager /usr/local/bin/abdownloadmanager 2>/dev/null || true
         sudo ln -sf /opt/abdownloadmanager/bin/ABDownloadManager /usr/local/bin/ab-download-manager 2>/dev/null || true
@@ -1132,8 +1134,8 @@ echo -e "  - ${BLUE}quickgui${NC}             : Interface gráfica para rodar Wi
 echo -e "  - ${BLUE}fix-suspend${NC}          : Diagnóstico e proteção para o PC nunca acordar sozinho"
 echo -e "  - ${BLUE}pacup / safe-update${NC}  : Atualização blindada (atualiza chaveiro PGP antes e previne quebras)"
 echo -e "  - ${BLUE}fix-pacman / fix-keys${NC}: Destrava db.lck e repara chaves PGP corrompidas"
-echo -e "  - ${BLUE}fix-mirrors / fix-audio${NC}: Ranquear mirrors mais rápidos do Brasil e reiniciar áudio"
 echo -e "  - ${BLUE}fin / financas${NC}        : APEX Finance TUI (Cockpit Soberano de Gestão, Time Machine & SSOT)"
+echo -e "  - ${BLUE}emoji / SUPER + .${NC}     : Apex Emoji Engine (Busca PT-BR, abas Alt+1..0 e Auto-Paste)"
 echo -e "  - ${BLUE}perf / balanced / quiet${NC}: Alterna perfil de energia da CPU/GPU e ruído de ventoinhas"
 echo -e "Por favor, reinicie a sessão ou o computador para aplicar todas as mudanças."
 
