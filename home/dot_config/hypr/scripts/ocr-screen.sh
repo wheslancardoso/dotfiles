@@ -182,6 +182,22 @@ def sanitize_code_and_text(t):
         l = re.sub(r"(\s|^)~\s*/\s*", r"\1~/", l)
         l = re.sub(r"(?<=/)\s+([a-zA-Z0-9_.-]+)", r"\1", l)
         l = re.sub(r"([a-zA-Z0-9_.-]+)\s+/(?=[a-zA-Z0-9_.-])", r"\1/", l)
+        # Fix bullet points & markers
+        l = re.sub(r"^([\s]*)[+\=~*]\s+(?=[A-Z0-9a-záéíóúÁÉÍÓÚâêîôûÂÊÎÔÛãõÃÕ])", r"\1• ", l)
+        
+        # Correção inteligente de acentos circunflexos em português (evita confusão de agudo por modelos spa/fra)
+        l = re.sub(r"\bPortugu[eé]s\b", "Português", l, flags=re.IGNORECASE)
+        l = re.sub(r"\bIngl[eé]s\b", "Inglês", l, flags=re.IGNORECASE)
+        l = re.sub(r"\bFranc[eé]s\b", "Francês", l, flags=re.IGNORECASE)
+        l = re.sub(r"\blingua\b", "língua", l, flags=re.IGNORECASE)
+        
+        # Remove espaços desnecessários dentro de parênteses/colchetes
+        l = re.sub(r"\(\s+", "(", l)
+        l = re.sub(r"\s+\)", ")", l)
+        l = re.sub(r"\[\s+", "[", l)
+        l = re.sub(r"\s+\]", "]", l)
+        
+        # Operadores de ponteiro e sintaxe
         l = re.sub(r"-\s+>", "->", l)
         l = re.sub(r"=\s+>", "=>", l)
         l = re.sub(r":\s+:", "::", l)
