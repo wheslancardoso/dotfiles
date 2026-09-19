@@ -100,8 +100,11 @@ spicetify config \
     overwrite_assets 1 \
     inject_theme_js 1 || true
 
+# Garante a extensão de atalhos Vim na pasta de extensões
+cp -f /opt/spicetify-cli/Extensions/keyboardShortcut.js "$EXTENSIONS_DIR/" 2>/dev/null || true
+
 # Ativa extensões: Adblock + Navegação Vim/Vimium nativa
-spicetify config extensions adblock.js keyboardShortcut.js || true
+spicetify config extensions "adblock.js|keyboardShortcut.js" || true
 
 # 8. Aplica tudo
 echo -e "${GREEN}[*] Compilando e aplicando customizações...${NC}"
