@@ -79,16 +79,43 @@ extract_text() {
     tesseract --tessdata-dir "$TESS_DATA_DIR" "$img" stdout -l "$LANGS" --psm "$psm" -c preserve_interword_spaces=1 2>/dev/null || true
 }
 
-# Passo 1: Extração direta Pixel-Perfect (sem alterar geometria)
-# Modos: PSM 6 (bloco uniforme) -> PSM 3 (páginas/colunas) -> PSM 11 (texto esparso/UI) -> PSM 7 (linha única)
 text=""
-for psm_mode in 6 3 11 7; do
-    res=$(extract_text "$tmp_raw" "$psm_mode")
-    if [[ -n "${res//[[:space:]]/}" ]]; then
-        text="$res"
-        break
+
+# Análise de dimensões da região capturada para pré-processamento adaptativo
+raw_dims=$(magick identify -format "%w %h" "$tmp_raw" 2>/dev/null || echo "800 600")
+raw_w=$(echo "$raw_dims" | awk '{print $1}')
+raw_h=$(echo "$raw_dims" | awk '{print $2}')
+
+# Se a seleção for pequena (fontes minúsculas de certificados, rodapés ou termos finos),
+# aplicamos upscale adaptativo inteligente imediato com interpolação Lanczos/Triangle
+if [[ -n "$raw_h" && "$raw_h" -lt 160 ]] && command -v magick &>/dev/null; then
+    tmp_scaled=$(mktemp --suffix=.png /tmp/ocr_scale_XXXXXX)
+    scale_pct="220%"
+    if [[ "$raw_h" -lt 60 ]]; then
+        scale_pct="250%"
     fi
-done
+    magick "$tmp_raw" -colorspace Gray -filter Lanczos -resize "$scale_pct" -sharpen 0x0.6 "$tmp_scaled" 2>/dev/null || cp "$tmp_raw" "$tmp_scaled"
+    for psm_mode in 6 11 3 7; do
+        res=$(extract_text "$tmp_scaled" "$psm_mode")
+        if [[ -n "${res//[[:space:]]/}" ]]; then
+            text="$res"
+            break
+        fi
+    done
+    rm -f "$tmp_scaled"
+fi
+
+# Passo 1: Extração direta Pixel-Perfect (sem alterar geometria) se ainda não obteve texto
+# Modos: PSM 6 (bloco uniforme) -> PSM 3 (páginas/colunas) -> PSM 11 (texto esparso/UI) -> PSM 7 (linha única)
+if [[ -z "${text//[[:space:]]/}" ]]; then
+    for psm_mode in 6 3 11 7; do
+        res=$(extract_text "$tmp_raw" "$psm_mode")
+        if [[ -n "${res//[[:space:]]/}" ]]; then
+            text="$res"
+            break
+        fi
+    done
+fi
 
 # Passo 2: Fallback com Padding Adaptativo de Borda (caso a seleção manual tenha cortado rente à primeira/última letra)
 if [[ -z "${text//[[:space:]]/}" ]] && command -v magick &>/dev/null; then
@@ -105,11 +132,11 @@ if [[ -z "${text//[[:space:]]/}" ]] && command -v magick &>/dev/null; then
     rm -f "$tmp_padded"
 fi
 
-# Passo 3: Fallback com Upscale Limpo 2x (ideal para fontes minúsculas de terminal e subpixels)
+# Passo 3: Fallback com Upscale Limpo 2x
 if [[ -z "${text//[[:space:]]/}" ]] && command -v magick &>/dev/null; then
     tmp_proc=$(mktemp --suffix=.png /tmp/ocr_proc_XXXXXX)
-    magick "$tmp_raw" -resize 200% "$tmp_proc" 2>/dev/null || cp "$tmp_raw" "$tmp_proc"
-    for psm_mode in 6 3 11; do
+    magick "$tmp_raw" -colorspace Gray -resize 200% -sharpen 0x0.5 "$tmp_proc" 2>/dev/null || cp "$tmp_raw" "$tmp_proc"
+    for psm_mode in 6 3 11 7; do
         res=$(extract_text "$tmp_proc" "$psm_mode")
         if [[ -n "${res//[[:space:]]/}" ]]; then
             text="$res"
@@ -211,6 +238,40 @@ def sanitize_code_and_text(t):
         l = re.sub(r"\b0[xX][0-9a-fA-F]+\b", lambda m: m.group(0), l)
         l = re.sub(r"([a-zA-Z0-9_])\s*\.\s*([a-zA-Z0-9_]+)\s*(\()", r"\1.\2\3", l)
         l = re.sub(r"([a-zA-Z0-9_.-]+)\s*\.\s*(py|js|ts|jsx|tsx|lua|rs|go|java|c|cpp|h|hpp|sh|bash|zsh|json|yaml|yml|toml|md|txt|html|css|scss|conf|ini|sql|png|jpg|jpeg|webp|gif|svg|mp4|mkv|mp3|flac|zip|tar|gz|7z)\b", r"\1.\2", l, flags=re.IGNORECASE)
+        
+        # 5.1 Auto-Heal cirúrgico de Certificados e UUIDs (ex: Udemy ude.my/UC-... e certificados FCC/Coursera)
+        def clean_hex_uuid_part(p, target_len):
+            if len(p) == target_len - 1 and ("H" in p or "h" in p):
+                p = re.sub(r"[Hh]", "f1", p, count=1)
+            elif len(p) == target_len - 1 and ("M" in p or "m" in p):
+                p = re.sub(r"[Mm]", "11", p, count=1)
+            p = p.replace("H1", "f1").replace("h1", "f1")
+            trans = str.maketrans("HhoOlI|sSgzZtT", "ff001115592277")
+            p = p.translate(trans)
+            if len(p) == target_len - 1 and p.endswith("11"):
+                p = p[:-2] + "f1"
+            return re.sub(r"[^0-9a-fA-F]", "", p).lower()
+
+        def fix_uuid(m):
+            prefix = m.group(1)
+            raw_uuid = m.group(2)
+            parts = raw_uuid.split("-")
+            if len(parts) == 5:
+                p0 = clean_hex_uuid_part(parts[0], 8)
+                p1 = clean_hex_uuid_part(parts[1], 4)
+                p2 = clean_hex_uuid_part(parts[2], 4)
+                p3 = clean_hex_uuid_part(parts[3], 4)
+                p4 = clean_hex_uuid_part(parts[4], 12)
+                if len(p2) == 4 and p2.startswith("456"):
+                    p2 = "45f" + p2[3]
+                if len(p0) == 8 and len(p1) == 4 and len(p2) == 4 and len(p3) == 4 and len(p4) == 12:
+                    return f"{prefix}{p0}-{p1}-{p2}-{p3}-{p4}"
+            return m.group(0)
+
+        l = re.sub(r"(UC-)\s*", r"\g<1>", l)
+        l = re.sub(r"([0-9a-zA-Z])\s*-\s*([0-9a-zA-Z])", r"\g<1>-\g<2>", l)
+        l = re.sub(r"(ude\.my/UC-)([0-9a-zA-Z_\-]+)", fix_uuid, l)
+        l = re.sub(r"\b(UC-)([0-9a-zA-Z_\-]{30,40})\b", fix_uuid, l)
         return l
     
     # 6. Preservação de indentação e limpeza sutil de ruído nas bordas
@@ -246,7 +307,15 @@ if mode in ["--translate", "-t", "translate"]:
     except Exception:
         translated = ""
 
-print(json.dumps({"cleaned": cleaned, "translated": translated}))
+# Detecta se há alguma URL embutida (inclusive links curtos como ude.my)
+url_match = re.search(r"\b((?:https?://[^\s]+)|(?:ude\.my/[^\s]+)|(?:www\.[^\s]+))", cleaned)
+detected_url = ""
+if url_match:
+    detected_url = url_match.group(1).rstrip(".,;:)\x27\"")
+    if not detected_url.startswith("http"):
+        detected_url = "https://" + detected_url
+
+print(json.dumps({"cleaned": cleaned, "translated": translated, "url": detected_url}))
 ' "$MODE" "$text" 2>/dev/null || true)
 
 if [[ -z "$json_result" ]]; then
@@ -256,6 +325,7 @@ fi
 
 cleaned_text=$(echo "$json_result" | jq -r '.cleaned // empty')
 translated_text=$(echo "$json_result" | jq -r '.translated // empty')
+extracted_url=$(echo "$json_result" | jq -r '.url // empty')
 
 if [[ -z "$cleaned_text" ]]; then
     notify-send -a "Screen OCR" -i "dialog-warning" "Screen OCR" "Texto vazio após higienização."
@@ -273,19 +343,23 @@ if [[ "$MODE" == "--translate" || "$MODE" == "-t" || "$MODE" == "translate" ]] &
         "🇧🇷 Tradução Copiada (PT-BR)!" \
         "Orig: ${preview_orig}\n➔ ${preview_trans}"
 else
+    # Se a seleção foi focada na URL ou linha de certificado com URL, copiamos
     echo -n "$cleaned_text" | wl-copy
     preview=$(echo "$cleaned_text" | head -n 3 | cut -c 1-80)
 
-    # Verifica se o texto é uma URL para oferecer ação de abrir
-    if [[ "$cleaned_text" =~ ^https?:// ]]; then
+    # Verifica se há URL para oferecer ação instantânea de abrir no navegador
+    if [[ -n "$extracted_url" ]]; then
         action=$(notify-send -a "Screen OCR" -i "edit-copy" \
-            --action="open=🔗 Abrir Link" \
+            --action="open=🔗 Abrir Link no Navegador" \
+            --action="copyurl=📋 Copiar Apenas a URL" \
             --action="translate=🌐 Traduzir (PT-BR)" \
-            "📋 URL Copiada para o Clipboard!" "$cleaned_text" || true)
+            "📋 Texto Copiado para o Clipboard!" "$preview" || true)
         if [ "$action" == "open" ]; then
-            xdg-open "$cleaned_text" >/dev/null 2>&1 &
+            xdg-open "$extracted_url" >/dev/null 2>&1 &
+        elif [ "$action" == "copyurl" ]; then
+            echo -n "$extracted_url" | wl-copy
+            notify-send -a "Screen OCR" -i "edit-copy" "🔗 URL Copiada!" "$extracted_url"
         elif [ "$action" == "translate" ]; then
-            # Traduz sob demanda
             trans=$(python3 -c '
 import sys, urllib.request, urllib.parse, json
 text = sys.argv[1]
@@ -323,3 +397,4 @@ except Exception:
         fi
     fi
 fi
+
