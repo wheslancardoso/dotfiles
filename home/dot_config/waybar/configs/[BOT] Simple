@@ -22,7 +22,7 @@
 "modules-left": [	
 	"idle_inhibitor",
 	"group/mobo_drawer",
-	"hyprland/workspaces#numbers",
+	"hyprland/workspaces#rw",
 	"tray",
 	"mpris", 
 	],

@@ -31,7 +31,7 @@
 
 "modules-center": [
 	"idle_inhibitor",
-	"hyprland/workspaces#numbers",
+	"hyprland/workspaces#rw",
 ],
 
 "modules-right": [
