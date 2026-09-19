@@ -6,19 +6,19 @@
 /* ---- Window ---- */
 window {
 	width: 40%;
-	//orientation: horizontal;
 	height: inherit;
     y-offset: 10px;
     location: north;
     children: [ "entry", "message" ];
     border: 2px;
-    border-color: white/25%;
+    border-radius: 16px;
+    border-color: rgba(255, 255, 255, 0.12);
 }
 
 /* ---- Entry ---- */ 
 entry {
 	expand: true;
-	placeholder: " 🔎 Google Search";
+	placeholder: "   Pesquisar no Google...";
 	horizontal-align: 0.5;
 	padding: 15px;
 	border-radius: inherit;

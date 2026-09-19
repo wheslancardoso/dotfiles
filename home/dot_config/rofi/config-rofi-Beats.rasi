@@ -17,14 +17,14 @@ mainbox {
 
 /* ---- Entry ---- */ 
 entry {
-  placeholder: "📻 Choose Media or Stations to play";
+  placeholder: " 󰝚  Escolher Estação / Mídia...";
 }
 
 /* ---- Listview ---- */
 listview {
   columns: 2;
   lines: 7;
-  fixed-height: false;
+  fixed-height: true;
   margin: 10px;
   scrollbar: true;
   spacing: 6px;

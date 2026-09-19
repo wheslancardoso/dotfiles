@@ -18,7 +18,7 @@ window {
 /* ---- Entry ---- */
 entry {
   width: 37%;
-  placeholder: " 💫 Search / Choose Emoji's";
+  placeholder: " 󰞅  Pesquisar Emojis...";
   horizontal-align: 0.0;
 }
 
@@ -26,7 +26,7 @@ entry {
 listview {
   columns: 2;
   lines: 7;
-  fixed-height: false;
+  fixed-height: true;
   scrollbar: true;
   spacing: 6px;
   cycle: true;

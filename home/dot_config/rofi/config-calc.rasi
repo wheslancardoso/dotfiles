@@ -19,7 +19,7 @@ window {
 /* ---- Entry ---- */
 entry {
   expand: true;
-  placeholder: " 🧮 Calculate";
+  placeholder: " 󰪚  Calcular...";
 }
 
 listview {enable: false;}

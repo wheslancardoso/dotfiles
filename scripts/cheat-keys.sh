@@ -213,7 +213,8 @@ if [ "$MODE" = "rofi" ]; then
     theme_arg=(-theme "$HOME/.config/rofi/config-search.rasi")
   fi
 
-  selected=$(generate_database | awk -F'\t' '{printf "%-26s │ %-14s │ %-38s │ %s  \033[30m[%s]\033[0m\n", $1, $2, $3, $4, $5}' |     rofi -dmenu -i -normalize-match -matching normal -tokenize "${theme_arg[@]}" -p "🔍 Buscar qualquer atalho, comando ou ferramenta:") || exit 0
+  selected=$(generate_database | awk -F'\t' '{printf "%-26s │ %-14s │ %-38s │ %s  \033[30m[%s]\033[0m\n", $1, $2, $3, $4, $5}' | \
+    rofi -dmenu -i -normalize-match -matching normal -tokenize "${theme_arg[@]}" -p "Atalhos") || exit 0
 
   if [ -z "$selected" ]; then
     exit 0

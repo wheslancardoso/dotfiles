@@ -18,7 +18,7 @@ mainbox {
 /* ---- Entry ---- */
 entry {
   width: inherit;
-  placeholder: " 📋 Search  Clipboard ";
+  placeholder: " 󰅍  Pesquisar Área de Transferência...";
 }
 
 /* ---- Listview ---- */
