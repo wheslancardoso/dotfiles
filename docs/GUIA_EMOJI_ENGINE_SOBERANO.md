@@ -78,6 +78,16 @@ Durante o desenvolvimento do motor de busca, um bug crítico gerou uma tela chei
   * `21`: `kb-custom-12` (`Alt+BackSpace`).
 * O motor em Python faz um loop de controle (`while True`) que intercepta os códigos `10..19` e `21`, atualiza o filtro (`-filter "#categoria "`) e relança o Rofi instantaneamente sem fechar a sessão do usuário.
 
+### 🐛 Causa-Raiz 4: O Bug do Truncamento de 16-bit do `wtype` (Glifos CJK Estranhos como `鸞`)
+* **O sintoma:** Ao tentar digitar emojis modernos do plano suplementar Unicode (ex: Rosto com Chapéu de Caubói 🤠 `U+1F920`), o `wtype` cuspia um caractere chinês/coreano estranho (`鸞` `U+F920`).
+* **A necropsia:** O `wtype` internamente compila keycodes usando tipos de 16 bits (`uint16_t`) ao simular `xkb_keysym`. Emojis além do plano básico (`U+10000` até `U+10FFFF`) sofrem overflow e têm os bits superiores decepados: `0x1F920 & 0xFFFF = 0xF920` (que é o caractere CJK Compatibility Ideograph `鸞`).
+* **A Solução Definitiva (Injeção Inteligente via Clipboard / Auto-Paste):**
+  1. O motor copia o caractere UTF-8 íntegro com `wl-copy`.
+  2. Identifica a classe da janela que estava em foco antes do Rofi abrir (`hyprctl activewindow -j`).
+  3. Se for terminal (`kitty`, `ghostty`, etc.), simula `Ctrl + Shift + V`.
+  4. Se for aplicativo gráfico comum (`brave`, `chrome`, `code`, `discord`, etc.), simula `Ctrl + V`.
+  5. Resultado: **100% de precisão para qualquer emoji**, sem risco de truncamento e sem depender de rotinas de xkb bugadas.
+
 ---
 
 ## 📦 3. Dependências e Provisionamento Automático

@@ -183,6 +183,16 @@ def main():
     input_payload = "\n".join(lines)
     current_filter = ""
 
+    # Captura a janela ativa ANTES de abrir o Rofi para restaurar o foco com precisão cirúrgica
+    previous_window_address = None
+    previous_window_class = ""
+    try:
+        active_info = json.loads(subprocess.check_output(["hyprctl", "activewindow", "-j"]))
+        previous_window_address = active_info.get("address")
+        previous_window_class = str(active_info.get("class", "")).lower()
+    except Exception:
+        pass
+
     while True:
         rofi_cmd = [
             "rofi",
@@ -234,10 +244,34 @@ def main():
 
         # Enter / returncode 0: Copia + Digita diretamente no aplicativo em foco
         if result.returncode == 0:
+            # 1. Copia imediatamente para o clipboard
             subprocess.run(["wl-copy", emoji], check=True)
-            time.sleep(0.05)
+
+            # 2. Devolve o foco explicitamente para a janela anterior no Hyprland
+            if previous_window_address:
+                try:
+                    subprocess.run(
+                        ["hyprctl", "dispatch", "focuswindow", f"address:{previous_window_address}"],
+                        check=False,
+                        capture_output=True
+                    )
+                except Exception:
+                    pass
+
+            # 3. Dá tempo para o Rofi fechar e a janela de destino retomar o foco no Wayland
+            time.sleep(0.12)
+
+            # 4. Injeta o emoji via Paste Direto (evita o bug de truncamento de 16-bit do wtype em emojis U+1F000+)
+            # Terminais recebem Ctrl+Shift+V; navegadores e apps GUI recebem Ctrl+V
+            is_terminal = any(term in previous_window_class for term in ["kitty", "ghostty", "alacritty", "foot", "wezterm", "terminal"])
+            
             try:
-                subprocess.run(["wtype", emoji], check=True)
+                if is_terminal:
+                    # Em terminal: Ctrl + Shift + V
+                    subprocess.run(["wtype", "-M", "ctrl", "-M", "shift", "-k", "v", "-m", "shift", "-m", "ctrl"], check=False)
+                else:
+                    # Em apps normais (Browsers, IDEs, Discord, etc.): Ctrl + V
+                    subprocess.run(["wtype", "-M", "ctrl", "-k", "v", "-m", "ctrl"], check=False)
             except Exception:
                 pass
             break
