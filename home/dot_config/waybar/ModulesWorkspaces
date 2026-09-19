@@ -265,7 +265,7 @@
 		"class<Gparted>":"",
 		"class<gimp>": " ",
 		"class<emulator>": "📱 ",
-		"class<android-studio>": " ",
+		"class<android-studio|jetbrains-studio>": " ",
 		"class<org.pipewire.Helvum>": "󰓃",
 		"class<localsend>":"",
 		"class<PrusaSlicer|UltiMaker-Cura|OrcaSlicer>": "󰹛",
