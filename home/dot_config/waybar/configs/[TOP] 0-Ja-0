@@ -34,7 +34,7 @@
 "modules-center": [
 	"group/app_drawer",
 	"custom/separator#dot-line",
-	"hyprland/workspaces#rw",
+	"hyprland/workspaces#numbers",
 	"custom/separator#dot-line",
 	"group/notify",	
 	],

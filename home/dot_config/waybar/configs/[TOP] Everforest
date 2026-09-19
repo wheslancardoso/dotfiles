@@ -25,7 +25,7 @@
 "modules-left": [
   "custom/arch",
 	"custom/separator#blank_2", 
-	"hyprland/workspaces#rw",
+	"hyprland/workspaces#numbers",
 	"custom/separator#blank_2",
 //	"mpris",
 	"group/notify",

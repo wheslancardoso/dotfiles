@@ -24,7 +24,7 @@
 
 "modules-left": [
   "custom/arch",
-	"hyprland/workspaces#rw",
+	"hyprland/workspaces#numbers",
 //	"mpris",
 	"group/notify",
 	"tray",

@@ -34,7 +34,7 @@
 	"custom/separator#blank",
   "group/app_drawer",
 	"group/notify",
-	"hyprland/workspaces#rw",
+	"hyprland/workspaces#numbers",
 	"clock",
 	"custom/weather",
 	"idle_inhibitor",	
