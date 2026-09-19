@@ -11,8 +11,9 @@ configuration {
 /* ---- Window (Amplo e com Glassmorphism) ---- */
 window {
   width: 70%;
+  border: 2px;
   border-radius: 18px;
-  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.12);
   background-color: rgba(24, 24, 37, 0.88);
 }
 
