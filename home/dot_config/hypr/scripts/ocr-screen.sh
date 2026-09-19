@@ -63,39 +63,46 @@ if command -v zbarimg &>/dev/null; then
 fi
 
 # ------------------------------------------------------------------------------
-# 2. PRÉ-PROCESSAMENTO DE IMAGEM PARA MÁXIMA ACURÁCIA (IMAGEMAGICK)
+# 2. MOTOR OCR DE ALTA FIDELIDADE (TESSDATA_BEST + FALLBACK MULTI-PASS)
 # ------------------------------------------------------------------------------
-tmp_proc=$(mktemp --suffix=.png /tmp/ocr_proc_XXXXXX)
-if command -v magick &>/dev/null || command -v convert &>/dev/null; then
-    IM_BIN="magick"
-    command -v magick &>/dev/null || IM_BIN="convert"
-
-    # Upscale 3x com interpolação, padding de borda, escala de cinza, auto-level e unsharp
-    $IM_BIN "$tmp_raw" \
-        -bordercolor black -border 10 \
-        -filter Mitchell -resize 300% \
-        -colorspace Gray \
-        -auto-level \
-        -unsharp 0x1+1+0.05 \
-        "$tmp_proc" 2>/dev/null || cp "$tmp_raw" "$tmp_proc"
-else
-    cp "$tmp_raw" "$tmp_proc"
+# Se existir tessdata_best no cache do usuário, utiliza para máxima acurácia neural
+TESS_DATA_DIR="/usr/share/tessdata"
+if [[ -d "$HOME/.local/share/tessdata_best" ]] && [[ -f "$HOME/.local/share/tessdata_best/por.traineddata" ]]; then
+    TESS_DATA_DIR="$HOME/.local/share/tessdata_best"
 fi
 
-# ------------------------------------------------------------------------------
-# 3. EXTRAÇÃO MULTI-PSM COM TESSERACT (DPI 300 + PRESERVAÇÃO DE ESPAÇOS)
-# ------------------------------------------------------------------------------
-text=$(tesseract "$tmp_proc" stdout -l por+eng --dpi 300 --oem 1 --psm 6 -c preserve_interword_spaces=1 2>/dev/null || true)
-if [[ -z "${text//[[:space:]]/}" ]]; then
-    # Fallback para PSM 3 (Segmentação de página completa)
-    text=$(tesseract "$tmp_proc" stdout -l por+eng --dpi 300 --oem 1 --psm 3 -c preserve_interword_spaces=1 2>/dev/null || true)
-fi
-if [[ -z "${text//[[:space:]]/}" ]]; then
-    # Fallback para PSM 11 (Texto esparso)
-    text=$(tesseract "$tmp_proc" stdout -l por+eng --dpi 300 --oem 1 --psm 11 -c preserve_interword_spaces=1 2>/dev/null || true)
+extract_text() {
+    local img="$1"
+    local psm="$2"
+    tesseract --tessdata-dir "$TESS_DATA_DIR" "$img" stdout -l por+eng --psm "$psm" -c preserve_interword_spaces=1 2>/dev/null || true
+}
+
+# Passo 1: Extração direta da imagem nítida capturada (sem artefatos de compressão)
+# Testa PSM 6 (bloco uniforme) -> PSM 3 (página com colunas) -> PSM 11 (texto esparso/UI) -> PSM 7 (linha única)
+text=""
+for psm_mode in 6 3 11 7; do
+    res=$(extract_text "$tmp_raw" "$psm_mode")
+    if [[ -n "${res//[[:space:]]/}" ]]; then
+        text="$res"
+        break
+    fi
+done
+
+# Passo 2: Se ainda assim nada for detectado, aplicar Upscale limpo 2x suave (ideal para fontes minúsculas de terminal)
+if [[ -z "${text//[[:space:]]/}" ]] && command -v magick &>/dev/null; then
+    tmp_proc=$(mktemp --suffix=.png /tmp/ocr_proc_XXXXXX)
+    magick "$tmp_raw" -resize 200% "$tmp_proc" 2>/dev/null || cp "$tmp_raw" "$tmp_proc"
+    for psm_mode in 6 3 11; do
+        res=$(extract_text "$tmp_proc" "$psm_mode")
+        if [[ -n "${res//[[:space:]]/}" ]]; then
+            text="$res"
+            break
+        fi
+    done
+    rm -f "$tmp_proc"
 fi
 
-rm -f "$tmp_raw" "$tmp_proc"
+rm -f "$tmp_raw"
 
 if [[ -z "${text//[[:space:]]/}" ]]; then
     notify-send -a "Screen OCR" -i "dialog-warning" "Screen OCR" "Nenhum texto detectado na região selecionada."
@@ -103,7 +110,7 @@ if [[ -z "${text//[[:space:]]/}" ]]; then
 fi
 
 # ------------------------------------------------------------------------------
-# 4. HIGIENIZAÇÃO, AUTO-HEAL DE CÓDIGO/URLS & TRADUÇÃO INTELIGENTE EM PYTHON
+# 3. HIGIENIZAÇÃO, AUTO-HEAL DE CÓDIGO/URLS & TRADUÇÃO INTELIGENTE EM PYTHON
 # ------------------------------------------------------------------------------
 json_result=$(python3 -c '
 import sys, re, urllib.request, urllib.parse, json, textwrap
@@ -150,9 +157,11 @@ def sanitize_code_and_text(t):
                 u = re.sub(r"\s+", "", u)
                 return u
             l = re.sub(r"https?://[a-zA-Z0-9_.\-\s\/\?\=\&\%\#\:\;]+?(?=(\"|\x27|\>|\<|\s\n|\s[A-Z][a-z]|$))", clean_url, l)
+            l = re.sub(r"\binstali\b", "install", l)
         
         l = re.sub(r"([a-zA-Z0-9])\s*_\s*([a-zA-Z0-9])", r"\1_\2", l)
         l = re.sub(r"(\s|^)-\s+-(?=[a-zA-Z0-9])", r"\1--", l)
+        l = re.sub(r"(?<=\s)~(fsSL|[a-zA-Z]{1,4})\b", r"-\1", l)
         l = re.sub(r"(\s|^)~\s*/\s*", r"\1~/", l)
         l = re.sub(r"(?<=/)\s+([a-zA-Z0-9_.-]+)", r"\1", l)
         l = re.sub(r"([a-zA-Z0-9_.-]+)\s+/(?=[a-zA-Z0-9_.-])", r"\1/", l)
