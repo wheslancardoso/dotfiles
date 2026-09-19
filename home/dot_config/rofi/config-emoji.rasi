@@ -1,57 +1,139 @@
 /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
-/* Apex Emoji Engine - Catppuccin Mocha Glassmorphic Style */
+/* Apex Emoji Engine - Sovereign Vim & Catppuccin Glassmorphism */
 
-@import "~/.config/rofi/config.rasi" 
+/* ---- Global Configuration Fonts & Colors ---- */
+@import "~/.config/rofi/0-shared-fonts.rasi"
+@import "~/.config/rofi/wallust/colors-rofi.rasi"
 
-/* ---- Mainbox ---- */
-mainbox {
-  padding: 20px;
-  spacing: 12px;
-  children: [ "inputbar", "message", "listview" ];
+/*****----- Configuration (Vim Navigation) -----*****/
+configuration {
+    kb-row-up:                  "Up,Control+k,Control+p";
+    kb-row-down:                "Down,Control+j,Control+n";
+    kb-page-prev:               "Page_Up,Control+u";
+    kb-page-next:               "Page_Down,Control+d";
+    kb-accept-entry:            "Return,KP_Enter";
+    kb-cancel:                  "Escape,Control+bracketleft";
+    kb-custom-1:                "Control+y";
+    hover-select:               false;
+    scroll-method:              0;
 }
 
-/* ---- Window (Spacious & Frosted Glass) ---- */
+/*****----- Main Window (Frosted Glass) -----*****/
 window {
-  width: 58%;
-  border: 2px;
-  border-radius: 18px;
-  border-color: rgba(255, 255, 255, 0.12);
-  background-color: rgba(24, 24, 37, 0.88);
+    transparency:                "real";
+    location:                    center;
+    anchor:                      center;
+    fullscreen:                  false;
+    width:                       52%;
+    x-offset:                    0px;
+    y-offset:                    0px;
+
+    enabled:                     true;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      2px;
+    border-radius:               18px;
+    border-color:                rgba(255, 255, 255, 0.12);
+    cursor:                      "default";
+    background-color:            rgba(24, 24, 37, 0.90);
 }
 
-/* ---- Entry ---- */
+/*****----- Main Box -----*****/
+mainbox {
+    enabled:                     true;
+    spacing:                     12px;
+    margin:                      0px;
+    padding:                     20px;
+    border:                      0px;
+    background-color:            transparent;
+    children:                    [ "inputbar", "listview" ];
+}
+
+/*****----- Inputbar -----*****/
+inputbar {
+    enabled:                     true;
+    spacing:                     12px;
+    margin:                      0px;
+    padding:                     10px 14px;
+    border:                      1px solid;
+    border-radius:               12px;
+    border-color:                rgba(255, 255, 255, 0.08);
+    background-color:            rgba(49, 50, 68, 0.45);
+    text-color:                  #cdd6f4;
+    children:                    [ "textbox-prompt-colon", "entry" ];
+}
+
+textbox-prompt-colon {
+    enabled:                     true;
+    padding:                     4px 6px 4px 2px;
+    expand:                      false;
+    str:                         "󰞅";
+    text-color:                  @selected;
+    background-color:            transparent;
+}
+
 entry {
-  expand: true;
-  placeholder: "Buscar emoji em PT-BR (ex: joinha, fogo, cafe, coracao, choro) ou Alt+1..9...";
-  placeholder-color: #6c7086;
-  horizontal-align: 0.0;
+    enabled:                     true;
+    padding:                     4px 0px;
+    background-color:            transparent;
+    text-color:                  #cdd6f4;
+    cursor:                      text;
+    placeholder:                 "Buscar emoji em PT-BR (ex: joinha, fogo, cafe) ou categoria (#comida, #rostos)...";
+    placeholder-color:           #6c7086;
 }
 
-/* ---- Listview (1 Coluna Ampla - Zero Cortes de Texto) ---- */
+/*****----- Listview (Telescope / Vim Flow) -----*****/
 listview {
-  columns: 1;
-  lines: 9;
-  fixed-height: true;
-  scrollbar: true;
-  spacing: 4px;
-  padding: 4px 0px;
-  cycle: true;
+    enabled:                     true;
+    columns:                     1;
+    lines:                       9;
+    cycle:                       true;
+    dynamic:                     true;
+    scrollbar:                   false;
+    layout:                      vertical;
+    reverse:                     false;
+    fixed-height:                true;
+    fixed-columns:               true;
+    
+    spacing:                     4px;
+    margin:                      0px;
+    padding:                     4px 0px;
+    border:                      0px;
+    background-color:            transparent;
+    text-color:                  #cdd6f4;
+    cursor:                      "default";
 }
 
-/* ---- Elements ---- */
+/*****----- Elements -----*****/
 element {
-  orientation: horizontal;
-  padding: 8px 14px;
-  border-radius: 10px;
+    enabled:                     true;
+    spacing:                     10px;
+    margin:                      0px;
+    padding:                     8px 14px;
+    border:                      0px;
+    border-radius:               10px;
+    background-color:            transparent;
+    text-color:                  #cdd6f4;
+    cursor:                      pointer;
 }
 
-element-icon {
-  size: 0%;
+element normal.normal {
+    background-color:            transparent;
+    text-color:                  #cdd6f4;
+}
+
+element selected.normal {
+    background-color:            @selected;
+    text-color:                  #11111b;
 }
 
 element-text {
-  horizontal-align: 0.0;
-  vertical-align: 0.5;
-  margin: 0px;
-  padding: 0px;
+    background-color:            transparent;
+    text-color:                  inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+}
+
+element-text selected {
+    text-color:                  #11111b;
 }
