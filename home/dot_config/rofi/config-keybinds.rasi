@@ -1,4 +1,4 @@
-/* ---- Main Config - For Keybinds generation ---- */
+/* ---- Main Config - For Keybinds generation (SUPER + H) ---- */
 
 @import "~/.config/rofi/config.rasi"  
 
@@ -8,37 +8,45 @@ configuration {
   normalize-match: true;
 }  
 
+/* ---- Window (Amplo e com Glassmorphism) ---- */
+window {
+  width: 70%;
+  border-radius: 18px;
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  background-color: rgba(24, 24, 37, 0.88);
+}
+
 /* ---- Mainbox ---- */
 mainbox {
+  padding: 22px;
+  spacing: 14px;
   children: [ "inputbar", "message", "listview" ];
 }
 
 /* ---- Entry ---- */
 entry {
   expand: true;
-  placeholder: " 🔍 Digite para buscar qualquer atalho ou comando (ex: copiar caminho, yazi, mpv, screenshot)...";
+  placeholder: " 🔍 Buscar atalho, comando ou ferramenta (ex: yazi, som, screenshot, devtype)...";
+  placeholder-color: #6c7086;
 }
 
 /* ---- Listview (1 Coluna Larga - Leitura Limpa sem Cortes) ---- */
 listview {
   columns: 1;
-  lines: 10;
+  lines: 11;
   fixed-height: false;
   scrollbar: true;
   spacing: 4px;
+  padding: 6px 0px;
+  border: 0px solid;
   cycle: true;
-}
-
-window {
-  width: 65%;
-  height: inherit;
 }
 
 /* ---- Elements ---- */
 element {
   orientation: horizontal;
-  padding: 8px 12px;
-  border-radius: 8px;
+  padding: 8px 14px;
+  border-radius: 10px;
 }
 
 element-icon {

@@ -5,19 +5,19 @@
 @define-color cc-card-bg rgba(49, 50, 68, 0.55);
 @define-color cc-card-hover rgba(69, 71, 90, 0.70);
 @define-color cc-border rgba(255, 255, 255, 0.09);
-@define-color cc-border-active rgba({{color12 | rgb}}, 0.45);
+@define-color cc-border-active rgba(198,138,238, 0.45);
 
 @define-color text-main #cdd6f4;
 @define-color text-sub #a6adc8;
 @define-color text-dim #6c7086;
 
-@define-color accent-primary {{color12}};
-@define-color accent-secondary {{color14}};
-@define-color accent-tertiary {{color6}};
-@define-color accent-red {{color11}};
+@define-color accent-primary #C68AEE;
+@define-color accent-secondary #F1CF8A;
+@define-color accent-tertiary #B59B67;
+@define-color accent-red #E05F65;
 @define-color accent-green #a6e3a1;
 
 @define-color noti-bg rgba(30, 30, 46, 0.85);
 @define-color noti-border rgba(255, 255, 255, 0.10);
-@define-color noti-border-hover rgba({{color12 | rgb}}, 0.40);
+@define-color noti-border-hover rgba(198,138,238, 0.40);
 

@@ -2,31 +2,47 @@
  /* wallust template - colors-rofi */
 
 * {
-active-background: {{color12}};
-active-foreground: {{foreground}};
-normal-background: {{background}};
-normal-foreground: {{foreground}};
-urgent-background: {{color13}};
-urgent-foreground: {{foreground}};
+    /* Base Catppuccin Mocha */
+    cat-base: rgba(30, 30, 46, 0.82);
+    cat-mantle: rgba(24, 24, 37, 0.90);
+    cat-crust: rgba(17, 17, 27, 0.95);
+    cat-surface0: rgba(49, 50, 68, 0.55);
+    cat-surface1: rgba(69, 71, 90, 0.70);
+    cat-text: #cdd6f4;
+    cat-subtext: #a6adc8;
 
-alternate-active-background: {{color11}};
-alternate-active-foreground: {{foreground}};
-alternate-normal-background: {{background}};
-alternate-normal-foreground: {{foreground}};
-alternate-urgent-background: {{background}};
-alternate-urgent-foreground: {{foreground}};
+    /* Wallust Dynamic Accents */
+    accent-primary: {{color12}};
+    accent-secondary: {{color14}};
+    accent-active: {{color11}};
+    accent-cyan: {{color6}};
 
-selected-active-background: {{color12}};
-selected-active-foreground: {{background}};
-selected-normal-background: {{color12}};
-selected-normal-foreground: {{background}};
-selected-urgent-background: {{color11}};
-selected-urgent-foreground: {{background}};
+    active-background: {{color12}};
+    active-foreground: #11111b;
+    normal-background: transparent;
+    normal-foreground: #cdd6f4;
+    urgent-background: {{color11}};
+    urgent-foreground: #11111b;
 
-background-color: {{background}};
-background: rgba(0,0,0,0.7);
-foreground: {{foreground}};
-border-color: {{color12}};
+    alternate-active-background: transparent;
+    alternate-active-foreground: {{color12}};
+    alternate-normal-background: transparent;
+    alternate-normal-foreground: #cdd6f4;
+    alternate-urgent-background: transparent;
+    alternate-urgent-foreground: {{color11}};
+
+    selected-active-background: {{color12}};
+    selected-active-foreground: #11111b;
+    selected-normal-background: {{color12}};
+    selected-normal-foreground: #11111b;
+    selected-urgent-background: {{color11}};
+    selected-urgent-foreground: #11111b;
+
+    background-color: transparent;
+    background: @cat-base;
+    background-alt: @cat-surface0;
+    foreground: #cdd6f4;
+    border-color: rgba({{color12 | rgb}}, 0.35);
 
 color0: {{color0}};
 color1: {{color1}};

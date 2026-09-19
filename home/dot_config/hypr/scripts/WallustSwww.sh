@@ -142,3 +142,9 @@ if command -v waybar-msg >/dev/null 2>&1; then
 elif pidof waybar >/dev/null; then
   killall -SIGUSR2 waybar 2>/dev/null || true
 fi
+
+# Prompt SwayNC to reload dynamic colors
+if command -v swaync-client >/dev/null 2>&1; then
+  swaync-client -R 2>/dev/null || true
+fi
+

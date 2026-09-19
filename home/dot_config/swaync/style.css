@@ -1,6 +1,8 @@
-/* ----------- 💫 https://github.com/JaKooLit 💫 -------- */
-/* swaync colors - wallust from waybar.css */
+/* ==============================================================================
+ * 💫 SWAYNC CONTROL CENTER & NOTIFICATIONS — Catppuccin Mocha Glassmorphism
+ * ============================================================================== */
 
+@import '../../.config/swaync/wallust/colors-wallust.css';
 @import '../../.config/waybar/wallust/colors-waybar.css';
 
 :root {
@@ -8,273 +10,78 @@
     --notification-app-icon-size: 24px;
 }
 
-@define-color noti-border-color @color12;
-@define-color noti-bg rgba(24, 24, 37, 0.95);
-@define-color noti-bg-alt @background-alt;
-@define-color noti-bg-hover @background;
-@define-color text-color @foreground;
+/* ---- Catppuccin Mocha Foundation + Wallust Accents ---- */
+@define-color noti-bg rgba(30, 30, 46, 0.86);
+@define-color noti-bg-alt rgba(24, 24, 37, 0.88);
+@define-color noti-card-bg rgba(49, 50, 68, 0.52);
+@define-color noti-card-hover rgba(69, 71, 90, 0.72);
+@define-color noti-border-color rgba(255, 255, 255, 0.09);
+@define-color noti-border-active @color12;
+@define-color text-color #cdd6f4;
+@define-color text-sub #a6adc8;
+@define-color text-dim #6c7086;
 
 * {
-    font-family: "JetBrains Mono Nerd Font";
-    font-weight: bold;
-    font-size: 1rem;
+    font-family: "JetBrains Mono Nerd Font", "FiraCode Nerd Font", sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
 }
 
+/* ==============================================================================
+ * 🪟 CONTROL CENTER (Janela Principal)
+ * ============================================================================== */
+.control-center {
+    background: @noti-bg;
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
+    color: @text-color;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+    padding: 10px 6px;
+}
+
+.control-center-list {
+    background: transparent;
+}
+
+.control-center-list-placeholder {
+    opacity: 0.4;
+    color: @text-dim;
+}
+
+.floating-notifications {
+    background: transparent;
+}
+
+.blank-window {
+    background: alpha(black, 0.05);
+}
+
+/* ==============================================================================
+ * 🔔 NOTIFICAÇÕES (Cards & Linhas)
+ * ============================================================================== */
 .control-center .notification-row:focus,
 .control-center .notification-row:hover {
     opacity: 1;
-    background: @noti-bg;
-    border-radius: 12px;
+    background: transparent;
 }
 
 .notification-row {
     outline: none;
+    margin: 4px 6px;
 }
 
 .notification {
-    background: @noti-bg;
-    padding: 10px 14px 10px 10px;
+    background: @noti-card-bg;
+    padding: 12px 14px;
     border-radius: 14px;
-    border: 1.5px solid @noti-border-color;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-}
-
-/* ==============================================================================
- * 🎵 SPOTIFY: Layout Completo de Música com Capa Grande e Glow Verde
- * ============================================================================== */
-.notification.Spotify,
-.notification.spotify,
-.notification.spotify-osd,
-.notification.music_notif {
-    border: 1.5px solid #1db954;
-    background: rgba(18, 24, 20, 0.96);
-    box-shadow: 0 8px 30px rgba(29, 185, 84, 0.28);
-}
-
-.notification.Spotify .image,
-.notification.spotify .image,
-.notification.spotify-osd .image,
-.notification.music_notif .image {
-    min-width: 88px;
-    min-height: 88px;
-    -gtk-icon-size: 88px;
-    border-radius: 12px;
-    margin: 2px 14px 2px 2px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
-    border: 1.5px solid rgba(29, 185, 84, 0.4);
-}
-
-.notification.Spotify .summary,
-.notification.spotify .summary {
-    color: #a6e3a1;
-    font-size: 1.05rem;
-    font-weight: 800;
-}
-
-/* ==============================================================================
- * 📺 YOUTUBE / VÍDEO: Identidade Vermelho YouTube & Formato Limpo
- * ============================================================================== */
-.notification.YouTube,
-.notification.youtube,
-.notification.youtube_media {
-    border: 1.5px solid #ff0000;
-    background: rgba(26, 18, 20, 0.96);
-    box-shadow: 0 8px 26px rgba(255, 0, 0, 0.25);
-}
-
-.notification.YouTube .image,
-.notification.youtube .image,
-.notification.youtube_media .image {
-    min-width: 68px;
-    min-height: 52px;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 0, 0, 0.3);
-}
-
-.notification.YouTube .summary,
-.notification.youtube .summary {
-    color: #f38ba8;
-    font-size: 0.98rem;
-    font-weight: 800;
-}
-
-/* ==============================================================================
- * 💬 WHATSAPP WEB / MENSAGENS: Estilo Chat com Verde WhatsApp
- * ============================================================================== */
-.notification.WhatsApp,
-.notification.whatsapp,
-.notification[app-name*="whatsapp"],
-.notification[app-name*="WhatsApp"] {
-    border: 1.5px solid #25d366;
-    background: rgba(16, 26, 22, 0.96);
-    box-shadow: 0 8px 26px rgba(37, 211, 102, 0.25);
-}
-
-.notification.WhatsApp .image,
-.notification.whatsapp .image {
-    min-width: 48px;
-    min-height: 48px;
-    -gtk-icon-size: 48px;
-    border-radius: 50%;
-    border: 1.5px solid #25d366;
-}
-
-.notification.WhatsApp .summary,
-.notification.whatsapp .summary {
-    color: #25d366;
-    font-size: 0.98rem;
-    font-weight: 800;
-}
-
-/* ==============================================================================
- * 🦁 BRAVE / NAVEGADORES WEB: Acento Laranja
- * ============================================================================== */
-.notification.Brave,
-.notification.brave,
-.notification.firefox,
-.notification.chromium {
-    border: 1.5px solid #fe640b;
-    background: rgba(26, 20, 18, 0.96);
-    box-shadow: 0 8px 24px rgba(254, 100, 11, 0.22);
-}
-
-.notification.Brave .summary,
-.notification.brave .summary {
-    color: #fab387;
-}
-
-/* ==============================================================================
- * 🎮 DISCORD & TELEGRAM
- * ============================================================================== */
-.notification.discord,
-.notification.Discord {
-    border: 1.5px solid #5865f2;
-    background: rgba(20, 22, 34, 0.96);
-    box-shadow: 0 8px 26px rgba(88, 101, 242, 0.25);
-}
-
-.notification.discord .summary,
-.notification.Discord .summary {
-    color: #b4befe;
-}
-
-.notification.telegram,
-.notification.Telegram {
-    border: 1.5px solid #229ed9;
-    background: rgba(18, 24, 32, 0.96);
-    box-shadow: 0 8px 26px rgba(34, 158, 217, 0.25);
-}
-
-.notification.telegram .summary,
-.notification.Telegram .summary {
-    color: #89dceb;
-}
-
-/* ==============================================================================
- * 💻 TERMINAL & DEV
- * ============================================================================== */
-.notification.ghostty,
-.notification.kitty,
-.notification.alacritty,
-.notification.foot {
-    border: 1.5px solid @color12;
-    background: rgba(20, 22, 30, 0.96);
-    box-shadow: 0 8px 24px rgba(198, 138, 238, 0.22);
-}
-
-.notification.ghostty .summary,
-.notification.kitty .summary,
-.notification.alacritty .summary {
-    color: @color12;
-}
-
-.notification-default-action {
-    margin: 0;
-    padding: 0;
-    border-radius: 10px;
-}
-
-.close-button {
-    background: #f7768e;
-    color: @noti-bg;
-    text-shadow: none;
-    padding: 0;
-    border-radius: 10px;
-    margin-top: 5px;
-    margin-right: 5px;
-}
-
-.close-button:hover {
-    box-shadow: none;
-    background: #f7768e;
-    transition: all .15s ease-in-out;
-    border: none
-}
-
-
-.notification-action {
     border: 1px solid @noti-border-color;
-    border-top: none;
-    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    transition: all 0.2s ease;
 }
 
-
-.notification-default-action:hover,
-.notification-action:hover {
-    color: @text-color;
-    background: @noti-bg
-}
-
-
-.notification-default-action {
-    border-radius: 10px;
-    margin: 5px;
-}
-
-.notification-default-action:not(:only-child) {
-    border-bottom-left-radius: 7px;
-    border-bottom-right-radius: 7px
-}
-
-.notification-action:first-child {
-    border-bottom-left-radius: 10px;
-    background: @noti-bg
-}
-
-.notification-action:last-child {
-    border-bottom-right-radius: 10px;
-    background: @noti-bg-alt
-}
-
-.inline-reply {
-    margin-top: 8px
-}
-
-.inline-reply-entry {
-    background: @noti-bg;
-    color: @text-color;
-    caret-color: @text-color;
-    border: 1px solid @noti-border-color;
-    border-radius: 10px
-}
-
-.inline-reply-button {
-	font-size: 0.5rem;
-    margin-left: 4px;
-    background: @noti-bg;
-    border: 1px solid @noti-border-color;
-    border-radius: 10px;
-    color: @text-color
-}
-
-.inline-reply-button:disabled {
-    background: initial;
-    color: @text-color;
-    border: 1px solid transparent
-}
-
-.inline-reply-button:hover {
-    background: @noti-bg-hover
+.notification:hover {
+    background: @noti-card-hover;
+    border-color: rgba(255, 255, 255, 0.16);
 }
 
 .notification-content {
@@ -306,209 +113,298 @@
     padding: 2px 0;
 }
 
-.body-image {
-    margin-top: 6px;
-    color: @text-color;
-    border-radius: 12px;
-}
-
 .summary {
-    font-size: 1.05rem;
+    font-size: 1.02rem;
     font-weight: 800;
     background: transparent;
-    color: #89b4fa;
+    color: @color12;
     text-shadow: none;
     margin-bottom: 3px;
 }
 
 .time {
-    font-size: 0.8rem;
-    font-weight: bold;
+    font-size: 0.78rem;
+    font-weight: 600;
     background: transparent;
-    color: alpha(@text-color, 0.5);
+    color: @text-dim;
     text-shadow: none;
-    margin-right: 18px;
+    margin-right: 14px;
 }
 
 .body {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: normal;
     background: transparent;
-    color: @text-color;
+    color: @text-sub;
     text-shadow: none;
     line-height: 1.35;
 }
 
-.control-center {
-    background: @noti-bg;
-    border: 1px solid @noti-border-color;
-	color: @text-color;
+.body-image {
+    margin-top: 6px;
+    color: @text-color;
     border-radius: 10px;
 }
 
-.control-center-list {
-    background: transparent
+/* Botão Fechar Notificação */
+.close-button {
+    background: rgba(243, 139, 168, 0.18);
+    color: #f38ba8;
+    text-shadow: none;
+    padding: 2px 6px;
+    border-radius: 8px;
+    margin-top: 4px;
+    margin-right: 4px;
+    border: 1px solid rgba(243, 139, 168, 0.3);
+    transition: all 0.15s ease;
 }
 
-.control-center-list-placeholder {
-    opacity: 0.5
+.close-button:hover {
+    background: #f38ba8;
+    color: #11111b;
+    border-color: #f38ba8;
 }
 
-.floating-notifications {
-    background: transparent;
+.notification-action {
+    border: 1px solid @noti-border-color;
+    border-radius: 10px;
+    background: rgba(49, 50, 68, 0.5);
+    color: @text-color;
+    padding: 4px 10px;
+    margin: 4px 2px;
 }
 
-.blank-window {
-    background: alpha(black, 0.1)
+.notification-action:hover {
+    background: @color12;
+    color: #11111b;
 }
 
+/* ==============================================================================
+ * 🎵 CARDS ESPECÍFICOS (Design Refinado sem Neon Duro)
+ * ============================================================================== */
+.notification.Spotify,
+.notification.spotify,
+.notification.spotify-osd,
+.notification.music_notif {
+    border-left: 3.5px solid #1db954;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(24, 34, 28, 0.85);
+}
+
+.notification.Spotify .summary,
+.notification.spotify .summary {
+    color: #a6e3a1;
+}
+
+.notification.YouTube,
+.notification.youtube,
+.notification.youtube_media {
+    border-left: 3.5px solid #f38ba8;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(36, 22, 26, 0.85);
+}
+
+.notification.YouTube .summary,
+.notification.youtube .summary {
+    color: #f38ba8;
+}
+
+.notification.WhatsApp,
+.notification.whatsapp,
+.notification[app-name*="whatsapp"],
+.notification[app-name*="WhatsApp"] {
+    border-left: 3.5px solid #a6e3a1;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(22, 34, 26, 0.85);
+}
+
+.notification.WhatsApp .summary,
+.notification.whatsapp .summary {
+    color: #a6e3a1;
+}
+
+/* ==============================================================================
+ * 🏷️ WIDGET: TÍTULO & BOTÃO CLEAR
+ * ============================================================================== */
 .widget-title {
     color: @text-color;
-    background: @noti-bg-alt;
-    padding: 3px 6px;
-    margin: 5px;
-    font-size: 1rem;
+    background: transparent;
+    padding: 6px 12px;
+    margin: 4px 6px;
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+.widget-title > button {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: @text-sub;
     border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    padding: 5px 14px;
+    transition: all 0.2s ease;
 }
 
-.widget-title>button {
-    font-size: 0.75rem;
-    color: @text-color;
-    border-radius: 10px;
-	background: transparent;
-	border: 0.5px solid @noti-border-color;
+.widget-title > button:hover {
+    background: rgba(243, 139, 168, 0.2);
+    color: #f38ba8;
+    border-color: rgba(243, 139, 168, 0.4);
 }
 
-/* clear button */
-.widget-title>button:hover {
-    background: @text-color;
-    color: red;
-}
-
+/* ==============================================================================
+ * 🌙 WIDGET: DO NOT DISTURB (DND)
+ * ============================================================================== */
 .widget-dnd {
-    background: @noti-bg-alt;
-    padding: 3px 6px;
-    margin: 5px;
-    border-radius: 10px;
-    font-size: 0.5rem;
-    color: @noti-border-color;
-}
-
-.widget-dnd>switch {
-    border-radius: 10px;
-    border: 1px solid #7aa2f7;
-    background: @noti-border-color;
-}
-
-.widget-dnd>switch:checked {
-    background: #f7768e;
-    border: 1px solid #f7768e;
-}
-
-.widget-dnd>switch slider {
-    background: @noti-bg;
-    border-radius: 10px
-}
-
-.widget-dnd>switch:checked slider {
-    background: @noti-bg;
-    border-radius: 10px
-}
-
-.widget-label {
-    margin: 5px;
-}
-
-.widget-label>label {
-    font-size: 1rem;
+    background: @noti-card-bg;
+    padding: 8px 14px;
+    margin: 6px 8px;
+    border-radius: 12px;
+    border: 1px solid @noti-border-color;
+    font-size: 0.92rem;
     color: @text-color;
 }
 
+.widget-dnd > switch {
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(69, 71, 90, 0.5);
+    min-width: 44px;
+    min-height: 22px;
+}
+
+.widget-dnd > switch:checked {
+    background: @color12;
+    border-color: @color12;
+}
+
+.widget-dnd > switch slider {
+    background: #cdd6f4;
+    border-radius: 50%;
+    min-width: 18px;
+    min-height: 18px;
+}
+
+.widget-dnd > switch:checked slider {
+    background: #11111b;
+    border-radius: 50%;
+}
+
+/* ==============================================================================
+ * 🎛️ WIDGET: GRID DE BOTÕES DE AÇÃO RÁPIDA
+ * ============================================================================== */
+.widget-buttons-grid {
+    padding: 6px;
+    margin: 6px 8px;
+    border-radius: 14px;
+    background: @noti-card-bg;
+    border: 1px solid @noti-border-color;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button {
+    margin: 3px;
+    padding: 10px;
+    background: rgba(69, 71, 90, 0.4);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: @text-color;
+    transition: all 0.2s ease;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button:hover {
+    background: @color12;
+    color: #11111b;
+    border-color: @color12;
+}
+
+/* ==============================================================================
+ * 🎵 WIDGET: MPRIS MEDIA PLAYER
+ * ============================================================================== */
 .widget-mpris {
     color: @text-color;
-    background: @noti-bg;
-    padding: 3px 6px;
-    margin: 5px;
-    border-radius: 10px;
+    background: @noti-card-bg;
+    padding: 10px 14px;
+    margin: 6px 8px;
+    border-radius: 14px;
+    border: 1px solid @noti-border-color;
+}
+
+.widget-mpris-player {
+    padding: 4px;
+    margin: 2px;
+}
+
+.widget-mpris-title {
+    font-weight: 800;
+    font-size: 0.98rem;
+    color: @text-color;
+}
+
+.widget-mpris-subtitle {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: @text-dim;
 }
 
 .widget-mpris > box > button {
     border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: @text-color;
+    padding: 6px 12px;
+    transition: all 0.15s ease;
 }
 
-.widget-mpris-player {
-    padding: 3px 6px;
-    margin: 5px;
+.widget-mpris > box > button:hover {
+    background: @color12;
+    color: #11111b;
 }
 
-.widget-mpris-title {
-    font-weight: 100;
-    font-size: 1rem
+/* ==============================================================================
+ * 🔊 WIDGETS: VOLUME & BRILHO (Sliders Modernos)
+ * ============================================================================== */
+.widget-volume,
+.widget-backlight {
+    background: @noti-card-bg;
+    padding: 8px 14px;
+    margin: 6px 8px;
+    border-radius: 12px;
+    border: 1px solid @noti-border-color;
+    color: @text-color;
 }
 
-.widget-mpris-subtitle {
-    font-size: 0.75rem
-}
-
-.widget-buttons-grid {
-    font-size: large;
-	color: @noti-border-color;
-    padding: 2px;
-    margin: 5px;
-    border-radius: 10px;
-    background: @noti-bg-alt;
-}
-
-.widget-buttons-grid>flowbox>flowboxchild>button {
-    margin: 1px;
-    background: @noti-bg;
-    border-radius: 10px;
-    color: @text-color
-}
-
-/* individual buttons */
-.widget-buttons-grid>flowbox>flowboxchild>button:hover {
-    background: @text-color;
-    color: @noti-bg-hover
-}
-
-.widget-menubar>box>.menu-button-bar>button {
+.widget-volume scale trough,
+.widget-backlight scale trough {
+    background: rgba(69, 71, 90, 0.5);
+    border-radius: 8px;
+    min-height: 8px;
     border: none;
-    background: transparent
 }
 
-.topbar-buttons>button {
+.widget-volume scale highlight,
+.widget-backlight scale highlight {
+    background: linear-gradient(90deg, @color12, @color14);
+    border-radius: 8px;
+}
+
+.widget-volume > box > button {
+    background: transparent;
     border: none;
-    background: transparent
-}
-
-.widget-volume {
-    background: @noti-bg-alt;
-    padding: 2px;
-    margin: 10px 10px 5px 10px;
-    border-radius: 10px;
-    font-size: x-large;
-    color: @text-color
-}
-
-.widget-volume>box>button {
-    background: @noti-border-color;
-    border: none
+    color: @color12;
+    font-size: 1.1rem;
+    margin-right: 8px;
 }
 
 .per-app-volume {
-    background-color: @noti-bg;
-    padding: 4px 8px 8px;
-    margin: 0 8px 8px;
+    background-color: rgba(24, 24, 37, 0.6);
+    padding: 6px 10px;
+    margin: 4px 8px;
     border-radius: 10px;
-	color: @text-color
-}
-
-.widget-backlight {
-    background: @noti-bg-alt;
-    padding: 5px;
-    margin: 10px 10px 5px 10px;
-    border-radius: 10px;
-    font-size: x-large;
-    color: @text-color
+    color: @text-color;
 }

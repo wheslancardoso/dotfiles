@@ -2,31 +2,47 @@
  /* wallust template - colors-rofi */
 
 * {
-active-background: #C68AEE;
-active-foreground: #FAEED6;
-normal-background: #131415;
-normal-foreground: #FAEED6;
-urgent-background: #B1BDCC;
-urgent-foreground: #FAEED6;
+    /* Base Catppuccin Mocha */
+    cat-base: rgba(30, 30, 46, 0.82);
+    cat-mantle: rgba(24, 24, 37, 0.90);
+    cat-crust: rgba(17, 17, 27, 0.95);
+    cat-surface0: rgba(49, 50, 68, 0.55);
+    cat-surface1: rgba(69, 71, 90, 0.70);
+    cat-text: #cdd6f4;
+    cat-subtext: #a6adc8;
 
-alternate-active-background: #E05F65;
-alternate-active-foreground: #FAEED6;
-alternate-normal-background: #131415;
-alternate-normal-foreground: #FAEED6;
-alternate-urgent-background: #131415;
-alternate-urgent-foreground: #FAEED6;
+    /* Wallust Dynamic Accents */
+    accent-primary: #C68AEE;
+    accent-secondary: #F1CF8A;
+    accent-active: #E05F65;
+    accent-cyan: #B59B67;
 
-selected-active-background: #C68AEE;
-selected-active-foreground: #131415;
-selected-normal-background: #C68AEE;
-selected-normal-foreground: #131415;
-selected-urgent-background: #E05F65;
-selected-urgent-foreground: #131415;
+    active-background: #C68AEE;
+    active-foreground: #11111b;
+    normal-background: transparent;
+    normal-foreground: #cdd6f4;
+    urgent-background: #E05F65;
+    urgent-foreground: #11111b;
 
-background-color: #131415;
-background: rgba(0,0,0,0.7);
-foreground: #FAEED6;
-border-color: #C68AEE;
+    alternate-active-background: transparent;
+    alternate-active-foreground: #C68AEE;
+    alternate-normal-background: transparent;
+    alternate-normal-foreground: #cdd6f4;
+    alternate-urgent-background: transparent;
+    alternate-urgent-foreground: #E05F65;
+
+    selected-active-background: #C68AEE;
+    selected-active-foreground: #11111b;
+    selected-normal-background: #C68AEE;
+    selected-normal-foreground: #11111b;
+    selected-urgent-background: #E05F65;
+    selected-urgent-foreground: #11111b;
+
+    background-color: transparent;
+    background: @cat-base;
+    background-alt: @cat-surface0;
+    foreground: #cdd6f4;
+    border-color: rgba(198,138,238, 0.35);
 
 color0: #3B3B3C;
 color1: #0D0F13;

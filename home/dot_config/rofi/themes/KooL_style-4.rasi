@@ -22,82 +22,75 @@ configuration {
 
 /*****----- Global Properties -----*****/
 * {
-    background-alt: @color0;
-    /* selected uses color12, active uses color11 (match other working styles) */
-    selected:       @color12;
-    active:         @color11;
-    urgent:         @color13;
+    background-alt:              rgba(49, 50, 68, 0.55);
+    selected:                    @color12;
+    active:                      @color14;
+    urgent:                      @color11;
     
-    border-color:                @active;
+    border-color:                rgba(255, 255, 255, 0.10);
     handle-color:                @selected;
-    background-color:            @background;
-    foreground-color:            @foreground;
-    alternate-background:        @background-alt;
-    normal-background:           @background;
-    normal-foreground:           @foreground;
+    background-color:            transparent;
+    foreground-color:            #cdd6f4;
+    alternate-background:        transparent;
+    normal-background:           transparent;
+    normal-foreground:           #cdd6f4;
     urgent-background:           @urgent;
-    urgent-foreground:           @background;
+    urgent-foreground:           #11111b;
     active-background:           @active;
-    active-foreground:           @background;
-    /* force selection to use the selected accent, not imported selected-* values */
+    active-foreground:           #11111b;
     selected-normal-background:  @selected;
-    selected-normal-foreground:  @background;
-    selected-urgent-background:  @selected;
-    selected-urgent-foreground:  @background;
-    selected-active-background:  @selected;
-    selected-active-foreground:  @background;
-    alternate-normal-background: @background;
-    alternate-normal-foreground: @foreground;
+    selected-normal-foreground:  #11111b;
+    selected-urgent-background:  @urgent;
+    selected-urgent-foreground:  #11111b;
+    selected-active-background:  @active;
+    selected-active-foreground:  #11111b;
+    alternate-normal-background: transparent;
+    alternate-normal-foreground: #cdd6f4;
     alternate-urgent-background: @urgent;
-    alternate-urgent-foreground: @background;
+    alternate-urgent-foreground: #11111b;
     alternate-active-background: @active;
-    alternate-active-foreground: @background;
-    
-
+    alternate-active-foreground: #11111b;
 }
 
 
-/*****----- Main Window -----*****/
+/*****----- Main Window (Glassmorphism & Frosted Blur) -----*****/
 window {
-    /* properties for window widget */
     transparency:                "real";
     location:                    center;
     anchor:                      center;
     fullscreen:                  false;
-    width:                       35%;
+    width:                       40%;
     x-offset:                    0px;
     y-offset:                    0px;
 
-    /* properties for all widgets */
     enabled:                     true;
     margin:                      0px;
     padding:                     0px;
-    border:                      0px solid;
-    border-radius:               10px;
-    border-color:                @border-color;
+    border:                      1.5px solid;
+    border-radius:               16px;
+    border-color:                rgba(255, 255, 255, 0.12);
     cursor:                      "default";
-    /* Backgroud Colors */
-    background-color:            @background-color;
+    background-color:            rgba(24, 24, 37, 0.86);
 }
 
 /*****----- Main Box -----*****/
 mainbox {
     enabled:                     true;
-    spacing:                     10px;
+    spacing:                     14px;
     margin:                      0px;
-    padding:                     20px;
+    padding:                     22px;
     border:                      0px solid;
-    border-radius:               0px 0px 0px 0px;
-    border-color:                @border-color;
-    background-color:            inherit;
+    border-radius:               0px;
+    border-color:                transparent;
+    background-color:            transparent;
     children:                    [ "inputbar", "message", "custombox" ];
 }
 
 /*****----- A Custom Box -----*****/
 custombox {
     spacing:                     0px;
-    background-color:            @background-color;
-    text-color:                  @foreground-color;
+    background-color:            transparent;
+    text-color:                  #cdd6f4;
     orientation:                 horizontal;
     children:                    [ "mode-switcher", "listview" ];
 }
@@ -105,14 +98,14 @@ custombox {
 /*****----- Inputbar -----*****/
 inputbar {
     enabled:                     true;
-    spacing:                     10px;
+    spacing:                     12px;
     margin:                      0px;
-    padding:                     8px 12px;
-    border:                      0px solid;
-    border-radius:               8px;
-    border-color:                @border-color;
-    background-color:            @alternate-background;
-    text-color:                  @foreground;
+    padding:                     10px 14px;
+    border:                      1px solid;
+    border-radius:               12px;
+    border-color:                rgba(255, 255, 255, 0.08);
+    background-color:            rgba(49, 50, 68, 0.45);
+    text-color:                  #cdd6f4;
     children:                    [ "textbox-prompt-colon", "entry" ];
 }
 
@@ -123,39 +116,39 @@ prompt {
 }
 textbox-prompt-colon {
     enabled:                     true;
-    padding:                     5px 0px;
+    padding:                     4px 0px;
     expand:                      false;
     str:                         " 🔎";
     background-color:            inherit;
-    text-color:                  inherit;
+    text-color:                  #a6adc8;
 }
 entry {
     enabled:                     true;
-    padding:                     5px 0px;
-    background-color:            @alternate-background;
-    text-color:                  @foreground;
+    padding:                     4px 0px;
+    background-color:            transparent;
+    text-color:                  #cdd6f4;
     cursor:                      text;
     placeholder:                 "Search...";
-    placeholder-color:           inherit;
+    placeholder-color:           #6c7086;
 }
 num-filtered-rows {
     enabled:                     true;
     expand:                      false;
     background-color:            inherit;
-    text-color:                  inherit;
+    text-color:                  #a6adc8;
 }
 textbox-num-sep {
     enabled:                     true;
     expand:                      false;
     str:                         "/";
     background-color:            inherit;
-    text-color:                  inherit;
+    text-color:                  #6c7086;
 }
 num-rows {
     enabled:                     true;
     expand:                      false;
     background-color:            inherit;
-    text-color:                  inherit;
+    text-color:                  #a6adc8;
 }
 case-indicator {
     enabled:                     true;
@@ -163,34 +156,34 @@ case-indicator {
     text-color:                  inherit;
 }
 
-/*****----- Listview -----*****/
+/*****----- Listview (Sem bordas duras, fluxo limpo) -----*****/
 listview {
     enabled:                     true;
     columns:                     1;
-    lines:                       6;
+    lines:                       7;
     cycle:                       true;
     dynamic:                     true;
     scrollbar:                   false;
     layout:                      vertical;
     reverse:                     false;
-    fixed-height:                true;
+    fixed-height:                false;
     fixed-columns:               true;
     
     spacing:                     5px;
     margin:                      0px;
-    padding:                     10px;
-    border:                      2px 2px 2px 2px;
-    border-radius:               8px;
-    border-color:                @border-color;
+    padding:                     4px 0px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                transparent;
     background-color:            transparent;
-    text-color:                  @foreground-color;
+    text-color:                  #cdd6f4;
     cursor:                      "default";
 }
 scrollbar {
-    handle-width:                2px ;
-    handle-color:                @handle-color;
+    handle-width:                3px;
+    handle-color:                @selected;
     border-radius:               10px;
-    background-color:            @alternate-background;
+    background-color:            rgba(49, 50, 68, 0.35);
 }
 
 /*****----- Elements -----*****/
@@ -200,49 +193,51 @@ element {
     margin:                      0px;
     padding:                     10px;
     border:                      0px solid;
-    border-radius:               8px;
-    border-color:                @border-color;
+    border-radius:               10px;
+    border-color:                transparent;
     background-color:            transparent;
-    text-color:                  @foreground-color;
+    text-color:                  #cdd6f4;
     cursor:                      pointer;
 }
 element normal.normal {
     background-color:            transparent;
-    text-color:                  @normal-foreground;
+    text-color:                  #cdd6f4;
 }
 element normal.urgent {
     background-color:            @urgent-background;
-    text-color:                  @urgent-foreground;
+    text-color:                  #11111b;
 }
 element normal.active {
     background-color:            transparent;
-    text-color:                  @active-foreground;
+    text-color:                  @active;
 }
 
-element-text selected,
 element selected.normal {
     background-color:            @selected;
-    text-color:                  @background;
+    text-color:                  #11111b;
 }
 element selected.urgent {
-    background-color:            @selected;
-    text-color:                  @background;
+    background-color:            @urgent;
+    text-color:                  #11111b;
 }
 element selected.active {
     background-color:            @selected;
-    text-color:                  @background;
+    text-color:                  #11111b;
+}
+element-text selected {
+    text-color:                  #11111b;
 }
 element alternate.normal {
-    background-color:            @alternate-normal-background;
-    text-color:                  @alternate-normal-foreground;
+    background-color:            transparent;
+    text-color:                  #cdd6f4;
 }
 element alternate.urgent {
-    background-color:            @alternate-urgent-background;
-    text-color:                  @alternate-urgent-foreground;
+    background-color:            transparent;
+    text-color:                  @urgent;
 }
 element alternate.active {
-    background-color:            @alternate-active-background;
-    text-color:                  @alternate-active-foreground;
+    background-color:            transparent;
+    text-color:                  @active;
 }
 element-icon {
     background-color:            transparent;
