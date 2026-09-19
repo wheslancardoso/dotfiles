@@ -15,6 +15,8 @@
 
 ## 2. FILOSOFIA DO SISTEMA (ARCH + HYPRLAND + CACHYOS)
 - **Keyboard-Driven (Vim / Sensei Style)**: O sistema é operado 100% via teclado, sem mouse. Favoreça atalhos rápidos e ferramentas TUI (Yazi, Neovim, Btop, LazyGit).
+- **Mapa Sagrado de Atalhos & Scratchpads (SSOT)**: Antes de propor, alterar ou supor qualquer atalho, verifique sempre o arquivo canônico [`docs/HYPRLAND_ECOSYSTEM_MASTER_INDEX.md`](file:///home/lan/dotfiles/docs/HYPRLAND_ECOSYSTEM_MASTER_INDEX.md).
+- **Sem Conflito de Teclas**: Nunca sobreponha atalhos existentes (ex: `SUPER + C` é calculadora, `SUPER + W` é WhatsApp, `SUPER + I` é IA, `SUPER + M` é Spotify, `SUPER + T` é TecConcursos).
 - **Sem Lentidão / Zero Bloat**: Não crie daemons pesados em polling contínuo (`while true; sleep 1`). Use `inotifywait`, timers systemd ou chamadas event-driven.
 - **Proteção contra Falhas**: Nunca use comandos destrutivos sem retorno (`rm -rf` indiscriminado). Para deletar arquivos de usuário, use `trash-put` (lixeira segura).
 

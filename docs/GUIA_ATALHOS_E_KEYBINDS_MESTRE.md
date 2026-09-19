@@ -39,17 +39,13 @@
 | `Super + Alt + M` | Silenciar / Ativar Microfone globalmente (**Mic Mute Toggle**) |
 | `Super + Alt + B` | **Bluetooth Quick Manager** (Menu Rofi com bateria e conexão rápida) |
 | `Super + Alt + W` | **Wi-Fi Quick Manager** (Menu Rofi com intensidade de sinal `▂▄▆█`) |
-| `Super + C` | Calculadora flutuante com conversão de moedas ao vivo |
-| `Super + Alt + C` | Calculadora científica e financeira avançada (**Qalculate-GTK**) |
-| `Super + Shift + D` | **Upload Rápido de Documentos** (Acesso Rápido - CNH, RG, Comprovantes em janela flutuante) |
-| `Super + Alt + S` | **Sincronização de Saves de Jogos** (Ludusavi Cloud Backup com notificação nativa) |
-| `Super + Alt + G` | **Google Drive 5TB On-Demand** (Conectar/Desconectar Rclone VFS streaming com notificação) |
-| `Super + Alt + D` | **Menu Media Downloader** (Rofi interativo para YouTube, Spotify, cortes, GIFs, etc.) |
-| `Super + Alt + U` | **Atualização Blindada do Sistema** (Janela flutuante do `safe-update` com snapshot Btrfs) |
-| `Super + Ctrl + D` | **Baixar Tocando Agora** (Captura imediata da faixa/vídeo ativa via MPRIS / Spotify / Navegador) |
-| `Super + Shift + M` | Gerenciador de Monitores e Projeção (**nwg-displays**) |
-| `Super + M` | **Spotify Dropdown Scratchpad** (Desce janela flutuante com blur Catppuccin e esconde ao apertar de novo) |
-| `Super + T` | **TecConcursos Dropdown Scratchpad** (Treinador de questões 60s centralizado 80%x88%, modo stealth com 1 toque) |
+| `Super + C` | 🧮 Calculadora flutuante com conversão de moedas ao vivo (`gnome-calculator`) |
+| `Super + Alt + C` | 📐 Calculadora científica e financeira avançada (**Qalculate-GTK**) |
+| `Super + W` | 💬 **WhatsApp Web Dropdown Scratchpad** (Mensagens instantâneas flutuantes) |
+| `Super + I` | 🤖 **Oráculo de IA Dropdown Scratchpad** (Chatbot e pesquisa sob demanda) |
+| `Super + M` | 🎵 **Spotify Dropdown Scratchpad** (Desce janela flutuante com blur Catppuccin e esconde ao apertar de novo) |
+| `Super + T` | 🎯 **TecConcursos Dropdown Scratchpad** (Treinador de questões 60s centralizado 80%x88%, modo stealth com 1 toque) |
+| `Super + '` (grave) / `Super + U` | 💻 **Terminal Quake Dropdown Scratchpad** (Terminal suspenso rápido 0ms) |
 | `Super + Ctrl + Space` | Play / Pause do Spotify em segundo plano |
 | `Super + Ctrl + ]` / `[` | Próxima faixa / Faixa anterior do Spotify |
 | `Super + Shift + N` | Central de Notificações e Controle (**SwayNC** com Não Perturbe) |

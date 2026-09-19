@@ -20,6 +20,7 @@
 │   ├── [ROADMAP_WHISPER_AI_ANKI_IMMERSION.md](./ROADMAP_WHISPER_AI_ANKI_IMMERSION.md) # 🎙️ Whisper Large-v3-Turbo + Edge-TTS: Cockpit AI de Imersão e Mineração
 │   ├── [GUIA_YAZI_POWERUSER.md](./GUIA_YAZI_POWERUSER.md)         # Yazi ultra-veloz, compactação/extração e saltos no Drive
 │   ├── [GUIA_EMOJI_ENGINE_SOBERANO.md](./GUIA_EMOJI_ENGINE_SOBERANO.md) # 󰞅 Apex Emoji Engine: Busca PT-BR, Abas WhatsApp, Vim & Necropsia Pango
+│   ├── [HYPRLAND_ECOSYSTEM_MASTER_INDEX.md](./HYPRLAND_ECOSYSTEM_MASTER_INDEX.md) # 🏛️ Índice Mestre: Todos os Atalhos, Scratchpads e Janelas do Hyprland
 │   └── [GUIA_ATALHOS_E_KEYBINDS_MESTRE.md](./GUIA_ATALHOS_E_KEYBINDS_MESTRE.md) # Cheat sheet geral de atalhos
 │
 ├── 🛠️ SETUP DE MÁQUINA, JOGOS & BACKUPS
