@@ -15,12 +15,12 @@ wallpaper_current="$HOME/.config/hypr/wallpaper_effects/.wallpaper_current"
 iDIR="$HOME/.config/swaync/images"
 iDIRi="$HOME/.config/swaync/icons"
 
-# awww transition config
-FPS=60
+# awww transition config (100Hz Sovereign Fluidity)
+FPS=100
 TYPE="any"
-DURATION=2
-BEZIER=".43,1.19,1,.4"
-SWWW_PARAMS="--transition-fps $FPS --transition-type $TYPE --transition-duration $DURATION --transition-bezier $BEZIER"
+DURATION=1.5
+BEZIER=".16,1,.3,1"
+SWWW_PARAMS="--transition-fps $FPS --transition-type $TYPE --transition-duration $DURATION --transition-bezier $BEZIER --transition-wave 20,20"
 
 # Check if package bc exists
 if ! command -v bc &>/dev/null; then
