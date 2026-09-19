@@ -1,13 +1,24 @@
 #!/usr/bin/env python3
 """
-⚡ APEX EMOJI ENGINE v3.5 (Vim Sovereign Edition)
+⚡ APEX EMOJI ENGINE v4.0 (Vim & Category Sovereign Edition)
 - Navegação 100% estilo Vim (Ctrl+j / Ctrl+k / Ctrl+d / Ctrl+u / Esc)
-- Atalho Yank (Ctrl+y) para apenas copiar pro Clipboard
-- Enter para Digitação Direta no App em foco (wtype) + Cópia (wl-copy)
+- Abas de Categorias Instantâneas com [Alt+1 .. Alt+0] (WhatsApp/Windows Style)
+  * Alt+1: ⭐ Recentes
+  * Alt+2: 😀 Rostos & Emoções
+  * Alt+3: 👋 Pessoas & Gestos
+  * Alt+4: 🐶 Animais & Natureza
+  * Alt+5: 🍕 Comidas & Bebidas
+  * Alt+6: ✈️ Viagens & Lugares
+  * Alt+7: ⚽ Atividades & Esportes
+  * Alt+8: 💡 Objetos
+  * Alt+9: 🔣 Símbolos
+  * Alt+0: 🇧🇷 Bandeiras
+  * Alt+BackSpace: Limpar categoria (Ver todos)
+- Atalho Yank (Ctrl+y): Copia direto pro Clipboard com notificação limpa
+- Enter: Digitação Direta no App em foco (wtype) + Cópia (wl-copy)
 - Busca Semântica em Português do Brasil com mais de 3.960 emojis
-- Gírias BR (joinha, foguinho, kkk, pix, sextou, etc.)
-- Filtro Instantâneo por Categorias via hashtags (#comidas, #rostos, #pessoas, #animais, #lugares, #esportes, #objetos, #simbolos, #bandeiras, #recentes)
-- Zero loops, zero flicker, execução atômica em 1 única sessão
+- Gírias BR completas (joinha, foguinho, kkk, pix, sextou, etc.)
+- Zero DDD: formatação Pango 100% validada e ultra-rápida em RAM
 """
 
 import html
@@ -37,6 +48,35 @@ GROUP_TO_TAG = {
     "🔣 Símbolos": "simbolos",
     "🇧🇷 Bandeiras": "bandeiras",
 }
+
+CATEGORY_ACTIONS = {
+    10: "#recentes ",
+    11: "#rostos ",
+    12: "#pessoas ",
+    13: "#animais ",
+    14: "#comidas ",
+    15: "#lugares ",
+    16: "#esportes ",
+    17: "#objetos ",
+    18: "#simbolos ",
+    19: "#bandeiras ",
+    21: "",  # Alt+BackSpace -> Limpar filtro
+}
+
+CATEGORY_HEADER = (
+    '<span size="small">'
+    '<b>[Alt+1]</b> ⭐Recentes '
+    '<b>[Alt+2]</b> 😀Rostos '
+    '<b>[Alt+3]</b> 👋Pessoas '
+    '<b>[Alt+4]</b> 🐶Animais '
+    '<b>[Alt+5]</b> 🍕Comidas '
+    '<b>[Alt+6]</b> ✈️Lugares '
+    '<b>[Alt+7]</b> ⚽Esportes '
+    '<b>[Alt+8]</b> 💡Objetos '
+    '<b>[Alt+9]</b> 🔣Símbolos '
+    '<b>[Alt+0]</b> 🇧🇷Bandeiras'
+    '</span>'
+)
 
 def load_database():
     if not DATABASE_FILE.exists():
@@ -75,30 +115,45 @@ def format_emoji_line(item, is_recent=False):
     
     # Extrai sinônimos limpos
     kws = [k for k in item.get("keywords", []) if k.lower() not in name.lower()]
-    synonyms = ", ".join(kws[:4]) if kws else ""
-    syn_markup = f'<span color="#a6adc8">· {html.escape(synonyms)}</span>' if synonyms else ""
+    synonyms = ", ".join(kws[:3]) if kws else ""
+    syn_markup = f'<span alpha="70%">· {html.escape(synonyms)}</span>' if synonyms else ""
     
     group_name = item.get("group", "")
     tag = GROUP_TO_TAG.get(group_name, "objetos")
     
     if is_recent:
-        badge = '<span color="#f9e2af">⭐ [Recente]</span> '
-        tag_markup = '<span color="#f9e2af"><i>#recentes</i></span>'
+        badge = '<span color="#f9e2af">⭐ </span>'
+        tag_markup = '<span alpha="85%"><i>#recentes</i></span>'
         search_tag = "recentes recente fav favorito "
     else:
         badge = ''
-        tag_markup = f'<span color="#cba6f7"><i>#{tag}</i></span>'
+        tag_markup = f'<span alpha="85%"><i>#{tag}</i></span>'
         search_tag = f"#{tag} {tag} "
     
     search_terms = html.escape(search_tag + item.get("search_text", ""))
     
+    # size="1" alpha="1%" mantém as palavras-chave 100% pesquisáveis sem Pango error e sem DDD
     return (
-        f'<span size="155%">{char}</span>   '
+        f'<span size="150%">{char}</span>   '
         f'{badge}<b>{name}</b>   '
         f'{syn_markup}   '
-        f'{tag_markup}  '
-        f'<span size="0" alpha="0%">{search_terms}</span>'
+        f'{tag_markup} '
+        f'<span size="1" alpha="1%">{search_terms}</span>'
     )
+
+def extract_emoji(selected_text):
+    if not selected_text:
+        return ""
+    m = re.search(r'<span size="150%">([^<]+)</span>', selected_text)
+    if m:
+        return m.group(1).strip()
+    return selected_text.split()[0].strip()
+
+def notify(msg):
+    try:
+        subprocess.run(["notify-send", "-a", "Apex Emoji", "-i", "accessories-character-map", "Apex Emoji", msg], check=False)
+    except Exception:
+        pass
 
 def main():
     database = load_database()
@@ -109,7 +164,6 @@ def main():
     char_to_item = {item["char"]: item for item in database}
     history = load_history()
 
-    # Ordena recentes por mais frequente e recente
     sorted_recent_chars = sorted(
         history.keys(),
         key=lambda c: (history[c].get("count", 0), history[c].get("last", 0)),
@@ -117,75 +171,78 @@ def main():
     )
 
     lines = []
-
-    # 1. Emojis Mais Usados e Frequentes no topo absoluto
-    for char in sorted_recent_chars[:12]:
+    # 1. Recentes no topo
+    for char in sorted_recent_chars[:15]:
         if char in char_to_item:
             lines.append(format_emoji_line(char_to_item[char], is_recent=True))
 
-    # 2. Toda a base de 3.962 emojis com busca semântica instantânea
+    # 2. Base completa de emojis
     for item in database:
         lines.append(format_emoji_line(item, is_recent=False))
 
-    # Executa o Rofi com navegação Vim nativa
-    rofi_cmd = [
-        "rofi",
-        "-dmenu",
-        "-i",
-        "-markup-rows",
-        "-normalize-match",
-        "-matching", "normal",
-        "-tokenize",
-        "-config", str(ROFI_CONFIG),
-    ]
+    input_payload = "\n".join(lines)
+    current_filter = ""
 
-    proc = subprocess.Popen(
-        rofi_cmd,
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.DEVNULL,
-        text=True
-    )
-    stdout, _ = proc.communicate(input="\n".join(lines))
-    return_code = proc.returncode
+    while True:
+        rofi_cmd = [
+            "rofi",
+            "-dmenu",
+            "-i",
+            "-markup-rows",
+            "-normalize-match",
+            "-matching", "normal",
+            "-tokenize",
+            "-mesg", CATEGORY_HEADER,
+            "-config", str(ROFI_CONFIG),
+        ]
+        if current_filter:
+            rofi_cmd.extend(["-filter", current_filter])
 
-    # Se o usuário cancelou (ESC ou Ctrl+[)
-    if return_code not in (0, 10):
-        sys.exit(0)
+        result = subprocess.run(
+            rofi_cmd,
+            input=input_payload,
+            text=True,
+            capture_output=True,
+        )
 
-    selected = stdout.strip()
-    if not selected:
-        sys.exit(0)
+        # Trata troca de categoria via [Alt+1 .. Alt+0] ou [Alt+BackSpace]
+        if result.returncode in CATEGORY_ACTIONS:
+            target_filter = CATEGORY_ACTIONS[result.returncode]
+            if current_filter == target_filter:
+                current_filter = ""  # Toggle de volta pra todos
+            else:
+                current_filter = target_filter
+            continue
 
-    # Extrai o emoji do span formatado
-    m = re.search(r'<span size="155%">([^<]+)</span>', selected)
-    if m:
-        emoji = m.group(1).strip()
-    else:
-        emoji = selected.split()[0].strip()
+        selected = result.stdout.strip()
 
-    if not emoji:
-        sys.exit(0)
+        # Cancelado (Esc / Ctrl+[)
+        if result.returncode == 1 or not selected:
+            break
 
-    # Salva no histórico de favoritos
-    save_history(emoji)
+        emoji = extract_emoji(selected)
+        if not emoji:
+            break
 
-    # Copia sempre para o Clipboard do Wayland
-    try:
-        subprocess.run(["wl-copy", emoji], check=True)
-    except Exception:
-        pass
+        save_history(emoji)
 
-    # Se apertou ENTER (return_code 0): Auto-Type direto no app ativo
-    # Se apertou Ctrl+y (return_code 10): Apenas Yank (copiou pro clipboard)
-    if return_code == 0:
-        time.sleep(0.12)
-        try:
-            subprocess.run(["wtype", emoji], check=True)
-        except Exception:
-            pass
+        # Ctrl+y / custom-11: Apenas Yank (copia pro clipboard com notificação)
+        if result.returncode == 20:
+            subprocess.run(["wl-copy", emoji], check=True)
+            notify(f"📋 Copiado para a área de transferência: {emoji}")
+            break
 
-    sys.exit(0)
+        # Enter / returncode 0: Copia + Digita diretamente no aplicativo em foco
+        if result.returncode == 0:
+            subprocess.run(["wl-copy", emoji], check=True)
+            time.sleep(0.05)
+            try:
+                subprocess.run(["wtype", emoji], check=True)
+            except Exception:
+                pass
+            break
+
+        break
 
 if __name__ == "__main__":
     main()
