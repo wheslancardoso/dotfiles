@@ -18,11 +18,11 @@
     },
     "equalizer#0": {
       "bypass": false,
-      "input-gain": 2.0,
+      "input-gain": 1.0,
       "output-gain": 0.0,
       "left": {
         "band0": {
-          "frequency": 75.0,
+          "frequency": 90.0,
           "gain": 0.0,
           "mode": "HighPass",
           "q": 0.707,
@@ -31,26 +31,26 @@
           "type": "Butterworth"
         },
         "band1": {
-          "frequency": 130.0,
-          "gain": 2.0,
+          "frequency": 200.0,
+          "gain": -1.0,
           "mode": "Bell",
-          "q": 1.2,
+          "q": 1.0,
           "slope": "x1",
           "solo": false,
           "type": "Bell"
         },
         "band2": {
-          "frequency": 300.0,
-          "gain": -2.5,
+          "frequency": 1000.0,
+          "gain": 1.0,
           "mode": "Bell",
-          "q": 1.4,
+          "q": 1.0,
           "slope": "x1",
           "solo": false,
           "type": "Bell"
         },
         "band3": {
           "frequency": 3500.0,
-          "gain": 3.5,
+          "gain": 2.0,
           "mode": "Bell",
           "q": 1.0,
           "slope": "x1",
@@ -58,8 +58,8 @@
           "type": "Bell"
         },
         "band4": {
-          "frequency": 10000.0,
-          "gain": 2.5,
+          "frequency": 8000.0,
+          "gain": 1.5,
           "mode": "HighShelf",
           "q": 0.707,
           "slope": "x1",
@@ -69,13 +69,13 @@
       }
     },
     "compressor#0": {
-      "attack": 8.0,
+      "attack": 12.0,
       "bypass": false,
       "knee": -6.0,
-      "makeup": 5.0,
-      "ratio": 3.5,
-      "release": 120.0,
-      "threshold": -22.0
+      "makeup": 4.0,
+      "ratio": 3.0,
+      "release": 100.0,
+      "threshold": -20.0
     },
     "limiter#0": {
       "alr": false,
