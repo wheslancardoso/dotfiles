@@ -241,6 +241,11 @@ def sanitize_code_and_text(t):
         
         # 5.1 Auto-Heal cirúrgico de Certificados e UUIDs (ex: Udemy ude.my/UC-... e certificados FCC/Coursera)
         def clean_hex_uuid_part(p, target_len):
+            # Corrige engasgo/gagueira de OCR em zeros triplos e caracteres repetidos quando excede o tamanho
+            if len(p) == target_len + 1:
+                p = re.sub(r"[oO0]{3}", "00", p)
+                p = re.sub(r"([a-fA-F0-9])\1{2,}", r"\1\1", p)
+            
             if len(p) == target_len - 1 and ("H" in p or "h" in p):
                 p = re.sub(r"[Hh]", "f1", p, count=1)
             elif len(p) == target_len - 1 and ("M" in p or "m" in p):
@@ -268,12 +273,13 @@ def sanitize_code_and_text(t):
                     return f"{prefix}{p0}-{p1}-{p2}-{p3}-{p4}"
             return m.group(0)
 
-        # Normalização de domínio Udemy quando o OCR em miniatura lê "ude.my" como "NW.my", "UW.my" ou "ud.my"
+        # Normalização de domínio Udemy quando o OCR em miniatura lê "ude.my" como "e.my", "NW.my", "UW.my" ou "ud.my"
+        l = re.sub(r"\b([a-zA-Z0-9_\-]{0,4}\.?my/UC-)", "ude.my/UC-", l, flags=re.IGNORECASE)
         l = re.sub(r"\b(NW|UW|ud|ucle|ude)\s*\.\s*my\b", "ude.my", l, flags=re.IGNORECASE)
         l = re.sub(r"(UC-)\s*", r"\g<1>", l)
         l = re.sub(r"([0-9a-zA-Z])\s*-\s*([0-9a-zA-Z])", r"\g<1>-\g<2>", l)
         l = re.sub(r"((?:ude\.my/|www\.udemy\.com/certificate/)UC-)([0-9a-zA-Z_\-]+)", fix_uuid, l)
-        l = re.sub(r"\b(UC-)([0-9a-zA-Z_\-]{30,40})\b", fix_uuid, l)
+        l = re.sub(r"\b(UC-)([0-9a-zA-Z_\-]{30,42})\b", fix_uuid, l)
         return l
     
     # 6. Preservação de indentação e limpeza sutil de ruído nas bordas
