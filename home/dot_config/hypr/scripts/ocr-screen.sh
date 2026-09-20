@@ -268,9 +268,11 @@ def sanitize_code_and_text(t):
                     return f"{prefix}{p0}-{p1}-{p2}-{p3}-{p4}"
             return m.group(0)
 
+        # Normalização de domínio Udemy quando o OCR em miniatura lê "ude.my" como "NW.my", "UW.my" ou "ud.my"
+        l = re.sub(r"\b(NW|UW|ud|ucle|ude)\s*\.\s*my\b", "ude.my", l, flags=re.IGNORECASE)
         l = re.sub(r"(UC-)\s*", r"\g<1>", l)
         l = re.sub(r"([0-9a-zA-Z])\s*-\s*([0-9a-zA-Z])", r"\g<1>-\g<2>", l)
-        l = re.sub(r"(ude\.my/UC-)([0-9a-zA-Z_\-]+)", fix_uuid, l)
+        l = re.sub(r"((?:ude\.my/|www\.udemy\.com/certificate/)UC-)([0-9a-zA-Z_\-]+)", fix_uuid, l)
         l = re.sub(r"\b(UC-)([0-9a-zA-Z_\-]{30,40})\b", fix_uuid, l)
         return l
     
