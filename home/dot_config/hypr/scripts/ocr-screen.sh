@@ -241,21 +241,34 @@ def sanitize_code_and_text(t):
         
         # 5.1 Auto-Heal cirúrgico de Certificados e UUIDs (ex: Udemy ude.my/UC-... e certificados FCC/Coursera)
         def clean_hex_uuid_part(p, target_len):
-            # Corrige engasgo/gagueira de OCR em zeros triplos e caracteres repetidos quando excede o tamanho
-            if len(p) == target_len + 1:
-                p = re.sub(r"[oO0]{3}", "00", p)
+            # 1. Ligaduras e artefatos comuns (ex: f1 -> H1 ou H; ft -> f)
+            p = p.replace("H1", "f1").replace("h1", "f1")
+            p = re.sub(r"[fF]t(?=[0-9a-fA-F])", "f", p)
+            
+            # 2. Corrige engasgo/gagueira de OCR em zeros triplos e caracteres repetidos quando excede o tamanho
+            if len(p) > target_len:
+                p = re.sub(r"[oO0]{3,}", "00", p)
                 p = re.sub(r"([a-fA-F0-9])\1{2,}", r"\1\1", p)
             
             if len(p) == target_len - 1 and ("H" in p or "h" in p):
                 p = re.sub(r"[Hh]", "f1", p, count=1)
             elif len(p) == target_len - 1 and ("M" in p or "m" in p):
                 p = re.sub(r"[Mm]", "11", p, count=1)
-            p = p.replace("H1", "f1").replace("h1", "f1")
+                
             trans = str.maketrans("HhoOlI|sSgzZtT", "ff001115592277")
             p = p.translate(trans)
             if len(p) == target_len - 1 and p.endswith("11"):
                 p = p[:-2] + "f1"
-            return re.sub(r"[^0-9a-fA-F]", "", p).lower()
+                
+            hex_only = re.sub(r"[^0-9a-fA-F]", "", p).lower()
+            
+            # Se ainda sobrou 1 caractere a mais por duplicação adjacente
+            if len(hex_only) == target_len + 1:
+                for i in range(len(hex_only) - 1):
+                    if hex_only[i] == hex_only[i+1]:
+                        return (hex_only[:i] + hex_only[i+1:]).lower()
+                        
+            return hex_only
 
         def fix_uuid(m):
             prefix = m.group(1)
