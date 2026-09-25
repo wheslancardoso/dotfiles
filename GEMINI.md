@@ -37,3 +37,12 @@ Toda vez que o usuário colar ou apontar um chat do Gemini ou caderno de erros:
 ## 📚 4. PADRÃO MASTERCLASS DE AULAS TEÓRICAS (`.agents/rules/04_*.md`)
 * Toda aula deve conter: Mapa de Danos, Gancho de 60s, Teoria Pura do Zero à Maestria, Diagrama Mermaid, Tabela Comparativa e Cascas de Banana da FCC.
 * Toda alteração em `.md` deve ser imediatamente compilada para `.html` via `python3 scripts/gerar_aulas_html.py`.
+
+---
+
+## ⌨️ 5. LEI DO MAPA DE ATALHOS DO HYPRLAND (`hypr-keys`)
+* **❌ PROIBIDO Mapeamento Cego:** NUNCA crie, altere ou sugira qualquer tecla de atalho no Hyprland (`UserKeybinds.conf` ou qualquer arquivo `.conf`) sem antes rodar obrigatoriamente no terminal:
+  `hypr-keys check <tecla>` ou `hypr-keys free <mod>`
+* **Auditoria de Conflitos & Desvinculação:** Se a tecla já estiver ocupada e for substituir/redefinir, é MANDATÓRIO incluir `unbind = <MOD>, <TECLA_MAIUSCULA>` e `unbind = <MOD>, <TECLA_MINUSCULA>` antes do novo `bindd` para evitar colisões silenciosas.
+* **Validação Imediata:** Após qualquer alteração de atalho, executar `hyprctl reload` e rodar `hypr-keys check <tecla>` e `hypr-keys conflicts` para validar que não existem comandos duplicados no compositor.
+

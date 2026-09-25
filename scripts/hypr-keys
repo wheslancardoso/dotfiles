@@ -1,0 +1,263 @@
+#!/usr/bin/env python3
+"""
+🎹 HyprKeys - Inspetor Soberano de Atalhos & Detector de Conflitos do Hyprland
+Consulta o compositor em tempo real (hyprctl binds) para garantir mapeamentos sem conflitos.
+"""
+
+import sys
+import json
+import subprocess
+import shutil
+from collections import defaultdict
+
+# Cores ANSI para terminal
+BOLD = "\033[1m"
+GREEN = "\033[32m"
+RED = "\033[31m"
+YELLOW = "\033[33m"
+BLUE = "\033[34m"
+CYAN = "\033[36m"
+GRAY = "\033[90m"
+RESET = "\033[0m"
+
+MOD_MAP = {
+    64: "SUPER",
+    1: "SHIFT",
+    4: "CTRL",
+    8: "ALT",
+}
+
+def decode_modmask(mask: int) -> str:
+    mods = []
+    if mask & 64: mods.append("SUPER")
+    if mask & 4:  mods.append("CTRL")
+    if mask & 8:  mods.append("ALT")
+    if mask & 1:  mods.append("SHIFT")
+    return " + ".join(mods) if mods else "NONE"
+
+def parse_mod_str(mod_str: str) -> str:
+    """Normaliza string de modificadores (ex: 'super shift' -> 'SUPER + SHIFT')"""
+    s = mod_str.upper().replace("+", " ").replace("-", " ")
+    tokens = s.split()
+    mods = []
+    if any(m in tokens for m in ["SUPER", "MOD", "MAINMOD", "WIN", "LOGO"]):
+        mods.append("SUPER")
+    if any(m in tokens for m in ["CTRL", "CONTROL"]):
+        mods.append("CTRL")
+    if any(m in tokens for m in ["ALT"]):
+        mods.append("ALT")
+    if any(m in tokens for m in ["SHIFT"]):
+        mods.append("SHIFT")
+    return " + ".join(mods) if mods else "NONE"
+
+def get_live_binds():
+    try:
+        out = subprocess.check_output(["hyprctl", "binds", "-j"], text=True)
+        return json.loads(out)
+    except Exception as e:
+        print(f"{RED}Erro ao consultar hyprctl:{RESET} {e}")
+        sys.exit(1)
+
+def build_index(binds):
+    combos = defaultdict(list)
+    for b in binds:
+        key = b.get("key", "").upper()
+        if not key or b.get("mouse", False):
+            continue
+        mod = decode_modmask(b.get("modmask", 0))
+        combos[(mod, key)].append(b)
+    return combos
+
+def cmd_conflicts(combos):
+    conflicts = {k: v for k, v in combos.items() if len(v) > 1}
+    print(f"\n{BOLD}🔍 Verificação de Conflitos de Atalhos no Hyprland{RESET}")
+    print(f"{'─'*60}")
+    if not conflicts:
+        print(f"{GREEN}✓ Nenhum conflito detectado! Todos os atalhos estão únicos.{RESET}\n")
+        return
+    
+    print(f"{YELLOW}⚠️  Encontrados {len(conflicts)} atalhos com duplo/múltiplo mapeamento:{RESET}\n")
+    for (mod, key), blist in sorted(conflicts.items()):
+        print(f"{RED}{BOLD}● {mod} + {key}{RESET} {GRAY}({len(blist)} comandos disputando a mesma tecla){RESET}")
+        for b in blist:
+            desc = b.get("description") or "(sem descrição)"
+            arg = b.get("arg") or b.get("dispatcher")
+            print(f"    {YELLOW}↳{RESET} {BOLD}{desc}{RESET} {GRAY}→ {arg}{RESET}")
+        print()
+
+def cmd_check(combos, query):
+    tokens = query.upper().replace("+", " ").replace("-", " ").split()
+    if not tokens:
+        print("Informe uma tecla ou combinação para checar. Ex: hypr-keys check a")
+        return
+    
+    # Se passou apenas uma única tecla (ex: 'A' ou 'RETURN')
+    if len(tokens) == 1 and tokens[0] not in ["SUPER", "SHIFT", "ALT", "CTRL"]:
+        target_key = tokens[0]
+        print(f"\n{BOLD}🎹 Mapa de Combinações para a Tecla: {CYAN}{target_key}{RESET}")
+        print(f"{'─'*60}")
+        
+        standard_mods = [
+            "SUPER",
+            "SUPER + SHIFT",
+            "SUPER + ALT",
+            "SUPER + CTRL",
+            "SUPER + CTRL + ALT",
+            "SUPER + CTRL + SHIFT",
+            "ALT",
+            "CTRL + ALT",
+            "SHIFT + ALT",
+        ]
+        
+        for mod in standard_mods:
+            blist = combos.get((mod, target_key), [])
+            combo_str = f"{mod} + {target_key}"
+            if len(blist) == 0:
+                print(f"  {GREEN}● [LIVRE]{RESET}    {BOLD}{combo_str:28}{RESET} {GRAY}(disponível para mapear){RESET}")
+            elif len(blist) == 1:
+                b = blist[0]
+                desc = b.get("description") or b.get("arg") or b.get("dispatcher")
+                print(f"  {RED}● [OCUPADO]{RESET}  {BOLD}{combo_str:28}{RESET} {YELLOW}→ {desc}{RESET}")
+            else:
+                print(f"  {YELLOW}● [CONFLITO]{RESET} {BOLD}{combo_str:28}{RESET} {RED}→ {len(blist)} comandos duplicados!{RESET}")
+                for b in blist:
+                    desc = b.get("description") or b.get("arg")
+                    print(f"      {GRAY}↳ {desc}{RESET}")
+        print()
+        return
+
+    # Passou combinação completa (ex: 'SUPER SHIFT A')
+    target_key = tokens[-1]
+    mod_part = " ".join(tokens[:-1])
+    target_mod = parse_mod_str(mod_part)
+    combo_str = f"{target_mod} + {target_key}"
+    
+    print(f"\n{BOLD}🔎 Checagem: {CYAN}{combo_str}{RESET}")
+    blist = combos.get((target_mod, target_key), [])
+    if not blist:
+        print(f"{GREEN}✓ LIVRE!{RESET} O atalho {BOLD}{combo_str}{RESET} não está em uso e pode ser mapeado com segurança.\n")
+    elif len(blist) == 1:
+        b = blist[0]
+        desc = b.get("description") or "(sem descrição)"
+        arg = b.get("arg") or b.get("dispatcher")
+        print(f"{RED}✗ OCUPADO!{RESET} O atalho {BOLD}{combo_str}{RESET} já está mapeado para:")
+        print(f"  ↳ {BOLD}{desc}{RESET} ({arg})\n")
+    else:
+        print(f"{YELLOW}⚠️  CONFLITO EXISTENTE!{RESET} {BOLD}{combo_str}{RESET} possui {len(blist)} comandos registrados:")
+        for b in blist:
+            desc = b.get("description") or "(sem descrição)"
+            arg = b.get("arg") or b.get("dispatcher")
+            print(f"  ↳ {BOLD}{desc}{RESET} ({arg})")
+        print()
+
+def cmd_free(combos, mod_query):
+    target_mod = parse_mod_str(mod_query) if mod_query else "SUPER + SHIFT"
+    print(f"\n{BOLD}🟢 Teclas LIVRES para: {CYAN}{target_mod} + <tecla>{RESET}")
+    print(f"{'─'*60}")
+    
+    alphabet = [chr(c) for c in range(ord('A'), ord('Z')+1)]
+    numbers = [str(n) for n in range(0, 10)]
+    
+    free_letters = [k for k in alphabet if (target_mod, k) not in combos]
+    free_numbers = [k for k in numbers if (target_mod, k) not in combos]
+    
+    print(f"{BOLD}Letras Livres ({len(free_letters)}/26):{RESET}")
+    print(f"  {GREEN}{'  '.join(free_letters) if free_letters else '(Nenhuma letra livre)'}{RESET}\n")
+    print(f"{BOLD}Números Livres ({len(free_numbers)}/10):{RESET}")
+    print(f"  {GREEN}{'  '.join(free_numbers) if free_numbers else '(Nenhum número livre)'}{RESET}\n")
+
+def cmd_list(binds):
+    print(f"\n{BOLD}{'ATALHO':<30} {'DISPATCHER':<15} {'DESCRIÇÃO':<35} {'COMANDO / ARG'}{RESET}")
+    print(f"{'─'*100}")
+    for b in sorted(binds, key=lambda x: (x.get("modmask", 0), x.get("key", ""))):
+        key = b.get("key", "").upper()
+        if not key or b.get("mouse", False):
+            continue
+        mod = decode_modmask(b.get("modmask", 0))
+        combo = f"{mod} + {key}"
+        disp = b.get("dispatcher", "")
+        desc = b.get("description", "") or "-"
+        arg = (b.get("arg", "") or "")[:45]
+        print(f"{combo:<30} {disp:<15} {desc:<35} {GRAY}{arg}{RESET}")
+    print()
+
+def cmd_rofi(binds):
+    import os
+    lines = []
+    for b in sorted(binds, key=lambda x: (x.get("modmask", 0), x.get("key", ""))):
+        key = b.get("key", "").upper()
+        if not key or b.get("mouse", False):
+            continue
+        mod = decode_modmask(b.get("modmask", 0))
+        combo = f"{mod} + {key}"
+        desc = b.get("description", "") or "(sem descrição)"
+        arg = b.get("arg", "") or b.get("dispatcher", "")
+        lines.append(f"{combo:<26} │ {desc:<32} │ {arg}")
+    
+    menu_content = "\n".join(lines)
+    theme_path = os.path.expanduser("~/.config/rofi/config-keybinds.rasi")
+    cmd = ["rofi", "-dmenu", "-i", "-p", "⌨️ Atalhos"]
+    if os.path.exists(theme_path):
+        cmd.extend(["-config", theme_path, "-mesg", "💡 Digite para buscar qualquer tecla (ex: SUPER, ALT, V, AUDIO, VOLUME)"])
+    else:
+        cmd.extend(["-theme-str", "window {width: 900px;}"])
+        
+    if shutil.which("rofi"):
+        subprocess.run(cmd, input=menu_content, text=True)
+    else:
+        print(menu_content)
+
+def print_help():
+    print(f"""
+{BOLD}🎹 HyprKeys - Inspetor de Atalhos do Hyprland{RESET}
+
+{BOLD}Uso:{RESET}
+  {CYAN}hypr-keys{RESET}                   -> Resumo geral e detector de conflitos
+  {CYAN}hypr-keys check <tecla>{RESET}     -> Checa se uma tecla (ex: 'a') ou atalho ('SUPER SHIFT A') está livre
+  {CYAN}hypr-keys free [MOD]{RESET}        -> Mostra quais teclas A-Z estão 100% LIVRES para um mod (ex: 'SUPER SHIFT')
+  {CYAN}hypr-keys conflicts{RESET}         -> Lista todas as teclas com conflito/duplicação ativa
+  {CYAN}hypr-keys list{RESET}              -> Lista todos os 250+ atalhos no terminal
+  {CYAN}hypr-keys rofi{RESET}              -> Abre o catálogo pesquisável no Rofi
+
+{BOLD}Exemplos:{RESET}
+  hypr-keys check a
+  hypr-keys check "SUPER SHIFT A"
+  hypr-keys free "SUPER ALT"
+""")
+
+def main():
+    args = sys.argv[1:]
+    binds = get_live_binds()
+    combos = build_index(binds)
+    
+    if not args:
+        # Resumo inicial + conflitos
+        print(f"\n{BOLD}🎹 HyprKeys - Status do Teclado no Hyprland{RESET}")
+        print(f"Total de atalhos registrados no compositor: {BOLD}{len(binds)}{RESET}")
+        cmd_conflicts(combos)
+        print(f"{GRAY}Dica: Use 'hypr-keys check <tecla>' para testar uma tecla antes de mapear.{RESET}\n")
+        return
+
+    cmd = args[0].lower()
+    if cmd in ["-h", "--help", "help"]:
+        print_help()
+    elif cmd in ["conflicts", "-c", "--conflicts"]:
+        cmd_conflicts(combos)
+    elif cmd in ["check"]:
+        if len(args) < 2:
+            print("Informe a tecla. Exemplo: hypr-keys check a")
+        else:
+            cmd_check(combos, " ".join(args[1:]))
+    elif cmd in ["free"]:
+        mod_q = " ".join(args[1:]) if len(args) > 1 else "SUPER + SHIFT"
+        cmd_free(combos, mod_q)
+    elif cmd in ["list", "-l", "--list"]:
+        cmd_list(binds)
+    elif cmd in ["rofi", "menu", "-m"]:
+        cmd_rofi(binds)
+    else:
+        # Se digitou direto 'hypr-keys a' ou 'hypr-keys SUPER SHIFT A'
+        cmd_check(combos, " ".join(args))
+
+if __name__ == "__main__":
+    main()

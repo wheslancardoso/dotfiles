@@ -22,8 +22,28 @@ from datetime import date, timedelta
 import calendar
 import json
 
-DB_DIR = os.path.expanduser("~/.local/share/apex-finance/data")
-DB_PATH = os.path.join(DB_DIR, "finance.db")
+# Resolução inteligente e portátil do banco de dados:
+# 1. Variável de ambiente explícita APEX_FINANCE_DB
+# 2. Banco versionado localmente no próprio repositório (./data/finance.db)
+# 3. Variável de ambiente APEX_FINANCE_DIR
+# 4. Fallback padrão (~/.local/share/apex-finance/data/finance.db)
+REPO_FINANCE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
+ENV_DB = os.environ.get("APEX_FINANCE_DB")
+ENV_DIR = os.environ.get("APEX_FINANCE_DIR")
+
+if ENV_DB:
+    DB_PATH = os.path.abspath(os.path.expanduser(ENV_DB))
+    DB_DIR = os.path.dirname(DB_PATH)
+elif os.path.exists(os.path.join(REPO_FINANCE_DIR, "finance.db")):
+    DB_DIR = REPO_FINANCE_DIR
+    DB_PATH = os.path.join(DB_DIR, "finance.db")
+elif ENV_DIR:
+    DB_DIR = os.path.abspath(os.path.expanduser(ENV_DIR))
+    DB_PATH = os.path.join(DB_DIR, "finance.db")
+else:
+    DB_DIR = os.path.expanduser("~/.local/share/apex-finance/data")
+    DB_PATH = os.path.join(DB_DIR, "finance.db")
+
 os.makedirs(DB_DIR, exist_ok=True)
 
 def get_connection():

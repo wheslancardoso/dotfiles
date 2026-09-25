@@ -37,21 +37,54 @@ RE_SUBJECT_MATCH = re.compile('|'.join(OTP_SUBJECT_KEYWORDS), re.IGNORECASE)
 
 # Patterns for clean OTP extraction
 RE_CODE_CONTEXT = [
-    # Explicit context: "seu código é: 123456", "código de verificação: 123-456", "use code 123456"
-    re.compile(r'(?:seu\s+c[oó]digo(?:\s+de\s+(?:seguran[cç]a|acesso|valida[cç][aã]o|confirma[cç][aã]o|aplica[cç][aã]o|ativa[cç][aã]o|verifica[cç][aã]o))?|your\s+(?:verification\s+)?code|c[oó]digo|code|token|pin|senha\s+provis[oó]ria)\s*(?:[eé]|is)?\s*[:\s-]{1,5}\s*([0-9]{4,8}|[0-9]{3}[\s-][0-9]{3})\b', re.IGNORECASE),
+    # Explicit context: "seu código é: 123456", "código de verificação: 123-456", "código de acesso: ULNGYWTL", "use code 123456"
+    re.compile(r'(?:seu\s+c[oó]digo(?:\s+de\s+[a-zà-ú]+)*|c[oó]digo\s+de\s+[a-zà-ú]+|your\s+(?:verification\s+)?code|c[oó]digo|code|token|pin|senha\s+provis[oó]ria)\s*(?:[eé]|is|:)\s*[:\s-]{0,4}\s*([A-Za-z0-9]{4,8}|[0-9]{3}[\s-][0-9]{3})\b', re.IGNORECASE),
     # Preceding code: "123456 is your code", "123456 é o seu código de verificação"
-    re.compile(r'\b([0-9]{4,8})\b\s*(?:[eé]|is)\s*(?:o\s+)?(?:seu\s+)?c[oó]digo', re.IGNORECASE),
-    # Formatted tags/classes: <span class="code">123456</span> or <b>123456</b> or <strong>123456</strong>
-    re.compile(r'<(?:span|b|strong|div|p|h[1-4]|td)[^>]*?(?:code|otp|token|pin|digit|number|highlight)[^>]*?>\s*([0-9]{4,8}|[0-9]{3}[\s-][0-9]{3})\s*</', re.IGNORECASE),
-    # Bold/standalone tags in HTML: <b>123456</b> or <strong>123456</strong>
-    re.compile(r'<(?:b|strong)>\s*([0-9]{4,8}|[0-9]{3}[\s-][0-9]{3})\s*</(?:b|strong)>', re.IGNORECASE),
+    re.compile(r'\b([A-Za-z0-9]{4,8})\b\s*(?:[eé]|is)\s*(?:o\s+)?(?:seu\s+)?c[oó]digo', re.IGNORECASE),
+    # Formatted tags/classes: <span class="code">123456</span> or <b>123456</b> or <strong>123456</strong> or <h1>394955</h1>
+    re.compile(r'<(?:span|b|strong|div|p|h[1-4]|td|a)[^>]*?(?:code|otp|token|pin|digit|number|highlight)[^>]*?>\s*([A-Za-z0-9]{4,8}|[0-9]{3}[\s-][0-9]{3})\s*</', re.IGNORECASE),
+    # Bold/heading tags in HTML: <b>123456</b>, <strong>123456</strong>, <h1>123456</h1>, <h2>123456</h2>
+    re.compile(r'<(?:b|strong|h[1-4]|big)>\s*(?:<[^>]+>\s*)*([A-Za-z0-9]{4,8}|[0-9]{3}[\s-][0-9]{3})\s*(?:<[^>]+>\s*)*</(?:b|strong|h[1-4]|big)>', re.IGNORECASE),
 ]
 
-# Blacklisted numbers: years, zip codes, known false positives
+# Blacklisted words and false positive tokens
+BLACKLIST_WORDS = {
+    'LOGIN', 'CONTA', 'EMAIL', 'ACESSO', 'CODIGO', 'SENHA', 'TOKEN', 'SECURITY',
+    'GOOGLE', 'UDEMY', 'VERIFICACAO', 'CONFIRMACAO', 'ENTRAR', 'ACESSE', 'ONLINE',
+    'STATUS', 'CLIQUE', 'EQUIPE', 'SUPORTE', 'VALIDO', 'MINUTOS', 'HORAS', 'UPDATE',
+    'REPORT', 'SYSTEM', 'ALERTA', 'BUTTON', 'ROBOT', 'CHROME', 'UBUNTU', 'LINUX'
+}
+
 BLACKLIST_PATTERNS = {
     '2023', '2024', '2025', '2026', '2027', '2028',
     '1234', '12345', '123456', '0000', '000000', '999999'
 }
+
+# Regex to detect email footers, legal text, and physical corporate addresses (e.g. San Francisco CA 94107, Barueri SP CEP)
+FOOTER_REGEX = re.compile(
+    r'(?:\n\s*[-_=]{3,}[\s\S]*|\b(?:Entregue por|Delivered by|Sent by|Enviado por|Copyright|\(c\)|Todos os direitos|All rights reserved|Street|Avenue|Avenida|Rua|San Francisco|CA\s+[0-9]{5}|Alameda|Condomínio|CNPJ|Barueri)[\s\S]*)',
+    re.IGNORECASE
+)
+
+def is_valid_otp(code, from_strict_context=False):
+    if not code:
+        return False
+    code = code.replace('-', '').replace(' ', '').strip()
+    if not (4 <= len(code) <= 8):
+        return False
+    upper = code.upper()
+    if upper in BLACKLIST_WORDS or code in BLACKLIST_PATTERNS:
+        return False
+    # Pure numbers (e.g. 394955)
+    if code.isdigit():
+        return True
+    # If directly preceded by "código de acesso:" or inside dedicated tags
+    if from_strict_context and re.match(r'^[A-Za-z0-9]+$', code):
+        return upper not in BLACKLIST_WORDS
+    # If isolated line or token: uppercase letters and/or digits (e.g. ULNGYWTL, 9I1VF82A)
+    if re.match(r'^[A-Z0-9]+$', code):
+        return upper not in BLACKLIST_WORDS
+    return False
 
 def clean_sender_name(sender_header):
     if not sender_header:
@@ -136,15 +169,15 @@ def extract_otp(subject, html_content, text_content):
         m = pat.search(subject)
         if m:
             code = m.group(1).replace('-', '').replace(' ', '')
-            if code not in BLACKLIST_PATTERNS and 4 <= len(code) <= 8:
-                return code
+            if is_valid_otp(code, from_strict_context=True):
+                return code.upper()
 
-    # Check for direct 4-8 digit isolated in subject
-    sub_digit_match = re.search(r'\b([0-9]{4,8})\b', subject)
+    # Check for direct 4-8 digit/alphanumeric isolated in subject
+    sub_digit_match = re.search(r'\b([A-Za-z0-9]{4,8})\b', subject)
     if sub_digit_match:
         code = sub_digit_match.group(1)
-        if code not in BLACKLIST_PATTERNS:
-            return code
+        if is_valid_otp(code):
+            return code.upper()
 
     # Search in HTML content using specific HTML/OTP rules
     if html_content:
@@ -152,45 +185,52 @@ def extract_otp(subject, html_content, text_content):
             m = pat.search(html_content)
             if m:
                 code = m.group(1).replace('-', '').replace(' ', '')
-                if code not in BLACKLIST_PATTERNS and 4 <= len(code) <= 8:
-                    return code
+                if is_valid_otp(code, from_strict_context=True):
+                    return code.upper()
 
     # Search in plain text or rendered HTML text
-    # Convert HTML into clean text lines (strip script/style first)
     extracted_text_sources = []
-    if text_content:
-        extracted_text_sources.append(text_content)
     if html_content:
+        # Prefer rendered HTML text first because responsive tags isolate codes cleanly
         no_scripts = re.sub(r'<(script|style)[^>]*?>.*?</\1>', '', html_content, flags=re.DOTALL|re.IGNORECASE)
         clean_html_text = re.sub(r'<[^>]+>', '\n', no_scripts)
         clean_html_text = html.unescape(clean_html_text)
         extracted_text_sources.append(clean_html_text)
+    if text_content:
+        extracted_text_sources.append(text_content)
 
     for body_text in extracted_text_sources:
+        # Strip corporate footers and addresses where zip codes usually reside
+        clean_body = FOOTER_REGEX.sub('', body_text)
+
+        # Normalize glued words like '394955Este' -> '394955 Este'
+        clean_body = re.sub(r'([0-9]{4,8})([A-Za-zÀ-ÿ])', r'\1 \2', clean_body)
+
         for pat in RE_CODE_CONTEXT:
-            m = pat.search(body_text)
+            m = pat.search(clean_body)
             if m:
                 code = m.group(1).replace('-', '').replace(' ', '')
-                if code not in BLACKLIST_PATTERNS and 4 <= len(code) <= 8:
-                    return code
+                if is_valid_otp(code, from_strict_context=True):
+                    return code.upper()
 
-        # Search for isolated lines containing solely the code (common in modern responsive emails like OpenAI, Discord)
-        lines = [line.strip() for line in body_text.splitlines() if line.strip()]
+        # Search for isolated lines containing solely the code (common in modern responsive emails like OpenAI, Discord, Udemy, Tec Concursos)
+        lines = [line.strip() for line in clean_body.splitlines() if line.strip()]
         for line in lines:
-            if re.match(r'^[0-9]{4,8}$', line):
-                if line not in BLACKLIST_PATTERNS:
-                    return line
+            if is_valid_otp(line):
+                return line.upper()
 
         # Search surrounding lines near OTP trigger phrases
         for i, line in enumerate(lines):
             if RE_SUBJECT_MATCH.search(line):
                 window = lines[max(0, i-2):min(len(lines), i+3)]
                 for w_line in window:
-                    m = re.search(r'\b([0-9]{4,8})\b', w_line)
-                    if m:
-                        code = m.group(1)
-                        if code not in BLACKLIST_PATTERNS:
-                            return code
+                    # Ignore physical address patterns if any slipped through
+                    if re.search(r'\b(?:Street|St\.|Avenue|Ave\.|Floor|San Francisco|CA|CEP|ZIP|Alameda|Condomínio|CNPJ|Barueri)\b', w_line, re.IGNORECASE):
+                        continue
+                    tokens = re.findall(r'\b([A-Za-z0-9]{4,8})\b', w_line)
+                    for tok in tokens:
+                        if is_valid_otp(tok):
+                            return tok.upper()
 
     return None
 
