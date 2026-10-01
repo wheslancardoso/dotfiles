@@ -1,0 +1,26 @@
+Core:
+  PPU Decoder: LLVM Recompiler
+  SPU Decoder: LLVM Recompiler
+  Lower SPU thread priority: false
+  SPU Loop Detection: true
+  SPU Block Size: Safe
+  Preferred SPU Threads: 0
+Video:
+  Renderer: Vulkan
+  Resolution: 1280x720
+  Resolution Scale: 150% # 1080p/1440p ideal para RTX 5060
+  Resolution Scale Threshold: 16x16
+  Aspect ratio: 16:9
+  Frame limit: Auto
+  VSync: true
+  Anisotropic Filter: 16x
+  Anti-Aliasing: Auto
+  Write Color Buffers: false
+  Strict Rendering Mode: false
+Audio:
+  Renderer: Cubeb
+  Audio Channels: Downmix to Stereo
+Miscellaneous:
+  Start games in fullscreen: false
+  Show FPS counter: false
+  Discord RPC: true

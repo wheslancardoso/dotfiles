@@ -141,6 +141,31 @@ if [ -f "$DOTFILES_DIR/home/dot_config/pcsx2/PCSX2.ini" ]; then
     ok "Preset Plug-and-Play do PCSX2 (Vulkan + 3x 1440p + Widescreen) aplicado!"
 fi
 
+# Configuração Plug-and-Play do RPCS3 (Vulkan + LLVM 8C/16T + 150% Scale)
+RPCS3_CONF_DIR="$HOME/.var/app/net.rpcs3.RPCS3/config/rpcs3"
+mkdir -p "$RPCS3_CONF_DIR"
+if [ -f "$DOTFILES_DIR/home/dot_config/rpcs3/config.yml" ]; then
+    cp -f "$DOTFILES_DIR/home/dot_config/rpcs3/config.yml" "$RPCS3_CONF_DIR/config.yml"
+    ok "Preset Plug-and-Play do RPCS3 (Vulkan + LLVM + 150% Scale) aplicado!"
+fi
+
+# Configuração Plug-and-Play do Ryujinx (Vulkan + HostMapped + Pastas de Jogos)
+RYU_CONF_DIR="$HOME/.var/app/io.github.ryubing.Ryujinx/config/Ryujinx"
+mkdir -p "$RYU_CONF_DIR"
+if [ -f "$DOTFILES_DIR/home/dot_config/ryujinx/Config.json" ]; then
+    cp -f "$DOTFILES_DIR/home/dot_config/ryujinx/Config.json" "$RYU_CONF_DIR/Config.json"
+    ok "Preset Plug-and-Play do Ryujinx (Vulkan + Docked + Auto Scan) aplicado!"
+fi
+
+# Configuração Plug-and-Play do Snes9x (Aspect Ratio 4:3 mantido + Filtro Bilinear)
+SNES_CONF_DIR="$HOME/.var/app/com.snes9x.Snes9x/config/snes9x"
+mkdir -p "$SNES_CONF_DIR" "$HOME/.config/snes9x"
+if [ -f "$DOTFILES_DIR/home/dot_config/snes9x/snes9x.conf" ]; then
+    cp -f "$DOTFILES_DIR/home/dot_config/snes9x/snes9x.conf" "$SNES_CONF_DIR/snes9x.conf"
+    cp -f "$DOTFILES_DIR/home/dot_config/snes9x/snes9x.conf" "$HOME/.config/snes9x/snes9x.conf"
+    ok "Preset Plug-and-Play do Snes9x aplicado!"
+fi
+
 # ------------------------------------------------------------------------------
 # 8. Criando Wrappers de Execução com GameMode & NVIDIA
 # ------------------------------------------------------------------------------

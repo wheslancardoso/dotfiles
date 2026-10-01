@@ -1,0 +1,35 @@
+{
+  "version": 51,
+  "backend_threading": "Auto",
+  "graphics_backend": "Vulkan",
+  "preferred_gpu": "",
+  "enable_docked_mode": true,
+  "enable_vsync": true,
+  "enable_shader_cache": true,
+  "enable_texture_recompression": false,
+  "enable_ptc": true,
+  "enable_fs_integrity_checks": true,
+  "audio_backend": "SDL2",
+  "audio_volume": 1.0,
+  "memory_manager_mode": "HostMappedUnsafe",
+  "expand_ram": false,
+  "ignore_missing_services": false,
+  "gui_columns": {
+    "fav_column": true,
+    "icon_column": true,
+    "app_column": true,
+    "dev_column": true,
+    "version_column": true,
+    "time_played_column": true,
+    "last_played_column": true,
+    "file_ext_column": true,
+    "file_size_column": true,
+    "path_column": true
+  },
+  "show_confirm_exit": false,
+  "remember_window_state": true,
+  "enable_discord_presence": true,
+  "game_dirs": [
+    "/home/lan/Games/Emulation/roms/switch"
+  ]
+}

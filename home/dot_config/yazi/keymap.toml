@@ -88,14 +88,14 @@ prepend_keymap = [
 	# --------------------------------------------------------------------------
 	# 🪄 RENOMEAR INTELIGENTE (ZERO RUÍDO VIM & PROTEÇÃO DE EXTENSÃO)
 	# --------------------------------------------------------------------------
-	# 'r': Limpa o nome mantendo a extensão (.mp4/.pdf) e abre com cursor no início pronto pra digitar/colar
-	{ on = "r", run = "rename --empty=stem --cursor=start", desc = "Renomear (Nome limpo, mantém extensão)" },
+	# 'r': Mantém o nome original com cursor antes da extensão pronto pra editar
+	{ on = "r", run = "rename --cursor=before_ext", desc = "Renomear (Mantém nome original, cursor antes da extensão)" },
 	# 'r e': Mudar a EXTENSÃO do arquivo (.mkv -> .mp4, .txt -> .md, etc.)
 	{ on = [ "r", "e" ], run = "rename --empty=all --cursor=end", desc = "Mudar Extensão / Renomear Completo" },
-	# 'R': Renomear tradicional (mantém nome original com cursor antes da extensão)
-	{ on = "R", run = "rename --cursor=before_ext", desc = "Renomear (Editar nome original)" },
-	# 'F2': Atalho universal padrão Windows/GUI (também limpa e preserva extensão)
-	{ on = "<F2>", run = "rename --empty=stem --cursor=start", desc = "Renomear (F2 Universal)" },
+	# 'R': Renomear do zero (limpa o nome mantendo a extensão)
+	{ on = "R", run = "rename --empty=stem --cursor=start", desc = "Renomear (Limpa nome, mantém extensão)" },
+	# 'F2': Atalho universal padrão Windows/GUI (também mantém nome original)
+	{ on = "<F2>", run = "rename --cursor=before_ext", desc = "Renomear (F2 Universal - Mantém nome)" },
 	# 'P' ou 'c r': Pega o título no Clipboard (wl-paste) e renomeia DIRETO preservando a extensão original!
 	{ on = [ "c", "r" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-rename-smart.sh paste %s" --confirm', desc = "Colar Título do Clipboard (Preserva Extensão)" },
 	{ on = [ "r", "p" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-rename-smart.sh paste %s" --confirm', desc = "Colar Título do Clipboard (Preserva Extensão)" },
