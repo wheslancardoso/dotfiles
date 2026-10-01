@@ -216,7 +216,11 @@ mods_to_download = [
     "item-borders",           # Bordas coloridas sutis de raridade em itens épicos e lendários no inventário
     # Início Imediato Sem Atrito & Fim do Sofrimento com Ovelha/Cama
     "starter-kit",            # Permite nascer no mundo já com a mochila Traveler's Backpack equipada nas costas!
-    "mixed-wool-bed"          # Permite craftar cama com qualquer cor de lã misturada (ex: 2 brancas + 1 preta)
+    "mixed-wool-bed",         # Permite craftar cama com qualquer cor de lã misturada (ex: 2 brancas + 1 preta)
+    # Fim das Dores de Endgame & Visibilidade Aquática
+    "forgiving-void",         # Cair no Void do End não te mata: você ressurge caindo suavemente do céu com todos os itens!
+    "better-flight",          # Voo de Elytra sem precisar de foguetes: aperte Espaço durante o voo para bater as asas e ganhar impulso!
+    "clear-water"             # Remove a névoa escura e turva debaixo d'água, deixando rios e oceanos cristalinos
 ]
 
 for slug in mods_to_download:

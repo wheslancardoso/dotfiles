@@ -3,14 +3,14 @@
 > **Launcher Canônico:** Prism Launcher (Nativo CachyOS/Arch com suporte a contas offline)  
 > **Hardware de Referência:** AMD Ryzen 7 5700X (8C/16T) • NVIDIA GeForce RTX 5060 (8 GB RAM alocados na JVM)  
 > **Script de Automação:** `~/dotfiles/scripts/setup-minecraft.sh`  
-> **Total de Mods Instalados e Auditados:** 93 Mods Especializados
+> **Total de Mods Instalados e Auditados:** 96 Mods Especializados
 
 ---
 
 ## 🎯 ÍNDICE GERAL
 1. [Filosofia do Setup: Zero Atrito, Zero Traumas](#-1-filosofia-do-setup-zero-atrito-zero-traumas)
 2. [Guia de Utilização das Armas Anti-Atrito & Controles](#-2-guia-de-utilização-das-armas-anti-atrito--controles)
-3. [Catálogo Completo dos 93 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-93-mods)
+3. [Catálogo Completo dos 96 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-96-mods)
 4. [Shaderpack Complementary Reimagined & Motor Gráfico](#-4-shaderpack-complementary-reimagined--motor-gráfico)
 5. [Passo a Passo: Como Iniciar e Jogar Hoje](#-5-passo-a-passo-como-iniciar-e-jogar-hoje)
 6. [Manutenção, Backup & Reprodutibilidade no Dotfiles](#-6-manutenção-backup--reprodutibilidade-no-dotfiles)
@@ -34,6 +34,9 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 
 | Ação Desejada | Mod Responsável | Como Executar no Teclado / Jogo |
 | :--- | :--- | :--- |
+| **Salvação Automática ao Cair no Void do End** | `Forgiving Void` | **Passivo/Automático:** Se você cair no abismo infinito do End com a Elytra ou fazendo pontes, você **não morre e não perde nenhum item**! O mod te resgata e te teleporta com segurança de volta para o céu da ilha com Queda Lenta (*Slow Falling*). |
+| **Bater Asas com a Elytra Sem Foguetes** | `Better Flight` | Enquanto estiver planando no ar com a sua Elytra, **aperte a tecla `Espaço` (Spacebar)** para bater as asas e ganhar impulso contínuo para a frente, voando infinitamente sem gastar pólvora e papel! |
+| **Visão Cristalina Subaquática (Sem Névoa)** | `Clear Water` | **Passivo/Automático:** Mergulhe em oceanos, rios ou monumentos do oceano: a água fica **100% cristalina**, eliminando a névoa escura e opaca do Vanilla para você enxergar templos, ruínas e naufrágios a dezenas de blocos de distância. |
 | **Nascer com Mochila e Cama (Zero Espera)** | `Starter Kit` | **Passivo/Automático:** Ao entrar no mundo pela primeira vez, seu personagem **já nasce com a Traveler's Backpack e uma Cama Vermelha no inventário**! Basta apertar **`B`** para usar sua super mochila desde o segundo zero. |
 | **Fazer Cama com Lãs de Cores Diferentes** | `Mixed Wool Bed` | **Passivo/Automático:** Na mesa de trabalho, você pode usar **qualquer cor de lã misturada** (ex: 2 brancas + 1 preta, ou 1 cinza + 2 marrons) para fazer uma cama! O jogo não te obriga mais a achar 3 ovelhas idênticas. |
 | **Girar Câmera 360° em Barcos** | `BoatView360` | Ao pilotar ou viajar de passageiro em um barco, **olhe livremente para trás e para todos os lados em 360° sem travas no pescoço**. |
@@ -79,9 +82,9 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 
 ---
 
-## 📚 3. CATÁLOGO COMPLETO DOS 91 MODS INSTALADOS
+## 📚 3. CATÁLOGO COMPLETO DOS 96 MODS INSTALADOS
 
-Abaixo está o registro exato de todos os 91 arquivos `.jar` presentes na pasta `.minecraft/mods/` da instância:
+Abaixo está o registro exato de todos os 96 arquivos `.jar` presentes na pasta `.minecraft/mods/` da instância:
 
 ### Grupo A: Eliminação de Dores & Traumas Clássicos (Pain Killers)
 1. **`gravelminer-fabric-1.20-16.0.4.jar` (GravelMiner):**  
@@ -299,6 +302,14 @@ Abaixo está o registro exato de todos os 91 arquivos `.jar` presentes na pasta 
     *Zero perda de tempo no primeiro dia.* Ao criar ou entrar num mundo novo pela primeira vez, seu personagem **já nasce automaticamente com a mochila Traveler's Backpack e uma Cama Vermelha no inventário**! Você não precisa caçar vacas no início nem perder tempo craftando para ter espaço infinito e dormir na primeira noite.
 93. **`mixed-wool-bed-1.0.0.jar` (Mixed Wool Bed - Cama com Lãs de Cores Mistas):**  
     *Fim da tortura de achar 3 ovelhas da mesma cor.* No Vanilla, se você achar 2 ovelhas brancas e 1 marrom/preta, você não consegue fazer uma cama e é obrigado a passar a noite inteira no escuro sendo caçado por monstros. Com este mod, qualquer combinação de 3 lãs (mesmo de cores totalmente diferentes) monta uma cama perfeitamente funcional!
+
+### Grupo R: Endgame Sem Trauma & Visibilidade Cristalina Subaquática
+94. **`forgivingvoid-fabric-1.20.1-10.0.3.jar` (Forgiving Void - Blindagem Contra o Vácuo do End):**  
+    *O fim do pior pesadelo do Minecraft.* Cair no abismo negro (void) do End é a única morte do jogo onde você perde armadura de Netherita, itens e ferramentas para sempre sem chance de resgate. Com este mod, se você cair no void, o jogo **resgata seu personagem e o teleporta de volta para o topo da ilha com Queda Lenta (Slow Falling)**, preservando 100% dos seus pertences intactos!
+95. **`betterflight-1.0.1.jar` (Better Flight - Bater de Asas Infinito da Elytra):**  
+    *Voo livre e sustentável.* Elimina a necessidade de construir farms industriais de pólvora e cana-de-açúcar só para craftar milhares de foguetes para voar. Enquanto estiver usando a Elytra, **basta pressionar a barra de Espaço para bater as asas e ganhar impulso contínuo para frente**, transformando o voo numa experiência fluida e prazerosa.
+96. **`Clear-Water-2.1.jar` (Clear Water - Visão Subaquática Translúcida):**  
+    *Fim da escuridão e névoa na água.* No Vanilla, entrar na água transforma sua visão num borrão escuro e turvo. Este mod remove completamente a névoa escura subaquática, tornando a água cristalina e permitindo explorar monumentos oceânicos, navios naufragados e ruínas submarinas com visão ampla e nítida.
 
 ---
 
