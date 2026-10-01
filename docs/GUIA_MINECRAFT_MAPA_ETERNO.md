@@ -144,7 +144,21 @@ Abaixo está o registro exato de todos os 40 arquivos `.jar` presentes na pasta 
 39. **`cloth-config-11.1.136-fabric.jar` (Cloth Config v11):**  
     *Telas de configuração.* Fornece a interface gráfica padronizada para os menus de configuração de dezenas de mods.
 40. **`modmenu-7.2.2.jar` (Mod Menu):**  
-    *Menu de gerenciamento.* Adiciona o botão "Mods" na tela inicial do jogo para consultar, ajustar e configurar qualquer um dos 40 mods sem sair do Minecraft.
+    *Menu de gerenciamento.* Adiciona o botão "Mods" na tela inicial do jogo para consultar, ajustar e configurar qualquer um dos mods sem sair do Minecraft.
+
+### Grupo G: Drops Justos (100%), Comércio Sem Quebrar Bancada & Super Agricultura
+41. **`alwaysawitherskull-1.20.1-3.5.jar` (Always A Wither Skull):**  
+    *Fim da roleta russa do Wither.* Todo Wither Skeleton morto **SEMPRE dropa a caveira de esqueleto wither com 100% de certeza**! Matou 3 no Nether? Já tem as 3 cabeças garantidas para invocar o Wither e pegar o Farol (Beacon).
+42. **`shulkerdropstwo-1.20.1-3.5.jar` (Shulker Drops Two):**  
+    *Caixa de Shulker garantida.* Todo Shulker morto nas Cidades do End **SEMPRE dropa 2 cascas completas** (o suficiente para montar 1 Shulker Box inteira por bicho, sem chance de dropar zero).
+43. **`trade-cycling-fabric-1.20.1-1.0.18.jar` (Trade Cycling):**  
+    *Fim do sofrimento com Aldeões.* Quando você estiver escolhendo os livros do Aldeão Bibliotecário, aparece uma **setinha verde dentro do menu de troca**. Basta clicar na setinha para girar os encantamentos instantaneamente, **sem precisar quebrar e recolocar o Atril 300 vezes** até vir Remendo (Mending) ou Fortuna III!
+44. **`extendedbonemeal-1.20.1-3.6.jar` (Extended Bone Meal):**  
+    *Farinha de osso universal.* Permite usar farinha de osso em **TUDO**: faz crescer cana-de-açúcar instantaneamente, cactos, videiras, fungos do nether e flores, além de acelerar mudas teimosas.
+45. **`farmers-delight-fabric-1.4.3.jar` (Farmer's Delight):**  
+    *A revolução da agricultura e comida.* Adiciona plantações de tomates, cebolas, arroz e repolho, facas para cortar carne, panelas de cozimento para fazer ensopados e banquetes que concedem efeitos de regeneração e super saturação duradouros.
+46. **`disenchanter-0.1.8+1.20.jar` (Disenchanter):**  
+    *Mesa de transferência de encantos.* Achou um arco ou espada com um encantamento lendário que você queria em outra arma? Coloque o item na mesa do Disenchanter com um livro comum e ele transfere os encantamentos diretamente para o **LIVRO**, para você aplicar onde quiser!
 
 ---
 

@@ -149,7 +149,14 @@ mods_to_download = [
     "explorers-compass",    # Bússola que aponta pra QUALQUER estrutura (Fortaleza do Nether, Portal do End, Vila, Mansão, Bastion!)
     "natures-compass",      # Bússola que aponta pra qualquer bioma (Cherry Blossom, Selva, Deserto)
     "minihud",              # Mostra Slime Chunks em tempo real na tela e desenha a caixa 3D do chunk de slime!
-    "betterf3"              # Tela F3 colorida, limpa e organizada em blocos
+    "betterf3",             # Tela F3 colorida, limpa e organizada em blocos
+    # Fim da Roleta Russa de Drops Raros & Agricultura Sem Sofrimento
+    "always-a-wither-skull", # Wither Skeleton SEMPRE dropa a cabeça (100% de drop)! Adeus 4 horas caçando esqueleto no Nether!
+    "shulker-drops-two",     # Shulker SEMPRE dropa 2 cascas (1 caixa de shulker inteira por bicho morto)!
+    "trade-cycling",         # Botão de resetar trocas do Villager com 1 clique (sem precisar quebrar o atril 200 vezes pra vir Remendo!)
+    "extended-bone-meal",    # Farinha de osso funciona em TUDO: cana de açúcar, cacto, videiras e plantações instantâneas
+    "farmers-delight-fabric",# Expansão agrícola: cultive cebola, tomate, arroz, repolho e faça banquetes deliciosos
+    "disenchanter"           # Mesa de desencantamento: tire encantamentos de armaduras/ferramentas e passe para LIVROS!
 ]
 
 for slug in mods_to_download:
