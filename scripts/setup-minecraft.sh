@@ -176,7 +176,11 @@ mods_to_download = [
     "macaws-roofs",           # Telhados inclinados perfeitos (resolve a coisa mais difícil de fazer no Minecraft!)
     "macaws-bridges",         # Pontes suspensas de madeira, corda e ferro pré-fabricadas lindas!
     "macaws-furniture",       # Mesas, cadeiras, gavetas e balcões prontos para decorar quartos e cozinhas
-    "handcrafted"             # Móveis rústicos elegantes (sofás com almofadas, bancadas de luxo, louças e cortinas)
+    "handcrafted",            # Móveis rústicos elegantes (sofás com almofadas, bancadas de luxo, louças e cortinas)
+    # Captura de Animais & Reprodução Automática (Zero Estresse de Laço e Trigo)
+    "mob-lassos",             # Laços Mágicos (Golden/Diamond Lassos): captura animais e mobs no bolso como Pokébolas!
+    "animal_feeding_trough",  # Cocho de Alimentação Automática: encha com trigo/sementes e os bichos procriam sozinhos!
+    "justenoughbreeding"      # Revela no JEI o alimento exato de procriação e o tempo de cooldown de cada animal
 ]
 
 for slug in mods_to_download:

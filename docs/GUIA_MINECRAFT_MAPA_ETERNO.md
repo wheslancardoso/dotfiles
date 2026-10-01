@@ -3,14 +3,14 @@
 > **Launcher Canônico:** Prism Launcher (Nativo CachyOS/Arch com suporte a contas offline)  
 > **Hardware de Referência:** AMD Ryzen 7 5700X (8C/16T) • NVIDIA GeForce RTX 5060 (8 GB RAM alocados na JVM)  
 > **Script de Automação:** `~/dotfiles/scripts/setup-minecraft.sh`  
-> **Total de Mods Instalados e Auditados:** 62 Mods Especializados
+> **Total de Mods Instalados e Auditados:** 65 Mods Especializados
 
 ---
 
 ## 🎯 ÍNDICE GERAL
 1. [Filosofia do Setup: Zero Atrito, Zero Traumas](#-1-filosofia-do-setup-zero-atrito-zero-traumas)
 2. [Guia de Utilização das Armas Anti-Atrito & Controles](#-2-guia-de-utilização-das-armas-anti-atrito--controles)
-3. [Catálogo Completo dos 62 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-62-mods)
+3. [Catálogo Completo dos 65 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-65-mods)
 4. [Shaderpack Complementary Reimagined & Motor Gráfico](#-4-shaderpack-complementary-reimagined--motor-gráfico)
 5. [Passo a Passo: Como Iniciar e Jogar Hoje](#-5-passo-a-passo-como-iniciar-e-jogar-hoje)
 6. [Manutenção, Backup & Reprodutibilidade no Dotfiles](#-6-manutenção-backup--reprodutibilidade-no-dotfiles)
@@ -22,7 +22,7 @@
 O Minecraft original (Vanilla) é notório por gerar atrito repetitivo que desestimula jogadores que buscam construir projetos de longo prazo ("Mapa Eterno" ou estilo "Em Busca da Casa Automática"):
 * **Atrito de Tempo:** Horas minerando bloco por bloco, quebrando troncos árvore por árvore, organizando centenas de baús individuais.
 * **Atrito de Perda & Frustração:** Creepers explodindo construções com fiação de redstone, cascalho caindo na cabeça e sufocando o jogador, perder armadura na lava por conta do timer cruel de 5 minutos, ou matar pets por fogo amigo acidental.
-* **Atrito de Deslocamento:** Ficar 40 minutos andando pelo mapa para voltar da mina ou transportar aldeões (Villagers) empurrando carrinhos ou barcos teimosos.
+* **Atrito de Deslocamento & Animais:** Ficar 40 minutos andando pelo mapa para voltar da mina, puxar animais burros com laço frágil que arrebenta ou empurrar barcos e trilhos com Villagers teimosos.
 
 Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores**, mantendo o jogo 100% fiel à essência Vanilla, mas adicionando a fluidez e a conveniência de um RPG de engenharia moderno.
 
@@ -32,10 +32,15 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 
 | Ação Desejada | Mod Responsável | Como Executar no Teclado / Jogo |
 | :--- | :--- | :--- |
-| **Carregar Villagers e Baús no Colo** | `Carry On` | Fique com as **mãos vazias**, mire no Villager, pet ou baú cheio, e aperte **`Shift + Botão Direito do Mouse`**. Solte no destino com outro Botão Direito. |
+| **Capturar Animais/Mobs no Bolso (Pokébola)** | `Mob Lassos` | Crie o **Golden Lasso** (para animais pacíficos) ou **Diamond Lasso** (para qualquer mob). Mire no bicho e dê **Botão Direito**. O animal vira um item no seu bolso! Clique com Botão Direito no chão para soltá-lo onde quiser. |
+| **Carregar Mobs e Baús nos Braços** | `Carry On` | Mãos vazias: mire no animal, Villager ou baú cheio e aperte **`Shift + Botão Direito`**. Solte no destino com outro Botão Direito. |
+| **Reprodução Automática de Animais** | `Animal Feeding Trough` | Coloque o bloco do **Cocho de Alimentação** no pasto e encha-o com trigo, sementes ou cenoura. Os animais se alimentam e **procriam sozinhos** sem você precisar clicar em nenhum deles! |
+| **Consultar Alimento de Procriação no JEI** | `Just Enough Breeding` | Abra o JEI no inventário, procure o animal e veja exatamente qual comida ele come para cruzar e quanto tempo dura a gestação/cooldown. |
 | **Minerar Veio Inteiro em 1 Segundo** | `Diggus Maximus` | Mire no minério (carvão, ferro, diamante, redstone) ou pedra, **segure a tecla de aspa/til (`~` ou `'`)** e minere o primeiro bloco. Todo o veio cai na hora. |
 | **Derrubar Árvores Instantaneamente** | `FallingTree` | Pegue qualquer machado e quebre o bloco da base do tronco da árvore. A árvore inteira desaba no chão com folhas, maçãs e mudas. |
 | **Abrir Mochila com Auto-Coleta** | `Traveler's Backpack` | Pressione a tecla **`B`** para abrir sua mochila. Equipe-a nas costas para ativar o auto-pickup de pedras e minérios na mina. |
+| **Radar de Diamantes nas Paredes** | `Scannable` | Segure o Scanner com **Botão Direito**. Ele dispara um sonar que ilumina todos os minérios de diamante, ouro e ferro através da pedra! |
+| **Quebrar Blocos em Área de 3x3** | `Just Hammers` | Equipe um martelo de mineração e bata na rocha. Quebra 9 blocos por clique instantaneamente. |
 | **Localizar Qualquer Estrutura do Mundo** | `Explorer's Compass` | Segure a bússola e clique com **Botão Direito**. Escolha a estrutura desejada (Fortaleza do Nether, Portal do End, Vila, Mansão, Bastion) e siga a agulha. |
 | **Localizar Qualquer Bioma** | `Nature's Compass` | Segure a bússola e clique com **Botão Direito**. Escolha o bioma (Cerejeiras, Selva, Deserto) e siga a agulha na tela. |
 | **Ver Slime Chunks em 3D no Chão** | `MiniHUD` | Pressione **`H`** para abrir o menu de overlays e ative `Slime Chunks` (ou atalho rápido configurável). Uma caixa 3D verde fluorescente aparecerá delimitando os 16x16 blocos do chunk de slime. |
@@ -194,6 +199,14 @@ Abaixo está o registro exato de todos os 40 arquivos `.jar` presentes na pasta 
     *Móveis funcionais prontos.* Guarda-roupas com portas que abrem, mesas de cabeceira, escrivaninhas, gaveteiros e armários de cozinha que realmente guardam itens. Chega de improvisar mesa com cerca e placa de pressão!
 62. **`handcrafted-fabric-1.20.1-3.0.6.jar` (Handcrafted):**  
     *O auge da decoração estética.* Adiciona sofás aconchegantes com almofadas coloridas, cadeiras estofadas, cortinas esvoaçantes para janelas, pratos, xícaras e bancadas de mármore. Transforma qualquer construção simples em uma mansão com cara de projeto de designer de interiores.
+
+### Grupo K: Captura de Animais & Reprodução Automática (Zero Estresse de Laço)
+63. **`MobLassos-v8.0.1-1.20.1-Fabric.jar` (Mob Lassos - A "Pokébola" Perfeita):**  
+    *Captura instantânea de qualquer animal ou monstro no bolso.* O laço do Vanilla é terrível: exige slime ball (difícil no começo), arrebenta toda hora se você andar rápido e os animais ficam travando em árvores e blocos. O Mob Lassos adiciona o **Golden Lasso** (para animais pacíficos como vacas, ovelhas, cavalos, galinhas e cães) e o **Diamond Lasso** (para qualquer mob). Basta dar **Botão Direito no animal**: ele é capturado instantaneamente para dentro do laço no seu inventário, guardando sua vida, cor e nome! Você pode carregar dezenas de vacas no bolso e soltá-las na sua base com outro clique.
+64. **`animal_feeding_trough-1.1.0+1.20.1.jar` (Animal Feeding Trough - Cocho de Procriação Automática):**  
+    *Animais reproduzem sozinhos sem você precisar clicar em nenhum.* Elimina o tédio de ficar segurando trigo/cenoura e clicando bicho por bicho num cercado apertado. Cria um bloco de **Cocho de Madeira**. Você coloca o cocho no chão e joga trigo, sementes ou cenoura dentro dele. Os animais do pasto vão até o cocho comer sozinhos e **entram no modo de procriação automaticamente**, multiplicando seu rebanho e gerando filhotes de forma passiva enquanto você constrói sua base!
+65. **`justenoughbreeding-fabric-1.20.1-3.1.0.jar` (Just Enough Breeding - Enciclopédia de Cruzamento):**  
+    *Integração de reprodução com o JEI.* Nunca mais abra o navegador para pesquisar "o que tatu come?", "qual flor reproduz abelha?" ou "quanto tempo demora para a vaca procriar de novo?". Basta apertar `R` ou consultar a aba do animal no JEI para ver a dieta exata de procriação, tempo de gestação e itens dropados.
 
 ---
 
