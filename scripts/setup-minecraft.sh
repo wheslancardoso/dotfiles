@@ -136,7 +136,15 @@ mods_to_download = [
     "friendly-fire",        # IMPOSSÍVEL bater ou matar seu cachorro/gato sem querer!
     "clumps",               # Agrupa 5.000 orbes de XP em 1 só (zero lag nas suas mega farms automáticas)
     "modernfix",            # Carregamento ultra-rápido do mundo e mata corrupção de memória
-    "continuity"            # Vidros conectados perfeitos sem divisórias feias
+    "continuity",           # Vidros conectados perfeitos sem divisórias feias
+    # Construção de Elite & Zero Atrito de Blocos
+    "building-wands",       # Varinhas mágicas: constrói paredes, pisos e tetos inteiros com 1 clique!
+    "bridging-mod",         # Construa pontes no vazio correndo para a frente (sem precisar dar Shift de ré!)
+    "litematica",           # Holograma de construções: projete qualquer castelo/farm do YouTube no mapa e monte por cima!
+    "malilib",              # Dependência oficial do Litematica
+    # Organização Centralizada e Inventário Fiel
+    "toms-storage",         # O melhor mod de armazenamento: conecta TODOS os seus baús num terminal único com busca!
+    "mouse-tweaks"          # Puxa ou empurra linhas de itens arrastando o mouse
 ]
 
 for slug in mods_to_download:

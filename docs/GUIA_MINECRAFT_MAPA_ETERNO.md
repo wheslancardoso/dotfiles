@@ -5,52 +5,58 @@
 
 ---
 
-## 🌟 O QUE ESTÁ INSTALADO (REMOÇÃO TOTAL DE ATRITO & SHADERS DE CINEMA)
+## 🏗️ 1. CONSTRUÇÃO DE ELITE (ZERO ATRITO COM BLOCOS)
 
-### 1. 🪨 O Fim da Raiva com Cascalho
-* **GravelMiner:** Quando você estiver minerando e um teto de cascalho ou areia desabar em cima de você, o mod quebra os blocos cadentes **automaticamente na mesma hora**. Acabou aquela história de sufocar ou ficar 2 minutos cavando cascalho com pá.
+* **Building Wands (Varinhas de Construção):**
+  * Chega de colocar bloco por bloco em paredes gigantes!
+  * Segurando uma varinha de construção, dê **1 clique** na face de qualquer parede ou chão e ela expande a parede inteira usando os blocos do seu inventário. Cria pisos, muralhas e tetos em segundos.
+* **Bridging Mod (Pontes sem Shift de Ré!):**
+  * Coloca pontes correndo pra frente olhando para o vazio (estilo Minecraft Bedrock). Você nunca mais vai cair no void ou na lava construindo ponte de ré agachado.
+* **Litematica + MaLiLib (Hologramas do YouTube no seu Mundo):**
+  * Achou uma farm de ferro, castelo medieval ou casa automática linda na internet? Você baixa o arquivo `.litematic`, projeta o holograma semitransparente no seu mapa e só vai colocando os blocos por cima do modelo 3D perfeito.
 
-### 2. 💥 Casa Protegida de Creepers
-* **No Creeper Griefing:** O Creeper explode e dá dano no seu personagem se você vacilar, **mas ele NÃO quebra nenhum bloco do cenário e nem destrói sua casa**. Chega de cratera na frente da sua base.
+---
 
-### 3. 🗑️ Lixeira no Inventário
-* **TrashSlot:** Tem slot de lixeira no canto do inventário. Pegou diorito, andesito ou item inútil que não quer? Arraste pra lixeira ou aperte `Delete` em cima do item.
+## 📦 2. ORGANIZAÇÃO SUPREMA (FIM DOS BAÚS BAGUNÇADOS)
 
-### 4. 🌾 Fazenda Sem Sofrimento
-* **RightClickHarvest:** Basta clicar com o **Botão Direito** no trigo, cenoura, batata madura. O item colhido cai na sua mão e ele **já replanta a semente sozinho na hora** (sem precisar quebrar e trocar de item).
+* **Tom's Simple Storage Mod (Terminal Central de Armazenamento):**
+  * O mod de armazenamento mais amado do jogo: você coloca um bloco conector em cima dos seus baús e coloca um **Terminal de Armazenamento**.
+  * Todos os seus 50 baús se transformam em **uma única tela mágica** com barra de pesquisa para você digitar e achar qualquer item do seu mapa na hora, sem precisar abrir baú por baú!
+  * Suporta terminal sem fio (você abre seus baús andando pela sua base).
+* **Inventory Profiles Next & Mouse Tweaks:**
+  * Arraste o mouse segurando o clique para distribuir ou puxar fileiras inteiras de itens.
+  * Um atalho ou botão organiza todo o baú ou inventário alfabeticamente ou por tipo.
+* **TrashSlot:** Lixeira no inventário com a tecla `Delete`.
+* **ShulkerBoxTooltip:** Vê o interior de qualquer Shulker passando o mouse em cima.
 
-### 5. 📦 Shulker Sem Colocar no Chão
-* **ShulkerBoxTooltip:** Basta passar o mouse por cima da Shulker Box ou Mochila e uma janela visual mostra todos os itens que estão dentro dela.
+---
 
-### 6. 🎒 Mochilas Inteligentes & Auto-Pickup na Mina
-* **Traveler's Backpack (Tecla `B`):**
-  * Auto-coleta e filtros: minérios e pedras vão direto pra mochila sem entupir os 36 slots principais do seu jogador.
-  * Fornalha e bancada de trabalho embutidas.
+## 🛡️ 3. ZERO DORES CLÁSSICAS & ANIMAIS BLINDADOS
 
-### 7. 🚶‍♂️ Transportar Villagers & Baús no Colo (Adeus Barco e Trilhos!)
-* **Carry On:**
-  * Mão vazia $\rightarrow$ Chegue perto de qualquer **Villager, animal, baú cheio ou fornalha** $\rightarrow$ segure `Shift + Botão Direito do Mouse`.
-  * Você carrega o Villager no colo e solta onde quiser.
+* **GravelMiner:** Cascalho ou areia caindo em cima de você quebra **sozinho no ar** instantaneamente!
+* **No Creeper Griefing:** Creeper dá dano no jogador se vacilar, mas **não explode nem quebra blocos da sua casa ou das suas farms**.
+* **FriendlyFire:** Impossível bater ou matar seu cachorro, gato ou cavalo sem querer durante combates.
+* **ElytraSlot:** Equipa Peitoral de Netherita com Proteção IV **E** Elytra no mesmo slot (voa blindado).
+* **Carry On:** `Shift + Botão Direito` com a mão vazia carrega Villagers, animais e baús cheios no colo.
+* **Universal Graves:** Morreu na lava? Um túmulo seguro guarda tudo e marca as coordenadas no mapa.
+* **Waystones:** Teletransporte instantâneo da camada -58 direto pra sua base.
+* **RightClickHarvest:** Colhe e replanta fazendas com 1 clique direito.
+* **FallingTree & Diggus Maximus:** Madeira e minérios quebram o bloco inteiro em 1 segundo.
 
-### 8. 🪓 Coleta em Lote (Madeira & Minérios)
-* **FallingTree:** Quebrou o bloco de baixo da árvore com machado? A árvore inteira cai com folhas e tudo.
-* **Diggus Maximus:** Segure a tecla da aspa/til (`~`) e quebre qualquer minério ou pedra $\rightarrow$ quebra todo o veio interligado.
+---
 
-### 9. 🌀 Teletransporte Instantâneo
-* **Waystones:** Coloque pedras de teletransporte e use pergaminhos (*Warp Scroll*) para voltar da camada -58 direto para sua casa sem andar milhares de blocos.
+## ☀️ 4. GRÁFICOS DE CINEMA (RTX 5060)
 
-### 10. 💀 Sem Perda de Itens
-* **Universal Graves:** Morreu na lava ou no escuro? Um túmulo seguro guarda tudo e marca no mapa.
-
-### 11. ☀️ Gráficos de Cinema & Performance Brutal
-* **Sodium + Iris Shaders + Complementary Reimagined:** Já ativo por padrão na sua RTX 5060 em centenas de FPS.
-* **LambDynamicLights:** Tocha na mão esquerda (`F`) ilumina o túnel enquanto você anda.
+* **Sodium + Iris + Lithium + ModernFix + FerriteCore + Indium:** O ecossistema de performance mais rápido do mundo.
+* **Complementary Reimagined Shaders:** Pré-instalado e ativado por padrão em centenas de FPS (água cristalina, iluminação volumétrica e sombras dinâmicas).
+* **Continuity:** Vidros conectados limpos e transparentes (sem divisórias feias).
+* **LambDynamicLights:** Tocha na mão esquerda (`F`) ilumina as cavernas enquanto você anda.
 
 ---
 
 ## 🎮 COMO JOGAR
 
 1. Abra o **Prism Launcher** (no menu do Hyprland ou terminal `prismlauncher`).
-2. No canto superior direito, clique em **Contas $\rightarrow$ Gerenciar Contas $\rightarrow$ Adicionar Offline**.
-3. Escolha o seu nome/nickname.
-4. Dê dois cliques na instância **Mapa Eterno (Fabric 1.20.1)**.
+2. No canto superior direito: **Contas $\rightarrow$ Gerenciar Contas $\rightarrow$ Adicionar Offline**.
+3. Digite seu nome/nickname.
+4. Dê dois cliques na instância **Mapa Eterno (Fabric 1.20.1)** e boa diversão! 🏰🌾⛏️
