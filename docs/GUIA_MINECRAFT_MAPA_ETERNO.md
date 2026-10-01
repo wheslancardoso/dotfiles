@@ -3,14 +3,14 @@
 > **Launcher Canônico:** Prism Launcher (Nativo CachyOS/Arch com suporte a contas offline)  
 > **Hardware de Referência:** AMD Ryzen 7 5700X (8C/16T) • NVIDIA GeForce RTX 5060 (8 GB RAM alocados na JVM)  
 > **Script de Automação:** `~/dotfiles/scripts/setup-minecraft.sh`  
-> **Total de Mods Instalados e Auditados:** 55 Mods Especializados
+> **Total de Mods Instalados e Auditados:** 58 Mods Especializados
 
 ---
 
 ## 🎯 ÍNDICE GERAL
 1. [Filosofia do Setup: Zero Atrito, Zero Traumas](#-1-filosofia-do-setup-zero-atrito-zero-traumas)
 2. [Guia de Utilização das Armas Anti-Atrito & Controles](#-2-guia-de-utilização-das-armas-anti-atrito--controles)
-3. [Catálogo Completo dos 55 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-55-mods)
+3. [Catálogo Completo dos 58 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-58-mods)
 4. [Shaderpack Complementary Reimagined & Motor Gráfico](#-4-shaderpack-complementary-reimagined--motor-gráfico)
 5. [Passo a Passo: Como Iniciar e Jogar Hoje](#-5-passo-a-passo-como-iniciar-e-jogar-hoje)
 6. [Manutenção, Backup & Reprodutibilidade no Dotfiles](#-6-manutenção-backup--reprodutibilidade-no-dotfiles)
@@ -176,6 +176,14 @@ Abaixo está o registro exato de todos os 40 arquivos `.jar` presentes na pasta 
     *Feixes de luz em drops raros.* Itens jogados no chão emitem um feixe vertical de luz brilhante colorido de acordo com a sua raridade (estilo RPG/Borderlands/Diablo). Você nunca mais vai perder um diamante ou barra de Netherita que caiu no meio da grama ou no escuro da caverna.
 55. **`BetterFurnacesReforged-1.20.1-1.1.2518.1-fabric.jar` (Better Furnaces Reforged):**  
     *Fornalhas Industriais Ultra-Rápidas.* Adiciona fornalhas de Ferro, Ouro, Diamante e Netherita. Uma fornalha de Diamante ou Netherita com upgrades de velocidade **funde 64 minérios ou carnes em questão de 3 a 5 segundos**! Possui upgrades de auto-inserção de combustível e auto-extração de itens para os baús conectados.
+
+### Grupo I: Anti-Warden & Mineração Turbo com Radar de Diamantes
+56. **`no-warden-1.0.jar` (No Warden):**  
+    *Extermínio do monstro mais injusto do jogo.* O Warden **NUNCA MAIS NASCE** no seu mundo! Os sensores e shriekers das Cidades Ancestrais não invocam o bicho. Você pode correr, quebrar blocos, pular e saquear os baús mais raros das profundezas em paz absoluta, sem aquela escuridão pulsante cegando sua tela.
+57. **`scannable-MC1.20.1-fabric-1.7.12+18ccb75.jar` (Scannable - Radar Portátil de Diamantes):**  
+    *O fim de minerar às cegas.* Adiciona um Scanner portátil de mão. Segure o botão direito para disparar uma onda sonora de sonar: o scanner emite um bipe e **projeta um contorno 3D iluminado através da pedra sólida destacando todos os blocos de Diamante, Ouro, Ferro e baús escondidos** num raio de dezenas de blocos! Você cava direto no minério.
+58. **`justhammers-fabric-20.1.5+mc1.20.1.jar` (Just Hammers - Mineração 3x3):**  
+    *Escavação de túneis 9x mais rápida.* Adiciona martelos de Pedra, Ferro, Diamante e Netherita. Ao invés de quebrar 1 bloquinho por vez, cada batida do martelo quebra uma área inteira de **3x3 blocos (9 blocos por clique)**, abrindo túneis gigantes e desenterrando minérios em velocidade supersônica.
 
 ---
 

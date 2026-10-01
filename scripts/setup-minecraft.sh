@@ -167,7 +167,11 @@ mods_to_download = [
     "neat",                  # Barra de vida em cima dos monstros estilo RPG para saber o dano exato.
     "loot-beams-refork",     # Feixes de luz coloridos saindo dos itens no chão estilo RPG (nunca mais perca um drop no escuro).
     # Fornalhas Industriais Ultra-Rápidas
-    "better-furnaces-reforged"# Fornalhas de Ferro, Ouro, Diamante e Netherita (fundem packs inteiros em segundos!)
+    "better-furnaces-reforged",# Fornalhas de Ferro, Ouro, Diamante e Netherita (fundem packs inteiros em segundos!)
+    # Anti-Warden & Mineração Turbo com Radar de Diamantes
+    "no-warden",              # O WARDEN NUNCA MAIS NASCE! Pode correr, pular e saquear as Cidades Ancestrais em paz total.
+    "scannable",              # Scanner portátil tecnológico que bipa e destaca Diamantes através das paredes da caverna!
+    "just-hammers"            # Martelos que escavam túneis de 3x3 blocos de uma só vez (mineração 9x mais rápida!)
 ]
 
 for slug in mods_to_download:
