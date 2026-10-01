@@ -73,7 +73,7 @@ merged_servers = win_data.get("mcpServers", {})
 for server_name, server_cfg in wsl_data.get("mcpServers", {}).items():
     # No Windows, npx roda nativamente via npx.cmd
     cfg_copy = json.loads(json.dumps(server_cfg))
-    if cfg_copy.get("command") == "npx":
+    if "npx" in cfg_copy.get("command", ""):
         cfg_copy["command"] = "npx.cmd"
     merged_servers[server_name] = cfg_copy
 
