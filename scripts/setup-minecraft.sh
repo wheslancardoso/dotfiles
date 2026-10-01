@@ -188,7 +188,15 @@ mods_to_download = [
     "clickthrough+",          # Clique em baús atravessa molduras e placas (abre o baú direto sem girar o item da moldura)
     "zoomify",                # Zoom ultra-suave com transição de cinema na tecla C (adeus luneta preta e lenta)
     "dynamic-fps",            # Reduz o consumo de GPU/CPU ao dar Alt+Tab ou minimizar a janela
-    "fastback"                # Backup automático e silencioso em .zip do seu mundo para blindar contra corrupção
+    "fastback",               # Backup automático e silencioso em .zip do seu mundo para blindar contra corrupção
+    # Blindagem de Ferramentas & Anti-Quebra (Nunca mais perca itens valiosos nem perca tempo no inventário)
+    "anti-tool-break",        # Bloqueia a ferramenta quando ela chega na beira de quebrar (1 de vida), impedindo destruição acidental!
+    "low-durability-switcher",# Troca automaticamente de ferramenta na mão quando a atual estiver quase quebrando
+    "show-durability",        # Mostra os números exatos de usos restantes de picaretas, espadas e armaduras diretamente no ícone
+    # Movimentação Fluida & HUD Inteligente
+    "stepitup",               # Subida suave de 1 bloco sem precisar ficar esmagando a barra de espaço (sem o auto-jump bugado)
+    "status-effect-bars",     # Barras visuais na tela mostrando o tempo restante de cada poção (visão noturna, respiração, etc.)
+    "loot-log"                # Notificação limpa no canto da tela mostrando exatamente o que você acabou de pegar do chão
 ]
 
 for slug in mods_to_download:

@@ -3,14 +3,14 @@
 > **Launcher Canônico:** Prism Launcher (Nativo CachyOS/Arch com suporte a contas offline)  
 > **Hardware de Referência:** AMD Ryzen 7 5700X (8C/16T) • NVIDIA GeForce RTX 5060 (8 GB RAM alocados na JVM)  
 > **Script de Automação:** `~/dotfiles/scripts/setup-minecraft.sh`  
-> **Total de Mods Instalados e Auditados:** 71 Mods Especializados
+> **Total de Mods Instalados e Auditados:** 77 Mods Especializados
 
 ---
 
 ## 🎯 ÍNDICE GERAL
 1. [Filosofia do Setup: Zero Atrito, Zero Traumas](#-1-filosofia-do-setup-zero-atrito-zero-traumas)
 2. [Guia de Utilização das Armas Anti-Atrito & Controles](#-2-guia-de-utilização-das-armas-anti-atrito--controles)
-3. [Catálogo Completo dos 71 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-71-mods)
+3. [Catálogo Completo dos 77 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-77-mods)
 4. [Shaderpack Complementary Reimagined & Motor Gráfico](#-4-shaderpack-complementary-reimagined--motor-gráfico)
 5. [Passo a Passo: Como Iniciar e Jogar Hoje](#-5-passo-a-passo-como-iniciar-e-jogar-hoje)
 6. [Manutenção, Backup & Reprodutibilidade no Dotfiles](#-6-manutenção-backup--reprodutibilidade-no-dotfiles)
@@ -21,8 +21,8 @@
 
 O Minecraft original (Vanilla) é notório por gerar atrito repetitivo que desestimula jogadores que buscam construir projetos de longo prazo ("Mapa Eterno" ou estilo "Em Busca da Casa Automática"):
 * **Atrito de Tempo:** Horas minerando bloco por bloco, quebrando troncos árvore por árvore, organizando centenas de baús individuais.
-* **Atrito de Perda & Frustração:** Creepers explodindo construções com fiação de redstone, cascalho caindo na cabeça e sufocando o jogador, perder armadura na lava por conta do timer cruel de 5 minutos, ou matar pets por fogo amigo acidental.
-* **Atrito de Deslocamento & Animais:** Ficar 40 minutos andando pelo mapa para voltar da mina, puxar animais burros com laço frágil que arrebenta ou empurrar barcos e trilhos com Villagers teimosos.
+* **Atrito de Perda & Frustração:** Creepers explodindo construções com fiação de redstone, cascalho caindo na cabeça e sufocando o jogador, perder armadura na lava por conta do timer cruel de 5 minutos, ferramentas caras quebrando acidentalmente por descuido, ou matar pets por fogo amigo.
+* **Atrito de Deslocamento & Animais:** Ficar 40 minutos andando pelo mapa para voltar da mina, esmagar a barra de espaço para subir cada montanha de 1 bloco, puxar animais burros com laço frágil que arrebenta ou empurrar barcos e trilhos com Villagers teimosos.
 * **Atrito de Coleta Agrícola:** Ficar quebrando matinho e grama um por um com a mão vazia para tentar dropar 2 ou 3 sementes de trigo.
 * **Atrito de Micro-Fricções:** Espada acertando a graminha na hora de bater em monstros, molduras girando ao tentar abrir baús decorados, e o perigo de perder um save de centenas de horas por corrupção de arquivo.
 
@@ -34,6 +34,12 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 
 | Ação Desejada | Mod Responsável | Como Executar no Teclado / Jogo |
 | :--- | :--- | :--- |
+| **Proteção Absoluta Contra Quebra de Picareta** | `Anti Tool Break` | **Passivo/Automático:** Quando sua picareta/espada valiosa chega em 1 ponto de durabilidade, ela **trava e recusa quebrar**, impedindo que você destrua ferramentas com Mending e Fortuna III por distração! |
+| **Troca Automática de Ferramenta Gasta** | `Low Durability Switcher` | **Passivo/Automático:** Ao minerar, quando uma picareta está para quebrar, o mod **substitui instantaneamente** a picareta da sua mão por outra reserva do seu inventário sem você precisar parar ou abrir menus! |
+| **Ver Durabilidade Numérica Exata** | `Show Durability` | Olhe para o ícone de qualquer ferramenta ou armadura: o **número exato de usos restantes** (ex: `1420`) aparece impresso diretamente sobre o item na hotbar. |
+| **Subir Morros e Degraus Lisos Sem Pular** | `StepItUp` | **Passivo/Automático:** Ande para a frente em direção a qualquer bloco de 1 de altura. Seu boneco sobe o degrau suavemente sem pular, sem tremer a câmera e sem gastar fome extra! |
+| **Timer Visual de Poções na Tela** | `Status Effect Bars` | Olhe para o canto superior direito da tela: cada efeito (visão noturna, velocidade, respiração) ganha uma barra de contagem regressiva colorida. |
+| **Notificação de Itens Coletados (Loot Log)** | `Loot Log` | Ao passar por cima de drops e minérios, um alerta compacto no canto inferior da tela mostra o ícone e a quantidade exata do que você acabou de pegar. |
 | **Zoom Cinematográfico Suave** | `Zoomify` | Pressione e segure a tecla **`C`**. A câmera aproxima suavemente com visão limpa sem barras pretas ou necessidade de segurar luneta na mão. |
 | **Atacar Monstros no Mato Sem Travar** | `Cut Through` | Espadas, machados e flechas atravessam mato alto, flores e vinhas direto no alvo sem errar o golpe por causa da vegetação. |
 | **Abrir Baús com Placas ou Molduras** | `ClickThrough+` | Clique com o **Botão Direito** no baú mesmo se houver uma moldura de item ou placa na frente: ele abre o baú direto sem girar o item! |
@@ -227,6 +233,20 @@ Abaixo está o registro exato de todos os 71 arquivos `.jar` presentes na pasta 
     *Protege sua GPU e economiza energia silenciosamente.* Ao alternar para o navegador, Discord ou anotações, reduz o FPS do jogo para 15 frames para não esquentar seu computador em segundo plano, restaurando instantaneamente para 200+ FPS ao retornar.
 71. **`fastback-0.15.6+1.20.1-fabric.jar` (FastBack - Blindagem de Save Anti-Corrupção):**  
     *Proteção automática do seu Mapa Eterno.* Cria backups compactados em `.zip` do seu mundo periodicamente em segundo plano, sem travamentos de tela ou quedas de frames. Seu mundo de centenas de horas fica imune a quedas de luz ou desligamentos inesperados.
+
+### Grupo M: Blindagem de Ferramentas, Durabilidade & HUD Fluido
+72. **`antitoolbreak-1.0.0+mc1.20.jar` (Anti Tool Break - Imunidade Contra Destruição):**  
+    *Chega de quebrar ferramentas caras por descuido.* Quando sua picareta de Netherita com Fortuna III e Mending atinge 1 ponto de durabilidade restante, o mod **bloqueia o uso da ferramenta** para que ela nunca quebre acidentalmente. Suas melhores armas e ferramentas ficam 100% salvas.
+73. **`LowDurabilitySwitcher-1.0.1+1.20.1.jar` (Low Durability Switcher - Troca Automática na Mão):**  
+    *Mineração ininterrupta sem abrir o inventário.* Ao minerar, quando sua picareta atinge o limite crítico de durabilidade, ela é **substituída automaticamente na sua mão por outra ferramenta equivalente do inventário**, permitindo que você continue cavando sem precisar abrir a tela de inventário a todo momento.
+74. **`showdurability-1.1.0+1.20.1.jar` (Show Durability - Contador Numérico Exato):**  
+    *Durabilidade visível sem achismos.* Imprime o número exato de usos restantes (ex: `1520`) diretamente em cima do ícone da ferramenta na hotbar e no inventário, dando clareza total de quanto resta antes de precisar consertar.
+75. **`stepitup-2.0.1-1.20.1-fabric.jar` (StepItUp - Subida Suave Sem Pular):**  
+    *Movimentação fluida em morros e montanhas.* Acabe com a necessidade de ficar esmagando a barra de espaço para subir cada bloco de 1 de altura. Seu personagem caminha suavemente sobre blocos de elevação como se fossem rampas, sem sacudir a câmera e sem a queimação inútil da barra de fome causada por pulos repetitivos.
+76. **`status-effect-bars-1.0.3.jar` (Status Effect Bars - Timers Visuais de Poções):**  
+    *Visão clara do tempo de buffs.* Exibe uma barra de contagem regressiva limpa e colorida para cada poção ativa na sua tela (Visão Noturna, Velocidade, Respiração Aquática), acabando com o susto de um efeito acabar do nada no meio do perigo.
+77. **`lootlog-fabric-1.20.1-1.0.0.jar` (Loot Log - Notificador de Coleta Estilo RPG):**  
+    *Saiba exatamente o que coletou sem abrir o inventário.* Mostra um feed visual minimalista no canto inferior da tela indicando o ícone e a quantidade exata de itens que você acabou de aspirar do chão (`+4 Diamantes`, `+32 Carvão`), sem precisar pausar a mineração para conferir o inventário.
 
 ---
 
