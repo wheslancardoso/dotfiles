@@ -8,7 +8,7 @@ set -euo pipefail
 DEST_DIR="$HOME/.gemini/config"
 RULES_DIR="$DEST_DIR/rules"
 
-echo "==> Configurando Antigravity AI (MCP + Regras Globais)..."
+echo "==> Configurando Antigravity AI (MCP + Regras Globais + Templates de Eficiência)..."
 
 mkdir -p "$RULES_DIR"
 
@@ -17,6 +17,8 @@ DOTFILES_DIR="$(dirname "$SCRIPT_DIR")"
 
 SOURCE_MCP="$DOTFILES_DIR/home/dot_gemini/config/mcp_config.json"
 SOURCE_RULE="$DOTFILES_DIR/home/dot_gemini/config/rules/mcp_policy.md"
+SOURCE_REPOMIX="$DOTFILES_DIR/home/dot_gemini/config/repomix.config.json"
+SOURCE_IGNORE="$DOTFILES_DIR/home/dot_gemini/config/.antigravityignore"
 
 # Obtém token do ambiente ou mantém o já configurado se existir
 GITHUB_TOKEN="${GITHUB_PERSONAL_ACCESS_TOKEN:-${GITHUB_TOKEN:-}}"
@@ -47,6 +49,17 @@ else
     echo "  [!] Arquivo fonte mcp_policy.md não encontrado em $SOURCE_RULE"
 fi
 
+# Copia templates globais de repomix e .antigravityignore
+if [ -f "$SOURCE_REPOMIX" ]; then
+    cp "$SOURCE_REPOMIX" "$DEST_DIR/repomix.config.json"
+    echo "  [OK] $DEST_DIR/repomix.config.json atualizado."
+fi
+
+if [ -f "$SOURCE_IGNORE" ]; then
+    cp "$SOURCE_IGNORE" "$DEST_DIR/.antigravityignore"
+    echo "  [OK] $DEST_DIR/.antigravityignore atualizado."
+fi
+
 echo "==> Verificando dependências necessárias (Node.js e npx)..."
 if ! command -v npx &>/dev/null; then
     echo "  [AVISO] 'npx' não foi detectado no PATH."
@@ -55,4 +68,4 @@ else
     echo "  [OK] Node/npx prontos: $(node -v) / npx $(npx -v)"
 fi
 
-echo "==> Tudo pronto! O Antigravity já carregará os MCPs e as regras globais."
+echo "==> Tudo pronto! O Antigravity já carregará os MCPs, Repomix e as regras de máxima economia de tokens."

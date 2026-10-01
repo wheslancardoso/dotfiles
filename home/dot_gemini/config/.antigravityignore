@@ -1,0 +1,38 @@
+# ==============================================================================
+# Antigravity Ignore: Bloqueio Agressivo de Ruído para Indexação e Busca
+# Fullstack (Java/Spring Boot, TypeScript/Next/React/Angular) & Mobile (Flutter)
+# ==============================================================================
+
+# Node / Web Frameworks
+node_modules/
+.next/
+.nuxt/
+dist/
+out/
+.turbo/
+.cache/
+
+# Java / Spring Boot / Gradle / Maven
+target/
+build/
+.gradle/
+*.class
+*.jar
+*.war
+
+# Flutter / Dart
+.dart_tool/
+.pub-cache/
+.pub/
+ephemeral/
+
+# Binários, IDEs e Logs
+bin/
+obj/
+*.log
+*.sqlite
+*.db
+.idea/
+.vscode/
+.antigravity/
+.git/

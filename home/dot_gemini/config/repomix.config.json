@@ -1,0 +1,28 @@
+{
+  "$schema": "https://repomix.com/schemas/json/config.json",
+  "output": {
+    "style": "xml",
+    "compress": true,
+    "removeComments": true,
+    "removeEmptyLines": true,
+    "parsableStyle": true
+  },
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "**/node_modules/**",
+      "**/.next/**",
+      "**/dist/**",
+      "**/target/**",
+      "**/build/**",
+      "**/.dart_tool/**",
+      "**/.pub-cache/**",
+      "**/bin/**",
+      "**/obj/**",
+      "**/.gradle/**",
+      "**/.antigravity/**",
+      "**/*.log"
+    ]
+  }
+}

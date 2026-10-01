@@ -7,6 +7,10 @@
         "MAX_LOG_LINES": "40"
       }
     },
+    "repomix": {
+      "command": "npx",
+      "args": ["-y", "repomix", "--mcp"]
+    },
     "context7": {
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp"]
