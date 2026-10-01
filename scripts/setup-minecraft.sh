@@ -182,7 +182,13 @@ mods_to_download = [
     "animal_feeding_trough",  # Cocho de Alimentação Automática: encha com trigo/sementes e os bichos procriam sozinhos!
     "justenoughbreeding",     # Revela no JEI o alimento exato de procriação e o tempo de cooldown de cada animal
     # Agricultura & Coleta Rápida de Sementes
-    "hoes-are-scythes"        # Enxadas funcionam como Foices (Ceifador em área): 1 batida limpa gramas e gera centenas de sementes!
+    "hoes-are-scythes",       # Enxadas funcionam como Foices (Ceifador em área): 1 batida limpa gramas e gera centenas de sementes!
+    # Remoção Cirúrgica de Fricções Extras (Combate, Baús, Zoom, Backup e Economia)
+    "cut-through",            # Golpes de espada e projéteis atravessam mato e flores (nunca mais erre o zumbi por causa da grama!)
+    "clickthrough+",          # Clique em baús atravessa molduras e placas (abre o baú direto sem girar o item da moldura)
+    "zoomify",                # Zoom ultra-suave com transição de cinema na tecla C (adeus luneta preta e lenta)
+    "dynamic-fps",            # Reduz o consumo de GPU/CPU ao dar Alt+Tab ou minimizar a janela
+    "fastback"                # Backup automático e silencioso em .zip do seu mundo para blindar contra corrupção
 ]
 
 for slug in mods_to_download:

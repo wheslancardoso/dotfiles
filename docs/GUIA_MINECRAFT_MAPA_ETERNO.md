@@ -3,14 +3,14 @@
 > **Launcher Canônico:** Prism Launcher (Nativo CachyOS/Arch com suporte a contas offline)  
 > **Hardware de Referência:** AMD Ryzen 7 5700X (8C/16T) • NVIDIA GeForce RTX 5060 (8 GB RAM alocados na JVM)  
 > **Script de Automação:** `~/dotfiles/scripts/setup-minecraft.sh`  
-> **Total de Mods Instalados e Auditados:** 66 Mods Especializados
+> **Total de Mods Instalados e Auditados:** 71 Mods Especializados
 
 ---
 
 ## 🎯 ÍNDICE GERAL
 1. [Filosofia do Setup: Zero Atrito, Zero Traumas](#-1-filosofia-do-setup-zero-atrito-zero-traumas)
 2. [Guia de Utilização das Armas Anti-Atrito & Controles](#-2-guia-de-utilização-das-armas-anti-atrito--controles)
-3. [Catálogo Completo dos 66 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-66-mods)
+3. [Catálogo Completo dos 71 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-71-mods)
 4. [Shaderpack Complementary Reimagined & Motor Gráfico](#-4-shaderpack-complementary-reimagined--motor-gráfico)
 5. [Passo a Passo: Como Iniciar e Jogar Hoje](#-5-passo-a-passo-como-iniciar-e-jogar-hoje)
 6. [Manutenção, Backup & Reprodutibilidade no Dotfiles](#-6-manutenção-backup--reprodutibilidade-no-dotfiles)
@@ -24,6 +24,7 @@ O Minecraft original (Vanilla) é notório por gerar atrito repetitivo que deses
 * **Atrito de Perda & Frustração:** Creepers explodindo construções com fiação de redstone, cascalho caindo na cabeça e sufocando o jogador, perder armadura na lava por conta do timer cruel de 5 minutos, ou matar pets por fogo amigo acidental.
 * **Atrito de Deslocamento & Animais:** Ficar 40 minutos andando pelo mapa para voltar da mina, puxar animais burros com laço frágil que arrebenta ou empurrar barcos e trilhos com Villagers teimosos.
 * **Atrito de Coleta Agrícola:** Ficar quebrando matinho e grama um por um com a mão vazia para tentar dropar 2 ou 3 sementes de trigo.
+* **Atrito de Micro-Fricções:** Espada acertando a graminha na hora de bater em monstros, molduras girando ao tentar abrir baús decorados, e o perigo de perder um save de centenas de horas por corrupção de arquivo.
 
 Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores**, mantendo o jogo 100% fiel à essência Vanilla, mas adicionando a fluidez e a conveniência de um RPG de engenharia moderno.
 
@@ -33,6 +34,9 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 
 | Ação Desejada | Mod Responsável | Como Executar no Teclado / Jogo |
 | :--- | :--- | :--- |
+| **Zoom Cinematográfico Suave** | `Zoomify` | Pressione e segure a tecla **`C`**. A câmera aproxima suavemente com visão limpa sem barras pretas ou necessidade de segurar luneta na mão. |
+| **Atacar Monstros no Mato Sem Travar** | `Cut Through` | Espadas, machados e flechas atravessam mato alto, flores e vinhas direto no alvo sem errar o golpe por causa da vegetação. |
+| **Abrir Baús com Placas ou Molduras** | `ClickThrough+` | Clique com o **Botão Direito** no baú mesmo se houver uma moldura de item ou placa na frente: ele abre o baú direto sem girar o item! |
 | **Ceifar Grama em Área (Chuva de Sementes)** | `Hoes Are Scythes` | Pegue **qualquer enxada** (madeira, pedra, ferro, diamante) e quebre 1 grama/mato alto com o **Botão Esquerdo**. A enxada funciona como uma Foice que ceifa uma área circular inteira instantaneamente, dropando dezenas de sementes de uma vez só! |
 | **Capturar Animais/Mobs no Bolso (Pokébola)** | `Mob Lassos` | Crie o **Golden Lasso** (para animais pacíficos) ou **Diamond Lasso** (para qualquer mob). Mire no bicho e dê **Botão Direito**. O animal vira um item no seu bolso! Clique com Botão Direito no chão para soltá-lo onde quiser. |
 | **Carregar Mobs e Baús nos Braços** | `Carry On` | Mãos vazias: mire no animal, Villager ou baú cheio e aperte **`Shift + Botão Direito`**. Solte no destino com outro Botão Direito. |
@@ -57,9 +61,9 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 
 ---
 
-## 📚 3. CATÁLOGO COMPLETO DOS 40 MODS INSTALADOS
+## 📚 3. CATÁLOGO COMPLETO DOS 71 MODS INSTALADOS
 
-Abaixo está o registro exato de todos os 40 arquivos `.jar` presentes na pasta `.minecraft/mods/` da instância:
+Abaixo está o registro exato de todos os 71 arquivos `.jar` presentes na pasta `.minecraft/mods/` da instância:
 
 ### Grupo A: Eliminação de Dores & Traumas Clássicos (Pain Killers)
 1. **`gravelminer-fabric-1.20-16.0.4.jar` (GravelMiner):**  
@@ -211,6 +215,18 @@ Abaixo está o registro exato de todos os 40 arquivos `.jar` presentes na pasta 
     *Integração de reprodução com o JEI.* Nunca mais abra o navegador para pesquisar "o que tatu come?", "qual flor reproduz abelha?" ou "quanto tempo demora para a vaca procriar de novo?". Basta apertar `R` ou consultar a aba do animal no JEI para ver a dieta exata de procriação, tempo de gestação e itens dropados.
 66. **`hoesarescythes-1.2-1.20.1.jar` (Hoes Are Scythes - Ceifador em Área de Gramas e Sementes):**  
     *Fim da tortura de catar semente na mão.* Bater de graminha em graminha com a mão vazia para conseguir uma dúzia de sementes de trigo é um dos inícios de jogo mais lentos e frustrantes. Com este mod, **qualquer enxada se comporta como uma foice real de colheita**: ao golpear um bloco de grama alta ou flor com o botão esquerdo, a enxada ceifa um raio de **3x3 a 5x5 blocos ao redor**, varrendo todo o mato do descampado em um piscar de olhos e dropando uma **chuva torrencial de sementes** para você encher o inventário e iniciar sua plantação em 30 segundos! Além disso, serve para colher fazendas maduras em lote instantaneamente.
+
+### Grupo L: Eliminação de Micro-Fricções Finais (Combate, Baús, Zoom & Blindagem de Save)
+67. **`CutThrough-v8.0.2-1.20.1-Fabric.jar` (Cut Through - Ataque Sem Bloqueio de Mato):**  
+    *Fim da espada que acerta grama e erra o monstro.* No Minecraft puro, se um zumbi ou esqueleto estiver atrás de uma flor ou grama alta e você golpear, sua espada quebra a plantinha e o monstro não toma nenhum dano. Com este mod, espadas, machados e flechas atravessam folhagens direto no alvo!
+68. **`clickthrough-plus-fabric-3.5.0+1.20.1.jar` (ClickThrough+ - Acesso Direto a Baús Decorados):**  
+    *Fim de ficar girando itens de molduras ao tentar abrir baús.* Permite clicar com o botão direito através de molduras com itens e placas para abrir o baú instantaneamente. Você decora sua sala de baús com molduras indicativas e nunca mais perde a paciência girando os itens acidentalmente.
+69. **`zoomify-2.15.2+1.20.1.jar` (Zoomify - Câmera de Cinema na Tecla C):**  
+    *O clássico zoom do OptiFine muito mais suave e moderno.* Aperte `C` para aproximar a visão com transição limpa e controle com a roda do mouse, sem precisar craftar ou segurar luneta na mão.
+70. **`dynamic-fps-3.11.4+minecraft-1.20.0-fabric.jar` (Dynamic FPS - Economia de Energia em Alt+Tab):**  
+    *Protege sua GPU e economiza energia silenciosamente.* Ao alternar para o navegador, Discord ou anotações, reduz o FPS do jogo para 15 frames para não esquentar seu computador em segundo plano, restaurando instantaneamente para 200+ FPS ao retornar.
+71. **`fastback-0.15.6+1.20.1-fabric.jar` (FastBack - Blindagem de Save Anti-Corrupção):**  
+    *Proteção automática do seu Mapa Eterno.* Cria backups compactados em `.zip` do seu mundo periodicamente em segundo plano, sem travamentos de tela ou quedas de frames. Seu mundo de centenas de horas fica imune a quedas de luz ou desligamentos inesperados.
 
 ---
 
