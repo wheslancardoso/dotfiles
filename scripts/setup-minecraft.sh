@@ -144,7 +144,12 @@ mods_to_download = [
     "malilib",              # Dependência oficial do Litematica
     # Organização Centralizada e Inventário Fiel
     "toms-storage",         # O melhor mod de armazenamento: conecta TODOS os seus baús num terminal único com busca!
-    "mouse-tweaks"          # Puxa ou empurra linhas de itens arrastando o mouse
+    "mouse-tweaks",         # Puxa ou empurra linhas de itens arrastando o mouse
+    # Localizadores de Estruturas & Detector de Slime Chunks
+    "explorers-compass",    # Bússola que aponta pra QUALQUER estrutura (Fortaleza do Nether, Portal do End, Vila, Mansão, Bastion!)
+    "natures-compass",      # Bússola que aponta pra qualquer bioma (Cherry Blossom, Selva, Deserto)
+    "minihud",              # Mostra Slime Chunks em tempo real na tela e desenha a caixa 3D do chunk de slime!
+    "betterf3"              # Tela F3 colorida, limpa e organizada em blocos
 ]
 
 for slug in mods_to_download:

@@ -54,6 +54,19 @@
 
 ---
 
+## 🧭 5. LOCALIZADORES DE ESTRUTURAS & RADAR DE SLIME CHUNKS
+
+* **Explorer's Compass (Bússola de Estruturas):**
+  * Segure a bússola e clique com o botão direito para abrir uma lista de **TODAS as estruturas do mundo** (Fortaleza do Nether, Portal do End / Stronghold, Vilas, Mansões da Floresta, Bastions, Cidades Ancestrais do Warden).
+  * Escolha a estrutura desejada $\rightarrow$ a agulha da bússola aponta a direção exata e mostra a distância em blocos!
+* **Nature's Compass (Bússola de Biomas):**
+  * Quer achar floresta de cerejeiras (Cherry Blossom), deserto ou selva? Abra a bússola, selecione o bioma e ela te guia até lá.
+* **MiniHUD (Visualizador de Slime Chunks em 3D):**
+  * **O fim do sofrimento para achar Slime Chunk:** Pressione `H + C` (ou abra o menu do MiniHUD com `H`) para ativar o overlay de **Slime Chunks**.
+  * O jogo desenha uma caixa 3D verde fluorescente mostrando os limites exatos do chunk de slime no chão! Você sabe exatamente onde escavar para montar a sua farm.
+* **BetterF3:**
+  * Substitui a tela poluída do F3 por uma interface limpa, colorida e organizada em módulos (coordenadas, FPS, bioma e direção).
+
 ## 🎮 COMO JOGAR
 
 1. Abra o **Prism Launcher** (no menu do Hyprland ou terminal `prismlauncher`).
