@@ -304,6 +304,119 @@ cat << 'DIGGUS_EOF' > "$INSTANCE_DIR/.minecraft/config/diggusmaximus/config.json
 DIGGUS_EOF
 ok "Diggus Maximus configurado: mineração de veios sempre ativa por padrão!"
 
+# Configuração de Vídeo Otimizada para RTX 5060 + Ryzen 7 5700X (Fidelidade Máxima & 240 FPS)
+cat << 'OPT_EOF' > "$INSTANCE_DIR/.minecraft/options.txt"
+version:3465
+autoJump:false
+operatorItemsTab:false
+autoSuggestions:true
+chatColors:true
+chatLinks:true
+chatLinksPrompt:true
+enableVsync:false
+entityShadows:true
+forceUnicodeFont:false
+discrete_mouse_scroll:false
+invertYMouse:false
+realmsNotifications:false
+reducedDebugInfo:false
+showSubtitles:false
+directionalAudio:false
+touchscreen:false
+bobView:true
+toggleCrouch:false
+toggleSprint:false
+darkMojangStudiosBackground:true
+hideLightningFlashes:false
+mouseSensitivity:0.5
+fov:1.0
+screenEffectScale:1.0
+fovEffectScale:1.0
+darknessEffectScale:1.0
+gamma:1.0
+renderDistance:16
+simulationDistance:10
+guiScale:3
+particles:0
+maxFps:240
+graphicsMode:2
+ao:2
+prioritizeChunkUpdates:0
+biomeBlendRadius:3
+renderClouds:true
+resourcePacks:[]
+incompatibleResourcePacks:[]
+chatDelay:0.0
+chatHeightFocused:1.0
+chatHeightUnfocused:0.44366195797920227
+chatOpacity:1.0
+chatScale:1.0
+chatWidth:1.0
+chatLineSpacing:0.0
+textBackgroundOpacity:0.5
+textBackground:true
+glDebugVerbosity:1
+pauseOnLostFocus:true
+overrideWidth:0
+overrideHeight:0
+heldItemTooltips:true
+chatVisibility:0
+damageTilt:true
+attackIndicator:1
+tutorialStep:none
+mouseWheelSensitivity:1.0
+rawMouseInput:true
+glintSpeed:0.5
+glintStrength:0.75
+soundCategory_master:0.7
+soundCategory_music:0.2
+soundCategory_record:0.7
+soundCategory_weather:0.6
+soundCategory_block:0.8
+soundCategory_hostile:0.8
+soundCategory_neutral:0.6
+soundCategory_player:0.8
+soundCategory_ambient:0.6
+soundCategory_voice:0.8
+modelPart_cape:true
+modelPart_jacket:true
+modelPart_left_sleeve:true
+modelPart_right_sleeve:true
+modelPart_left_pants_leg:true
+modelPart_right_pants_leg:true
+modelPart_hat:true
+mainHand:right
+OPT_EOF
+
+cat << 'SOD_EOF' > "$INSTANCE_DIR/.minecraft/config/sodium-options.json"
+{
+  "quality": {
+    "weatherQuality": "HIGH",
+    "leavesQuality": "HIGH",
+    "enableVignette": true
+  },
+  "performance": {
+    "chunkBuilderThreads": 0,
+    "alwaysDeferChunkUpdates": false,
+    "animateOnlyVisibleTextures": true,
+    "useEntityCulling": true,
+    "useFogOcclusion": true,
+    "useBlockFaceCulling": true,
+    "useNoErrorGLContext": true
+  },
+  "advanced": {
+    "enableMemoryTracing": false,
+    "useAdvancedStagingBuffers": true,
+    "cpuRenderAheadLimit": 3
+  },
+  "notifications": {
+    "hasClearedDonationButton": true,
+    "hasSeenDonationPrompt": true
+  }
+}
+SOD_EOF
+ok "Configurações visuais de alta fidelidade e performance calibradas para RTX 5060!"
+
 # Configuração do StarterKit (Nascer com Mochila nas costas e Cama)
 mkdir -p "$INSTANCE_DIR/.minecraft/config/starterkit/active"
 cat << 'STARTER_EOF' > "$INSTANCE_DIR/.minecraft/config/starterkit/active/Default.txt"

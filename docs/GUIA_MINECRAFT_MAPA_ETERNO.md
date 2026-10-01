@@ -354,6 +354,16 @@ Para a sua **NVIDIA GeForce RTX 5060**, configuramos e pré-instalamos os **3 sh
 > * Pressione a tecla **`K`** para **ligar/desligar** os shaders instantaneamente em tempo real.  
 > * Vá em *Opções $\rightarrow$ Configurações de Vídeo $\rightarrow$ Pacotes de Shaders* para alternar entre `Complementary Reimagined`, `Complementary Unbound` ou `BSL` com 1 clique!
 
+### ⚙️ Pré-Configurações Calibradas de Fábrica (Zero Setup Manual):
+A instância já vem com `options.txt` e `sodium-options.json` configurados cirurgicamente para extrair a potência máxima do **Ryzen 7 5700X + RTX 5060**:
+* **Distância de Renderização (Render Distance):** **16 Chunks** (campo de visão amplo de horizonte sem engasgos).
+* **Distância de Simulação:** **10 Chunks** (todas as farms, fornos e mobs funcionam perfeitamente à distância).
+* **Taxa Máxima de Quadros (Max FPS):** **240 FPS** (sem limite tolo de 60Hz e com `VSync: Desativado` para menor input lag no Hyprland).
+* **Qualidade Gráfica:** **Fabulous / Fantástica** (folhas transparentes, biomas com blend suave nível 3, vinheta e partículas ativas).
+* **Auto-Pulo (AutoJump):** **DESATIVADO** (o mod `StepItUp` cuida da subida suave sem solavancos).
+* **FOV:** **90 / Pro** (visão periférica moderna de RPG).
+* **Otimizações do Sodium:** *Entity Culling* ativado, *Block Face Culling* ativado, *Fog Occlusion* ativado e *Advanced Staging Buffers* ativado na VRAM da GPU.
+
 ---
 
 ## 🚀 5. PASSO A PASSO: COMO INICIAR E JOGAR HOJE
