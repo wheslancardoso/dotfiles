@@ -180,7 +180,9 @@ mods_to_download = [
     # Captura de Animais & Reprodução Automática (Zero Estresse de Laço e Trigo)
     "mob-lassos",             # Laços Mágicos (Golden/Diamond Lassos): captura animais e mobs no bolso como Pokébolas!
     "animal_feeding_trough",  # Cocho de Alimentação Automática: encha com trigo/sementes e os bichos procriam sozinhos!
-    "justenoughbreeding"      # Revela no JEI o alimento exato de procriação e o tempo de cooldown de cada animal
+    "justenoughbreeding",     # Revela no JEI o alimento exato de procriação e o tempo de cooldown de cada animal
+    # Agricultura & Coleta Rápida de Sementes
+    "hoes-are-scythes"        # Enxadas funcionam como Foices (Ceifador em área): 1 batida limpa gramas e gera centenas de sementes!
 ]
 
 for slug in mods_to_download:

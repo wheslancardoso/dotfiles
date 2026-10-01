@@ -3,14 +3,14 @@
 > **Launcher Canônico:** Prism Launcher (Nativo CachyOS/Arch com suporte a contas offline)  
 > **Hardware de Referência:** AMD Ryzen 7 5700X (8C/16T) • NVIDIA GeForce RTX 5060 (8 GB RAM alocados na JVM)  
 > **Script de Automação:** `~/dotfiles/scripts/setup-minecraft.sh`  
-> **Total de Mods Instalados e Auditados:** 65 Mods Especializados
+> **Total de Mods Instalados e Auditados:** 66 Mods Especializados
 
 ---
 
 ## 🎯 ÍNDICE GERAL
 1. [Filosofia do Setup: Zero Atrito, Zero Traumas](#-1-filosofia-do-setup-zero-atrito-zero-traumas)
 2. [Guia de Utilização das Armas Anti-Atrito & Controles](#-2-guia-de-utilização-das-armas-anti-atrito--controles)
-3. [Catálogo Completo dos 65 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-65-mods)
+3. [Catálogo Completo dos 66 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-66-mods)
 4. [Shaderpack Complementary Reimagined & Motor Gráfico](#-4-shaderpack-complementary-reimagined--motor-gráfico)
 5. [Passo a Passo: Como Iniciar e Jogar Hoje](#-5-passo-a-passo-como-iniciar-e-jogar-hoje)
 6. [Manutenção, Backup & Reprodutibilidade no Dotfiles](#-6-manutenção-backup--reprodutibilidade-no-dotfiles)
@@ -23,6 +23,7 @@ O Minecraft original (Vanilla) é notório por gerar atrito repetitivo que deses
 * **Atrito de Tempo:** Horas minerando bloco por bloco, quebrando troncos árvore por árvore, organizando centenas de baús individuais.
 * **Atrito de Perda & Frustração:** Creepers explodindo construções com fiação de redstone, cascalho caindo na cabeça e sufocando o jogador, perder armadura na lava por conta do timer cruel de 5 minutos, ou matar pets por fogo amigo acidental.
 * **Atrito de Deslocamento & Animais:** Ficar 40 minutos andando pelo mapa para voltar da mina, puxar animais burros com laço frágil que arrebenta ou empurrar barcos e trilhos com Villagers teimosos.
+* **Atrito de Coleta Agrícola:** Ficar quebrando matinho e grama um por um com a mão vazia para tentar dropar 2 ou 3 sementes de trigo.
 
 Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores**, mantendo o jogo 100% fiel à essência Vanilla, mas adicionando a fluidez e a conveniência de um RPG de engenharia moderno.
 
@@ -32,6 +33,7 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 
 | Ação Desejada | Mod Responsável | Como Executar no Teclado / Jogo |
 | :--- | :--- | :--- |
+| **Ceifar Grama em Área (Chuva de Sementes)** | `Hoes Are Scythes` | Pegue **qualquer enxada** (madeira, pedra, ferro, diamante) e quebre 1 grama/mato alto com o **Botão Esquerdo**. A enxada funciona como uma Foice que ceifa uma área circular inteira instantaneamente, dropando dezenas de sementes de uma vez só! |
 | **Capturar Animais/Mobs no Bolso (Pokébola)** | `Mob Lassos` | Crie o **Golden Lasso** (para animais pacíficos) ou **Diamond Lasso** (para qualquer mob). Mire no bicho e dê **Botão Direito**. O animal vira um item no seu bolso! Clique com Botão Direito no chão para soltá-lo onde quiser. |
 | **Carregar Mobs e Baús nos Braços** | `Carry On` | Mãos vazias: mire no animal, Villager ou baú cheio e aperte **`Shift + Botão Direito`**. Solte no destino com outro Botão Direito. |
 | **Reprodução Automática de Animais** | `Animal Feeding Trough` | Coloque o bloco do **Cocho de Alimentação** no pasto e encha-o com trigo, sementes ou cenoura. Os animais se alimentam e **procriam sozinhos** sem você precisar clicar em nenhum deles! |
@@ -207,6 +209,8 @@ Abaixo está o registro exato de todos os 40 arquivos `.jar` presentes na pasta 
     *Animais reproduzem sozinhos sem você precisar clicar em nenhum.* Elimina o tédio de ficar segurando trigo/cenoura e clicando bicho por bicho num cercado apertado. Cria um bloco de **Cocho de Madeira**. Você coloca o cocho no chão e joga trigo, sementes ou cenoura dentro dele. Os animais do pasto vão até o cocho comer sozinhos e **entram no modo de procriação automaticamente**, multiplicando seu rebanho e gerando filhotes de forma passiva enquanto você constrói sua base!
 65. **`justenoughbreeding-fabric-1.20.1-3.1.0.jar` (Just Enough Breeding - Enciclopédia de Cruzamento):**  
     *Integração de reprodução com o JEI.* Nunca mais abra o navegador para pesquisar "o que tatu come?", "qual flor reproduz abelha?" ou "quanto tempo demora para a vaca procriar de novo?". Basta apertar `R` ou consultar a aba do animal no JEI para ver a dieta exata de procriação, tempo de gestação e itens dropados.
+66. **`hoesarescythes-1.2-1.20.1.jar` (Hoes Are Scythes - Ceifador em Área de Gramas e Sementes):**  
+    *Fim da tortura de catar semente na mão.* Bater de graminha em graminha com a mão vazia para conseguir uma dúzia de sementes de trigo é um dos inícios de jogo mais lentos e frustrantes. Com este mod, **qualquer enxada se comporta como uma foice real de colheita**: ao golpear um bloco de grama alta ou flor com o botão esquerdo, a enxada ceifa um raio de **3x3 a 5x5 blocos ao redor**, varrendo todo o mato do descampado em um piscar de olhos e dropando uma **chuva torrencial de sementes** para você encher o inventário e iniciar sua plantação em 30 segundos! Além disso, serve para colher fazendas maduras em lote instantaneamente.
 
 ---
 
