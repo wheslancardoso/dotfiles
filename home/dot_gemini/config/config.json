@@ -1,0 +1,11 @@
+{
+  "userSettings": {
+    "autoExecutionPolicy": "CASCADE_COMMANDS_AUTO_EXECUTION_EAGER",
+    "enableTerminalSandbox": false,
+    "nonWorkspaceFileAccessPolicy": "AGENT_SETTING_POLICY_ALLOW",
+    "permissionGrantsV2Migrated": true,
+    "remoteControlHostname": "xagr-3691973-rising-flare",
+    "sandboxEnabledAtV2Migration": true,
+    "themeMode": "THEME_MODE_DARK"
+  }
+}

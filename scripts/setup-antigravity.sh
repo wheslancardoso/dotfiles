@@ -60,6 +60,15 @@ if [ -f "$SOURCE_IGNORE" ]; then
     echo "  [OK] $DEST_DIR/.antigravityignore atualizado."
 fi
 
+# Copia configurações globais de permissões e comportamento do usuário
+SOURCE_CONFIG="$DOTFILES_DIR/home/dot_gemini/config/config.json"
+if [ -f "$SOURCE_CONFIG" ]; then
+    if [ ! -f "$DEST_DIR/config.json" ]; then
+        cp "$SOURCE_CONFIG" "$DEST_DIR/config.json"
+        echo "  [OK] $DEST_DIR/config.json instalado."
+    fi
+fi
+
 echo "==> Verificando dependências necessárias (Node.js e npx)..."
 if ! command -v npx &>/dev/null; then
     echo "  [AVISO] 'npx' não foi detectado no PATH."
