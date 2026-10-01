@@ -26,6 +26,7 @@
 ### D. Integração com Chezmoi, Arch Linux e Windows Nativo
 * Arquivos salvos em `~/dotfiles/home/dot_gemini/config/`.
 * Script de instalação e teste local (WSL/Linux): `~/dotfiles/scripts/setup-antigravity.sh`.
+  - Resolve automaticamente o caminho nativo do Linux via Mise shims (`$HOME/.local/share/mise/shims/npx`), evitando conflito com o `npx` do Windows montado em `/mnt/c/` que causava erro de interpretador (`bad interpreter: /bin/sh\r`).
 * Script de sincronização com o Windows (Host OS): `~/dotfiles/scripts/sync-antigravity-to-windows.sh`.
   - Injeta MCPs com comando nativo `npx.cmd`.
   - Preserva extensões existentes do Windows (`notebooks`, `visualization`, `data-agent-kit`).
