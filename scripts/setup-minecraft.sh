@@ -220,7 +220,11 @@ mods_to_download = [
     # Fim das Dores de Endgame & Visibilidade Aquática
     "forgiving-void",         # Cair no Void do End não te mata: você ressurge caindo suavemente do céu com todos os itens!
     "better-flight",          # Voo de Elytra sem precisar de foguetes: aperte Espaço durante o voo para bater as asas e ganhar impulso!
-    "clear-water"             # Remove a névoa escura e turva debaixo d'água, deixando rios e oceanos cristalinos
+    "clear-water",            # Remove a névoa escura e turva debaixo d'água, deixando rios e oceanos cristalinos
+    # Troca Inteligente de Ferramenta, Decomposição Rápida de Folhas & Imersão
+    "autoswitch",             # Troca automaticamente para a ferramenta certa ao mirar e bater no bloco (picareta, pá, machado ou espada)
+    "accelerated-decay",      # Decomposição quase instantânea de folhas após derrubar árvores (chuva rápida de maçãs e mudas)
+    "eating-animation"        # Animações visuais detalhadas de mastigação e consumo para todas as comidas do jogo
 ]
 
 for slug in mods_to_download:
