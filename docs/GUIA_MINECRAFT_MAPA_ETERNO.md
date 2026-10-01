@@ -5,48 +5,52 @@
 
 ---
 
-## 🌟 O QUE ESTÁ INSTALADO (ZERO ATRITO & SHADERS DE CINEMA)
+## 🌟 O QUE ESTÁ INSTALADO (REMOÇÃO TOTAL DE ATRITO & SHADERS DE CINEMA)
 
-### 1. 🪓 Coleta Rápida & Fim do Grind
-* **FallingTree:** Quebrou a base de qualquer árvore com o machado? O tronco inteiro e as folhas caem instantaneamente.
-* **Diggus Maximus (Vein Miner):** Segure a tecla da aspa/til (`~` ou `'`) ao minerar qualquer minério ou pedra para quebrar o bloco e todos os blocos iguais adjacentes de uma só vez.
+### 1. 🪨 O Fim da Raiva com Cascalho
+* **GravelMiner:** Quando você estiver minerando e um teto de cascalho ou areia desabar em cima de você, o mod quebra os blocos cadentes **automaticamente na mesma hora**. Acabou aquela história de sufocar ou ficar 2 minutos cavando cascalho com pá.
 
-### 2. 🎒 O Fim do Inventário Cheio na Mina
-* **Traveler's Backpack (Mochilas de Viagem):**
-  * Pressione `B` para abrir sua mochila.
-  * Possui **Auto-Pickup & Filtros**: blocos de pedra, terra e minérios vão direto para os compartimentos da mochila sem entupir seu inventário principal.
-  * Possui bancada de trabalho e fornalha embutidas.
+### 2. 💥 Casa Protegida de Creepers
+* **No Creeper Griefing:** O Creeper explode e dá dano no seu personagem se você vacilar, **mas ele NÃO quebra nenhum bloco do cenário e nem destrói sua casa**. Chega de cratera na frente da sua base.
 
-### 3. 🚶‍♂️ Transportar Villagers & Baús no Colo (Adeus Barco e Carrinho!)
+### 3. 🗑️ Lixeira no Inventário
+* **TrashSlot:** Tem slot de lixeira no canto do inventário. Pegou diorito, andesito ou item inútil que não quer? Arraste pra lixeira ou aperte `Delete` em cima do item.
+
+### 4. 🌾 Fazenda Sem Sofrimento
+* **RightClickHarvest:** Basta clicar com o **Botão Direito** no trigo, cenoura, batata madura. O item colhido cai na sua mão e ele **já replanta a semente sozinho na hora** (sem precisar quebrar e trocar de item).
+
+### 5. 📦 Shulker Sem Colocar no Chão
+* **ShulkerBoxTooltip:** Basta passar o mouse por cima da Shulker Box ou Mochila e uma janela visual mostra todos os itens que estão dentro dela.
+
+### 6. 🎒 Mochilas Inteligentes & Auto-Pickup na Mina
+* **Traveler's Backpack (Tecla `B`):**
+  * Auto-coleta e filtros: minérios e pedras vão direto pra mochila sem entupir os 36 slots principais do seu jogador.
+  * Fornalha e bancada de trabalho embutidas.
+
+### 7. 🚶‍♂️ Transportar Villagers & Baús no Colo (Adeus Barco e Trilhos!)
 * **Carry On:**
-  * Chegue perto de qualquer **Villager, animal, baú cheio ou fornalha** com as **mãos vazias**, segure `Shift + Botão Direito do Mouse`.
-  * Você carrega o Villager ou o Baú cheio no colo e coloca onde quiser com outro Botão Direito! Zero estresse com trilhos.
+  * Mão vazia $\rightarrow$ Chegue perto de qualquer **Villager, animal, baú cheio ou fornalha** $\rightarrow$ segure `Shift + Botão Direito do Mouse`.
+  * Você carrega o Villager no colo e solta onde quiser.
 
-### 4. 🌀 Teletransporte e Retorno para a Base
-* **Waystones:**
-  * Encontre ou crie pedras de teletransporte (Waystones).
-  * Fabrique pergaminhos de retorno (*Warp Scroll*) para voltar da camada mais profunda da mina direto para o centro da sua base em 1 segundo.
+### 8. 🪓 Coleta em Lote (Madeira & Minérios)
+* **FallingTree:** Quebrou o bloco de baixo da árvore com machado? A árvore inteira cai com folhas e tudo.
+* **Diggus Maximus:** Segure a tecla da aspa/til (`~`) e quebre qualquer minério ou pedra $\rightarrow$ quebra todo o veio interligado.
 
-### 5. 💀 Sem Perda de Itens
-* **Universal Graves:**
-  * Se você morrer na lava ou no escuro, seus itens não queimam nem somem em 5 minutos.
-  * Um túmulo seguro é gerado no local exato e suas coordenadas aparecem no chat e no minimapa. Basta clicar no túmulo para recuperar tudo intacto.
+### 9. 🌀 Teletransporte Instantâneo
+* **Waystones:** Coloque pedras de teletransporte e use pergaminhos (*Warp Scroll*) para voltar da camada -58 direto para sua casa sem andar milhares de blocos.
 
-### 6. 🗺️ Navegação & Receitas
-* **Xaero's Minimap & World Map:** Minimapa com radar no topo direito e mapa-múndi completo ao pressionar `M`.
-* **JEI (Just Enough Items):** Painel lateral com todas as receitas do jogo para você nunca precisar abrir a wiki.
+### 10. 💀 Sem Perda de Itens
+* **Universal Graves:** Morreu na lava ou no escuro? Um túmulo seguro guarda tudo e marca no mapa.
 
-### 7. ☀️ Gráficos de Cinema & RTX 5060
-* **Sodium + Iris Shaders + Lithium + FerriteCore + Indium:** O motor mais rápido do mundo no Linux.
-* **Complementary Reimagined Shaders:** Já pré-instalado e ativado por padrão. Iluminação volumétrica de tirar o fôlego, reflexos na água e raios de sol suaves.
-* **LambDynamicLights:** Segure uma tocha na mão esquerda (`F`) e ela ilumina todo o ambiente ao seu redor enquanto você caminha pela caverna.
+### 11. ☀️ Gráficos de Cinema & Performance Brutal
+* **Sodium + Iris Shaders + Complementary Reimagined:** Já ativo por padrão na sua RTX 5060 em centenas de FPS.
+* **LambDynamicLights:** Tocha na mão esquerda (`F`) ilumina o túnel enquanto você anda.
 
 ---
 
-## 🎮 COMO JOGAR (PRIMEIRO ACESSO)
+## 🎮 COMO JOGAR
 
-1. Abra o **Prism Launcher** pelo menu do Hyprland ou digite `prismlauncher` no terminal.
+1. Abra o **Prism Launcher** (no menu do Hyprland ou terminal `prismlauncher`).
 2. No canto superior direito, clique em **Contas $\rightarrow$ Gerenciar Contas $\rightarrow$ Adicionar Offline**.
-3. Digite o seu nickname favorito (ex: seu nome ou tag de jogador).
+3. Escolha o seu nome/nickname.
 4. Dê dois cliques na instância **Mapa Eterno (Fabric 1.20.1)**.
-5. Bom jogo e boa construção da sua Casa Automática! 🏰🌾

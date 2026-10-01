@@ -122,7 +122,15 @@ mods_to_download = [
     "waystones",            # Teletransporte instantâneo da mina pra base
     "xaeros-minimap",       # Radar de cavernas e minimapa
     "xaeros-world-map",     # Mapa-múndi apertando M
-    "jei"                   # Receitas de craft fáceis
+    "jei",                  # Receitas de craft fáceis
+    # Fim do Cascalho e Dores Crônicas do Minecraft
+    "gravelminer",          # Cascalho que cai sobre você quebra SOZINHO instantaneamente!
+    "nocreepergriefing",    # Creeper da dano em você, mas NUNCA destroi blocos nem sua casa!
+    "trashslot",            # Lixeira no inventário (arraste o lixo ou aperte Delete)
+    "rightclickharvest",    # Colhe e replanta plantações com 1 clique direito
+    "appleskin",            # Mostra valor nutricional e saturação exata da comida
+    "shulkerboxtooltip",    # Vê o que tem dentro da Shulker passando o mouse (sem pôr no chão)
+    "inventory-sorting"     # Organização de baús e inventário com atalho
 ]
 
 for slug in mods_to_download:
