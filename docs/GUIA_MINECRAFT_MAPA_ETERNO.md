@@ -58,7 +58,7 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 | **Carregar Mobs e Baús nos Braços** | `Carry On` | Mãos vazias: mire no animal, Villager ou baú cheio e aperte **`Shift + Botão Direito`**. Solte no destino com outro Botão Direito. |
 | **Reprodução Automática de Animais** | `Animal Feeding Trough` | Coloque o bloco do **Cocho de Alimentação** no pasto e encha-o com trigo, sementes ou cenoura. Os animais se alimentam e **procriam sozinhos** sem você precisar clicar em nenhum deles! |
 | **Consultar Alimento de Procriação no JEI** | `Just Enough Breeding` | Abra o JEI no inventário, procure o animal e veja exatamente qual comida ele come para cruzar e quanto tempo dura a gestação/cooldown. |
-| **Minerar Veio Inteiro em 1 Segundo** | `Diggus Maximus` | Mire no minério (carvão, ferro, diamante, redstone) ou pedra, **segure a tecla de aspa/til (`~` ou `'`)** e minere o primeiro bloco. Todo o veio cai na hora. |
+| **Minerar Veio Inteiro em 1 Segundo** | `Diggus Maximus` | **Passivo/Automático:** Basta quebrar o minério (carvão, ferro, diamante, ouro) normalmente com a picareta adequada. **O veio inteiro desaba na hora sem você precisar segurar nenhuma tecla!** (Caso queira quebrar apenas 1 bloco isolado sem o veio, basta segurar a tecla `~`). |
 | **Derrubar Árvores Instantaneamente** | `FallingTree` | Pegue qualquer machado e quebre o bloco da base do tronco da árvore. A árvore inteira desaba no chão com folhas, maçãs e mudas. |
 | **Abrir Mochila com Auto-Coleta** | `Traveler's Backpack` | Pressione a tecla **`B`** para abrir sua mochila. Equipe-a nas costas para ativar o auto-pickup de pedras e minérios na mina. |
 | **Radar de Diamantes nas Paredes** | `Scannable` | Segure o Scanner com **Botão Direito**. Ele dispara um sonar que ilumina todos os minérios de diamante, ouro e ferro através da pedra! |
@@ -77,9 +77,9 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 
 ---
 
-## 📚 3. CATÁLOGO COMPLETO DOS 71 MODS INSTALADOS
+## 📚 3. CATÁLOGO COMPLETO DOS 91 MODS INSTALADOS
 
-Abaixo está o registro exato de todos os 71 arquivos `.jar` presentes na pasta `.minecraft/mods/` da instância:
+Abaixo está o registro exato de todos os 91 arquivos `.jar` presentes na pasta `.minecraft/mods/` da instância:
 
 ### Grupo A: Eliminação de Dores & Traumas Clássicos (Pain Killers)
 1. **`gravelminer-fabric-1.20-16.0.4.jar` (GravelMiner):**  

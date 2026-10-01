@@ -253,6 +253,31 @@ shaderPack=ComplementaryReimagined_r5.9.3.zip
 IRIS_EOF
 ok "Shaders ativados por padrão!"
 
+# Configuração do Diggus Maximus (Mineração de Veio Sempre Automática)
+mkdir -p "$INSTANCE_DIR/.minecraft/config/diggusmaximus"
+cat << 'DIGGUS_EOF' > "$INSTANCE_DIR/.minecraft/config/diggusmaximus/config.json5"
+{
+  "enabled": true,
+  "keybinding": {
+    "rawKey": "key.keyboard.grave.accent"
+  },
+  "invertActivation": true,
+  "sneakToExcavate": false,
+  "mineDiag": true,
+  "maxMinedBlocks": 64,
+  "maxMineDistance": 16,
+  "autoPickup": true,
+  "requiresTool": true,
+  "dontBreakTool": true,
+  "stopOnToolBreak": true,
+  "toolDurability": true,
+  "playerExhaustion": true,
+  "exhaustionMultiplier": 1.0,
+  "tools": []
+}
+DIGGUS_EOF
+ok "Diggus Maximus configurado: mineração de veios sempre ativa por padrão!"
+
 echo -e "\n${BOLD}======================================================================${NC}"
 echo -e "${GREEN}${BOLD}✔ INSTÂNCIA MINECRAFT MAPA ETERNO 100% PRONTA!${NC}"
 echo -e "${BOLD}======================================================================${NC}"
