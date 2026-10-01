@@ -3,14 +3,14 @@
 > **Launcher Canônico:** Prism Launcher (Nativo CachyOS/Arch com suporte a contas offline)  
 > **Hardware de Referência:** AMD Ryzen 7 5700X (8C/16T) • NVIDIA GeForce RTX 5060 (8 GB RAM alocados na JVM)  
 > **Script de Automação:** `~/dotfiles/scripts/setup-minecraft.sh`  
-> **Total de Mods Instalados e Auditados:** 77 Mods Especializados
+> **Total de Mods Instalados e Auditados:** 87 Mods Especializados
 
 ---
 
 ## 🎯 ÍNDICE GERAL
 1. [Filosofia do Setup: Zero Atrito, Zero Traumas](#-1-filosofia-do-setup-zero-atrito-zero-traumas)
 2. [Guia de Utilização das Armas Anti-Atrito & Controles](#-2-guia-de-utilização-das-armas-anti-atrito--controles)
-3. [Catálogo Completo dos 77 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-77-mods)
+3. [Catálogo Completo dos 87 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-87-mods)
 4. [Shaderpack Complementary Reimagined & Motor Gráfico](#-4-shaderpack-complementary-reimagined--motor-gráfico)
 5. [Passo a Passo: Como Iniciar e Jogar Hoje](#-5-passo-a-passo-como-iniciar-e-jogar-hoje)
 6. [Manutenção, Backup & Reprodutibilidade no Dotfiles](#-6-manutenção-backup--reprodutibilidade-no-dotfiles)
@@ -23,8 +23,8 @@ O Minecraft original (Vanilla) é notório por gerar atrito repetitivo que deses
 * **Atrito de Tempo:** Horas minerando bloco por bloco, quebrando troncos árvore por árvore, organizando centenas de baús individuais.
 * **Atrito de Perda & Frustração:** Creepers explodindo construções com fiação de redstone, cascalho caindo na cabeça e sufocando o jogador, perder armadura na lava por conta do timer cruel de 5 minutos, ferramentas caras quebrando acidentalmente por descuido, ou matar pets por fogo amigo.
 * **Atrito de Deslocamento & Animais:** Ficar 40 minutos andando pelo mapa para voltar da mina, esmagar a barra de espaço para subir cada montanha de 1 bloco, puxar animais burros com laço frágil que arrebenta ou empurrar barcos e trilhos com Villagers teimosos.
-* **Atrito de Coleta Agrícola:** Ficar quebrando matinho e grama um por um com a mão vazia para tentar dropar 2 ou 3 sementes de trigo.
-* **Atrito de Micro-Fricções:** Espada acertando a graminha na hora de bater em monstros, molduras girando ao tentar abrir baús decorados, e o perigo de perder um save de centenas de horas por corrupção de arquivo.
+* **Atrito de Coleta Agrícola & Farms:** Ficar quebrando matinho e grama um por um com a mão vazia, ou ter que construir circuitos quilométricos de redstone e água apenas para recolher drops de mob farms e ferro.
+* **Atrito de Micro-Fricções:** Boneco travado no lugar ao abrir inventário, espada acertando a graminha na hora de bater em monstros, molduras girando ao tentar abrir baús decorados, e o perigo de perder um save de centenas de horas por corrupção de arquivo.
 
 Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores**, mantendo o jogo 100% fiel à essência Vanilla, mas adicionando a fluidez e a conveniência de um RPG de engenharia moderno.
 
@@ -34,6 +34,12 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 
 | Ação Desejada | Mod Responsável | Como Executar no Teclado / Jogo |
 | :--- | :--- | :--- |
+| **Andar com o Inventário Aberto** | `InvMove` | Abra o inventário (`E`) ou mochila (`B`) e **continue andando com `W, A, S, D` e pulando normalmente**. O boneco nunca mais congela no meio da corrida! |
+| **Minerar Spawners de Mobs (Gaiolas)** | `Silkier Touch` | Encontrou um gerador de esqueletos, zumbis ou aranhas numa dungeon? Quebre-o com uma **picareta de Toque Suave (Silk Touch)** e leve-o para sua base para montar sua mob farm! |
+| **Aspirar Drops de Farms em Área (Vácuo)** | `Item Collectors` | Coloque o bloco do **Coletor de Itens** no topo de um baú perto da sua farm de ferro ou mob trap. Ele suga instantaneamente todos os itens dropados num raio de até 15 blocos! |
+| **Filtrar Itens Sem Redstone (Funil de Cobre)**| `Copper Hopper` | Coloque o **Funil de Cobre**: ele possui um slot exclusivo de filtro interno para deixar passar apenas os itens permitidos sem precisar de comparadores e repetidores. |
+| **Balancear Itens na Mesa de Trabalho** | `Crafting Tweaks` | Na grade de crafting, clique no botão **Balance** para distribuir igualmente os itens nos slots, **Rotate** para girar a receita, ou **Clear** para recolher tudo de volta. |
+| **Buscar Atalhos de Teclado por Nome** | `Controlling` | Em *Opções -> Teclas*, use a **barra de pesquisa** para achar qualquer comando em 1 segundo e filtre teclas em conflito com 1 clique. |
 | **Proteção Absoluta Contra Quebra de Picareta** | `Anti Tool Break` | **Passivo/Automático:** Quando sua picareta/espada valiosa chega em 1 ponto de durabilidade, ela **trava e recusa quebrar**, impedindo que você destrua ferramentas com Mending e Fortuna III por distração! |
 | **Troca Automática de Ferramenta Gasta** | `Low Durability Switcher` | **Passivo/Automático:** Ao minerar, quando uma picareta está para quebrar, o mod **substitui instantaneamente** a picareta da sua mão por outra reserva do seu inventário sem você precisar parar ou abrir menus! |
 | **Ver Durabilidade Numérica Exata** | `Show Durability` | Olhe para o ícone de qualquer ferramenta ou armadura: o **número exato de usos restantes** (ex: `1420`) aparece impresso diretamente sobre o item na hotbar. |
@@ -247,6 +253,30 @@ Abaixo está o registro exato de todos os 71 arquivos `.jar` presentes na pasta 
     *Visão clara do tempo de buffs.* Exibe uma barra de contagem regressiva limpa e colorida para cada poção ativa na sua tela (Visão Noturna, Velocidade, Respiração Aquática), acabando com o susto de um efeito acabar do nada no meio do perigo.
 77. **`lootlog-fabric-1.20.1-1.0.0.jar` (Loot Log - Notificador de Coleta Estilo RPG):**  
     *Saiba exatamente o que coletou sem abrir o inventário.* Mostra um feed visual minimalista no canto inferior da tela indicando o ícone e a quantidade exata de itens que você acabou de aspirar do chão (`+4 Diamantes`, `+32 Carvão`), sem precisar pausar a mineração para conferir o inventário.
+
+### Grupo N: Eficiência Industrial de Farms (Mobs, Ferro & Spawners Portáteis)
+78. **`silkiertouch-1.20.1-1.3.jar` (Silkier Touch - Gaiolas de Spawners Portáteis):**  
+    *Crie a mob farm onde você quiser.* No Vanilla, spawners quebram e somem se você minerar. Com este mod, quebre qualquer gaiola geradora de zumbis, esqueletos ou aranhas com uma picareta de Toque Suave (Silk Touch) e leve o bloco para dentro da sua base para montar farms industriais compactas e super produtivas!
+79. **`itemcollectors-1.1.12-fabric-mc1.20.2.jar` (Item Collectors - Coletor de Drops a Vácuo):**  
+    *Fim dos circuitos gigantescos de correntes de água e dezenas de funis.* Adiciona um bloco coletor tecnológico que você coloca em cima de um baú. Ele aspira e teletransporta para o baú todos os itens e drops de ferro, ouro e mobs num raio de até 15 blocos instantaneamente, eliminando 100% da perda de itens por despawn ou lava.
+80. **`copperhopper-0.5.1+1.20.1.jar` (Copper Hopper - Funil com Filtro Inteligente):**  
+    *Separação de itens em farms sem redstone complexo.* Funis normais puxam qualquer coisa desordenadamente. O funil de cobre possui uma interface onde você define exatamente quais itens podem passar por ele, permitindo separar ferro de flores nas farms de golem ou ossos de pólvora nas mob farms sem precisar de sistemas enormes de comparadores e tochas.
+
+### Grupo O: Usabilidade Extrema de Menus & Otimização de FPS
+81. **`InvMove-0.9.3+1.20.1-Fabric.jar` (InvMove - Movimento com Inventário Aberto):**  
+    *Nunca mais vire estátua ao checar itens.* Permite continuar andando com WASD, pulando no Shift/Espaço e desviando de perigos mesmo com a tela do inventário, baú ou mochila aberta.
+82. **`craftingtweaks-fabric-1.20.1-18.2.9.jar` (Crafting Tweaks - Ajustes Rápidos de Crafting):**  
+    *Distribuição perfeita de itens na mesa de trabalho.* Adiciona botões sutis ao lado da grade de 3x3 para balancear itens igualmente entre os slots, girar a receita ou devolver tudo ao inventário com um único clique.
+83. **`entityculling-fabric-1.11.2-mc1.20.1.jar` (Entity Culling - FPS Extremo em Bases Grandes):**  
+    *Oclusão assíncrona de entidades.* O jogo deixa de renderizar e processar o desenho de animais, monstros e baús que estiverem escondidos atrás de paredes de pedra sólidas, garantindo centenas de FPS mesmo dentro de bases recheadas de fazendas e armazéns.
+84. **`Controlling-fabric-1.20.1-12.0.2.jar` (Controlling - Busca de Atalhos no Teclado):**  
+    *Ache qualquer comando em 1 segundo.* Adiciona uma barra de pesquisa moderna no menu de controles para encontrar atalhos de mods pelo nome e destacar teclas em conflito com 1 clique.
+85. **`Searchables-fabric-1.20.1-1.0.3.jar` (Searchables):**  
+    *Mecanismo de busca otimizado.* Biblioteca base necessária para acelerar consultas e buscas de texto instantâneas dentro das interfaces de mods.
+86. **`sodium-extra-0.5.9+mc1.20.1.jar` (Sodium Extra - Painel Visual Avançado):**  
+    *Controle milimétrico do motor gráfico.* Expande o menu do Sodium permitindo ligar e desligar animações e partículas individuais para atingir máxima fluidez na sua RTX 5060.
+87. **`reeses_sodium_options-1.7.2+mc1.20.1-build.101.jar` (Reese's Sodium Options):**  
+    *Menu de vídeo moderno e limpo.* Substitui a rolagem confusa do menu gráfico por uma interface organizada em abas verticais elegantes.
 
 ---
 

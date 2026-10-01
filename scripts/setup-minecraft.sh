@@ -196,7 +196,19 @@ mods_to_download = [
     # Movimentação Fluida & HUD Inteligente
     "stepitup",               # Subida suave de 1 bloco sem precisar ficar esmagando a barra de espaço (sem o auto-jump bugado)
     "status-effect-bars",     # Barras visuais na tela mostrando o tempo restante de cada poção (visão noturna, respiração, etc.)
-    "loot-log"                # Notificação limpa no canto da tela mostrando exatamente o que você acabou de pegar do chão
+    "loot-log",               # Notificação limpa no canto da tela mostrando exatamente o que você acabou de pegar do chão
+    # Eficiência Industrial de Farms (Mobs, Ferro e Spawners)
+    "silkier-touch",          # Permite minerar Spawners com Toque de Suave e levá-los para sua base para criar farms de mobs perfeitas!
+    "item-collectors",        # Coletores de itens a vácuo em área (aspira drops de mob farms e farms de ferro instantaneamente)
+    "copper-hopper",          # Funis de Cobre com filtro embutido: separa itens sem precisar de circuitos quilométricos de redstone
+    # Usabilidade Suprema de Menus & Otimização de FPS
+    "invmove",                # Permite andar livremente com WASD enquanto organiza inventário, baús ou mochila
+    "crafting-tweaks",        # Botões para balancear, girar e limpar a mesa de trabalho com 1 clique
+    "entityculling",          # Culling de entidades: não renderiza mobs e baús atrás de paredes, explodindo o FPS em bases gigantes!
+    "controlling",            # Barra de busca instantânea e filtro de conflitos no menu de teclas de atalho
+    "searchables",            # Biblioteca de busca avançada para menus
+    "sodium-extra",           # Painel avançado de opções de renderização e controle de partículas do Sodium
+    "reeses-sodium-options"   # Interface moderna com abas organizadas para as configurações de vídeo
 ]
 
 for slug in mods_to_download:
