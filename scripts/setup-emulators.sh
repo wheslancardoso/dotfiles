@@ -133,6 +133,14 @@ if [ -d "$DOTFILES_DIR/home/dot_config/xenia" ]; then
     ok "Preset anti-crash/anti-stutter e Patches do Midnight Club LA aplicados em $XENIA_DIR!"
 fi
 
+# Configuração Plug-and-Play do PCSX2 (Vulkan, 3x Upscaling 1080p/1440p, Widescreen)
+PCSX2_CONF_DIR="$HOME/.var/app/net.pcsx2.PCSX2/config/PCSX2"
+mkdir -p "$PCSX2_CONF_DIR"
+if [ -f "$DOTFILES_DIR/home/dot_config/pcsx2/PCSX2.ini" ]; then
+    cp -f "$DOTFILES_DIR/home/dot_config/pcsx2/PCSX2.ini" "$PCSX2_CONF_DIR/PCSX2.ini"
+    ok "Preset Plug-and-Play do PCSX2 (Vulkan + 3x 1440p + Widescreen) aplicado!"
+fi
+
 # ------------------------------------------------------------------------------
 # 8. Criando Wrappers de Execução com GameMode & NVIDIA
 # ------------------------------------------------------------------------------
