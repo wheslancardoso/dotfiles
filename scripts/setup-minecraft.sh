@@ -224,7 +224,11 @@ mods_to_download = [
     # Troca Inteligente de Ferramenta, Decomposição Rápida de Folhas & Imersão
     "autoswitch",             # Troca automaticamente para a ferramenta certa ao mirar e bater no bloco (picareta, pá, machado ou espada)
     "accelerated-decay",      # Decomposição quase instantânea de folhas após derrubar árvores (chuva rápida de maçãs e mudas)
-    "eating-animation"        # Animações visuais detalhadas de mastigação e consumo para todas as comidas do jogo
+    "eating-animation",       # Animações visuais detalhadas de mastigação e consumo para todas as comidas do jogo
+    # Atração Magnética de Itens Caídos ao Redor
+    "supermartijn642s-core-lib",   # Biblioteca essencial para o Simple Magnets
+    "supermartijn642s-config-lib", # Biblioteca de configurações do Simple Magnets
+    "simple-magnets"               # Ímãs magnéticos que puxam itens caídos e XP num raio de até 11 blocos
 ]
 
 for slug in mods_to_download:

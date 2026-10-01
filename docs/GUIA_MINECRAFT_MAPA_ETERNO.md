@@ -3,14 +3,14 @@
 > **Launcher Canônico:** Prism Launcher (Nativo CachyOS/Arch com suporte a contas offline)  
 > **Hardware de Referência:** AMD Ryzen 7 5700X (8C/16T) • NVIDIA GeForce RTX 5060 (8 GB RAM alocados na JVM)  
 > **Script de Automação:** `~/dotfiles/scripts/setup-minecraft.sh`  
-> **Total de Mods Instalados e Auditados:** 99 Mods Especializados
+> **Total de Mods Instalados e Auditados:** 102 Mods Especializados
 
 ---
 
 ## 🎯 ÍNDICE GERAL
 1. [Filosofia do Setup: Zero Atrito, Zero Traumas](#-1-filosofia-do-setup-zero-atrito-zero-traumas)
 2. [Guia de Utilização das Armas Anti-Atrito & Controles](#-2-guia-de-utilização-das-armas-anti-atrito--controles)
-3. [Catálogo Completo dos 99 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-99-mods)
+3. [Catálogo Completo dos 102 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-102-mods)
 4. [Shaderpack Complementary Reimagined & Motor Gráfico](#-4-shaderpack-complementary-reimagined--motor-gráfico)
 5. [Passo a Passo: Como Iniciar e Jogar Hoje](#-5-passo-a-passo-como-iniciar-e-jogar-hoje)
 6. [Manutenção, Backup & Reprodutibilidade no Dotfiles](#-6-manutenção-backup--reprodutibilidade-no-dotfiles)
@@ -34,6 +34,7 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 
 | Ação Desejada | Mod Responsável | Como Executar no Teclado / Jogo |
 | :--- | :--- | :--- |
+| **Atrair Itens e XP ao Redor (Ímã Magnético)** | `Simple Magnets` | Segure ou guarde o **Magnet** no inventário/slot de acessório e aperte o botão direito ou a tecla de alternância para ligar: **todos os itens caídos no chão e orbes de XP num raio de até 11 blocos voam direto para o seu bolso**! Permite configurar lista branca/preta com Shift + Botão Direito para não puxar terra/pedra se não quiser. |
 | **Troca Automática de Ferramenta ao Bater** | `AutoSwitch` | **Passivo/Automático:** Mire em pedra, terra ou madeira e comece a quebrar: o jogo **seleciona instantaneamente a ferramenta ideal** da sua hotbar (picareta para pedra, pá para cascalho/terra, machado para troncos, espada para monstros) sem você precisar ficar rodando a roda do mouse ou teclando 1, 2, 3! Ao terminar, volta para o item anterior. |
 | **Queda Acelerada de Folhas em Árvores** | `Accelerated Decay` | **Passivo/Automático:** Ao cortar qualquer árvore com o machado, as **folhas se desintegram quase instantaneamente** em cascata rápida, fazendo chover maçãs, gravetos e mudas sem deixar folhas feias flutuando no ar por minutos. |
 | **Animação Visual Realista ao Comer** | `Eating Animation` | **Passivo/Automático:** Ao comer pão, carne, maçãs douradas ou beber poções, o item na sua mão exibe **mordidas e animação visual de consumo quadro a quadro**, dando feedback visual nítido do progresso da alimentação. |
@@ -85,9 +86,9 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 
 ---
 
-## 📚 3. CATÁLOGO COMPLETO DOS 99 MODS INSTALADOS
+## 📚 3. CATÁLOGO COMPLETO DOS 102 MODS INSTALADOS
 
-Abaixo está o registro exato de todos os 99 arquivos `.jar` presentes na pasta `.minecraft/mods/` da instância:
+Abaixo está o registro exato de todos os 102 arquivos `.jar` presentes na pasta `.minecraft/mods/` da instância:
 
 ### Grupo A: Eliminação de Dores & Traumas Clássicos (Pain Killers)
 1. **`gravelminer-fabric-1.20-16.0.4.jar` (GravelMiner):**  
@@ -321,6 +322,14 @@ Abaixo está o registro exato de todos os 99 arquivos `.jar` presentes na pasta 
     *Chuva imediata de sementes, maçãs e mudas.* Quando você derruba uma árvore com o machado ou `FallingTree`, o Vanilla leva minutos para sumir com as folhas. Este mod acelera a decomposição para 2 segundos, fazendo as folhas sumirem em cascata e liberando a visão do céu e seus drops na hora.
 99. **`eating-animation-1.20+1.9.61.jar` (Eating Animation - Feedback Visual Realista ao Comer):**  
     *Sensação tátil e imersão ao se alimentar.* Substitui a animação genérica estática por um modelo onde a comida na mão do jogador sofre mordidas visíveis e vai diminuindo conforme é consumida, oferecendo retorno visual nítido do progresso da alimentação em meio à exploração ou combate.
+
+### Grupo T: Atração Magnética de Itens & Experiência
+100. **`simplemagnets-1.1.12-fabric-mc1.20.1.jar` (Simple Magnets - Ímã Portátil de Drops & XP):**  
+     *Fim do zigue-zague para recolher itens no chão.* Adiciona ímãs de fácil fabricação (Tier Básico e Avançado) que puxam itens dropados e orbes de experiência num raio de até 11 blocos diretamente para o jogador. Funciona no inventário, na mão ou em slots de acessórios (Curios/Trinkets), pode ser ligado/desligado por atalho e possui suporte a lista de filtros (whitelist/blacklist) com `Shift + Botão Direito` para ignorar pedras ou terra indesejadas.
+101. **`supermartijn642corelib-1.1.24a-fabric-mc1.20.1.jar` (SuperMartijn642's Core Lib):**  
+     *Biblioteca fundamental do Simple Magnets.* Núcleo de abstração e performance que gerencia a física de atração de entidades e renderização fluida sem impacto na contagem de frames.
+102. **`supermartijn642configlib-1.1.8a-fabric-mc1.20.jar` (SuperMartijn642's Config Lib):**  
+     *Gerenciador de configuração do Simple Magnets.* Permite ajustar o raio de atração, velocidade de puxada e compatibilidade com outros mods.
 
 ---
 
