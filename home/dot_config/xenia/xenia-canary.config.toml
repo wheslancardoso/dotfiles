@@ -1,0 +1,57 @@
+# Xenia Canary - Configuração Otimizada para CachyOS / RTX 5060
+# Foco em estabilidade e eliminação de crash/memory leak no motor RAGE (Midnight Club: LA)
+
+[APU]
+apu = "any"
+mute = false
+
+[CPU]
+break_on_unimplemented_instructions = false
+clock_no_scaling = false
+clock_scale = 1.0
+
+[Content]
+license_mask = 0
+
+[Display]
+fullscreen = false
+internal_display_resolution = 8 # 720p nativo do console (ideal para estabilidade inicial do MCLA)
+window_high_dpi = true
+
+[GPU]
+# d3d12_readback_resolve é mandatório para não quebrar a iluminação e texturas do MCLA
+d3d12_readback_resolve = true
+# clear_memory_page_state evita que as texturas virtuais do MCLA estourem a memória de vídeo e crashem o emulador
+clear_memory_page_state = true
+draw_resolution_scale_x = 1
+draw_resolution_scale_y = 1
+# 60 FPS com sincronização interna do emulador (usar em conjunto com o patch Game Speed Fix)
+framerate_limit = 60
+gpu = "vulkan"
+gpu_allow_any_core = true
+render_target_path_vulkan = "fbo"
+vsync = true
+vsync_interval = 16
+
+[General]
+apply_patches = true
+discord = true
+launch_module = ""
+patches_directory = "patches"
+
+[HID]
+hid = "sdl"
+
+[Kernel]
+clog = false
+log_level = 2
+
+[Logging]
+flush_log = false
+
+[Memory]
+protect_zero = true
+
+[Storage]
+mount_cache = true
+mount_scratch = true
