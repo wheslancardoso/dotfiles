@@ -3,14 +3,14 @@
 > **Launcher Canônico:** Prism Launcher (Nativo CachyOS/Arch com suporte a contas offline)  
 > **Hardware de Referência:** AMD Ryzen 7 5700X (8C/16T) • NVIDIA GeForce RTX 5060 (8 GB RAM alocados na JVM)  
 > **Script de Automação:** `~/dotfiles/scripts/setup-minecraft.sh`  
-> **Total de Mods Instalados e Auditados:** 58 Mods Especializados
+> **Total de Mods Instalados e Auditados:** 62 Mods Especializados
 
 ---
 
 ## 🎯 ÍNDICE GERAL
 1. [Filosofia do Setup: Zero Atrito, Zero Traumas](#-1-filosofia-do-setup-zero-atrito-zero-traumas)
 2. [Guia de Utilização das Armas Anti-Atrito & Controles](#-2-guia-de-utilização-das-armas-anti-atrito--controles)
-3. [Catálogo Completo dos 58 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-58-mods)
+3. [Catálogo Completo dos 62 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-62-mods)
 4. [Shaderpack Complementary Reimagined & Motor Gráfico](#-4-shaderpack-complementary-reimagined--motor-gráfico)
 5. [Passo a Passo: Como Iniciar e Jogar Hoje](#-5-passo-a-passo-como-iniciar-e-jogar-hoje)
 6. [Manutenção, Backup & Reprodutibilidade no Dotfiles](#-6-manutenção-backup--reprodutibilidade-no-dotfiles)
@@ -184,6 +184,16 @@ Abaixo está o registro exato de todos os 40 arquivos `.jar` presentes na pasta 
     *O fim de minerar às cegas.* Adiciona um Scanner portátil de mão. Segure o botão direito para disparar uma onda sonora de sonar: o scanner emite um bipe e **projeta um contorno 3D iluminado através da pedra sólida destacando todos os blocos de Diamante, Ouro, Ferro e baús escondidos** num raio de dezenas de blocos! Você cava direto no minério.
 58. **`justhammers-fabric-20.1.5+mc1.20.1.jar` (Just Hammers - Mineração 3x3):**  
     *Escavação de túneis 9x mais rápida.* Adiciona martelos de Pedra, Ferro, Diamante e Netherita. Ao invés de quebrar 1 bloquinho por vez, cada batida do martelo quebra uma área inteira de **3x3 blocos (9 blocos por clique)**, abrindo túneis gigantes e desenterrando minérios em velocidade supersônica.
+
+### Grupo J: Construção de Arquiteto Sem Esforço & Decoração de Luxo
+59. **`mcw-roofs-2.3.2-mc1.20.1fabric.jar` (Macaw's Roofs):**  
+    *Fim da casa em formato de caixa de sapato.* Fazer telhado bonito com escadas comuns no Minecraft é um dos maiores pesadelos para quem não é construtor profissional. Este mod adiciona **telhados inclinados perfeitos, calhas, quinas e cúpulas pré-fabricadas** de todas as madeiras e pedras. Sua casa fica parecendo um chalé suíço ou castelo medieval em 5 minutos!
+60. **`mcw-bridges-3.1.2-mc1.20.1fabric.jar` (Macaw's Bridges):**  
+    *Pontes cinematográficas instantâneas.* Adiciona pontes suspensas de corda, pontes de madeira rústica e pontes de pedra com corrimão e pilares automáticos que se adaptam à altura da água ou do desfiladeiro.
+61. **`mcw-furniture-3.4.1-mc1.20.1fabric.jar` (Macaw's Furniture):**  
+    *Móveis funcionais prontos.* Guarda-roupas com portas que abrem, mesas de cabeceira, escrivaninhas, gaveteiros e armários de cozinha que realmente guardam itens. Chega de improvisar mesa com cerca e placa de pressão!
+62. **`handcrafted-fabric-1.20.1-3.0.6.jar` (Handcrafted):**  
+    *O auge da decoração estética.* Adiciona sofás aconchegantes com almofadas coloridas, cadeiras estofadas, cortinas esvoaçantes para janelas, pratos, xícaras e bancadas de mármore. Transforma qualquer construção simples em uma mansão com cara de projeto de designer de interiores.
 
 ---
 

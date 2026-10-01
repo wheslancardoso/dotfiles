@@ -171,7 +171,12 @@ mods_to_download = [
     # Anti-Warden & Mineração Turbo com Radar de Diamantes
     "no-warden",              # O WARDEN NUNCA MAIS NASCE! Pode correr, pular e saquear as Cidades Ancestrais em paz total.
     "scannable",              # Scanner portátil tecnológico que bipa e destaca Diamantes através das paredes da caverna!
-    "just-hammers"            # Martelos que escavam túneis de 3x3 blocos de uma só vez (mineração 9x mais rápida!)
+    "just-hammers",           # Martelos que escavam túneis de 3x3 blocos de uma só vez (mineração 9x mais rápida!)
+    # Construção de Arquiteto Sem Esforço (Beleza Instantânea)
+    "macaws-roofs",           # Telhados inclinados perfeitos (resolve a coisa mais difícil de fazer no Minecraft!)
+    "macaws-bridges",         # Pontes suspensas de madeira, corda e ferro pré-fabricadas lindas!
+    "macaws-furniture",       # Mesas, cadeiras, gavetas e balcões prontos para decorar quartos e cozinhas
+    "handcrafted"             # Móveis rústicos elegantes (sofás com almofadas, bancadas de luxo, louças e cortinas)
 ]
 
 for slug in mods_to_download:
