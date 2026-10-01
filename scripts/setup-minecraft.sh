@@ -208,7 +208,12 @@ mods_to_download = [
     "controlling",            # Barra de busca instantânea e filtro de conflitos no menu de teclas de atalho
     "searchables",            # Biblioteca de busca avançada para menus
     "sodium-extra",           # Painel avançado de opções de renderização e controle de partículas do Sodium
-    "reeses-sodium-options"   # Interface moderna com abas organizadas para as configurações de vídeo
+    "reeses-sodium-options",  # Interface moderna com abas organizadas para as configurações de vídeo
+    # Micro-Atritos Psicológicos, Sons & Visibilidade
+    "boatview360",            # Rotação livre de câmera de 360° em barcos (adeus pescoço travado)
+    "silent-mobs",            # Permite silenciar mobs e carrinhos barulhentos renomeando para "silent"
+    "cherished-worlds",       # Fixa e protege seu "Mapa Eterno" com estrela e trava anti-deleção no topo da lista
+    "item-borders"            # Bordas coloridas sutis de raridade em itens épicos e lendários no inventário
 ]
 
 for slug in mods_to_download:

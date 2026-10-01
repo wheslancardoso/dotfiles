@@ -3,14 +3,14 @@
 > **Launcher Canônico:** Prism Launcher (Nativo CachyOS/Arch com suporte a contas offline)  
 > **Hardware de Referência:** AMD Ryzen 7 5700X (8C/16T) • NVIDIA GeForce RTX 5060 (8 GB RAM alocados na JVM)  
 > **Script de Automação:** `~/dotfiles/scripts/setup-minecraft.sh`  
-> **Total de Mods Instalados e Auditados:** 87 Mods Especializados
+> **Total de Mods Instalados e Auditados:** 91 Mods Especializados
 
 ---
 
 ## 🎯 ÍNDICE GERAL
 1. [Filosofia do Setup: Zero Atrito, Zero Traumas](#-1-filosofia-do-setup-zero-atrito-zero-traumas)
 2. [Guia de Utilização das Armas Anti-Atrito & Controles](#-2-guia-de-utilização-das-armas-anti-atrito--controles)
-3. [Catálogo Completo dos 87 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-87-mods)
+3. [Catálogo Completo dos 91 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-91-mods)
 4. [Shaderpack Complementary Reimagined & Motor Gráfico](#-4-shaderpack-complementary-reimagined--motor-gráfico)
 5. [Passo a Passo: Como Iniciar e Jogar Hoje](#-5-passo-a-passo-como-iniciar-e-jogar-hoje)
 6. [Manutenção, Backup & Reprodutibilidade no Dotfiles](#-6-manutenção-backup--reprodutibilidade-no-dotfiles)
@@ -24,7 +24,7 @@ O Minecraft original (Vanilla) é notório por gerar atrito repetitivo que deses
 * **Atrito de Perda & Frustração:** Creepers explodindo construções com fiação de redstone, cascalho caindo na cabeça e sufocando o jogador, perder armadura na lava por conta do timer cruel de 5 minutos, ferramentas caras quebrando acidentalmente por descuido, ou matar pets por fogo amigo.
 * **Atrito de Deslocamento & Animais:** Ficar 40 minutos andando pelo mapa para voltar da mina, esmagar a barra de espaço para subir cada montanha de 1 bloco, puxar animais burros com laço frágil que arrebenta ou empurrar barcos e trilhos com Villagers teimosos.
 * **Atrito de Coleta Agrícola & Farms:** Ficar quebrando matinho e grama um por um com a mão vazia, ou ter que construir circuitos quilométricos de redstone e água apenas para recolher drops de mob farms e ferro.
-* **Atrito de Micro-Fricções:** Boneco travado no lugar ao abrir inventário, espada acertando a graminha na hora de bater em monstros, molduras girando ao tentar abrir baús decorados, e o perigo de perder um save de centenas de horas por corrupção de arquivo.
+* **Atrito de Micro-Fricções:** Câmera travada em barcos, barulho insuportável de dezenas de vacas mugindo na base, boneco travado ao abrir inventário, espada acertando a graminha na hora de bater em monstros, molduras girando ao tentar abrir baús decorados, e o perigo de perder um save de centenas de horas por corrupção de arquivo.
 
 Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores**, mantendo o jogo 100% fiel à essência Vanilla, mas adicionando a fluidez e a conveniência de um RPG de engenharia moderno.
 
@@ -34,6 +34,10 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 
 | Ação Desejada | Mod Responsável | Como Executar no Teclado / Jogo |
 | :--- | :--- | :--- |
+| **Girar Câmera 360° em Barcos** | `BoatView360` | Ao pilotar ou viajar de passageiro em um barco, **olhe livremente para trás e para todos os lados em 360° sem travas no pescoço**. |
+| **Silenciar Criaturas ou Carrinhos Barulhentos**| `Silent Mobs` | Renomeie qualquer criatura irritante ou carrinho numa bigorna com a etiqueta **`silent`** e use nela: ela fica **100% muda**, acabando com a poluição sonora na sua base! |
+| **Favoritar e Blindar Mundo no Topo** | `Cherished Worlds` | Na tela de seleção de mundos, clique no **ícone de estrela** ao lado do seu save "Mapa Eterno": ele fica fixado no topo com trava anti-exclusão acidental. |
+| **Bordas Coloridas de Raridade (RPG)** | `Item Borders` | Olhe para o inventário: itens raros, encantados e lendários ganham uma **borda brilhante colorida** sutil, facilitando a identificação imediata. |
 | **Andar com o Inventário Aberto** | `InvMove` | Abra o inventário (`E`) ou mochila (`B`) e **continue andando com `W, A, S, D` e pulando normalmente**. O boneco nunca mais congela no meio da corrida! |
 | **Minerar Spawners de Mobs (Gaiolas)** | `Silkier Touch` | Encontrou um gerador de esqueletos, zumbis ou aranhas numa dungeon? Quebre-o com uma **picareta de Toque Suave (Silk Touch)** e leve-o para sua base para montar sua mob farm! |
 | **Aspirar Drops de Farms em Área (Vácuo)** | `Item Collectors` | Coloque o bloco do **Coletor de Itens** no topo de um baú perto da sua farm de ferro ou mob trap. Ele suga instantaneamente todos os itens dropados num raio de até 15 blocos! |
@@ -277,6 +281,16 @@ Abaixo está o registro exato de todos os 71 arquivos `.jar` presentes na pasta 
     *Controle milimétrico do motor gráfico.* Expande o menu do Sodium permitindo ligar e desligar animações e partículas individuais para atingir máxima fluidez na sua RTX 5060.
 87. **`reeses_sodium_options-1.7.2+mc1.20.1-build.101.jar` (Reese's Sodium Options):**  
     *Menu de vídeo moderno e limpo.* Substitui a rolagem confusa do menu gráfico por uma interface organizada em abas verticais elegantes.
+
+### Grupo P: Micro-Atritos Psicológicos, Sons & Visibilidade
+88. **`boatview360-v1.0.5-mc1.20.1-fabric.jar` (BoatView360 - Câmera Livre em Barcos):**  
+    *Adeus pescoço duro.* No barco Vanilla, seu pescoço é travado e você não consegue olhar para trás. Este mod remove a trava de 210º e concede 360º de rotação completa da visão para você explorar o mar com liberdade total.
+89. **`silent-mobs-3.1.jar` (Silent Mobs - Silenciador de Criaturas e Carrinhos):**  
+    *Paz e silêncio na sua base.* Quando seu rebanho ou sua trading hall de villagers tiver dezenas de mobs fazendo barulho ininterrupto, basta renomear a criatura ou carrinho com a etiqueta (nametag) **`silent`**: ela fica 100% muda para sempre!
+90. **`cherishedworlds-fabric-6.1.7+1.20.1.jar` (Cherished Worlds - Proteção do Mapa Eterno):**  
+    *Seu mundo principal sempre seguro.* Adiciona uma estrela de favoritos na tela de seleção de mundos. Fixa o seu save "Mapa Eterno" no topo da lista e adiciona uma trava de proteção contra cliques acidentais de exclusão.
+91. **`ItemBorders-1.20.1-fabric-1.2.2.jar` (Item Borders - Destaque de Raridade Estilo RPG):**  
+    *Identificação visual instantânea.* Adiciona contornos coloridos discretos e elegantes (ouro, roxo, azul) ao redor dos itens no inventário e baús de acordo com o nível de raridade e encantamento do item, facilitando bater o olho e achar suas peças mais valiosas na bagunça.
 
 ---
 
