@@ -3,14 +3,14 @@
 > **Launcher Canônico:** Prism Launcher (Nativo CachyOS/Arch com suporte a contas offline)  
 > **Hardware de Referência:** AMD Ryzen 7 5700X (8C/16T) • NVIDIA GeForce RTX 5060 (8 GB RAM alocados na JVM)  
 > **Script de Automação:** `~/dotfiles/scripts/setup-minecraft.sh`  
-> **Total de Mods Instalados e Auditados:** 40 Mods Especializados
+> **Total de Mods Instalados e Auditados:** 54 Mods Especializados
 
 ---
 
 ## 🎯 ÍNDICE GERAL
 1. [Filosofia do Setup: Zero Atrito, Zero Traumas](#-1-filosofia-do-setup-zero-atrito-zero-traumas)
 2. [Guia de Utilização das Armas Anti-Atrito & Controles](#-2-guia-de-utilização-das-armas-anti-atrito--controles)
-3. [Catálogo Completo dos 40 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-40-mods)
+3. [Catálogo Completo dos 54 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-54-mods)
 4. [Shaderpack Complementary Reimagined & Motor Gráfico](#-4-shaderpack-complementary-reimagined--motor-gráfico)
 5. [Passo a Passo: Como Iniciar e Jogar Hoje](#-5-passo-a-passo-como-iniciar-e-jogar-hoje)
 6. [Manutenção, Backup & Reprodutibilidade no Dotfiles](#-6-manutenção-backup--reprodutibilidade-no-dotfiles)
@@ -157,8 +157,23 @@ Abaixo está o registro exato de todos os 40 arquivos `.jar` presentes na pasta 
     *Farinha de osso universal.* Permite usar farinha de osso em **TUDO**: faz crescer cana-de-açúcar instantaneamente, cactos, videiras, fungos do nether e flores, além de acelerar mudas teimosas.
 45. **`farmers-delight-fabric-1.4.3.jar` (Farmer's Delight):**  
     *A revolução da agricultura e comida.* Adiciona plantações de tomates, cebolas, arroz e repolho, facas para cortar carne, panelas de cozimento para fazer ensopados e banquetes que concedem efeitos de regeneração e super saturação duradouros.
-46. **`disenchanter-0.1.8+1.20.jar` (Disenchanter):**  
-    *Mesa de transferência de encantos.* Achou um arco ou espada com um encantamento lendário que você queria em outra arma? Coloque o item na mesa do Disenchanter com um livro comum e ele transfere os encantamentos diretamente para o **LIVRO**, para você aplicar onde quiser!
+### Grupo H: Vilas Blindadas, Bigorna Infinita, Mega Baús & Recarga Automática
+47. **`zombieproofdoors-1.20.1-3.5.jar` (Zombie-Proof Doors):**  
+    *Aldeões imunes a invasão.* Zumbis **NUNCA MAIS conseguem quebrar as portas de madeira das casas das vilas**! Quando a noite cair, os Aldeões entram em casa, fecham a porta e ficam 100% seguros contra qualquer horda. Zero risco de acordar e ver a vila vazia ou infectada.
+48. **`ironchests-5.0.2-fabric.jar` (Iron Chests: Restocked):**  
+    *Armazenamento massivo de minérios.* Adiciona baús de Cobre, Ferro, Ouro, Diamante e Netherita. Um único Baú de Diamante guarda até **108 slots** (mais que o dobro de um baú duplo comum), ideal para guardar montanhas de pedra, ferro e carvão ocupando o espaço de apenas 1 bloco!
+49. **`anvilrestoration-1.20.1-2.4.jar` (Anvil Restoration):**  
+    *Bigorna Indestrutível.* No jogo original, consertar itens faz a bigorna rachar e quebrar após alguns usos. Com este mod, a bigorna **NUNCA quebra e dura para sempre**.
+50. **`fixedanvilrepaircost-1.20.1-3.5.jar` (Fixed Anvil Repair Cost):**  
+    *Fim do 'MUITO CARO!' (Too Expensive).* Acaba com o limite cruel do Minecraft que impedia você de continuar reparando ou combinando livros na sua espada ou armadura favorita após o custo passar de 40 níveis de XP. Agora você pode consertar e aprimorar seus itens eternamente por um custo fixo e justo de XP!
+51. **`stackrefill-1.20.1-4.9.jar` (Stack Refill):**  
+    *Recarga automática na mão.* Acabou o bloco de pedra, a tocha, a comida ou quebrou a ferramenta que estava na sua mão principal? O mod puxa **automaticamente** outro bloco ou ferramenta idêntica do seu inventário para a sua mão no mesmo instante, sem você precisar abrir o inventário para repor.
+52. **`infinitetrading-1.20.1-5.0.jar` (Infinite Trading):**  
+    *Aldeões com comércio ilimitado.* O Aldeão **NUNCA bloqueia as trocas com uma cruz vermelha**. Se você tiver 5 baús cheios de trigo, cenoura ou gravetos, você pode trocar tudo por esmeraldas em uma única sessão, sem ele travar e pedir para esperar o dia seguinte.
+53. **`Neat-1.20.1-41-FABRIC.jar` (Neat - Health Bars):**  
+    *Barras de vida visuais estilo RPG.* Exibe discretamente uma barra de vida, armadura e nome em cima de qualquer monstro, chefe ou animal que você estiver olhando, permitindo saber exatamente quanta vida falta para derrotá-lo.
+54. **`Loot Beams Refork-fabric-1.20.1-3.4.7.jar` (Loot Beams):**  
+    *Feixes de luz em drops raros.* Itens jogados no chão emitem um feixe vertical de luz brilhante colorido de acordo com a sua raridade (estilo RPG/Borderlands/Diablo). Você nunca mais vai perder um diamante ou barra de Netherita que caiu no meio da grama ou no escuro da caverna.
 
 ---
 

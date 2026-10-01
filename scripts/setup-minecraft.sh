@@ -156,7 +156,16 @@ mods_to_download = [
     "trade-cycling",         # Botão de resetar trocas do Villager com 1 clique (sem precisar quebrar o atril 200 vezes pra vir Remendo!)
     "extended-bone-meal",    # Farinha de osso funciona em TUDO: cana de açúcar, cacto, videiras e plantações instantâneas
     "farmers-delight-fabric",# Expansão agrícola: cultive cebola, tomate, arroz, repolho e faça banquetes deliciosos
-    "disenchanter"           # Mesa de desencantamento: tire encantamentos de armaduras/ferramentas e passe para LIVROS!
+    "disenchanter",          # Mesa de desencantamento: tire encantamentos de armaduras/ferramentas e passe para LIVROS!
+    # Proteção de Vilas & Eliminação de Micro-Atritos
+    "zombie-proof-doors",    # Zumbis NUNCA MAIS quebram as portas das vilas! Aldeões 100% seguros dentro de casa.
+    "ironchests",            # Baús de Ferro, Ouro, Diamante e Netherita (armazenamento massivo de minérios no mesmo bloco!)
+    "anvil-restoration",     # Bigorna NUNCA se desgasta nem quebra! 1 bigorna dura pra sempre.
+    "fixed-anvil-repair-cost",# ACABA COM O 'MUITO CARO!' (Too Expensive) na bigorna! Repare e encante infinitas vezes.
+    "stack-refill",          # Acabou o bloco ou tocha que estava na sua mão? Puxa outro do inventário automaticamente!
+    "infinite-trading",      # Aldeão NUNCA esgota as trocas! Troque quanto trigo, esmeralda ou livro quiser sem travar.
+    "neat",                  # Barra de vida em cima dos monstros estilo RPG para saber o dano exato.
+    "loot-beams-refork"      # Feixes de luz coloridos saindo dos itens no chão estilo RPG (nunca mais perca um drop no escuro).
 ]
 
 for slug in mods_to_download:
