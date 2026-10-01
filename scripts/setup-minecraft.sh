@@ -213,7 +213,10 @@ mods_to_download = [
     "boatview360",            # Rotação livre de câmera de 360° em barcos (adeus pescoço travado)
     "silent-mobs",            # Permite silenciar mobs e carrinhos barulhentos renomeando para "silent"
     "cherished-worlds",       # Fixa e protege seu "Mapa Eterno" com estrela e trava anti-deleção no topo da lista
-    "item-borders"            # Bordas coloridas sutis de raridade em itens épicos e lendários no inventário
+    "item-borders",           # Bordas coloridas sutis de raridade em itens épicos e lendários no inventário
+    # Início Imediato Sem Atrito & Fim do Sofrimento com Ovelha/Cama
+    "starter-kit",            # Permite nascer no mundo já com a mochila Traveler's Backpack equipada nas costas!
+    "mixed-wool-bed"          # Permite craftar cama com qualquer cor de lã misturada (ex: 2 brancas + 1 preta)
 ]
 
 for slug in mods_to_download:
@@ -277,6 +280,54 @@ cat << 'DIGGUS_EOF' > "$INSTANCE_DIR/.minecraft/config/diggusmaximus/config.json
 }
 DIGGUS_EOF
 ok "Diggus Maximus configurado: mineração de veios sempre ativa por padrão!"
+
+# Configuração do StarterKit (Nascer com Mochila nas costas e Cama)
+mkdir -p "$INSTANCE_DIR/.minecraft/config/starterkit/active"
+cat << 'STARTER_EOF' > "$INSTANCE_DIR/.minecraft/config/starterkit/active/Default.txt"
+'head' : '',
+'chest' : '',
+'legs' : '',
+'feet' : '',
+'offhand' : '',
+0 : '{Count:1b,id:"travelersbackpack:standard"}',
+1 : '{Count:1b,id:"minecraft:red_bed"}',
+2 : '',
+3 : '',
+4 : '',
+5 : '',
+6 : '',
+7 : '',
+8 : '',
+9 : '',
+10 : '',
+11 : '',
+12 : '',
+13 : '',
+14 : '',
+15 : '',
+16 : '',
+17 : '',
+18 : '',
+19 : '',
+20 : '',
+21 : '',
+22 : '',
+23 : '',
+24 : '',
+25 : '',
+26 : '',
+27 : '',
+28 : '',
+29 : '',
+30 : '',
+31 : '',
+32 : '',
+33 : '',
+34 : '',
+35 : '',
+'effects' : '',
+STARTER_EOF
+ok "StarterKit configurado: nascer com Traveler's Backpack e Cama no inventário!"
 
 echo -e "\n${BOLD}======================================================================${NC}"
 echo -e "${GREEN}${BOLD}✔ INSTÂNCIA MINECRAFT MAPA ETERNO 100% PRONTA!${NC}"

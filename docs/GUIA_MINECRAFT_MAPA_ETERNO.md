@@ -3,14 +3,14 @@
 > **Launcher Canônico:** Prism Launcher (Nativo CachyOS/Arch com suporte a contas offline)  
 > **Hardware de Referência:** AMD Ryzen 7 5700X (8C/16T) • NVIDIA GeForce RTX 5060 (8 GB RAM alocados na JVM)  
 > **Script de Automação:** `~/dotfiles/scripts/setup-minecraft.sh`  
-> **Total de Mods Instalados e Auditados:** 91 Mods Especializados
+> **Total de Mods Instalados e Auditados:** 93 Mods Especializados
 
 ---
 
 ## 🎯 ÍNDICE GERAL
 1. [Filosofia do Setup: Zero Atrito, Zero Traumas](#-1-filosofia-do-setup-zero-atrito-zero-traumas)
 2. [Guia de Utilização das Armas Anti-Atrito & Controles](#-2-guia-de-utilização-das-armas-anti-atrito--controles)
-3. [Catálogo Completo dos 91 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-91-mods)
+3. [Catálogo Completo dos 93 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-93-mods)
 4. [Shaderpack Complementary Reimagined & Motor Gráfico](#-4-shaderpack-complementary-reimagined--motor-gráfico)
 5. [Passo a Passo: Como Iniciar e Jogar Hoje](#-5-passo-a-passo-como-iniciar-e-jogar-hoje)
 6. [Manutenção, Backup & Reprodutibilidade no Dotfiles](#-6-manutenção-backup--reprodutibilidade-no-dotfiles)
@@ -23,7 +23,7 @@ O Minecraft original (Vanilla) é notório por gerar atrito repetitivo que deses
 * **Atrito de Tempo:** Horas minerando bloco por bloco, quebrando troncos árvore por árvore, organizando centenas de baús individuais.
 * **Atrito de Perda & Frustração:** Creepers explodindo construções com fiação de redstone, cascalho caindo na cabeça e sufocando o jogador, perder armadura na lava por conta do timer cruel de 5 minutos, ferramentas caras quebrando acidentalmente por descuido, ou matar pets por fogo amigo.
 * **Atrito de Deslocamento & Animais:** Ficar 40 minutos andando pelo mapa para voltar da mina, esmagar a barra de espaço para subir cada montanha de 1 bloco, puxar animais burros com laço frágil que arrebenta ou empurrar barcos e trilhos com Villagers teimosos.
-* **Atrito de Coleta Agrícola & Farms:** Ficar quebrando matinho e grama um por um com a mão vazia, ou ter que construir circuitos quilométricos de redstone e água apenas para recolher drops de mob farms e ferro.
+* **Atrito de Coleta Agrícola & Farms:** Ficar quebrando matinho e grama um por um com a mão vazia, não achar ovelhas para ter uma cama na primeira noite, ou ter que construir circuitos quilométricos de redstone e água apenas para recolher drops de mob farms e ferro.
 * **Atrito de Micro-Fricções:** Câmera travada em barcos, barulho insuportável de dezenas de vacas mugindo na base, boneco travado ao abrir inventário, espada acertando a graminha na hora de bater em monstros, molduras girando ao tentar abrir baús decorados, e o perigo de perder um save de centenas de horas por corrupção de arquivo.
 
 Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores**, mantendo o jogo 100% fiel à essência Vanilla, mas adicionando a fluidez e a conveniência de um RPG de engenharia moderno.
@@ -34,6 +34,8 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 
 | Ação Desejada | Mod Responsável | Como Executar no Teclado / Jogo |
 | :--- | :--- | :--- |
+| **Nascer com Mochila e Cama (Zero Espera)** | `Starter Kit` | **Passivo/Automático:** Ao entrar no mundo pela primeira vez, seu personagem **já nasce com a Traveler's Backpack e uma Cama Vermelha no inventário**! Basta apertar **`B`** para usar sua super mochila desde o segundo zero. |
+| **Fazer Cama com Lãs de Cores Diferentes** | `Mixed Wool Bed` | **Passivo/Automático:** Na mesa de trabalho, você pode usar **qualquer cor de lã misturada** (ex: 2 brancas + 1 preta, ou 1 cinza + 2 marrons) para fazer uma cama! O jogo não te obriga mais a achar 3 ovelhas idênticas. |
 | **Girar Câmera 360° em Barcos** | `BoatView360` | Ao pilotar ou viajar de passageiro em um barco, **olhe livremente para trás e para todos os lados em 360° sem travas no pescoço**. |
 | **Silenciar Criaturas ou Carrinhos Barulhentos**| `Silent Mobs` | Renomeie qualquer criatura irritante ou carrinho numa bigorna com a etiqueta **`silent`** e use nela: ela fica **100% muda**, acabando com a poluição sonora na sua base! |
 | **Favoritar e Blindar Mundo no Topo** | `Cherished Worlds` | Na tela de seleção de mundos, clique no **ícone de estrela** ao lado do seu save "Mapa Eterno": ele fica fixado no topo com trava anti-exclusão acidental. |
@@ -291,6 +293,12 @@ Abaixo está o registro exato de todos os 91 arquivos `.jar` presentes na pasta 
     *Seu mundo principal sempre seguro.* Adiciona uma estrela de favoritos na tela de seleção de mundos. Fixa o seu save "Mapa Eterno" no topo da lista e adiciona uma trava de proteção contra cliques acidentais de exclusão.
 91. **`ItemBorders-1.20.1-fabric-1.2.2.jar` (Item Borders - Destaque de Raridade Estilo RPG):**  
     *Identificação visual instantânea.* Adiciona contornos coloridos discretos e elegantes (ouro, roxo, azul) ao redor dos itens no inventário e baús de acordo com o nível de raridade e encantamento do item, facilitando bater o olho e achar suas peças mais valiosas na bagunça.
+
+### Grupo Q: Início Imediato Sem Espera & Fim da Falta de Cama
+92. **`starterkit-1.20.1-8.1.jar` (Starter Kit - Kit de Sobrevivência Instantâneo):**  
+    *Zero perda de tempo no primeiro dia.* Ao criar ou entrar num mundo novo pela primeira vez, seu personagem **já nasce automaticamente com a mochila Traveler's Backpack e uma Cama Vermelha no inventário**! Você não precisa caçar vacas no início nem perder tempo craftando para ter espaço infinito e dormir na primeira noite.
+93. **`mixed-wool-bed-1.0.0.jar` (Mixed Wool Bed - Cama com Lãs de Cores Mistas):**  
+    *Fim da tortura de achar 3 ovelhas da mesma cor.* No Vanilla, se você achar 2 ovelhas brancas e 1 marrom/preta, você não consegue fazer uma cama e é obrigado a passar a noite inteira no escuro sendo caçado por monstros. Com este mod, qualquer combinação de 3 lãs (mesmo de cores totalmente diferentes) monta uma cama perfeitamente funcional!
 
 ---
 
