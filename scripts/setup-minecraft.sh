@@ -165,7 +165,9 @@ mods_to_download = [
     "stack-refill",          # Acabou o bloco ou tocha que estava na sua mão? Puxa outro do inventário automaticamente!
     "infinite-trading",      # Aldeão NUNCA esgota as trocas! Troque quanto trigo, esmeralda ou livro quiser sem travar.
     "neat",                  # Barra de vida em cima dos monstros estilo RPG para saber o dano exato.
-    "loot-beams-refork"      # Feixes de luz coloridos saindo dos itens no chão estilo RPG (nunca mais perca um drop no escuro).
+    "loot-beams-refork",     # Feixes de luz coloridos saindo dos itens no chão estilo RPG (nunca mais perca um drop no escuro).
+    # Fornalhas Industriais Ultra-Rápidas
+    "better-furnaces-reforged"# Fornalhas de Ferro, Ouro, Diamante e Netherita (fundem packs inteiros em segundos!)
 ]
 
 for slug in mods_to_download:
