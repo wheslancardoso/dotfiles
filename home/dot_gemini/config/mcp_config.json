@@ -1,0 +1,31 @@
+{
+  "mcpServers": {
+    "context-mode": {
+      "command": "npx",
+      "args": ["-y", "context-mode"],
+      "env": {
+        "MAX_LOG_LINES": "40"
+      }
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"]
+    },
+    "fast-playwright": {
+      "command": "npx",
+      "args": ["-y", "@tontoko/fast-playwright-mcp"],
+      "env": {
+        "INCLUDE_SNAPSHOT": "true",
+        "INCLUDE_CONSOLE": "true",
+        "NO_IMAGES": "true"
+      }
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+      }
+    }
+  }
+}
