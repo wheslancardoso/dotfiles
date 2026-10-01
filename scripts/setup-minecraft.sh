@@ -228,7 +228,10 @@ mods_to_download = [
     # Atração Magnética de Itens Caídos ao Redor
     "supermartijn642s-core-lib",   # Biblioteca essencial para o Simple Magnets
     "supermartijn642s-config-lib", # Biblioteca de configurações do Simple Magnets
-    "simple-magnets"               # Ímãs magnéticos que puxam itens caídos e XP num raio de até 11 blocos
+    "simple-magnets",              # Ímãs magnéticos que puxam itens caídos e XP num raio de até 11 blocos
+    # Abertura Simultânea de Portas Duplas e Portões
+    "collective",                  # Biblioteca base essencial para automações de blocos duplos
+    "double-doors"                 # Abre e fecha ambas as folhas de portas duplas e portões com 1 clique
 ]
 
 for slug in mods_to_download:
@@ -253,13 +256,21 @@ for slug in mods_to_download:
 PY_EOF
 ok "Mods anti-atrito baixados com sucesso!"
 
-# 6. Baixando Shaders de Cinema: Complementary Reimagined
-info "Baixando Complementary Reimagined Shaders..."
-SHADER_FILE="$SHADERS_DIR/ComplementaryReimagined_r5.9.3.zip"
-if [ ! -f "$SHADER_FILE" ]; then
-    curl -L "https://cdn.modrinth.com/data/HVnmMxH1/versions/Bqen1mJX/ComplementaryReimagined_r5.9.3.zip" -o "$SHADER_FILE"
-    ok "Shader Complementary Reimagined baixado!"
-fi
+# 6. Baixando Shaders de Cinema: Suíte de Elite Otimizada para RTX 5060
+info "Baixando Suíte de Shaders de Alta Performance (Complementary Reimagined, Unbound e BSL)..."
+declare -A SHADERS=(
+    ["ComplementaryReimagined_r5.9.3.zip"]="https://cdn.modrinth.com/data/HVnmMxH1/versions/Bqen1mJX/ComplementaryReimagined_r5.9.3.zip"
+    ["ComplementaryUnbound_r5.9.3.zip"]="https://cdn.modrinth.com/data/R6NEzAwj/versions/B1kyfoUZ/ComplementaryUnbound_r5.9.3.zip"
+    ["BSL_v10.1.8.zip"]="https://cdn.modrinth.com/data/Q1vvjJYV/versions/Y68yiql9/BSL_v10.1.8.zip"
+)
+
+for sname in "${!SHADERS[@]}"; do
+    sfile="$SHADERS_DIR/$sname"
+    if [ ! -f "$sfile" ]; then
+        curl -sSL "${SHADERS[$sname]}" -o "$sfile"
+        ok "Shader $sname baixado!"
+    fi
+done
 
 # Configuração do Iris para ativar o shader de cara
 cat << 'IRIS_EOF' > "$INSTANCE_DIR/.minecraft/config/iris.properties"

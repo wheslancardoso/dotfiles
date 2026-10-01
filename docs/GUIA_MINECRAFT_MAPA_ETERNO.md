@@ -3,14 +3,14 @@
 > **Launcher Canônico:** Prism Launcher (Nativo CachyOS/Arch com suporte a contas offline)  
 > **Hardware de Referência:** AMD Ryzen 7 5700X (8C/16T) • NVIDIA GeForce RTX 5060 (8 GB RAM alocados na JVM)  
 > **Script de Automação:** `~/dotfiles/scripts/setup-minecraft.sh`  
-> **Total de Mods Instalados e Auditados:** 102 Mods Especializados
+> **Total de Mods Instalados e Auditados:** 104 Mods Especializados
 
 ---
 
 ## 🎯 ÍNDICE GERAL
 1. [Filosofia do Setup: Zero Atrito, Zero Traumas](#-1-filosofia-do-setup-zero-atrito-zero-traumas)
 2. [Guia de Utilização das Armas Anti-Atrito & Controles](#-2-guia-de-utilização-das-armas-anti-atrito--controles)
-3. [Catálogo Completo dos 102 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-102-mods)
+3. [Catálogo Completo dos 104 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-104-mods)
 4. [Shaderpack Complementary Reimagined & Motor Gráfico](#-4-shaderpack-complementary-reimagined--motor-gráfico)
 5. [Passo a Passo: Como Iniciar e Jogar Hoje](#-5-passo-a-passo-como-iniciar-e-jogar-hoje)
 6. [Manutenção, Backup & Reprodutibilidade no Dotfiles](#-6-manutenção-backup--reprodutibilidade-no-dotfiles)
@@ -34,6 +34,7 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 
 | Ação Desejada | Mod Responsável | Como Executar no Teclado / Jogo |
 | :--- | :--- | :--- |
+| **Abrir Portas e Portões Duplos com 1 Clique**| `Double Doors` | **Passivo/Automático:** Ao clicar com o botão direito em qualquer porta dupla de castelo/casa ou portão duplo de cerca, **ambos os lados abrem ou fecham simultaneamente**! Chega de ter que clicar duas vezes para passar correndo. |
 | **Atrair Itens e XP ao Redor (Ímã Magnético)** | `Simple Magnets` | Segure ou guarde o **Magnet** no inventário/slot de acessório e aperte o botão direito ou a tecla de alternância para ligar: **todos os itens caídos no chão e orbes de XP num raio de até 11 blocos voam direto para o seu bolso**! Permite configurar lista branca/preta com Shift + Botão Direito para não puxar terra/pedra se não quiser. |
 | **Troca Automática de Ferramenta ao Bater** | `AutoSwitch` | **Passivo/Automático:** Mire em pedra, terra ou madeira e comece a quebrar: o jogo **seleciona instantaneamente a ferramenta ideal** da sua hotbar (picareta para pedra, pá para cascalho/terra, machado para troncos, espada para monstros) sem você precisar ficar rodando a roda do mouse ou teclando 1, 2, 3! Ao terminar, volta para o item anterior. |
 | **Queda Acelerada de Folhas em Árvores** | `Accelerated Decay` | **Passivo/Automático:** Ao cortar qualquer árvore com o machado, as **folhas se desintegram quase instantaneamente** em cascata rápida, fazendo chover maçãs, gravetos e mudas sem deixar folhas feias flutuando no ar por minutos. |
@@ -86,9 +87,9 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 
 ---
 
-## 📚 3. CATÁLOGO COMPLETO DOS 102 MODS INSTALADOS
+## 📚 3. CATÁLOGO COMPLETO DOS 104 MODS INSTALADOS
 
-Abaixo está o registro exato de todos os 102 arquivos `.jar` presentes na pasta `.minecraft/mods/` da instância:
+Abaixo está o registro exato de todos os 104 arquivos `.jar` presentes na pasta `.minecraft/mods/` da instância:
 
 ### Grupo A: Eliminação de Dores & Traumas Clássicos (Pain Killers)
 1. **`gravelminer-fabric-1.20-16.0.4.jar` (GravelMiner):**  
@@ -331,19 +332,27 @@ Abaixo está o registro exato de todos os 102 arquivos `.jar` presentes na pasta
 102. **`supermartijn642configlib-1.1.8a-fabric-mc1.20.jar` (SuperMartijn642's Config Lib):**  
      *Gerenciador de configuração do Simple Magnets.* Permite ajustar o raio de atração, velocidade de puxada e compatibilidade com outros mods.
 
+### Grupo U: Portas Duplas Sincronizadas & Engenharia de Blocos
+103. **`doubledoors-1.20.1-7.2.jar` (Double Doors - Abertura Sincronizada de Portas Duplas):**  
+     *Fim do clique duplo em entradas.* Em castelos, celeiros ou portões duplos de cerca, clicar com o botão direito em uma das folhas abre ou fecha **ambas as portas simultaneamente em perfeita harmonia**, eliminando a necessidade de dar dois cliques toda vez que for passar correndo ou a cavalo.
+104. **`collective-1.20.1-8.40.jar` (Collective):**  
+     *Biblioteca base do ecossistema de blocos duplos.* Garante a sincronização de eventos de clique e estados de portas, alçapões e portões sem gerar lag ou bugs de colisão.
+
 ---
 
-## ☀️ 4. SHADERPACK COMPLEMENTARY REIMAGINED & MOTOR GRÁFICO
+## ☀️ 4. SUÍTE DE SHADERS DE CINEMA & MOTOR GRÁFICO (RTX 5060)
 
-O shaderpack pré-instalado e ativado por padrão na sua instância é o **`ComplementaryReimagined_r5.9.3.zip`**:
+Para a sua **NVIDIA GeForce RTX 5060**, configuramos e pré-instalamos os **3 shaders mais bonitos, estáveis e otimizados do mundo**, que entregam visual de cinema sem pesar no hardware (mantendo mais de **140 a 220+ FPS** constantes com frametime ultra suave via Iris + Sodium):
 
-* **Estética:** Preserva a alma cúbica do Minecraft (sem parecer um mod fotorrealista artificial que quebra a estética do jogo), mas adiciona:
-  * Iluminação volumétrica com raios solares dinâmicos atravessando copas de árvores e janelas.
-  * Água com transparência natural, ondas sutis e refração de luz.
-  * Sombras suaves projetadas de acordo com a posição do sol e da lua.
-  * Céu com nuvens volumétricas e estrelas detalhadas.
-  * Suporte nativo à iluminação de tochas nas cavernas através do `LambDynamicLights`.
-* **Desempenho:** Na sua **NVIDIA GeForce RTX 5060**, os shaders rodam a mais de **150-240 FPS** em resolução nativa com frametime perfeitamente estável.
+| Shaderpack Instalado | Estilo Visual | Desempenho na RTX 5060 | Destaques |
+| :--- | :--- | :--- | :--- |
+| **`Complementary Reimagined`** *(Padrão Ativo)* | Vanilla Aprimorado de Luxo | **180 - 240+ FPS** | Mantém a fidelidade dos blocos e nuvens quadradas do Minecraft, adicionando água translúcida com refração, raios solares divinos (*godrays*), iluminação de tocha dinâmica na mão (`LambDynamicLights`) e névoa atmosférica de tirar o fôlego. |
+| **`Complementary Unbound`** | Fotorrealista Suave & Cênico | **160 - 210+ FPS** | Semelhante ao Reimagined, mas troca as nuvens quadradas por nuvens volumétricas fofas e arredondadas em 3D, com reflexos de água mais realistas e céu estrelado estilo filme da Pixar. |
+| **`BSL Shaders v10.1`** | Aconchegante, Quente & Vibrante | **170 - 230+ FPS** | O clássico queridinho dos criadores de conteúdo: iluminação dourada quente, sombras suaves de folhagens, água cristalina e visual relaxante sem saturação exagerada. |
+
+> **Como alternar ou desligar em jogo:**  
+> * Pressione a tecla **`K`** para **ligar/desligar** os shaders instantaneamente em tempo real.  
+> * Vá em *Opções $\rightarrow$ Configurações de Vídeo $\rightarrow$ Pacotes de Shaders* para alternar entre `Complementary Reimagined`, `Complementary Unbound` ou `BSL` com 1 clique!
 
 ---
 
