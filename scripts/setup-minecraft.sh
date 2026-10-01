@@ -130,7 +130,13 @@ mods_to_download = [
     "rightclickharvest",    # Colhe e replanta plantações com 1 clique direito
     "appleskin",            # Mostra valor nutricional e saturação exata da comida
     "shulkerboxtooltip",    # Vê o que tem dentro da Shulker passando o mouse (sem pôr no chão)
-    "inventory-sorting"     # Organização de baús e inventário com atalho
+    "inventory-sorting",    # Organização de baús e inventário com atalho
+    # Exterminadores de Dores Lendárias (Minecraft Pain Killer Suite)
+    "elytra-slot",          # Usa Peitoral de Netherita E Elytra JUNTOS (nunca mais morra sem peitoral!)
+    "friendly-fire",        # IMPOSSÍVEL bater ou matar seu cachorro/gato sem querer!
+    "clumps",               # Agrupa 5.000 orbes de XP em 1 só (zero lag nas suas mega farms automáticas)
+    "modernfix",            # Carregamento ultra-rápido do mundo e mata corrupção de memória
+    "continuity"            # Vidros conectados perfeitos sem divisórias feias
 ]
 
 for slug in mods_to_download:
