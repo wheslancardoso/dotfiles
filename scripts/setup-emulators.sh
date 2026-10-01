@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# 🎮 SETUP DEFINITIVO DA TRÍADE DE EMULADORES (PCSX2 + RPCS3 + XENIA CANARY)
+# 🎮 SETUP DEFINITIVO DA SUÍTE DE EMULADORES
+# (SNES + PS2 + PS3 + XBOX 360 + NINTENDO SWITCH)
 # Otimizado para Arch Linux / CachyOS (NVIDIA RTX 5060 + Ryzen 7 5700X)
 # Inclui patches anti-crash e anti-stutter para Midnight Club Los Angeles
 # ==============================================================================
@@ -26,7 +27,7 @@ APPLICATIONS_DIR="$HOME/.local/share/applications"
 XENIA_DIR="$HOME/.local/share/xenia-canary"
 
 echo -e "${BOLD}======================================================================${NC}"
-echo -e "${BOLD}🚀 INICIANDO INSTALAÇÃO & AFINAÇÃO DA SUÍTE DE EMULAÇÃO (PS2/PS3/X360)${NC}"
+echo -e "${BOLD}🚀 SETUP & AFINAÇÃO DA SUÍTE DE EMULAÇÃO (SNES/PS2/PS3/X360/SWITCH)${NC}"
 echo -e "${BOLD}======================================================================${NC}\n"
 
 # ------------------------------------------------------------------------------
@@ -35,17 +36,33 @@ echo -e "${BOLD}================================================================
 info "Criando árvore canônica de diretórios em $GAMES_DIR..."
 mkdir -p "$GAMES_DIR/bios/ps2" \
          "$GAMES_DIR/bios/ps3" \
+         "$GAMES_DIR/bios/switch/keys" \
+         "$GAMES_DIR/bios/switch/firmware" \
+         "$GAMES_DIR/roms/snes" \
          "$GAMES_DIR/roms/ps2" \
          "$GAMES_DIR/roms/ps3" \
          "$GAMES_DIR/roms/xbox360" \
+         "$GAMES_DIR/roms/switch" \
          "$GAMES_DIR/configs" \
          "$LOCAL_BIN" \
          "$APPLICATIONS_DIR" \
          "$XENIA_DIR/patches"
-ok "Árvore de diretórios pronta!"
+ok "Árvore de diretórios organizada!"
 
 # ------------------------------------------------------------------------------
-# 2. Instalação do PCSX2 (PlayStation 2) via Flatpak
+# 2. Instalação do Snes9x (Super Nintendo) via Flatpak
+# ------------------------------------------------------------------------------
+info "Verificando Snes9x (Super Nintendo)..."
+if ! flatpak info com.snes9x.Snes9x &>/dev/null; then
+    info "Instalando Snes9x via Flatpak Flathub..."
+    flatpak install -y flathub com.snes9x.Snes9x
+    ok "Snes9x instalado com sucesso!"
+else
+    ok "Snes9x já está instalado."
+fi
+
+# ------------------------------------------------------------------------------
+# 3. Instalação do PCSX2 (PlayStation 2) via Flatpak
 # ------------------------------------------------------------------------------
 info "Verificando PCSX2 (PlayStation 2)..."
 if ! flatpak info net.pcsx2.PCSX2 &>/dev/null; then
@@ -57,7 +74,7 @@ else
 fi
 
 # ------------------------------------------------------------------------------
-# 3. Instalação do RPCS3 (PlayStation 3) via Flatpak
+# 4. Instalação do RPCS3 (PlayStation 3) via Flatpak
 # ------------------------------------------------------------------------------
 info "Verificando RPCS3 (PlayStation 3)..."
 if ! flatpak info net.rpcs3.RPCS3 &>/dev/null; then
@@ -69,7 +86,19 @@ else
 fi
 
 # ------------------------------------------------------------------------------
-# 4. Provisionamento do Xenia Canary (Xbox 360) Linux Nativo / AppImage
+# 5. Instalação do Ryujinx / Ryubing (Nintendo Switch) via Flatpak
+# ------------------------------------------------------------------------------
+info "Verificando Ryujinx (Nintendo Switch)..."
+if ! flatpak info io.github.ryubing.Ryujinx &>/dev/null; then
+    info "Instalando Ryujinx via Flatpak Flathub..."
+    flatpak install -y flathub io.github.ryubing.Ryujinx
+    ok "Ryujinx instalado com sucesso!"
+else
+    ok "Ryujinx já está instalado."
+fi
+
+# ------------------------------------------------------------------------------
+# 6. Provisionamento do Xenia Canary (Xbox 360) Linux Nativo / AppImage
 # ------------------------------------------------------------------------------
 info "Provisionando Xenia Canary (Xbox 360)..."
 XENIA_APPIMAGE="$XENIA_DIR/xenia_canary.AppImage"
@@ -85,7 +114,7 @@ if [ ! -f "$XENIA_APPIMAGE" ]; then
         chmod +x "$XENIA_APPIMAGE"
         ok "Xenia Canary baixado e tornado executável!"
     else
-        warn "Não foi possível obter a tag mais recente via API. Tentando download direto..."
+        warn "Tentando download direto do release..."
         curl -L "https://github.com/xenia-canary/xenia-canary/releases/latest/download/xenia_canary_linux.AppImage" -o "$XENIA_APPIMAGE" || true
         chmod +x "$XENIA_APPIMAGE" || true
     fi
@@ -94,11 +123,10 @@ else
 fi
 
 # ------------------------------------------------------------------------------
-# 5. Aplicação das Configurações de Elite & Patches para Midnight Club LA
+# 7. Aplicação das Configurações de Elite & Patches para Midnight Club LA
 # ------------------------------------------------------------------------------
 info "Aplicando configurações de alta performance do dotfiles..."
 
-# Configuração e Patches do Xenia
 if [ -d "$DOTFILES_DIR/home/dot_config/xenia" ]; then
     cp -rf "$DOTFILES_DIR/home/dot_config/xenia/xenia-canary.config.toml" "$XENIA_DIR/xenia-canary.config.toml"
     cp -rf "$DOTFILES_DIR/home/dot_config/xenia/patches/"* "$XENIA_DIR/patches/" 2>/dev/null || true
@@ -106,7 +134,7 @@ if [ -d "$DOTFILES_DIR/home/dot_config/xenia" ]; then
 fi
 
 # ------------------------------------------------------------------------------
-# 6. Criando Wrappers de Execução com GameMode & NVIDIA
+# 8. Criando Wrappers de Execução com GameMode & NVIDIA
 # ------------------------------------------------------------------------------
 info "Criando script wrapper para o Xenia Canary em $LOCAL_BIN/xenia-canary..."
 
@@ -129,13 +157,11 @@ else
 fi
 WRAPPER_EOF
 chmod +x "$LOCAL_BIN/xenia-canary"
-ok "Wrapper do Xenia Canary criado com sucesso!"
+ok "Wrapper do Xenia Canary pronto!"
 
 # ------------------------------------------------------------------------------
-# 7. Criando Atalhos de Menu (.desktop) para Hyprland / Rofi / Wofi
+# 9. Criando Atalhos de Menu (.desktop) para Hyprland / Rofi / Wofi
 # ------------------------------------------------------------------------------
-info "Registrando atalho do Xenia Canary no menu de aplicativos..."
-
 cat << DESKTOP_EOF > "$APPLICATIONS_DIR/xenia-canary.desktop"
 [Desktop Entry]
 Name=Xenia Canary
@@ -149,16 +175,21 @@ MimeType=application/x-iso9660-image;
 DESKTOP_EOF
 
 update-desktop-database "$APPLICATIONS_DIR" 2>/dev/null || true
-ok "Atalho do Xenia Canary adicionado ao menu de aplicativos!"
+ok "Atalhos registrados com sucesso!"
 
 echo -e "\n${BOLD}======================================================================${NC}"
-echo -e "${GREEN}${BOLD}✔ INSTALAÇÃO & CONFIGURAÇÃO CONCLUÍDA COM SUCESSO!${NC}"
+echo -e "${GREEN}${BOLD}✔ SUÍTE COMPLETA DE EMULADORES CONFIGURADA!${NC}"
 echo -e "${BOLD}======================================================================${NC}"
-echo -e "📁 Pastas canônicas organizadas:"
-echo -e "   • BIOS:  ${BLUE}$GAMES_DIR/bios/${NC} (ps2/ e ps3/)"
-echo -e "   • ROMs:  ${BLUE}$GAMES_DIR/roms/${NC} (ps2/, ps3/ e xbox360/)"
-echo -e "🎮 Emuladores disponíveis no terminal e no menu do Hyprland:"
-echo -e "   • PCSX2:       ${GREEN}flatpak run net.pcsx2.PCSX2${NC}"
-echo -e "   • RPCS3:       ${GREEN}flatpak run net.rpcs3.RPCS3${NC}"
-echo -e "   • Xenia:       ${GREEN}xenia-canary${NC} (com patches de MCLA já ativos)"
+echo -e "📁 Diretórios organizados:"
+echo -e "   • SNES:    ${BLUE}$GAMES_DIR/roms/snes/${NC}"
+echo -e "   • PS2:     ${BLUE}$GAMES_DIR/roms/ps2/${NC} | BIOS: ${BLUE}$GAMES_DIR/bios/ps2/${NC}"
+echo -e "   • PS3:     ${BLUE}$GAMES_DIR/roms/ps3/${NC} | Firmware: ${BLUE}$GAMES_DIR/bios/ps3/${NC}"
+echo -e "   • XBOX360: ${BLUE}$GAMES_DIR/roms/xbox360/${NC} (com MCLA otimizado)"
+echo -e "   • SWITCH:  ${BLUE}$GAMES_DIR/roms/switch/${NC} | Keys/Firmware: ${BLUE}$GAMES_DIR/bios/switch/${NC}"
+echo -e "🎮 Comandos de execução rápida:"
+echo -e "   • SNES:    ${GREEN}flatpak run com.snes9x.Snes9x${NC}"
+echo -e "   • PS2:     ${GREEN}flatpak run net.pcsx2.PCSX2${NC}"
+echo -e "   • PS3:     ${GREEN}flatpak run net.rpcs3.RPCS3${NC}"
+echo -e "   • X360:    ${GREEN}xenia-canary${NC}"
+echo -e "   • SWITCH:  ${GREEN}flatpak run io.github.ryubing.Ryujinx${NC}"
 echo -e "======================================================================\n"
