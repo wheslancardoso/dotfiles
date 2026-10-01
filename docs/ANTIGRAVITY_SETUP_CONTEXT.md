@@ -23,9 +23,13 @@
 * `~/.gemini/config/repomix.config.json`: configurações de compressão de repositório.
 * `~/.gemini/config/.antigravityignore`: bloqueio de pastas pesadas (`target/`, `node_modules/`, `.dart_tool/`, `build/`, `.gradle/`, logs e caches).
 
-### D. Integração com Chezmoi e Arch Linux
+### D. Integração com Chezmoi, Arch Linux e Windows Nativo
 * Arquivos salvos em `~/dotfiles/home/dot_gemini/config/`.
-* Script de instalação e teste: `~/dotfiles/scripts/setup-antigravity.sh`.
+* Script de instalação e teste local (WSL/Linux): `~/dotfiles/scripts/setup-antigravity.sh`.
+* Script de sincronização com o Windows (Host OS): `~/dotfiles/scripts/sync-antigravity-to-windows.sh`.
+  - Injeta MCPs com comando nativo `npx.cmd`.
+  - Preserva extensões existentes do Windows (`notebooks`, `visualization`, `data-agent-kit`).
+  - Sincroniza regras (`mcp_policy.md`), `.antigravityignore` e `repomix.config.json` para `C:\Users\wheslan.quintanilha\.gemini\config\`.
 * Proteção de segredo: no repositório remoto git usa `${GITHUB_PERSONAL_ACCESS_TOKEN}`; localmente na máquina o token real `ghp_...` é preservado.
 
 ---
