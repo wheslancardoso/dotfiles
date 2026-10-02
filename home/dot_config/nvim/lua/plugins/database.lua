@@ -33,9 +33,7 @@ return {
       }
     end,
     keys = {
-      { "<leader>D", "<cmd>DBUIToggle<cr>", desc = "Database UI (Dadbod)" },
-      { "<leader>Df", "<cmd>DBUIFindBuffer<cr>", desc = "Localizar buffer de DB" },
-      { "<leader>Da", "<cmd>DBUIAddConnection<cr>", desc = "Adicionar conexão DB" },
+      { "<leader>D", "<cmd>DBUIToggle<cr>", desc = "Toggle Database UI (Dadbod)" },
     },
   },
 }

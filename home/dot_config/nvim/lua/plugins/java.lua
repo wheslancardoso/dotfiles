@@ -3,9 +3,32 @@ return {
   {
     "mfussenegger/nvim-jdtls",
     opts = function(_, opts)
+      -- ☕ JDTLS requer Java 21+ para rodar o processo do servidor
+      local java21_matches = vim.fn.glob("~/.local/share/mise/installs/java/21*/bin/java", false, true)
+      local java21_bin = #java21_matches > 0 and java21_matches[#java21_matches] or ""
+      if java21_bin ~= "" then
+        opts.cmd = opts.cmd or { vim.fn.exepath("jdtls") }
+        table.insert(opts.cmd, "--java-executable")
+        table.insert(opts.cmd, java21_bin)
+      end
+
+      -- Configuração de runtimes de compilação (permite projeto Java 17 no JDTLS)
+      local java17_home = vim.fn.expand("~/.local/share/mise/installs/java/openjdk-17.0.2")
+      local java21_home = vim.fn.expand("~/.local/share/mise/installs/java/21.0.2")
+      local runtimes = {}
+      if vim.fn.isdirectory(java17_home) == 1 then
+        table.insert(runtimes, { name = "JavaSE-17", path = java17_home })
+      end
+      if vim.fn.isdirectory(java21_home) == 1 then
+        table.insert(runtimes, { name = "JavaSE-21", path = java21_home, default = true })
+      end
+
       -- Configurações adicionais para garantir que o Java JDTLS funcione com Lombok e JDK local
       opts.settings = vim.tbl_deep_extend("force", opts.settings or {}, {
         java = {
+          configuration = {
+            runtimes = #runtimes > 0 and runtimes or nil,
+          },
           signatureHelp = { enabled = true },
           contentProvider = { preferred = "fernflower" },
           completion = {
@@ -43,10 +66,18 @@ return {
       return opts
     end,
     init = function()
-      -- 🚀 Auto-Scaffolding Inteligente de Classes e Pacotes Java estilo IntelliJ / VS Code
-      vim.api.nvim_create_autocmd("BufNewFile", {
+      -- 🚀 Auto-Scaffolding Inteligente de Classes, Interfaces e Pacotes Java
+      -- Funciona tanto ao criar via :e quanto via Neo-tree (onde o arquivo é criado vazio no disco)
+      vim.api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
         pattern = "*.java",
         callback = function(args)
+          -- Apenas preenche se o buffer estiver completamente vazio
+          local existing_lines = vim.api.nvim_buf_get_lines(args.buf, 0, -1, false)
+          local is_empty = #existing_lines == 0 or (#existing_lines == 1 and existing_lines[1] == "")
+          if not is_empty then
+            return
+          end
+
           local filepath = vim.fs.normalize(args.file)
           local filename = vim.fs.basename(filepath)
           local classname = filename:match("^([%w_]+)%.java$")
@@ -69,7 +100,9 @@ return {
             cursor_line = 4
           end
 
-          table.insert(lines, "public class " .. classname .. " {")
+          -- Se for *Repository, define automaticamente como interface (Spring Data)
+          local type_kw = classname:match("Repository$") and "interface" or "class"
+          table.insert(lines, "public " .. type_kw .. " " .. classname .. " {")
           table.insert(lines, "  ")
           table.insert(lines, "}")
           table.insert(lines, "")
