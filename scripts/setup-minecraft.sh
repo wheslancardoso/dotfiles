@@ -28,12 +28,16 @@ echo -e "${BOLD}================================================================
 echo -e "${BOLD}🚀 PROVISIONANDO INSTÂNCIA MINECRAFT MAPA ETERNO (FABRIC 1.20.1)${NC}"
 echo -e "${BOLD}======================================================================${NC}\n"
 
-# 1. Garante que o Prism Launcher está instalado
-if ! command -v prismlauncher &>/dev/null; then
-    info "Instalando Prism Launcher..."
-    sudo pacman -S --noconfirm prismlauncher
+# 1. Garante que o Prism Launcher com suporte Offline (Cracked/Pinecone) está instalado
+if [ ! -f "/opt/prismlauncher-cracked/PrismLauncher" ]; then
+    info "Instalando Prism Launcher com suporte a Contas Offline nativas..."
+    curl -sSL -o /tmp/prismlauncher-portable.tar.gz "https://github.com/DiegiWG/PrismLauncher-Cracked/releases/download/11.0.3/PrismLauncher-Linux-Qt6-Portable-11.0.3.tar.gz"
+    sudo mkdir -p /opt/prismlauncher-cracked
+    sudo tar -zxvf /tmp/prismlauncher-portable.tar.gz -C /opt/prismlauncher-cracked/ > /dev/null
+    sudo rm -f /opt/prismlauncher-cracked/portable.txt
+    sudo ln -sf /opt/prismlauncher-cracked/PrismLauncher /usr/local/bin/prismlauncher
 fi
-ok "Prism Launcher detectado!"
+ok "Prism Launcher Offline detectado!"
 
 # 2. Cria a árvore de pastas da instância
 info "Criando estrutura da instância em $INSTANCE_DIR..."
