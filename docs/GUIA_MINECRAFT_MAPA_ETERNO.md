@@ -437,12 +437,12 @@ Deixamos um **acervo de 20 projetos industriais e estéticos prontos** dentro da
      ```bash
      prismlauncher
      ```
-2. **Configure seu Perfil de Jogador (1º acesso):**
-   * No canto superior direito, clique em **Contas $\rightarrow$ Gerenciar Contas $\rightarrow$ Adicionar Offline**.
-   * Digite o seu nome / nickname desejado.
+2. **Conta Offline Já Configurada (Sem Conta Microsoft!):**
+   * Nós já pré-configuramos uma conta offline chamada **`Jogador`** vinculada diretamente à sua instância!
+   * Caso queira trocar seu nickname para qualquer outro nome, basta ir no canto superior direito em **Contas $\rightarrow$ Gerenciar Contas $\rightarrow$ Adicionar Offline** e digitar seu nick favorito.
 3. **Inicie o Jogo:**
    * Dê dois cliques na instância **Mapa Eterno (Fabric 1.20.1)**.
-   * O jogo carregará todos os 111 mods, shaders e schematics automaticamente.
+   * O jogo carregará todos os 113 mods, shaders e schematics automaticamente sem pedir login da Microsoft!
 4. **Crie seu Mundo:**
    * Vá em **Um Jogador $\rightarrow$ Criar Novo Mundo**.
    * Escolha o modo Sobrevivência e bom jogo!

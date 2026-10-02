@@ -39,7 +39,39 @@ ok "Prism Launcher detectado!"
 info "Criando estrutura da instância em $INSTANCE_DIR..."
 mkdir -p "$MODS_DIR" "$SHADERS_DIR" "$INSTANCE_DIR/.minecraft/config"
 
-# 3. Cria o arquivo de manifesto da instância (instance.cfg)
+# 3. Cria a conta Offline padrão no Prism Launcher (Zero necessidade de conta Microsoft)
+cat << 'ACC_EOF' > "$PRISM_DIR/accounts.json"
+{
+    "accounts": [
+        {
+            "entitlement": {
+                "canPlayMinecraft": true,
+                "ownsMinecraft": true
+            },
+            "profile": {
+                "capes": [],
+                "id": "00000000-0000-0000-0000-000000000001",
+                "name": "Jogador",
+                "skin": {
+                    "id": "",
+                    "url": "",
+                    "variant": "classic"
+                }
+            },
+            "type": "Offline",
+            "ygg": {
+                "extra": {},
+                "iat": 0,
+                "token": ""
+            }
+        }
+    ],
+    "formatVersion": 3
+}
+ACC_EOF
+ok "Perfil Offline configurado com sucesso!"
+
+# 4. Cria o arquivo de manifesto da instância (instance.cfg)
 cat << 'CFG_EOF' > "$INSTANCE_DIR/instance.cfg"
 InstanceType=OneSix
 IntendedVersion=1.20.1
@@ -55,6 +87,7 @@ JvmArgs=-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+U
 iconKey=creeper
 name=Mapa Eterno (Fabric 1.20.1)
 notes=Instância de alta performance com shaders Complementary Reimagined e mods anti-atrito (Mochilas, Vein Miner, Tree Chopper, Carry On, Waystones, Iluminação Dinâmica).
+lastUsedAccount=00000000-0000-0000-0000-000000000001
 CFG_EOF
 
 # 4. Configura os componentes da instância (mmc-pack.json)
