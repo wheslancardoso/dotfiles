@@ -3,14 +3,14 @@
 > **Launcher Canônico:** Prism Launcher (Nativo CachyOS/Arch com suporte a contas offline)  
 > **Hardware de Referência:** AMD Ryzen 7 5700X (8C/16T) • NVIDIA GeForce RTX 5060 (8 GB RAM alocados na JVM)  
 > **Script de Automação:** `~/dotfiles/scripts/setup-minecraft.sh`  
-> **Total de Mods Instalados e Auditados:** 106 Mods Especializados
+> **Total de Mods Instalados e Auditados:** 111 Mods Especializados
 
 ---
 
 ## 🎯 ÍNDICE GERAL
 1. [Filosofia do Setup: Zero Atrito, Zero Traumas](#-1-filosofia-do-setup-zero-atrito-zero-traumas)
 2. [Guia de Utilização das Armas Anti-Atrito & Controles](#-2-guia-de-utilização-das-armas-anti-atrito--controles)
-3. [Catálogo Completo dos 106 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-106-mods)
+3. [Catálogo Completo dos 111 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-111-mods)
 4. [Shaderpack Complementary Reimagined & Motor Gráfico](#-4-shaderpack-complementary-reimagined--motor-gráfico)
 5. [Passo a Passo: Como Iniciar e Jogar Hoje](#-5-passo-a-passo-como-iniciar-e-jogar-hoje)
 6. [Manutenção, Backup & Reprodutibilidade no Dotfiles](#-6-manutenção-backup--reprodutibilidade-no-dotfiles)
@@ -34,6 +34,9 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 
 | Ação Desejada | Mod Responsável | Como Executar no Teclado / Jogo |
 | :--- | :--- | :--- |
+| **Projeções Holográficas 3D de Construções**| `Litematica` | Pressione a tecla **`M`** para abrir o menu do Litematica (ou consulte *Load Schematics*). Carregue qualquer projeto `.litematic` da pasta `schematics/` e posicione o holograma translúcido no seu mundo para construir sem errar blocos de redstone! |
+| **Drenar Oceanos com Esponjas Conectadas**| `Bigger Sponge Radius` | Coloque **várias esponjas lado a lado**: cada bloco adjacente multiplica o raio de sucção, permitindo secar monumentos oceânicos e rios em minutos! |
+| **Recolher Andaimes de Bambu no Pé** | `Scaffolding Drops Nearby` | Quebre o bloco da base da sua torre de andaimes: **todos os blocos caem juntos aos seus pés instantaneamente**, sem voar pelo cenário. |
 | **Fusão Instantânea de XP Anti-Lag** | `Clumps` | **Passivo/Automático:** Em mob traps, farms de enderman ou ao derrotar chefes, centenas de orbes de XP são **fundidos instantaneamente em um único orbe gigante**. Você coleta 30 níveis em 1 segundo com 0% de lag de processador! |
 | **Acústica e Eco Realista de Cavernas** | `Sound Physics` | **Passivo/Automático:** Sons de passos, monstros e água ecoam e reverberam realisticamente de acordo com o tamanho da caverna, sendo abafados por paredes espessas de pedra. |
 | **Abrir Portas e Portões Duplos com 1 Clique**| `Double Doors` | **Passivo/Automático:** Ao clicar com o botão direito em qualquer porta dupla de castelo/casa ou portão duplo de cerca, **ambos os lados abrem ou fecham simultaneamente**! Chega de ter que clicar duas vezes para passar correndo. |
@@ -89,9 +92,9 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 
 ---
 
-## 📚 3. CATÁLOGO COMPLETO DOS 106 MODS INSTALADOS
+## 📚 3. CATÁLOGO COMPLETO DOS 111 MODS INSTALADOS
 
-Abaixo está o registro exato de todos os 106 arquivos `.jar` presentes na pasta `.minecraft/mods/` da instância:
+Abaixo está o registro exato de todos os 111 arquivos `.jar` presentes na pasta `.minecraft/mods/` da instância:
 
 ### Grupo A: Eliminação de Dores & Traumas Clássicos (Pain Killers)
 1. **`gravelminer-fabric-1.20-16.0.4.jar` (GravelMiner):**  
@@ -347,6 +350,18 @@ Abaixo está o registro exato de todos os 106 arquivos `.jar` presentes na pasta
      *Áudio de cinema espacial.* Calcula em tempo real o eco e a reverberação de sons em cavernas profundas, o abafamento realista de passos de monstros atrás de paredes de pedra e a propagação dinâmica do som de acordo com a geometria do ambiente.
 107. **`notenoughanimations-fabric-1.12.6-mc1.20.1.jar` (Not Enough Animations - Animações Corporais Realistas):**  
      *Fim dos movimentos robóticos.* Traz animações suaves de primeira pessoa para a visão de terceira pessoa e interface do inventário: comer com as duas mãos, remar botes com braçadas naturais, segurar mapas abertos e transições corporais orgânicas.
+
+### Grupo W: Mega Engenharia, Hologramas 3D & Drenagem Rápida de Oceanos
+108. **`litematica-fabric-1.20.1-0.15.4.jar` (Litematica - Hologramas 3D de Blueprints):**  
+     *A ferramenta suprema de arquitetura.* Permite carregar arquivos `.litematic` da pasta `schematics/` e projetar um holograma translúcido em 3D da construção no seu mundo de sobrevivência. Mostra a posição exata de cada bloco e circuito de redstone, avisa blocos colocados errados e faz a contagem total de materiais necessários na sua mochila.
+109. **`biggerspongeabsorptionradius-1.20.1-3.7.jar` (Bigger Sponge Absorption Radius):**  
+     *Drenagem em massa de monumentos aquáticos.* No Vanilla, esponjas secam um raio minúsculo. Com este mod, conectar várias esponjas lado a lado multiplica o raio de sucção de água em cadeia, permitindo secar oceanos inteiros e abrir crateras de farms em poucos minutos.
+110. **`scaffoldingdropsnearby-1.20.1-3.4.jar` (Scaffolding Drops Nearby - Andaimes de Bambu Perfeitos):**  
+     *Fim do bambu espalhado no oceano.* Ao quebrar o bloco da base de uma torre alta de andaimes, todos os blocos de bambu caem agrupados diretamente aos pés do seu personagem, sem voar pelo mapa ou afundar na água.
+111. **`betterconduitplacement-1.20.1-3.4.jar` (Better Conduit Placement):**  
+     *Alinhamento perfeito de canalizadores.* Permite posicionar o Canalizador (Conduit) diretamente na frente do bloco e centralizar a moldura de prismarinho sem precisar de blocos de apoio temporários.
+112. **`conduitspreventdrowned-1.20.1-3.9.jar` (Conduits Prevent Drowned - Blindagem Aquática):**  
+     *Paz absoluta nas obras do mar.* Enquanto o Canalizador estiver ativo no monumento ou base submarina, zumbis afogados com tridentes são impedidos de spawnar no raio de ação, permitindo trabalhar e construir em paz.
 
 ---
 

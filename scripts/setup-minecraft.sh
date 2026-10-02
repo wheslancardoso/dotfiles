@@ -235,7 +235,13 @@ mods_to_download = [
     # Anti-Lag de XP, Acústica 3D Realista & Animações Naturais
     "clumps",                      # Agrupa orbes de XP em um único bloco, eliminando 100% do lag em farms massivas
     "sound-physics-remastered",    # Física sonora realista com eco e reverberação em cavernas e absorção por paredes
-    "not-enough-animations"        # Animações corporais fluidas e realistas em terceira pessoa (comer, remar, mapas)
+    "not-enough-animations",       # Animações corporais fluidas e realistas em terceira pessoa (comer, remar, mapas)
+    # Engenharia de Mega Farms, Drenagem de Oceanos & Hologramas 3D
+    "litematica",                  # Projeta hologramas 3D de farms e construções diretamente no mundo de sobrevivência
+    "bigger-sponge-absorption-radius", # Multiplica o raio de absorção de água conectando esponjas em massa para drenar monumentos
+    "scaffolding-drops-nearby",    # Faz toda a torre de andaimes de bambu cair aos seus pés ao quebrar a base
+    "better-conduit-placement",    # Posiciona e alinha o Canalizador do oceano com perfeição sem blocos temporários
+    "conduits-prevent-drowned"     # Impede o spawn de afogados arremessando tridentes perto do canalizador
 ]
 
 for slug in mods_to_download:
