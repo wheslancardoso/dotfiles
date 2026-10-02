@@ -126,10 +126,10 @@ cat << 'PACK_EOF' > "$INSTANCE_DIR/mmc-pack.json"
                     "uid": "net.fabricmc.intermediary"
                 }
             ],
-            "cachedVersion": "0.16.10",
+            "cachedVersion": "0.19.5",
             "important": true,
             "uid": "net.fabricmc.fabric-loader",
-            "version": "0.16.10"
+            "version": "0.19.5"
         }
     ],
     "formatVersion": 1
@@ -259,7 +259,7 @@ mods_to_download = [
     "better-flight",          # Voo de Elytra sem precisar de foguetes: aperte Espaço durante o voo para bater as asas e ganhar impulso!
     "clear-water",            # Remove a névoa escura e turva debaixo d'água, deixando rios e oceanos cristalinos
     # Troca Inteligente de Ferramenta, Decomposição Rápida de Folhas & Imersão
-    "autoswitch",             # Troca automaticamente para a ferramenta certa ao mirar e bater no bloco (picareta, pá, machado ou espada)
+    # "autoswitch" removed             # Troca automaticamente para a ferramenta certa ao mirar e bater no bloco (picareta, pá, machado ou espada)
     "accelerated-decay",      # Decomposição quase instantânea de folhas após derrubar árvores (chuva rápida de maçãs e mudas)
     "eating-animation",       # Animações visuais detalhadas de mastigação e consumo para todas as comidas do jogo
     # Atração Magnética de Itens Caídos ao Redor

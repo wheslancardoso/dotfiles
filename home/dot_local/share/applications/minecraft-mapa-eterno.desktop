@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Minecraft (Mapa Eterno 1.20.1)
+Comment=Minecraft 1.20.1 Fabric Mapa Eterno com 112 Mods & Shaders
+Exec=/home/lan/.local/share/PrismLauncher/instances/Mapa_Eterno_1.20.1/iniciar.sh
+Icon=minecraft
+Terminal=false
+Type=Application
+Categories=Game;
+StartupWMClass=Minecraft* 1.20.1
