@@ -12,8 +12,9 @@
 2. [Guia de Utilização das Armas Anti-Atrito & Controles](#-2-guia-de-utilização-das-armas-anti-atrito--controles)
 3. [Catálogo Completo dos 111 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-111-mods)
 4. [Shaderpack Complementary Reimagined & Motor Gráfico](#-4-shaderpack-complementary-reimagined--motor-gráfico)
-5. [Passo a Passo: Como Iniciar e Jogar Hoje](#-5-passo-a-passo-como-iniciar-e-jogar-hoje)
-6. [Manutenção, Backup & Reprodutibilidade no Dotfiles](#-6-manutenção-backup--reprodutibilidade-no-dotfiles)
+5. [Mega Acervo de Schematics (.litematic) Já Instalados](#-5-mega-acervo-de-schematics-litematic-já-instalados)
+6. [Passo a Passo: Como Iniciar e Jogar Hoje](#-6-passo-a-passo-como-iniciar-e-jogar-hoje)
+7. [Manutenção, Backup & Reprodutibilidade no Dotfiles](#-7-manutenção-backup--reprodutibilidade-no-dotfiles)
 
 ---
 
@@ -391,7 +392,37 @@ A instância já vem com `options.txt` e `sodium-options.json` configurados ciru
 
 ---
 
-## 🚀 5. PASSO A PASSO: COMO INICIAR E JOGAR HOJE
+## 📐 5. MEGA ACERVO DE SCHEMATICS (.LITEMATIC) JÁ INSTALADOS
+
+Deixamos um **acervo de 20 projetos industriais e estéticos prontos** dentro da pasta `.minecraft/schematics/`, permitindo projetar hologramas e construir as farms mais eficientes do jogo sem erro:
+
+| Projeto (.litematic) | Categoria | Finalidade no "Mapa Eterno" |
+| :--- | :--- | :--- |
+| **`giant iron farm`** | Farm Industrial | Mega farm de ferro com aldeões e zumbi para gerar milhares de barras de ferro por hora. |
+| **`no water iron farm`** | Farm Compacta | Farm de ferro sem mecânica de correntes de água, ideal para montar dentro de montanhas ou subsolos. |
+| **`gold farm`** | Farm do Nether | Farm de ouro e pepitas no teto do Nether com Piglins zumbificados caindo em funis. |
+| **`wither skeleton farm`** | Farm do Nether | Construção otimizada para fortalezas do Nether para coletar carvão, ossos e cabeças de Wither. |
+| **`raid farm`** | Farm de Esmeraldas | Farm de invasão de Illagers para acumular esmeraldas, totens da imortalidade e poções infinitas. |
+| **`sea lantern farm`** | Farm Aquática | Farm construída dentro da cratera do Monumento do Oceano drenada para farmar lanternas do mar e prismarinho. |
+| **`witch farm`** | Farm de Redstone | Farm na cabana da bruxa para gerar redstone, pólvora, glowstone e açúcar automáticos. |
+| **`Super smelter`** | Automação Base | Fornalha industrial gigantesca com distribuição uniforme de minérios e combustível em carrinhos. |
+| **`bamboo farm`** | Farm de Recursos | Fazenda automática com observadores e pistões para gerar combustível infinito de fornalha. |
+| **`tree farm`** | Farm de Madeira | Farm automática de toras de madeira com dispensador de farinha de osso e empurrador de pistões. |
+| **`bartering farm`** | Farm de Trocas | Sistema de troca rápida com Piglins usando ouro para obter pérolas do End, quartzo e poções de fogo. |
+| **`brewing farm`** | Alquimia | Suporte de poções automatizado com botões seletores para preparar qualquer poção com 1 clique. |
+| **`stone farm`** | Recursos | Gerador de pedra lisa compacta usando lava, água e picareta rápida. |
+| **`cobblestone farm`** | Recursos | Gerador de pedregulho contínuo para obras e murralhas. |
+| **`Spawner farm module`** | Mob Trap | Módulo padrão para converter qualquer gaiola (spawner) de zumbi/aranha/esqueleto em farm de XP. |
+| **`Machine à bouffe`** | Agricultura | Cozinha e alimentador automático de animais para produção em massa de carnes e couro. |
+| **`Elytra Launcher`** | Mobilidade | Lançador de alta velocidade com pistões/slime para decolar de Elytra até a estratosfera sem gastar impulso. |
+| **`Ender Base`** | Arquitetura | Mega base futurista/mística desenhada para ser construída no vazio do End. |
+| **`Copper Golem géant`** | Estátua Decorativa | Monumento colossal de Golem de Cobre para decorar a praça central da sua vila. |
+
+> **Como usar:** No jogo, pressione a tecla **`M`** $\rightarrow$ **`Load Schematics`** $\rightarrow$ Escolha o projeto e clique em **`Create Placement`**!
+
+---
+
+## 🚀 6. PASSO A PASSO: COMO INICIAR E JOGAR HOJE
 
 1. **Abra o Prism Launcher:**
    * Pelo atalho de aplicativos do Hyprland (Rofi/Wofi: pressione `SUPER + SPACE` e busque por `Prism Launcher`), ou digite no terminal:
@@ -403,14 +434,14 @@ A instância já vem com `options.txt` e `sodium-options.json` configurados ciru
    * Digite o seu nome / nickname desejado.
 3. **Inicie o Jogo:**
    * Dê dois cliques na instância **Mapa Eterno (Fabric 1.20.1)**.
-   * O jogo carregará todos os 40 mods e os shaders automaticamente.
+   * O jogo carregará todos os 111 mods, shaders e schematics automaticamente.
 4. **Crie seu Mundo:**
    * Vá em **Um Jogador $\rightarrow$ Criar Novo Mundo**.
    * Escolha o modo Sobrevivência e bom jogo!
 
 ---
 
-## 🔄 6. MANUTENÇÃO, BACKUP & REPRODUTIBILIDADE NO DOTFILES
+## 🔄 7. MANUTENÇÃO, BACKUP & REPRODUTIBILIDADE NO DOTFILES
 
 Se você formatar a máquina ou clonar seus dotfiles em outro computador, você não precisa configurar nada manualmente:
 
