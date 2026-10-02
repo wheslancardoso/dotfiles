@@ -134,7 +134,26 @@ return {
           end
 
           -- Imports & Ações Rápidas
-          map("n", "<leader>jo", function() jdtls.organize_imports() end, "Organizar Imports (Shift+Alt+O)")
+          map("n", "<leader>jo", function()
+            local client = vim.lsp.get_clients({ bufnr = args.buf, name = "jdtls" })[1]
+            if not client then
+              jdtls.organize_imports()
+              return
+            end
+            local params = { textDocument = { uri = vim.uri_from_bufnr(args.buf) } }
+            client:request("java/organizeImports", params, function(err, resp)
+              if err then
+                vim.notify("Erro ao organizar imports: " .. (err.message or tostring(err)), vim.log.levels.ERROR)
+                return
+              end
+              if resp and (resp.changes or resp.documentChanges) then
+                vim.lsp.util.apply_workspace_edit(resp, client.offset_encoding or "utf-16")
+                vim.notify("✅ Imports organizados com sucesso!", vim.log.levels.INFO)
+              else
+                vim.notify("ℹ️ Nenhum import pendente.", vim.log.levels.INFO)
+              end
+            end, args.buf)
+          end, "Organizar Imports (Shift+Alt+O)")
           map("n", "<leader>ca", vim.lsp.buf.code_action, "Code Actions / Quick Fix (Mover pacote, etc)")
 
           -- Geração de Código estilo IntelliJ (Alt+Insert)
