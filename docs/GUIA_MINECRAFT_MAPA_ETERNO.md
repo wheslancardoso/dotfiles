@@ -3,14 +3,14 @@
 > **Launcher Canônico:** Prism Launcher (Nativo CachyOS/Arch com suporte a contas offline)  
 > **Hardware de Referência:** AMD Ryzen 7 5700X (8C/16T) • NVIDIA GeForce RTX 5060 (8 GB RAM alocados na JVM)  
 > **Script de Automação:** `~/dotfiles/scripts/setup-minecraft.sh`  
-> **Total de Mods Instalados e Auditados:** 111 Mods Especializados
+> **Total de Mods Instalados e Auditados:** 113 Mods Especializados
 
 ---
 
 ## 🎯 ÍNDICE GERAL
 1. [Filosofia do Setup: Zero Atrito, Zero Traumas](#-1-filosofia-do-setup-zero-atrito-zero-traumas)
 2. [Guia de Utilização das Armas Anti-Atrito & Controles](#-2-guia-de-utilização-das-armas-anti-atrito--controles)
-3. [Catálogo Completo dos 111 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-111-mods)
+3. [Catálogo Completo dos 113 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-113-mods)
 4. [Shaderpack Complementary Reimagined & Motor Gráfico](#-4-shaderpack-complementary-reimagined--motor-gráfico)
 5. [Mega Acervo de Schematics (.litematic) Já Instalados](#-5-mega-acervo-de-schematics-litematic-já-instalados)
 6. [Passo a Passo: Como Iniciar e Jogar Hoje](#-6-passo-a-passo-como-iniciar-e-jogar-hoje)
@@ -35,6 +35,8 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 
 | Ação Desejada | Mod Responsável | Como Executar no Teclado / Jogo |
 | :--- | :--- | :--- |
+| **Contratar e Armar Guardas Aldeões** | `Guard Villagers` | Dê **Shift + Botão Direito com uma Espada ou Arco na mão em qualquer Aldeão desempregado**: ele vira um **Guarda da Vila** equipado que patrulha as ruas, ataca zumbis e protege suas construções dia e noite! |
+| **Identificar Aldeões por Nome Próprio** | `Villager Names` | **Passivo/Automático:** Olhe para qualquer aldeão: uma etiqueta flutuante sutil exibe seu nome único gerado (ex: *Alexander, o Bibliotecário*), acabando com aldeões genéricos e tornando a vila viva. |
 | **Projeções Holográficas 3D de Construções**| `Litematica` | Pressione a tecla **`M`** para abrir o menu do Litematica (ou consulte *Load Schematics*). Carregue qualquer projeto `.litematic` da pasta `schematics/` e posicione o holograma translúcido no seu mundo para construir sem errar blocos de redstone! |
 | **Drenar Oceanos com Esponjas Conectadas**| `Bigger Sponge Radius` | Coloque **várias esponjas lado a lado**: cada bloco adjacente multiplica o raio de sucção, permitindo secar monumentos oceânicos e rios em minutos! |
 | **Recolher Andaimes de Bambu no Pé** | `Scaffolding Drops Nearby` | Quebre o bloco da base da sua torre de andaimes: **todos os blocos caem juntos aos seus pés instantaneamente**, sem voar pelo cenário. |
@@ -93,9 +95,9 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 
 ---
 
-## 📚 3. CATÁLOGO COMPLETO DOS 111 MODS INSTALADOS
+## 📚 3. CATÁLOGO COMPLETO DOS 113 MODS INSTALADOS
 
-Abaixo está o registro exato de todos os 111 arquivos `.jar` presentes na pasta `.minecraft/mods/` da instância:
+Abaixo está o registro exato de todos os 113 arquivos `.jar` presentes na pasta `.minecraft/mods/` da instância:
 
 ### Grupo A: Eliminação de Dores & Traumas Clássicos (Pain Killers)
 1. **`gravelminer-fabric-1.20-16.0.4.jar` (GravelMiner):**  
@@ -363,6 +365,12 @@ Abaixo está o registro exato de todos os 111 arquivos `.jar` presentes na pasta
      *Alinhamento perfeito de canalizadores.* Permite posicionar o Canalizador (Conduit) diretamente na frente do bloco e centralizar a moldura de prismarinho sem precisar de blocos de apoio temporários.
 112. **`conduitspreventdrowned-1.20.1-3.9.jar` (Conduits Prevent Drowned - Blindagem Aquática):**  
      *Paz absoluta nas obras do mar.* Enquanto o Canalizador estiver ativo no monumento ou base submarina, zumbis afogados com tridentes são impedidos de spawnar no raio de ação, permitindo trabalhar e construir em paz.
+
+### Grupo X: Vilas Vivas, Identidade & Exército de Guardas
+113. **`villagernames-1.20.1-8.7.jar` (Villager Names - Identidade Própria):**  
+     *Adeus aldeões anônimos.* Atribui nomes reais e únicos a cada aldeão (ex: *Julian, o Ferreiro*, *Matilda, a Fazendeira*). Torna o convívio na sua vila pessoal, imersivo e orgânico.
+114. **`guardvillagers-2.0.9-1.20.1.jar` (Guard Villagers - Defesa Civil e Exército da Base):**  
+     *Proteção ativa dia e noite.* Permite recrutar aldeões desempregados entregando espadas ou arcos (`Shift + Botão Direito`) para transformá-los em **Guardas Oficiais da Vila**! Eles patrulham as ruas da sua base, abatem zumbis, esqueletos e creepers, e podem até seguir você para ajudar a limpar fortalezas e dungeons!
 
 ---
 

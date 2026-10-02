@@ -241,7 +241,10 @@ mods_to_download = [
     "bigger-sponge-absorption-radius", # Multiplica o raio de absorção de água conectando esponjas em massa para drenar monumentos
     "scaffolding-drops-nearby",    # Faz toda a torre de andaimes de bambu cair aos seus pés ao quebrar a base
     "better-conduit-placement",    # Posiciona e alinha o Canalizador do oceano com perfeição sem blocos temporários
-    "conduits-prevent-drowned"     # Impede o spawn de afogados arremessando tridentes perto do canalizador
+    "conduits-prevent-drowned",    # Impede o spawn de afogados arremessando tridentes perto do canalizador
+    # Vilas Vivas, Nomes Únicos & Guardas Aldeões
+    "villager-names-serilum",      # Dá nomes próprios únicos a cada aldeão (ex: Arthur, Elena) tornando a vila viva
+    "guard-villagers-(fabricquilt)" # Permite contratar aldeões guardas armados com espadas e arcos para patrulhar suas ruas
 ]
 
 for slug in mods_to_download:
