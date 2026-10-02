@@ -42,4 +42,31 @@ return {
       },
     },
   },
+
+  -- ⚔️ Git Conflict: Resolução instantânea de merge conflicts sem mouse e com supressão de erros de sintaxe
+  {
+    "akinsho/git-conflict.nvim",
+    version = "*",
+    event = { "BufReadPre", "BufNewFile" },
+    opts = {
+      default_mappings = true, -- Ativa: co (ours), ct (theirs), cb (both), c0 (none), ]x (next), [x (prev)
+      default_commands = true,
+      disable_diagnostics = true, -- Silencia erros de LSP no bloco conflitante para visualização limpa
+      list_opener = "copen",
+      highlights = {
+        incoming = "DiffAdd",
+        current = "DiffText",
+      },
+    },
+    keys = {
+      { "<leader>gmo", "<cmd>GitConflictChooseOurs<cr>", desc = "Escolher Nosso (Current/Ours) [co]" },
+      { "<leader>gmt", "<cmd>GitConflictChooseTheirs<cr>", desc = "Escolher Deles (Incoming/Theirs) [ct]" },
+      { "<leader>gmb", "<cmd>GitConflictChooseBoth<cr>", desc = "Manter Ambos (Both) [cb]" },
+      { "<leader>gm0", "<cmd>GitConflictChooseNone<cr>", desc = "Descartar Ambos (None) [c0]" },
+      { "<leader>gmn", "<cmd>GitConflictNextConflict<cr>", desc = "Próximo Conflito (]x)" },
+      { "<leader>gmp", "<cmd>GitConflictPrevConflict<cr>", desc = "Conflito Anterior ([x)" },
+      { "<leader>gml", "<cmd>GitConflictListQf<cr>", desc = "Listar Conflitos no Projeto (Quickfix)" },
+      { "<leader>gmd", "<cmd>DiffviewOpen<cr>", desc = "Abrir 3-Way Diffview Merge Tool" },
+    },
+  },
 }
