@@ -71,4 +71,24 @@ return {
       },
     },
   },
+
+  -- 🔇 Noice: Silencia popups repetitivos de "Validating..." e progresso em segundo plano do JDTLS
+  {
+    "folke/noice.nvim",
+    opts = function(_, opts)
+      opts.routes = opts.routes or {}
+      table.insert(opts.routes, {
+        filter = {
+          event = "lsp",
+          kind = "progress",
+          cond = function(message)
+            local title = vim.tbl_get(message.opts, "progress", "title") or ""
+            local client = vim.tbl_get(message.opts, "progress", "client") or ""
+            return client == "jdtls" or title:find("Validating") ~= nil
+          end,
+        },
+        opts = { skip = true },
+      })
+    end,
+  },
 }
