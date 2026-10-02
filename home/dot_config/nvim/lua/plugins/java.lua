@@ -144,6 +144,27 @@ return {
           map("n", "<leader>jgs", function() generate("source.generate.toString") end, "Gerar toString()")
           map("n", "<leader>jge", function() generate("source.generate.hashCodeEquals") end, "Gerar hashCode() & equals()")
 
+          -- Maven / Spring Boot Runners
+          local function run_maven(cmd_args)
+            local root = vim.fs.root(0, { "pom.xml", "mvnw" }) or vim.fn.getcwd()
+            local mvn = vim.fn.filereadable(root .. "/mvnw") == 1 and "./mvnw" or "mvn"
+            local full_cmd = string.format("cd %s && %s %s", vim.fn.shellescape(root), mvn, cmd_args)
+            if Snacks and Snacks.terminal then
+              Snacks.terminal(full_cmd, { cwd = root })
+            else
+              vim.cmd("split | terminal " .. full_cmd)
+            end
+          end
+
+          map("n", "<leader>jmr", function() run_maven("spring-boot:run") end, "Rodar Spring Boot (./mvnw spring-boot:run)")
+          map("n", "<leader>jmc", function() run_maven("compile") end, "Maven Compile (./mvnw compile)")
+          map("n", "<leader>jmt", function() run_maven("test") end, "Maven Test (./mvnw test)")
+          map("n", "<leader>jmb", function() run_maven("clean package -DskipTests") end, "Maven Package (Build Jar)")
+
+          -- Sincronização & Rebuild do JDTLS
+          map("n", "<leader>jC", function() jdtls.compile("full") end, "Recompilar Workspace JDTLS (Full)")
+          map("n", "<leader>ju", function() jdtls.update_project_config() end, "Atualizar Config do pom.xml no JDTLS")
+
           -- Refatoração & Extração
           map("v", "<leader>jrv", function() jdtls.extract_variable(true) end, "Extrair Variável")
           map("n", "<leader>jrv", function() jdtls.extract_variable() end, "Extrair Variável")

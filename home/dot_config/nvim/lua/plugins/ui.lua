@@ -29,6 +29,7 @@ return {
         { "<leader>u", group = "UI / Visual Toggles", icon = "󰔡 " },
         { "<leader>j", group = "Java (JDTLS)", icon = " " },
         { "<leader>jg", group = "Generate (Getters/Construtor)", icon = "󰏫 " },
+        { "<leader>jm", group = "Maven / Spring Boot", icon = "󰔚 " },
         { "<leader>jr", group = "Refactor / Extração", icon = "󰑕 " },
         { "<leader>jt", group = "Test (JUnit)", icon = "󰙨 " },
       },
