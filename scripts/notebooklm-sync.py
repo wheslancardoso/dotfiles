@@ -87,11 +87,40 @@ CLUSTERS = {
         ]
     },
     "Notebook_05_Repertorio_Cultural_e_Ingles.md": {
-        "title": "🎬 CLUSTER 05: REPERTÓRIO CULTURAL, SABEDORIA & MAESTRIA EM INGLÊS",
-        "description": "Filmes, séries, clássicos da literatura, sabedoria perene e imersão/shadowing em inglês de elite.",
+        "title": "🎬 CLUSTER 05: REPERTÓRIO CULTURAL, ARTE & MAESTRIA EM INGLÊS",
+        "description": "Cinema, séries, clássicos da literatura, música, estilo e imersão/shadowing em inglês de elite.",
         "paths": [
-            "08 - Repertório Cultural (Cinema, Séries & Livros de Sabedoria)",
+            "08 - Repertório Cultural (Cinema, Séries & Livros de Sabedoria)/00 - Protocolo MPV Cinema & Music Dojo (Imersao em Ingles & Anki).md",
+            "08 - Repertório Cultural (Cinema, Séries & Livros de Sabedoria)/01 - Filmes de Alto Repertório (Obras-Primas do Cinema).md",
+            "08 - Repertório Cultural (Cinema, Séries & Livros de Sabedoria)/02 - Séries de Elite (Roteiros Densos & Dinâmica Humana).md",
+            "08 - Repertório Cultural (Cinema, Séries & Livros de Sabedoria)/03 - Livros de Sabedoria Humana & Cultura Geral.md",
+            "08 - Repertório Cultural (Cinema, Séries & Livros de Sabedoria)/04 - Games de Alto Repertório (Obras-Primas e Narrativas Imersivas).md",
+            "08 - Repertório Cultural (Cinema, Séries & Livros de Sabedoria)/05 - Música, Hip-Hop & Obras-Primas Sonoras.md",
+            "08 - Repertório Cultural (Cinema, Séries & Livros de Sabedoria)/06 - Estilo, Presença & Identidade Visual.md",
             "09 - Maestria em Inglês de Elite & Imersão Global"
+        ]
+    },
+    "Notebook_08_Sabedoria_Barbara_Timeless_Wisdom.md": {
+        "title": "🌸 CLUSTER 08: SABEDORIA DE BÁRBARA (TIMELESS WISDOM — 360 OBRAS)",
+        "description": "Regulação do sistema nervoso, intuição, dignidade, quietude mental, desapego do ego e sabedoria feminina arquetípica.",
+        "paths": [
+            "08 - Repertório Cultural (Cinema, Séries & Livros de Sabedoria)/07 - Barbara (Timeless Wisdom)",
+            "08 - Repertório Cultural (Cinema, Séries & Livros de Sabedoria)/07 - Compêndio de Sabedoria Prática & Modelos Mentais (Bárbara - Timeless Wisdom).md"
+        ]
+    },
+    "Notebook_09_Sabedoria_Desfigurado_Homem_Rocha.md": {
+        "title": "⚔️ CLUSTER 09: SABEDORIA DO DESFIGURADO (FORJA DO HOMEM ROCHA — 200 OBRAS)",
+        "description": "Têmpera militar, o poder do silêncio, as 48 leis do poder, forja na dor, memento mori e postura soberana perigosa.",
+        "paths": [
+            "08 - Repertório Cultural (Cinema, Séries & Livros de Sabedoria)/08 - Desfigurado (Homem Forjado no Fogo)"
+        ]
+    },
+    "Notebook_10_Sabedoria_Matheus_Ferreira_Homem_Classico.md": {
+        "title": "🛡️ CLUSTER 10: SABEDORIA DE MATHEUS FERREIRA (O HOMEM CLÁSSICO — 170 OBRAS)",
+        "description": "Masculinidade bíblica, fé inabalável, guerra à luxúria/NoFap, treino Full-Body natural, solução do falso magro e honra tradicional.",
+        "paths": [
+            "08 - Repertório Cultural (Cinema, Séries & Livros de Sabedoria)/09 - Matheus Ferreira (O Homem Clássico)",
+            "08 - Repertório Cultural (Cinema, Séries & Livros de Sabedoria)/09 - Compêndio de Sabedoria Prática & Modelos Mentais (Matheus Ferreira - O Homem Clássico).md"
         ]
     },
     "Notebook_06_Prompts_IA_e_Carreira_Wtechapp.md": {
@@ -216,7 +245,7 @@ def sync_to_gdrive():
         return False
 
     cmd = [
-        "rclone", "sync",
+        "rclone", "copy",
         str(OUTPUT_DIR),
         RCLONE_REMOTE,
         "--progress",
