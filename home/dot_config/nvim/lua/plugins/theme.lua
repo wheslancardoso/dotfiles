@@ -39,12 +39,25 @@ return {
         noice = true,
         notify = true,
         semantic_tokens = true,
+        rainbow_delimiters = true,
         snacks = true,
         telescope = true,
         treesitter = true,
         treesitter_context = true,
         which_key = true,
       },
+      custom_highlights = function(colors)
+        return {
+          -- 🎯 Destaque cirúrgico para aspas de strings (" e ') separando da string interna
+          ["@string.delimiter"] = { fg = colors.pink, bold = true },
+          ["@string.escape"] = { fg = colors.red, bold = true },
+          -- 🔍 Destaque de alto contraste para o par de delimitadores sob o cursor (), {}, []
+          MatchParen = { bg = colors.surface2, fg = colors.peach, bold = true, underline = true },
+          -- 📦 Linhas de conexão visual do bloco / escopo ativo (Snacks Chunk)
+          SnacksIndentChunk = { fg = colors.sapphire },
+          SnacksIndentScope = { fg = colors.mauve },
+        }
+      end,
     },
   },
   {

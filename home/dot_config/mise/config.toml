@@ -5,6 +5,7 @@ bun = "latest"
 python = "3.12"
 go = "latest"
 java = "openjdk-17"
+maven = "latest"
 
 [settings]
 experimental = true

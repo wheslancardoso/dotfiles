@@ -92,4 +92,77 @@ return {
       })
     end,
   },
+
+  -- 🌈 Rainbow Delimiters: Colorização hierárquica por profundidade de (), {}, []
+  {
+    "HiPhish/rainbow-delimiters.nvim",
+    submodules = false,
+    event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      local rainbow_delimiters = require("rainbow-delimiters")
+
+      vim.g.rainbow_delimiters = {
+        strategy = {
+          [""] = rainbow_delimiters.strategy["global"],
+          vim = rainbow_delimiters.strategy["local"],
+        },
+        query = {
+          [""] = "rainbow-delimiters",
+          lua = "rainbow-blocks",
+        },
+        priority = {
+          [""] = 110,
+          lua = 210,
+        },
+        highlight = {
+          "RainbowDelimiterRed",
+          "RainbowDelimiterYellow",
+          "RainbowDelimiterBlue",
+          "RainbowDelimiterOrange",
+          "RainbowDelimiterGreen",
+          "RainbowDelimiterViolet",
+          "RainbowDelimiterCyan",
+        },
+      }
+    end,
+  },
+
+  -- 🍿 Snacks Indent: Guias de indentação com escopos visuais em chunk (╭ ─ │ ╰) e animação
+  {
+    "folke/snacks.nvim",
+    opts = {
+      indent = {
+        enabled = true,
+        priority = 1,
+        char = "│",
+        only_scope = false,
+        only_current = false,
+        scope = {
+          enabled = true,
+          priority = 200,
+          char = "│",
+          underline = true, -- sublinha o início do escopo ativo (ex: class, método, if, loop)
+        },
+        chunk = {
+          enabled = true,
+          priority = 200,
+          char = {
+            corner_top = "╭",
+            corner_bottom = "╰",
+            horizontal = "─",
+            vertical = "│",
+            arrow = ">",
+          },
+        },
+        animate = {
+          enabled = vim.fn.has("nvim-0.10") == 1,
+          style = "out",
+          duration = {
+            step = 15,
+            total = 250,
+          },
+        },
+      },
+    },
+  },
 }
