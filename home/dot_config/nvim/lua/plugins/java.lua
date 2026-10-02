@@ -124,15 +124,25 @@ return {
 
           local jdtls = require("jdtls")
 
+          local function generate(kind)
+            vim.lsp.buf.code_action({
+              context = {
+                only = { kind or "source.generate" },
+                diagnostics = {},
+              },
+            })
+          end
+
           -- Imports & Ações Rápidas
           map("n", "<leader>jo", function() jdtls.organize_imports() end, "Organizar Imports (Shift+Alt+O)")
           map("n", "<leader>ca", vim.lsp.buf.code_action, "Code Actions / Quick Fix (Mover pacote, etc)")
 
-          -- Geração de Código
-          map("n", "<leader>jga", function() jdtls.generate_accessor_methods() end, "Gerar Getters & Setters")
-          map("n", "<leader>jgc", function() jdtls.generate_constructor() end, "Gerar Construtor")
-          map("n", "<leader>jgs", function() jdtls.generate_to_string() end, "Gerar toString()")
-          map("n", "<leader>jge", function() jdtls.generate_hash_code_equals() end, "Gerar hashCode() & equals()")
+          -- Geração de Código estilo IntelliJ (Alt+Insert)
+          map("n", "<leader>jg", function() generate("source.generate") end, "Menu de Geração (Alt+Insert)")
+          map("n", "<leader>jga", function() generate("source.generate.accessors") end, "Gerar Getters & Setters")
+          map("n", "<leader>jgc", function() generate("source.generate.constructors") end, "Gerar Construtor")
+          map("n", "<leader>jgs", function() generate("source.generate.toString") end, "Gerar toString()")
+          map("n", "<leader>jge", function() generate("source.generate.hashCodeEquals") end, "Gerar hashCode() & equals()")
 
           -- Refatoração & Extração
           map("v", "<leader>jrv", function() jdtls.extract_variable(true) end, "Extrair Variável")
