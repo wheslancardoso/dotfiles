@@ -27,6 +27,8 @@ return {
         { "<leader>F", group = "Flutter Mobile", icon = " " },
         { "<leader>a", group = "AI Agent (Antigravity)", icon = "󰚩 " },
         { "<leader>u", group = "UI / Visual Toggles", icon = "󰔡 " },
+        { "<leader>j", group = "Java (JDTLS)", icon = " " },
+        { "<leader>jg", group = "Generate (Getters/Constructor)", icon = "󰏫 " },
       },
     },
   },
