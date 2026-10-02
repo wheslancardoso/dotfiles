@@ -164,13 +164,13 @@ return {
     },
   },
 
-  -- 🪆 Mini.Pairs: Auto-fechamento inteligente estilo VS Code (sem travas em strings e escapes)
+  -- 🪆 Mini.Pairs: Auto-fechamento limpo estilo VS Code para "", '', [], {} e ()
   {
     "nvim-mini/mini.pairs",
     opts = {
-      -- Permite fechar {}, [] e () dentro de strings (essencial para JSON, SQL, regex e interpolações)
+      -- Permite que {}, [], (), "" e '' fechem normalmente em qualquer lugar (inclusive dentro de strings)
       skip_ts = {},
-      -- Remove aspas (%" e %') do skip_next para permitir abrir {, [ e ( dentro de strings vazias "" ou ''
+      -- Remove aspas do skip_next para permitir abrir {, [ e ( mesmo encostado em aspas
       skip_next = [=[[%w%%%[%.%`%$]]=],
     },
     config = function(_, opts)
@@ -182,34 +182,24 @@ return {
       local escape = function(s)
         return vim.api.nvim_replace_termcodes(s, true, true, true)
       end
-      local escaped_quote = '\\"'
 
-      -- 1. Digitação inteligente de aspas (abertura de par \" e pulo inteligente)
+      -- 1. Ao digitar aspas após barra invertida (\"), insere as aspas literais sem pular a aspas final da string
       pairs.closeopen = function(pair, neigh_pattern)
         local line = vim.api.nvim_get_current_line()
         local cursor = vim.api.nvim_win_get_cursor(0)
         local col = cursor[2]
         local line_before = line:sub(1, col)
-        local line_after = line:sub(col + 1)
-
-        -- Se o cursor estiver imediatamente antes de uma aspas escapada (\"), digitar aspas pula sobre ela
-        if line_after:sub(1, 2) == escaped_quote then
-          return escape("<Right><Right>")
-        end
-
-        -- Se precedido por uma barra invertida (\), estamos criando uma aspas escapada
         local backslashes = line_before:match("\\+$")
         local is_escaped = backslashes and (#backslashes % 2 == 1)
 
         if is_escaped then
-          -- Cria o par de aspas escapadas (\"...\") e posiciona o cursor no meio
-          return '"\\"' .. escape("<Left><Left>")
+          return pair:sub(1, 1)
         end
 
         return orig_closeopen(pair, neigh_pattern)
       end
 
-      -- 2. Backspace inteligente (proteção contra deletar a aspas de fechamento da string principal)
+      -- 2. Backspace limpo: não deleta a aspas de fechamento da string se o caractere apagado for escapado (\")
       pairs.bs = function(key)
         local line = vim.api.nvim_get_current_line()
         local cursor = vim.api.nvim_win_get_cursor(0)
@@ -217,15 +207,8 @@ return {
         local line_before = line:sub(1, col)
         local line_after = line:sub(col + 1)
 
-        -- Caso A: Cursor exatamente entre um par de aspas escapadas vazio: \"|\"
-        -- Apaga o par inteiro de uma vez!
-        if line_before:sub(-2) == escaped_quote and line_after:sub(1, 2) == escaped_quote then
-          return escape("<BS><BS><Del><Del>")
-        end
-
-        -- Caso B: Cursor imediatamente antes da aspas que fecha a string do Java (ex: \"|")
-        -- A aspas da esquerda é escapada, mas a da direita é a que fecha a string toda.
-        -- O mini.pairs padrão deletaria a da direita com <Del>. Protegemos para deletar apenas a da esquerda!
+        -- Se a aspas à esquerda for escapada (\"), ela não faz par com a aspas da direita.
+        -- Deleta apenas a aspas da esquerda sem comer a da direita!
         if line_before:sub(-1) == '"' and line_after:sub(1, 1) == '"' then
           local before_slice = line_before:sub(1, -2)
           local backslashes = before_slice:match("\\+$")
