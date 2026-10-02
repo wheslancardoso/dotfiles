@@ -231,7 +231,11 @@ mods_to_download = [
     "simple-magnets",              # Ímãs magnéticos que puxam itens caídos e XP num raio de até 11 blocos
     # Abertura Simultânea de Portas Duplas e Portões
     "collective",                  # Biblioteca base essencial para automações de blocos duplos
-    "double-doors"                 # Abre e fecha ambas as folhas de portas duplas e portões com 1 clique
+    "double-doors",                # Abre e fecha ambas as folhas de portas duplas e portões com 1 clique
+    # Anti-Lag de XP, Acústica 3D Realista & Animações Naturais
+    "clumps",                      # Agrupa orbes de XP em um único bloco, eliminando 100% do lag em farms massivas
+    "sound-physics-remastered",    # Física sonora realista com eco e reverberação em cavernas e absorção por paredes
+    "not-enough-animations"        # Animações corporais fluidas e realistas em terceira pessoa (comer, remar, mapas)
 ]
 
 for slug in mods_to_download:

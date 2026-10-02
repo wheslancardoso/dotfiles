@@ -3,14 +3,14 @@
 > **Launcher Canônico:** Prism Launcher (Nativo CachyOS/Arch com suporte a contas offline)  
 > **Hardware de Referência:** AMD Ryzen 7 5700X (8C/16T) • NVIDIA GeForce RTX 5060 (8 GB RAM alocados na JVM)  
 > **Script de Automação:** `~/dotfiles/scripts/setup-minecraft.sh`  
-> **Total de Mods Instalados e Auditados:** 104 Mods Especializados
+> **Total de Mods Instalados e Auditados:** 106 Mods Especializados
 
 ---
 
 ## 🎯 ÍNDICE GERAL
 1. [Filosofia do Setup: Zero Atrito, Zero Traumas](#-1-filosofia-do-setup-zero-atrito-zero-traumas)
 2. [Guia de Utilização das Armas Anti-Atrito & Controles](#-2-guia-de-utilização-das-armas-anti-atrito--controles)
-3. [Catálogo Completo dos 104 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-104-mods)
+3. [Catálogo Completo dos 106 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-106-mods)
 4. [Shaderpack Complementary Reimagined & Motor Gráfico](#-4-shaderpack-complementary-reimagined--motor-gráfico)
 5. [Passo a Passo: Como Iniciar e Jogar Hoje](#-5-passo-a-passo-como-iniciar-e-jogar-hoje)
 6. [Manutenção, Backup & Reprodutibilidade no Dotfiles](#-6-manutenção-backup--reprodutibilidade-no-dotfiles)
@@ -34,6 +34,8 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 
 | Ação Desejada | Mod Responsável | Como Executar no Teclado / Jogo |
 | :--- | :--- | :--- |
+| **Fusão Instantânea de XP Anti-Lag** | `Clumps` | **Passivo/Automático:** Em mob traps, farms de enderman ou ao derrotar chefes, centenas de orbes de XP são **fundidos instantaneamente em um único orbe gigante**. Você coleta 30 níveis em 1 segundo com 0% de lag de processador! |
+| **Acústica e Eco Realista de Cavernas** | `Sound Physics` | **Passivo/Automático:** Sons de passos, monstros e água ecoam e reverberam realisticamente de acordo com o tamanho da caverna, sendo abafados por paredes espessas de pedra. |
 | **Abrir Portas e Portões Duplos com 1 Clique**| `Double Doors` | **Passivo/Automático:** Ao clicar com o botão direito em qualquer porta dupla de castelo/casa ou portão duplo de cerca, **ambos os lados abrem ou fecham simultaneamente**! Chega de ter que clicar duas vezes para passar correndo. |
 | **Atrair Itens e XP ao Redor (Ímã Magnético)** | `Simple Magnets` | Segure ou guarde o **Magnet** no inventário/slot de acessório e aperte o botão direito ou a tecla de alternância para ligar: **todos os itens caídos no chão e orbes de XP num raio de até 11 blocos voam direto para o seu bolso**! Permite configurar lista branca/preta com Shift + Botão Direito para não puxar terra/pedra se não quiser. |
 | **Troca Automática de Ferramenta ao Bater** | `AutoSwitch` | **Passivo/Automático:** Mire em pedra, terra ou madeira e comece a quebrar: o jogo **seleciona instantaneamente a ferramenta ideal** da sua hotbar (picareta para pedra, pá para cascalho/terra, machado para troncos, espada para monstros) sem você precisar ficar rodando a roda do mouse ou teclando 1, 2, 3! Ao terminar, volta para o item anterior. |
@@ -87,9 +89,9 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 
 ---
 
-## 📚 3. CATÁLOGO COMPLETO DOS 104 MODS INSTALADOS
+## 📚 3. CATÁLOGO COMPLETO DOS 106 MODS INSTALADOS
 
-Abaixo está o registro exato de todos os 104 arquivos `.jar` presentes na pasta `.minecraft/mods/` da instância:
+Abaixo está o registro exato de todos os 106 arquivos `.jar` presentes na pasta `.minecraft/mods/` da instância:
 
 ### Grupo A: Eliminação de Dores & Traumas Clássicos (Pain Killers)
 1. **`gravelminer-fabric-1.20-16.0.4.jar` (GravelMiner):**  
@@ -337,6 +339,14 @@ Abaixo está o registro exato de todos os 104 arquivos `.jar` presentes na pasta
      *Fim do clique duplo em entradas.* Em castelos, celeiros ou portões duplos de cerca, clicar com o botão direito em uma das folhas abre ou fecha **ambas as portas simultaneamente em perfeita harmonia**, eliminando a necessidade de dar dois cliques toda vez que for passar correndo ou a cavalo.
 104. **`collective-1.20.1-8.40.jar` (Collective):**  
      *Biblioteca base do ecossistema de blocos duplos.* Garante a sincronização de eventos de clique e estados de portas, alçapões e portões sem gerar lag ou bugs de colisão.
+
+### Grupo V: Otimização Extrema de XP, Acústica 3D de Cavernas & Animações Naturais
+105. **`Clumps-fabric-1.20.1-12.0.0.4.jar` (Clumps - Anti-Lag Absoluto de Farms de XP):**  
+     *O fim das quedas de FPS em mob traps.* No jogo original, matar centenas de monstros em farms de XP faz chover centenas de orbes individuais, travando a CPU. O Clumps agrupa instantaneamente todas as entidades de experiência em um único orbe gigante que você absorve em 1 milissegundo com zero lag!
+106. **`sound-physics-remastered-fabric-1.20.1-1.5.1.jar` (Sound Physics Remastered - Física Acústica 3D):**  
+     *Áudio de cinema espacial.* Calcula em tempo real o eco e a reverberação de sons em cavernas profundas, o abafamento realista de passos de monstros atrás de paredes de pedra e a propagação dinâmica do som de acordo com a geometria do ambiente.
+107. **`notenoughanimations-fabric-1.12.6-mc1.20.1.jar` (Not Enough Animations - Animações Corporais Realistas):**  
+     *Fim dos movimentos robóticos.* Traz animações suaves de primeira pessoa para a visão de terceira pessoa e interface do inventário: comer com as duas mãos, remar botes com braçadas naturais, segurar mapas abertos e transições corporais orgânicas.
 
 ---
 
