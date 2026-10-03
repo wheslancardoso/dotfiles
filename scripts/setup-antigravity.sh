@@ -33,25 +33,60 @@ elif [ -x "/usr/bin/npx" ]; then
     NPX_BIN="/usr/bin/npx"
 fi
 
+SOURCE_SKILLS="$DOTFILES_DIR/home/dot_gemini/config/skills.json"
+
 if [ -f "$SOURCE_MCP" ]; then
-    TMP_MCP=$(mktemp)
-    if [ -n "$GITHUB_TOKEN" ]; then
-        sed "s|\${GITHUB_PERSONAL_ACCESS_TOKEN}|$GITHUB_TOKEN|g" "$SOURCE_MCP" > "$TMP_MCP"
-        echo "  [OK] $DEST_DIR/mcp_config.json configurado com seu GITHUB_TOKEN."
-    else
-        # Se já existe um token real configurado localmente no destino, preserva-o
-        if [ -f "$DEST_DIR/mcp_config.json" ] && grep -q "ghp_" "$DEST_DIR/mcp_config.json"; then
-            CURRENT_TOKEN=$(grep -o 'ghp_[A-Za-z0-9_]*' "$DEST_DIR/mcp_config.json" | head -n 1)
-            sed "s|\${GITHUB_PERSONAL_ACCESS_TOKEN}|$CURRENT_TOKEN|g" "$SOURCE_MCP" > "$TMP_MCP"
-            echo "  [OK] $DEST_DIR/mcp_config.json atualizado mantendo o token local existente."
-        else
-            cp "$SOURCE_MCP" "$TMP_MCP"
-            echo "  [OK] $DEST_DIR/mcp_config.json copiado (lembre de definir GITHUB_PERSONAL_ACCESS_TOKEN ou editar o arquivo)."
-        fi
-    fi
-    # Ajusta o comando para o caminho real do npx no Linux
-    sed -i "s|\"command\": \"npx\"|\"command\": \"$NPX_BIN\"|g" "$TMP_MCP"
-    mv "$TMP_MCP" "$DEST_DIR/mcp_config.json"
+    python3 - <<EOF
+import json
+import os
+
+dest_file = "$DEST_DIR/mcp_config.json"
+source_file = "$SOURCE_MCP"
+npx_bin = "$NPX_BIN"
+github_token = "$GITHUB_TOKEN"
+
+dest_data = {"mcpServers": {}}
+if os.path.exists(dest_file):
+    try:
+        with open(dest_file, "r", encoding="utf-8") as f:
+            dest_data = json.load(f)
+    except Exception as e:
+        print(f"  [AVISO] Erro ao ler mcp_config existente: {e}")
+
+try:
+    with open(source_file, "r", encoding="utf-8") as f:
+        source_data = json.load(f)
+except Exception as e:
+    print(f"  [ERRO] Falha ao ler fonte mcp_config: {e}")
+    source_data = {"mcpServers": {}}
+
+# Token do GitHub
+if not github_token:
+    existing_github = dest_data.get("mcpServers", {}).get("github", {})
+    existing_token = existing_github.get("env", {}).get("GITHUB_PERSONAL_ACCESS_TOKEN", "")
+    if existing_token and not existing_token.startswith("\${"):
+        github_token = existing_token
+
+merged_servers = dest_data.get("mcpServers", {})
+for name, cfg in source_data.get("mcpServers", {}).items():
+    cfg_copy = json.loads(json.dumps(cfg))
+    if cfg_copy.get("command") == "npx":
+        cfg_copy["command"] = npx_bin
+    if name == "github":
+        if github_token:
+            cfg_copy.setdefault("env", {})["GITHUB_PERSONAL_ACCESS_TOKEN"] = github_token
+        elif "\${GITHUB_PERSONAL_ACCESS_TOKEN}" in cfg_copy.get("env", {}).get("GITHUB_PERSONAL_ACCESS_TOKEN", ""):
+            pass
+    merged_servers[name] = cfg_copy
+
+dest_data["mcpServers"] = merged_servers
+
+with open(dest_file, "w", encoding="utf-8") as f:
+    json.dump(dest_data, f, indent=2, ensure_ascii=False)
+    f.write("\n")
+
+print("  [OK] $DEST_DIR/mcp_config.json mesclado com sucesso (MCPs configurados).")
+EOF
 else
     echo "  [!] Arquivo fonte mcp_config.json não encontrado em $SOURCE_MCP"
 fi
@@ -72,6 +107,25 @@ fi
 if [ -f "$SOURCE_IGNORE" ]; then
     cp "$SOURCE_IGNORE" "$DEST_DIR/.antigravityignore"
     echo "  [OK] $DEST_DIR/.antigravityignore atualizado."
+fi
+
+# Copia skills.json se existir
+if [ -f "$SOURCE_SKILLS" ]; then
+    cp "$SOURCE_SKILLS" "$DEST_DIR/skills.json"
+    echo "  [OK] $DEST_DIR/skills.json sincronizado."
+fi
+
+# Sincroniza catálogo de skills para o diretório global
+if [ -d "$DOTFILES_DIR/skills" ]; then
+    mkdir -p "$DEST_DIR/skills"
+    for skill_dir in "$DOTFILES_DIR/skills"/*; do
+        if [ -d "$skill_dir" ]; then
+            skill_name="$(basename "$skill_dir")"
+            mkdir -p "$DEST_DIR/skills/$skill_name"
+            cp -r "$skill_dir"/* "$DEST_DIR/skills/$skill_name/"
+        fi
+    done
+    echo "  [OK] Skills sincronizadas para $DEST_DIR/skills."
 fi
 
 # Copia configurações globais de permissões e comportamento do usuário

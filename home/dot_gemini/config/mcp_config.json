@@ -37,6 +37,9 @@
       "env": {
         "MEMORY_FILE_PATH": ".gemini/memory.jsonl"
       }
+    },
+    "supabase": {
+      "serverUrl": "https://mcp.supabase.com/mcp"
     }
   }
 }
