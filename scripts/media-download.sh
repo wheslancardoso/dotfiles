@@ -2544,7 +2544,7 @@ run_cli_mode() {
                 [ "${#short_clip}" -gt 45 ] && short_clip="${short_clip:0:42}..."
                 main_actions="0\t📋 [Clipboard] Baixar Link Copiado (${short_clip})\tProcessa e baixa automaticamente a URL encontrada na sua área de transferência com prévia da capa.\n"
             fi
-            main_actions="${main_actions}1\t🍿 Filmes & Séries no Pomfy (Catálogo TMDB 1080p)\tAbre o catálogo navegável com sinopse oficial, pôster HD e streaming direto.\n2\t🎵 Buscar Músicas no YouTube Music (Pesquisa FZF com Capas HD)\tPesquise pelo nome da música ou artista, escolha no menu FZF com capa HD e baixe em MP3 320k com tags.\n3\t🎧 Spotify (Baixar por Link ou Nome da Música)\tBaixe faixas, álbuns ou playlists do Spotify com capas HD oficiais, metadados e letras (.lrc).\ne\t🇬🇧 Estudo de Inglês com Música (MPV Lyrics + Shadowing + Anki)\tBusca músicas em inglês, baixa com letra sincronizada (.lrc) e abre direto no MPV com atalhos de repetição e Anki Miner.\n4\t🎥 Buscar / Baixar Vídeos no YouTube (1080p/4K com Capas HD)\tBusca com miniaturas ao vivo no FZF ou baixa links do YouTube com 1 tecla de confirmação.\n5\t🔗 Inserir URL ou Arquivo de Lote (.txt / .md)\tProcessa qualquer link da web, torrent/magnet ou arquivos de lote (.txt, .md).\n6\t📻 Baixar o que está tocando agora (MPRIS / Spotify)\tDetecta a música ou vídeo em reprodução no seu player do Linux e baixa na hora.\n7\t📂 Ver Histórico de Downloads\tAbre a lista de downloads anteriores pesquisável com FZF.\n8\t🔄 Atualizar Motores de Download\tVerifica e atualiza o yt-dlp, spotdl e gallery-dl.\n9\t🚪 Sair\tFecha o cockpit de mídia."
+            main_actions="${main_actions}1\t🍿 Filmes & Séries no Pomfy (Catálogo TMDB 1080p)\tAbre o catálogo navegável com sinopse oficial, pôster HD e streaming direto.\n2\t🎵 Buscar Músicas no YouTube Music (Pesquisa FZF com Capas HD)\tPesquise pelo nome da música ou artista, escolha no menu FZF com capa HD e baixe em MP3 320k com tags.\n3\t🎧 Spotify (Baixar por Link ou Nome da Música)\tBaixe faixas, álbuns ou playlists do Spotify com capas HD oficiais, metadados e letras (.lrc).\ne\t🇬🇧 Estudo de Inglês com Música (MPV Lyrics + Shadowing + Anki)\tBusca músicas em inglês, baixa com letra sincronizada (.lrc) e abre direto no MPV com atalhos de repetição e Anki Miner.\n4\t🎥 Buscar / Baixar Vídeos no YouTube (1080p/4K com Capas HD)\tBusca com miniaturas ao vivo no FZF ou baixa links do YouTube com 1 tecla de confirmação.\n5\t🔗 Inserir URL ou Arquivo de Lote (.txt / .md)\tProcessa qualquer link da web, torrent/magnet ou arquivos de lote (.txt, .md).\n6\t📻 Baixar o que está tocando agora (MPRIS / Spotify)\tDetecta a música ou vídeo em reprodução no seu player do Linux e baixa na hora.\nr\t🕹️ Emuladores & ROMs Vault (APEX-ROMS)\tAbre o cockpit de download de jogos para SNES, PS2, PS3, X360 e Switch com capas HD e injeção automática.\n7\t📂 Ver Histórico de Downloads\tAbre a lista de downloads anteriores pesquisável com FZF.\n8\t🔄 Atualizar Motores de Download\tVerifica e atualiza o yt-dlp, spotdl e gallery-dl.\n9\t🚪 Sair\tFecha o cockpit de mídia."
 
             local chosen_action
             chosen_action=$(echo -e "$main_actions" | fzf \
@@ -2568,6 +2568,16 @@ run_cli_mode() {
             case "$act_num" in
                 0)
                     url="$clip_url"
+                    ;;
+                r)
+                    if command -v apex-roms >/dev/null 2>&1; then
+                        exec apex-roms
+                    elif [ -x "$HOME/apex-dl/roms/bin/apex-roms" ]; then
+                        exec "$HOME/apex-dl/roms/bin/apex-roms"
+                    else
+                        exec roms
+                    fi
+                    exit 0
                     ;;
                 e)
                     run_study_english_hub ""
