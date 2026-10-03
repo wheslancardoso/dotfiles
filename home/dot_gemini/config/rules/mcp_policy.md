@@ -22,7 +22,7 @@ Zero prolixidade, sem cumprimentos, sem textos introdutórios ou conclusivos (ex
    - Processe as saídas através do `context-mode` para condensar stack traces e descartar ruído antes de injetar na janela de contexto.
 
 4. **VALIDAÇÃO DE INTERFACE E ROTA:**
-   - Para alterações em Angular, React ou Next.js: valide elementos de rota e renderização usando o `fast-playwright` em modo estruturado antes de concluir.
+   - Para alterações em Angular, React ou Next.js: valide elementos de rota e renderização usando o `playwright` em modo estruturado antes de concluir.
 
 5. **BRANCHING E ISOLAMENTO:**
    - Ao iniciar tarefas ou novos escopos, isole o trabalho em branch dedicada via `github` para manter a árvore limpa e atômica.

@@ -15,14 +15,9 @@
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp"]
     },
-    "fast-playwright": {
+    "playwright": {
       "command": "npx",
-      "args": ["-y", "@tontoko/fast-playwright-mcp"],
-      "env": {
-        "INCLUDE_SNAPSHOT": "true",
-        "INCLUDE_CONSOLE": "true",
-        "NO_IMAGES": "true"
-      }
+      "args": ["-y", "@executeautomation/playwright-mcp-server"]
     },
     "github": {
       "command": "npx",
