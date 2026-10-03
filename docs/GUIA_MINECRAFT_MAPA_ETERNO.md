@@ -1,16 +1,16 @@
 # ⛏️ ENCICLOPÉDIA DEFINITIVA DO MINECRAFT: "MAPA ETERNO & CASA AUTOMÁTICA"
-> **Versão do Jogo:** Minecraft 1.20.1 (Fabric Loader 0.16.10)  
+> **Versão do Jogo:** Minecraft 1.20.1 (Fabric Loader 0.19.5)  
 > **Launcher Canônico:** Prism Launcher (Nativo CachyOS/Arch com suporte a contas offline)  
 > **Hardware de Referência:** AMD Ryzen 7 5700X (8C/16T) • NVIDIA GeForce RTX 5060 (8 GB RAM alocados na JVM)  
 > **Script de Automação:** `~/dotfiles/scripts/setup-minecraft.sh`  
-> **Total de Mods Instalados e Auditados:** 113 Mods Especializados
+> **Total de Mods Instalados e Auditados:** 133 Mods Especializados
 
 ---
 
 ## 🎯 ÍNDICE GERAL
 1. [Filosofia do Setup: Zero Atrito, Zero Traumas](#-1-filosofia-do-setup-zero-atrito-zero-traumas)
 2. [Guia de Utilização das Armas Anti-Atrito & Controles](#-2-guia-de-utilização-das-armas-anti-atrito--controles)
-3. [Catálogo Completo dos 113 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-113-mods)
+3. [Catálogo Completo dos 133 Mods (Nome, Função e Explicação Cirúrgica)](#-3-catálogo-completo-dos-113-mods)
 4. [Shaderpack Complementary Reimagined & Motor Gráfico](#-4-shaderpack-complementary-reimagined--motor-gráfico)
 5. [Mega Acervo de Schematics (.litematic) Já Instalados](#-5-mega-acervo-de-schematics-litematic-já-instalados)
 6. [Passo a Passo: Como Iniciar e Jogar Hoje](#-6-passo-a-passo-como-iniciar-e-jogar-hoje)
@@ -35,6 +35,13 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 
 | Ação Desejada | Mod Responsável | Como Executar no Teclado / Jogo |
 | :--- | :--- | :--- |
+
+| **Pausar Jogo e Fechar Menus (Esc)** | `RebindMyKeys` | Pressione a sua tecla física **`Caps Lock`**! Graças ao rebind integrado, o Caps Lock funciona nativamente como o `Escape` do jogo, alinhado ao `caps:swapescape` do seu Hyprland/Linux! |
+| **Sucção Magnética Nativa (Sem Craftar Nada)** | `Bring Me That Item` | **Passivo/Automático:** O jogador possui alcance de atração aumentado em 16x com intervalo de 1 tick. Quebrou blocos ou matou monstros, os itens e orbes de XP voam na hora para você! |
+| **Empilhar Ferramentas, Poções e Livros** | `StackableTools` | **Passivo/Automático:** Ferramentas, armas, armaduras, elytras, poções e livros encantados agora se empilham em até **8 itens por slot** no inventário e baús! |
+| **HUD de Identificação no Topo da Tela** | `Jade 🔍` | **Passivo/Automático:** Olhe para qualquer bloco ou entidade no mundo para ver um HUD flutuante no topo com o nome, ícone, ferramenta recomendada e inspeção de baús! |
+| **Drops Garantidos de Monstros & Traps** | `Mobs Always Drop` | **Passivo/Automático:** Mobs sempre dropam seus itens garantidos e equipamentos, inclusive em mob traps automáticas sem precisar levar dano direto do jogador! |
+| **Ceifar Grama em Área e Chuva de Sementes** | `Diggus Maximus` + Datapack | **Agache (Shift) com qualquer enxada na mão e quebre grama**: o matagal ao redor desaba de uma vez só e dropa sementes de trigo **100% garantido**! |
 | **Contratar e Armar Guardas Aldeões** | `Guard Villagers` | Dê **Shift + Botão Direito com uma Espada ou Arco na mão em qualquer Aldeão desempregado**: ele vira um **Guarda da Vila** equipado que patrulha as ruas, ataca zumbis e protege suas construções dia e noite! |
 | **Identificar Aldeões por Nome Próprio** | `Villager Names` | **Passivo/Automático:** Olhe para qualquer aldeão: uma etiqueta flutuante sutil exibe seu nome único gerado (ex: *Alexander, o Bibliotecário*), acabando com aldeões genéricos e tornando a vila viva. |
 | **Projeções Holográficas 3D de Construções**| `Litematica` | Pressione a tecla **`M`** para abrir o menu do Litematica (ou consulte *Load Schematics*). Carregue qualquer projeto `.litematic` da pasta `schematics/` e posicione o holograma translúcido no seu mundo para construir sem errar blocos de redstone! |
@@ -62,7 +69,7 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 | **Filtrar Itens Sem Redstone (Funil de Cobre)**| `Copper Hopper` | Coloque o **Funil de Cobre**: ele possui um slot exclusivo de filtro interno para deixar passar apenas os itens permitidos sem precisar de comparadores e repetidores. |
 | **Balancear Itens na Mesa de Trabalho** | `Crafting Tweaks` | Na grade de crafting, clique no botão **Balance** para distribuir igualmente os itens nos slots, **Rotate** para girar a receita, ou **Clear** para recolher tudo de volta. |
 | **Buscar Atalhos de Teclado por Nome** | `Controlling` | Em *Opções -> Teclas*, use a **barra de pesquisa** para achar qualquer comando em 1 segundo e filtre teclas em conflito com 1 clique. |
-| **Proteção Absoluta Contra Quebra de Picareta** | `Anti Tool Break` | **Passivo/Automático:** Quando sua picareta/espada valiosa chega em 1 ponto de durabilidade, ela **trava e recusa quebrar**, impedindo que você destrua ferramentas com Mending e Fortuna III por distração! |
+| **Reposição Instantânea de Ferramenta Quebrada (AutoSwap)** | `Anti Tool Break` | **Passivo/Automático:** Quando sua picareta/espada valiosa chega em 1 ponto de durabilidade, ela **trava e recusa quebrar**, impedindo que você destrua ferramentas com Mending e Fortuna III por distração! |
 | **Troca Automática de Ferramenta Gasta** | `Low Durability Switcher` | **Passivo/Automático:** Ao minerar, quando uma picareta está para quebrar, o mod **substitui instantaneamente** a picareta da sua mão por outra reserva do seu inventário sem você precisar parar ou abrir menus! |
 | **Ver Durabilidade Numérica Exata** | `Show Durability` | Olhe para o ícone de qualquer ferramenta ou armadura: o **número exato de usos restantes** (ex: `1420`) aparece impresso diretamente sobre o item na hotbar. |
 | **Subir Morros e Degraus Lisos Sem Pular** | `StepItUp` | **Passivo/Automático:** Ande para a frente em direção a qualquer bloco de 1 de altura. Seu boneco sobe o degrau suavemente sem pular, sem tremer a câmera e sem gastar fome extra! |
