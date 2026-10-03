@@ -123,6 +123,14 @@ CLUSTERS = {
             "08 - Repertório Cultural (Cinema, Séries & Livros de Sabedoria)/09 - Compêndio de Sabedoria Prática & Modelos Mentais (Matheus Ferreira - O Homem Clássico).md"
         ]
     },
+    "Notebook_11_Sabedoria_Ricardo_Thome_Projeto_Conselho.md": {
+        "title": "👑 CLUSTER 11: SABEDORIA DE RICARDO THOMÉ (PROJETO CONSELHO — 827 OBRAS)",
+        "description": "Maturidade masculina adulta, destruição da Síndrome de Peter Pan, casamento e fidelidade heroica, paternidade patriarcal, Jordan Peterson, estoicismo e superação do niilismo da redpill.",
+        "paths": [
+            "08 - Repertório Cultural (Cinema, Séries & Livros de Sabedoria)/10 - Ricardo Thomé (Projeto Conselho)",
+            "08 - Repertório Cultural (Cinema, Séries & Livros de Sabedoria)/10 - Compêndio de Sabedoria Prática & Modelos Mentais (Ricardo Thomé - Projeto Conselho).md"
+        ]
+    },
     "Notebook_06_Prompts_IA_e_Carreira_Wtechapp.md": {
         "title": "⚡ CLUSTER 06: PROMPTS DE IA, CARREIRA & EMPREENDIMENTOS (WTECHAPP)",
         "description": "Sistemas de prompts de ghostwriting, diretrizes de carreira sênior, AGR, wtechapp e Protocolo Dojo.",
@@ -166,9 +174,21 @@ def collect_files(target_paths):
     """Varre e coleta arquivos válidos em ordem alfabética."""
     collected = []
     for rel_path in target_paths:
-        full_path = WORKSPACE_DIR / rel_path
-        if not full_path.exists():
-            continue
+        p_obj = Path(rel_path)
+        if p_obj.is_absolute() and p_obj.exists():
+            full_path = p_obj
+        else:
+            full_path = WORKSPACE_DIR / rel_path
+            if not full_path.exists():
+                # Tenta fallback para /home/lan/concurso
+                alt1 = Path("/home/lan/concurso/metodologia_e_planejamento") / Path(rel_path).name
+                alt2 = Path("/home/lan/concurso/edital") / Path(rel_path).name
+                if alt1.exists():
+                    full_path = alt1
+                elif alt2.exists():
+                    full_path = alt2
+                else:
+                    continue
         if full_path.is_file():
             if full_path.suffix.lower() == ".md":
                 collected.append(full_path)
