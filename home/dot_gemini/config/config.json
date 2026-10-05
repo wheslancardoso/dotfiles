@@ -1,11 +1,31 @@
 {
   "userSettings": {
+    "artifactReviewMode": "ARTIFACT_REVIEW_MODE_TURBO",
     "autoExecutionPolicy": "CASCADE_COMMANDS_AUTO_EXECUTION_EAGER",
     "enableTerminalSandbox": false,
+    "globalPermissionGrants": {
+      "allow": [
+        "command(*)",
+        "read_url(*)",
+        "mcp(*)",
+        "mcp(*/*)",
+        "mcp(supabase/*)",
+        "mcp(context-mode/*)",
+        "mcp(context_mode/*)",
+        "mcp(repomix/*)",
+        "mcp(context7/*)",
+        "mcp(playwright/*)",
+        "mcp(github/*)",
+        "mcp(memory/*)",
+        "mcp(chrome-devtools/*)",
+        "mcp(chrome_devtools/*)"
+      ]
+    },
     "nonWorkspaceFileAccessPolicy": "AGENT_SETTING_POLICY_ALLOW",
     "permissionGrantsV2Migrated": true,
     "remoteControlHostname": "xagr-3691973-rising-flare",
     "sandboxEnabledAtV2Migration": true,
-    "themeMode": "THEME_MODE_DARK"
+    "themeMode": "THEME_MODE_DARK",
+    "useAiCredits": true
   }
 }

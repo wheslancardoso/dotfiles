@@ -86,6 +86,20 @@ local function detect_series_name(filepath)
     return current_folder
 end
 
+-- Localiza um item no banco pelo caminho exato ou pelo nome do arquivo (resiliente a symlinks e caminhos relativos)
+local function find_in_db(db, path)
+    if not path or path == "" then return nil end
+    if db[path] then return db[path] end
+
+    local _, filename = utils.split_path(path)
+    for _, entry in pairs(db) do
+        if entry.filename == filename then
+            return entry
+        end
+    end
+    return nil
+end
+
 -- Salva o progresso da mídia atual
 local function record_current_progress()
     local path = mp.get_property("path", "")
@@ -96,6 +110,14 @@ local function record_current_progress()
 
     if duration <= 30 or time_pos <= 5 then return end
 
+    local db = load_db()
+    local existing = find_in_db(db, path)
+
+    -- Proteção: se o usuário abrir e fechar rápido (<15s), não sobrescreve um progresso longo já existente (>30s)
+    if existing and existing.time_pos and existing.time_pos > 30 and time_pos < 15 and not existing.completed then
+        return
+    end
+
     local percent = math.floor((time_pos / duration) * 100)
     local remaining = duration - time_pos
     local completed = (percent >= 85) or (remaining <= 120)
@@ -103,8 +125,7 @@ local function record_current_progress()
     local _, filename = utils.split_path(path)
     local series_name = detect_series_name(path)
 
-    local db = load_db()
-    db[path] = {
+    local entry = {
         path = path,
         filename = filename,
         series_name = series_name,
@@ -114,6 +135,12 @@ local function record_current_progress()
         completed = completed,
         last_watched = os.time()
     }
+
+    db[path] = entry
+    -- Se o arquivo foi aberto por outro caminho no passado (ex: link simbólico pictures vs mnt/dados), sincroniza ambos
+    if existing and existing.path and existing.path ~= path then
+        db[existing.path] = entry
+    end
     save_db(db)
 end
 
@@ -206,7 +233,7 @@ local function on_file_loaded()
     end
 
     local db = load_db()
-    local item = db[path]
+    local item = find_in_db(db, path)
 
     if item and item.completed then
         -- O arquivo já foi marcado como concluído (>85%)
@@ -231,11 +258,15 @@ local function on_file_loaded()
             return
         end
     elseif item and item.time_pos and item.time_pos > 20 and not item.completed then
-        -- Mídia em andamento: notifica onde está continuando
-        local mins = math.floor(item.time_pos / 60)
-        local secs = item.time_pos % 60
-        mp.add_timeout(0.5, function()
-            mp.osd_message(string.format("⏸️ Continuando aos %02d:%02d (%d%%)", mins, secs, item.percent), 2.5)
+        -- Mídia em andamento: restaura e continua de onde parou
+        mp.add_timeout(0.3, function()
+            local current_pos = mp.get_property_number("time-pos", 0)
+            if current_pos < 10 then
+                mp.commandv("seek", item.time_pos, "absolute")
+            end
+            local mins = math.floor(item.time_pos / 60)
+            local secs = item.time_pos % 60
+            mp.osd_message(string.format("⏸️ Continuando aos %02d:%02d (%d%%)", mins, secs, item.percent), 3.0)
         end)
     end
 end

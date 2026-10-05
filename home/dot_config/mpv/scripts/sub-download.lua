@@ -37,18 +37,22 @@ local function download_subtitles()
 
     -- Script Python auxiliar inline para buscar no OpenSubtitles via REST v1
     local python_code = string.format([[
-import urllib.request, urllib.parse, json, os, sys
+import urllib.request, urllib.parse, json, os, sys, gzip
 
 query = sys.argv[1]
 video_path = sys.argv[2]
 base_dir = os.path.dirname(video_path)
 
-headers = {'User-Agent': 'SubDB/1.0 (mpv-god-mode/1.0; https://github.com/dotfiles)'}
-url = f"https://rest.opensubtitles.org/search/query-{urllib.parse.quote(query)}"
+headers = {
+    'User-Agent': 'VLSub 0.10.2',
+    'X-User-Agent': 'VLSub 0.10.2'
+}
+clean_query = query.lower().strip()
+url = f"https://rest.opensubtitles.org/search/query-{urllib.parse.quote(clean_query)}"
 
 try:
     req = urllib.request.Request(url, headers=headers)
-    with urllib.request.urlopen(req, timeout=8) as res:
+    with urllib.request.urlopen(req, timeout=10) as res:
         data = json.loads(res.read().decode('utf-8'))
         
     en_sub = None
@@ -65,13 +69,11 @@ try:
     chosen = en_sub or pt_sub
     if chosen and chosen[1]:
         dest_srt = os.path.join("/tmp", f"downloaded_{os.path.basename(video_path)}.srt")
-        # Download gzipped srt
-        gz_dest = dest_srt + ".gz"
-        urllib.request.urlretrieve(chosen[1], gz_dest)
-        import gzip
-        with gzip.open(gz_dest, 'rb') as f_in, open(dest_srt, 'wb') as f_out:
-            f_out.write(f_in.read())
-        os.remove(gz_dest)
+        req_sub = urllib.request.Request(chosen[1], headers=headers)
+        with urllib.request.urlopen(req_sub, timeout=10) as r:
+            decompressed = gzip.decompress(r.read())
+            with open(dest_srt, 'wb') as f_out:
+                f_out.write(decompressed)
         print(dest_srt)
     else:
         sys.exit(1)

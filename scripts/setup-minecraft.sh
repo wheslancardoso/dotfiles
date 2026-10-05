@@ -190,6 +190,8 @@ mods_to_download = [
     # Fim da Roleta Russa de Drops Raros & Agricultura Sem Sofrimento
     "always-a-wither-skull", # Wither Skeleton SEMPRE dropa a cabeça (100% de drop)! Adeus 4 horas caçando esqueleto no Nether!
     "shulker-drops-two",     # Shulker SEMPRE dropa 2 cascas (1 caixa de shulker inteira por bicho morto)!
+    "all-loot-drops",        # Todos os mobs SEMPRE dropam 100% de seus itens/loots garantidos (sem dropar 0)!
+    "trajectory-estimation",  # Linha 3D parabólica visual da trajetória de flechas, arcos, tridentes e pérolas!
     "trade-cycling",         # Botão de resetar trocas do Villager com 1 clique (sem precisar quebrar o atril 200 vezes pra vir Remendo!)
     "extended-bone-meal",    # Farinha de osso funciona em TUDO: cana de açúcar, cacto, videiras e plantações instantâneas
     "farmers-delight-fabric",# Expansão agrícola: cultive cebola, tomate, arroz, repolho e faça banquetes deliciosos

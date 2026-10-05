@@ -109,11 +109,23 @@ if [ -f "$SOURCE_IGNORE" ]; then
     echo "  [OK] $DEST_DIR/.antigravityignore atualizado."
 fi
 
-# Copia skills.json se existir
-if [ -f "$SOURCE_SKILLS" ]; then
-    cp "$SOURCE_SKILLS" "$DEST_DIR/skills.json"
-    echo "  [OK] $DEST_DIR/skills.json sincronizado."
-fi
+# Configura skills.json com caminhos absolutos dinâmicos (evita erro de path relativo do language_server)
+python3 - <<EOF
+import json
+import os
+
+skills_file = "$DEST_DIR/skills.json"
+skills_data = {
+    "entries": [
+        {"path": os.path.expanduser("~/.gemini/config/skills")},
+        {"path": os.path.abspath("$DOTFILES_DIR/skills")}
+    ]
+}
+with open(skills_file, "w", encoding="utf-8") as f:
+    json.dump(skills_data, f, indent=2, ensure_ascii=False)
+    f.write("\n")
+EOF
+echo "  [OK] $DEST_DIR/skills.json sincronizado com caminhos absolutos."
 
 # Sincroniza catálogo de skills para o diretório global
 if [ -d "$DOTFILES_DIR/skills" ]; then
@@ -128,14 +140,87 @@ if [ -d "$DOTFILES_DIR/skills" ]; then
     echo "  [OK] Skills sincronizadas para $DEST_DIR/skills."
 fi
 
-# Copia configurações globais de permissões e comportamento do usuário
+# Configura permissões globais do Antigravity (libera todos os MCPs sem prompt e auto-executa comandos)
 SOURCE_CONFIG="$DOTFILES_DIR/home/dot_gemini/config/config.json"
-if [ -f "$SOURCE_CONFIG" ]; then
-    if [ ! -f "$DEST_DIR/config.json" ]; then
-        cp "$SOURCE_CONFIG" "$DEST_DIR/config.json"
-        echo "  [OK] $DEST_DIR/config.json instalado."
-    fi
-fi
+python3 - <<EOF
+import json
+import os
+
+dest_file = "$DEST_DIR/config.json"
+source_file = "$SOURCE_CONFIG"
+mcp_file = "$DEST_DIR/mcp_config.json"
+
+config_data = {}
+if os.path.exists(dest_file):
+    try:
+        with open(dest_file, "r", encoding="utf-8") as f:
+            config_data = json.load(f)
+    except Exception as e:
+        print(f"  [AVISO] Erro ao ler config.json existente: {e}")
+
+if not config_data and os.path.exists(source_file):
+    try:
+        with open(source_file, "r", encoding="utf-8") as f:
+            config_data = json.load(f)
+    except Exception:
+        pass
+
+user_settings = config_data.setdefault("userSettings", {})
+user_settings["artifactReviewMode"] = "ARTIFACT_REVIEW_MODE_TURBO"
+user_settings["autoExecutionPolicy"] = "CASCADE_COMMANDS_AUTO_EXECUTION_EAGER"
+user_settings["enableTerminalSandbox"] = False
+user_settings["nonWorkspaceFileAccessPolicy"] = "AGENT_SETTING_POLICY_ALLOW"
+user_settings.setdefault("themeMode", "THEME_MODE_DARK")
+user_settings.setdefault("useAiCredits", True)
+
+# Carrega servidores MCP cadastrados para gerar regras wildcard individuais
+mcp_servers = []
+if os.path.exists(mcp_file):
+    try:
+        with open(mcp_file, "r", encoding="utf-8") as f:
+            mcp_data = json.load(f)
+            mcp_servers = list(mcp_data.get("mcpServers", {}).keys())
+    except Exception:
+        pass
+
+base_allows = [
+    "command(*)",
+    "read_url(*)",
+    "mcp(*)",
+    "mcp(*/*)",
+    "mcp(chrome-devtools/*)",
+    "mcp(chrome_devtools/*)",
+]
+
+for server in mcp_servers:
+    base_allows.append(f"mcp({server}/*)")
+    if "-" in server:
+        base_allows.append(f"mcp({server.replace('-', '_')}/*)")
+
+# Recupera regras allow existentes no config
+grants = user_settings.setdefault("globalPermissionGrants", {})
+existing_allows = grants.get("allow", [])
+
+# Remove entradas com sintaxe inválida conhecida que geram warnings no log do language server
+invalid_patterns = {"*", "run_command(*)", "write_to_file(*)", "replace_file_content(*)", "view_file(*)", "list_dir(*)", "grep_search(*)", "find_by_name(*)"}
+filtered_existing = [item for item in existing_allows if item not in invalid_patterns]
+
+# Preserva regras existentes específicas mantendo ordem e evitando duplicatas
+seen = set()
+merged_allows = []
+for item in (base_allows + filtered_existing):
+    if item not in seen:
+        seen.add(item)
+        merged_allows.append(item)
+
+grants["allow"] = merged_allows
+
+with open(dest_file, "w", encoding="utf-8") as f:
+    json.dump(config_data, f, indent=2, ensure_ascii=False)
+    f.write("\n")
+
+print("  [OK] $DEST_DIR/config.json atualizado: todos os MCPs e ações configurados para auto-aprovação.")
+EOF
 
 echo "==> Verificando dependências necessárias (Node.js e npx)..."
 if [ "$NPX_BIN" = "npx" ] && ! command -v npx &>/dev/null; then
