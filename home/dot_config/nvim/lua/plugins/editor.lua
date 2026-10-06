@@ -1,5 +1,5 @@
 return {
-  -- 🔄 Auto-tag: Fecha e renomeia tags HTML/JSX/TSX/XML automaticamente
+  -- 🔄 Auto-tag: Fecha e renomeia tags HTML/JSX/TSX/XML e HTML embutido em JS/TS automaticamente
   {
     "windwp/nvim-ts-autotag",
     event = { "BufReadPre", "BufNewFile" },
@@ -8,6 +8,15 @@ return {
         enable_close = true,
         enable_rename = true,
         enable_close_on_slash = true,
+      },
+      per_filetype = {
+        ["html"] = { enable_close = true, enable_rename = true, enable_close_on_slash = true },
+        ["javascript"] = { enable_close = true, enable_rename = true, enable_close_on_slash = true },
+        ["typescript"] = { enable_close = true, enable_rename = true, enable_close_on_slash = true },
+        ["javascriptreact"] = { enable_close = true, enable_rename = true, enable_close_on_slash = true },
+        ["typescriptreact"] = { enable_close = true, enable_rename = true, enable_close_on_slash = true },
+        ["vue"] = { enable_close = true, enable_rename = true, enable_close_on_slash = true },
+        ["svelte"] = { enable_close = true, enable_rename = true, enable_close_on_slash = true },
       },
     },
   },
