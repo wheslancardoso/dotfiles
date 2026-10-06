@@ -160,8 +160,8 @@ return {
   -- ⚡ Autocompletion (blink.cmp) - Super-Tab Inteligente & Navegação estilo Vim
   {
     "saghen/blink.cmp",
-    opts = {
-      keymap = {
+    opts = function(_, opts)
+      opts.keymap = vim.tbl_deep_extend("force", opts.keymap or {}, {
         preset = "super-tab",
         ["<C-j>"] = { "select_next", "fallback" },
         ["<NL>"] = { "select_next", "fallback" },
@@ -169,8 +169,50 @@ return {
         ["<C-n>"] = { "select_next", "fallback" },
         ["<C-p>"] = { "select_prev", "fallback" },
         ["<CR>"] = { "fallback" }, -- Enter apenas quebra linha, sem acidentes
-      },
-    },
+      })
+
+      opts.sources = opts.sources or {}
+      opts.sources.providers = opts.sources.providers or {}
+      opts.sources.providers.lsp = opts.sources.providers.lsp or {}
+
+      -- 🎯 Isolamento Cirúrgico do Emmet:
+      -- Em arquivos JS/TS, sugestões HTML do emmet_ls aparecem EXCLUSIVAMENTE dentro de crases (`...`).
+      -- Fora das crases (no código JS puro), o autocompletar fica 100% limpo com variáveis e métodos do vtsls!
+      opts.sources.providers.lsp.transform_items = function(ctx, items)
+        local ft = vim.bo[ctx.bufnr].filetype
+        if ft ~= "javascript" and ft ~= "typescript" and ft ~= "javascriptreact" and ft ~= "typescriptreact" then
+          return items
+        end
+
+        local inside_template = false
+        local ok, node = pcall(vim.treesitter.get_node, {
+          bufnr = ctx.bufnr,
+          pos = { ctx.cursor[1] - 1, math.max(0, ctx.cursor[2] - 1) },
+        })
+        if ok and node then
+          local curr = node
+          while curr do
+            if curr:type() == "template_string" then
+              inside_template = true
+              break
+            end
+            curr = curr:parent()
+          end
+        end
+
+        if inside_template then
+          return items
+        end
+
+        return vim.tbl_filter(function(item)
+          if not item.client_id then
+            return true
+          end
+          local client = vim.lsp.get_client_by_id(item.client_id)
+          return not (client and client.name == "emmet_ls")
+        end, items)
+      end
+    end,
   },
 
   -- 🪆 Mini.Pairs: Auto-fechamento limpo estilo VS Code para "", '', [], {} e ()
