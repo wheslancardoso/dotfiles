@@ -27,9 +27,10 @@ Zero prolixidade, sem cumprimentos, sem textos introdutórios ou conclusivos (ex
 5. **BRANCHING E ISOLAMENTO (MCP GITHUB):**
    - Ao iniciar tarefas ou novos escopos, isole o trabalho em branch dedicada via servidor MCP `github` ou git local para manter a árvore limpa e atômica.
 
-6. **RETENÇÃO DE DECISÕES ARQUITETURAIS (MCP MEMORY GRAPH):**
+6. **RETENÇÃO DE DECISÕES ARQUITETURAIS & SINCRONIZAÇÃO GIT (MCP MEMORY GRAPH):**
    - No início de conversas ou antes de propor arquiteturas em projetos existentes, consulte o servidor MCP `memory` (ferramentas `read_graph` ou `search_nodes` via `call_mcp_tool`) para carregar o histórico de decisões e contratos já estabelecidos.
    - Use o servidor MCP `memory` (ferramentas `create_entities`, `add_observations`, `create_relations` via `call_mcp_tool`) para persistir decisões fundamentais tomadas (ex: Records vs DTOs no Java, contratos de API entre Spring e Angular/Next, arquitetura bloc/cubit no Flutter).
+   - **Versionamento do Grafo de Memória no Git:** Sempre que realizar commits de alterações no repositório de um projeto, inclua obrigatoriamente o arquivo `.gemini/memory.jsonl` (e `ESTADO-ATUAL.md` se presente) no `git add` e commit. Garanta que o `.gitignore` do projeto não bloqueie `!.gemini/memory.jsonl`, assegurando que o grafo de conhecimento viaje entre diferentes chats e máquinas.
 
 7. **CONSULTA DE ESPECIFICAÇÕES NO NOTEBOOKLM (MCP NOTEBOOKLM):**
    - Para especificações técnicas de negócio ou arquitetura de sistemas específicos (ex: AGR), consulte o servidor MCP `notebooklm` (ferramenta `ask_question` via `call_mcp_tool`) para validar diretrizes e regras de negócio.
