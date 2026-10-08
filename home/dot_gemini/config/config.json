@@ -18,7 +18,10 @@
         "mcp(github/*)",
         "mcp(memory/*)",
         "mcp(chrome-devtools/*)",
-        "mcp(chrome_devtools/*)"
+        "mcp(chrome_devtools/*)",
+        "mcp(fast-playwright/*)",
+        "mcp(fast_playwright/*)",
+        "mcp(notebooklm/*)"
       ]
     },
     "nonWorkspaceFileAccessPolicy": "AGENT_SETTING_POLICY_ALLOW",
@@ -27,5 +30,10 @@
     "sandboxEnabledAtV2Migration": true,
     "themeMode": "THEME_MODE_DARK",
     "useAiCredits": true
+  },
+  "plugins": {
+    "mcp-engineering-policy": {
+      "enabled": true
+    }
   }
 }

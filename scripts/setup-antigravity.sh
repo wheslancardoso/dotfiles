@@ -140,6 +140,14 @@ if [ -d "$DOTFILES_DIR/skills" ]; then
     echo "  [OK] Skills sincronizadas para $DEST_DIR/skills."
 fi
 
+# Sincroniza plugins globais
+SOURCE_PLUGINS="$DOTFILES_DIR/home/dot_gemini/config/plugins"
+if [ -d "$SOURCE_PLUGINS" ]; then
+    mkdir -p "$DEST_DIR/plugins"
+    cp -r "$SOURCE_PLUGINS"/* "$DEST_DIR/plugins/"
+    echo "  [OK] Plugins sincronizados para $DEST_DIR/plugins."
+fi
+
 # Configura permissões globais do Antigravity (libera todos os MCPs sem prompt e auto-executa comandos)
 SOURCE_CONFIG="$DOTFILES_DIR/home/dot_gemini/config/config.json"
 python3 - <<EOF
@@ -214,6 +222,9 @@ for item in (base_allows + filtered_existing):
         merged_allows.append(item)
 
 grants["allow"] = merged_allows
+
+plugins = config_data.setdefault("plugins", {})
+plugins.setdefault("mcp-engineering-policy", {})["enabled"] = True
 
 with open(dest_file, "w", encoding="utf-8") as f:
     json.dump(config_data, f, indent=2, ensure_ascii=False)

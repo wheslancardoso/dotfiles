@@ -15,6 +15,15 @@
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp"]
     },
+    "fast-playwright": {
+      "command": "npx",
+      "args": ["-y", "@tontoko/fast-playwright-mcp"],
+      "env": {
+        "INCLUDE_SNAPSHOT": "true",
+        "INCLUDE_CONSOLE": "true",
+        "NO_IMAGES": "true"
+      }
+    },
     "playwright": {
       "command": "npx",
       "args": ["-y", "@executeautomation/playwright-mcp-server"]
@@ -31,6 +40,15 @@
       "args": ["-y", "@modelcontextprotocol/server-memory"],
       "env": {
         "MEMORY_FILE_PATH": ".gemini/memory.jsonl"
+      }
+    },
+    "notebooklm": {
+      "command": "npx",
+      "args": ["-y", "notebooklm-mcp@latest"],
+      "env": {
+        "NOTEBOOKLM_BROWSER_CHANNEL": "chromium",
+        "NOTEBOOK_URL": "https://notebooklm.google.com/notebook/955aecd5-fa95-4189-8ec9-623b7ff331dc",
+        "NOTEBOOK_DESCRIPTION": "AGR System Technical Architecture and Domain Specifications Megadoc"
       }
     },
     "supabase": {
