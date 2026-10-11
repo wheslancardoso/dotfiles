@@ -249,6 +249,8 @@ mods_to_download = [
     "viewboard",              # Teclado visual interativo no menu de controles: mostra teclas livres, usadas e em conflito estilo Neovim!
     "nocroptrample",          # NUNCA MAIS desarar terra fértil ao pular ou andar por cima das plantações (para players e mobs)!
     "autoattack",             # Combate contínuo limpo: segure o clique para atacar automaticamente no ritmo certo, ou aperte F12 para modo AFK!
+    "playeranimator",         # Biblioteca de animações dinâmicas em 3D para combate fluido
+    "better-combat",          # Ataque em área real 3D: acerte e corte TODOS os monstros ao redor num único golpe fluido com combos!
     "searchables",            # Biblioteca de busca avançada para menus
     "sodium-extra",           # Painel avançado de opções de renderização e controle de partículas do Sodium
     "reeses-sodium-options",  # Interface moderna com abas organizadas para as configurações de vídeo
