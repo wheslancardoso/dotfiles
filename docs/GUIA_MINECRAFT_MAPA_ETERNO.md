@@ -99,6 +99,9 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 | **Apagar Lixo do Inventário** | `TrashSlot` | Abra o inventário, passe o mouse sobre o bloco inútil (ex: cascalho, diorito) e aperte **`Delete`**, ou arraste-o até o ícone de lixeira no canto inferior direito. |
 | **Abrir Mapa-Múndi e Ver Coordenadas** | `Xaero's World Map` | Pressione **`M`** para abrir o mapa em tela cheia com relevo, cavernas e marcadores de vilas e mortes. |
 | **Ver Receitas de Crafting** | `JEI` | Abra o inventário e clique em qualquer item na lista lateral direita (ou aperte **`R`** sobre o item para ver a receita, e **`U`** para ver onde ele é usado). |
+| **Ver Teclado Visual & Teclas Livres (Estilo LazyVim)** | `ViewBoard` & `Controlling` | Abra **Opções > Controles > Atribuição de Teclas**. No topo, clique no botão do **Teclado Visual (ViewBoard)**: ele desenha seu teclado completo na tela, mostrando em verde as teclas livres, em cinza as usadas e em vermelho os conflitos! |
+| **Atalhos com Modificadores Sem Conflito** | `Amecs` | Agora você pode criar atalhos compostos como **`Ctrl + B`**, **`Shift + M`**, **`Alt + C`** diretamente no menu de controles. Várias ações podem usar a mesma letra desde que o modificador seja diferente! |
+| **Proteção Total de Plantações (Anti-Pisoteio)** | `No Crop Trample` | **Passivo/Automático:** Pule, corra e aterrisse de qualquer altura em cima de plantações e terras aradas. A terra **NUNCA MAIS** se desara nem quebra as sementes (protege contra pulos do jogador e de monstros/aldeões). |
 | **Alternar Shaders em Tempo Real** | `Iris` | Pressione a tecla **`K`** para ligar ou desligar os shaders Complementary Reimagined instantaneamente. |
 
 ---

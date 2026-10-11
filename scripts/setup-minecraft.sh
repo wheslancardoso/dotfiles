@@ -245,6 +245,9 @@ mods_to_download = [
     "crafting-tweaks",        # Botões para balancear, girar e limpar a mesa de trabalho com 1 clique
     "entityculling",          # Culling de entidades: não renderiza mobs e baús atrás de paredes, explodindo o FPS em bases gigantes!
     "controlling",            # Barra de busca instantânea e filtro de conflitos no menu de teclas de atalho
+    "amecs",                  # Permite combinações de teclas com Modificadores (Ctrl+Key, Shift+Key, Alt+Key) sem conflitos!
+    "viewboard",              # Teclado visual interativo no menu de controles: mostra teclas livres, usadas e em conflito estilo Neovim!
+    "nocroptrample",          # NUNCA MAIS desarar terra fértil ao pular ou andar por cima das plantações (para players e mobs)!
     "searchables",            # Biblioteca de busca avançada para menus
     "sodium-extra",           # Painel avançado de opções de renderização e controle de partículas do Sodium
     "reeses-sodium-options",  # Interface moderna com abas organizadas para as configurações de vídeo
