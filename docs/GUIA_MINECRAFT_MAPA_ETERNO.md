@@ -109,6 +109,7 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 | **Apagar Lixo do Inventário** | `TrashSlot` | Abra o inventário, passe o mouse sobre o bloco inútil (ex: cascalho, diorito) e aperte **`Delete`**, ou arraste-o até o ícone de lixeira no canto inferior direito. |
 | **Ver Teclado Visual & Teclas Livres (Estilo LazyVim)** | `ViewBoard` & `Controlling` | Abra **Opções > Controles > Atribuição de Teclas**. No topo, clique no botão do **Teclado Visual (ViewBoard)**: ele desenha seu teclado completo na tela, mostrando em verde as teclas livres, em cinza as usadas e em vermelho os conflitos! |
 | **Atalhos com Modificadores Sem Conflito** | `Amecs` | Crie atalhos compostos como **`Ctrl + B`**, **`Shift + M`**, **`Alt + C`** diretamente no menu de controles. Várias ações podem usar a mesma letra desde que o modificador seja diferente! |
+| **Ataque Automático / Combate Contínuo Limpo** | `AutoAttack` | **Passivo/Ao Segurar:** Mantenha o **Botão Esquerdo** pressionado para atacar automaticamente no ritmo perfeito de dano máximo (sem poluição visual e atravessando grama alta).<br>**Modo AFK:** Pressione **`F12`** para travar o auto-ataque em farms de monstros. |
 | **Proteção Total de Plantações (Anti-Pisoteio)** | `No Crop Trample` | **Passivo/Automático:** Pule, corra e aterrisse de qualquer altura em cima de plantações e terras aradas. A terra **NUNCA MAIS** se desara nem quebra as sementes (protege contra pulos do jogador e de monstros/aldeões). |
 
 ---

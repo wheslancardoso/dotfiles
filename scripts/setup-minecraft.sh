@@ -248,6 +248,7 @@ mods_to_download = [
     "amecs",                  # Permite combinações de teclas com Modificadores (Ctrl+Key, Shift+Key, Alt+Key) sem conflitos!
     "viewboard",              # Teclado visual interativo no menu de controles: mostra teclas livres, usadas e em conflito estilo Neovim!
     "nocroptrample",          # NUNCA MAIS desarar terra fértil ao pular ou andar por cima das plantações (para players e mobs)!
+    "autoattack",             # Combate contínuo limpo: segure o clique para atacar automaticamente no ritmo certo, ou aperte F12 para modo AFK!
     "searchables",            # Biblioteca de busca avançada para menus
     "sodium-extra",           # Painel avançado de opções de renderização e controle de partículas do Sodium
     "reeses-sodium-options",  # Interface moderna com abas organizadas para as configurações de vídeo
