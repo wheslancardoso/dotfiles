@@ -87,22 +87,29 @@ Esta suíte foi construída para **eliminar cirurgicamente cada uma dessas dores
 | **Minerar Veio Inteiro em 1 Segundo** | `Diggus Maximus` | **Passivo/Automático:** Basta quebrar o minério (carvão, ferro, diamante, ouro) normalmente com a picareta adequada. **O veio inteiro desaba na hora sem você precisar segurar nenhuma tecla!** (Caso queira quebrar apenas 1 bloco isolado sem o veio, basta segurar a tecla `~`). |
 | **Derrubar Árvores Instantaneamente** | `FallingTree` | Pegue qualquer machado e quebre o bloco da base do tronco da árvore. A árvore inteira desaba no chão com folhas, maçãs e mudas. |
 | **Abrir Mochila com Auto-Coleta** | `Traveler's Backpack` | Pressione a tecla **`B`** para abrir sua mochila. Equipe-a nas costas para ativar o auto-pickup de pedras e minérios na mina. |
-| **Radar de Diamantes nas Paredes** | `Scannable` | Segure o Scanner com **Botão Direito**. Ele dispara um sonar que ilumina todos os minérios de diamante, ouro e ferro através da pedra! |
+| **Acessar Todos os Baús da Base em 1 Tela** | `Tom's Simple Storage` | Pressione a tecla **`~` / `\``** (ou interaja com o terminal no bloco) para abrir o Crafting Terminal com busca instantânea. |
+| **Abrir Mapa-Múndi em Tela Cheia** | `Xaero's World Map` | Pressione **`M`** para abrir o mapa em tela cheia com relevo, cavernas e marcadores de vilas e mortes. |
+| **Criar Novo Marcador / Waypoint no Mapa** | `Xaero's Minimap` | Pressione **`N`** (*New waypoint*) para salvar a coordenada atual com nome, cor e ícone no mapa. |
+| **Listar Todos os Waypoints Salvos** | `Xaero's Minimap` | Pressione **`J`** (*Journey/Waypoints*) para gerenciar, ocultar ou teleportar para seus waypoints. |
+| **Ampliar / Reduzir o Minimapa** | `Xaero's Minimap` | Pressione **`Z`** para alternar o tamanho do minimapa no canto da tela. |
+| **Configurações do Minimapa** | `Xaero's Minimap` | Pressione **`Y`** para abrir as opções e categorias do radar do Minimap. |
+| **Ver Slime Chunks no Minimap e em 3D** | `Xaero's Minimap` & `MiniHUD` | **No Minimap (Xaero):** Pressione **`F7`** para ligar/desligar a grade de Slime Chunks no minimapa.<br>**No Chão em 3D (MiniHUD):** Pressione **`H + S`** para projetar a caixa 3D verde fluorescente de 16x16 blocos diretamente no chão. |
+| **Zoom de Câmera Ultra-Suave** | `Zoomify` | Segure a tecla **`C`** para aproximar a visão com transição de cinema. |
+| **Ver Receitas / Usos de Itens no Inventário** | `JEI` | Passe o mouse sobre qualquer item e aperte **`R`** (*Recipes*) para ver como craftar, ou **`U`** (*Uses*) para ver em quais receitas ele é usado. |
+| **Girar Trocas de Livros com Aldeões** | `Trade Cycling` | Na interface de troca do Villager, aperte **`R`** (ou clique no botão verde de seta) para rodar os livros/itens sem quebrar a bancada de trabalho! |
+| **Alternar Shaders em Tempo Real** | `Iris` | Pressione a tecla **`K`** para ligar ou desligar os shaders Complementary Reimagined instantaneamente. Pressione **`O`** para abrir a seleção de packs. |
+| **Ativar / Desativar Vôo Suave de Elytra** | `BetterFlight` | Pressione **`F8`** para ligar o modo de vôo aerodinâmico suave. Use **`X`** para frear/flare e **`Alt`** para bater asas/planar. |
+| **Radar de Diamantes nas Paredes** | `Scannable` | Segure o Scanner na mão com **Botão Direito**. Ele emite uma onda sonar revelando diamantes através da rocha (energia infinita ativada). |
 | **Quebrar Blocos em Área de 3x3** | `Just Hammers` | Equipe um martelo de mineração e bata na rocha. Quebra 9 blocos por clique instantaneamente. |
 | **Localizar Qualquer Estrutura do Mundo** | `Explorer's Compass` | Segure a bússola e clique com **Botão Direito**. Escolha a estrutura desejada (Fortaleza do Nether, Portal do End, Vila, Mansão, Bastion) e siga a agulha. |
 | **Localizar Qualquer Bioma** | `Nature's Compass` | Segure a bússola e clique com **Botão Direito**. Escolha o bioma (Cerejeiras, Selva, Deserto) e siga a agulha na tela. |
-| **Ver Slime Chunks no Minimap e em 3D** | `Xaero's Minimap` & `MiniHUD` | **No Minimap (Xaero):** Chunks de slime aparecem coloridos com contorno vermelho/verde automaticamente. Pressione **`F7`** para ligar/desligar a visualização de Slime Chunks no minimapa.<br>**No Chão em 3D (MiniHUD):** Pressione **`H + S`** para projetar a caixa 3D verde fluorescente de 16x16 blocos diretamente no chão do jogo. Além disso, as coordenadas no topo da tela já indicam `Slime Chunk: true/false`. |
-| **Construir Paredes e Pisos com 1 Clique** | `Building Wands` | Mire na face de uma parede ou chão segurando a varinha e dê **Botão Direito**. Ela expandirá a superfície instantaneamente consumindo os blocos do seu inventário. |
-| **Fazer Pontes Correndo para Frente** | `Bridging Mod` | Corra em direção ao abismo olhando para a frente e segure o **Botão Direito com blocos na mão**. Os blocos serão posicionados sob os seus pés automaticamente, sem necessidade de andar de ré agachado no Shift. |
-| **Acessar Todos os Baús da Base em 1 Tela** | `Tom's Simple Storage` | Coloque o bloco *Inventory Connector* encostado na sua parede de baús e coloque o *Crafting Terminal*. Abra o terminal para ver e buscar todos os itens da base com barra de pesquisa. |
+| **Construir Paredes e Pisos com 1 Clique** | `Building Wands` | Segure a varinha e clique com **Botão Direito** na face de qualquer bloco. (Para abrir o menu circular de modos da varinha, dê **`Shift + Botão Direito no Ar`**). |
+| **Fazer Pontes Correndo para Frente** | `Bridging Mod` | Corra em direção ao abismo olhando para a frente e segure o **Botão Direito com blocos na mão**. Pressione **`,`** (vírgula) para alternar o modo de ponte. |
 | **Colher e Replantar Fazendas** | `RightClickHarvest` | Mire no trigo, batata ou cenoura madura e dê **Botão Direito**. O alimento vai para sua mão e a semente é replantada automaticamente no mesmo milissegundo. |
 | **Apagar Lixo do Inventário** | `TrashSlot` | Abra o inventário, passe o mouse sobre o bloco inútil (ex: cascalho, diorito) e aperte **`Delete`**, ou arraste-o até o ícone de lixeira no canto inferior direito. |
-| **Abrir Mapa-Múndi e Ver Coordenadas** | `Xaero's World Map` | Pressione **`M`** para abrir o mapa em tela cheia com relevo, cavernas e marcadores de vilas e mortes. |
-| **Ver Receitas de Crafting** | `JEI` | Abra o inventário e clique em qualquer item na lista lateral direita (ou aperte **`R`** sobre o item para ver a receita, e **`U`** para ver onde ele é usado). |
 | **Ver Teclado Visual & Teclas Livres (Estilo LazyVim)** | `ViewBoard` & `Controlling` | Abra **Opções > Controles > Atribuição de Teclas**. No topo, clique no botão do **Teclado Visual (ViewBoard)**: ele desenha seu teclado completo na tela, mostrando em verde as teclas livres, em cinza as usadas e em vermelho os conflitos! |
-| **Atalhos com Modificadores Sem Conflito** | `Amecs` | Agora você pode criar atalhos compostos como **`Ctrl + B`**, **`Shift + M`**, **`Alt + C`** diretamente no menu de controles. Várias ações podem usar a mesma letra desde que o modificador seja diferente! |
+| **Atalhos com Modificadores Sem Conflito** | `Amecs` | Crie atalhos compostos como **`Ctrl + B`**, **`Shift + M`**, **`Alt + C`** diretamente no menu de controles. Várias ações podem usar a mesma letra desde que o modificador seja diferente! |
 | **Proteção Total de Plantações (Anti-Pisoteio)** | `No Crop Trample` | **Passivo/Automático:** Pule, corra e aterrisse de qualquer altura em cima de plantações e terras aradas. A terra **NUNCA MAIS** se desara nem quebra as sementes (protege contra pulos do jogador e de monstros/aldeões). |
-| **Alternar Shaders em Tempo Real** | `Iris` | Pressione a tecla **`K`** para ligar ou desligar os shaders Complementary Reimagined instantaneamente. |
 
 ---
 
