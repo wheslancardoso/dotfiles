@@ -31,22 +31,24 @@
 - `b` + `b` ou `'`: **Abrir Menu de Favoritos** (FZF com preview da árvore de pastas)
 - `b` + `d`      : **Remover Pasta dos Favoritos**
 - `g` + `h`      : `~` (Home)
-- `g` + `d`      : `~/Downloads`
-- `g` + `D`      : `~/Documentos`
-- `g` + `I`      : `~/Imagens`
-- `g` + `V`      : `~/Vídeos`
+- `g` + `d` / `i`: `/mnt/dados/00_Inbox_Triagem` (Downloads / Triagem)
+- `g` + `p` / `D`: `/mnt/dados/01_Pessoal_e_Vida` (Pessoal / Documentos)
+- `g` + `e`      : `/mnt/dados/02_Estudos_e_Concursos` (Estudos & Concursos)
+- `g` + `C`      : `~/concurso` (TCE-GO 2026)
+- `g` + `w`      : `/mnt/dados/03_Profissional_WFIX` (Trabalho WFIX)
+- `g` + `v` / `x`: `/mnt/dados/04_Desenvolvimento_e_Codigo` (Dev / Códigos)
+- `g` + `m` / `I`: `/mnt/dados/05_Design_Midia_e_Criacao` (Mídias / Imagens)
+- `g` + `a`      : `/mnt/dados/05_Design_Midia_e_Criacao/05.2_Audios_e_Midias` (Músicas / Áudios)
+- `g` + `f` / `V`: `/mnt/dados/05_Design_Midia_e_Criacao/05.4_Filmes_e_Series` (Vídeos / Filmes)
+- `g` + `b`      : `/mnt/dados/06_Backups_ISOs_e_Sistemas` (Backups / ISOs)
+- `g` + `j`      : `/mnt/dados/06_Backups_ISOs_e_Sistemas/06.4_Games_e_Emuladores` (Games)
+- `g` + `0`      : `/mnt/dados` (Raiz da partição de dados)
 - `g` + `c`      : `~/.config`
+- `g` + `.`      : `~/dotfiles`
+- `g` + `G`      : `~/gdrive` (Google Drive 5TB)
+- `g` + `u`      : `/run/media` (Pen-drives / USB)
 - `g` + `t`      : `/tmp` (Temporários)
 - `g` + `/`      : `/` (Raiz do sistema)
-- `g` + `i`      : `00_Inbox` (Downloads /mnt/dados)
-- `g` + `p`      : `01_Pessoal` (Documentos / Finanças)
-- `g` + `e`      : `03_Estudos_Carreira`
-- `g` + `v` / `x`: `04_Dev` (Projetos e Códigos)
-- `g` + `j`      : `06.4_Games` (Jogos & Emuladores)
-- `g` + `m`      : `05_Midias` (Fotos & Vídeos)
-- `g` + `u`      : `/run/media` (Pen-drives / USB)
-- `g` + `0`      : `/mnt/dados` (Raiz da partição de dados)
-- `g` + `.`      : `~/dotfiles`
 
 ---
 

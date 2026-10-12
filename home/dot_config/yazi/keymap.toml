@@ -50,29 +50,32 @@ prepend_keymap = [
 	{ on = "l",          run = "plugin smart-enter", desc = "Entrada Inteligente (Pastas, Arquivos, Zips)" },
 
 	# --------------------------------------------------------------------------
-	# 🚀 NAVEGAÇÃO RÁPIDA CANÔNICA (GOTO JUMPS — Linux XDG + /mnt/dados)
+	# 🚀 NAVEGAÇÃO RÁPIDA CIRÚRGICA (GOTO JUMPS — Mapeamento Real /mnt/dados & $HOME)
 	# --------------------------------------------------------------------------
 	{ on = [ "g", "h" ], run = "cd ~", desc = "Ir para Home (~)" },
-	{ on = [ "g", "d" ], run = "cd ~/Downloads", desc = "Ir para ~/Downloads" },
-	{ on = [ "g", "D" ], run = "cd ~/Documentos", desc = "Ir para ~/Documentos" },
-	{ on = [ "g", "I" ], run = "cd ~/Imagens", desc = "Ir para ~/Imagens" },
-	{ on = [ "g", "V" ], run = "cd ~/Vídeos", desc = "Ir para ~/Vídeos" },
+	{ on = [ "g", "d" ], run = "cd /mnt/dados/00_Inbox_Triagem", desc = "Ir para Downloads / 00_Inbox_Triagem" },
+	{ on = [ "g", "i" ], run = "cd /mnt/dados/00_Inbox_Triagem", desc = "Ir para 00_Inbox_Triagem (Downloads)" },
+	{ on = [ "g", "p" ], run = "cd /mnt/dados/01_Pessoal_e_Vida", desc = "Ir para 01_Pessoal_e_Vida (Documentos)" },
+	{ on = [ "g", "D" ], run = "cd /mnt/dados/01_Pessoal_e_Vida", desc = "Ir para 01_Pessoal_e_Vida (Documentos)" },
+	{ on = [ "g", "e" ], run = "cd /mnt/dados/02_Estudos_e_Concursos", desc = "Ir para 02_Estudos_e_Concursos" },
+	{ on = [ "g", "C" ], run = "cd ~/concurso", desc = "Ir para ~/concurso (TCE-GO 2026)" },
+	{ on = [ "g", "w" ], run = "cd /mnt/dados/03_Profissional_WFIX", desc = "Ir para 03_Profissional_WFIX" },
+	{ on = [ "g", "v" ], run = "cd /mnt/dados/04_Desenvolvimento_e_Codigo", desc = "Ir para 04_Dev (Projetos/Git)" },
+	{ on = [ "g", "x" ], run = "cd /mnt/dados/04_Desenvolvimento_e_Codigo", desc = "Ir para 04_Dev (Projetos/Git)" },
+	{ on = [ "g", "m" ], run = "cd /mnt/dados/05_Design_Midia_e_Criacao", desc = "Ir para 05_Design_Midia_e_Criacao" },
+	{ on = [ "g", "I" ], run = "cd /mnt/dados/05_Design_Midia_e_Criacao", desc = "Ir para Imagens (05_Design_Midia_e_Criacao)" },
+	{ on = [ "g", "a" ], run = "cd /mnt/dados/05_Design_Midia_e_Criacao/05.2_Audios_e_Midias", desc = "Ir para Áudios / Músicas" },
+	{ on = [ "g", "f" ], run = "cd /mnt/dados/05_Design_Midia_e_Criacao/05.4_Filmes_e_Series", desc = "Ir para Filmes / Séries / Vídeos" },
+	{ on = [ "g", "V" ], run = "cd /mnt/dados/05_Design_Midia_e_Criacao/05.4_Filmes_e_Series", desc = "Ir para Vídeos (05.4_Filmes_e_Series)" },
+	{ on = [ "g", "b" ], run = "cd /mnt/dados/06_Backups_ISOs_e_Sistemas", desc = "Ir para 06_Backups_ISOs_e_Sistemas" },
+	{ on = [ "g", "j" ], run = "cd /mnt/dados/06_Backups_ISOs_e_Sistemas/06.4_Games_e_Emuladores", desc = "Ir para Jogos & Emuladores" },
+	{ on = [ "g", "0" ], run = "cd /mnt/dados", desc = "Ir para Raiz /mnt/dados" },
 	{ on = [ "g", "c" ], run = "cd ~/.config", desc = "Ir para ~/.config" },
+	{ on = [ "g", "." ], run = "cd ~/dotfiles", desc = "Ir para ~/dotfiles" },
+	{ on = [ "g", "G" ], run = "cd ~/gdrive", desc = "Ir para Google Drive Virtual (5 TB)" },
+	{ on = [ "g", "u" ], run = "cd /run/media", desc = "Ir para Pen-drives / USB (/run/media)" },
 	{ on = [ "g", "t" ], run = "cd /tmp", desc = "Ir para /tmp" },
 	{ on = [ "g", "/" ], run = "cd /", desc = "Ir para Raiz do Sistema (/)" },
-	# Saltos para partições e drives (/mnt/dados)
-	{ on = [ "g", "i" ], run = "cd /mnt/dados/00_Inbox", desc = "Ir para 00_Inbox (Downloads)" },
-	{ on = [ "g", "p" ], run = "cd /mnt/dados/01_Pessoal", desc = "Ir para 01_Pessoal" },
-	{ on = [ "g", "e" ], run = "cd /mnt/dados/03_Estudos_Carreira", desc = "Ir para 03_Estudos_Carreira" },
-	{ on = [ "g", "v" ], run = "cd /mnt/dados/04_Dev", desc = "Ir para 04_Dev (Projetos/Git)" },
-	{ on = [ "g", "x" ], run = "cd /mnt/dados/04_Dev", desc = "Ir para 04_Dev (Projetos/Git)" },
-	{ on = [ "g", "j" ], run = "cd /mnt/dados/06.4_Games", desc = "Ir para 06.4_Games (Jogos & Emuladores)" },
-	{ on = [ "g", "m" ], run = "cd /mnt/dados/05_Midias", desc = "Ir para 05_Midias" },
-	{ on = [ "g", "u" ], run = "cd /run/media", desc = "Ir para Dispositivos USB / Pen-drives" },
-	{ on = [ "g", "b" ], run = "cd /mnt/dados/06_Backups_ISOs_e_Sistemas/06.3_ISOs_e_Boot", desc = "Ir para Pasta de ISOs e Boot" },
-	{ on = [ "g", "0" ], run = "cd /mnt/dados", desc = "Ir para Raiz /mnt/dados" },
-	{ on = [ "g", "G" ], run = "cd ~/gdrive", desc = "Ir para Google Drive Virtual (5 TB)" },
-	{ on = [ "g", "." ], run = "cd ~/dotfiles", desc = "Ir para ~/dotfiles" },
 
 	# --------------------------------------------------------------------------
 	# 📌 BOOKMARKS DINÂMICOS & FAVORITOS PERSISTENTES (Prefixo: 'b' ou '\'')
