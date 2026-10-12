@@ -26,16 +26,63 @@
 
 ---
 
-## 🚀 Saltos Rápidos (GOTO no /mnt/dados)
-- `g` + `i`      : `00_Inbox` (Downloads)
+## 📌 Favoritos Dinâmicos & Saltos Rápidos
+- `b` + `a`      : **Favoritar Pasta Atual** (Salva com apelido personalizável)
+- `b` + `b` ou `'`: **Abrir Menu de Favoritos** (FZF com preview da árvore de pastas)
+- `b` + `d`      : **Remover Pasta dos Favoritos**
+- `g` + `h`      : `~` (Home)
+- `g` + `d`      : `~/Downloads`
+- `g` + `D`      : `~/Documentos`
+- `g` + `I`      : `~/Imagens`
+- `g` + `V`      : `~/Vídeos`
+- `g` + `c`      : `~/.config`
+- `g` + `t`      : `/tmp` (Temporários)
+- `g` + `/`      : `/` (Raiz do sistema)
+- `g` + `i`      : `00_Inbox` (Downloads /mnt/dados)
 - `g` + `p`      : `01_Pessoal` (Documentos / Finanças)
 - `g` + `e`      : `03_Estudos_Carreira`
-- `g` + `v`      : `04_Dev` (Projetos e Códigos)
+- `g` + `v` / `x`: `04_Dev` (Projetos e Códigos)
 - `g` + `j`      : `06.4_Games` (Jogos & Emuladores)
 - `g` + `m`      : `05_Midias` (Fotos & Vídeos)
-- `g` + `D`      : `/mnt/dados` (Raiz da partição)
+- `g` + `u`      : `/run/media` (Pen-drives / USB)
+- `g` + `0`      : `/mnt/dados` (Raiz da partição de dados)
 - `g` + `.`      : `~/dotfiles`
-- `g` + `h`      : `~` (Home)
+
+---
+
+## 📅 Metadados & Linemodes (Modos de Linha)
+- `m` + `t`      : **Exibir Data de Modificação (`mtime`)** (Horário/data de alteração)
+- `m` + `s`      : **Exibir Tamanho dos Arquivos** (Modo padrão)
+- `m` + `p`      : **Exibir Permissões Unix** (`rwxr-xr-x`)
+- `m` + `o`      : **Exibir Proprietário e Grupo** (`lan:lan`)
+- `m` + `n`      : **Ocultar Metadados** (Modo limpo, apenas nomes)
+
+---
+
+## 🔄 Ordenação Mnemônica Instantânea (`o`)
+- `o` + `M`      : **Ordenar por Modificação (Recentes Primeiro)**
+- `o` + `m`      : **Ordenar por Modificação (Antigos Primeiro)**
+- `o` + `s`      : **Ordenar por Tamanho (Maiores no Topo)**
+- `o` + `S`      : **Ordenar por Tamanho (Menores no Topo)**
+- `o` + `n` / `a`: **Ordenar por Nome (Alfabético A-Z)**
+- `o` + `e`      : **Ordenar por Extensão / Tipo**
+- `o` + `c`      : **Ordenar por Data de Criação**
+- `o` + `r`      : **Inverter Ordem Atual** (Crescente ↔ Decrescente)
+- `o` + `d`      : **Alternar Pastas no Topo** (Diretórios primeiro ↔ Misturados)
+
+---
+
+## 🏛️ Ações de Elite & Forense
+- `O` *(Shift+O)*: **OCR Forense em Imagens** (Tesseract extrai o texto da imagem/print e copia pro clipboard)
+- `M` + `w`      : **AirDrop Web Local + QR Code** (Sobe servidor HTTP e gera QR no terminal para o celular baixar)
+- `c` + `s`      : **Calcular SHA-256** (Calcula checksum e copia o hash pro clipboard)
+- `y` + `c`      : **Copiar Conteúdo do Arquivo** (Copia texto direto pro clipboard sem abrir editor)
+- `y` + `i`      : **Copiar Imagem Bitmap** (Copia como PNG pro clipboard para colar com `Ctrl+V` em apps)
+- `d` + `u`      : **Raio-X de Uso de Disco (GDU)** (Analisa espaço ocupado visualmente)
+- `u` + `t`      : **Restaurar da Lixeira** (`trash-restore` com busca interativa)
+- `M` + `M` + `w`: **Converter Imagem para WebP** (Alta compressão para web)
+- `M` + `M` + `a`: **Extrair Áudio para MP3** (Converte vídeo em áudio 320kbps)
+- `M` + `M` + `g`: **Gerar GIF Otimizado** (A partir de vídeo com paleta de alta definição)
 
 ---
 
@@ -47,7 +94,6 @@
 - `M` + `g`      : **Abrir Lazygit** na pasta atual
 - `M` + `t`      : **Abrir Terminal** na pasta atual
 - `Enter` em áudios : **Toca no Amberol Hi-Fi Player** (`SUPER + SHIFT + L` abre letras/karaokê)
-
 
 ---
 

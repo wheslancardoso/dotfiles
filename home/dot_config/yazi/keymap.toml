@@ -50,19 +50,60 @@ prepend_keymap = [
 	{ on = "l",          run = "plugin smart-enter", desc = "Entrada Inteligente (Pastas, Arquivos, Zips)" },
 
 	# --------------------------------------------------------------------------
-	# 🚀 NAVEGAÇÃO RÁPIDA (GOTO JUMPS - Atalhos Diretos no seu Drive /mnt/dados)
+	# 🚀 NAVEGAÇÃO RÁPIDA CANÔNICA (GOTO JUMPS — Linux XDG + /mnt/dados)
 	# --------------------------------------------------------------------------
+	{ on = [ "g", "h" ], run = "cd ~", desc = "Ir para Home (~)" },
+	{ on = [ "g", "d" ], run = "cd ~/Downloads", desc = "Ir para ~/Downloads" },
+	{ on = [ "g", "D" ], run = "cd ~/Documentos", desc = "Ir para ~/Documentos" },
+	{ on = [ "g", "I" ], run = "cd ~/Imagens", desc = "Ir para ~/Imagens" },
+	{ on = [ "g", "V" ], run = "cd ~/Vídeos", desc = "Ir para ~/Vídeos" },
+	{ on = [ "g", "c" ], run = "cd ~/.config", desc = "Ir para ~/.config" },
+	{ on = [ "g", "t" ], run = "cd /tmp", desc = "Ir para /tmp" },
+	{ on = [ "g", "/" ], run = "cd /", desc = "Ir para Raiz do Sistema (/)" },
+	# Saltos para partições e drives (/mnt/dados)
 	{ on = [ "g", "i" ], run = "cd /mnt/dados/00_Inbox", desc = "Ir para 00_Inbox (Downloads)" },
 	{ on = [ "g", "p" ], run = "cd /mnt/dados/01_Pessoal", desc = "Ir para 01_Pessoal" },
 	{ on = [ "g", "e" ], run = "cd /mnt/dados/03_Estudos_Carreira", desc = "Ir para 03_Estudos_Carreira" },
 	{ on = [ "g", "v" ], run = "cd /mnt/dados/04_Dev", desc = "Ir para 04_Dev (Projetos/Git)" },
+	{ on = [ "g", "x" ], run = "cd /mnt/dados/04_Dev", desc = "Ir para 04_Dev (Projetos/Git)" },
 	{ on = [ "g", "j" ], run = "cd /mnt/dados/06.4_Games", desc = "Ir para 06.4_Games (Jogos & Emuladores)" },
 	{ on = [ "g", "m" ], run = "cd /mnt/dados/05_Midias", desc = "Ir para 05_Midias" },
 	{ on = [ "g", "u" ], run = "cd /run/media", desc = "Ir para Dispositivos USB / Pen-drives" },
 	{ on = [ "g", "b" ], run = "cd /mnt/dados/06_Backups_ISOs_e_Sistemas/06.3_ISOs_e_Boot", desc = "Ir para Pasta de ISOs e Boot" },
-	{ on = [ "g", "D" ], run = "cd /mnt/dados", desc = "Ir para Raiz /mnt/dados" },
+	{ on = [ "g", "0" ], run = "cd /mnt/dados", desc = "Ir para Raiz /mnt/dados" },
 	{ on = [ "g", "G" ], run = "cd ~/gdrive", desc = "Ir para Google Drive Virtual (5 TB)" },
 	{ on = [ "g", "." ], run = "cd ~/dotfiles", desc = "Ir para ~/dotfiles" },
+
+	# --------------------------------------------------------------------------
+	# 📌 BOOKMARKS DINÂMICOS & FAVORITOS PERSISTENTES (Prefixo: 'b' ou '\'')
+	# --------------------------------------------------------------------------
+	{ on = [ "b", "a" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-bookmarks.sh add \"$PWD\"" --block', desc = "Favoritar Pasta Atual (Add Bookmark)" },
+	{ on = [ "b", "b" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-bookmarks.sh jump" --block', desc = "Abrir Menu de Favoritos (FZF Jump)" },
+	{ on = "'",          run = 'shell "bash $HOME/dotfiles/scripts/yazi-bookmarks.sh jump" --block', desc = "Abrir Favoritos (Vim Mark Jump)" },
+	{ on = [ "b", "d" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-bookmarks.sh delete" --block', desc = "Remover Pasta dos Favoritos" },
+
+	# --------------------------------------------------------------------------
+	# 📅 LINEMODES & EXIBIÇÃO DE METADADOS (Prefixo: 'm' de Mode)
+	# --------------------------------------------------------------------------
+	{ on = [ "m", "t" ], run = "linemode mtime", desc = "Exibir Data de Modificação (mtime)" },
+	{ on = [ "m", "s" ], run = "linemode size", desc = "Exibir Tamanho dos Arquivos (Padrão)" },
+	{ on = [ "m", "p" ], run = "linemode permissions", desc = "Exibir Permissões Unix (rwxr-xr-x)" },
+	{ on = [ "m", "o" ], run = "linemode owner", desc = "Exibir Proprietário e Grupo" },
+	{ on = [ "m", "n" ], run = "linemode none", desc = "Ocultar Metadados (Modo Limpo)" },
+
+	# --------------------------------------------------------------------------
+	# 🔄 ORDENAÇÃO DINÂMICA MNEMÔNICA (Prefixo: 'o' de Order / Sort)
+	# --------------------------------------------------------------------------
+	{ on = [ "o", "m" ], run = "sort modified --dir-first", desc = "Ordenar por Data de Modificação (Antigos Primeiro)" },
+	{ on = [ "o", "M" ], run = "sort modified --reverse --dir-first", desc = "Ordenar por Data de Modificação (Recentes Primeiro)" },
+	{ on = [ "o", "s" ], run = "sort size --reverse --dir-first", desc = "Ordenar por Tamanho (Maiores Primeiro)" },
+	{ on = [ "o", "S" ], run = "sort size --dir-first", desc = "Ordenar por Tamanho (Menores Primeiro)" },
+	{ on = [ "o", "n" ], run = "sort alphabetical --dir-first", desc = "Ordenar por Nome (A-Z)" },
+	{ on = [ "o", "a" ], run = "sort alphabetical --dir-first", desc = "Ordenar por Nome (A-Z)" },
+	{ on = [ "o", "e" ], run = "sort extension --dir-first", desc = "Ordenar por Extensão / Tipo" },
+	{ on = [ "o", "c" ], run = "sort created --reverse --dir-first", desc = "Ordenar por Data de Criação" },
+	{ on = [ "o", "r" ], run = "sort --reverse=toggle", desc = "Inverter Ordem (Crescente / Decrescente)" },
+	{ on = [ "o", "d" ], run = "sort --dir-first=toggle", desc = "Alternar Pastas no Topo" },
 
 	# --------------------------------------------------------------------------
 	# ⚡ INTEGRAÇÃO COM ORGANIZADOR MASTER & FERRAMENTAS DO SISTEMA
@@ -78,6 +119,20 @@ prepend_keymap = [
 	{ on = [ "M", "a" ], run = 'shell "dl --dir \"$PWD\"" --block', desc = "APEX Media Cockpit (Baixar Mídia nesta Pasta)" },
 	{ on = [ "M", "y" ], run = 'shell "dl --dir \"$PWD\"" --block', desc = "APEX Media Cockpit (Baixar Mídia nesta Pasta)" },
 	{ on = [ "M", "t" ], run = 'shell "$TERMINAL &" --confirm', desc = "Abrir Terminal nesta Pasta" },
+
+	# --------------------------------------------------------------------------
+	# 🏛️ AÇÕES DE ELITE (OCR, AirDrop Web, Hashes, Clipboard & Mídia)
+	# --------------------------------------------------------------------------
+	{ on = "O",          run = 'shell "bash $HOME/dotfiles/scripts/yazi-actions.sh ocr %s" --block', desc = "OCR Forense (Tesseract -> Clipboard)" },
+	{ on = [ "M", "w" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-actions.sh qr-share \"$PWD\"" --block', desc = "AirDrop Web Local + QR Code" },
+	{ on = [ "c", "s" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-actions.sh sha256 %s" --block', desc = "Calcular SHA-256 (Copia Hash)" },
+	{ on = [ "y", "c" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-actions.sh copy-content %s" --confirm', desc = "Copiar Conteúdo de Texto pro Clipboard" },
+	{ on = [ "y", "i" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-actions.sh copy-image %s" --confirm', desc = "Copiar Imagem Bitmap pro Clipboard" },
+	{ on = [ "d", "u" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-actions.sh disk-usage \"$PWD\"" --block', desc = "Raio-X de Uso de Disco (GDU)" },
+	{ on = [ "u", "t" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-actions.sh trash-restore" --block', desc = "Restaurar da Lixeira (trash-restore)" },
+	{ on = [ "M", "M", "w" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-actions.sh media-webp %s" --confirm', desc = "Converter Imagem para WebP" },
+	{ on = [ "M", "M", "a" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-actions.sh media-mp3 %s" --confirm', desc = "Extrair Áudio para MP3" },
+	{ on = [ "M", "M", "g" ], run = 'shell "bash $HOME/dotfiles/scripts/yazi-actions.sh media-gif %s" --confirm', desc = "Gerar GIF Otimizado" },
 
 
 	# --------------------------------------------------------------------------
