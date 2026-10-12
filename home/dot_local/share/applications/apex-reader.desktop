@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=APEX Reader
+Comment=Leitor Bimodal de Elite e Bíblia Sagrada do Ecossistema APEX
+Exec=/home/lan/.local/bin/apex-reader
+Icon=accessories-dictionary
+Terminal=false
+Type=Application
+Categories=Utility;Education;Office;
+StartupWMClass=zen-reader

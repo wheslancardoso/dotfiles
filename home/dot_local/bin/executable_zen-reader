@@ -6,12 +6,13 @@
 
 PORT=7777
 SERVER_URL="http://127.0.0.1:${PORT}"
-APP_DIR="$HOME/.local/share/zen-reader"
-PROJECT_DIR="$HOME/projects/04.1_Projetos_Web_e_Apps/zen-reader"
+APP_DIR="$HOME/.local/share/apex-reader"
+PROJECT_DIR="$HOME/projects/04.1_Projetos_Web_e_Apps/apex-reader"
 
 if [ -d "$PROJECT_DIR" ]; then
     APP_DIR="$PROJECT_DIR"
 fi
+
 
 
 PID_FILE="/tmp/zen-reader-server.pid"
