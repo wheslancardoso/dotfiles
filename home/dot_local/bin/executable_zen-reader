@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# ZEN-READER: Launcher do Leitor Bimodal de Elite (Linux / Hyprland)
+# Inicia o servidor backend local e abre a janela imersiva frameless no Brave/Chrome.
+# ==============================================================================
+
+PORT=7777
+SERVER_URL="http://127.0.0.1:${PORT}"
+APP_DIR="$HOME/.local/share/zen-reader"
+PROJECT_DIR="$HOME/projects/04.1_Projetos_Web_e_Apps/zen-reader"
+
+if [ -d "$PROJECT_DIR" ]; then
+    APP_DIR="$PROJECT_DIR"
+fi
+
+
+PID_FILE="/tmp/zen-reader-server.pid"
+
+is_server_running() {
+    curl -s --connect-timeout 1 "${SERVER_URL}/api/bible/books" >/dev/null 2>&1
+}
+
+stop_server() {
+    if [ -f "$PID_FILE" ]; then
+        kill "$(cat "$PID_FILE")" 2>/dev/null
+        rm -f "$PID_FILE"
+    fi
+    pkill -f "zen-reader.*server.py" 2>/dev/null
+    notify-send -a "Zen Reader" -t 2000 "Zen Reader" "Servidor finalizado."
+}
+
+if [ "$1" = "--stop" ] || [ "$1" = "-s" ]; then
+    stop_server
+    exit 0
+fi
+
+if [ "$1" = "--status" ]; then
+    if is_server_running; then
+        echo "Zen Reader Server: ATIVO em ${SERVER_URL}"
+    else
+        echo "Zen Reader Server: INATIVO"
+    fi
+    exit 0
+fi
+
+# Inicia o servidor se não estiver ativo
+if ! is_server_running; then
+    export PATH="$HOME/.local/share/mise/shims:$HOME/.local/share/mise/installs/python/3.12/bin:$HOME/.local/bin:$PATH"
+    python3 "${APP_DIR}/backend/server.py" >/tmp/zen-reader.log 2>&1 &
+    echo $! > "$PID_FILE"
+
+    # Aguarda inicialização (até 4 segundos)
+    for _ in {1..20}; do
+        if is_server_running; then
+            break
+        fi
+        sleep 0.2
+    done
+fi
+
+if ! is_server_running; then
+    notify-send -u critical -a "Zen Reader" "Erro ao iniciar servidor" "Verifique /tmp/zen-reader.log"
+    exit 1
+fi
+
+notify-send -a "Zen Reader" -i book -t 2000 "📖 Zen Reader" "Abrindo modo de leitura imersiva..."
+
+# Abre a janela em modo App (sem abas, sem barra de endereços, como app nativo)
+if command -v brave >/dev/null 2>&1; then
+    exec brave --app="${SERVER_URL}" --class="zen-reader" "$@"
+elif command -v google-chrome-stable >/dev/null 2>&1; then
+    exec google-chrome-stable --app="${SERVER_URL}" --class="zen-reader" "$@"
+elif command -v firefox >/dev/null 2>&1; then
+    exec firefox --new-window "${SERVER_URL}" "$@"
+else
+    exec xdg-open "${SERVER_URL}"
+fi

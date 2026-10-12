@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# TTS-SPEAK: Leitor de Texto Neural Universal (Linux / Wayland / Hyprland)
+# Utiliza edge-tts (Microsoft Neural Speech) + mpv (scaletempo2)
+# Suporta leitura por seleção primária (mouse), clipboard, arquivo ou entrada direta.
+# ==============================================================================
+
+export PATH="$HOME/.local/share/mise/shims:$HOME/.local/share/mise/installs/python/3.12/bin:$HOME/.local/bin:$PATH"
+
+MPV_TITLE="tts_stream_daemon"
+PID_FILE="/tmp/tts-speak.pid"
+
+# Configurações padrão
+DEFAULT_VOICE="pt-BR-AntonioNeural"
+DEFAULT_RATE="+25%"
+
+VOICE="${TTS_VOICE:-$DEFAULT_VOICE}"
+RATE="${TTS_RATE:-$DEFAULT_RATE}"
+
+# Função para parar qualquer leitura ativa
+stop_tts() {
+    local stopped=0
+    if pgrep -f "title=$MPV_TITLE" >/dev/null 2>&1; then
+        pkill -f "title=$MPV_TITLE" 2>/dev/null
+        stopped=1
+    fi
+    if [ -f "$PID_FILE" ]; then
+        kill "$(cat "$PID_FILE")" 2>/dev/null
+        rm -f "$PID_FILE"
+        stopped=1
+    fi
+    if [ "$stopped" -eq 1 ]; then
+        notify-send -a "TTS" -i audio-volume-muted -t 1500 "TTS Interrompido" "Reprodução finalizada."
+        return 0
+    fi
+    return 1
+}
+
+# Tratamento de flags
+if [ "$1" = "--stop" ] || [ "$1" = "-s" ]; then
+    stop_tts
+    exit 0
+fi
+
+# Se já houver reprodução em andamento, o toggle encerra
+if stop_tts; then
+    exit 0
+fi
+
+TEXT=""
+
+if [ "$1" = "--file" ] || [ "$1" = "-f" ]; then
+    if [ -f "$2" ]; then
+        TEXT=$(cat "$2")
+    else
+        notify-send -a "TTS" -u critical -t 3000 "TTS Erro" "Arquivo não encontrado: $2"
+        exit 1
+    fi
+elif [ -n "$1" ] && [ "$1" != "--toggle" ]; then
+    TEXT="$*"
+else
+    # Captura da seleção primária (texto marcado com mouse)
+    TEXT=$(wl-paste -p 2>/dev/null)
+    # Se a seleção primária estiver vazia, tenta o clipboard regular
+    if [ -z "$TEXT" ]; then
+        TEXT=$(wl-paste 2>/dev/null)
+    fi
+fi
+
+# Limpeza e sanitização básica
+TEXT=$(echo "$TEXT" | sed '/^[[:space:]]*$/d')
+
+if [ -z "$TEXT" ]; then
+    notify-send -a "TTS" -i dialog-information -t 2000 "TTS" "Nenhum texto selecionado para leitura."
+    exit 0
+fi
+
+# Resumo para notificação (primeiros 60 caracteres)
+PREVIEW=$(echo "$TEXT" | tr '\n' ' ' | head -c 60)
+notify-send -a "TTS" -i audio-speakers -t 3000 "🔊 Lendo Seleção (${RATE})" "${PREVIEW}..."
+
+# Executa em subshell e grava PID
+(
+    edge-tts --voice "$VOICE" --rate="$RATE" --text "$TEXT" | \
+        mpv --title="$MPV_TITLE" --no-video --keep-open=no --really-quiet -
+    rm -f "$PID_FILE"
+) &
+
+echo $! > "$PID_FILE"

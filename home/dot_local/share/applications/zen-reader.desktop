@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Zen Reader
+Comment=Leitor Bimodal de Elite com Áudio Neural e Highlighting Sincronizado
+Exec=/home/lan/.local/bin/zen-reader
+Icon=accessories-dictionary
+Terminal=false
+Type=Application
+Categories=Utility;Education;Office;
+StartupWMClass=zen-reader

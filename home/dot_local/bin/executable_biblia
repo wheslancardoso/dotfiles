@@ -1,0 +1,338 @@
+#!/usr/bin/env python3
+# ==============================================================================
+# BIBLIA CLI / ZEN READER & BIMODAL AUDIO (Linux / Hyprland)
+# Consulta bíblica ultrarrápida (NVI), busca textual e narração neural (Edge-TTS).
+# ==============================================================================
+
+import os
+import sys
+import json
+import re
+import unicodedata
+import argparse
+import subprocess
+import shutil
+
+BIBLE_JSON_PATH = os.path.expanduser("~/.local/share/biblia/pt_nvi.json")
+DOTFILES_BIBLE_PATH = os.path.expanduser("~/dotfiles/home/dot_local/share/biblia/pt_nvi.json")
+
+# Cores ANSI para modo Zen no terminal
+RESET = "\033[0m"
+BOLD = "\033[1m"
+DIM = "\033[2m"
+CYAN = "\033[36m"
+YELLOW = "\033[33m"
+GREEN = "\033[32m"
+BLUE = "\033[34m"
+MAGENTA = "\033[35m"
+WHITE = "\033[97m"
+
+def normalize(text: str) -> str:
+    """Remove acentos, pontuação e converte para minúsculas."""
+    text = unicodedata.normalize("NFKD", text)
+    text = "".join(c for c in text if not unicodedata.combining(c))
+    return re.sub(r"[^a-z0-9]", "", text.lower())
+
+def load_bible():
+    target = BIBLE_JSON_PATH if os.path.exists(BIBLE_JSON_PATH) else DOTFILES_BIBLE_PATH
+    if not os.path.exists(target):
+        sys.stderr.write(f"Erro: Arquivo bíblico não encontrado em {target}\n")
+        sys.exit(1)
+    with open(target, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+# Tabela canônica de aliases para facilitar digitação rápida
+ALIASES = {
+    "gn": "Gênesis", "genesis": "Gênesis",
+    "ex": "Êxodo", "exodo": "Êxodo",
+    "lv": "Levítico", "levitico": "Levítico",
+    "nm": "Números", "numeros": "Números",
+    "dt": "Deuteronômio", "deuteronomio": "Deuteronômio",
+    "js": "Josué", "josue": "Josué",
+    "jz": "Juízes", "juizes": "Juízes",
+    "rt": "Rute", "rute": "Rute",
+    "1sm": "1 Samuel", "1samuel": "1 Samuel",
+    "2sm": "2 Samuel", "2samuel": "2 Samuel",
+    "1rs": "1 Reis", "1reis": "1 Reis",
+    "2rs": "2 Reis", "2reis": "2 Reis",
+    "1cr": "1 Crônicas", "1cronicas": "1 Crônicas",
+    "2cr": "2 Crônicas", "2cronicas": "2 Crônicas",
+    "ed": "Esdras", "esdras": "Esdras",
+    "ne": "Neemias", "neemias": "Neemias",
+    "et": "Ester", "ester": "Ester",
+    "jo": "Jó", "job": "Jó", # Jó
+    "sl": "Salmos", "salmo": "Salmos", "salmos": "Salmos", "psalms": "Salmos",
+    "pv": "Provérbios", "proverbios": "Provérbios", "pr": "Provérbios",
+    "ec": "Eclesiastes", "eclesiastes": "Eclesiastes",
+    "ct": "Cânticos", "canticos": "Cânticos", "cantares": "Cânticos",
+    "is": "Isaías", "isaias": "Isaías",
+    "jr": "Jeremias", "jeremias": "Jeremias",
+    "lm": "Lamentações", "lamentacoes": "Lamentações",
+    "ez": "Ezequiel", "ezequiel": "Ezequiel",
+    "dn": "Daniel", "daniel": "Daniel",
+    "os": "Oséias", "oseias": "Oséias",
+    "jl": "Joel", "joel": "Joel",
+    "am": "Amós", "amos": "Amós",
+    "ob": "Obadias", "obadias": "Obadias",
+    "jn": "Jonas", "jonas": "Jonas",
+    "mq": "Miquéias", "miqueias": "Miquéias",
+    "na": "Naum", "naum": "Naum",
+    "hc": "Habacuque", "habacuque": "Habacuque",
+    "sf": "Sofonias", "sofonias": "Sofonias",
+    "ag": "Ageu", "ageu": "Ageu",
+    "zc": "Zacarias", "zacarias": "Zacarias",
+    "ml": "Malaquias", "malaquias": "Malaquias",
+    # Novo Testamento
+    "mt": "Mateus", "mateus": "Mateus",
+    "mc": "Marcos", "marcos": "Marcos",
+    "lc": "Lucas", "lucas": "Lucas",
+    "joh": "João", "joao": "João", "jn": "João", # João Evangelho
+    "at": "Atos", "atos": "Atos",
+    "rm": "Romanos", "romanos": "Romanos", "ro": "Romanos",
+    "1co": "1 Coríntios", "1corintios": "1 Coríntios",
+    "2co": "2 Coríntios", "2corintios": "2 Coríntios",
+    "gl": "Gálatas", "galatas": "Gálatas",
+    "ef": "Efésios", "efesios": "Efésios",
+    "fp": "Filipenses", "filipenses": "Filipenses",
+    "cl": "Colossenses", "colossenses": "Colossenses",
+    "1ts": "1 Tessalonicenses", "1tessalonicenses": "1 Tessalonicenses",
+    "2ts": "2 Tessalonicenses", "2tessalonicenses": "2 Tessalonicenses",
+    "1tm": "1 Timóteo", "1timoteo": "1 Timóteo",
+    "2tm": "2 Timóteo", "2timoteo": "2 Timóteo",
+    "tt": "Tito", "tito": "Tito",
+    "fm": "Filemom", "filemom": "Filemom",
+    "hb": "Hebreus", "hebreus": "Hebreus",
+    "tg": "Tiago", "tiago": "Tiago",
+    "1pe": "1 Pedro", "1pedro": "1 Pedro",
+    "2pe": "2 Pedro", "2pedro": "2 Pedro",
+    "1jo": "1 João", "1joao": "1 João",
+    "2jo": "2 João", "2joao": "2 João",
+    "3jo": "3 João", "3joao": "3 João",
+    "jd": "Judas", "judas": "Judas",
+    "ap": "Apocalipse", "apocalipse": "Apocalipse", "revelation": "Apocalipse"
+}
+
+def find_book(bible, query: str):
+    q_norm = normalize(query)
+    # 1. Alias direto
+    if q_norm in ALIASES:
+        target_name = ALIASES[q_norm]
+        for book in bible:
+            if book["name"] == target_name:
+                return book
+
+    # 2. Match exato ou abreviação
+    for book in bible:
+        if normalize(book["abbrev"]) == q_norm or normalize(book["name"]) == q_norm:
+            return book
+
+    # 3. Prefixo / Substring
+    for book in bible:
+        if normalize(book["name"]).startswith(q_norm):
+            return book
+
+    return None
+
+def wrap_text(text: str, width: int = 80, indent: str = "    ") -> str:
+    words = text.split()
+    lines = []
+    current_line = []
+    current_len = 0
+    for w in words:
+        if current_len + len(w) + 1 > width:
+            lines.append(" ".join(current_line))
+            current_line = [w]
+            current_len = len(w)
+        else:
+            current_line.append(w)
+            current_len += len(w) + 1
+    if current_line:
+        lines.append(" ".join(current_line))
+    return "\n".join(lines[0:1] + [indent + line for line in lines[1:]])
+
+def play_audio(title: str, text: str, rate: str = "+25%", voice: str = "pt-BR-AntonioNeural"):
+    """Toca áudio neural via edge-tts e mpv em streaming."""
+    subprocess.run(["notify-send", "-a", "Bíblia Zen", "-i", "audio-speakers", "-t", "3000",
+                    f"🔊 Lendo: {title} ({rate})", "Pressione 'q' no terminal para pausar/sair."])
+    
+    edge_cmd = ["edge-tts", "--voice", voice, "--rate", rate, "--text", text]
+    mpv_cmd = ["mpv", "--title=tts_stream_biblia", "--no-video", "--keep-open=no", "--really-quiet", "-"]
+    
+    try:
+        p1 = subprocess.Popen(edge_cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+        p2 = subprocess.Popen(mpv_cmd, stdin=p1.stdout)
+        p1.stdout.close()
+        p2.communicate()
+    except KeyboardInterrupt:
+        p2.terminate()
+        print("\n\033[33mLeitura pausada.\033[0m")
+
+def show_chapter(bible, book, chapter_num: int, verse_range: str = None, listen: bool = False, rate: str = "+25%"):
+    chapters = book["chapters"]
+    if chapter_num < 1 or chapter_num > len(chapters):
+        print(f"{YELLOW}Aviso: {book['name']} possui {len(chapters)} capítulos.{RESET}")
+        return
+
+    chapter_verses = chapters[chapter_num - 1]
+    total_verses = len(chapter_verses)
+
+    v_start, v_end = 1, total_verses
+    if verse_range:
+        if "-" in verse_range:
+            parts = verse_range.split("-")
+            v_start = int(parts[0])
+            v_end = int(parts[1]) if parts[1] else total_verses
+        else:
+            v_start = int(verse_range)
+            v_end = int(verse_range)
+
+    # Cabeçalho Zen
+    term_width = min(shutil.get_terminal_size((80, 20)).columns, 90)
+    print("\n" + "─" * term_width)
+    ref_title = f"{book['name']} {chapter_num}" + (f":{verse_range}" if verse_range else "")
+    print(f"  {BOLD}{CYAN}📖  {ref_title}{RESET}  {DIM}(Nova Versão Internacional - NVI){RESET}")
+    print("─" * term_width + "\n")
+
+    audio_text_parts = []
+    
+    for i in range(v_start - 1, min(v_end, total_verses)):
+        v_num = i + 1
+        v_text = chapter_verses[i]
+        audio_text_parts.append(f"Versículo {v_num}. {v_text}")
+        
+        # Formatação do versículo
+        num_tag = f"{YELLOW}{BOLD}{v_num:2d}{RESET} "
+        formatted_v = wrap_text(f"{num_tag} {v_text}", width=term_width - 4, indent="     ")
+        print(f"  {formatted_v}\n")
+
+    print("─" * term_width)
+
+    if listen:
+        full_audio_text = f"{book['name']}, capítulo {chapter_num}. " + " ".join(audio_text_parts)
+        print(f"\n{BOLD}{GREEN}▶ Iniciando áudio neural ({rate})...{RESET} {DIM}[q para parar]{RESET}")
+        play_audio(ref_title, full_audio_text, rate=rate)
+
+def search_text(bible, query: str):
+    """Busca termos na Bíblia inteira."""
+    q_norm = normalize(query)
+    matches = []
+    for book in bible:
+        for c_idx, chapter in enumerate(book["chapters"]):
+            for v_idx, verse in enumerate(chapter):
+                if q_norm in normalize(verse):
+                    matches.append((book["name"], c_idx + 1, v_idx + 1, verse))
+
+    print(f"\n{BOLD}{CYAN}🔍 Busca por:{RESET} \"{query}\"  {DIM}({len(matches)} ocorrências){RESET}\n")
+    if not matches:
+        print(f"  {YELLOW}Nenhum versículo encontrado.{RESET}\n")
+        return
+
+    for book_name, chap, ver, text in matches[:25]:
+        print(f"  {BOLD}{YELLOW}{book_name} {chap}:{ver}{RESET}")
+        print(f"    {DIM}{text}{RESET}\n")
+
+    if len(matches) > 25:
+        print(f"  {DIM}... e mais {len(matches) - 25} versículos encontrados.{RESET}\n")
+
+def main():
+    bible = load_bible()
+
+    parser = argparse.ArgumentParser(
+        description="Bíblia CLI / Leitor Zen Bimodal (NVI)",
+        usage="biblia [livro] [capitulo] [versiculo] [-o] | biblia buscar <termo>"
+    )
+    parser.add_argument("args", nargs="*", help="Referência (ex: joao 3, romanos 8:28, sl 23)")
+    parser.add_argument("-o", "--ouvir", "--listen", action="store_true", help="Ouvir capítulo/versículo com voz neural")
+    parser.add_argument("-r", "--rate", default="+25%", help="Velocidade da narração (padrão: +25%%)")
+    parser.add_argument("-b", "--buscar", "--search", help="Buscar texto em toda a Bíblia")
+    parser.add_argument("--rofi", action="store_true", help="Abrir seletor interativo via Rofi")
+
+    parsed = parser.parse_args()
+
+    if parsed.buscar:
+        search_text(bible, parsed.buscar)
+        return
+
+    if not parsed.args:
+        # Se chamado sem argumentos e com --rofi
+        if parsed.rofi or not sys.stdin.isatty():
+            # Menu Rofi
+            books_list = "\n".join(f"{b['name']} ({len(b['chapters'])} cap)" for b in bible)
+            rofi_cmd = subprocess.run(["rofi", "-dmenu", "-p", "📖 Selecione o Livro"], input=books_list, text=True, stdout=subprocess.PIPE)
+            selected = rofi_cmd.stdout.strip()
+            if not selected:
+                return
+            book_name = selected.split(" (")[0]
+            book = find_book(bible, book_name)
+            if not book:
+                return
+            caps_list = "\n".join(f"Capítulo {i+1}" for i in range(len(book["chapters"])))
+            c_cmd = subprocess.run(["rofi", "-dmenu", "-p", f"📖 {book['name']}: Capítulo"], input=caps_list, text=True, stdout=subprocess.PIPE)
+            c_sel = c_cmd.stdout.strip()
+            if not c_sel:
+                return
+            c_num = int(c_sel.replace("Capítulo ", ""))
+            # Pergunta se quer ouvir
+            act_cmd = subprocess.run(["rofi", "-dmenu", "-p", "Ação"], input="1. Ler na Janela\n2. Ouvir com Áudio Neural", text=True, stdout=subprocess.PIPE)
+            listen = "Ouvir" in act_cmd.stdout
+            if listen:
+                show_chapter(bible, book, c_num, listen=True, rate=parsed.rate)
+            else:
+                subprocess.Popen(["ghostty", "-e", "bash", "-c", f"biblia {book['name']} {c_num}; read -n 1 -s -r -p 'Pressione qualquer tecla para fechar...'"])
+            return
+
+        # Modo de Ajuda e Exibição de Livros
+        print(f"""
+{BOLD}{CYAN}📖  BÍBLIA SAGRADA (NVI) - LEITOR ZEN & ÁUDIO BIMODAL{RESET}
+{DIM}Uso prático:{RESET}
+  {BOLD}biblia joao 3{RESET}             Lê o capítulo 3 de João no terminal
+  {BOLD}biblia romanos 8 -o{RESET}       Lê o texto e inicia narração neural simultânea
+  {BOLD}biblia sl 23{RESET}              Salmo 23 formatado em modo Zen
+  {BOLD}biblia mt 5 1-12{RESET}          Mateus 5 (versículos 1 ao 12)
+  {BOLD}biblia -b "amor de Deus"{RESET}  Busca versículos em toda a Bíblia
+  {BOLD}biblia --rofi{RESET}             Menu gráfico para escolher Livro e Capítulo
+""")
+        return
+
+    # Parse dos argumentos livres
+    first_arg = parsed.args[0].lower()
+    if first_arg in ["buscar", "find", "search"] and len(parsed.args) > 1:
+        search_text(bible, " ".join(parsed.args[1:]))
+        return
+
+    # Tratamento de referências compostas:
+    # Casos: "1", "corintios", "13" -> "1 corintios", 13
+    # Casos: "romanos", "8", "28" -> "romanos", 8, "28"
+    # Casos: "joao", "3:16" -> "joao", 3, "16"
+    
+    book_query = parsed.args[0]
+    next_idx = 1
+    if parsed.args[0] in ["1", "2", "3"] and len(parsed.args) > 1:
+        book_query = f"{parsed.args[0]} {parsed.args[1]}"
+        next_idx = 2
+
+    book = find_book(bible, book_query)
+    if not book:
+        print(f"{YELLOW}Livro não reconhecido: '{book_query}'{RESET}")
+        print("Exemplos: 'gn', 'genesis', 'sl', 'salmos', 'joao', 'rm', 'romanos'")
+        return
+
+    chap_num = 1
+    verse_range = None
+
+    if len(parsed.args) > next_idx:
+        raw_chap = parsed.args[next_idx]
+        if ":" in raw_chap:
+            parts = raw_chap.split(":")
+            chap_num = int(parts[0])
+            verse_range = parts[1]
+        else:
+            chap_num = int(raw_chap)
+
+    if len(parsed.args) > next_idx + 1:
+        verse_range = parsed.args[next_idx + 1]
+
+    show_chapter(bible, book, chap_num, verse_range=verse_range, listen=parsed.ouvir, rate=parsed.rate)
+
+if __name__ == "__main__":
+    main()
