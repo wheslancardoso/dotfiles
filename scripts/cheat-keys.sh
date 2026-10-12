@@ -101,21 +101,50 @@ SUPER + ALT + O	🚀 Hyprland	Organizador Master Cockpit	Menu interativo para au
 c p	📂 Yazi	Copiar Caminho Absoluto	Copia o caminho completo (ex: /mnt/dados/pasta/arquivo.iso) direto pro Clipboard.	copiar caminho path localizacao pasta arquivo absoluto fullpath endereco clipboard wayland wl-copy yazi	copy_key
 c f	📂 Yazi	Copiar Nome do Arquivo	Copia apenas o nome do arquivo com a extensão (ex: video.mp4).	copiar nome filename title nome arquivo name clipboard yazi	copy_key
 c d	📂 Yazi	Copiar Caminho da Pasta	Copia o diretório/pasta onde você está navegando no Yazi.	copiar pasta dirpath dirname diretorio caminho pasta localizacao yazi	copy_key
-F2 ou r	📂 Yazi	Renomear Inteligente	Limpa o nome mantendo a extensão (.mp4/.pdf/.iso) intacta para digitação direta.	renomear rename mudar nome editar nome titulo f2 r stem preservar extensao yazi	copy_key
+c s	📂 Yazi	Calcular SHA-256	Calcula o hash SHA-256 do arquivo e copia automaticamente para o Clipboard.	sha256 hash checksum integridade verificar arquivo copia clipboard yazi	copy_key
+y c	📂 Yazi	Copiar Conteúdo do Arquivo	Copia todo o texto do arquivo diretamente para a área de transferência sem abrir editor.	copiar conteudo texto copiar arquivo texto clipboard yazi	copy_key
+y i	📂 Yazi	Copiar Imagem Bitmap	Copia a imagem como PNG para colar com Ctrl+V no Discord, Telegram ou Navegador.	copiar imagem bitmap png clipboard colar discord telegram yazi	copy_key
+F2 ou r	📂 Yazi	Renomear Inteligente	Mantém o nome com o cursor antes da extensão pronto para editar sem apagar tudo.	renomear rename mudar nome editar nome titulo f2 r stem preservar extensao yazi	copy_key
 r e	📂 Yazi	Mudar Extensão do Arquivo	Permite alterar o formato/extensão (.mkv -> .mp4, .txt -> .md).	mudar extensao trocar extensao formato rename ext all yazi	copy_key
+R	📂 Yazi	Renomear do Zero	Limpa o nome mantendo a extensão intacta.	renomear do zero limpar nome manter extensao yazi	copy_key
+c r ou r p	📂 Yazi	Colar Título do Clipboard	Pega o texto copiado no navegador e renomeia preservando a extensão original.	colar titulo clipboard colar renomear da web yazi	copy_key
 u ou Ctrl+Z	📂 Yazi	Desfazer Renomeação (Undo)	Restaura o nome anterior do arquivo caso tenha errado ao renomear.	desfazer undo reverter voltar cancelar erro renomear nome anterior yazi	copy_key
 y	📂 Yazi	Copiar Arquivo Físico (Yank)	Copia o arquivo selecionado para colar com 'p' em qualquer outra pasta.	copiar arquivo duplicar transferir yank paste yazi	copy_key
 x	📂 Yazi	Recortar Arquivo Físico (Cut)	Recorta o arquivo para mover com 'p' para outra pasta.	recortar cortar mover transferir cut yazi	copy_key
 p	📂 Yazi	Colar Arquivo(s)	Cola os arquivos copiados ou recortados na pasta atual.	colar paste inserir descarregar yazi	copy_key
+c k ou Ctrl+N	📂 Yazi	Criar Nova Pasta Direto	Cria uma nova pasta sem necessidade de digitar '/' no final do nome.	criar pasta mkdir nova pasta diretorio yazi	copy_key
 d d	📂 Yazi	Mover para a Lixeira (Trash)	Envia o arquivo para a lixeira segura sem risco de perda permanente.	lixeira trash apagar deletar remover excluir dd lixeira segura yazi	copy_key
 D	📂 Yazi	Deletar Permanentemente	Apaga o arquivo em definitivo do disco sem passar pela lixeira.	deletar permanente apagar direto excluir definitivo sem lixeira yazi	copy_key
-Ctrl + Y	📂 Yazi	Arrastar Arquivo (Drag & Drop)	Abre o seletor visual para arrastar arquivos com o mouse pro Brave, Discord ou WhatsApp.	arrastar soltar drag drop ripdrag navegador discord whatsapp anexar yazi	copy_key
+u t	📂 Yazi	Restaurar da Lixeira	Abre menu interativo para restaurar arquivos excluídos da lixeira.	restaurar lixeira recuperar trash-restore lixeira segura yazi	copy_key
+Ctrl + Y	📂 Yazi	Arrastar Arquivo (Drag & Drop)	Abre seletor visual para arrastar arquivos com mouse pro Brave, Discord ou WhatsApp.	arrastar soltar drag drop ripdrag navegador discord whatsapp anexar yazi	copy_key
 Ctrl + D	📂 Yazi	Comparar Arquivos (Diff)	Abre visualizador de diferenças entre dois arquivos selecionados.	diff comparar diferenca alteracoes versao yazi	copy_key
 c z	📂 Yazi	Comprimir para .ZIP (Rápido)	Compacta arquivos ou pastas selecionadas em .zip.	compactar comprimir zip zipar empacotar rapido yazi	copy_key
 c 7	📂 Yazi	Comprimir para .7Z (Ultra LZMA2)	Compacta com compressão máxima multi-thread 7-Zip.	compactar comprimir 7z 7zip lzma2 ultra maximo yazi	copy_key
 c t	📂 Yazi	Comprimir para .TAR.GZ (Linux)	Compacta no formato padrão do ecossistema Unix/Linux.	compactar comprimir tar targz tar.gz linux gzip yazi	copy_key
 X ou e s	📂 Yazi	Extrair para Subpasta Limpa	Descompacta o arquivo criando automaticamente uma pasta com o nome dele (1 toque).	extrair descompactar unzip extract subpasta descompactar limpo yazi	copy_key
 e x	📂 Yazi	Extrair Conteúdo Aqui	Descompacta todos os arquivos diretamente na pasta atual.	extrair aqui extract here descompactar solto yazi	copy_key
+b a	📂 Yazi	Favoritar Pasta Atual	Salva o diretório atual nos favoritos persistentes com apelido personalizável.	favoritar bookmark marcar pasta pin salvar favoritos yazi	copy_key
+b b ou '	📂 Yazi	Menu de Favoritos (FZF Jump)	Abre menu interativo com busca fuzzy e preview para pular para pastas favoritas.	favoritos bookmarks menu fzf jump pular marcas yazi	copy_key
+b d	📂 Yazi	Remover Favorito	Abre menu interativo para excluir um favorito salvo.	remover favorito deletar bookmark apagar favoritos yazi	copy_key
+m t	📂 Yazi	Exibir Data de Modificação	Alterna a coluna lateral para exibir a data e hora de modificação (mtime).	data modificacao mtime quando alterado horario data linemode yazi	copy_key
+m s	📂 Yazi	Exibir Tamanho dos Arquivos	Alterna a coluna lateral para exibir o tamanho (bytes, KB, MB, GB).	tamanho size espaco tamanho arquivo linemode yazi	copy_key
+m p	📂 Yazi	Exibir Permissões Unix	Alterna a coluna lateral para exibir as permissões rwxr-xr-x.	permissoes chmod unix rwx linemode yazi	copy_key
+m o	📂 Yazi	Exibir Dono e Grupo	Alterna a coluna lateral para exibir proprietário e grupo do arquivo.	dono proprietario grupo owner linemode yazi	copy_key
+m n	📂 Yazi	Ocultar Metadados (Modo Limpo)	Oculta colunas laterais exibindo apenas a listagem limpa de nomes.	modo limpo ocultar metadados linemode none yazi	copy_key
+o M	📂 Yazi	Ordenar por Mais Recentes	Reordena a pasta colocando os arquivos modificados recentemente no topo.	ordenar recentes data modificacao novos primeiro order sort yazi	copy_key
+o m	📂 Yazi	Ordenar por Mais Antigos	Reordena por data de modificação com os mais antigos no topo.	ordenar antigos data modificacao velhos order sort yazi	copy_key
+o s	📂 Yazi	Ordenar por Tamanho (Maiores)	Reordena colocando os maiores arquivos no topo da lista.	ordenar tamanho maiores pesados order sort yazi	copy_key
+o S	📂 Yazi	Ordenar por Tamanho (Menores)	Reordena colocando os menores arquivos no topo da lista.	ordenar tamanho menores leves order sort yazi	copy_key
+o n ou o a	📂 Yazi	Ordenar por Nome (A-Z)	Reordena a lista em ordem alfabética de nomes.	ordenar alfabetico nome a-z order sort yazi	copy_key
+o e	📂 Yazi	Ordenar por Extensão	Agrupa arquivos por extensão e formato.	ordenar extensao tipo formato order sort yazi	copy_key
+o r	📂 Yazi	Inverter Ordem (Reverse)	Inverte a direção da ordenação atual (Crescente ↔ Decrescente).	inverter ordem reverso reverse toggle order sort yazi	copy_key
+o d	📂 Yazi	Alternar Pastas no Topo	Alterna se diretórios ficam agrupados no topo ou misturados.	pastas topo diretorios primeiro dir-first toggle yazi	copy_key
+O (Shift+O)	📂 Yazi	OCR Forense (Imagem -> Texto)	Extrai texto de prints/fotos via Tesseract e copia direto pro Clipboard.	ocr reconhecer texto imagem print foto ler texto clipboard tesseract yazi	copy_key
+M w	📂 Yazi	AirDrop Web Local + QR Code	Sobe servidor web HTTP local e exibe QR Code no terminal para o celular baixar.	compartilhar airdrop qr code servidor web http celular transferir yazi	copy_key
+d u	📂 Yazi	Raio-X de Uso de Disco (GDU)	Abre analisador visual de consumo de disco na pasta atual.	disco espaco gdu uso armazenamento tamanho ocupado yazi	copy_key
+M M w	📂 Yazi	Converter Imagem para WebP	Converte a imagem selecionada para WebP leve e otimizado.	converter imagem webp otimizar compactar ffmpeg yazi	copy_key
+M M a	📂 Yazi	Extrair Áudio para MP3	Extrai a trilha de áudio de vídeos diretamente para MP3 320kbps.	extrair audio mp3 converter video musica ffmpeg yazi	copy_key
+M M g	📂 Yazi	Gerar GIF Otimizado de Vídeo	Cria GIF animado de alta qualidade a partir do arquivo de vídeo.	gerar gif converter video gif animacao ffmpeg yazi	copy_key
 z	📂 Yazi	Pulo Rápido por Pastas (Zoxide)	Aperte 'z', digite parte do nome da pasta (ex: down, dev) e pule na hora.	pular navegar zoxide jump ir para pasta z yazi	copy_key
 Z	📂 Yazi	Busca Recursiva Fuzzy (FZF)	Busca ultra-rápida em profundidade com preview e toggle de ocultos (Ctrl+H).	buscar pesquisar fzf fuzzy recursivo localizar arquivo achar yazi	copy_key
 M m	📂 Yazi	Montar / Ejetar Discos e Pen-drives	Gerenciador de montagem e ejeção segura de mídias USB e partições.	montar ejetar pendrive usb disco hd externo mount unmount yazi	copy_key
@@ -127,15 +156,26 @@ M a ou M y	📂 Yazi	Baixar Mídia Nesta Pasta	Baixa vídeo ou áudio do link co
 M g	📂 Yazi	Abrir Lazygit Nesta Pasta	Abre interface gráfica de Git no diretório atual.	git lazygit commits branches diff yazi	copy_key
 M t	📂 Yazi	Abrir Terminal Nesta Pasta	Abre uma nova janela do terminal no diretório atual.	terminal console abrir pasta kitty yazi	copy_key
 . (ponto)	📂 Yazi	Mostrar / Ocultar Ocultos	Alterna a exibição de dotfiles e pastas ocultas.	ocultos dotfiles ponto mostrar esconder toggle hidden yazi	copy_key
-g i	📂 Yazi	Ir para 00_Inbox_Triagem	Navega para a pasta de downloads e triagem.	ir inbox downloads triagem pasta goto jump yazi	copy_key
-g p	📂 Yazi	Ir para 01_Pessoal	Navega para a pasta de documentos pessoais e finanças.	ir pessoal documentos financas saude goto jump yazi	copy_key
-g e	📂 Yazi	Ir para 03_Estudos_Carreira	Navega para a pasta de estudos, concursos e livros.	ir estudos concursos livros carreira tce goto jump yazi	copy_key
-g v	📂 Yazi	Ir para 04_Dev	Navega para a pasta de desenvolvimento e código.	ir dev programacao codigo git projetos goto jump yazi	copy_key
-g m	📂 Yazi	Ir para 05_Midias	Navega para a pasta de vídeos, músicas e design.	ir midias videos musicas design fotos goto jump yazi	copy_key
+? ou F1	📂 Yazi	Cheatsheet Completo do Yazi	Abre a ajuda visual completa com todos os atalhos e funções de elite.	ajuda cheatsheet guia teclas atalhos f1 ? yazi	copy_key
+g h	📂 Yazi	Ir para Home (~)	Navega para a pasta pessoal do usuário.	ir home usuario pasta inicial goto jump yazi	copy_key
+g d ou g i	📂 Yazi	Ir para 00_Inbox_Triagem	Navega para a pasta de downloads e triagem do disco.	ir inbox downloads triagem pasta goto jump yazi	copy_key
+g p ou g D	📂 Yazi	Ir para 01_Pessoal_e_Vida	Navega para a pasta de documentos pessoais, saúde e finanças.	ir pessoal documentos vida saude financas goto jump yazi	copy_key
+g e	📂 Yazi	Ir para 02_Estudos_e_Concursos	Navega para a pasta de estudos, concursos e apostilas.	ir estudos concursos livros carreira tce goto jump yazi	copy_key
+g C	📂 Yazi	Ir para ~/concurso (TCE-GO)	Navega para o quartel-general de estudos do concurso TCE-GO 2026.	ir concurso tce tce-go estudos auditor ti goto jump yazi	copy_key
+g w	📂 Yazi	Ir para 03_Profissional_WFIX	Navega para a pasta de projetos profissionais WFIX.	ir profissional wfix trabalho projetos goto jump yazi	copy_key
+g v ou g x	📂 Yazi	Ir para 04_Dev (Códigos)	Navega para a pasta de desenvolvimento, código e repositórios.	ir dev programacao codigo git projetos goto jump yazi	copy_key
+g m ou g I	📂 Yazi	Ir para 05_Design_Midia_e_Criacao	Navega para a pasta de mídias, design e imagens.	ir midias design criacao imagens fotos goto jump yazi	copy_key
+g a	📂 Yazi	Ir para 05.2_Audios_e_Midias	Navega para a pasta de músicas e áudios.	ir audios musicas mp3 flac goto jump yazi	copy_key
+g f ou g V	📂 Yazi	Ir para 05.4_Filmes_e_Series	Navega para a pasta de filmes, séries e vídeos.	ir filmes series videos animes mpv goto jump yazi	copy_key
+g b	📂 Yazi	Ir para 06_Backups_ISOs	Navega para a pasta de backups e imagens de sistemas.	ir backups isos sistemas instaladores goto jump yazi	copy_key
 g j	📂 Yazi	Ir para 06.4_Games	Navega para a pasta de jogos e emuladores.	ir games jogos emuladores roms goto jump yazi	copy_key
-g b	📂 Yazi	Ir para 06.3_ISOs_e_Boot	Navega para a pasta de ISOs do Ventoy e instaladores.	ir boot isos ventoy instaladores sistemas goto jump yazi	copy_key
+g 0	📂 Yazi	Ir para Raiz /mnt/dados	Navega para a raiz da partição de dados do HD.	ir raiz dados mnt dados hd particao goto jump yazi	copy_key
+g c	📂 Yazi	Ir para ~/.config	Navega para as configurações do sistema do usuário.	ir config configuracoes sistema dotfiles goto jump yazi	copy_key
+g .	📂 Yazi	Ir para ~/dotfiles	Navega para a pasta do repositório dotfiles.	ir dotfiles repositorio git configs goto jump yazi	copy_key
 g G	📂 Yazi	Ir para Google Drive 5TB	Navega para o Google Drive virtual montado em ~/gdrive.	ir drive gdrive nuvem 5tb google drive goto jump yazi	copy_key
-g .	📂 Yazi	Ir para ~/dotfiles	Navega para a pasta do repositório de configurações do sistema.	ir dotfiles configs configuracoes sistema goto jump yazi	copy_key
+g u	📂 Yazi	Ir para Pen-drives (/run/media)	Navega para os dispositivos USB e pen-drives conectados.	ir usb pendrive midia removivel goto jump yazi	copy_key
+g t	📂 Yazi	Ir para /tmp	Navega para os arquivos temporários do sistema.	ir tmp temporarios arquivos cache goto jump yazi	copy_key
+g /	📂 Yazi	Ir para Raiz do Linux (/)	Navega para a raiz absoluta do sistema operacional.	ir raiz sistema linux barra root goto jump yazi	copy_key
 vibe	💻 Dev Suite	Iniciar Ambiente Vibe Coding	Abre layout Zellij com LazyVim (70%) + Terminal de IA (30%).	programar vibe coding dev zellij neovim ia layout terminal	vibe
 Space (no Neovim)	💻 LazyVim	Tecla Líder (Leader Key)	Prefixo principal de todos os comandos do editor.	leader tecla lider space neovim lazyvim	copy_key
 Space f f	💻 LazyVim	Buscar Arquivo no Projeto	Localizador rápido de arquivos por nome (Telescope / Snacks Picker).	buscar arquivo find files telescope neovim lazyvim	copy_key

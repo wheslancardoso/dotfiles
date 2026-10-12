@@ -141,6 +141,8 @@ prepend_keymap = [
 	# --------------------------------------------------------------------------
 	# 💡 AJUDA E DIAGNÓSTICO
 	# --------------------------------------------------------------------------
+	{ on = "?",     run = 'shell "bash $HOME/dotfiles/scripts/yazi-help.sh" --block', desc = "Guia / Cheatsheet de Atalhos do Yazi" },
+	{ on = "<F1>",  run = 'shell "bash $HOME/dotfiles/scripts/yazi-help.sh" --block', desc = "Guia / Cheatsheet de Atalhos do Yazi" },
 	{ on = "<F12>", run = 'shell "notify-send -a Yazi \"Yazi Power-User\" \"Configuração carregada com sucesso! Pressione ? para ajuda.\"" --confirm', desc = "Status / Teste Yazi" },
 
 	# --------------------------------------------------------------------------
