@@ -752,3 +752,33 @@ flowchart TD
 * **A Dor (455+ Likes):** Um Draugr Death Overlord usa o grito *Disarm*, sua espada épica/única voa longe no chão escuro da catacumba, entra embaixo de uma pedra ou cai no abismo e você perde a arma para sempre.
 * **A Solução:** **Scrambled Bugs** (`43532`):
   * Ativa a trava de proteção em C++ no arquivo `.ini` (`fDisarmPlayer = 0` / *Disarm Protection*): o grito do Draugr aplica dano e atordoamento no jogador, mas **nunca mais derruba sua arma no chão**.
+
+---
+
+## 💀 CAMADA 32: A DISSECAÇÃO PROFUNDA DOS 2.300 COMENTÁRIOS DO CSV
+*Análise dos relatos mais votados do vídeo de dores (posições 16 a 65):*
+
+### 1. "A NEW HAND TOUCHES THE BEACON" (O Estouro de Tímpanos de Meridia)
+* **O Trauma Coletivo (862+ Likes):** Você está no meio de uma masmorra, abre um baú inocente, pega a esfera brilhante e a deusa Meridia começa a berrar no volume máximo nos seus fones de ouvido: *"A NEW HAND TOUCHES THE BEACON. LISTEN. HEAR ME AND OBEY."*
+* **A Solução:** **Audio Overhaul for Skyrim (AOS)** (`12466`) + **USSEP** (`266`):
+  * Normaliza os picos de decibéis da voz de Meridia para o nível do restante dos diálogos do jogo, eliminando o susto ensurdecedor.
+
+### 2. O Falatório Incessante de Serana em Cenas Dramáticas (272+ Likes)
+* **A Dor Real do CSV:** Na reunião de cúpula de paz em High Hrothgar ou no meio de diálogos solenes, Serana fica sentada ao seu lado repetindo sem parar a cada 3 segundos: *"Yes? What is it? Yes? What is it?"*, atropelando e cortando as legendas dos outros personagens.
+* **A Solução:** **Nether's Follower Framework (NFF)** (`55653`) + **Serana Dialogue Add-On (SDA)** (`32161`):
+  * No menu MCM do NFF, ative a opção **"Follower Silence during Scenes / Stealth"**: seguidores ficam 100% em silêncio quando outros personagens estão falando ou quando você está agachado em furtividade.
+
+### 3. Matar a Lydia Acidentalmente e Só Notar 5 Horas Depois (121+ Likes)
+* **O Desespero do CSV:** No vanilla, se você der uma espadada ou flechada na Lydia enquanto ela está ajoelhada ferida no chão, você mesmo a assassina. Muitas vezes o jogador só percebe que ela morreu horas depois e perde o companheiro e todos os itens carregados.
+* **A Solução:** **Nether's Follower Framework** (`55653`):
+  * Permite ativar a flag **"Make Followers Essential"** (Lydia e qualquer seguidor viram personagens imortais que nunca morrem por fogo amigo do jogador).
+
+### 4. Pisar em Esqueletos e Ossos no Chão e Tomar 200 de Dano Físico (91+ Likes)
+* **O Bug da Física Havok:** Você passa correndo por uma pilha de ossos de Draugr ou uma panela de ferro jogada no chão, o motor de física calcula o choque do osso contra a sua canela em alta velocidade e você morre instantaneamente.
+* **A Solução:** **SSE Engine Fixes** (`17230`):
+  * Corrige a taxa de cálculo de colisão física e limita o dano de *clutter* (objetos soltos no chão) contra o corpo do jogador, acabando com a morte estúpida por tropeçar em um osso.
+
+### 5. O Death-Loop do Savegame (Morrer em Loop Infinito sem Conseguir Pausar)
+* **A Dor (246+ Likes):** Você salva com 2% de vida bem na hora em que uma bola de fogo ou flecha está voando na sua cara. Ao carregar o save, você morre antes mesmo de o jogo liberar os controles de movimento.
+* **A Solução:** **Smart Cast SSE** (`32847`):
+  * Como o Smart Cast roda em script engine prioritário e dispara curas automáticas no milissegundo em que o savegame é injetado, ele casta o feitiço de cura antes mesmo de o dano fatal ser processado, quebrando o ciclo de morte perpétua.
