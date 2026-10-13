@@ -439,3 +439,37 @@ flowchart LR
 | :--- | :--- | :--- | :--- |
 | **Wildcat - Combat of Skyrim** | `1368` | **Combate Letal e Tático:** Substitui o combate de esponja de dano por letalidade mútua. Adiciona sistema de ferimentos (ataque nas pernas reduz velocidade, dano nos braços reduz dano de ataque). | Inimigos continuam extremamente perigosos e te matam em 1 ou 2 golpes, mas **eles não são mais sacos de pancada**: se você acertar um contra-ataque ou parry perfeito, eles morrem rápido. |
 | **Custom Difficulty UI** | `14362` | **Calibração Total de Dano no Menu do Jogo:** Permite ajustar os multiplicadores exatos de dano dado e dano recebido no modo Lendário diretamente na interface do jogo. | Permite configurar o equilíbrio perfeito: dano recebido em 3.0x (letalidade máxima para você) e dano causado em 1.5x ou 2.0x (combate visceral onde todo golpe importa, acabando com a sensação de bater em pedra). |
+
+---
+
+## 🏰 CAMADA 18: OVERHAUL DE TODAS AS GUILDAS & FACILITAÇÃO DE QUESTS MAÇANTES
+*No Skyrim vanilla, as guildas são absurdas: você vira Arquimago sem saber 2 feitiços, a Thieves Guild te obriga a fazer 125 missões repetitivas aleatórias para restaurar a guilda, os Companions te empurram licantropia goela abaixo e a Dark Brotherhood não tem alternativas.*
+*Esta camada corrige e agiliza todas as facções para a run 100%:*
+
+### 🦹 1. Guilda dos Ladrões (Fim do Grind de Restauração)
+| Mod | Nexus ID | A Dor no Vanilla | A Solução Cirúrgica |
+| :--- | :--- | :--- | :--- |
+| **All Thieves Guild Jobs Concurrently** | `14883` | **Pegar 1 trabalho por vez e dar Save/Load:** Delvin e Vex só te dão 1 missão por vez. Se ela cair na cidade errada, o jogador era obrigado a cancelar ou dar load. | Permite aceitar **todos os 7 tipos de trabalhos simultaneamente** (roubo, invasão, falsificação, etc.). Você viaja para uma cidade e limpa todos os contratos de uma só vez, restaurando a guilda em 1/5 do tempo. |
+| **Thieves Guild Requirements SE** | `33256` | **Virar mestre sem roubar nada:** O jogo te declara chefe mesmo sem perícia de ladrão. | Permite configurar no MCM a quantidade exata de trabalhos necessários para restaurar a guilda (reduzindo o grind absurdo para o número que você preferir) e adiciona a opção de vender as Gemas de Barenziah caso não queira juntar as 24. |
+
+### 🧙 2. Colégio de Winterhold (Arquimago com Mérito Real)
+| Mod | Nexus ID | A Dor no Vanilla | A Solução Cirúrgica |
+| :--- | :--- | :--- | :--- |
+| **Magical College of Winterhold** | `1539` | **Colégio cinza e vazio:** Parece um castelo abandonado sem atmosfera mágica. | Transforma o colégio num centro arcano vivo com estantes flutuantes, estações de estudo e fontes de poder visualmente impressionantes. |
+| **At Your Own Pace - College** | `52704` | **Virar Arquimago em 4 missões:** Um guerreiro com um machado vira o líder supremo dos magos em poucas horas de jogo. | Pausa a linha de missões entre os estágios e exige que você realmente estude feitiços e alcance proficiência antes de ser promovido. |
+
+### 🐺 3. Os Companheiros (Companions de Whiterun)
+| Mod | Nexus ID | A Dor no Vanilla | A Solução Cirúrgica |
+| :--- | :--- | :--- | :--- |
+| **At Your Own Pace - Companions** | `52704` | **Obrigação de virar Lobisomem:** Você é forçado a beber sangue de fera para avançar na história dos guerreiros, mesmo querendo ser um paladino honrado. | Permite recusar a licantropia do Círculo Interno e continuar a história como um guerreiro comum sem ser infectado pela maldição de Hircine. |
+
+### 🗡️ 4. Dark Brotherhood (Escolhas e Continuação Pós-Fim)
+| Mod | Nexus ID | A Dor no Vanilla | A Solução Cirúrgica |
+| :--- | :--- | :--- | :--- |
+| **Your Choices Matter - Dark Brotherhood** | `46871` | **Final fixo e linear:** Quase toda a família morre no santuário e você não pode salvar seus companheiros favoritos. | Adiciona finais alternativos baseados nas suas escolhas: permite salvar membros icônicos da guilda e dá diálogos dublados para desmascarar a traição antes do massacre. |
+| **The Brotherhood of Old** | `15322` | **A guilda morre após o contrato final:** O jogo acaba e restam apenas missões genéricas repetitivas da Night Mother. | Uma expansão massiva de 24 novas missões dubladas para reconstruir a Dark Brotherhood por toda Tamriel após o fim da campanha. |
+
+### ⚔️ 5. Guerra Civil (Open Civil War)
+| Mod | Nexus ID | A Dor no Vanilla | A Solução Cirúrgica |
+| :--- | :--- | :--- | :--- |
+| **Open Civil War SSE** | `11076` | **Guerra Civil rasa:** Invadir 3 fortes genéricos e atacar Whiterun/Solitude em batalhas curtas e sem estratégia. | Reativa todo o conteúdo de estratégia militar cortado pela Bethesda: você pode comandar tropas nos mapas de guerra das tendas militares e defender cidades em cercos reais. |
