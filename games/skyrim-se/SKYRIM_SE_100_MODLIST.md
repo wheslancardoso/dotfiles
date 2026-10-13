@@ -240,3 +240,45 @@ flowchart LR
 | **Carriage and Ferry Travel Overhaul (CFTO)** | `8379` | **Transporte Público Imersivo:** Carruagens e balsas conectam todos os vilarejos pequenos (não apenas as 5 capitais). Você viaja imersivamente pagando uma moeda ao condutor. | Substitui o teletransporte mágico por uma viagem diegética de transporte de época. |
 | **Convenient Horses** | `9519` | **Cavalaria Real de RPG:** Sistema de inventário nas selas do cavalo (alforjes para carregar loot extra), coleta de plantas montado sem descer, combate a cavalo funcional e assobio para chamar o cavalo de longe. | O cavalo vira seu companheiro fiel e útil de jornada, exatamente como em RDR2. |
 | **Point The Way** | `352` | **Placas de Sinalização nos Cruzamentos:** Instala placas de madeira autênticas apontando a direção de cada cidade e forte nas encruzilhadas. | Permite que você navegue organicamente olhando o relevo e as placas, sem ficar abrindo o mapa de 2 em 2 minutos. |
+
+---
+
+## 🛡️ CAMADA 12: ELIMINAÇÃO DE ATRITOS MECÂNICOS & FRUSTRAÇÕES DE IA
+*Mapeamento cirúrgico para os 8 atritos de gameplay clássicos (killcams roubadas, cavalos suicidas, acidentes com guardas e montanhas cegas):*
+
+### 1. Fim das Killcams Injustas e Flechas Falhadas
+* **A Dor:** A câmera lenta de finalização (Killcam) entra do nada, você perde o controle e morre sem poder reagir; ou você atira uma flecha, a killcam cinematográfica ativa e a flecha bate numa quina ou erra o alvo.
+* **A Solução:** **VioLens - A Killmove Mod SE** (`668`):
+  * Permite **desativar killcams de longo alcance** (nunca mais flecha em câmera lenta errando).
+  * Concede **imunidade ao jogador contra killcams de inimigos** (o jogo nunca mais vai te travar numa animação indefesa de morte).
+  * Permite calibrar a frequência e visão (1ª ou 3ª pessoa) das finalizações corpo a corpo.
+
+### 2. Fim do "Fogo Amigo" e Crimes Acidentais no Meio da Luta
+* **A Dor:** Você está enfrentando um dragão ou vampiro na cidade, acerta um golpe sem querer num guarda, num cavalo ou numa galinha, e a cidade inteira para de lutar contra o monstro para te caçar.
+* **A Solução:** **Simple Offence Suppression** (`41764`):
+  * Plugin SKSE que impede que NPCs neutros ou aliados fiquem hostis por golpes acidentais durante combates contra monstros.
+
+### 3. Fim dos NPCs Suicidas Contra Dragões
+* **A Dor:** Um dragão pousa em Riverwood e o ferreiro Alvor parte para cima com um martelo de forja, morre e quebra missões e serviços da vila.
+* **A Solução:** **Run For Your Lives** (`2272`):
+  * Faz com que civis, comerciantes e crianças corram para dentro de casa e tranquem as portas quando dragões ou vampiros atacam. Apenas guardas armados e você enfrentam a fera.
+
+### 4. Fim do Cavalo Agressor Suicida
+* **A Dor:** Você desce do cavalo para enfrentar um urso ou dragão e o cavalo avança na frente, toma dano e morre.
+* **A Solução:** **Convenient Horses** (`9519`) (Configuração de Comportamento):
+  * Permite definir no menu MCM a postura do cavalo para **"Passivo / Covarde"** ou **"Fugir para distância segura"**. Ao desmontar em combate, ele se afasta imediatamente da zona de perigo.
+
+### 5. Fim do "Trocar Dano" (Esquiva com I-Frames Reais)
+* **A Dor:** Recuar andando de costas ou para os lados não evita o ataque do inimigo por causa de animações com rastreamento magnético da Bethesda.
+* **A Solução:** **TK Dodge RE - Script Free** (`56956`):
+  * Adiciona esquiva com rolamento / passo lateral rápido (dash) com frames de invencibilidade (I-Frames), sem scripts pesados. Permite esquivar de machadadas pesadas com habilidade real de reflexo.
+
+### 6. Fim do Arqueiro Furtivo Quebrado (Stealth Trivilizado)
+* **A Dor:** A IA do jogo base é cega no escuro e surda. Qualquer um agacha no meio da sala e limpa a dungeon inteira sem esforço.
+* **A Solução:** **Realistic AI Detection (RAID)** (`2345`):
+  * Recalibra completamente a fórmula de detecção da IA com base na luz real, no som de passos e no tipo de armadura. Inimigos buscam o jogador de forma tática e investigam cantos por mais tempo, trazendo tensão e mérito real para o roleplay furtivo.
+
+### 7. Pilotagem Real de Dragões (DLC Dragonborn)
+* **A Dor:** O grito *Bend Will* permite subir no dragão, mas você não pilota: você fica assistindo uma IA burra voar em círculos sem controle real.
+* **A Solução:** **Intuitive Dragon Ride Control** (`64679`):
+  * Concede comandos de voo diretos e controle responsivo sobre para onde o dragão voa e quem ele alveja.
