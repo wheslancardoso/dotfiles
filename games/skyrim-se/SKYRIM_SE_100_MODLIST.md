@@ -394,3 +394,28 @@ flowchart LR
 | **Yes I'm Sure** | `24898` | **Mensagens de confirmação desnecessárias:** *"Tem certeza de que deseja forjar isso?"*, *"Tem certeza de que deseja sair da bancada?"*. | Elimina todos os popups de confirmação do jogo. Clicou, executou instantaneamente. |
 | **Stay At The System Page** | `19832` | **Menu ESC abrindo na aba de quests:** Ao apertar ESC para salvar rapidamente, o jogo abre no diário de missões, forçando você a navegar de aba. | Garante que apertar ESC sempre abra direto na aba de Salvar / Carregar / Opções. |
 | **More Informative Console** | `19250` | **Console do jogo não informa nada:** Você clica num item ou NPC com o console (`~`) aberto e só vê um código hexadecimal genérico. | Exibe na hora o nome real, a vida, os atributos e **qual mod gerou aquele item ou NPC**. Indispensável para diagnóstico. |
+
+---
+
+## 🏛️ CAMADA 16: DILEMAS NARRATIVOS, CONVERSAS E MOTOR DE ANIMAÇÃO MODERNO
+*Revisão forense final: os últimos 4 atritos estruturais que ainda quebravam a imersão e o controle:*
+
+### 1. O Dilema Moral de Paarthurnax (Quest Travada / Injusta)
+* **O Problema Vanilla:** No final da Main Quest, Delphine e os Blades exigem que você assassine o dragão ancião Paarthurnax. Se você se recusar a matá-lo, a missão fica **presa no seu diário para sempre** e você é banido da facção dos Blades.
+* **A Solução:** **[The Paarthurnax Dilemma](https://www.nexusmods.com/skyrimspecialedition/mods/365)** (`365`):
+  * Permite confrontar Delphine e Esbern como o verdadeiro Dragonborn que você é, impor sua autoridade soberana e fechar a missão pacificamente sem matar Paarthurnax e sem perder a aliança com os Blades.
+
+### 2. O Framework Vital de Animação: Open Animation Replacer (OAR)
+* **O Requisito Técnico:** Mods como *MCO/DXP*, *Valhalla Combat*, *True Directional Movement* e *Stances* exigem um injetor dinâmico de animações. O antigo *DAR (Dynamic Animation Replacer)* foi descontinuado e quebra em versões modernas.
+* **A Solução:** **[Open Animation Replacer - OAR](https://www.nexusmods.com/skyrimspecialedition/mods/92109)** (`92109`):
+  * Framework moderno em C++ que substitui animações em tempo real com editor visual in-game, compatibilidade total com SE/AE e zero crash.
+
+### 3. Fim do Falatório Simultâneo de NPCs na Rua
+* **O Problema Vanilla:** Você está andando por Whiterun ou conversando com um comerciante e qualquer NPC que passa a 3 metros de distância interrompe a conversa falando alto na sua orelha (*"Do you get to the Cloud District very often?"*).
+* **A Solução:** **[To Your Face - Sensible NPC Commenting](https://www.nexusmods.com/skyrimspecialedition/mods/13373)** (`13373`):
+  * NPCs só falam com você se você estiver olhando diretamente para eles e a curta distância. Acaba com o festival de vozes sobrepostas ao caminhar pelas cidades.
+
+### 4. Áudio & Paisagem Sonora Imersiva
+* **O Problema Vanilla:** O som original é comprimido, passos em masmorras não têm eco espacial e o choque de espadas soa abafado.
+* **A Solução:** **[Audio Overhaul for Skyrim SE (AOS)](https://www.nexusmods.com/skyrimspecialedition/mods/12466)** (`12466`):
+  * Redesenha toda a acústica do jogo: reverbação física realista dentro de catacumbas, impacto metálico nítido no parry e sons da natureza dinâmicos ao ar livre.
