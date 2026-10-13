@@ -142,3 +142,13 @@ flowchart TD
 | **Stagecoach Robberies** | `869` | **Diligências sem valor:** Assaltar carruagens na estrada rende quase nada e não tem contratos dinâmicos. | Adiciona contratos infinitos gerados aleatoriamente de assaltos a carruagens blindadas com escolta armada e baús de joias por todo o mapa. |
 | **Ride With Gang** | `284` | **Gangue presa no acampamento:** Arthur é forçado a viajar sempre sozinho, enquanto John, Charles, Javier e Sadie ficam sentados fumando em Horseshoe Overlook. | Permite recrutar qualquer membro da gangue de Dutch para cavalgar, caçar e trocar tiros ao seu lado como companheiros de viagem com cobertura tática. |
 | **Dog Companion** | `725` | **Cachorros só servem para fazer carinho:** Você vê dezenas de cães no acampamento e nas vilas, mas não pode ter um parceiro leal. | Adiciona um cão de caça pessoal que cavalga ao seu lado, ajuda a rastrear animais na mata, ataca inimigos na perna e busca itens caídos. |
+
+---
+
+## ⏱️ CAMADA 8: ESCALA DE TEMPO REALISTA & PROPRIEDADES
+*Dois atritos finais de atmosfera e progresso:*
+
+| Mod | Nexus ID | A Dor no Vanilla | A Solução Cirúrgica |
+| :--- | :--- | :--- | :--- |
+| **Longer Days** | `41` | **O tempo passa rápido demais:** No vanilla, cada minuto real equivale a 30 minutos in-game. O pôr do sol dura apenas 40 segundos e a noite passa voando antes de você conseguir acampar e caçar. | Permite desacelerar a passagem do tempo para uma proporção mais imersiva (ex: 1 minuto real = 2 a 5 minutos in-game). Você aproveita manhãs ensolaradas, tardes e noites com calma. |
+| **WhyEm's DLC** | `671` | **Falta de personalização de roupas e coldres:** O modo história tem pouquíssimas roupas comparado ao modo online. | Adiciona centenas de novos chapéus, ponchos autênticos, coletes, jaquetas, anéis, cortes de cabelo, barbas e coldres duplos nos armários e lojas. |
