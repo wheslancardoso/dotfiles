@@ -375,3 +375,22 @@ flowchart LR
 * **O Problema Vanilla:** A forma de Lorde Vampiro remove seus itens, não permite nadar e é mais fraca que a forma humana no endgame.
 * **A Solução:** **Sacrosanct - Vampires of Skyrim** (`3928`):
   * Overhaul lendário de vampirismo: adiciona magias de sangue (*Hemomancy*), novos perks de Lorde Vampiro que escalam com o número de vítimas alimentadas e mobilidade sobrenatural de névoa.
+
+---
+
+## 📍 CAMADA 15: MAPEAMENTO ABSOLUTO DE 100% & ELIMINAÇÃO DE ATRITOS DE SISTEMA
+*Para quem quer fazer 100% da campanha, explorar masmorras e cavernas sem saber se já foram limpas ou perder pontos de interesse no mapa é um dos maiores desperdícios de tempo. Esta camada revela tudo de forma precisa e limpa os atritos da interface de sistema:*
+
+### 🗺️ 1. Rastreadores Totais de Localizações no Mapa
+| Mod | Nexus ID | Mecânica | Impacto na Run 100% |
+| :--- | :--- | :--- | :--- |
+| **Atlas Map Markers SE (com MCM)** | `24104` | **Adiciona mais de 700 novos marcadores no mapa-múndi:** Marca entradas secundárias de cavernas, acampamentos remotos, santuários de deuses, túmulos e locais de tesouro. Totalmente configurável pelo menu MCM (você ativa ou oculta categorias como quiser). | Nenhum canto de Skyrim fica oculto ou esquecido na hora de explorar todas as locações da conquista *Explorer*. |
+| **CoMAP - Common Marker Addon Project** | `56123` | **Ícones Customizados no Mapa & Bússola:** Em vez de usar o mesmo ícone cinza genérico para tudo, ele atribui ícones específicos coloridos para altares de deuses, pedras do zodíaco, covis de dragão e portões de cidades. | Leitura instantânea do mapa sem precisar passar o cursor em cada ícone para ler o nome. |
+| **A Quality World Map (SE)** | `5804` | **Mapa com Estradas em Relevo Detalhado:** Mostra com clareza todas as trilhas e estradas secundárias, evitando que você tente subir montanhas inacessíveis. | Evita a frustração clássica de ficar preso na encosta de montanhas tentando achar a rota para High Hrothgar. |
+
+### ⚙️ 2. Fim das Micro-Irritações de Sistema & Menus (QoL Profundo)
+| Mod | Nexus ID | A Irritação Vanilla | A Solução Cirúrgica |
+| :--- | :--- | :--- | :--- |
+| **Yes I'm Sure** | `24898` | **Mensagens de confirmação desnecessárias:** *"Tem certeza de que deseja forjar isso?"*, *"Tem certeza de que deseja sair da bancada?"*. | Elimina todos os popups de confirmação do jogo. Clicou, executou instantaneamente. |
+| **Stay At The System Page** | `19832` | **Menu ESC abrindo na aba de quests:** Ao apertar ESC para salvar rapidamente, o jogo abre no diário de missões, forçando você a navegar de aba. | Garante que apertar ESC sempre abra direto na aba de Salvar / Carregar / Opções. |
+| **More Informative Console** | `19250` | **Console do jogo não informa nada:** Você clica num item ou NPC com o console (`~`) aberto e só vê um código hexadecimal genérico. | Exibe na hora o nome real, a vida, os atributos e **qual mod gerou aquele item ou NPC**. Indispensável para diagnóstico. |
