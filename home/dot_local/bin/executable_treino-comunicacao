@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# treino-comunicacao.sh
+# ------------------------------------------------------------------------------
+# Menu rápido no terminal para registrar sessões e ver ganchos do Dojo de Comunicação.
+# ==============================================================================
+
+set -eo pipefail
+
+DIARIO_DIR="$HOME/timeless_life/04 - Comunicação, Postura & Simulações Sociais/Diário de Treinos de Comunicação"
+DATE_STR="$(date +'%Y-%m-%d')"
+
+echo "=========================================================="
+echo "🥋 DOJO DE COMUNICAÇÃO — SESSÃO RÁPIDA (HOMEM ROCHA)"
+echo "=========================================================="
+echo "Lembrete de Ouro: Zero esforço mental. Não quebre a cabeça."
+echo "Regra 1: Use o Eco (repita as últimas 2 palavras)."
+echo "Regra 2: Nomeie o sentimento ('Parece que foi pesado...')."
+echo "Regra 3: Máximo 2 linhas por resposta. Solte a frase e respire."
+echo "=========================================================="
+echo ""
+echo "Escolha o que deseja fazer:"
+echo "1) Criar novo registro de treino no Diário de Batalha"
+echo "2) Listar treinos anteriores"
+echo "3) Sair"
+read -rp "Opção [1-3]: " OPCAO
+
+case "$OPCAO" in
+    1)
+        read -rp "Título/Tema do treino (ex: Colega Cansado na AGR): " TEMA
+        read -rp "Número do Treino (ex: 02): " NUMERO
+        
+        ARQUIVO="$DIARIO_DIR/$DATE_STR - Treino $NUMERO - $TEMA.md"
+        
+        cat << EOF > "$ARQUIVO"
+# 🥋 TREINO $NUMERO — $TEMA
+> **Data:** $DATE_STR | **Tipo:** Simulação Chat Antigravity | **Status:** Concluído
+
+---
+
+## 1. 🎯 Cenário
+* **Contexto:** $TEMA
+* **Foco:** Conexão de baixa fricção, acolhimento genuíno e zero interrogatório.
+
+---
+
+## 2. 💬 Diálogo Realizado
+*(Cole aqui as 3 a 5 mensagens trocadas com o bot)*
+
+---
+
+## 3. 💡 Microfeedback
+* **O que brilhou:** 
+* **Micro-ajuste:** 
+EOF
+        echo "✅ Criado com sucesso em:"
+        echo "   $ARQUIVO"
+        ;;
+    2)
+        echo ""
+        echo "📋 Histórico de Treinos:"
+        ls -la "$DIARIO_DIR"/*.md 2>/dev/null || echo "Nenhum treino encontrado."
+        ;;
+    *)
+        echo "Até a próxima rodada!"
+        ;;
+esac
