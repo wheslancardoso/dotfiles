@@ -504,3 +504,14 @@ flowchart LR
 | :--- | :--- | :--- | :--- |
 | **Better Jumping SE** | `18967` | **Proibição de pular correndo (Sprint Jump):** No Skyrim vanilla, se você estiver no meio de um sprint (correndo rápido) e apertar o botão de pulo, **o personagem não pula**. Você é forçado a parar de correr para conseguir pular um buraco. | Plugin SKSE nativo em C++ que permite pular livremente enquanto corre no sprint máximo (e permite salto duplo opcional se desejar). |
 | **PrivateProfileRedirector SE** | `18860` | **Telas de carregamento lentas ao carregar arquivos `.ini`:** O motor abre, lê e fecha os arquivos `.ini` milhares de vezes do disco. | Mantém as configurações em cache direto na memória RAM, acelerando os tempos de carregamento e o início do jogo em até 5x. |
+
+---
+
+## 🔦 CAMADA 21: ILUMINAÇÃO DINÂMICA, BATALHAS DE DRAGÃO E DIÁLOGOS
+*Eliminação dos 3 últimos atritos de exploração escura, combates aéreos e interface de conversa:*
+
+| Mod | Nexus ID | A Frustração no Vanilla | A Solução Cirúrgica |
+| :--- | :--- | :--- | :--- |
+| **Quick Light SE** | `12633` | **Tochas ocupando uma das mãos:** Para explorar cavernas escuras, você é forçado a segurar uma tocha na mão esquerda, perdendo o escudo, a segunda espada ou a magia de apoio. | Estilo lanterna do *Fallout 4* ou *The Last of Us*: pressione ou segure uma tecla dedicada (ex: `L`) para acender uma lanterna portátil presa no cinto que ilumina o ambiente em 360° sem ocupar nenhuma mão. |
+| **Dragon War - A Dragon Overhaul** | `51310` | **Dragões voando em círculos eternamente:** O dragão se recusa a pousar, fica voando a 500 metros de altura sem descer e muda de alvo para matar vacas e cervos distantes. | Reformulação de IA e física de voo via SKSE: dragões realizam ataques rasantes agressivos, pousam com frequência muito maior e respeitam o duelo direto com o Dragonborn sem dispersar o foco. |
+| **Convenient Dialogue UI - SE** | `57943` | **Menu de diálogo clássico com apenas 3 opções visíveis:** Você precisa ficar rolando a barra de rolagem em diálogos longos e a seleção por teclado é imprecisa. | Interface de diálogo expandida com atalhos numéricos (`1` a `9`), mais tópicos visíveis simultaneamente na tela e indicação visual nítida de quais opções de conversa você já escolheu antes. |
