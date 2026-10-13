@@ -564,3 +564,19 @@ flowchart LR
 | :--- | :--- | :--- | :--- |
 | **Whose Quest Is It Anyway** | `23581` | **Itens de missão misteriosos que você não sabe de onde vieram:** Você tenta guardar um item no baú de casa e o jogo só diz *"Itens de missão não podem ser removidos"*, sem informar qual é a missão associada. | Substitui a mensagem genérica por uma notificação descritiva exata: *"Este item pertence à missão: [Nome da Missão]"*. Você sabe na hora o que precisa concluir para poder guardar ou vender o item. |
 | **Security Overhaul SKSE - Lock Variations** | `58224` | **Todas as fechaduras do jogo são idênticas:** Uma tumba nórdica antiga de 3.000 anos, um cofre anão de Dwemer e uma porta de madeira de fazenda usam exatamente a mesma fechadura de ferro moderna de console. | Injeta modelos 3D únicos em alta definição para cada tipo de fechadura: fechaduras de pedra nórdicas antigas, mecanismos de bronze Dwemer com engrenagens visíveis e fechaduras enferrujadas em catacumbas. |
+
+---
+
+## 🎯 CAMADA 24: GUIA DE RASTREAMENTO TOTAL (COLECIONÁVEIS, OBJETIVOS & LOCALIZAÇÕES)
+*No Skyrim vanilla, a Bethesda omitiu marcadores para dezenas de missões de coleta (Gemas de Barenziah, Nirnroots, Páginas do Jiub, Livros de Habilidade, Máscaras e Baús do Tesouro), forçando o jogador a abrir a Wiki no navegador o tempo todo.*
+*Esta camada garante que você tenha **indicação visual e no mapa para 100% de tudo no jogo**:*
+
+| Colecionável / Missão | Mod Responsável | Nexus ID | Como Fica na Tela |
+| :--- | :--- | :--- | :--- |
+| **24 Gemas de Barenziah** (Thieves Guild) | **Stones of Barenziah Quest Markers** | `684` | Coloca uma seta de objetivo no mapa-múndi e na bússola apontando a localização exata de cada uma das 24 pedras. |
+| **Todas as Quests, Itens Únicos e DLCs** | **Completionist - Skyrim Completion Tracker (NG)** | `46358` | Menu MCM in-game que lista **todas as missões existentes no jogo** (principais, secundárias, Daédricas, Solstheim e Dawnguard), marcando com checklist verde o que você já fez e onde pegar o que falta. |
+| **Textos e Instruções Claras de Missão** | **Even Better Quest Objectives (EBQO)** | `159` | Reescreve o diário de missões da Bethesda (que era vago: *"Fale com Fulano"*). Agora dá direções geográficas precisas e referências de marcos no terreno. |
+| **700+ Cavernas, Túmulos e Acampamentos** | **Atlas Map Markers SE (com MCM)** | `24104` | Revela todas as entradas secretas, tumbas, baús de tesouro e altares no mapa do jogo com controle de filtros. |
+| **Livros de Perícia (Skill Books) e Magias** | **Unread Books Glow SSE** | `1296` | Qualquer livro que dá ponto de habilidade ou ensina feitiço **brilha no escuro** com luz azul/vermelha enquanto você não lê-lo. Você nunca mais deixa passar um livro valioso em prateleiras. |
+| **Qualquer Item de Missão Preso no Inventário** | **Whose Quest Is It Anyway** | `23581` | Ao passar o cursor ou tentar largar o item, o jogo avisa exatamente em qual missão ele é usado. |
+| **Nível e Vida Real dos Inimigos** | **TrueHUD - HUD Additions** | `62775` | Mostra o nível exato do inimigo, barra de vida e postura flutuante na cabeça de cada criatura (evitando que você entre em combate contra um chefe de nível 50 sem saber). |
