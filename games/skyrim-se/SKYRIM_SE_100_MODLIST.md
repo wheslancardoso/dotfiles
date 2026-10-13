@@ -494,3 +494,13 @@ flowchart LR
 * **A Dor no Vanilla:** O guerreiro dá sempre o mesmo golpe de corte para a direita e corte para a esquerda, sem variação de peso ou sequência.
 * **A Solução:** **[Combo Animation Framework](https://www.nexusmods.com/skyrimspecialedition/mods/40541)** (`40541`):
   * Permite estender o loop de ataque básico para combos de até 5 ou 7 golpes variados com golpes pesados intercalados, tornando cada combate imprevisível e coreografado.
+
+---
+
+## ⚡ CAMADA 20: VELOCIDADE DE EXECUÇÃO & PULO EM CORRIDA
+*Dois atritos clássicos que impactam cada segundo de gameplay:*
+
+| Mod | Nexus ID | A Frustração no Vanilla | A Solução Cirúrgica |
+| :--- | :--- | :--- | :--- |
+| **Better Jumping SE** | `18967` | **Proibição de pular correndo (Sprint Jump):** No Skyrim vanilla, se você estiver no meio de um sprint (correndo rápido) e apertar o botão de pulo, **o personagem não pula**. Você é forçado a parar de correr para conseguir pular um buraco. | Plugin SKSE nativo em C++ que permite pular livremente enquanto corre no sprint máximo (e permite salto duplo opcional se desejar). |
+| **PrivateProfileRedirector SE** | `18860` | **Telas de carregamento lentas ao carregar arquivos `.ini`:** O motor abre, lê e fecha os arquivos `.ini` milhares de vezes do disco. | Mantém as configurações em cache direto na memória RAM, acelerando os tempos de carregamento e o início do jogo em até 5x. |
