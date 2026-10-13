@@ -1073,5 +1073,14 @@ Mapeamento forense contra a frustração de se perder em masmorras labirínticas
 | :--- | :--- | :---: | :--- | :--- |
 | **1. Saída de Emergência / Teleporte Instantâneo** | **Fasttravel Out of Dungeons (ESL)** | `132517` | Concede um *Lesser Power* no menu de Magias. Ao ativar em qualquer interior profundo ou masmorra, **teleporta você instantaneamente para o lado de fora da porta de entrada principal**. | Se usado no meio de uma cena scriptada ativa de quest, pode pular diálogos de encerramento. Use preferencialmente após concluir o objetivo ou para sair de becos sem saída. |
 | **2. Viagem Rápida Direta do Interior** | **Fast Travel from Interiors** | `11765` | Remove a flag `Can't Fast Travel From This Location` dos interiores do jogo. Permite abrir o mapa (`M`) e dar **Fast Travel direto para qualquer cidade ou marcador do mundo exterior** sem precisar achar a porta. | Não funciona se houver inimigos hostis ativamente caçando você no local (exige matar os perseguidores ou entrar em modo *Sneak/Hidden*). |
-| **3. Bússola e Guia Visual sem Linha Quebrada** | **Compass Navigation Overhaul** + **A Guiding Light (Clairvoyance Reimagined)** | `74484`<br>`35464` | • **CNO (`74484`):** Exibe a distância exata em metros e nome da porta de saída na bússola superior.<br>• **Guiding Light (`35464`):** Substitui o feitiço bugado *Clairvoyance* por uma **fada-guia luminosa (*Guiding Wisp*)** física que voa na sua frente mostrando o caminho exato até o objetivo ou saída. | O wisp é programado para ser tímido: se entrar em combate com inimigos por perto, ele se afasta temporariamente até a área ser limpa. |
 
+---
+
+## 49. MIRA BALÍSTICA & PROJEÇÃO DE TRAJETÓRIA DE FLECHAS (ARROW PREDICTION)
+
+Solução nativa e comprovada para projetar na tela o arco balístico e o ponto exato de impacto da flecha antes do disparo:
+
+| Recurso | Mod & ID Nexus | Como Funciona na Prática | Configuração no MCM & Limitações Reais |
+| :--- | :---: | :--- | :--- |
+| **Arco e Linha Preditiva de Projéteis** | **SmoothCam**<br>ID: `41252` | O mod inclui um sistema nativo de **Arrow Prediction / Crosshair Raycasting**. Ao puxar a corda do arco, o motor calcula a gravidade e velocidade da flecha e desenha uma **linha de trajetória / arco visual curvo** ou ajusta a retícula 3D no ponto exato de colisão com o alvo. | **Visão:** Funciona nativamente em **3ª pessoa** (foco do SmoothCam). Para disparo em 1ª pessoa, a mira utiliza a retícula vanilla centralizada. |
+| **Rastro Visual de Disparo** | **Smooth Arrow Trails and Fixes**<br>ID: `100869` | Cria um traçado contínuo e suave na esteira do projétil ao soltar a flecha, permitindo acompanhar todo o voo e ajustar o disparo seguinte sem perder flechas no cenário escuro. | Afeta a renderização do projétil no ar; não altera os valores físicos de gravidade ou velocidade vanilla da flecha. |
