@@ -1022,6 +1022,26 @@ flowchart TD
 | **Paarthurnax Dilemma** | `365` | **A Ordem Forçada dos Blades para Matar Paarthurnax:** Se você se recusar a assassinar o dragão Paarthurnax no endgame, Delphine e Esbern cortam relações e a linha de missões dos Blades fica travada para sempre. | Permite confrontar Delphine com autoridade de Dragonborn e poupar Paarthurnax sem travar a guilda dos Blades, concluindo todas as missões sem peso na consciência. |
 | **Achieve That! SE (Conquistas In-Game)** | `3079` / *MCM Tracker* | **Não saber o progresso das conquistas dentro do jogo:** Ter que ficar minimizando Skyrim no CachyOS/Steam para ver quantos livros você já leu ou quantos bolsos bateu. | Adiciona um **painel de conquistas nativo dentro do menu MCM**: mostra o progresso em tempo real (ex: *"Artefatos Daédricos: 11/15"*, *"Habilidades no 100: 4/18"*), concedendo pequenos bônus estéticos à medida que você fecha os marcos. |
 
+---
+
+## 🔬 CAMADA 46: MATRIZ DE AUDITORIA FORENSE & ESPECIFICAÇÃO CIRÚRGICA (RESOLUÇÕES COMPROVADAS)
+*Retificação técnica rigorosa de IDs, limites e escopos reais documentados nas páginas dos autores e UESP:*
+
+| Item Auditado | ID Nexus Verificado | O Que o Mod Realmente Faz | O Que NÃO Faz (Limitação Real / Solução Complementar) |
+| :--- | :---: | :--- | :--- |
+| **1. Odin (Magic Overhaul)** | `46000` | Melhora spells vanilla e adiciona 125 novos feitiços integrados. | **Ilusão:** Não garante controle de qualquer inimigo no início; substitui a trava rígida por escalonamento com chance probabilística. Mortos-vivos e autômatos ainda exigem o perk *Master of the Mind* (Ilusão 90). |
+| **2. Better Master Spells** | `5962` | Permite cast com 1 mão, dual-cast, reduz tempo de 3s para 1s e **permite andar enquanto lança**. | Afeta magias de mestre vanilla. Magias adicionadas por outros mods exigem patches próprios. |
+| **3. 100% Max Pickpocket Chance** | `8234` | Eleva a variável de engine `fPickPocketMaxChance` de 90% para **100%**. | Não dá 100% automático no nível 15; garante que, com perícia e perks altos, o sucesso seja **100% real**, eliminando a falha forçada de 10% do vanilla. |
+| **4. Instant Mining** | `687` | Extrai todos os minérios e gemas da rocha em **1 clique instantâneo** sem animação. | Mantém os drops e probabilidades vanilla intactos; economiza apenas o tempo da animação. |
+| **5. No Disarm (Unequip Instead)** | `27188` | Converte o grito *Disarm* do Draugr em stagger + desequipar a arma. | A arma vai para o inventário/bainha, **nunca mais cai no chão nem se perde no limbo do cenário**. |
+| **6. SkyClimb** | `97253` | Detecção procedural de bordas físicas para escalar dinamicamente (requer EVGAT `63232`). | Exige borda acessível em alcance vertical plausível; não permite escalar montanhas verticais lisas. |
+| **7. Reusable Corpses (Necromancy)** | `26414` | Substitui `ReanimateAshPile.pex`. Lacaios reanimados **não viram cinzas**. | Lacaios ainda podem ser retidos nos estábulos ao dar Fast Travel para cidades (comportamento nativo de guardas); exige recuperação na saída. |
+| **8. Growl (Werebeasts)** | `31245` | Permite saquear corpos na forma de fera, reverter à vontade e escalar dano com armas. | Mantém fraqueza a fogo (+25%) e dano de prata. Para anular transformações forçadas, desative no menu MCM do Growl. |
+| **9. Sacrosanct (Vampires)** | `3928` | Permite obter a passiva *Daywalker* (imunidade solar em vida/stamina/magicka). | Cuidado com o perk *Dragon at Midnight*: ele causa dano letal ao sol no estágio Blood Starved se for adquirido. |
+| **10. Honed Metal** | `61015` | Encomenda forjas e encantamentos com ferreiros/magos NPCs por ouro. | Ferreiros lendários (como Eorlund) exigem progressão de respeito na facção por padrão (configurável no MCM). |
+| **11. Fogo Amigo: 4 Camadas Distintas** | `41764` + `55745` + `55653` | • **Hostilidade:** `41764` (SOS).<br>• **Dano:** `55745` (SOS Block Friendly Fire) e NFF `55653` (`Damage = 0`). | **Linha de Tiro / Interceptação:** Flechas físicas ainda podem ser interceptadas pelo corpo do seguidor; para evitar colisão corporal, use `I'm Walkin' Here` (`27742`) e posicionamento tático. |
+
+
 
 
 
