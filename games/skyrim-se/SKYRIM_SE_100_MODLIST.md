@@ -322,3 +322,56 @@ flowchart LR
     * Flechas com efeito de sangramento realista em inimigos;
     * Permite puxar e manter a flecha tensionada sem cansaço absurdo de estamina;
     * Encantamento de flechas e anéis em tempo real.
+
+---
+
+## 💎 CAMADA 14: DESTRUIÇÃO TOTAL DE ATRITOS POR ESPECIALIZAÇÃO
+*Análise aprofundada de cada limitação clássica por estilo de jogo e as soluções cirúrgicas:*
+
+### 1. O Mod de Lockpick Desejado: [Easy Lockpicking](https://www.nexusmods.com/skyrimspecialedition/mods/4070) (`4070`) ou [Lockpick Pro SE]
+* **Como você gostava:** No seu pacote de 2021 você tinha o `Lockpick Pro v3-219-3.zip`, que colocava uma barra colorida/indicador no topo da tela mostrando o ponto exato onde a fechadura abre.
+* **No Skyrim SE:** 
+  * Se quiser abrir de primeira sem minigame nenhum: **Easy Lockpicking** (`4070`) (qualquer gazua vira no meio e abre na hora).
+  * Se quiser com indicador visual no HUD ou manter o minigame sem frustração: **Remember Lockpick Angle** (`26838`) ou o port do **Lockpick Pro SE**.
+
+### 2. Guerreiro: O Fim da Disputa Mortal de Estamina (Block, Bash & Sprint)
+* **O Problema Vanilla:** Bloquear toma dano parcial e gasta estamina; dar bash gasta metade da barra; correr esgota tudo. Ficar com estamina zero te deixa indefeso.
+* **A Solução:** **Valhalla Combat** (`64741`) (Já na Camada 4):
+  * **Timed Block (Parry Perfeito):** Se você bloquear no milissegundo do golpe, **você não toma 1 ponto de dano** e reflete o impacto, atordoando o agressor.
+  * **Estamina Ofensiva:** Acertar golpes com armas leves **recupera estamina** (estilo ARPG moderno), eliminando a exaustão eterna da barra.
+
+### 3. Duas Mãos & Dual Wield: Defesa e Magia sem Troca de Mãos
+* **O Problema Vanilla:** Duas armas não bloqueiam; armas de duas mãos bloqueiam mal e não curam sem guardar a arma.
+* **A Solução:** 
+  * **Dual Wield Parrying** (`18264`): Tecla dedicada que permite bloquear e dar bash mesmo segurando duas espadas ou espada + feitiço.
+  * **Smart Cast** (`32847`): Cura automática programada no MCM quando sua vida cai de 50%, sem você precisar soltar seu martelo de duas mãos para castar Fast Healing.
+
+### 4. Mago de Destruição: O Fim do Dano Fraco no Late Game
+* **O Problema Vanilla:** No nível 50, uma espada com ferreiro dá 400 de dano, mas a magia Incinerate da Bethesda continua dando os mesmos 60 de dano base de quando você era nível 15.
+* **A Solução:** **Ordinator** (`1137`) + **Odin** (`46000`):
+  * O perk *Destruction Mastery* faz o dano de todas as magias **escalar percentualmente a cada ponto do seu nível de Destruição**, igualzinho às armas físicas.
+
+### 5. Conjurador: O Fim do Bug de Spell Absorption
+* **O Problema Vanilla:** Se você pega o perk *Atronach* ou a *Atronach Stone* (que absorve 50% de magias inimigas), o motor comete um bug matemático e **absorve suas próprias invocações**, fazendo seu Atronach falhar e sumir com a sua Magicka.
+* **A Solução:** **Scrambled Bugs** (`43532`) (Já na Camada 0):
+  * Corrige a linha de código C++ da engine: o jogo passa a checar se o feitiço foi castado por você mesmo, permitindo absorver dano inimigo sem anular suas próprias criaturas invocadas.
+
+### 6. Ilusionista: O Fim da Imunidade de Mortos-Vivos, Dragões e Vampiros
+* **O Problema Vanilla:** Metade dos inimigos de Skyrim são Draugrs, vampiros e robôs anões imunes aos feitiços de Calm/Fury até você atingir Ilusão nível 90.
+* **A Solução:** **Ordinator** (`1137`) redesenha a árvore de Ilusão:
+  * O perk *Neverworld* e *Crown of the False King* reduzem a resistência mental dos inimigos continuamente e afetam todas as raças desde os níveis iniciais.
+
+### 7. Mago de Alteração: Fim de Renovar Mage Armor a Cada 60 Segundos
+* **O Problema Vanilla:** Ter que parar a cada 60s para castar Ebonyflesh na mão.
+* **A Solução:** **Smart Cast** (`32847`):
+  * Regra de evento: *"Ao entrar em combate ➔ Castar Ebonyflesh instantaneamente"*. Você entra na luta com armadura mágica ativa sem gastar 1 segundo de preparação.
+
+### 8. Ladrão: Fim do Teto Rígido de 90% em Pickpocket
+* **O Problema Vanilla:** Mesmo com Pickpocket nível 100 e armadura da Guilda dos Ladrões, a chance máxima é travada em 90%, forçando o jogador a recarregar savegame em 1 de cada 10 furtos.
+* **A Solução:** **Skyrim Skill Uncapper** (`8889`):
+  * No arquivo `SkyrimUncapper.ini`, basta alterar `fPickPocketMaxChance = 100` para que um ladrão mestre tenha 100% de sucesso garantido, eliminando o Save/Load compulsivo.
+
+### 9. Lorde Vampiro: Transformação Rápida & Poder Verdadeiro
+* **O Problema Vanilla:** A forma de Lorde Vampiro remove seus itens, não permite nadar e é mais fraca que a forma humana no endgame.
+* **A Solução:** **Sacrosanct - Vampires of Skyrim** (`3928`):
+  * Overhaul lendário de vampirismo: adiciona magias de sangue (*Hemomancy*), novos perks de Lorde Vampiro que escalam com o número de vítimas alimentadas e mobilidade sobrenatural de névoa.
