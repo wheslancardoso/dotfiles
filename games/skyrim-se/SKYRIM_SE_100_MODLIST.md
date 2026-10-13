@@ -515,3 +515,32 @@ flowchart LR
 | **Quick Light SE** | `12633` | **Tochas ocupando uma das mãos:** Para explorar cavernas escuras, você é forçado a segurar uma tocha na mão esquerda, perdendo o escudo, a segunda espada ou a magia de apoio. | Estilo lanterna do *Fallout 4* ou *The Last of Us*: pressione ou segure uma tecla dedicada (ex: `L`) para acender uma lanterna portátil presa no cinto que ilumina o ambiente em 360° sem ocupar nenhuma mão. |
 | **Dragon War - A Dragon Overhaul** | `51310` | **Dragões voando em círculos eternamente:** O dragão se recusa a pousar, fica voando a 500 metros de altura sem descer e muda de alvo para matar vacas e cervos distantes. | Reformulação de IA e física de voo via SKSE: dragões realizam ataques rasantes agressivos, pousam com frequência muito maior e respeitam o duelo direto com o Dragonborn sem dispersar o foco. |
 | **Convenient Dialogue UI - SE** | `57943` | **Menu de diálogo clássico com apenas 3 opções visíveis:** Você precisa ficar rolando a barra de rolagem em diálogos longos e a seleção por teclado é imprecisa. | Interface de diálogo expandida com atalhos numéricos (`1` a `9`), mais tópicos visíveis simultaneamente na tela e indicação visual nítida de quais opções de conversa você já escolheu antes. |
+
+---
+
+## 📋 SUMÁRIO EXECUTIVO: TODAS AS 21 CAMADAS CONSOLIDADAS
+
+```
+📦 CAMADA 00: Fundação de Engine & Anti-Crash (SKSE64, Engine Fixes, Address Library, Crash Logger)
+🛡️ CAMADA 01: Correção de Quests & Limpeza de Bugs (USSEP, Quest Journal Limit Fix)
+🏆 CAMADA 02: Arsenal do 100% Complecionista (Completionist Tracker, Barenziah, Nirnroot, Soul Cairn)
+🖥️ CAMADA 03: Interface Cirúrgica & UI Moderna (SkyUI SE, TrueHUD estilo souls, Dear Diary Dark Mode)
+⚔️ CAMADA 04: Revolução de Combate (True Directional Movement, MCO/DXP, Valhalla Combat, Precision)
+🧙‍♂️ CAMADA 05: RPG, Magias & Progressão (Ordinator, Apocalypse, Nether's Follower Framework)
+🐎 CAMADA 06: Qualidade de Vida & Imersão Básica (Auto Unequip Shield, Quick Loot RE)
+⚖️ CAMADA 07: Quebra do Paradoxo de Leveling & Economia (Experience, Smart Training, Trade and Barter)
+🔮 CAMADA 08: Magia Contínua & Fim da Pausa em Combate (Smart Cast SSE, Wheeler Action Wheel)
+🛑 CAMADA 09: Protocolo Zero-Glitch (Honed Metal para forja terceirizada, Acquisitive Soul Gems)
+🎭 CAMADA 10: Fluidez de Classes & Respec Livre (Ish's Respec Potion, Andromeda Stones, Guia 3 Fases)
+🗺️ CAMADA 11: Mundo Vivo Estilo RDR2 (Northern Roads, Lux Via, 3DNPC, Missives, Convenient Horses)
+🛡️ CAMADA 12: Eliminação de Atritos de IA (VioLens anti-killcam, Simple Offence sem fogo amigo, Run For Your Lives)
+⚔️ CAMADA 13: Arsenal Cirúrgico por Especialização (Odin, Arcanum, Stances, Dual Wield Parrying, Sneak Tools, AGO)
+💎 CAMADA 14: Destruição Total de Limitações por Classe (Easy Lockpicking/Cheat, Dano Mágico Escalável, Pickpocket 100%, Sacrosanct)
+📍 CAMADA 15: Mapeamento Total de Locais & QoL de Sistema (Atlas Map Markers com 700+ pontos, CoMAP, Yes I'm Sure, Stay At System Page)
+🏛️ CAMADA 16: Dilemas Narrativos & Motor de Animação Moderno (The Paarthurnax Dilemma, Open Animation Replacer - OAR, To Your Face, Audio Overhaul)
+💰 CAMADA 17: Império Financeiro & Dificuldade Lendária Real (RE - Real Estate, Imperial Mail com poupança, Wildcat letalidade mútua)
+🏰 CAMADA 18: Overhaul de Todas as Guildas & Quests Maçantes (All Thieves Guild Jobs Concurrently, Magical College, At Your Own Pace, Open Civil War)
+🏁 CAMADA 19: Blindagem de Início de Jogo & Parkour (Alternate Start - Live Another Life, EVG Animated Traversal, Combo Animation Framework)
+⚡ CAMADA 20: Velocidade de Execução & Pulo em Corrida (Better Jumping SE no sprint, PrivateProfileRedirector)
+🔦 CAMADA 21: Iluminação Portátil, Batalhas de Dragão & Diálogos (Quick Light SE sem ocupar as mãos, Dragon War, Convenient Dialogue UI)
+```
