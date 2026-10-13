@@ -669,3 +669,37 @@ Como o nosso pacote conta com o **Copy and Paste in Console** e **SSE Engine Fix
 | Mod | Nexus ID | A Frustração no Vanilla | A Solução Cirúrgica |
 | :--- | :--- | :--- | :--- |
 | **Individual Shout Cooldowns** | `7433` | **Cooldown global compartilhado para todos os gritos:** Se você usa o grito *Aura Whisper* para ver inimigos pelas paredes, fica **proibido de usar qualquer outro grito** (como *Unrelenting Force* ou *Whirlwind Sprint*) pelos próximos 40 segundos, tornando o arsenal de gritos inútil no meio da ação. | Faz com que **cada grito tenha seu próprio tempo de recarga independente**. Você pode usar *Whirlwind Sprint* para se aproximar e em seguida disparar *Fus Ro Dah* ou *Fire Breath* sem que um trave o outro. Transforma o Dragonborn em um mestre dos Thu'um de verdade. |
+
+---
+
+## ⚡ ANEXO: O MANUAL DO ARQUIMAGO APOCALÍPTICO (DESTRUIÇÃO + CONJURAÇÃO 100% SEM GLITCH)
+
+### 1. O Triângulo de Ouro da Build Sem Bugar o Jogo
+```mermaid
+flowchart TD
+    M1["Smart Cast SSE<br/>(Buffs & Curas Passivas Automáticas)"] --> C["Campo de Batalha"]
+    M2["Ordinator + Odin<br/>(Dano Mágico Escalável + Exército de Dremoras)"] --> C
+    M3["Wheeler Action Wheel<br/>(Troca Instantânea de Magias em Slow-Mo)"] --> C
+    C --> Win["Destruição Absoluta em Dificuldade Lendária"]
+```
+
+### 2. Passo a Passo da Engenharia da Build:
+1. **Fase 1: O Início Seguro (Níveis 1 ao 15)**
+   * **Como upar sem grind:** Com o **Experience** (`17751`), você não precisa ficar castando magia na parede da cidade. Basta explorar as primeiras masmorras em torno de Whiterun e Riverwood. Cada quest concluída e masmorra limpa sobe seu nível geral.
+   * **Primeira Configuração no Smart Cast:**
+     * Regra 1: *Se Vida < 50% ➔ Castar Healing*.
+     * Regra 2: *Se Entrar em Combate ➔ Castar Oakflesh*.
+   * **Combate:** Invoque um Familiar / Flame Atronach para segurar o dano enquanto você dispara projéteis de fogo à distância.
+2. **Fase 2: A Consolidação da Sinergia (Níveis 15 ao 35)**
+   * **No Ordinator (Destruição):** Pegue o perk *Destruction Mastery* (o dano das magias começa a escalar com seu nível de Destruição, superando qualquer arma física sem precisar de poção bugada).
+   * **No Ordinator (Conjuração):** Pegue *Planemeld* e *Atromancy* (aumenta a distância de invocação em 5x e a duração para minutos).
+   * **O Fim da Pausa com o Wheeler:** Configure a Roda de Ações com:
+     * Slot 1: *Fireball / Chain Lightning* (Dano em Área).
+     * Slot 2: *Frost Cloak / Flame Cloak* (Defesa Elemental).
+     * Slot 3: *Conjure Dremora Lord / Frost Atronach* (Tanques de Frente).
+3. **Fase 3: O Arquimago Imortal no Endgame (Níveis 35+)**
+   * **O Combo do Ordinator:**
+     * Perk *Twin Souls / March of Oblivion:* Permite manter **3 a 5 Lordes Dremora / Atronachs ao mesmo tempo** em campo.
+     * Perk *War of the Elements:* Inimigos congelados tomam 30% a mais de dano de fogo, e inimigos eletrocutados perdem regeneração mágica.
+   * **O Papel do Honed Metal:** Leve suas gemas e ouro aos mestres encantadores do Colégio de Winterhold. Eles encantam suas túnicas e anéis para você com **redução de custo de 100% de Magicka em Destruição e Conjuração**, de forma legítima, sem usar o glitch do *Resto-Loop*.
+   * **Resultado:** Feitiços de nível Master (como tempestades elétricas e meteoros do *Arcanum*) com custo zero de mana, enquanto seu exército pessoal de Dremoras limpa qualquer masmorra no modo Lendário.
