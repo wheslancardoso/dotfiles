@@ -598,3 +598,37 @@ Como o nosso pacote conta com o **Copy and Paste in Console** e **SSE Engine Fix
 * Pressione `~` (ou `'`) para abrir o console e digite:
   * `tmm 1,0,1` ➔ **Revela 100% das localizações do mapa inteiro**, mas **sem ativar viagem rápida** (o mapa fica 100% iluminado e desenhado, mostrando onde tudo fica para você cavalgar até lá).
   * `tmm 1` ➔ Revela 100% do mapa e já desbloqueia viagem rápida para todas as localidades.
+
+---
+
+## 🌲 CAMADA 25: O MUNDO DENSO & NOVA GERAÇÃO GRÁFICA (SEM QUEDA DE FPS)
+*No Skyrim vanilla, a paisagem é árida: árvores estáticas de 2011, grama rala com chão cinza à mostra, água com textura plástica e cidades minúsculas que parecem vilarejos vazios.*
+*Esta camada transforma o visual do jogo em um RPG moderno de 2026, com vegetação densa, florestas imponentes e iluminação cinematográfica sem a instabilidade de ENBs pesados:*
+
+### 🏛️ 1. Cidades Densas & Cidadela Viva
+| Mod | Nexus ID | O que Adiciona | Impacto Visual |
+| :--- | :--- | :--- | :--- |
+| **JK's Skyrim** | `6289` | **Reforma completa de todas as 5 capitais e vilarejos menores:** Adiciona detalhes arquitetônicos nórdicos, bancas de mercado, fortificações, bandeiras, iluminação e caminhos de paralelepípedo em Whiterun, Solitude, Riften, Windhelm e vilas como Riverwood e Falkreath. | As cidades deixam de parecer maquetes vazias e viram povoados densos e movimentados. |
+
+### 🌲 2. Vegetação Densa & Florestas Imponentes
+| Mod | Nexus ID | O que Faz | Por que Acaba com o "Mapa Vazio" |
+| :--- | :--- | :--- | :--- |
+| **Happy Little Trees** | `50961` | **Florestas nórdicas densas e majestosas:** Substitui todas as árvores do jogo por modelos densos com folhas volumosas e física de vento realista. Extremamente leve em desempenho. | As florestas de Falkreath e The Rift viram matas densas onde a luz do sol vaza por entre as copas. |
+| **Cathedral Landscapes** | `21954` | **Grama verde densa e campos floridos:** Cobre todo o solo de Skyrim com vegetação volumosa sem comer FPS. Inclui texturas de terreno que se mesclam ao relevo distante. | O chão árido e cinza dá lugar a tundras e campos dourados vivos e densos. |
+
+### 🏔️ 3. Texturas 2K/4K de Toda a Província (All-In-One)
+| Mod | Nexus ID | Escopo | Benefício Técnico |
+| :--- | :--- | :--- | :--- |
+| **Skyland AIO** | `34179` | **O pacote de textura definitivo da comunidade:** Cobre 100% de Skyrim (todas as pedras de montanha, estradas, castelos, masmorras nórdicas, cavernas de gelo e pontes) em altíssima definição 2K/4K. | Elimina as texturas borradas esticadas de 2011 em um único mod coeso e sem conflitos. |
+
+### ☀️ 4. Clima Atmosférico & Iluminação Interior Dramática
+| Mod | Nexus ID | O que Faz | Por que Fica Lindo |
+| :--- | :--- | :--- | :--- |
+| **Cathedral Weathers and Seasons** | `24791` | **Sistema de clima realista e cinematográfico:** Céus azuis límpidos, noites escuras com auroras boreais deslumbrantes, tempestades de neve intensas e neblinas matinais dinâmicas. | Acaba com aquele filtro cinza/desbotado do Skyrim original sem precisar de reshade. |
+| **Lux** | `43158` | **O padrão moderno de iluminação de interiores:** Reformulação completa de iluminação dentro de tavernas, castelos e masmorras. Toda fonte de luz tem origem real (velas, lareiras, tochas). | Tavernas viram ambientes aconchegantes com meia-luz e catacumbas ganham sombras profundas. |
+
+### 🌊 5. Rios e Mares Vivos & Motor Gráfico Moderno
+| Mod | Nexus ID | Tecnologia | Vantagem |
+| :--- | :--- | :--- | :--- |
+| **Realistic Water Two SE (RWT)** | `2182` | **Física de água hiper-realista:** Espuma em corredeiras, transparência nas margens, reflexos e ondas físicas em lagos e icebergs. | A água deixa de parecer gelatina azul e ganha movimento e limpidez real. |
+| **Community Shaders** | `86492` | **O substituto moderno, aberto e leve do ENB:** Plugin SKSE que injeta reflexos de tela (*Screen-Space Reflections*), luz dinâmica na grama (*Grass Lighting*) e sombras de alta definição direto na GPU com zero perda de performance. | Dá o visual cinematográfico de um jogo moderno rodando a 60 FPS lisos no Linux/PC. |
