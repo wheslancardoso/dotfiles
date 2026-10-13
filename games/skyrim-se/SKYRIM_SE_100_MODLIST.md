@@ -632,3 +632,15 @@ Como o nosso pacote conta com o **Copy and Paste in Console** e **SSE Engine Fix
 | :--- | :--- | :--- | :--- |
 | **Realistic Water Two SE (RWT)** | `2182` | **Física de água hiper-realista:** Espuma em corredeiras, transparência nas margens, reflexos e ondas físicas em lagos e icebergs. | A água deixa de parecer gelatina azul e ganha movimento e limpidez real. |
 | **Community Shaders** | `86492` | **O substituto moderno, aberto e leve do ENB:** Plugin SKSE que injeta reflexos de tela (*Screen-Space Reflections*), luz dinâmica na grama (*Grass Lighting*) e sombras de alta definição direto na GPU com zero perda de performance. | Dá o visual cinematográfico de um jogo moderno rodando a 60 FPS lisos no Linux/PC. |
+
+---
+
+## 🧪 CAMADA 26: ALQUIMIA PROFUNDA, CULINÁRIA E COLHEITA REALISTA
+*No Skyrim vanilla, a culinária é inútil (comer uma sopa de repolho no meio da luta cura míseros 5 pontos de vida), colher uma moita de flores gigantesca rende apenas 1 pétala solitária e descobrir efeitos de alquimia exige comer ingredientes crus no escuro.*
+*Esta camada transforma ingredientes, poções e comidas em sistemas recompensadores e vitais:*
+
+| Mod | Nexus ID | A Dor no Vanilla | A Solução Cirúrgica |
+| :--- | :--- | :--- | :--- |
+| **Harvest Overhaul Redone** | `2398` | **Colheita ridícula:** Você colhe um arbusto enorme de flores da montanha e recebe apenas 1 florzinha; abate um urso gigante e só ganha 1 dente. | Aumenta o rendimento de colheita de forma realista: arbustos rendem de 2 a 5 flores/ervas, animais grandes rendem mais carnes, gorduras e ossos, e você pode coletar sementes para plantar na sua casa. |
+| **Complete Alchemy and Cooking Overhaul (CACO)** | `19924` | **Culinária inútil e alquimia sem graça:** Comida não serve para nada além de peso na bolsa; poções curam instantaneamente sem estratégia. | **A reforma definitiva:**<br>1. **Comidas & Sopas Úteis:** Refeições concedem bônus longos de regeneração de estamina e magicka (estilo *The Witcher 3* e *Monster Hunter*).<br>2. **Alquimia Profunda:** Permite destilar álcoois, criar bombas de arremesso alquímicas (fogo, gelo, paralisia), frascos de veneno em diferentes graduações e centenas de novas receitas balanceadas.<br>3. **Estações de Culinária & Fornos:** Fornos de pão, grelhas e panelas ganham receitas ricas com carnes assadas, queijos maturados e tortas nórdicas. |
+| **Gourmet - A Cooking Overhaul** *(Alternativa Leve ao CACO)* | `96876` | **Alternativa moderna sem scripts pesados:** Para quem quer uma culinária imersiva perfeitamente integrada aos outros mods de balanceamento. | Distribui carnes, ensopados, pães e cervejas com efeitos passivos duradouros por todas as tavernas de Skyrim. |
