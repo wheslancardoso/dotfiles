@@ -703,3 +703,16 @@ flowchart TD
      * Perk *War of the Elements:* Inimigos congelados tomam 30% a mais de dano de fogo, e inimigos eletrocutados perdem regeneração mágica.
    * **O Papel do Honed Metal:** Leve suas gemas e ouro aos mestres encantadores do Colégio de Winterhold. Eles encantam suas túnicas e anéis para você com **redução de custo de 100% de Magicka em Destruição e Conjuração**, de forma legítima, sem usar o glitch do *Resto-Loop*.
    * **Resultado:** Feitiços de nível Master (como tempestades elétricas e meteoros do *Arcanum*) com custo zero de mana, enquanto seu exército pessoal de Dremoras limpa qualquer masmorra no modo Lendário.
+
+---
+
+## ⚡ CAMADA 29: O FIM DO GRIND DE ENCANTAMENTO & RECARGA AUTOMÁTICA
+*No Skyrim vanilla, ter roupas e armas mágicas fortes exigia passar 10 horas comprando adagas de ferro, enchendo centenas de pedras da alma e encantando lixo para vender; além disso, armas mágicas descarregavam a cada 15 golpes, forçando você a abrir o menu para queimar gemas da alma.*
+*Esta camada consolida a liberdade total de encantamento:*
+
+| Mod | Nexus ID | A Dor no Vanilla | A Solução Cirúrgica |
+| :--- | :--- | :--- | :--- |
+| **Honed Metal - NPC Crafting and Enchanting** | `61015` | **Obrigação de virar Encantador Nível 100:** Mesmo jogando de guerreiro ou mago puro, o jogo forçava você a grindar a árvore de Enchanting do zero para ter anéis e túnicas com redução de custo de magia. | Magos renomados da corte (como Farengar em Whiterun ou Savos Aren e Sergius Turrianus no Colégio de Winterhold) **encantam seus itens por encomenda**. Você leva a roupa, a pedra da alma e o ouro, e eles aplicam encantamentos no nível de poder máximo deles. Você nunca mais precisa tocar em uma mesa arcana para ter equipamentos de alto escalão. |
+| **Summermyst - Enchantments of Skyrim** | `6285` | **Encantamentos vanilla sem graça:** O jogo base só tem os mesmos bônus repetitivos (*Fortify Health*, *Resist Fire*). | Adiciona mais de **100 novos encantamentos profundos** integrados ao loot do jogo (ex: roubo de velocidade de movimento, dano baseado na falta de vida do alvo, ondas de choque elementais e auras mágicas). |
+| **Passive Weapon Enchantment Recharging** | `14491` | **Ficar abrindo inventário para recarregar armas:** Báculos e espadas mágicas perdem a carga rapidamente no meio das masmorras, forçando você a gastar soul gems manualmente no menu. | Faz com que armas encantadas e báculos **recarreguem sua energia mágica passivamente ao longo do tempo**, como se absorvessem a magia ambiente de Tamriel. |
+| **Acquisitive Soul Gems Multithreaded** | `1469` | **Gemas caras estragadas com almas de rato:** Uma gema de nível Grand/Black capturava almas minúsculas (*Petty*) por acidente e ficava inutilizada para sempre. | Impede o desperdício: gemas só aceitam almas do tamanho exato. Almas fracas vão para gemas comuns; almas poderosas vão para gemas superiores. |
