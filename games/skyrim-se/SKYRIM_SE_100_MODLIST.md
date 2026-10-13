@@ -473,3 +473,24 @@ flowchart LR
 | Mod | Nexus ID | A Dor no Vanilla | A Solução Cirúrgica |
 | :--- | :--- | :--- | :--- |
 | **Open Civil War SSE** | `11076` | **Guerra Civil rasa:** Invadir 3 fortes genéricos e atacar Whiterun/Solitude em batalhas curtas e sem estratégia. | Reativa todo o conteúdo de estratégia militar cortado pela Bethesda: você pode comandar tropas nos mapas de guerra das tendas militares e defender cidades em cercos reais. |
+
+---
+
+## 🏁 CAMADA 19: BLINDAGEM TOTAL — OS ÚLTIMOS 3 ATRITOS RESIDUAIS
+*Para não sobrar absolutamente NENHUM atrito mecânico ou de ritmo durante a campanha:*
+
+### 1. Fim da Carruagem de Helgen Travada (15 Minutos de Introdução Obrigatória)
+* **A Dor no Vanilla:** Toda vez que você inicia um jogo novo, é obrigado a passar por 15 minutos de introdução não-pulável na carruagem de Helgen. Com mods instalados, esse passeio de carruagem frequentemente quebra a física da Havok (a carruagem sai voando ou bate numa árvore e trava o jogo).
+* **A Solução:** **[Alternate Start - Live Another Life](https://www.nexusmods.com/skyrimspecialedition/mods/272)** (`272`):
+  * Você começa numa cela abandonada com o menu de criação de personagem pronto. Você escolhe onde quer começar (como um viajante em uma taverna, um caçador na floresta, um recruta em uma guilda ou o início vanilla em Helgen quando quiser).
+  * O jogo carrega com estabilidade total e você só inicia a Main Quest ao investigar os rumores sobre Helgen.
+
+### 2. Mobilidade do Terreno: Escalar Muros, Rochas e Beiradas
+* **A Dor no Vanilla:** Ficar dando pulinhos repetitivos na diagonal tentando escalar uma pedra de meio metro na beira de um penhasco ou não conseguir pular um murinho de pedra baixo.
+* **A Solução:** **[EVG Animated Traversal](https://www.nexusmods.com/skyrimspecialedition/mods/63232)** (`63232`):
+  * Adiciona mecânica de travessia e parkour realista: o personagem sobe escadas de mão, apoia as mãos para subir muros, esgueira-se por frestas de rochas e escala beiradas de pedra como em um jogo de aventura moderno.
+
+### 3. Variação Dinâmica de Ataques: Fim do Ataque Duplo Repetitivo
+* **A Dor no Vanilla:** O guerreiro dá sempre o mesmo golpe de corte para a direita e corte para a esquerda, sem variação de peso ou sequência.
+* **A Solução:** **[Combo Animation Framework](https://www.nexusmods.com/skyrimspecialedition/mods/40541)** (`40541`):
+  * Permite estender o loop de ataque básico para combos de até 5 ou 7 golpes variados com golpes pesados intercalados, tornando cada combate imprevisível e coreografado.
