@@ -825,3 +825,23 @@ flowchart TD
 * **A Dor Relatada:** *"Você vê uma placa de pressão com espetos gigantes no chão, desvia cuidadosamente e a Lydia vem correndo atrás de você, pisa bem no meio da placa e aciona a parede de espinhos na sua cara."*
 * **A Solução:** Já integrada nativamente no **Nether's Follower Framework (NFF)** (`55653`):
   * Ativa a opção **"Followers Ignore Floor Traps"**: seguidores adquirem o perk *Light Foot*, tornando-se incapazes de disparar armadilhas de piso ao caminhar atrás de você.
+
+---
+
+## 📬 CAMADA 35: O CARTEIRO EM COMBATE & HORÁRIOS QUEBRADOS DE LOJAS (COMENTÁRIOS 141 A 180)
+*Mais 3 traumas profundos extraídos da camada 141 a 180 do CSV:*
+
+### 🏃‍♂️ 1. O Carteiro Interrompendo Lutas de Vida ou Morte (Comentário #162 / #175 - 17+ Likes)
+* **A Cena Clássica de Terror:** Você está no meio de uma batalha contra um Dragão Ancião e 3 vampiros ao mesmo tempo, com a vida no vermelho prestes a tomar uma poção, e do nada a câmera trava, o mundo para e o **Courier (Carteiro)** surge na sua frente com aquela voz calma: *"I've been looking for you. Got something I'm supposed to deliver, your hands only."* Você sai do diálogo e toma um golpe mortal na nuca.
+* **A Solução:** **Immersive Citizens - AI Overhaul SE** (`173`) + **USSEP** (`266`):
+  * NPCs de entrega e mensageiros **nunca mais abordam o jogador durante combate ativo**. Eles esperam a batalha terminar e você guardar a arma para entregar cartas de forma segura.
+
+### 🚪 2. O Bug da Loja do Belethor Trancada no Meio do Dia (Comentário #141 - 24+ Likes)
+* **O Bug da Bethesda:** O horário oficial das lojas é das 8h às 20h. Porém, se o comerciante (Belethor em Whiterun ou Arcadia) esbarrar num caixote na rua ou sua rotina de IA travar, a porta fica **trancada o dia inteiro**. Se você arrombar para vender itens, ele chama a guarda e manda você sair.
+* **A Solução:** **Immersive Citizens - AI Overhaul SE** (`173`):
+  * Reconstrói os ciclos de rotina diária e as rotas dos comerciantes. Lojas abrem rigorosamente às 8h da manhã e os comerciantes sempre se posicionam atrás do balcão prontos para negociar.
+
+### 🐴 3. O Bug do Save/Load Montado a Cavalo (Comentário #150 - 21+ Likes)
+* **O Bug da Havok:** Salvar o jogo enquanto cavalga e dar *Load Game* depois. O cavalo reaparece no ar com as pernas contorcidas ou afundado no chão, jogando você num abismo sem textura.
+* **A Solução:** **SSE Engine Fixes** (`17230`):
+  * Corrige a taxa de atualização do esqueleto e da física de montaria em carregamentos de savegame, permitindo salvar e carregar montado sem deformar o cavalo.
