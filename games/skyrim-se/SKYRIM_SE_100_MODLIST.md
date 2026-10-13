@@ -156,3 +156,31 @@ cd modorganizer2-linux-installer
 | **Wheeler - Quick Action Wheel** | `97345` | **Roda de Ações Rápida (Estilo GTA V / Doom Eternal / Monster Hunter):** Abre uma roda em slow-motion no botão do mouse/teclado. Você troca magias, armas, gritos e poções instantaneamente com o cursor. | Elimina 100% da necessidade de parar o jogo no menu de favoritos arcaico. |
 | **The Wizard Warrior** | `14890` | **Castar Magias no Golpe de Arma (Spellsword Real):** Permite atribuir qualquer feitiço para ser disparado ao balançar a espada, bloquear com escudo ou atirar flecha. | Mago-Guerreiro definitivo sem ficar trocando itens de mão. |
 | **Disable Follower Collision** | `35925` | **Fim da Lydia travando portas:** Remove totalmente a caixa de colisão física entre você e seus seguidores / invocações. Você atravessa o NPC se ele parar na sua frente. | Acaba com o ódio clássico de ficar preso em corredores estreitos de catacumbas. |
+
+---
+
+## 🛑 CAMADA 9: PROTOCOLO ZERO-GLITCH (ELIMINAÇÃO TOTAL DE EXPLOITS)
+*Por que os jogadores usavam exploits no Skyrim vanilla e como eliminamos a necessidade de cada um deles com engenharia de jogo limpa:*
+
+### 1. Fim do Glitch do Baú do Khajiit em Dawnstar (Falta de Ouro/Itens)
+* **O Glitch:** Pegar baús invisíveis enterrados no chão em Dawnstar para conseguir ouro e itens fáceis.
+* **A Solução:** **Trade and Barter** (`23081`) + **Rich Skyrim Merchants** (`1772`). Os mercadores têm até 10.000 septims e compram tudo de forma justa. Você fica rico apenas limpando masmorras e explorando o mundo normalmente.
+
+### 2. Fim do Glitch do "Resto-Loop" (Poções Infinitas de Encantamento)
+* **O Glitch:** Abusar do loop infinito de Fortify Restoration + Fortify Enchanting para criar armas de 1.000.000 de dano que quebram o jogo.
+* **A Solução:** **USSEP** (`266`) bloqueia o bug matemático do motor. Em conjunto com **Ordinator** (`1137`) e **Summermyst** (`6285`), você atinge alto poder de dano e defesa através de sinergias legítimas da árvore de habilidades sem precisar bugar o motor.
+
+### 3. Fim do Glitch de Espadas em Baldes / Fim de Upar Ferreiro com 3.000 Adagas
+* **O Glitch:** Mesmo jogando de mago puro ou ladino, o jogador era obrigado a virar ferreiro lendário para conseguir uma armadura ou arma com dano decente.
+* **A Solução:** **Honed Metal - NPC Crafting and Enchanting Services** (`61015`):
+  * **O que faz:** Ferreiros famosos (como Eorlund Gray-Mane na Skyforge) e magos da corte (como Farengar) **trabalham para você por encomenda**.
+  * Você leva o minério e o ouro, e eles forjam, aprimoram e encantam os seus itens no nível máximo deles. Você nunca mais precisa tocar em uma forja se o seu personagem não for ferreiro.
+
+### 4. Fim do Glitch do Prato na Parede (Atravessar Portas Trancadas / Pular Dungeons)
+* **O Glitch:** Segurar um prato contra uma parede para atravessar portões trancados e não ter que passar por quebra-cabeças longos ou fechaduras master.
+* **A Solução:** **Remember Lockpick Angle** (`26838`) + Perks de Lockpicking do **Ordinator** (`1137`) (que incluem o perk *Lockpick Mastery* e gazuas autônomas que abrem portas automaticamente com base em perks legítimos).
+
+### 5. Fim do Desperdício de Gemas da Alma (Soul Gem Trap)
+* **O Glitch / Frustração:** Uma *Grand Soul Gem* caríssima capturando uma alma de rato pequeno (*Petty*) e sendo estragada para sempre.
+* **A Solução:** **Acquisitive Soul Gems Multithreaded** (`1469`):
+  * Garante que gemas só aceitem almas do seu tamanho exato. Ratos vão para Petty Gems; almas humanas/monstros vão para Black/Grand Gems. Nenhuma gema é desperdiçada.
