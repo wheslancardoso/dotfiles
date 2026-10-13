@@ -782,3 +782,23 @@ flowchart TD
 * **A Dor (246+ Likes):** Você salva com 2% de vida bem na hora em que uma bola de fogo ou flecha está voando na sua cara. Ao carregar o save, você morre antes mesmo de o jogo liberar os controles de movimento.
 * **A Solução:** **Smart Cast SSE** (`32847`):
   * Como o Smart Cast roda em script engine prioritário e dispara curas automáticas no milissegundo em que o savegame é injetado, ele casta o feitiço de cura antes mesmo de o dano fatal ser processado, quebrando o ciclo de morte perpétua.
+
+---
+
+## 🛡️ CAMADA 33: A ANULAÇÃO DO FOGO AMIGO EM SEGUIDORES (IMUNIDADE TOTAL)
+*Na sua pasta antiga de 2021 você usava o `SCSI-NoFriendDamage-91802-1-0.zip`. No Skyrim SE, esta proteção foi elevada ao estado da arte:*
+
+### 1. Fim do Ataque Acidental em Seguidores e Aliados
+* **A Dor no Vanilla:** Você está dando golpes de espada em área, soltando *Chain Lightning* (raios em cadeia) ou flechadas no meio do tumulto, sua arma acerta a Lydia ou seu cachorro, o aliado fica hostil e começa a te atacar de volta, ou morre no chão.
+* **A Solução:** **Nether's Follower Framework (NFF)** (`55653`) + **Simple Offence Suppression** (`41764`):
+  * **Dano do Jogador contra Seguidores = ZERO:** No menu MCM do NFF, o dano que seus golpes, flechas e magias causam nos seus próprios seguidores é reduzido a **0%**.
+  * **Hostilidade Desativada:** Mesmo que uma bola de fogo ou grito atinja o seguidor em cheio, a IA dele ignora o golpe e continua focada exclusivamente nos inimigos.
+  * **Fim das Flechas Bloqueadas:** O mod de colisão física permite que flechas e feitiços atravessem aliados sem esbarrar no corpo deles no calor da batalha.
+
+### 2. Mais 4 Dores Mapeadas do CSV (Posições 66 a 100):
+| A Dor Relatada no Vídeo | O Que Acontece | A Solução na Modlist |
+| :--- | :--- | :--- |
+| **Paredes Invisíveis em Escadas/Beiradas** *(Comentário #75)* | Você tenta atirar flechas ou magias de cima de uma escada ou parapeito e o projétil bate numa colisão invisível no ar bem na sua cara. | **USSEP** (`266`) + **Engine Fixes** (`17230`): removem centenas de caixas de colisão quebradas de escadas e parapeitos de masmorras. |
+| **Esquecer o Seguidor em "Espere Aqui"** *(Comentário #69)* | Você manda a Lydia esperar num canto, viaja pelo mapa inteiro e só nota 10 horas depois que esqueceu onde a deixou. | **NFF** (`55653`): adiciona o feitiço e atalho MCM **"Summon Followers"** (Teletransporta instantaneamente todos os seus seguidores esquecidos direto para o seu lado). |
+| **Doenças Chatas que Destroem Atributos** *(Comentário #84)* | Uma mordida de lobo ou rato te infecta com *Rockjoint* ou *Bone Break Fever*, reduzindo seu dano de arma em 25% sem você perceber. | **Smart Cast SSE** (`32847`): regra automática: *"Se contrair doença ➔ Castar Cure Disease ou tomar poção na hora"*. |
+| **A Masmorra Sem Saída no Fim** *(Comentário #68)* | Explorar uma caverna gigantesca por 40 minutos para descobrir que não tem atalho de saída no final e ter que andar tudo de volta. | **Atlas Map Markers** (`24104`): indica no mapa quais cavernas possuem saídas rápidas e passagens secretas. |
