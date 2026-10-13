@@ -580,3 +580,21 @@ flowchart LR
 | **Livros de Perícia (Skill Books) e Magias** | **Unread Books Glow SSE** | `1296` | Qualquer livro que dá ponto de habilidade ou ensina feitiço **brilha no escuro** com luz azul/vermelha enquanto você não lê-lo. Você nunca mais deixa passar um livro valioso em prateleiras. |
 | **Qualquer Item de Missão Preso no Inventário** | **Whose Quest Is It Anyway** | `23581` | Ao passar o cursor ou tentar largar o item, o jogo avisa exatamente em qual missão ele é usado. |
 | **Nível e Vida Real dos Inimigos** | **TrueHUD - HUD Additions** | `62775` | Mostra o nível exato do inimigo, barra de vida e postura flutuante na cabeça de cada criatura (evitando que você entre em combate contra um chefe de nível 50 sem saber). |
+
+---
+
+## 🗺️ PROTOCOLO DE REVELAÇÃO DE MAPA 100% (SEM NÉVOA E COM TODOS OS MARCADORES)
+
+No Skyrim SE, existem duas maneiras perfeitas de ter **100% do mapa visível desde o minuto 1**:
+
+### Opção 1: Via Menu MCM do Atlas Map Markers (`24104`) (Recomendada)
+* Abra o menu do jogo ➔ `Mod Configuration (MCM)` ➔ `Atlas Map Markers`.
+* Na aba de opções, você tem duas opções sob medida:
+  1. **"Show All Unvisited Locations":** Exibe todos os mais de 700 marcadores no mapa-múndi como ícones cinzas (você vê exatamente onde fica cada caverna, tumba, santuário e acampamento para onde ir, sem liberar teletransporte antes da hora).
+  2. **"Unlock All Fast Travel":** Libera a viagem rápida para qualquer localidade instantaneamente.
+
+### Opção 2: Comando Nativo de Engine (Sem Mods Extras)
+Como o nosso pacote conta com o **Copy and Paste in Console** e **SSE Engine Fixes** (que preservam as conquistas da Steam mesmo usando o console):
+* Pressione `~` (ou `'`) para abrir o console e digite:
+  * `tmm 1,0,1` ➔ **Revela 100% das localizações do mapa inteiro**, mas **sem ativar viagem rápida** (o mapa fica 100% iluminado e desenhado, mostrando onde tudo fica para você cavalgar até lá).
+  * `tmm 1` ➔ Revela 100% do mapa e já desbloqueia viagem rápida para todas as localidades.
