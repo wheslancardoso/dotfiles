@@ -1,8 +1,9 @@
-# 🐉 SKYRIM SPECIAL EDITION: PROTOCOLO DEFINITIVO 100% & MASTER GAMEPLAY
+# 🐉 SKYRIM SPECIAL & ANNIVERSARY EDITION: PROTOCOLO DEFINITIVO 100% & MASTER GAMEPLAY
 
-> **Objetivo Soberano:** Transformar o Skyrim SE na sua versão definitiva: combate moderno responsivo, estabilidade inabalável (zero crash), preservação de lore, reativação de conquistas e rastreamento cirúrgico de 100% de colecionáveis, quests e perks.
+> **Objetivo Soberano:** Transformar o Skyrim SE / AE na sua versão definitiva: combate moderno responsivo, estabilidade inabalável (zero crash), preservação de lore, reativação de conquistas e rastreamento cirúrgico de 100% de colecionáveis, quests e perks (incluindo todo o conteúdo do Creation Club).
 > **Ambiente Alvo:** Linux (Proton + Mod Organizer 2 via `mo2-linux-installer`) / Windows (MO2 Nativo).
 > **Conta Nexus Vinculada:** `Mercenary308` (API Key persistida em `~/.config/nexusmods/credentials.json`).
+> **Versão de Executável Alvo:** Skyrim AE `1.6.x+` (Steam padrão). Ao baixar mods com DLLs/SKSE no Nexus, **sempre selecione os arquivos marcados para AE / 1.6+**.
 
 ---
 
@@ -10,8 +11,8 @@
 
 ```mermaid
 flowchart TD
-    C0["Camada 0: Fundação de Engine & Anti-Crash (SKSE64 + Engine Fixes)"] --> C1["Camada 1: Correção de Quests & Limpeza de Bugs (USSEP)"]
-    C1 --> C2["Camada 2: Ferramentas do 100% Complecionista (Trackers & Markers)"]
+    C0["Camada 0: Fundação de Engine & Anti-Crash (SKSE64 AE + Engine Fixes)"] --> C1["Camada 1: Correção de Quests & Integração CC (USSEP + CC Delayer)"]
+    C1 --> C2["Camada 2: Ferramentas do 100% Complecionista (Trackers & Markers + CC Tracker)"]
     C2 --> C3["Camada 3: Interface Cirúrgica & UI Moderna (SkyUI + TrueHUD)"]
     C3 --> C4["Camada 4: Revolução de Combate & Movimento (MCO / Valhalla / True Directional)"]
     C4 --> C5["Camada 5: RPG, Magias & Progressão de Elite (Simonrim / Enairim)"]
@@ -20,37 +21,38 @@ flowchart TD
 
 ---
 
-## 🛠️ CAMADA 0: FUNDAÇÃO DA ENGINE, ESTABILIDADE & CONQUISTAS STEAM
-*Sem isso, mods quebram a engine e a Bethesda bloqueia as conquistas da Steam.*
+## 🛠️ CAMADA 0: FUNDAÇÃO DA ENGINE, ESTABILIDADE & CONQUISTAS STEAM (AE 1.6+)
+*Sem isso, mods quebram a engine e a Bethesda bloqueia as conquistas da Steam. **Atenção:** Baixe as versões de download identificadas como AE / 1.6+.*
 
 | Mod / Ferramenta | Nexus ID | Função Vital | Por que é Obrigatório no 100% |
 | :--- | :--- | :--- | :--- |
-| **SKSE64** | *Externo* | Extensor de Scripts 64-bit | Base para 95% dos mods avançados. |
-| **Address Library for SKSE Plugins** | `32444` | Header universal de offsets de memória | Evita que updates quebrem DLLs de mods. |
-| **SSE Engine Fixes** | `17230` | Patch em C++ direto na engine da Bethesda | **Reabilita Conquistas Steam com mods**, corrige física em >60 FPS e vazamento de memória. |
-| **Scrambled Bugs** | `43532` | Correções profundas de engine do jogo | Conserta bugs de perks, feitiços e cálculos de acerto do motor vanilla. |
+| **SKSE64 (Anniversary Edition)** | *Externo* | Extensor de Scripts 64-bit para versão 1.6+ | Base para 95% dos mods avançados. Baixar o build Current Anniversary Edition (`1.6.1170+`). |
+| **Address Library for SKSE Plugins** | `32444` | Header universal de offsets de memória | Baixar a opção `All in one (Anniversary Edition)`. Elimina necessidade de recompilar DLLs. |
+| **SSE Engine Fixes** | `17230` | Patch em C++ direto na engine da Bethesda | **Reabilita Conquistas Steam com mods**, corrige física em >60 FPS e vazamento de memória (baixar versão para 1.6+). |
+| **Scrambled Bugs** | `43532` | Correções profundas de engine do jogo | Conserta bugs de perks, feitiços e cálculos de acerto do motor vanilla (versão AE). |
 | **Recursion Fix** | `105248` | Correção de loops infinitos de scripts | Impede que scripts do jogo fiquem travados consumindo CPU em saves longos (run 100%). |
 | **Crash Logger SSE** | `59818` | Diagnóstico de falhas | Se o jogo fechar, gera log apontando exatamente qual arquivo/malha causou o crash. |
 
 ---
 
-## 🐛 CAMADA 1: CORREÇÃO DE QUESTS & INTEGRIDADE DE SAVEGAME
-*Skyrim possui dezenas de missões que travam permanentemente sem estes patches.*
+## 🐛 CAMADA 1: CORREÇÃO DE QUESTS, INTEGRIDADE & INTEGRAÇÃO CREATION CLUB
+*Skyrim SE/AE possui dezenas de missões que travam sem estes patches, além do problema do AE puro de "cuspir" 40 missões na tela ao sair de Helgen.*
 
 | Mod | Nexus ID | Função Vital | Impacto no 100% |
 | :--- | :--- | :--- | :--- |
-| **USSEP (Unofficial Skyrim SE Patch)** | `266` | Compilado massivo de correções | Resolve mais de 10.000 bugs de diálogos, gatilhos de quests e itens inacessíveis. |
+| **USSEP (Unofficial Skyrim SE Patch)** | `266` | Compilado massivo de correções | Resolve mais de 10.000 bugs de diálogos, gatilhos de quests e itens inacessíveis (já compatível e otimizado para os 4 CCs base e versão AE). |
 | **Quest Journal Limit Bug Fixer** | `56130` | Correção de limite de missões ativas | Previne corrupção quando você acumula centenas de quests secundárias. |
 | **Encounter Zones Unlocked SE** | `1961` | Zonas de encontro dinâmicas | Garante que dungeons visitadas no início voltem a escalar de nível no endgame. |
+| **Timing is Everything / CC Delayer** | `25464` / `58105` | Distribuição orgânica do Creation Club | **Vital para AE:** Impede o spam de 40 cartas de correio e quests imediatas ao iniciar; distribui armas, armaduras e masmorras do CC organicamente por nível e rumores em tavernas. |
 
 ---
 
-## 🏆 CAMADA 2: ARSENAL DO 100% COMPLECIONISTA
+## 🏆 CAMADA 2: ARSENAL DO 100% COMPLECIONISTA (INCLUINDO CREATION CLUB)
 *Rastreamento cirúrgico de cada gema, quest, máscara, livro e conquista sem precisar consultar wiki externa o tempo todo.*
 
 | Mod | Nexus ID | O que faz no Jogo | Por que é Indispensável |
 | :--- | :--- | :--- | :--- |
-| **Completionist - Skyrim Quest Tracker** | `46358` | Menu MCM com checklist completa | Rastreador de missões primárias, secundárias, daédricas, livros de skill e itens únicos. |
+| **Completionist - Skyrim Quest Tracker** | `46358` | Menu MCM com checklist completa | Rastreador de missões primárias, secundárias, daédricas, livros de skill e itens únicos (**possui addon completo para rastrear 100% do Creation Club**). |
 | **Stones of Barenziah Quest Markers** | `684` | Marcadores para as 24 Gemas | Elimina a agonia de vasculhar Skyrim procurando a última gema da Thieves Guild. |
 | **Jiub's Opus & Arvak's Skull Markers** | `818` | Marcadores na Soul Cairn | Transforma a pior busca cega da DLC Dawnguard em algo rápido e objetivo. |
 | **Dragon Priest Masks Quest Markers** | `11604` | Marcadores para os 8 Sacerdotes Dragão | Rastreamento direto para fechar o santuário de Bromjunaar. |
@@ -91,7 +93,8 @@ flowchart TD
 | Mod | Nexus ID | Vantagem Técnica e de Gameplay |
 | :--- | :--- | :--- |
 | **Ordinator - Perks of Skyrim** | `1137` | Mais de 400 novos perks que viabilizam qualquer arquétipo (Bardo, Paladino, Necromante, Ladino Trapmaster). |
-| **Apocalypse - Magic of Skyrim** | `1090` | 155 feitiços com efeitos únicos e sinergia com o Ordinator. |
+| **Odin - Skyrim Magic Overhaul** | `46000` | Rebalanceia e substitui todos os feitiços básicos/vanilla da Bethesda com escalonamento justo de dano. |
+| **Apocalypse - Magic of Skyrim** | `1090` | 155 feitiços exóticos complementares (instalar junto com o patch oficial *Apocalypse - Odin Compatibility Patch*). |
 | **Nether's Follower Framework (NFF)** | `55653` | Substitui o antigo *AFT*. Muito mais estável em scripts, permite treinar companheiros e definir residências. |
 | **Summermyst - Enchantments of Skyrim** | `6285` | Dezenas de novos encantamentos balanceados para o late game do 100%. |
 
@@ -296,6 +299,42 @@ flowchart LR
 * **A Solução:** **Intuitive Dragon Ride Control** (`64679`):
   * Concede comandos de voo diretos e controle responsivo sobre para onde o dragão voa e quem ele alveja.
 
+### 8. Fim da Rendição Falsa ("I Yield!") & Encerramento Real de Luta
+* **A Dor (383 Likes no CSV):** O inimigo de joelhos grita *"I yield! I surrender!"*, o jogador poupa a vida dele e embainha a espada, e 3 segundos depois o NPC levanta do chão gritando *"I'll see you burn!"* e ataca pelas costas (ou a morte vira um loop de carnificina forçada).
+* **A Solução:** **Combat Surrender SSE** (`16729`):
+  * Transforma a rendição em mecânica real. Quando o inimigo cai de joelhos rendido, você pode:
+    1. Desarmá-lo e poupá-lo (ele foge do mapa e vira neutro definitivo).
+    2. Rendê-lo sem sangue ou saquear pacificamente.
+    3. Embainhar a arma encerra imediatamente o estado de combate.
+
+### 9. Prevenção de Roubo Acidental no Balcão & Fim do "Take All" Destrutivo
+* **A Dor (248 Likes no CSV):** Tentar conversar com o comerciante e roubar acidentalmente uma caneca ou lingote no balcão, virando criminoso na cidade instantaneamente; ou apertar o botão de "Take All" num baú com 500 itens e perder 20 minutos reclassificando peso.
+* **A Solução:** **BlockSteal - Prevents accidentally pick up** (`18732`) + **BTPS** (`64339`):
+  * Bloqueia a ação de pegar qualquer item pertencente a NPCs se a mira estiver próxima de interação de diálogo, a menos que você esteja agachado e segurando tecla modificadora intencional.
+  * O SkyUI permite ordenar por "Recent Items" e reverter qualquer transferência incorreta.
+
+### 10. Proteção Contra Baús que Resetam (Safe Storage Soberano)
+* **A Dor (61 Likes no CSV):** Guardar armaduras únicas (*Wuuthrad*, *Shield of Ysgramor*, artefatos) em baús de facções (ex: Jorrvaskr, College) após virar líder e perder tudo porque a célula resetou no timer de 10/30 dias.
+* **A Solução:** Moradias Oficiais do Creation Club / AE + **USSEP** (`266`):
+  * Todas as casas de jogador da Anniversary Edition possuem recipientes com a tag imutável `NoRespawn`.
+  * Regra de Ouro: Nunca deposite itens únicos em contêineres públicos ou de taverna antes de adquirir moradia com contêiner marcado como seguro.
+
+### 11. Proteção de Brigas de Soco (Brawls) Contra Intromissão & Magia
+* **A Dor (164 Likes no CSV):** Iniciar uma aposta de soco, a IA demorar uma eternidade no Legendary, transeuntes cruzarem o ringue e tomarem um murro acidental, ou auras passivas (como o veneno da *Ebony Mail*) ativarem crime de assassinato e a guarda inteira te atacar.
+* **A Solução:** **Modern Brawl Bug Fix** (`1473`) + **Precision** (`72347`):
+  * Corrige o bug do motor da Bethesda impedindo que feitiços passivos, capas de veneno ou buffs de companheiros quebrem a aposta.
+  * O **Precision** com detecção precisa de malha somado ao Lock-On do **True Directional Movement** impede que socos atinjam espectadores passando na lateral.
+
+### 12. Fim do Desvio Telepático de Flechas (Matrix / Ultra Instinct Dodge)
+* **A Dor (207 Likes no CSV):** Bandidos ou magos em repouso deslizando lateralmente a 100 km/h sem animação no exato milissegundo em que você dispara uma flecha furtiva a 50 metros de distância.
+* **A Solução:** **No BS AI Projectile Dodge** (`1763`):
+  * Elimina o script que dá reflexos psíquicos sobrenaturais para inimigos que nem sequer detectaram a presença do jogador.
+
+### 13. Prevenção de Dragões Fugitivos & Carcaças Assombradas
+* **A Dor (386 Likes no CSV):** Derrotar um dragão no ar ou com Dragonrend e ele voar quilômetros até sumir atrás de uma montanha para achar uma clareira de morte, ou carcaças de dragões mortos ficarem caindo do céu ao fazer Fast Travel.
+* **A Solução:** **Dragon Stalking Fix** (`14060`) + **USSEP** (`266`):
+  * Corrige o motor de limpeza de dragões para evitar que esqueletos fiquem te perseguindo em viagens rápidas e corrige a absorção correta de almas.
+
 ---
 
 ## ⚔️ CAMADA 13: ARSENAL CIRÚRGICO POR CLASSE & ARQUÉTIPO
@@ -447,10 +486,10 @@ flowchart LR
 | **Imperial Mail - Post and Banking Service** | `21014` | **Sistema de Banco, Poupança e Envio de Encomendas:** Permite depositar seu ouro em contas bancárias com rendimento de juros em qualquer taverna ou capital, além de despachar baús de loot pesado direto para sua casa sem precisar carregar tudo a pé. | Você limpa masmorras inteiras, despacha o lote pesado pelo correio imperial e recebe o pagamento sem travar o peso do inventário. |
 | **Bandolier - Bags and Pouches Classic** | `2417` | **Bolsas, Coldres e Cartucheiras Físicas:** Adiciona bolsas de couro visíveis no cinto e no peito do personagem, expandindo o peso de carga de forma balanceada e estética. | Permite que o jogador "coletor/farmador" transporte muito mais loot legítimo de masmorras sem precisar apelar para cheats de peso infinito. |
 
-### 💀 2. Dificuldade Lendária Letal (Estilo Souls / Hardcore Real)
+### 💀 2. Dificuldade Lendária Letal (Estilo Souls / Hardcore Real sem Conflitos)
 | Mod | Nexus ID | Mecânica | Como Transforma a Dificuldade Lendária |
 | :--- | :--- | :--- | :--- |
-| **Wildcat - Combat of Skyrim** | `1368` | **Combate Letal e Tático:** Substitui o combate de esponja de dano por letalidade mútua. Adiciona sistema de ferimentos (ataque nas pernas reduz velocidade, dano nos braços reduz dano de ataque). | Inimigos continuam extremamente perigosos e te matam em 1 ou 2 golpes, mas **eles não são mais sacos de pancada**: se você acertar um contra-ataque ou parry perfeito, eles morrem rápido. |
+| **Valhalla Combat (Hardcore Preset)** | `64741` | **Combate Letal e Postura:** Utiliza o sistema moderno de estamina agressiva e quebra de postura já presente na Camada 4, evitando scripts legados de combate como o Wildcat. | Elimina o atrito de inimigos esponja de dano sem sobreposição de scripts: parries precisos deixam inimigos abertos a execuções brutais imediatas. |
 | **Custom Difficulty UI** | `14362` | **Calibração Total de Dano no Menu do Jogo:** Permite ajustar os multiplicadores exatos de dano dado e dano recebido no modo Lendário diretamente na interface do jogo. | Permite configurar o equilíbrio perfeito: dano recebido em 3.0x (letalidade máxima para você) e dano causado em 1.5x ou 2.0x (combate visceral onde todo golpe importa, acabando com a sensação de bater em pedra). |
 
 ---
