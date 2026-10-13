@@ -644,3 +644,19 @@ Como o nosso pacote conta com o **Copy and Paste in Console** e **SSE Engine Fix
 | **Harvest Overhaul Redone** | `2398` | **Colheita ridícula:** Você colhe um arbusto enorme de flores da montanha e recebe apenas 1 florzinha; abate um urso gigante e só ganha 1 dente. | Aumenta o rendimento de colheita de forma realista: arbustos rendem de 2 a 5 flores/ervas, animais grandes rendem mais carnes, gorduras e ossos, e você pode coletar sementes para plantar na sua casa. |
 | **Complete Alchemy and Cooking Overhaul (CACO)** | `19924` | **Culinária inútil e alquimia sem graça:** Comida não serve para nada além de peso na bolsa; poções curam instantaneamente sem estratégia. | **A reforma definitiva:**<br>1. **Comidas & Sopas Úteis:** Refeições concedem bônus longos de regeneração de estamina e magicka (estilo *The Witcher 3* e *Monster Hunter*).<br>2. **Alquimia Profunda:** Permite destilar álcoois, criar bombas de arremesso alquímicas (fogo, gelo, paralisia), frascos de veneno em diferentes graduações e centenas de novas receitas balanceadas.<br>3. **Estações de Culinária & Fornos:** Fornos de pão, grelhas e panelas ganham receitas ricas com carnes assadas, queijos maturados e tortas nórdicas. |
 | **Gourmet - A Cooking Overhaul** *(Alternativa Leve ao CACO)* | `96876` | **Alternativa moderna sem scripts pesados:** Para quem quer uma culinária imersiva perfeitamente integrada aos outros mods de balanceamento. | Distribui carnes, ensopados, pães e cervejas com efeitos passivos duradouros por todas as tavernas de Skyrim. |
+
+---
+
+## 🥩 CAMADA 27: DROPS GARANTIDOS DE 100% EM CRIATURAS (FIM DA ROLETA RUSSA)
+*No Skyrim vanilla, a tabela de drops é ilógica e absurda: você mata um Dente-de-Sabre (Sabre Cat) gigante com presas de 30cm e o corpo vem **sem dentes**; mata um Urso com patas enormes e ele vem **sem garras**; mata um Mamute com presas colossais e o saque vem vazio porque o jogo rodou um teste de porcentagem aleatória.*
+*Esta camada elimina a roleta russa: **se o animal tem o membro no corpo, o drop é 100% garantido**:*
+
+| Criatura Abatida | O Absurdo no Vanilla | Com **Harvest Overhaul Redone - Creatures** (`2398`) |
+| :--- | :--- | :--- |
+| **Dente-de-Sabre (Sabre Cat)** | Chance de não vir dente nenhum | **100% garantido:** 2x *Sabre Cat Teeth*, 1x *Eye of Sabre Cat*, Pele e Carnes. |
+| **Ursos (Bears)** | Frequentemente vem sem garras e sem gordura | **100% garantido:** 2 a 4x *Bear Claws*, *Bear Fat*, Pele de Urso e Carnes. |
+| **Mamutes (Mammoths)** | Presas raras de dropar | **100% garantido:** 2x *Mammoth Tusks* (duas presas inteiras) e *Mammoth Snout*. |
+| **Gigantes (Giants)** | Dedos de gigante aleatórios | **100% garantido:** *Giant's Toe*, ouro e tesouros de clã. |
+| **Gelo / Trolls** | Trolls mortos sem gordura | **100% garantido:** *Troll Fat* e Crânio de Troll. |
+| **Aranhas Congelantes (Frostbite Spiders)** | Aranhas sem veneno | **100% garantido:** *Frostbite Venom* (veneno fresco) e *Spider Eggs*. |
+| **Dragões (Dragons)** | Quantidades aleatórias baixas | **100% garantido:** Escalas e Ossos abundantes proporcionais para forjar sets completos. |
