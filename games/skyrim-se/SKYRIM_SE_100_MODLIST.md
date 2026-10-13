@@ -933,5 +933,17 @@ flowchart TD
 | **EVG Animated Traversal (EVGAT)** | `63232` | **Personagem travando em qualquer murinho de 40cm:** O Dragonborn não consegue subir num caixote ou pular uma cerca sem pular desajeitado e escorregar no chão. | Adiciona animações contextuais fluidas: pressione ação para **escalar beiradas de pedras, pular muros, esgueirar-se por frestas estreitas de masmorras e subir escadas de mão verticais**. |
 | **Skyrim's Paraglider** | `53256` | **Ter que descer montanhas de costas ou morrer de queda:** Descer de High Hrothgar ou dos picos de Markarth exige deslizar na diagonal pelas pedras torcendo para não tomar dano de queda. | Adiciona um **Paraglider funcional**: pule de qualquer penhasco ou torre e abra as asas no ar para planar suavemente pelo horizonte de Skyrim em alta velocidade, admirando as florestas e cidades lá embaixo. |
 
+---
+
+## 🔬 CAMADA 39: OS MICRO-ATRITOS INVISÍVEIS (SELEÇÃO FANTASMA DE MENUS & PULO TRAVADO)
+*Três atritos minúsculos que acontecem centenas de vezes por sessão e que irritam profundamente no dia a dia:*
+
+| Mod / Ferramenta | Nexus ID | A Dor no Vanilla | A Solução Cirúrgica |
+| :--- | :---: | :--- | :--- |
+| **Better Dialogue Controls** | `1429` | **O "Clique Fantasma" nos diálogos:** Você passa o mouse sobre a opção 1 de diálogo, mas o teclado ou a seleção interna do jogo ainda está destacando a opção 2. Ao clicar, o jogo aciona a opção errada (muitas vezes recusando uma quest ou insultando um NPC sem querer). | Corrige o cálculo de foco de interface do cursor. Onde o mouse estiver posicionado é **estritamente o que será clicado**, eliminando 100% dos cliques em opções erradas de diálogo. |
+| **Better MessageBox Controls** | `1428` | **Caixas de confirmação desajeitadas ("Deseja comprar este cavalo? Sim / Não"):** A área de clique dos botões é minúscula e você é forçado a tirar a mão do WASD para clicar com precisão de agulha com o mouse. | Permite navegar todas as caixas de alerta do jogo usando as teclas direcionais (ou `A`/`D`) e confirmar direto com a tecla **`E`** (ou barra de espaço), tornando confirmações de compra, forja e craft instantâneas. |
+| **Better Jumping SE** | `18967` | **Proibição de pular correndo (Sprint Jump):** No Skyrim vanilla, se você estiver segurando o botão de corrida (Sprint) e apertar Espaço para pular sobre um tronco ou riacho, **o personagem simplesmente não pula** (o motor ignora o comando de pulo durante o sprint). | Libera o pulo dinâmico durante a corrida contínua (estilo qualquer jogo moderno de ação), além de permitir configurar pulo duplo suave opcional via arquivo `.ini` sem ESPs. |
+
+
 
 
