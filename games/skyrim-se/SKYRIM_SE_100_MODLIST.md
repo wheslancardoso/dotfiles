@@ -1044,14 +1044,21 @@ flowchart TD
 | **10. Honed Metal** | `61015` | Encomenda forjas e encantamentos com ferreiros/magos NPCs por ouro. | Ferreiros lendários (como Eorlund) exigem progressão de respeito na facção por padrão (configurável no MCM). |
 | **11. Fogo Amigo: 4 Camadas Distintas** | `41764` + `55745` + `55653` | • **Hostilidade:** `41764` (SOS).<br>• **Dano:** `55745` (SOS Block Friendly Fire) e NFF `55653` (`Damage = 0`). | **Linha de Tiro / Interceptação:** Flechas físicas ainda podem ser interceptadas pelo corpo do seguidor; para evitar colisão corporal, use `I'm Walkin' Here` (`27742`) e posicionamento tático. |
 
+---
 
+## 47. MATRIZ ANTI-TOP 10 DORES UNIVERSAIS DE SKYRIM (VERIFICAÇÃO FORENSE)
 
+Mapeamento técnico direto contra as 10 maiores queixas históricas da comunidade de Skyrim, detalhando o mod exato, a mecânica de neutralização e o comportamento real:
 
-
-
-
-
-
-
-
-
+| # | Pior Dor de Skyrim (Ranking Histórico) | Solução Técnica na Modlist | Mod ID Nexus | O Que o Mod Faz na Prática (Mecanismo Exato) | Limitação / Ressalva Técnica Documentada |
+| :-: | :--- | :--- | :---: | :--- | :--- |
+| **1** | **Quest travada / NPC não conversa** | **USSEP** + **Quest Journal Limit Bug Fixer** | `266`<br>`56130` | Corrige dezenas de milhares de scripts e condições corrompidas de missões vanilla. O fix `56130` impede crash e travamento do diário de quests quando acumulam dezenas de objetivos. | Quests com scripts quebrados por escolhas contraditórias em saves antigos ainda podem exigir o comando de console de emergência `setstage <QuestID> <Stage>`. |
+| **2** | **Lydia / Seguidor bloqueando portas** | **I'm Walkin' Here (NG)** | `27742` | Remove completamente a caixa de colisão física entre o jogador, seguidores e summons. Você simplesmente **atravessa qualquer NPC** como se fosse ar em portas e corredores. | Desativa apenas a colisão jogador-aliado; NPCs inimigos continuam tendo colisão para bloqueio e combate tático. |
+| **3** | **Inventário cheio + Vendedor sem ouro** | **Rich Skyrim Merchants** + Carry Weight nativo | `1772` | Multiplica o ouro de todos os comerciantes em até 10x (2k, 5k ou 10k de ouro). Acoplado ao comando seguro `player.modav carryweight 5000` (sem scripts pesados). | Se você vender mais de 30.000 de ouro em um único vendedor sem sair do menu, o motor vanilla pode bugar o contador de ouro; venda em lotes de até 10k. |
+| **4** | **Draugr desarmando sua arma favorita** | **No Disarm (Unequip Instead)** | `27188` | Substitui a perda física da arma: o grito do Draugr apenas aplica *stagger* e desequipa a arma direto para o seu inventário/bainha. **Zero armas caídas no chão ou engolidas pelo cenário**. | Sua arma ainda será desequipada temporariamente no meio da luta, exigindo reequipá-la (use o menu radial do *Wheeler* em 0.2s). |
+| **5** | **Combate travado "bater e apanhar"** | **Precision** + **Valhalla Combat** + **MCO/True Directional Movement** | `72347`<br>`64741`<br>`51614` | • **Precision:** Hitboxes físicas precisas (acerta exatamente onde a lâmina corta; sem golpes no ar).<br>• **Valhalla:** Parrying perfeito com stagger, execuções dinâmicas e bloqueio técnico estilo moderno.<br>• **TDM:** Movimentação fluida 360º com mira travada (Lock-on). | O combate torna-se mais exigente e responsivo; não é um botão de invencibilidade automática, exige timing de esquiva/parry. |
+| **6** | **Mago preso em menus infinitos** | **Wheeler** + **Smart Cast SSE** | `97345`<br>`32847` | • **Wheeler:** Menu radial em tempo real na tela, permitindo trocar magias e itens em frações de segundo.<br>• **Smart Cast:** Automatiza magias de suporte (ex: casta *Armor* automaticamente ao sacar armas; casta cura se a vida cair de 50%). | *Smart Cast SSE* é uma conversão do clássico Oldrim via porta SSE; deve ser instalado preservando a pausa clássica dos menus (sem SkyrimSouls). |
+| **7** | **Seguidor na linha de tiro / Fogo amigo** | **SOS MCM (Block Friendly Fire)** + **NFF** | `55745`<br>`55653` | • **SOS MCM:** Zera dano e hostilidade acidentais causados por flechas, gritos e feitiços de área.<br>• **NFF:** Seguidor imortal (*Essential*) que se afasta ativamente quando o jogador mira à distância. | Flechas físicas ainda possuem trajetória interrompida se colidirem no modelo do seguidor; use *I'm Walkin' Here* para reposicionar ou atirar pelos flancos. |
+| **8** | **Montanha bloqueando a travessia** | **SkyClimb** + **Skyrim's Paraglider** | `97253`<br>`53256` | • **SkyClimb:** Permite agarrar bordas e escalar relevos verticais dinamicamente.<br>• **Paraglider:** Salte de montanhas e picos para planar quilômetros com velocidade e sem dano de queda. | *SkyClimb* exige bordas com geometria física detectável; encostas 100% lisas sem arestas ainda requerem contorno lateral ou cavalos. |
+| **9** | **Killcam de flecha que erra o alvo** | **VioLens - A Killmove Mod** | `668` | Permite desligar com um clique a opção *Ranged Killcam* no menu MCM. **Nunca mais perca o controle da câmera para ver uma flecha bater na parede ou o inimigo desviar**. | Desativa apenas a cinemática de câmera lenta à distância; o dano de acerto crítico e furtividade continuam funcionando normalmente. |
+| **10** | **Colecionáveis e pedras sem pistas** | **The Completionist** + **Stones of Barenziah Quest Markers** | `46358`<br>`684` | Adiciona marcadores de mapa individuais para todas as 24 Pedras de Barenziah e rastreador visual no diário para todos os livros, máscaras e itens únicos do jogo. | Os marcadores aparecem no mapa apenas após conversar com Vex da Thieves Guild para iniciar a contagem das pedras. |
