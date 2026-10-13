@@ -130,3 +130,15 @@ flowchart TD
   * Dentro do menu do Rampage (`F5`):
     * `Character > Stats > Challenges`: Permite **concluir individualmente apenas os desafios que você achar abusivos** (como Gambler 8 e 9), ou desbloquear todos de uma vez se quiser pegar a roupa lendária *Legend of the East* instantaneamente.
     * `Compendium`: Permite marcar como "Descoberto/Estudado" qualquer animal raro que você não tenha paciência de ficar caçando na mata.
+
+---
+
+## 🤠 CAMADA 7: VIDA DE FORA-DA-LEI LIVRE & ASSALTOS INFINITOS
+*No RDR2 vanilla, uma vez que as missões da história acabam, você **não pode assaltar bancos**, não pode assaltar diligências livremente e os membros da gangue ficam presos no acampamento:*
+
+| Mod | Nexus ID | A Dor no Vanilla | A Solução Cirúrgica |
+| :--- | :--- | :--- | :--- |
+| **Bank Robberies** | `167` | **Bancos trancados para sempre:** No jogo base, assaltos a banco só acontecem em missões pré-programadas de história. No modo livre as portas dos cofres são cenográficas. | Permite entrar e assaltar qualquer banco do jogo (Valentine, Rhodes, Saint Denis). Aponte a arma para o caixa, arrombe o cofre com dinamite e fuja com sacolas de dinheiro enquanto os homens da lei cercam o local. |
+| **Stagecoach Robberies** | `869` | **Diligências sem valor:** Assaltar carruagens na estrada rende quase nada e não tem contratos dinâmicos. | Adiciona contratos infinitos gerados aleatoriamente de assaltos a carruagens blindadas com escolta armada e baús de joias por todo o mapa. |
+| **Ride With Gang** | `284` | **Gangue presa no acampamento:** Arthur é forçado a viajar sempre sozinho, enquanto John, Charles, Javier e Sadie ficam sentados fumando em Horseshoe Overlook. | Permite recrutar qualquer membro da gangue de Dutch para cavalgar, caçar e trocar tiros ao seu lado como companheiros de viagem com cobertura tática. |
+| **Dog Companion** | `725` | **Cachorros só servem para fazer carinho:** Você vê dezenas de cães no acampamento e nas vilas, mas não pode ter um parceiro leal. | Adiciona um cão de caça pessoal que cavalga ao seu lado, ajuda a rastrear animais na mata, ataca inimigos na perna e busca itens caídos. |
