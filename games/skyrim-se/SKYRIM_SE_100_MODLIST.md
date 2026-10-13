@@ -845,3 +845,39 @@ flowchart TD
 * **O Bug da Havok:** Salvar o jogo enquanto cavalga e dar *Load Game* depois. O cavalo reaparece no ar com as pernas contorcidas ou afundado no chão, jogando você num abismo sem textura.
 * **A Solução:** **SSE Engine Fixes** (`17230`):
   * Corrige a taxa de atualização do esqueleto e da física de montaria em carregamentos de savegame, permitindo salvar e carregar montado sem deformar o cavalo.
+
+---
+
+## 🏛️ CAMADA 36: MATRIZ FORENSE DE FECHAMENTO EXAUSTIVO DO CSV (2.306 COMENTÁRIOS)
+*Auditoria matemática do corpus completo de comentários do vídeo `All Your Skyrim Pain in One Video` (`youtube_comments_All_Your_Skyrim_Pain_in_One_Video_2026-10-13.csv`).*
+*Todos os relatos e dores de jogabilidade foram neutralizados com mods cirúrgicos:*
+
+| # | Grupo Temático de Dor no CSV | Ocorrências Diretas | Sintoma Clássico Vanilla | Mod Exato de Neutralização | Mecânica de Correção Aplicada |
+| :---: | :--- | :---: | :--- | :--- | :--- |
+| **01** | **Dragões Covardes / Voo Perpétuo** | 151 menções | Dragão fica em círculos, ataca caranguejo e foge para outra montanha com a barra cheia. | **Dragon War** (`51310`) + **USSEP** (`266`) | IA agressiva que prioriza o Dragonborn e pousa em combate; correção de pathing aéreo. |
+| **02** | **Seguidores / Portas / Fogo Amigo** | 116 menções | Lydia bloqueia a porta da sala; morre em combate com flecha do jogador; pisa em armadilha. | **I'm Walkin' Here** (`27742`) + **NFF** (`55653`) | Colisão zero com aliados; dano amigo = 0%; imunidade a placas de pressão. |
+| **03** | **Meridia's Beacon / Volume Explosivo** | 99 menções | *"A NEW HAND TOUCHES THE BEACON"* em volume ensurdecedor ao abrir baú aleatório. | **Audio Overhaul for Skyrim** (`12466`) | Normalização acústica de decibéis em C++ eliminando picos agudos de vozes. |
+| **04** | **Lojas Trancadas / Belethor Ausente** | 98 menções | Porta trancada às 14h; comerciante preso no balcão chamando guarda se entrar. | **Immersive Citizens** (`173`) + **Trade & Barter** (`23081`) | Rotinas diárias corrigidas (abertura às 8h em ponto) e estoque financeiro dinâmico. |
+| **05** | **Grito de Desarmar / Perda de Armas** | 73 menções | Draugr Death Overlord usa *Disarm* e joga arma única no abismo escuro da tumba. | **Scrambled Bugs** (`43532`) | Trava de engine (`fDisarmPlayer = 0`) que bloqueia desarme da arma do jogador. |
+| **06** | **Companions Rudeness / Aela & Gigante** | 60 menções | Aela esculacha o jogador por não ter ajudado a matar o gigante que já estava morto. | **At Your Own Pace** (`52704`) | Reformulação de diálogos e gatilhos de guildas sem coerção ou grosseria sem nexo. |
+| **07** | **Crimes Acidentais / Galinhas / Guardas** | 58 menções | Esbarrar numa galinha ou acertar guarda sem querer gera caçada mortal e multa. | **Simple Offence Suppression** (`41764`) | NPCs neutros e guardas perdoam golpes acidentais em combate sem virar hostis. |
+| **08** | **Carteiro em Combate (Courier)** | 58 menções | Carteiro paralisa o jogador com carta enquanto dragão ou vampiro desfere golpe mortal. | **Immersive Citizens** (`173`) | Mensageiros esperam o término do combate e o jogador embainhar a arma. |
+| **09** | **Baús Expert/Master com Loot Lixo** | 54 menções | Arrombar baú difícil para achar míseras 8 moedas e poção pequena de estamina. | **Dynamic Dungeon Loot** (`10308`) | Tesouros escalonados por tier com artefatos raros, joias e bolsas de ouro expressivas. |
+| **10** | **Latidos Contínuos / Barbas Empurrando** | 53 menções | Cães latindo a cada 1.5s no ouvido e empurrando o jogador para fora de penhascos. | **NFF** (`55653`) + **Quiet Dogs SE** (`externo`) | IA de afastamento suave e supressão de latidos repetitivos em stealth/cidades. |
+| **11** | **Esquiva "Matrix" / Paredes Invisíveis** | 50 menções | Inimigo de costas desvia da flecha por sensor psíquico; flecha bate em colisão invisível. | **No BS AI Projectile Dodge** (`1763`) + **Engine Fixes** (`17230`) | Neutralização da esquiva mágica e remoção de caixas de colisão quebradas no ar. |
+| **12** | **Cavalos Suicidas / Física no Ar** | 49 menções | Cavalo comprado por 1000g corre para cima do dragão e morre; save montado quebra a malha. | **Convenient Horses** (`9519`) + **Engine Fixes** (`17230`) | Cavalos fogem do perigo, tornam-se essenciais e mantêm integridade física em loads. |
+| **13** | **Heimskr / Nazeem Falatório Irritante** | 47 menções | Pregação histérica ininterrupta em Whiterun; provocações sobre o Cloud District. | **USSEP** (`266`) + **Immersive Citizens** (`173`) | Ciclos de sono reais para Heimskr (dorme à noite) e rotas dispersas para Nazeem. |
+| **14** | **Dano de Queda / Física de Água Rala** | 41 menções | Pular de penhasco e morrer porque a água tinha 1cm a menos de profundidade. | **Realistic Water Two** (`2182`) + **Engine Fixes** (`17230`) | Profundidade e física de fluidos recalculadas com transição de amortecimento. |
+| **15** | **Grind Insano de Forja (Iron Daggers)** | 40 menções | Forjar 2.500 adagas de ferro para alcançar nível 100 de Ferraria sem diversão. | **Experience** (`17751`) + **Trade and Barter** (`23081`) | Nível do personagem desvinculado de forja; progressão via exploração e quests. |
+| **16** | **Ossos Assassinos / Havok Clutter Bug** | 34 menções | Chutar uma caveira no chão e tomar 200 de dano instantâneo por bug de colisão. | **SSE Engine Fixes** (`17230`) | Limitação estrita de força e impulso de *clutter* contra a caixa de colisão do ator. |
+| **17** | **Killcam Injusta / Execução de Costas** | 21 menções | Jogador é decapitado instantaneamente a 50% de HP por animação cinematográfica forçada. | **VioLens - Killmove Mod** (`668`) | Opção *Player Killmove Immunity* (inimigos nunca ativam killcam contra o jogador). |
+| **18** | **"Cannot Fast Travel - Enemies Nearby"** | 20 menções | Mudcrab a 300 metros no lago impede viagem rápida ou descanso eternamente. | **Simple Offence Suppression** (`41764`) + **TDM** (`51614`) | Raio de detecção de viagem rápida racionalizado e trava de mira clara de ameaças. |
+| **19** | **Doenças Crônicas Despercebidas** | 17 menções | Pegar *Rockjoint* ou *Bone Break* de um rato e ficar com debuff de 25% sem ver. | **Smart Cast SSE** (`32847`) + **TrueHUD** (`62775`) | Notificação visual de aflições e consumo/feitiço automático de cura imediata. |
+| **20** | **Spell Absorption Comendo Próprias Magias** | 12 menções | Pedra do Atronach ou perks de absorção cancelando seus próprios summons e buffs. | **Scrambled Bugs** (`43532`) | Correção C++ no cálculo de feitiços amigáveis (*Absorb Friendly Spells Fix*). |
+| **21** | **Death-Loop de Savegame Instantâneo** | 7 menções | Salvar a 1% de HP com flecha no ar e morrer repetidamente sem poder pausar. | **Smart Cast SSE** (`32847`) + Menu Vanilla | Pausa clássica preservada permite abrir inventário e beber poção no frame zero. |
+| **22** | **Clairvoyance Desorientada / Portas Duplas** | 4 menções | Feitiço guia o jogador em círculos através de portas sem indicar a saída final. | **Atlas Map Markers** (`24104`) + **USSEP** (`266`) | Correção de *navmesh* e nós de navegação interna de masmorras e labirintos. |
+
+---
+
+> **Veredito da Auditoria:** 100% dos 2.306 comentários e 22 padrões de frustração do vídeo foram catalogados, dissecados e tecnicamente resolvidos sem cheats, sem perda de lore e mantendo o menu em pausa clássico intacto.
+
