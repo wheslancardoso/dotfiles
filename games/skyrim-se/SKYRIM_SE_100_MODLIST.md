@@ -544,3 +544,13 @@ flowchart LR
 ⚡ CAMADA 20: Velocidade de Execução & Pulo em Corrida (Better Jumping SE no sprint, PrivateProfileRedirector)
 🔦 CAMADA 21: Iluminação Portátil, Batalhas de Dragão & Diálogos (Quick Light SE sem ocupar as mãos, Dragon War, Convenient Dialogue UI)
 ```
+
+---
+
+## 👁️ CAMADA 22: IMERSÃO DE INVENTÁRIO EM TEMPO REAL & VISUALIZAÇÃO DE PERSONAGEM
+*Dois mods que eliminam os últimos resquícios de interface arcaica do Skyrim:*
+
+| Mod | Nexus ID | A Dor no Vanilla | A Solução Cirúrgica |
+| :--- | :--- | :--- | :--- |
+| **Show Player In Menus** | `81291` | **Não dá para ver o personagem ao trocar de roupa:** No Skyrim vanilla, abrir o inventário mostra apenas uma tela preta com itens 3D flutuando no meio do nada (você não vê como a armadura ou o elmo ficaram no corpo sem fechar o menu). | Exibe o seu personagem 3D em tempo real girando e reagindo dentro do menu de inventário (estilo *Oblivion* e *Cyberpunk 2077*). Você vê exatamente como cada arma, capa e armadura se encaixam no seu corpo na hora de equipar. |
+| **SkyrimSouls - Unpaused Game Menus** | `15170` | **Pausa mágica no meio da batalha:** Tomar 40 poções de cura instantaneamente pausando o jogo no meio do golpe de um dragão (acaba com qualquer tensão e desafio no modo Lendário). | Faz com que os menus do jogo (inventário, favoritos, baús e diálogos) ocorram em **tempo real** (estilo *Dark Souls / Elden Ring*). Você precisa se afastar para beber poções ou gerenciar itens com calma, trazendo tensão real para a gameplay. Totalmente configurável no `.ini` (pode manter pausa só no menu ESC se quiser). |
