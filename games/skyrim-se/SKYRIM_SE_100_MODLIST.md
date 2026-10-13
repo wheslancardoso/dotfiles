@@ -914,9 +914,12 @@ flowchart TD
 
 ---
 
-### 🖥️ Guia de Ajuste Recomendado na RTX 5060:
-1. **Resolução:** 1080p ou 1440p nativo.
-2. **Upscaling:** Ativar **DLAA** dentro do menu do `Skyrim Upscaler` (pressione a tecla `End` in-game para abrir o menu do upscaler). Como a RTX 5060 tem poder de sobra, o DLAA usa os Tensor Cores para eliminar 100% dos serrilhados sem borrado.
-3. **Parallax 3D:** No arquivo `EngineFixes.toml`, garanta que `MemoryManager = true` e desfrute das estradas de pedra com relevo físico real.
+### 🖥️ Guia de Ajuste Recomendado na RTX 5060 & DLSS 5:
+1. **O Ecossistema DLSS 5 (Lançado pela Nvidia em Setembro/2026):**
+   * O **DLSS 5** introduziu o **3D-Guided Neural Rendering (DLSS-NR)**, indo além da reconstrução clássica de pixels: ele utiliza a arquitetura de IA da série RTX 50 para reconstruir geometria e iluminação em tempo real.
+   * **Modding no Skyrim:** O modder PureDark e a comunidade de upscalers atualizaram os wrappers do `Skyrim Upscaler` para suportar a injeção das DLLs mais recentes do DLSS 5 (`nvngx_dlss.dll`).
+2. **Resolução & Modo Recomendado:**
+   * **DLAA / DLSS 5 Quality:** Em 1080p ou 1440p, você pode selecionar **DLAA** ou **DLSS Quality** pelo menu flutuante (tecla `End`). A RTX 5060 renderiza o jogo com nitidez e estabilidade temporal superiores ao TAA vanilla.
+3. **Parallax 3D & VRAM:** No arquivo `EngineFixes.toml`, garanta que `MemoryManager = true` para que o gerenciamento de memória do jogo converse perfeitamente com os 8GB/16GB da sua GPU.
 
 
