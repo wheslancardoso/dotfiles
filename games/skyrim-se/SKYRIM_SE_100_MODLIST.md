@@ -996,6 +996,20 @@ flowchart TD
 | **Desencantar sem Destruir Itens Raros** | `17751` / `6285` | **Destruir armas épicas ou únicas só para aprender o efeito na bancada:** Se você achar um item lendário com um encantamento novo, tem que quebrar a arma para sempre se quiser o efeito. | Permite aprender a fórmula do encantamento **sem desintegrar o item físico**, preservando colecionáveis únicos para a sua sala de troféus. |
 | **Alquimia sem Precisar Comer Ingredientes Venenosos** | `1137` *(Ordinator)* | **Ter que comer asas de mosca, veneno de aranha e dedos de gigante:** Para descobrir os 4 efeitos de cada planta, o jogo obriga você a comer o item e tomar dano/paralisia. | O perk *Experimenter* do Ordinator e a bancada de alquimia revelam todos os efeitos mágicos de uma só vez conforme o nível da sua perícia sobe, sem precisar mastigar veneno. |
 
+---
+
+## 🧙‍♂️ CAMADA 44: IDENTIDADE DE CLASSE & BUILDS SÓLIDAS DESDE O NÍVEL 1
+*No Skyrim vanilla, todos os personagens começam como uma "folha em branco genérica" sem poderes reais, forçando o jogador a usar magias fracas ou virar arqueiro.*
+*Esta camada dá identidade forte, passivas profundas e sinergia de RPG no minuto 1 de jogo:*
+
+| Mod / Ferramenta | Nexus ID | A Dor no Early Game Vanilla | A Construção Sólida Concedida |
+| :--- | :---: | :--- | :--- |
+| **Character Creation Overhaul (CCO)** | `2725` | **Começar sem classe definida:** Não existe escolha de Guerreiro, Mago, Ladrão ou Especialista. Todo mundo nasce igual em Helgen. | Traz de volta o sistema clássico de RPG de *Morrowind* e *Oblivion*: escolha sua **Classe Principal** (Mago de Batalha, Assassino, Paladino, Bardo, Necromante), **Atributos Primários** e bônus de perícia focados desde o primeiro minuto. |
+| **Imperious - Races of Skyrim** | `1315` | **Passivas raciais inúteis do vanilla:** O Nórdico só tem 50% de resistência a frio e um grito que afasta inimigos 1 vez por dia. As raças parecem quase cópias estéticas. | Cada raça ganha **3 passivas permanentes profundas + 1 missão racial única**: Nórdicos ganham dano baseado em perder vida; Altos Elfos manipulam atributos com feitiços; Bretões têm resistência mágica escalonável e absorção. |
+| **Andromeda - Unique Standing Stones** | `14910` | **Standing Stones entediantes:** As Pedras Guardiãs do início do jogo dão apenas "+20% de ganho de XP" e nada de mecânica real. | Transforma as 13 pedras em pilares de builds: A Pedra do Mago concede feitiços gratuitos e dano mágico extra; A Pedra do Guerreiro dá estamina e ataque pesado dinâmico; A Pedra da Sombra dá teletransporte nas costas de inimigos. |
+| **Wintersun - Faiths of Skyrim** | `22506` | **Religião sem propósito prático:** Rezar em altares no vanilla só cura doenças e dá um buff de 10% por 8 horas. | Adiciona sistema real de devoção e culto: escolha rezar para Divinos (Akatosh, Kynareth) ou Príncipes Daédricos (Azura, Hermaeus Mora). Seguir os mandamentos do seu deus concede bônus passivos monstruosos que potencializam sua build. |
+
+
 
 
 
