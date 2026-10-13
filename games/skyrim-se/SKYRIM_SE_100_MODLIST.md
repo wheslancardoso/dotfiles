@@ -984,6 +984,19 @@ flowchart TD
 | **Tochas Eternas (Torches Cast Shadows & Longer Duration)** | `2424` / *ELFX* | **Tochas apagando sozinhas após 4 minutos no meio do escuro:** Ficar no breu de repente e ter que vasculhar o inventário para equipar outra tocha. | Aumenta a duração da tocha para várias horas de jogo (ou infinita) com iluminação dinâmica real que projeta sombras físicas dos objetos. |
 | **Remoção de Itens de Quest Concluída (Quest Item Unblocker)** | `23581` / `43532` | **Itens de quests que já acabaram e continuam pesando no inventário:** Flautas, livros e instrumentos de bardos que você entregou mas o jogo bugou e deixou presos com peso zero/positivo. | Desbloqueia automaticamente a flag *Quest Item* assim que o objetivo da missão é entregue, permitindo vender, guardar em baús de casa ou colocar em suportes de parede. |
 
+---
+
+## 🌿 CAMADA 43: AS 4 TRAVAS OCULTAS DO 100% (COLETA, ALQUIMIA & ENCANTAMENTO)
+*Elimina as últimas tarefas repetitivas que drenam horas de gameplay:*
+
+| Mod / Recurso | Nexus ID / Método | A Dor no Vanilla | A Solução Cirúrgica |
+| :--- | :---: | :--- | :--- |
+| **IHarvest / Auto-Harvest SE** | `27789` | **Ficar apertando `E` em 3.000 flores, borboletas e cogumelos pelo mapa:** Ter que parar o cavalo e descer a cada 10 metros para colher Mountain Flowers e Lavender para upar Alquimia. | Um feitiço automático/passivo faz pequenas fadas ou pulsos mágicos **colherem automaticamente todos os ingredientes, peixes e flores em um raio de 20 metros** enquanto você apenas caminha ou cavalga. |
+| **Viagem Rápida com Sobrepeso (Fast Travel Overencumbered)** | `17230` *(Engine Fixes)* | **Não poder dar Fast Travel se estiver 1 kg acima do peso:** Se você passar do peso sem querer, o jogo bloqueia a viagem rápida e você tem que andar devagar ou tomar poção de força. | No `EngineFixes.toml`, configure `MovementSpeedMultiplier = true` ou use montaria (no cavalo o Fast Travel já é liberado mesmo com 10.000 kg). |
+| **Desencantar sem Destruir Itens Raros** | `17751` / `6285` | **Destruir armas épicas ou únicas só para aprender o efeito na bancada:** Se você achar um item lendário com um encantamento novo, tem que quebrar a arma para sempre se quiser o efeito. | Permite aprender a fórmula do encantamento **sem desintegrar o item físico**, preservando colecionáveis únicos para a sua sala de troféus. |
+| **Alquimia sem Precisar Comer Ingredientes Venenosos** | `1137` *(Ordinator)* | **Ter que comer asas de mosca, veneno de aranha e dedos de gigante:** Para descobrir os 4 efeitos de cada planta, o jogo obriga você a comer o item e tomar dano/paralisia. | O perk *Experimenter* do Ordinator e a bancada de alquimia revelam todos os efeitos mágicos de uma só vez conforme o nível da sua perícia sobe, sem precisar mastigar veneno. |
+
+
 
 
 
