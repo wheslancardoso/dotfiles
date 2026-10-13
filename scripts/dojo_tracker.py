@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-dojo_tracker.py — Rastreador Forense de Competências Sociais & Carisma (Homem Rocha)
+dojo_tracker.py — Rastreador Forense de Competências Sociais & Carisma (Homem Centrado)
 Armazena e exibe a evolução numérica real dos treinos de comunicação de Wheslan.
 """
 
@@ -61,7 +61,7 @@ def status():
     total = row["total"] or 0
     media_total = round(row["media_total"] or 0.0, 2)
 
-    print("📊 PAINEL GERAL DE EVOLUÇÃO SOCIAL (HOMEM ROCHA)")
+    print("📊 PAINEL GERAL DE EVOLUÇÃO SOCIAL (HOMEM CENTRADO)")
     print(f"   Total de Treinos Concluídos: {total}")
     print(f"   Média Geral Acumulada:        {media_total}/10")
     print("-" * 50)

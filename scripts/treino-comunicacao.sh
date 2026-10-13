@@ -11,7 +11,7 @@ DIARIO_DIR="$HOME/timeless_life/04 - Comunicação, Postura & Simulações Socia
 DATE_STR="$(date +'%Y-%m-%d')"
 
 echo "=========================================================="
-echo "🥋 DOJO DE COMUNICAÇÃO — SESSÃO RÁPIDA (HOMEM ROCHA)"
+echo "🥋 DOJO DE COMUNICAÇÃO — SESSÃO RÁPIDA (HOMEM CENTRADO)"
 echo "=========================================================="
 echo "Lembrete de Ouro: Zero esforço mental. Não quebre a cabeça."
 echo "Regra 1: Use o Eco (repita as últimas 2 palavras)."
