@@ -802,3 +802,26 @@ flowchart TD
 | **Esquecer o Seguidor em "Espere Aqui"** *(Comentário #69)* | Você manda a Lydia esperar num canto, viaja pelo mapa inteiro e só nota 10 horas depois que esqueceu onde a deixou. | **NFF** (`55653`): adiciona o feitiço e atalho MCM **"Summon Followers"** (Teletransporta instantaneamente todos os seus seguidores esquecidos direto para o seu lado). |
 | **Doenças Chatas que Destroem Atributos** *(Comentário #84)* | Uma mordida de lobo ou rato te infecta com *Rockjoint* ou *Bone Break Fever*, reduzindo seu dano de arma em 25% sem você perceber. | **Smart Cast SSE** (`32847`): regra automática: *"Se contrair doença ➔ Castar Cure Disease ou tomar poção na hora"*. |
 | **A Masmorra Sem Saída no Fim** *(Comentário #68)* | Explorar uma caverna gigantesca por 40 minutos para descobrir que não tem atalho de saída no final e ter que andar tudo de volta. | **Atlas Map Markers** (`24104`): indica no mapa quais cavernas possuem saídas rápidas e passagens secretas. |
+
+---
+
+## 🎯 CAMADA 34: O FIM DA ESQUIVA "MATRIX" E BAÚS DE MERDA (COMENTÁRIOS 101 A 140)
+*Ao cavar até a posição 140 dos comentários mais votados do CSV, encontramos duas das maiores humilhações do motor da Bethesda:*
+
+### 🏹 1. A Esquiva Sobrenatural "Matrix" da IA (Comentário #140 - 24+ Likes)
+* **A Dor Relatada:** *"Você está agachado no escuro a 100 metros de distância com 100 de Sneak. O bandido está de costas lavando um prato. Você solta a flecha perfeita. No milissegundo em que a flecha vai acertar a nuca dele, o NPC dá um teletransporte lateral com passo de caranguejo como se fosse um agente do Matrix e a flecha bate na parede."*
+* **A Causa Técnica:** A Bethesda programou uma trapaceira desonesta na IA: os NPCs não "enxergam" a flecha com os olhos; o motor avisa o cérebro do NPC no momento exato em que o projétil é disparado, forçando uma animação de esquiva mágica.
+* **A Solução:** **[No BS AI Projectile Dodge (Magic and Arrows)](https://www.nexusmods.com/skyrimspecialedition/mods/1763)** (Nexus ID: `1763`):
+  * **Elimina 100% da esquiva psíquica dos inimigos.**
+  * Inimigos desatentos ou de costas **nunca mais desviam magicamente de flechas ou magias disparadas do escuro**. Se você mirou certo, o tiro acerta. Apenas inimigos que já estão em combate ativo e olhando para você tentam bloquear com escudos.
+
+### 📦 2. Baús Expert com 8 Moedas de Ouro e Poção de Estamina (Comentário #122 - 33+ Likes)
+* **A Dor Relatada:** *"Você passa 5 minutos arrombando um baú trancado com fechadura Master/Expert no final de uma tumba lendária, quebra gazuas, abre o baú com expectativa e o conteúdo é: míseras 8 moedas de ouro e uma Minor Potion of Stamina."*
+* **A Solução:** **[Dynamic Dungeon Loot (DDL)](https://www.nexusmods.com/skyrimspecialedition/mods/10308)** (Nexus ID: `10308`):
+  * Reformula completamente o sistema de tesouros de fim de masmorra.
+  * Baús Expert e Master **sempre contêm recompensas de alto valor proporcionais ao desafio**: joias raras, armas encantadas únicas, lingotes valiosos e grandes bolsas de ouro (acabando com a piada de encontrar 8 moedas num baú milenar).
+
+### 👣 3. Seguidores Pisando em Armadilhas de Piso (Comentário #112 - 39+ Likes)
+* **A Dor Relatada:** *"Você vê uma placa de pressão com espetos gigantes no chão, desvia cuidadosamente e a Lydia vem correndo atrás de você, pisa bem no meio da placa e aciona a parede de espinhos na sua cara."*
+* **A Solução:** Já integrada nativamente no **Nether's Follower Framework (NFF)** (`55653`):
+  * Ativa a opção **"Followers Ignore Floor Traps"**: seguidores adquirem o perk *Light Foot*, tornando-se incapazes de disparar armadilhas de piso ao caminhar atrás de você.
