@@ -83,3 +83,50 @@ flowchart TD
 | **Ped Damage Overhaul (PDO)** | `184` | **Física de ferimentos realista:** Tiro na perna faz o inimigo mancar e cair; tiro nos braços faz largar a arma; inimigos feridos gemem e perdem a vontade de lutar. | Elimina o comportamento de esponja de dano e traz a física visceral de Euphoria do RDR1. |
 | **1 Shot 1 Kill Mod** | `92` | **Tiros letais no peito:** Inimigos caem com 1 tiro certeiro no tronco. | Realismo máximo de tiroteio clássico de faroeste. |
 | **Rampage Trainer** | `233` | **Menu de controle total in-game (F5):** Ajuste de clima, teletransporte, spawn de animais raros, dinheiro e munição infinita. | A ferramenta definitiva de suporte para nunca travar em nenhum desafio da campanha. |
+
+---
+
+## 🃏 CAMADA 6: O GUIA DEFINITIVO DO 100% SEM SOFRIMENTO (COLECIONÁVEIS, PEIXES & ANIMAIS)
+*O 100% de Red Dead Redemption 2 tem alguns dos objetivos mais sádicos já criados pela Rockstar Games (144 cartas de cigarro, 13 peixes lendários brigando na vara por 10 minutos, desafios de Gambler que dependem de sorte de cassino e animais raros que não spawnam). Veja como liquidar cada um deles:*
+
+### 🚬 1. As 144 Cartas de Cigarros (Cigarette Cards)
+* **A Tortura:** Cavalgar por todo o mapa do jogo procurando 144 cartões minúsculos em cima de caixas e mesas isoladas.
+* **O Método Definitivo (Sem Trapaça Excessiva):**
+  1. Vá até o armazém geral (*General Store*) de Valentine ou Saint Denis com cerca de \$1.000 a \$1.500 no bolso.
+  2. Abra o catálogo, vá em Provisões e compre maços de **Cigarros Premium (Premium Cigarettes)**.
+  3. **Cada maço de cigarro comprado dá 1 carta aleatória na hora.**
+  4. Encha a bolsa, abra a bolsa, descarte todos os cigarros e compre mais maços. Em 10 a 15 minutos comprando na loja, você completa todas as 12 coleções de 144 cartas de forma 100% legítima sem sair da cidade.
+* **O Método Instantâneo (Via Rampage Trainer - ID `233`):**
+  * Abra o Rampage (`F5`) ➔ Vá em `Character > Inventory > Collectibles` ➔ Clique em **Give All Cigarette Cards**. Todas as 144 cartas caem no seu inventário na hora, liberando a quest do Phineas T. Ramsbottom imediatamente.
+
+---
+
+### 🎣 2. Os 13 Peixes Lendários (Sem Destruir os Dedos no Controle/Mouse)
+* **A Tortura:** Peixes lendários (como o Muskie e o Bagre do Lago) demoram até 10 minutos puxando a linha, a linha arrebenta e o minigame de girar o analógico ou ficar enrolando com o mouse cansa os pulsos.
+* **A Solução Nativa da Rockstar (Configuração Escondida):**
+  * Vá nas configurações do próprio jogo:  
+    `Configurações > Controles > Acessibilidade > Pesca (Fishing) ➔ Mudar de "Girar" para "Segurar Botão" (Hold to Reel)`.
+  * Isso faz a linha recolher automaticamente na velocidade máxima apenas segurando uma tecla, sem precisar rodar mouse nem controle.
+* **O Atalho com Mods:**
+  * **[Legendary Animal & Fish Spawner](https://www.nexusmods.com/reddeadredemption2/mods/1088)** (`1088`):
+    * Permite spawnar o peixe ou animal lendário diretamente na sua frente se o gatilho da Rockstar falhar ou se o animal não aparecer.
+  * **Rampage Trainer (`233`) - Atirar com Arma com Dead Eye:**
+    * Você pode atirar com arma de fogo na água com o Dead Eye para matar o peixe lendário e apenas recolher o corpo da água sem nem pegar a vara de pescar.
+
+---
+
+### 🐻 3. Os 16 Animais Lendários & Peles Perfeitas Garantidas
+* **A Tortura:** Rastrear pistas de esterco e pelos por 30 minutos na mata, e ter que enfrentar os snipers em New Austin para pegar os animais do sul (como o Puma Lendário e o Bisão Tatanka).
+* **O Combo Definitivo de Mods:**
+  1. **Disable Out Of Bounds Snipers** (`877`): Permite que Arthur Morgan vá até New Austin caçar o Puma Lendário e o Pronghorn Lendário sem tomar tiro invisível da Rockstar.
+  2. **Perfect Pelts** (`984`): Elimina o medo de estragar a pele: você pode matar o animal com escopeta ou rifle explosivo que a pele continuará sendo **3 Estrelas / Perfeita**.
+  3. **Revealed Map** (`1245`): O mapa já mostra as áreas demarcadas de onde cada animal lendário vive.
+
+---
+
+### 🎰 4. Os 90 Desafios da Campanha (Gambler, Herbalist, Survivalist)
+* **A Tortura:** Desafios sádicos como *Gambler 8* (vencer 3 partidas de Blackjack pedindo 3 cartas adicionais na mesa — pura probabilidade estatística que pode levar 6 horas sentado na cadeira) ou colher 43 plantas diferentes.
+* **A Resolução via Rampage Trainer (`233`):**
+  * Dentro do menu do Rampage (`F5`):
+    * `Character > Stats > Challenges`: Permite **concluir individualmente apenas os desafios que você achar abusivos** (como Gambler 8 e 9), ou desbloquear todos de uma vez se quiser pegar a roupa lendária *Legend of the East* instantaneamente.
+    * `Compendium`: Permite marcar como "Descoberto/Estudado" qualquer animal raro que você não tenha paciência de ficar caçando na mata.
