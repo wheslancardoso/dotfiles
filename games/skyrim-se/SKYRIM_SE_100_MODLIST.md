@@ -144,3 +144,15 @@ cd modorganizer2-linux-installer
 | **Train and Study** | `17578` | **Treinamento orgânico:** Bonecos de treino (*dummies*), alvos de arquearia e livros comuns agora concedem treino real passando tempo in-game. | Alternativa imersiva para subir armas e arco sem exploits de bater nos Greybeards ajoelhados. |
 | **Trade and Barter** | `23081` | **Economia balanceada e dinâmica:** Ajusta preços com base no seu status social, guilda e reputação local, além de dar estoque de ouro real aos mercadores. | O ouro acumulado nas dungeons tem valor real e você não precisa esperar 48h no botão T a cada 3 itens vendidos. |
 | **Skyrim Skill Uncapper** | `8889` | **Personalização cirúrgica de limites:** Permite calibrar ganho de XP por skill, pontos de perk por nível e quantidade de treinos por mestre via arquivo `.ini`. | Dá total controle se quiser aumentar o limite de 5 treinos/nível para 10 ou 15 sem quebrar o jogo. |
+
+---
+
+## 🔮 CAMADA 8: O FIM DA PAUSA EM COMBATE & MAGIA AUTOMÁTICA
+*No Skyrim vanilla, jogar de mago ou conjurador exige pausar o jogo a cada 3 segundos para equipar feitiço na mão. Os dois mods lendários que você lembrava:*
+
+| Mod | Nexus ID | Mecânica | O que Resolve |
+| :--- | :--- | :--- | :--- |
+| **Smart Cast SSE Patch** | `32847` | **Casting Automático & Lógica "If / Then":** Você configura no SkyUI regras automáticas: *Se Vida < 50% ➔ Castar Fast Healing automaticamente*; *Se entrar em combate ➔ Castar Oakflesh/Ironflesh*; *Se equipar espada ➔ Castar Cloak de Fogo*. Sem pausar o jogo, sem ocupar as mãos. | Acaba com a morte estúpida por esquecer de curar ou ficar abrindo menu de favoritos em pânico. |
+| **Wheeler - Quick Action Wheel** | `97345` | **Roda de Ações Rápida (Estilo GTA V / Doom Eternal / Monster Hunter):** Abre uma roda em slow-motion no botão do mouse/teclado. Você troca magias, armas, gritos e poções instantaneamente com o cursor. | Elimina 100% da necessidade de parar o jogo no menu de favoritos arcaico. |
+| **The Wizard Warrior** | `14890` | **Castar Magias no Golpe de Arma (Spellsword Real):** Permite atribuir qualquer feitiço para ser disparado ao balançar a espada, bloquear com escudo ou atirar flecha. | Mago-Guerreiro definitivo sem ficar trocando itens de mão. |
+| **Disable Follower Collision** | `35925` | **Fim da Lydia travando portas:** Remove totalmente a caixa de colisão física entre você e seus seguidores / invocações. Você atravessa o NPC se ele parar na sua frente. | Acaba com o ódio clássico de ficar preso em corredores estreitos de catacumbas. |
