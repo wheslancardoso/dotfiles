@@ -223,3 +223,20 @@ flowchart LR
    * **Transição:** Use os pontos acumulados e almas de dragão convertidas para abrir Destruction, Conjuration e Alteration no Ordinator.
    * **Facções:** College of Winterhold e DLC Dragonborn (Solstheim).
    * **Vantagem:** Controle absoluto de campo com o Smart Cast disparando buffs e dano em área em tempo real.
+
+---
+
+## 🗺️ CAMADA 11: MUNDO VIVO & EXPLORAÇÃO ESTILO RDR2 (SEM FAST TRAVEL)
+*No Skyrim vanilla, andar a pé ou a cavalo pelas estradas é monótono: caminhos de terra genéricos, encontros repetitivos de bandidos e cidades desconectadas. No Red Dead Redemption 2, cavalgar é prazeroso porque a estrada é viva, cheia de eventos aleatórios, pontos de interesse, iluminação cênica e marcos visuais.*
+*Esta camada transforma a travessia de Skyrim em uma jornada viva onde você naturalmente não sente falta de fast travel:*
+
+| Mod | Nexus ID | O que Adiciona ao Mundo | Por que Torna o Mundo Vivo (Estilo RDR2) |
+| :--- | :--- | :--- | :--- |
+| **Northern Roads** | `77530` | **Estradas Completamente Reconstruídas:** Substitui a terra batida genérica por caminhos empedrados, pontes rústicas de madeira, ruínas nórdicas nas encostas e santuários na beira das trilhas. | A travessia ganha identidade geográfica real. Cada região tem seu próprio estilo de estrada. |
+| **Lux Via** | `63588` | **Iluminação & Pontos de Interesse nas Vias:** Adiciona postes de iluminação de época, fogueiras de viajantes, pontes reformadas e pequenas paradas ao longo das rotas comerciais. | Andar à noite deixa de ser um breu vazio e vira uma travessia atmosférica e envolvente. |
+| **Interesting NPCs SE (3DNPC)** | `29194` | **Mais de 250 NPCs Únicos com Histórias Próprias:** Encontrados acampando na beira da estrada, cantando em tavernas remotas ou precisando de ajuda em encruzilhadas. Todos dublados e com personalidades marcantes. | Traz a sensação de "estranhos pelo caminho" que consagrou o mundo aberto de Red Dead. |
+| **More Bandit Camps** | `1994` | **Acampamentos Orgânicos nas Trilhas:** Adiciona dezenas de pequenos acampamentos de bandidos e saqueadores escondidos em cavernas e despenhadeiros perto das estradas. | Acaba com os longos trechos de terreno baldio onde nada acontece. |
+| **Missives** | `17576` | **Quadros de Avisos nas Tavernas e Cidades:** Como os quadros de cartazes de caça e recados de RDR2 e The Witcher 3. Pegue contratos de caça de bandidos, entregas de cartas entre vilarejos e coleta de minérios locais. | Você sempre tem um motivo orgânico para cavalgar até o próximo vilarejo sem abrir a viagem rápida. |
+| **Carriage and Ferry Travel Overhaul (CFTO)** | `8379` | **Transporte Público Imersivo:** Carruagens e balsas conectam todos os vilarejos pequenos (não apenas as 5 capitais). Você viaja imersivamente pagando uma moeda ao condutor. | Substitui o teletransporte mágico por uma viagem diegética de transporte de época. |
+| **Convenient Horses** | `9519` | **Cavalaria Real de RPG:** Sistema de inventário nas selas do cavalo (alforjes para carregar loot extra), coleta de plantas montado sem descer, combate a cavalo funcional e assobio para chamar o cavalo de longe. | O cavalo vira seu companheiro fiel e útil de jornada, exatamente como em RDR2. |
+| **Point The Way** | `352` | **Placas de Sinalização nos Cruzamentos:** Instala placas de madeira autênticas apontando a direção de cada cidade e forte nas encruzilhadas. | Permite que você navegue organicamente olhando o relevo e as placas, sem ficar abrindo o mapa de 2 em 2 minutos. |
