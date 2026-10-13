@@ -219,4 +219,25 @@ Mapeamento forense cena a cena dos 34 momentos canônicos de dor e frustração 
 
 ---
 
+## 10. A VERDADE TÉCNICA SOBRE "TUDO QUE MATAR DROPAR SEMPRE" (DROPS DE CRIATURAS & DRAGÕES)
+
+Auditoria forense sobre a promessa de *drops garantidos* em Skyrim: o que a engine vanilla realmente faz, como funcionam os mods e qual é a regra estrita para dragões:
+
+### 1. O que acontece no Skyrim Vanilla sem mods?
+* **Criaturas Comuns (RNG frustrante):** Ursos podem morrer e não dropar garras; cervos adultos com galhadas enormes muitas vezes não dropam chifres; dentes-de-sabre nem sempre dropam olhos ou dentes. O motor usa tabelas percentuais randômicas (*Leveled Lists* com chances entre 25% e 50%).
+* **Dragões (Drops Semi-Garantidos):** Dragões **sempre** dropam ossos (*Dragon Bones*) e escamas (*Dragon Scales*) em quantidades entre 1 e 3 de cada. Porém, o restante do loot (armas encantadas, ouro alto, gemas preciosas) é completamente randômico.
+
+### 2. O mod cumpre a promessa de dropar 100% garantido?
+* **Para Animais e Monstros:** O mod comprovado é o **Animal and Creature Loot Tweaks** (Nexus ID: `54362`).
+  - **O Que Ele Faz:** Garante **100% de drop lógico de partes corporais visíveis**. Se você matou um urso, ele dropa **obrigatoriamente 2 garras e pele**. Se matou um mamute, dropa **4 presas garantidas**. Dentes-de-sabre dropam **sempre 2 olhos e 2 dentes**.
+  - **O Que Ele Remove:** Corta o drop bizarro de animais selvagens carregando moedas de ouro ou anéis de ametista no estômago.
+* **E para Dragões? Como Funciona?**
+  - O mod **More Realistic Dragon Loot SE** (Nexus ID: `39906`) garante rendimentos massivos e consistentes: um dragão abatido passa a render **4 a 7 Dragon Bones e 7 a 12 Dragon Scales garantidos** (condizente com o tamanho de um réptil titânico), além de reduzir o peso individual para não travar a caminhada.
+  - O mod **More Dragon Loot** (`86513`) insere **drop garantido de pelo menos 1 equipamento mágico/encantado de alto nível** no corpo do dragão, eliminando a frustração de matar um dragão Ancião e encontrar apenas 15 moedas e um elmo de ferro comum.
+
+> [!IMPORTANT]
+> **Ressalva Forense de Dragões:** Nenhum mod no Nexus altera o fato de que dragões gerados por console de depuração sem alma (`player.placeatme`) ou esqueletos revividos de túmulos já saqueados não geram novo loot. Em todos os dragões do mundo aberto e encontros randômicos da campanha, **o drop é 100% garantido e maximizado**.
+
+---
+
 *Documento gerado e integrado no ecossistema dotfiles como referência perene para a modlist de Skyrim SE.*
