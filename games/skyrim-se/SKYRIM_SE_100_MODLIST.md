@@ -111,24 +111,37 @@ flowchart TD
 
 ## 🚀 GUIA DE IMPLANTAÇÃO FUTURA NO LINUX / STEAM
 
-### Pré-requisitos do Sistema
-1. Instalar o **Skyrim Special Edition** via Steam com Proton Experimental ou GE-Proton.
-2. Abrir o jogo vanilla uma vez até o menu principal para gerar os arquivos `.ini` iniciais.
+### Pré-requisitos do Sistema (CachyOS / Arch Linux)
+1. Sistema: **CachyOS** com kernel otimizado (`linux-cachyos` com patches BORE/sched-ext e pacotes x86-64-v3/v4).
+2. Drivers: Drivers Nvidia mais recentes com suporte à série RTX 50.
+3. Compatibilidade: **Proton-CachyOS** ou **GE-Proton** selecionado na Steam (`Propriedades > Compatibilidade > Forçar o uso de ferramenta específica`).
+4. Abrir o Skyrim SE uma vez até o menu principal para gerar a pasta do Wine prefix (`~/.steam/steam/steamapps/compatdata/489830/`).
 
-### Roteiro de Instalação do MO2:
+### Roteiro de Instalação do Mod Organizer 2 no CachyOS:
 ```bash
-# 1. Clonar o instalador automatizado para Proton
+# 1. Instalar dependências básicas via pacman se necessário
+sudo pacman -S --needed git curl 7zip
+
+# 2. Clonar o instalador automatizado para Proton/Steam
 git clone https://github.com/rockerbacon/modorganizer2-linux-installer.git
 cd modorganizer2-linux-installer
 
-# 2. Rodar o assistente (ele detecta a pasta do jogo na Steam automaticamente)
+# 3. Rodar o assistente (ele detecta a instalação da Steam do Skyrim automaticamente)
 ./install.sh
 ```
 
+### ⚡ Parâmetros de Inicialização da Steam no CachyOS (DLSS & Performance Máxima):
+Nas **Opções de Inicialização** do Skyrim na Steam, adicione:
+```bash
+PROTON_ENABLE_NVAPI=1 PROTON_HIDE_NVIDIA_GPU=0 DXVK_ASYNC=1 gamemoderun %command%
+```
+* `PROTON_ENABLE_NVAPI=1`: Ativa as chamadas nativas de NVAPI necessárias para o plugin do **DLSS / DLAA** (`Skyrim Upscaler`) se comunicar diretamente com a GPU Nvidia.
+* `gamemoderun`: Aciona o escalonador de CPU de baixa latência do CachyOS.
+
 ### Configurações Iniciais dentro do MO2:
 1. Em `Settings > Nexus`, vincular com a conta `Mercenary308`.
-2. Baixar os mods compactados na pasta de downloads do MO2.
-3. Instalar seguindo estritamente a ordem das Camadas (0 a 6).
+2. Baixar os mods na pasta de downloads do MO2.
+3. Instalar seguindo a ordem das Camadas.
 4. Executar o jogo **sempre através do atalho do SKSE** dentro do MO2.
 
 ---
