@@ -660,3 +660,12 @@ Como o nosso pacote conta com o **Copy and Paste in Console** e **SSE Engine Fix
 | **Gelo / Trolls** | Trolls mortos sem gordura | **100% garantido:** *Troll Fat* e Crânio de Troll. |
 | **Aranhas Congelantes (Frostbite Spiders)** | Aranhas sem veneno | **100% garantido:** *Frostbite Venom* (veneno fresco) e *Spider Eggs*. |
 | **Dragões (Dragons)** | Quantidades aleatórias baixas | **100% garantido:** Escalas e Ossos abundantes proporcionais para forjar sets completos. |
+
+---
+
+## 🌪️ CAMADA 28: GRITOS DE DRAGÃO INDEPENDENTES & FIM DO TRAVAMENTO NO CHÃO
+*Dois atritos clássicos que quebram o fluxo de combate no endgame:*
+
+| Mod | Nexus ID | A Frustração no Vanilla | A Solução Cirúrgica |
+| :--- | :--- | :--- | :--- |
+| **Individual Shout Cooldowns** | `7433` | **Cooldown global compartilhado para todos os gritos:** Se você usa o grito *Aura Whisper* para ver inimigos pelas paredes, fica **proibido de usar qualquer outro grito** (como *Unrelenting Force* ou *Whirlwind Sprint*) pelos próximos 40 segundos, tornando o arsenal de gritos inútil no meio da ação. | Faz com que **cada grito tenha seu próprio tempo de recarga independente**. Você pode usar *Whirlwind Sprint* para se aproximar e em seguida disparar *Fus Ro Dah* ou *Fire Breath* sem que um trave o outro. Transforma o Dragonborn em um mestre dos Thu'um de verdade. |
