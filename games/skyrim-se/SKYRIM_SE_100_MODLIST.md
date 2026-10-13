@@ -1062,3 +1062,16 @@ Mapeamento técnico direto contra as 10 maiores queixas históricas da comunidad
 | **8** | **Montanha bloqueando a travessia** | **SkyClimb** + **Skyrim's Paraglider** | `97253`<br>`53256` | • **SkyClimb:** Permite agarrar bordas e escalar relevos verticais dinamicamente.<br>• **Paraglider:** Salte de montanhas e picos para planar quilômetros com velocidade e sem dano de queda. | *SkyClimb* exige bordas com geometria física detectável; encostas 100% lisas sem arestas ainda requerem contorno lateral ou cavalos. |
 | **9** | **Killcam de flecha que erra o alvo** | **VioLens - A Killmove Mod** | `668` | Permite desligar com um clique a opção *Ranged Killcam* no menu MCM. **Nunca mais perca o controle da câmera para ver uma flecha bater na parede ou o inimigo desviar**. | Desativa apenas a cinemática de câmera lenta à distância; o dano de acerto crítico e furtividade continuam funcionando normalmente. |
 | **10** | **Colecionáveis e pedras sem pistas** | **The Completionist** + **Stones of Barenziah Quest Markers** | `46358`<br>`684` | Adiciona marcadores de mapa individuais para todas as 24 Pedras de Barenziah e rastreador visual no diário para todos os livros, máscaras e itens únicos do jogo. | Os marcadores aparecem no mapa apenas após conversar com Vex da Thieves Guild para iniciar a contagem das pedras. |
+
+---
+
+## 48. NAVEGAÇÃO ANTI-LABIRINTO & SAÍDA INSTANTÂNEA DE MASMORRAS
+
+Mapeamento forense contra a frustração de se perder em masmorras labirínticas (como ruínas Dwemer ou Blackreach) ou ficar sem saber onde está a saída:
+
+| Camada de Navegação | Solução Técnica | ID Nexus | Mecanismo Prático | Limitação / Ressalva Documentada |
+| :--- | :--- | :---: | :--- | :--- |
+| **1. Saída de Emergência / Teleporte Instantâneo** | **Fasttravel Out of Dungeons (ESL)** | `132517` | Concede um *Lesser Power* no menu de Magias. Ao ativar em qualquer interior profundo ou masmorra, **teleporta você instantaneamente para o lado de fora da porta de entrada principal**. | Se usado no meio de uma cena scriptada ativa de quest, pode pular diálogos de encerramento. Use preferencialmente após concluir o objetivo ou para sair de becos sem saída. |
+| **2. Viagem Rápida Direta do Interior** | **Fast Travel from Interiors** | `11765` | Remove a flag `Can't Fast Travel From This Location` dos interiores do jogo. Permite abrir o mapa (`M`) e dar **Fast Travel direto para qualquer cidade ou marcador do mundo exterior** sem precisar achar a porta. | Não funciona se houver inimigos hostis ativamente caçando você no local (exige matar os perseguidores ou entrar em modo *Sneak/Hidden*). |
+| **3. Bússola e Guia Visual sem Linha Quebrada** | **Compass Navigation Overhaul** + **A Guiding Light (Clairvoyance Reimagined)** | `74484`<br>`35464` | • **CNO (`74484`):** Exibe a distância exata em metros e nome da porta de saída na bússola superior.<br>• **Guiding Light (`35464`):** Substitui o feitiço bugado *Clairvoyance* por uma **fada-guia luminosa (*Guiding Wisp*)** física que voa na sua frente mostrando o caminho exato até o objetivo ou saída. | O wisp é programado para ser tímido: se entrar em combate com inimigos por perto, ele se afasta temporariamente até a área ser limpa. |
+
