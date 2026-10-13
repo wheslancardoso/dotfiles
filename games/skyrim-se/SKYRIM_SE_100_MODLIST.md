@@ -1100,3 +1100,18 @@ Mapeamento forense contra as mecânicas mais irritantes e desbalanceadas das 6 p
 | **5. Trolls e Feras de Gelo** | Regeneração de vida hiperativa que frustra builds sem dano massivo de fogo. | **SRCEO - Troll Regeneration Nerfed** + **Know Your Enemy** | `13807` | Exibe e calibra a regeneração do Troll para parar instantaneamente ao sofrer qualquer fonte de fogo (tocha, magia ou encantamento), recompensando combate tático. | Se você não usar dano de fogo, a regeneração base do Troll continuará ativa (mecânica canônica da criatura). |
 | **6. Predadores Selvagens (Ursos/Lobos)** | Agressividade suicida de perseguir o jogador pelo mapa inteiro ao menor passo. | **Less Aggressive Bears** + **Slightly Less Aggressive Animals** | `75184`<br>`94572` | Reduz o raio de detecção agressiva de predadores. Ursos rugem como aviso territorial antes de atacar e lobos mantêm distância tática em vez de correrem cegamente. | Se você invadir o ninho ou atacar primeiro, a hostilidade normal é disparada. |
 
+---
+
+## 51. MECÂNICAS AVANÇADAS DE IA & COMBATE CONTRA CRIATURAS ESPECÍFICAS
+
+Mapeamento forense contra comportamentos evasivos e frustrantes da IA de combate e monstros específicos:
+
+| Problema Irritante Vanilla | Solução Técnica & Mod | ID Nexus | Como Funciona na Prática | Ressalva Técnica Documentada |
+| :--- | :--- | :---: | :--- | :--- |
+| **1. Esquiva Ninja Telepática de Flechas/Magias** | **No BS AI Projectile Dodge** | `1763` | Remove o script de "super-sentido" da engine que faz NPCs e monstros darem um passo lateral instantâneo no exato milissegundo em que você solta uma flecha ou feitiço. | Inimigos ainda podem desviar se estiverem em movimento livre patrulhando; apenas o desvio pré-cognitivo instantâneo é desativado. |
+| **2. Magos Inimigos Correndo de Costas na Velocidade da Luz** | **Mage NPCs move Slower In Combat** | `48858` | Reduz a velocidade de corrida retrógrada e lateral dos magos hostis enquanto disparam feitiços, permitindo que guerreiros corpo a corpo consigam alcançá-los sem perseguições infinitas. | Não altera o dano nem a reserva de Magicka dos magos; afeta estritamente o deslocamento tático de fuga. |
+| **3. Slaughterfish (Peixe Carniceiro) Travando Fast Travel na Água** | **Friendly Slaughterfish** | `56230` | Torna peixes carniceiros neutros/passivos no rio/mar, impedindo que um peixe invisível a 50 metros mantenha a música de combate tocando e bloqueie viagens rápidas. | Se você preferir lutar na água, a alternativa é o *Character Behaviors Enhanced* (`26513`), mas este altera comportamentos `.hkx` profundos; *Friendly Slaughterfish* é a solução mais estável. |
+| **4. Espectros de Gelo (Ice Wraiths) Invisíveis e Espetando Chão** | **Ice Wraith Ice Spike Spell Remover** + **Emissive Ice Wraiths** | `11497`<br>`133649` | • `11497`: Remove a habilidade frustrante do Ice Wraith de invocar paredes de estacas de gelo no chão.<br>• `133649`: Adiciona emissão de luz suave no corpo do monstro para torná-lo claramente visível no meio de nevascas. | Mantém o ataque físico frontal de investida e dano de frio de contato intactos. |
+| **5. Latidos Repetitivos e Empurrões de Cães Aliados** | **Quiet Dog** | `7919` | Silencia os latidos em loop contínuo a cada 3 segundos fora de combate, preservando apenas os sons emitidos durante lutas ativas. | Não altera a IA de combate ou movimentação do animal; apenas remove o loop de áudio idle cansativo. |
+
+
