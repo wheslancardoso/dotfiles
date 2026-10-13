@@ -554,3 +554,13 @@ flowchart LR
 | :--- | :--- | :--- | :--- |
 | **Show Player In Menus** | `81291` | **Não dá para ver o personagem ao trocar de roupa:** No Skyrim vanilla, abrir o inventário mostra apenas uma tela preta com itens 3D flutuando no meio do nada (você não vê como a armadura ou o elmo ficaram no corpo sem fechar o menu). | Exibe o seu personagem 3D em tempo real girando e reagindo dentro do menu de inventário (estilo *Oblivion* e *Cyberpunk 2077*). Você vê exatamente como cada arma, capa e armadura se encaixam no seu corpo na hora de equipar (mantendo a pausa clássica do jogo intacta). |
 
+
+---
+
+## 🔑 CAMADA 23: CLAREZA DE INVENTÁRIO DE MISSÕES & FECHADURAS REGIONAIS
+*Dois refinamentos que eliminam a dúvida de "que item é esse?" e dão variedade estética às dungeons:*
+
+| Mod | Nexus ID | A Dor no Vanilla | A Solução Cirúrgica |
+| :--- | :--- | :--- | :--- |
+| **Whose Quest Is It Anyway** | `23581` | **Itens de missão misteriosos que você não sabe de onde vieram:** Você tenta guardar um item no baú de casa e o jogo só diz *"Itens de missão não podem ser removidos"*, sem informar qual é a missão associada. | Substitui a mensagem genérica por uma notificação descritiva exata: *"Este item pertence à missão: [Nome da Missão]"*. Você sabe na hora o que precisa concluir para poder guardar ou vender o item. |
+| **Security Overhaul SKSE - Lock Variations** | `58224` | **Todas as fechaduras do jogo são idênticas:** Uma tumba nórdica antiga de 3.000 anos, um cofre anão de Dwemer e uma porta de madeira de fazenda usam exatamente a mesma fechadura de ferro moderna de console. | Injeta modelos 3D únicos em alta definição para cada tipo de fechadura: fechaduras de pedra nórdicas antigas, mecanismos de bronze Dwemer com engrenagens visíveis e fechaduras enferrujadas em catacumbas. |
