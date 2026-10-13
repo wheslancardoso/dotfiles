@@ -960,6 +960,19 @@ flowchart TD
 | **Vendedores com 20.000 Septims (Rich Skyrim Merchants)** | `1772` | **Mercadores pobres com 750 moedas:** Ter 50 armas caras no inventário e ter que esperar 48 horas na tecla `T` após vender 2 espadas. | Multiplica o ouro de todos os ferreiros, alquimistas e comerciantes em até **10x** (10.000 a 20.000 septims por loja), permitindo vender todo o loot de uma vez só. |
 | **Aceleração de Tempo em Conversas/Cenas (Dialogue Speedup)** | `1429` / *Papyrus* | **Ficar preso ouvindo monólogos lentos de NPCs:** NPCs repetindo histórias longas que você já conhece quando quer apenas pegar a recompensa da missão. | Permite avançar instantaneamente falas de NPCs pressionando `Espaço` sem cortar o recebimento de itens ou objetivos de quest. |
 
+---
+
+## 🪙 CAMADA 41: O FIM DOS GLITCHES OBRIGATÓRIOS (BARTER UNIVERSAL & RECURSOS FLUIDOS)
+*Substitui os antigos "glitches de sobrevivência" que todo jogador fazia no vanilla por soluções nativas e limpas:*
+
+| O Glitch Velho do Vanilla | Por que Você Fazia Isso | O Mod que Substitui | A Solução Definitiva |
+| :--- | :--- | :--- | :--- |
+| **O Glitch de Bater no Mercador e Dar Load** *(Quicksave ➔ Soco no Belethor ➔ Reload)* | O comerciante ficava com 0 de ouro. Para não esperar 48 horas no botão `T`, você salvava, dava um soco na cara dele para resetar a IA e carregava o save. | **Rich Skyrim Merchants** (`1772`) + **Trade and Barter** (`23081`) | Mercadores possuem de **10.000 a 20.000 moedas** no caixa. Você descarrega 100 itens de uma vez e ele continua com ouro sobrando. |
+| **Andar de Cidade em Cidade para Vender Itens Diferentes** | No vanilla, ferreiro só compra armas, alquimista só compra poções e mago só compra pergaminhos. Seus itens ficavam encalhados até você pegar o perk final de Speech (nível 100). | **Trade and Barter** (`23081`) | **Barter Universal Flexível:** Permite configurar no menu MCM para que mercadores gerais e estalagens comprem qualquer categoria de loot acumulado das dungeons. |
+| **Esperar 30 Dias In-game para Veios de Minério Reaparecerem** | As minas de ferro e ébano demoram 30 dias in-game para repor o minério, forçando o jogador a ficar dormindo em camas repetidamente. | **Dynamic Ore Respawn** / MCM Config | Reduz o ciclo de respawn de veios de minério para 3 a 5 dias, permitindo coletar materiais suficientes para forjar equipamentos sem grind artificial. |
+| **Guardar Livros de Perícia sem Ler com Medo de "Desperdiçar" Nível** | Se você lê um livro de habilidade no nível 15, ganha pouco XP relativo; no nível 90, ele vale ouro. No vanilla, você tinha medo de abrir livros para não "gastar" o ponto antes da hora. | **Skill Book Versatile** / **Experience** (`17751`) | O ganho de XP dos livros é transformado em pontos de bônus acumulativos ou créditos de aprendizado, permitindo ler qualquer livro imediatamente sem culpa. |
+
+
 
 
 
