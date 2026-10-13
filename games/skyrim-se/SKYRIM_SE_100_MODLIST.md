@@ -881,3 +881,29 @@ flowchart TD
 
 > **Veredito da Auditoria:** 100% dos 2.306 comentários e 22 padrões de frustração do vídeo foram catalogados, dissecados e tecnicamente resolvidos sem cheats, sem perda de lore e mantendo o menu em pausa clássico intacto.
 
+---
+
+## 🎨 CAMADA 37: O SALTO GRÁFICO NEXT-GEN PARA RTX 5060 (10X MAIS VIVO E FOTORREALISTA)
+*A transição definitiva da época do HiAlgoBoost / Asus K52JC para a arquitetura Blackwell da Nvidia (RTX 5060).*
+*Esta camada transforma a iluminação, sombras volumétricas, texturas 4K e folhagem sem sacrificar estabilidade e mantendo 60+ FPS cravados:*
+
+| Mod / Ferramenta | Nexus ID | Tecnologia Empregada | O Que Muda Visualmente no Jogo |
+| :--- | :---: | :--- | :--- |
+| **Skyrim Upscaler - DLSS / DLAA** | `80343` | **DLSS & DLAA Nativo via SKSE** (PureDark) | Permite rodar o jogo com **DLAA (Anti-Aliasing de Deep Learning)** para nitidez cinematográfica absoluta sem serrilhados, ou **DLSS** para ganho massivo de performance com Ray Tracing/ENB. |
+| **Community Shaders** | `86492` | **Shaders Modernos em C++ / HLSL** | Sistema moderno e ultrarrápido que adiciona oclusão de ambiente de tela (SSAO), reflexos reais na água e grama iluminada com custo de FPS muito menor que ENBs antigos. |
+| **Enhanced Volumetric Lighting (EVLaS)** | `63725` | **Raios Crepusculares & Godrays Físicos** | Sincroniza a posição matemática do sol e das luas de Nirn com a névoa volumétrica. As montanhas e árvores projetam feixes de luz reais cortando a floresta ao amanhecer. |
+| **Lux** | `43158` | **Iluminação Dramática de Interiores** | Redesenho completo de fogueiras, tochas e velas em masmorras e tavernas. Locais escuros são intimistas e a luz tem dispersão realista, acabando com os interiores "lavados" e acinzentados do vanilla. |
+| **Skyrim 202X by Pfuscher (AIO)** | `2347` | **Texturas Fotorrealistas 2K/4K com Parallax** | Substitui mais de 2.000 texturas de pedras, madeira, estradas de paralelepípedo e paredes de castelos por escaneamentos em altíssima definição com efeito de profundidade 3D real (*Parallax*). |
+| **Happy Little Trees** | `50961` | **Florestas Densas de Nova Geração** | Substitui os pinheiros repetitivos de 2011 por árvores orgânicas, cheias e com animação de vento suave, transformando a região de Falkreath e The Rift em florestas vivas. |
+| **Folkvangr - Grass and Landscape Overhaul** | `44899` | **Campos de Grama Densa & Vegetação** | Tundra de Whiterun deixa de ser um descampado árido e se transforma em um mar de relva alta, flores silvestres e musgo nórdico. |
+| **Realistic Water Two SE** | `2182` | **Simulação de Água Fotorrealista** | Rios com correntes dinâmicas, lagos cristalinos que refletem o céu e cachoeiras com espuma volumétrica e transparência realista. |
+| **Cathedral Weathers and Seasons** | `24791` | **Climas Dinâmicos & Auroras Boreais 4K** | Céus limpos e vibrantes, tempestades de neve imersivas com ventania e auroras boreais deslumbrantes que iluminam a noite de Skyrim com cores vivas. |
+
+---
+
+### 🖥️ Guia de Ajuste Recomendado na RTX 5060:
+1. **Resolução:** 1080p ou 1440p nativo.
+2. **Upscaling:** Ativar **DLAA** dentro do menu do `Skyrim Upscaler` (pressione a tecla `End` in-game para abrir o menu do upscaler). Como a RTX 5060 tem poder de sobra, o DLAA usa os Tensor Cores para eliminar 100% dos serrilhados sem borrado.
+3. **Parallax 3D:** No arquivo `EngineFixes.toml`, garanta que `MemoryManager = true` e desfrute das estradas de pedra com relevo físico real.
+
+
