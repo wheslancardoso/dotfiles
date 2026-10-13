@@ -1009,6 +1009,20 @@ flowchart TD
 | **Andromeda - Unique Standing Stones** | `14910` | **Standing Stones entediantes:** As Pedras Guardiãs do início do jogo dão apenas "+20% de ganho de XP" e nada de mecânica real. | Transforma as 13 pedras em pilares de builds: A Pedra do Mago concede feitiços gratuitos e dano mágico extra; A Pedra do Guerreiro dá estamina e ataque pesado dinâmico; A Pedra da Sombra dá teletransporte nas costas de inimigos. |
 | **Wintersun - Faiths of Skyrim** | `22506` | **Religião sem propósito prático:** Rezar em altares no vanilla só cura doenças e dá um buff de 10% por 8 horas. | Adiciona sistema real de devoção e culto: escolha rezar para Divinos (Akatosh, Kynareth) ou Príncipes Daédricos (Azura, Hermaeus Mora). Seguir os mandamentos do seu deus concede bônus passivos monstruosos que potencializam sua build. |
 
+---
+
+## 🏆 CAMADA 45: BLINDAGEM DO 100% (PROTEÇÃO CONTRA QUESTS PERDÍVEIS & CONQUISTAS MISSABLE)
+*Em Skyrim, existem escolhas que **bloqueiam permanentemente** conquistas da Steam (ex: a conquista `Oblivion Walker` exige 15 artefatos Daédricos, mas matar o cachorro Barbas ou não matar o ferreiro em Dawnstar cancela o troféu para sempre).*
+*Esta camada impede que você perca qualquer conquista por engano:*
+
+| Mod / Ferramenta | Nexus ID | A Dor do Complecionista no Vanilla | A Blindagem Cirúrgica |
+| :--- | :---: | :--- | :--- |
+| **Oblivion Walker Artifact Protection (USSEP + Completionist)** | `46358` / `266` | **Perder a conquista dos 15 Artefatos Daédricos:** Fazer uma escolha errada de diálogo com um Daedra e ficar com 14/15 artefatos, sendo forçado a recomeçar o jogo do zero. | O menu do **Completionist** emite um alerta explícito no MCM destacando quais escolhas de diálogo concedem o artefato oficial e previne que você estrague o troféu sem saber. |
+| **Quests & NPCs Protegidos (Timing is Everything)** | `25464` | **Vampiros e dragões atacando cidades e matando NPCs de missões:** Um ataque de vampiro aleatório entrava em Riverwood e matava o ferreiro Alvor ou a dona da loja antes de você pegar a quest dele. | Permite atrasar ou desativar ataques de monstros dentro de cidades fortificadas até que você inicie as DLCs voluntariamente, mantendo 100% dos NPCs de missões vivos. |
+| **Paarthurnax Dilemma** | `365` | **A Ordem Forçada dos Blades para Matar Paarthurnax:** Se você se recusar a assassinar o dragão Paarthurnax no endgame, Delphine e Esbern cortam relações e a linha de missões dos Blades fica travada para sempre. | Permite confrontar Delphine com autoridade de Dragonborn e poupar Paarthurnax sem travar a guilda dos Blades, concluindo todas as missões sem peso na consciência. |
+| **Achieve That! SE (Conquistas In-Game)** | `3079` / *MCM Tracker* | **Não saber o progresso das conquistas dentro do jogo:** Ter que ficar minimizando Skyrim no CachyOS/Steam para ver quantos livros você já leu ou quantos bolsos bateu. | Adiciona um **painel de conquistas nativo dentro do menu MCM**: mostra o progresso em tempo real (ex: *"Artefatos Daédricos: 11/15"*, *"Habilidades no 100: 4/18"*), concedendo pequenos bônus estéticos à medida que você fecha os marcos. |
+
+
 
 
 
