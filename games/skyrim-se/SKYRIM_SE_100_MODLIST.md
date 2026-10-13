@@ -716,3 +716,14 @@ flowchart TD
 | **Summermyst - Enchantments of Skyrim** | `6285` | **Encantamentos vanilla sem graça:** O jogo base só tem os mesmos bônus repetitivos (*Fortify Health*, *Resist Fire*). | Adiciona mais de **100 novos encantamentos profundos** integrados ao loot do jogo (ex: roubo de velocidade de movimento, dano baseado na falta de vida do alvo, ondas de choque elementais e auras mágicas). |
 | **Passive Weapon Enchantment Recharging** | `14491` | **Ficar abrindo inventário para recarregar armas:** Báculos e espadas mágicas perdem a carga rapidamente no meio das masmorras, forçando você a gastar soul gems manualmente no menu. | Faz com que armas encantadas e báculos **recarreguem sua energia mágica passivamente ao longo do tempo**, como se absorvessem a magia ambiente de Tamriel. |
 | **Acquisitive Soul Gems Multithreaded** | `1469` | **Gemas caras estragadas com almas de rato:** Uma gema de nível Grand/Black capturava almas minúsculas (*Petty*) por acidente e ficava inutilizada para sempre. | Impede o desperdício: gemas só aceitam almas do tamanho exato. Almas fracas vão para gemas comuns; almas poderosas vão para gemas superiores. |
+
+---
+
+## 🎭 CAMADA 30: INTERAÇÕES FÍSICAS REAIS & RECONHECIMENTO DE MUNDO
+*No Skyrim vanilla, seu personagem parece um fantasma flutuante: ele abre baús com a mente, come comida sem mexer a boca, bate carteira telecineticamente e anda olhando fixamente para a frente como um manequim sem pescoço.*
+*Esta camada final traz a fisicalidade e o acabamento de um jogo de última geração:*
+
+| Mod | Nexus ID | A Falta de Imersão no Vanilla | A Solução Cirúrgica |
+| :--- | :--- | :--- | :--- |
+| **Immersive Interactions - Animated Actions** | `47670` | **Interações invisíveis e sem corpo:** Você aperta `E` para saquear e o item simplesmente some do chão; examina uma alavanca e ela se move sozinha; reza num santuário e ganha um buff sem se ajoelhar. | Adiciona animações contextuais rápidas em 3ª pessoa: Arthur/Dovahkiin estende a mão para abrir baús, abaixa para colher flores, ajoelha-se diante de altares, acena para guardas amigos e usa gazuas nas mãos ao arrombar fechaduras. |
+| **PC Head Tracking and Voice Type SE** | `11993` | **Olhar fixo de manequim:** Seu personagem nunca olha para quem está falando com ele, mantendo a cabeça travada para a frente mesmo enquanto alguém grita ao lado. | Seu personagem vira a cabeça naturalmente para olhar para NPCs que estão falando, olha para dragões voando no céu e faz contato visual com comerciantes ao negociar. |
