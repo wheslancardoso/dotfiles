@@ -922,4 +922,16 @@ flowchart TD
    * **DLAA / DLSS 5 Quality:** Em 1080p ou 1440p, você pode selecionar **DLAA** ou **DLSS Quality** pelo menu flutuante (tecla `End`). A RTX 5060 renderiza o jogo com nitidez e estabilidade temporal superiores ao TAA vanilla.
 3. **Parallax 3D & VRAM:** No arquivo `EngineFixes.toml`, garanta que `MemoryManager = true` para que o gerenciamento de memória do jogo converse perfeitamente com os 8GB/16GB da sua GPU.
 
+---
+
+## 🧗‍♂️ CAMADA 38: MECÂNICAS CIRÚRGICAS DE GAMEPLAY (WHEELER, PARKOUR & PARAGLIDER)
+*Três inovações de gameplay que tiram o Skyrim da rigidez de 2011 e trazem mecânicas de exploração e combate do nível de Elden Ring e Zelda: Breath of the Wild:*
+
+| Mod / Ferramenta | Nexus ID | A Dor no Vanilla | A Solução Cirúrgica de Gameplay |
+| :--- | :---: | :--- | :--- |
+| **Wheeler - Quick Action Wheel** | `97345` | **Ficar pausando o jogo a cada 5 segundos para trocar de feitiço/poção:** A lista de favoritos vanilla do Skyrim é uma coluna vertical horrível onde você rola 40 itens e perde o ritmo da batalha. | Adiciona uma **Roda Radial Dinâmica (estilo GTA V / Monster Hunter)** totalmente personalizável. Segure um botão e selecione feitiços, armas, poções e gritos instantaneamente em slots circulares visuais com ícones claros. |
+| **EVG Animated Traversal (EVGAT)** | `63232` | **Personagem travando em qualquer murinho de 40cm:** O Dragonborn não consegue subir num caixote ou pular uma cerca sem pular desajeitado e escorregar no chão. | Adiciona animações contextuais fluidas: pressione ação para **escalar beiradas de pedras, pular muros, esgueirar-se por frestas estreitas de masmorras e subir escadas de mão verticais**. |
+| **Skyrim's Paraglider** | `53256` | **Ter que descer montanhas de costas ou morrer de queda:** Descer de High Hrothgar ou dos picos de Markarth exige deslizar na diagonal pelas pedras torcendo para não tomar dano de queda. | Adiciona um **Paraglider funcional**: pule de qualquer penhasco ou torre e abra as asas no ar para planar suavemente pelo horizonte de Skyrim em alta velocidade, admirando as florestas e cidades lá embaixo. |
+
+
 
