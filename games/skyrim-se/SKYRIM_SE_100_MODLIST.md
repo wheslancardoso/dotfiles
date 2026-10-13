@@ -184,3 +184,42 @@ cd modorganizer2-linux-installer
 * **O Glitch / Frustração:** Uma *Grand Soul Gem* caríssima capturando uma alma de rato pequeno (*Petty*) e sendo estragada para sempre.
 * **A Solução:** **Acquisitive Soul Gems Multithreaded** (`1469`):
   * Garante que gemas só aceitem almas do seu tamanho exato. Ratos vão para Petty Gems; almas humanas/monstros vão para Black/Grand Gems. Nenhuma gema é desperdiçada.
+
+---
+
+## 🎭 CAMADA 10: FLUIDEZ DE CLASSES, BUILDS & RESPEC LIVRE
+*No Skyrim vanilla, se você investe 40 níveis jogando de Guerreiro de Armadura Pesada e quer virar Mago ou Arqueiro Furtivo, você está travado: seus perks estão presos, sua magia é fraca e o jogo só permite redistribuir perks no final da DLC Dragonborn (Apocrypha).*
+*Esta camada transforma as classes em um sistema dinâmico e flexível:*
+
+| Mod | Nexus ID | Mecânica | Impacto na Troca de Classes |
+| :--- | :--- | :--- | :--- |
+| **Ish's Respec Mod** | `1960` | **Poção de Respec de Perks:** Alquimistas e boticários vendem a *Potion of Respec*. Ao beber, todos os seus perks investidos voltam para o saldo do personagem. | Permite trocar de Guerreiro para Mago ou Ladino instantaneamente a qualquer momento, sem precisar usar comandos de console. |
+| **Andromeda - Unique Standing Stones** | `14910` | **Pedras Guia Vivas e Reconfiguráveis:** As pedras do zodíaco de Skyrim (Mage, Thief, Warrior, Shadow, Atronach) agora concedem habilidades passivas e ativas profundas. | Mudar de estilo de jogo basta visitar uma Standing Stone diferente pelo mapa para mudar drasticamente o comportamento da sua build. |
+| **Wintersun - Faiths of Skyrim** | `22506` | **Sistema de Devoção e Divindades (RPG de Verdade):** Permite rezar e seguir deuses (Nove Divinos, Príncipes Daédricos, deuses Élficos). Cada deus dá bônus radicais específicos (ex: Stendarr buffa paladino, Nocturnal buffa ladrão, Hermaeus Mora buffa magias). | Você molda a identidade da sua classe através da sua religião e pode trocar de divindade conforme sua história evolui. |
+| **Dragon Souls to Perk Points** | `2879` | **Conversão Orgânica de Almas de Dragão:** Permite converter o excesso de almas de dragão acumuladas na campanha em pontos de perk. | Recompensa a caçada aos dragões e dá os pontos necessários para você desenvolver uma segunda classe no mesmo personagem sem precisar grindar níveis. |
+| **SkyUI Equipment Sets / Group Hotkeys** | `12604` | **Loadouts Rápidos de Equipamento (F1 a F8):** Você salva conjuntos inteiros de armas + armaduras + feitiços em teclas de atalho. | Transição instantânea: com um toque de tecla você guarda a armadura pesada e espada e veste a túnica de mago com báculos e anéis mágicos. |
+
+---
+
+## 🧭 GUIA DINÂMICO DE BUILDS & TRANSIÇÃO DE CLASSES (100% RUN)
+
+Como o nosso pacote conta com **Experience** (`17751`), **Ordinator** (`1137`) e **Ish's Respec Mod** (`1960`), a melhor estratégia de progressão para fazer 100% sem frustração é avançar em **3 Fases Temáticas**:
+
+```mermaid
+flowchart LR
+    A["Fase 1: Guerreiro / Paladino<br/>(Companions + Guerra Civil)<br/>🛡️ Tank & Fácil Sobrevivência"] --> B["Fase 2: Ladino / Ilusionista<br/>(Thieves Guild + Dark Brotherhood)<br/>🗡️ Sneak, Lockpick & Riqueza"]
+    B --> C["Fase 3: Arquimago / Spellsword<br/>(College of Winterhold + Dragonborn DLC)<br/>⚡ Magias Apocalípticas & MCO"]
+```
+
+1. **Fase Inicial (Níveis 1 ao 25) — O Guerreiro / Paladino:**
+   * **Foco:** One-Handed, Block, Heavy Armor.
+   * **Facções:** Companions e Main Quest inicial.
+   * **Vantagem:** Maior margem de erro enquanto você se acostuma com o combate do MCO/Valhalla.
+2. **Fase Intermediária (Níveis 25 ao 50) — O Mestre das Sombras:**
+   * **Transição:** Beba a *Potion of Respec* do Ish's Mod. Mude seus pontos para Sneak, Archery, Light Armor, Pickpocket e Lockpicking.
+   * **Facções:** Thieves Guild e Dark Brotherhood.
+   * **Vantagem:** Limpeza das 24 Gemas de Barenziah e acúmulo de riqueza absurda.
+3. **Fase Endgame (Níveis 50+) — O Mestre Arcano / Spellsword:**
+   * **Transição:** Use os pontos acumulados e almas de dragão convertidas para abrir Destruction, Conjuration e Alteration no Ordinator.
+   * **Facções:** College of Winterhold e DLC Dragonborn (Solstheim).
+   * **Vantagem:** Controle absoluto de campo com o Smart Cast disparando buffs e dano em área em tempo real.
