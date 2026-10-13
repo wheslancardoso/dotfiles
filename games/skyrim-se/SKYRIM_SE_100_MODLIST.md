@@ -944,6 +944,19 @@ flowchart TD
 | **Better MessageBox Controls** | `1428` | **Caixas de confirmação desajeitadas ("Deseja comprar este cavalo? Sim / Não"):** A área de clique dos botões é minúscula e você é forçado a tirar a mão do WASD para clicar com precisão de agulha com o mouse. | Permite navegar todas as caixas de alerta do jogo usando as teclas direcionais (ou `A`/`D`) e confirmar direto com a tecla **`E`** (ou barra de espaço), tornando confirmações de compra, forja e craft instantâneas. |
 | **Better Jumping SE** | `18967` | **Proibição de pular correndo (Sprint Jump):** No Skyrim vanilla, se você estiver segurando o botão de corrida (Sprint) e apertar Espaço para pular sobre um tronco ou riacho, **o personagem simplesmente não pula** (o motor ignora o comando de pulo durante o sprint). | Libera o pulo dinâmico durante a corrida contínua (estilo qualquer jogo moderno de ação), além de permitir configurar pulo duplo suave opcional via arquivo `.ini` sem ESPs. |
 
+---
+
+## ⚡ CAMADA 40: FACILITADORES SUPREMOS DO 100% (ZERO PERDA DE TEMPO)
+*Recursos cirúrgicos opcionais para acelerar o 100% sem quebrar o balanceamento de combate:*
+
+| Mod / Recurso | Nexus ID / Método | A Dor no 100% Complecionista | A Facilidade Concedida |
+| :--- | :---: | :--- | :--- |
+| **Lockpick Pro (Cheat Bar Visual)** | `219` *(SE/AE)* | **Perder minutos preciosos e 30 gazuas em cada fechadura Master:** Ficar girando a chave de fenda milímetro por milímetro tentando achar o ponto cego da fechadura. | Adiciona uma **Barra Visual Colorida no topo da tela do minigame**: indica com uma linha exata o ponto milimétrico onde a gazua deve ficar para abrir a tranca no primeiro giro sem quebrar nenhuma gazua. |
+| **Skyrim Skill Uncapper (2x Perks / Treinos)** | `8889` | **Falta crônica de pontos de Perk para experimentar builds completas:** O jogo te dá apenas 1 perk por nível, forçando você a escolher entre Mago ou Ladrão. | No arquivo `SkyrimUncapper.ini`, configure `PerksAtLevelUp = 2` e `TrainingPerLevel = 10`. Ao subir de nível, você ganha 2 perks e pode pagar até 10 aulas com mestres. |
+| **Fim do Limite de Peso (Carry Weight Infinito)** | *Nativo / Console* | **Andar arrastado a cada 2 masmorras porque o inventário bateu 350/350:** Ter que parar de jogar para jogar coisas fora ou voltar pra cidade a cada 15 minutos. | Abra o console (`~` ou `'`) e digite: `player.modav carryweight 5000`. Seu limite sobe para 5.000 kg permanentemente (as conquistas continuam funcionando normalmente graças ao `Engine Fixes`). |
+| **Viagem Rápida em Interiores (Fast Travel from Interiors)** | `41764` / *Nativo* | **Ter que andar 10 minutos a pé para sair de um castelo ou santuário:** O jogo bloqueia viagem rápida dentro de casas, palácios de Jarls e cidades fechadas. | Permite abrir o mapa e dar Fast Travel instantaneamente de dentro da casa do Jarl, da Thieves Guild ou de High Hrothgar direto para a próxima quest. |
+
+
 
 
 
