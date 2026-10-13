@@ -1084,3 +1084,19 @@ Solução nativa e comprovada para projetar na tela o arco balístico e o ponto 
 | :--- | :---: | :--- | :--- |
 | **Arco e Linha Preditiva de Projéteis** | **SmoothCam**<br>ID: `41252` | O mod inclui um sistema nativo de **Arrow Prediction / Crosshair Raycasting**. Ao puxar a corda do arco, o motor calcula a gravidade e velocidade da flecha e desenha uma **linha de trajetória / arco visual curvo** ou ajusta a retícula 3D no ponto exato de colisão com o alvo. | **Visão:** Funciona nativamente em **3ª pessoa** (foco do SmoothCam). Para disparo em 1ª pessoa, a mira utiliza a retícula vanilla centralizada. |
 | **Rastro Visual de Disparo** | **Smooth Arrow Trails and Fixes**<br>ID: `100869` | Cria um traçado contínuo e suave na esteira do projétil ao soltar a flecha, permitindo acompanhar todo o voo e ajustar o disparo seguinte sem perder flechas no cenário escuro. | Afeta a renderização do projétil no ar; não altera os valores físicos de gravidade ou velocidade vanilla da flecha. |
+
+---
+
+## 50. NEUTRALIZAÇÃO CIRÚRGICA DE ATRITOS POR CATEGORIA DE MONSTROS E FERAS
+
+Mapeamento forense contra as mecânicas mais irritantes e desbalanceadas das 6 principais categorias de criaturas de Skyrim:
+
+| Categoria / Monstro | Atrito Irritante Vanilla | Solução Técnica & Mod | ID Nexus | Como Funciona na Prática | Ressalva Documentada |
+| :--- | :--- | :--- | :---: | :--- | :--- |
+| **1. Dragões** | Ficam voando em círculos infinitos sem pousar para lutar corpo a corpo. | **Dragon Landing Overhaul** | `141872` | Força dragões a pousarem com muito mais frequência e permanecerem no chão por períodos prolongados de combate. | Não anula a habilidade de voo de emergência se o terreno for completamente inacessível para colisão. |
+| **2. Mortos-Vivos (Draugr)** | Spam ininterrupto de gritos (*Fus Ro Dah* em cadeia travando o jogador no chão). | **Draugr Shout Less** | `14352` | Aplica um cooldown de gritos nos Draugr equivalente ou o dobro do tempo do jogador, impedindo *stagger-lock*. Acoplado ao *No Disarm* (`27188`). | Draugr chefes (*Deathlords*) continuam usando gritos de dano e gelo; apenas a frequência abusiva é controlada. |
+| **3. Falmer e Chaurus** | Veneno com dano absurdo que derrete a vida em 2 segundos e paralisa. | **Vile Venoms - Enemy Poison Overhaul** | `126938` | Rebalanceia venenos de Chaurus e Falmer: converte dano instantâneo letal em dano progressivo mitigável por armadura/bloqueio com escudo. | A resistência a veneno do jogador (como raça Redguard ou poções) continua sendo relevante para anular o efeito. |
+| **4. Gigantes e Mamutes** | Golpe do tacape lança o jogador na estratosfera (*Skyrim Space Program* glitch de física). | **Yet Another Attempt at fixing Giant Physics and Clubs** | `13898` | Zera a força excessiva de explosão do tacape dos gigantes. O golpe causa alto dano físico normal com *knockdown* no chão, sem jogar o jogador na órbita da física da engine. | O golpe de esmagamento ainda é extremamente letal em níveis baixos; bloqueio ou esquiva permanecem obrigatórios. |
+| **5. Trolls e Feras de Gelo** | Regeneração de vida hiperativa que frustra builds sem dano massivo de fogo. | **SRCEO - Troll Regeneration Nerfed** + **Know Your Enemy** | `13807` | Exibe e calibra a regeneração do Troll para parar instantaneamente ao sofrer qualquer fonte de fogo (tocha, magia ou encantamento), recompensando combate tático. | Se você não usar dano de fogo, a regeneração base do Troll continuará ativa (mecânica canônica da criatura). |
+| **6. Predadores Selvagens (Ursos/Lobos)** | Agressividade suicida de perseguir o jogador pelo mapa inteiro ao menor passo. | **Less Aggressive Bears** + **Slightly Less Aggressive Animals** | `75184`<br>`94572` | Reduz o raio de detecção agressiva de predadores. Ursos rugem como aviso territorial antes de atacar e lobos mantêm distância tática em vez de correrem cegamente. | Se você invadir o ninho ou atacar primeiro, a hostilidade normal é disparada. |
+
