@@ -282,3 +282,43 @@ flowchart LR
 * **A Dor:** O grito *Bend Will* permite subir no dragão, mas você não pilota: você fica assistindo uma IA burra voar em círculos sem controle real.
 * **A Solução:** **Intuitive Dragon Ride Control** (`64679`):
   * Concede comandos de voo diretos e controle responsivo sobre para onde o dragão voa e quem ele alveja.
+
+---
+
+## ⚔️ CAMADA 13: ARSENAL CIRÚRGICO POR CLASSE & ARQUÉTIPO
+*No Skyrim vanilla, todas as armas de uma mesma categoria parecem iguais, magos ficam sem opções no late game, ladrões não têm mecânicas reais de furto e arqueiros sofrem com draw speed lento. Esta camada entrega identidade única para cada classe:*
+
+### 🧙‍♂️ 1. Arquétipo Mago / Conjurador / Ilusionista
+* **[Odin - Skyrim Magic Overhaul](https://www.nexusmods.com/skyrimspecialedition/mods/46000)** (`46000`):
+  * Corrige a progressão estagnada de magias da Bethesda. Adiciona mais de 120 feitiços canônicos, balanceia pergaminhos e báculos (staves passam a escalar dano com a sua perícia e recarregar magicka).
+* **[Arcanum - A New Age of Magic](https://www.nexusmods.com/skyrimspecialedition/mods/23488)** (`23488`):
+  * Feitiços cinematográficos de alta complexidade com combos elementais (ex: feitiços que conjuram tempestades de meteoros, buracos negros arcanos e barreiras temporais dinâmicas).
+* **[Strange Runes](https://www.nexusmods.com/skyrimspecialedition/mods/19456)** (`19456`):
+  * Adiciona runas mágicas circulares em 3D brilhando dinamicamente nas mãos do personagem enquanto você canaliza feitiços (estilo *Doutor Estranho*).
+
+### 🛡️ 2. Arquétipo Guerreiro / Paladino / Bárbaro
+* **[Dual Wield Parrying Reimplementation](https://www.nexusmods.com/skyrimspecialedition/mods/18264)** (`18264`):
+  * **Fim da incapacidade de bloquear:** No vanilla, se você usa duas espadas ao mesmo tempo ou espada em uma mão e feitiço na outra (Spellsword), o botão direito ataca e você **perde a habilidade de defender**. Este mod cria uma tecla dedicada de bloqueio/parry.
+* **[Stances - Dynamic Animation Sets](https://www.nexusmods.com/skyrimspecialedition/mods/40484)** (`40484`):
+  * **Sistema de 4 Posturas de Combate (estilo Nioh / Ghost of Tsushima):**
+    * *Postura Alta:* Ataques lentos, alto dano e quebra de postura;
+    * *Postura Média:* Equilíbrio de dano e defesa rápida;
+    * *Postura Baixa:* Ataques ultrarrápidos para sangramento e estamina;
+    * *Postura Neutra:* Animações vanilla.
+
+### 🗡️ 3. Arquétipo Ladrão / Assassino Furtivo
+* **[Sneak Tools SE](https://www.nexusmods.com/skyrimspecialedition/mods/1863)** (`1863`):
+  * Adiciona mecânicas de jogos furtivos profissionais (*Thief*, *Dishonored*, *Splinter Cell*):
+    * **Flechas de Água:** Apagam tochas e lareiras à distância para criar sombras completas;
+    * **Flechas de Corda:** Permite escalar muralhas e janelas altas;
+    * **Slit Throat (Corte de Garganta):** Assassinato instantâneo silencioso pelas costas com adaga;
+    * **Blackjack (Cassetete):** Nocaute não-letal pelas costas (permite passar sem matar ninguém);
+    * **Máscaras de Identidade Oculta:** Escondem sua identidade — qualquer crime cometido com a máscara não adiciona recompensa à sua cabeça depois de tirá-la.
+
+### 🏹 4. Arquétipo Arqueiro / Caçador
+* **[Archery Gameplay Overhaul SE (AGO)](https://www.nexusmods.com/skyrimspecialedition/mods/24296)** (`24296`):
+  * Transforma completamente o combate com arco:
+    * Animação de sacar e puxar a corda muito mais rápida e responsiva;
+    * Flechas com efeito de sangramento realista em inimigos;
+    * Permite puxar e manter a flecha tensionada sem cansaço absurdo de estamina;
+    * Encantamento de flechas e anéis em tempo real.
