@@ -727,3 +727,28 @@ flowchart TD
 | :--- | :--- | :--- | :--- |
 | **Immersive Interactions - Animated Actions** | `47670` | **Interações invisíveis e sem corpo:** Você aperta `E` para saquear e o item simplesmente some do chão; examina uma alavanca e ela se move sozinha; reza num santuário e ganha um buff sem se ajoelhar. | Adiciona animações contextuais rápidas em 3ª pessoa: Arthur/Dovahkiin estende a mão para abrir baús, abaixa para colher flores, ajoelha-se diante de altares, acena para guardas amigos e usa gazuas nas mãos ao arrombar fechaduras. |
 | **PC Head Tracking and Voice Type SE** | `11993` | **Olhar fixo de manequim:** Seu personagem nunca olha para quem está falando com ele, mantendo a cabeça travada para a frente mesmo enquanto alguém grita ao lado. | Seu personagem vira a cabeça naturalmente para olhar para NPCs que estão falando, olha para dragões voando no céu e faz contato visual com comerciantes ao negociar. |
+
+---
+
+## 🛑 CAMADA 31: O ANTÍDOTO DO "ALL YOUR SKYRIM PAIN IN ONE VIDEO"
+*Análise forense dos 2.300 comentários do vídeo clássico do YouTube sobre as piores dores universais dos jogadores de Skyrim:*
+
+### 🚪 1. NPCs e Seguidores Bloqueando Portas e Corredores (O Vídeo Clássico da Lydia)
+* **A Dor (594+ Likes):** Você entra numa tumba estreita, Lydia ou um cachorro para no batente da porta e **bloqueia sua passagem**. Você tenta empurrar, corre contra ele, dá cabeçada e fica preso para sempre no cômodo.
+* **A Solução:** **I'm Walkin' Here** (`27742`) + **Disable Follower Collision** (`35925`):
+  * **Remove 100% da colisão física entre o jogador e aliados/seguidores**. Se um NPC ou cachorro parar no meio da porta, você simplesmente **atravessa o corpo dele** como se fosse ar e continua andando.
+
+### 🦀 2. "Você Não Pode Viajar: Inimigos Próximos" (O Mudcrab a 200 Metros)
+* **A Dor (951+ Likes):** Você quer dar Fast Travel, mas o jogo bloqueia porque um caranguejo (*mudcrab*) minúsculo a 300 metros de distância entrou em combate contra um cervo ou camponês.
+* **A Solução:** **Carriage and Ferry Travel Overhaul** (`8379`) + **Instant Travel** / **Scrambled Bugs** (`43532`):
+  * Recalibra o raio de agressividade e combate de criaturas passivas, impedindo que caranguejos e lobos distantes prendam seu status de combate.
+
+### 🌪️ 3. O Tornado em Casa (Decorações Explodindo por Bug de Física)
+* **A Dor (Top 1 do Vídeo):** Você passa 40 minutos arrumando poções, pratos e crânios perfeitamente nas prateleiras da sua casa. Ao sair e entrar de novo pela porta, o motor de física Havok explode e parece que um tornado passou pela sala, jogando tudo no chão.
+* **A Solução:** **SSE Engine Fixes** (`17230`) (trava a física e impede o glitch de framerate) + **Jaxonz Positioner** (`13090`):
+  * Permite travar qualquer item decorativo estaticamente no chão ou na estante com 1 clique (o item vira parte do cenário estático e nunca mais cai).
+
+### ⚔️ 4. O Grito de Desarmar do Draugr (Perder Armas Únicas na Escuridão)
+* **A Dor (455+ Likes):** Um Draugr Death Overlord usa o grito *Disarm*, sua espada épica/única voa longe no chão escuro da catacumba, entra embaixo de uma pedra ou cai no abismo e você perde a arma para sempre.
+* **A Solução:** **Scrambled Bugs** (`43532`):
+  * Ativa a trava de proteção em C++ no arquivo `.ini` (`fDisarmPlayer = 0` / *Disarm Protection*): o grito do Draugr aplica dano e atordoamento no jogador, mas **nunca mais derruba sua arma no chão**.
