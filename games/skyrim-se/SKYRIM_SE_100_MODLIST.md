@@ -763,8 +763,9 @@ flowchart TD
 
 ### ⚔️ 4. O Grito de Desarmar do Draugr (Perder Armas Únicas na Escuridão)
 * **A Dor (455+ Likes):** Um Draugr Death Overlord usa o grito *Disarm*, sua espada épica/única voa longe no chão escuro da catacumba, entra embaixo de uma pedra ou cai no abismo e você perde a arma para sempre.
-* **A Solução:** **Scrambled Bugs** (`43532`):
-  * Ativa a trava de proteção em C++ no arquivo `.ini` (`fDisarmPlayer = 0` / *Disarm Protection*): o grito do Draugr aplica dano e atordoamento no jogador, mas **nunca mais derruba sua arma no chão**.
+* **A Solução:** **No Disarm (Unequip Instead)** (`27188`):
+  * Converte os efeitos de *Disarm* vanilla em stagger e desequipa a arma de volta para o inventário/bainha: o grito ainda afeta taticamente o combate, mas a arma **nunca mais cai no chão do cenário**.
+
 
 ---
 
@@ -871,11 +872,12 @@ flowchart TD
 | **02** | **Seguidores / Portas / Fogo Amigo** | 116 menções | Lydia bloqueia a porta da sala; morre em combate com flecha do jogador; pisa em armadilha. | **I'm Walkin' Here** (`27742`) + **NFF** (`55653`) | Colisão zero com aliados; dano amigo = 0%; imunidade a placas de pressão. |
 | **03** | **Meridia's Beacon / Volume Explosivo** | 99 menções | *"A NEW HAND TOUCHES THE BEACON"* em volume ensurdecedor ao abrir baú aleatório. | **Audio Overhaul for Skyrim** (`12466`) | Normalização acústica de decibéis em C++ eliminando picos agudos de vozes. |
 | **04** | **Lojas Trancadas / Belethor Ausente** | 98 menções | Porta trancada às 14h; comerciante preso no balcão chamando guarda se entrar. | **Immersive Citizens** (`173`) + **Trade & Barter** (`23081`) | Rotinas diárias corrigidas (abertura às 8h em ponto) e estoque financeiro dinâmico. |
-| **05** | **Grito de Desarmar / Perda de Armas** | 73 menções | Draugr Death Overlord usa *Disarm* e joga arma única no abismo escuro da tumba. | **Scrambled Bugs** (`43532`) | Trava de engine (`fDisarmPlayer = 0`) que bloqueia desarme da arma do jogador. |
+| **05** | **Grito de Desarmar / Perda de Armas** | 73 menções | Draugr Death Overlord usa *Disarm* e joga arma única no abismo escuro da tumba. | **No Disarm (Unequip Instead)** (`27188`) | Converte o grito em stagger + desequipar; a arma vai para a bainha sem cair no chão. |
 | **06** | **Companions Rudeness / Aela & Gigante** | 60 menções | Aela esculacha o jogador por não ter ajudado a matar o gigante que já estava morto. | **At Your Own Pace** (`52704`) | Reformulação de diálogos e gatilhos de guildas sem coerção ou grosseria sem nexo. |
 | **07** | **Crimes Acidentais / Galinhas / Guardas** | 58 menções | Esbarrar numa galinha ou acertar guarda sem querer gera caçada mortal e multa. | **Simple Offence Suppression** (`41764`) | NPCs neutros e guardas perdoam golpes acidentais em combate sem virar hostis. |
 | **08** | **Carteiro em Combate (Courier)** | 58 menções | Carteiro paralisa o jogador com carta enquanto dragão ou vampiro desfere golpe mortal. | **Immersive Citizens** (`173`) | Mensageiros esperam o término do combate e o jogador embainhar a arma. |
-| **09** | **Baús Expert/Master com Loot Lixo** | 54 menções | Arrombar baú difícil para achar míseras 8 moedas e poção pequena de estamina. | **Dynamic Dungeon Loot** (`10308`) | Tesouros escalonados por tier com artefatos raros, joias e bolsas de ouro expressivas. |
+| **09** | **Baús Expert/Master com Loot Lixo** | 54 menções | Arrombar baú difícil para achar míseras 8 moedas e poção pequena de estamina. | **Dynamic Dungeon Loot** (`10308`) | Adiciona tabelas de raridade dinâmica aos baús de chefes de masmorras. |
+
 | **10** | **Latidos Contínuos / Barbas Empurrando** | 53 menções | Cães latindo a cada 1.5s no ouvido e empurrando o jogador para fora de penhascos. | **NFF** (`55653`) + **Quiet Dogs SE** (`externo`) | IA de afastamento suave e supressão de latidos repetitivos em stealth/cidades. |
 | **11** | **Esquiva "Matrix" / Paredes Invisíveis** | 50 menções | Inimigo de costas desvia da flecha por sensor psíquico; flecha bate em colisão invisível. | **No BS AI Projectile Dodge** (`1763`) + **Engine Fixes** (`17230`) | Neutralização da esquiva mágica e remoção de caixas de colisão quebradas no ar. |
 | **12** | **Cavalos Suicidas / Física no Ar** | 49 menções | Cavalo comprado por 1000g corre para cima do dragão e morre; save montado quebra a malha. | **Convenient Horses** (`9519`) + **Engine Fixes** (`17230`) | Cavalos fogem do perigo, tornam-se essenciais e mantêm integridade física em loads. |
@@ -1030,8 +1032,9 @@ flowchart TD
 | Item Auditado | ID Nexus Verificado | O Que o Mod Realmente Faz | O Que NÃO Faz (Limitação Real / Solução Complementar) |
 | :--- | :---: | :--- | :--- |
 | **1. Odin (Magic Overhaul)** | `46000` | Melhora spells vanilla e adiciona 125 novos feitiços integrados. | **Ilusão:** Não garante controle de qualquer inimigo no início; substitui a trava rígida por escalonamento com chance probabilística. Mortos-vivos e autômatos ainda exigem o perk *Master of the Mind* (Ilusão 90). |
-| **2. Better Master Spells** | `5962` | Permite cast com 1 mão, dual-cast, reduz tempo de 3s para 1s e **permite andar enquanto lança**. | Afeta magias de mestre vanilla. Magias adicionadas por outros mods exigem patches próprios. |
-| **3. 100% Max Pickpocket Chance** | `8234` | Eleva a variável de engine `fPickPocketMaxChance` de 90% para **100%**. | Não dá 100% automático no nível 15; garante que, com perícia e perks altos, o sucesso seja **100% real**, eliminando a falha forçada de 10% do vanilla. |
+| **2. Better Master Spells** | `5962` | Permite cast com 1 mão, dual-cast (exceto Conjuração), reduz cast para 1.5s, corta custos pela metade e **permite andar enquanto lança**. | **Conflito com Overhauls:** O autor declara explicitamente *"Not compatible with major spell overhauls"*. Sobrescreve registros de *Odin*. **Dragonhide** deixa de funcionar com armadura leve/pesada equipada. Requer teste de compatibilidade na ordem de carregamento (*load order*). |
+| **3. 100% Max Pickpocket Chance** | `8234` | Eleva a variável de engine `fPickPocketMaxChance` de 90% para **100%**. | **Não garante sucesso universal:** Permite alcançar 100% apenas quando a fórmula matemática do furto permitir (habilidade/perks altos); a chance mínima permanece em 0%. Não garante furto automático em itens de alto valor no início. |
+
 | **4. Instant Mining** | `687` | Extrai todos os minérios e gemas da rocha em **1 clique instantâneo** sem animação. | Mantém os drops e probabilidades vanilla intactos; economiza apenas o tempo da animação. |
 | **5. No Disarm (Unequip Instead)** | `27188` | Converte o grito *Disarm* do Draugr em stagger + desequipar a arma. | A arma vai para o inventário/bainha, **nunca mais cai no chão nem se perde no limbo do cenário**. |
 | **6. SkyClimb** | `97253` | Detecção procedural de bordas físicas para escalar dinamicamente (requer EVGAT `63232`). | Exige borda acessível em alcance vertical plausível; não permite escalar montanhas verticais lisas. |
