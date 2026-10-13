@@ -419,3 +419,23 @@ flowchart LR
 * **O Problema Vanilla:** O som original é comprimido, passos em masmorras não têm eco espacial e o choque de espadas soa abafado.
 * **A Solução:** **[Audio Overhaul for Skyrim SE (AOS)](https://www.nexusmods.com/skyrimspecialedition/mods/12466)** (`12466`):
   * Redesenha toda a acústica do jogo: reverbação física realista dentro de catacumbas, impacto metálico nítido no parry e sons da natureza dinâmicos ao ar livre.
+
+---
+
+## 💰 CAMADA 17: IMPÉRIO FINANCEIRO, FARM DE LOOT & DIFICULDADE LENDÁRIA REAL
+*Dois pontos fundamentais para quem gosta de farmar coletando tudo e jogar no Lendário:*
+1. **O Problema do Dinheiro Vanilla:** Você junta 300.000 septims e não tem onde gastar; o ouro vira um número inútil no inventário e carregar 50 armaduras pesadas cansa.
+2. **O Problema do Lendário Vanilla:** O modo Lendário da Bethesda é mal feito: ele reduz seu dano a **0.25x** (inimigos viram "esponjas de dano" onde você precisa bater 80 vezes num lobo) e aumenta o dano que você toma para **3.0x** (um arqueiro genérico te mata com uma flechada no dedão).
+
+### 🪙 1. O Ciclo do Ouro e do Farm de Loot
+| Mod | Nexus ID | Mecânica | Impacto no Farm de Loot |
+| :--- | :--- | :--- | :--- |
+| **RE - Real Estate Continued** | `14408` | **Compre Imóveis, Lojas e Minas por toda Skyrim:** Permite investir seu ouro acumulado comprando tavernas, lojas de ferreiros, fazendas e minas em todas as cidades. | O ouro acumulado nas dungeons tem utilidade real: você compra propriedades que geram renda passiva diária de aluguel no seu cofre. |
+| **Imperial Mail - Post and Banking Service** | `21014` | **Sistema de Banco, Poupança e Envio de Encomendas:** Permite depositar seu ouro em contas bancárias com rendimento de juros em qualquer taverna ou capital, além de despachar baús de loot pesado direto para sua casa sem precisar carregar tudo a pé. | Você limpa masmorras inteiras, despacha o lote pesado pelo correio imperial e recebe o pagamento sem travar o peso do inventário. |
+| **Bandolier - Bags and Pouches Classic** | `2417` | **Bolsas, Coldres e Cartucheiras Físicas:** Adiciona bolsas de couro visíveis no cinto e no peito do personagem, expandindo o peso de carga de forma balanceada e estética. | Permite que o jogador "coletor/farmador" transporte muito mais loot legítimo de masmorras sem precisar apelar para cheats de peso infinito. |
+
+### 💀 2. Dificuldade Lendária Letal (Estilo Souls / Hardcore Real)
+| Mod | Nexus ID | Mecânica | Como Transforma a Dificuldade Lendária |
+| :--- | :--- | :--- | :--- |
+| **Wildcat - Combat of Skyrim** | `1368` | **Combate Letal e Tático:** Substitui o combate de esponja de dano por letalidade mútua. Adiciona sistema de ferimentos (ataque nas pernas reduz velocidade, dano nos braços reduz dano de ataque). | Inimigos continuam extremamente perigosos e te matam em 1 ou 2 golpes, mas **eles não são mais sacos de pancada**: se você acertar um contra-ataque ou parry perfeito, eles morrem rápido. |
+| **Custom Difficulty UI** | `14362` | **Calibração Total de Dano no Menu do Jogo:** Permite ajustar os multiplicadores exatos de dano dado e dano recebido no modo Lendário diretamente na interface do jogo. | Permite configurar o equilíbrio perfeito: dano recebido em 3.0x (letalidade máxima para você) e dano causado em 1.5x ou 2.0x (combate visceral onde todo golpe importa, acabando com a sensação de bater em pedra). |
