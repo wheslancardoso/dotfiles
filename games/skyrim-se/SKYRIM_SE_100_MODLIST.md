@@ -130,3 +130,17 @@ cd modorganizer2-linux-installer
 2. Baixar os mods compactados na pasta de downloads do MO2.
 3. Instalar seguindo estritamente a ordem das Camadas (0 a 6).
 4. Executar o jogo **sempre através do atalho do SKSE** dentro do MO2.
+
+---
+
+## ⚖️ CAMADA 7: QUEBRA DO PARADOXO DO LEVELING & ECONOMIA JUSTA
+*No Skyrim vanilla, você é punido por jogar normalmente: o ferreiro é forçado a forjar 5.000 adagas de ferro, os treinadores custam fortunas e limitam 5 aulas por nível (perdidas se você upar antes de pagar), e o gold dos mercadores é ridículo (750 septims).*
+*Esta camada elimina a necessidade de qualquer glitch ou grind maçante:*
+
+| Mod | Nexus ID | Como Resolve o Paradoxo | Benefício na Run 100% |
+| :--- | :--- | :--- | :--- |
+| **Experience** | `17751` | **Muda a lógica de XP para padrão RPG moderno:** Você ganha nível completando missões, descobrindo masmorras e explorando o mapa — e **NÃO** spamando magias na parede ou forjando adagas. | Você avança e zera o jogo jogando as quests, sem precisar grindar skills secundárias. |
+| **Smart Training - Tweaked SE** | `18048` | **Fim do desperdício de aulas:** No vanilla, se você upa de nível sem usar os 5 treinos de mestre, eles somem para sempre. Com este mod, os treinos acumulam como créditos. | Se você passar 10 níveis sem ir a um mestre, você terá 50 treinos acumulados quando tiver dinheiro. |
+| **Train and Study** | `17578` | **Treinamento orgânico:** Bonecos de treino (*dummies*), alvos de arquearia e livros comuns agora concedem treino real passando tempo in-game. | Alternativa imersiva para subir armas e arco sem exploits de bater nos Greybeards ajoelhados. |
+| **Trade and Barter** | `23081` | **Economia balanceada e dinâmica:** Ajusta preços com base no seu status social, guilda e reputação local, além de dar estoque de ouro real aos mercadores. | O ouro acumulado nas dungeons tem valor real e você não precisa esperar 48h no botão T a cada 3 itens vendidos. |
+| **Skyrim Skill Uncapper** | `8889` | **Personalização cirúrgica de limites:** Permite calibrar ganho de XP por skill, pontos de perk por nível e quantidade de treinos por mestre via arquivo `.ini`. | Dá total controle se quiser aumentar o limite de 5 treinos/nível para 10 ou 15 sem quebrar o jogo. |
