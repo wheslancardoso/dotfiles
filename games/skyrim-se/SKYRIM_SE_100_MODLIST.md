@@ -972,6 +972,19 @@ flowchart TD
 | **Esperar 30 Dias In-game para Veios de Minério Reaparecerem** | As minas de ferro e ébano demoram 30 dias in-game para repor o minério, forçando o jogador a ficar dormindo em camas repetidamente. | **Dynamic Ore Respawn** / MCM Config | Reduz o ciclo de respawn de veios de minério para 3 a 5 dias, permitindo coletar materiais suficientes para forjar equipamentos sem grind artificial. |
 | **Guardar Livros de Perícia sem Ler com Medo de "Desperdiçar" Nível** | Se você lê um livro de habilidade no nível 15, ganha pouco XP relativo; no nível 90, ele vale ouro. No vanilla, você tinha medo de abrir livros para não "gastar" o ponto antes da hora. | **Skill Book Versatile** / **Experience** (`17751`) | O ganho de XP dos livros é transformado em pontos de bônus acumulativos ou créditos de aprendizado, permitindo ler qualquer livro imediatamente sem culpa. |
 
+---
+
+## ⏱️ CAMADA 42: ACELERAÇÃO TEMPORAL & AUTOMAÇÃO CIRÚRGICA (O FIM DO TEMPO MORTO)
+*Quatro refinamentos que eliminam a espera passiva na tela:*
+
+| Mod / Recurso | Nexus ID / Método | A Dor no Vanilla | A Solução Cirúrgica |
+| :--- | :---: | :--- | :--- |
+| **Faster Wait Menu (Espera no 'T' em 1 Segundo)** | `17230` *(Engine Fixes)* | **Aguardar 24 horas no botão `T` leva quase 30 segundos reais:** O relógio do jogo gira hora por hora devagarzinho como uma tartaruga. | No arquivo `EngineFixes.toml`, o parâmetro `SleepWaitTimeModifier = true` acelera a contagem de tempo: esperar 24 horas passa **em menos de 1 segundo real**. |
+| **Complete Crafting Overhaul (Batch Crafting)** | `28608` | **Apertar Enter 50 vezes para derreter 100 ferros ou cozinhar:** O jogo força você a confirmar a forja de lingote por lingote individualmente. | Adiciona a opção de **Fabricação em Lote (Slider de Quantidade)**: selecione "Fundir 50x Lingotes de Ferro" e derreta tudo de uma única vez em 1 segundo. |
+| **Tochas Eternas (Torches Cast Shadows & Longer Duration)** | `2424` / *ELFX* | **Tochas apagando sozinhas após 4 minutos no meio do escuro:** Ficar no breu de repente e ter que vasculhar o inventário para equipar outra tocha. | Aumenta a duração da tocha para várias horas de jogo (ou infinita) com iluminação dinâmica real que projeta sombras físicas dos objetos. |
+| **Remoção de Itens de Quest Concluída (Quest Item Unblocker)** | `23581` / `43532` | **Itens de quests que já acabaram e continuam pesando no inventário:** Flautas, livros e instrumentos de bardos que você entregou mas o jogo bugou e deixou presos com peso zero/positivo. | Desbloqueia automaticamente a flag *Quest Item* assim que o objetivo da missão é entregue, permitindo vender, guardar em baús de casa ou colocar em suportes de parede. |
+
+
 
 
 
