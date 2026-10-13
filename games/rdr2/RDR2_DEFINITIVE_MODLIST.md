@@ -152,3 +152,15 @@ flowchart TD
 | :--- | :--- | :--- | :--- |
 | **Longer Days** | `41` | **O tempo passa rápido demais:** No vanilla, cada minuto real equivale a 30 minutos in-game. O pôr do sol dura apenas 40 segundos e a noite passa voando antes de você conseguir acampar e caçar. | Permite desacelerar a passagem do tempo para uma proporção mais imersiva (ex: 1 minuto real = 2 a 5 minutos in-game). Você aproveita manhãs ensolaradas, tardes e noites com calma. |
 | **WhyEm's DLC** | `671` | **Falta de personalização de roupas e coldres:** O modo história tem pouquíssimas roupas comparado ao modo online. | Adiciona centenas de novos chapéus, ponchos autênticos, coletes, jaquetas, anéis, cortes de cabelo, barbas e coldres duplos nos armários e lojas. |
+
+---
+
+## 🤠 CAMADA 9: O FAROESTE CINEMATOGRÁFICO DEFINITIVO (DUELOS, MALABARISMO & PROPRIEDADES)
+*O jogo vanilla bloqueia ações clássicas de filmes de faroeste. Esta camada adiciona os recursos mais pedidos pela comunidade:*
+
+| Mod | Nexus ID | A Dor no Vanilla | A Solução Cirúrgica |
+| :--- | :--- | :--- | :--- |
+| **Duels** | `500` | **Não dá para desafiar ninguém para duelo:** No vanilla, duelos de saque rápido (*Quickdraw*) só acontecem em 4 ou 5 missões roteirizadas da história. | Permite **desafiar qualquer NPC armado no jogo para um duelo clássico de saque rápido no meio da rua**. Fique cara a cara, espere a contagem, saque o revólver no Dead Eye e atire na mão ou no peito do oponente. |
+| **Gun Tricks** | `818` | **Falta de firulas com o revólver:** No modo história, Arthur só guarda a arma normalmente, enquanto no modo online existem giros acrobáticos (*gun spinning*). | Traz todos os malabarismos de revólver do Red Dead Online para o modo história: gire o revólver nos dedos, gire para trás e guarde no coldre com estilo pressionando duas vezes o botão de coldre. |
+| **Buyable Properties** | `820` | **Arthur não pode ter uma casa própria:** Mesmo tendo \$50.000 no bolso no final do jogo, você é obrigado a dormir apenas em barracas no mato ou pagar 1 dólar por noite em hotel. | Permite **comprar casas, cabanas nas montanhas e quartos de hotel permanentes** por toda a província de New Hanover, Ambarino, Lemoyne e New Austin, com personalização de móveis e guarda-roupa. |
+| **Bounties Expansion - Replayable Bounties** | `210` | **Os cartazes de procurado acabam rápido:** As delegacias de Valentine, Rhodes e Saint Denis só têm 2 ou 3 cartazes de caça a recompensas e nunca mais renovam. | Adiciona **39 novas missões de caça a recompensas totalmente rejogáveis** inspiradas no sistema do RDR1. A cada 6 horas in-game, um novo cartaz de fugitivo perigoso surge na parede da delegacia. |
