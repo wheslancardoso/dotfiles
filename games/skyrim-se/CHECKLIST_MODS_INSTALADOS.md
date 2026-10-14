@@ -4,8 +4,8 @@
 > **Ambiente:** Linux (CachyOS / Hyprland / Proton-GE / Heroic Games Launcher)  
 > **Caminho do Jogo:** `/mnt/dados/Jogos/Skyrim-AE/`  
 > **Executável Primário:** `skse64_loader.exe` (Engine Skyrim AE: `1.6.318.0`)  
-> **Total de Plugins Oficiais e da Comunidade:** **140 Plugins Ativos**  
-> **Total de Plugins Nativos SKSE em C++:** **31 DLLs**
+> **Total de Plugins Oficiais e da Comunidade:** **143 Plugins Ativos**  
+> **Total de Plugins Nativos SKSE em C++:** **34 DLLs**
 
 ---
 
@@ -21,7 +21,8 @@
 * 🟢 **Andrealphus Papyrus Functions:** Biblioteca complementar de funções lógicas para quests.
 * 🟢 **PrivateProfileRedirector:** Mantém arquivos `.ini` em memória RAM (loads até 5x mais rápidos).
 * 🟢 **Nemesis Unlimited Behavior Engine:** Framework gerador de comportamentos e físicas de combate.
-* 🟢 **Dynamic Animation Replacer (DAR) / DAK:** Injeção contextual de animações e teclas dinâmicas.
+* 🟢 **Dynamic Animation Replacer (DAR) & Open Animation Replacer (OAR 3.2):** Sistema de ponta para injeção contextual de animações e replacers dinâmicos.
+* 🟢 **Animation Motion Revolution (AMR):** Framework para movimentação física precisa em animações de ataque e parkour.
 
 ### 🧙‍♂️ B. Mago Supremo & RPG Profundo
 * 🟢 **Ordinator - Perks of Skyrim:** Árvores completas de habilidades e perks de mago/necromante.
@@ -94,6 +95,8 @@
 * 🟢 **Dynamic Dungeon Loot (DDL):** Baús de chefes contêm recompensas épicas proporcionais ao perigo.
 * 🟢 **Friendly Slaughterfish:** Peixes carniceiros neutros não travam viagens rápidas na margem da água.
 * 🟢 **Fasttravel Out of Dungeons:** Poder menor que teletransporta para a saída da masmorra.
+* 🟢 **Thieves Guild Requirements SE:** Requisitos de progressão equilibrados para a Guilda dos Ladrões.
+* 🟢 **All Thieves Guild Jobs Concurrently:** Permite aceitar trabalhos de furto em todas as capitais de Skyrim simultaneamente (fim das viagens maçantes para Riften).
 * 🟢 **Yes I'm Sure:** Elimina popups redundantes de confirmação de forja e craft.
 * 🟢 **Easy Lockpicking:** Abertura rápida de fechaduras sem perda de tempo.
 
@@ -113,6 +116,8 @@
 * 🟢 **To Your Face:** NPCs só conversam se você estiver olhando para eles.
 * 🟢 **Quick Light SE:** Lanterna de cinto no botão `L` sem ocupar as mãos do seu Mago.
 * 🟢 **Better Jumping NG:** Salto livre durante a corrida em sprint máximo.
+* 🟢 **EVG Animated Traversal (EVGAT):** Framework completo para pular janelas, escalar muros baixos, transpor cercas e passar frestas estreitas.
+* 🟢 **SkyClimb:** Habilidade de escalar beirais de telhados, bordas de penhascos e muros estilo Assassin's Creed / Zelda.
 * 🟢 **Skyrim's Paraglider:** Paraglider funcional estilo Zelda para planar de picos sem dano de queda.
 * 🟢 **Immersive Interactions:** Animações contextuais para abrir baús, colher ervas e rezar em altares.
 * 🟢 **PC Head Tracking:** Seu personagem faz contato visual natural e acompanha alvos em movimento.
