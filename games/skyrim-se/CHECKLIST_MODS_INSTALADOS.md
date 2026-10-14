@@ -4,7 +4,7 @@
 > **Ambiente:** Linux (CachyOS / Hyprland / Proton-GE / Heroic Games Launcher)  
 > **Caminho do Jogo:** `/mnt/dados/Jogos/Skyrim-AE/`  
 > **Executável Primário:** `skse64_loader.exe` (Engine Skyrim AE: `1.6.318.0`)  
-> **Total de Plugins Oficiais e da Comunidade:** **145 Plugins Ativos**  
+> **Total de Plugins Oficiais e da Comunidade:** **146 Plugins Ativos**  
 > **Total de Plugins Nativos SKSE em C++:** **34 DLLs**
 
 ---
@@ -110,6 +110,7 @@
 * 🟢 **Ish's Respec Mod:** Poção de redistribuição de perks vendida em boticários.
 * 🟢 **Convenient Horses:** Alforjes de carga, combate a cavalo, assobio e IA que foge de perigos.
 * 🟢 **Point The Way:** Placas de madeira autênticas indicando cidades nas encruzilhadas.
+* 🟢 **Cathedral Weathers and Seasons:** Sistema dinâmico de clima, nevascas volumétricas e iluminação atmosférica natural.
 * 🟢 **JK's Skyrim All in One:** Overhaul visual completo de todas as 5 grandes capitais (Whiterun, Solitude, Windhelm, Riften, Markarth) e pequenos vilarejos.
 * 🟢 **Open Civil War:** Batalhas de cerco e disputas territoriais dinâmicas na Guerra Civil.
 * 🟢 **Missives:** Quadros de avisos e contratos nas estalagens estilo Witcher 3 / RDR2.
