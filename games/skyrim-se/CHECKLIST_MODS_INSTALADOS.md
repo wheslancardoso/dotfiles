@@ -4,8 +4,8 @@
 > **Ambiente:** Linux (CachyOS / Hyprland / Proton-GE / Heroic Games Launcher)  
 > **Caminho do Jogo:** `/mnt/dados/Jogos/Skyrim-AE/`  
 > **Executável Primário:** `skse64_loader.exe` (Engine Skyrim AE: `1.6.318.0`)  
-> **Total de Plugins Oficiais e da Comunidade:** **137 Plugins Ativos**  
-> **Total de Plugins Nativos SKSE em C++:** **29 DLLs**
+> **Total de Plugins Oficiais e da Comunidade:** **140 Plugins Ativos**  
+> **Total de Plugins Nativos SKSE em C++:** **31 DLLs**
 
 ---
 
@@ -39,6 +39,7 @@
 ### ⚔️ C. Combate Moderno & Físicas
 * 🟢 **True Directional Movement (TDM):** Movimentação 360° fluida em 3ª pessoa com trava de mira (Lock-On).
 * 🟢 **Precision - Accurate Melee Collisions:** Hitboxes milimétricas baseadas na lâmina real da arma.
+* 🟢 **Valhalla Combat:** Timed Block / Parry estilo Sekiro, quebra de postura e execuções críticas.
 * 🟢 **SmoothCam:** Câmera dinâmica de 3ª pessoa cinematográfica sem trepidação.
 * 🟢 **Smooth Arrow Trails NG:** Traçado visual suave no rastro das flechas e feitiços.
 * 🟢 **Archery Gameplay Overhaul (AGO):** Animações ágeis de arco, flechas com sangramento e fadiga justa.
@@ -56,12 +57,15 @@
 * 🟢 **Wheeler - Quick Action Wheel:** Roda de magias/armas/poções em câmera lenta estilo Monster Hunter/GTA.
 * 🟢 **Show Player In Menus:** Exibe seu personagem 3D em tempo real reagindo no inventário ao equipar itens.
 * 🟢 **Dear Diary Dark Mode:** Menu pergaminho escuro elegante com textos legíveis em branco.
+* 🟢 **Quick Loot RE:** Saque em tempo real estilo Fallout 4 sem pausar o jogo ao olhar para baús e cadáveres.
+* 🟢 **Better Third Person Selection (BTPS):** Mira e seleção cirúrgica de itens pequenos e gazuas em 3ª pessoa.
 * 🟢 **Better Dialogue Controls:** Elimina 100% dos cliques fantasmas em opções erradas de diálogo.
 * 🟢 **Better MessageBox Controls:** Confirmação de popups direto no teclado (`E` e `Espaço`).
 * 🟢 **Stay At The System Page:** Menu Esc abre diretamente na aba de Salvar / Opções / Sair.
 * 🟢 **More Informative Console:** Raio-X completo de itens, NPCs e seus mods de origem no console `~`.
 
 ### 🏆 E. 100% Complecionista & Rastreamento
+* 🟢 **The Completionist (Skyrim Completion Tracker):** Menu MCM dedicado com checklist in-game de 100% de colecionáveis, quests e Creation Club.
 * 🟢 **Stones of Barenziah Markers:** Marcadores de mapa para as 24 Gemas da Thieves Guild.
 * 🟢 **Crimson Nirnroot Markers:** Marcadores para as 30 Nirnroots Vermelhas em Blackreach.
 * 🟢 **Dragon Priest Masks (No Mask Unturned):** Rastreamento dos 8 Sacerdotes Dragão.
@@ -83,6 +87,7 @@
 * 🟢 **Disable Follower Collision & I'm Walkin' Here:** Colisão zero com aliados (nunca mais portas travadas).
 * 🟢 **Acquisitive Soul Gems Multithreaded:** Almas pequenas nunca estragam gemas grandes.
 * 🟢 **Simple Dual Sheath:** Báculos, escudos e adagas esquerdas aparecem embainhados nas costas.
+* 🟢 **Bandolier - Bags and Pouches:** Bolsas, cantis e cartucheiras no cinto para aumento visual da capacidade de carga.
 * 🟢 **Run For Your Lives:** Cidadãos fogem e trancam portas durante ataques de dragões e vampiros.
 * 🟢 **Simple Offence Suppression:** Fim de crimes acidentais e guardas hostis no fogo cruzado.
 * 🟢 **No Disarm (Unequip Instead):** Draugrs desequipam sua arma para a bainha sem jogá-la no chão.
@@ -112,7 +117,7 @@
 * 🟢 **Immersive Interactions:** Animações contextuais para abrir baús, colher ervas e rezar em altares.
 * 🟢 **PC Head Tracking:** Seu personagem faz contato visual natural e acompanha alvos em movimento.
 * 🟢 **Imperious - Races of Skyrim:** Passivas raciais e missões culturais profundas desde o nível 1.
-* 🟢 **Skyrim Upscaler (DLSS / FSR2 / XeSS):** Renderização por inteligência artificial via Tensor Cores (DLAA nativo e DLSS).
+* 🟢 **DLSS 5 Neural Rendering & Skyrim Upscaler:** Pipeline neural de última geração (ReShade 6.5.1 + Feeder + LumeniteFX + renodx-dlss5 + `nvngx_dlssnr.dll` + `nvngx_dlss.dll` v3.10) com renderização direta pelos Tensor Cores da RTX 5060.
 
 ---
 
