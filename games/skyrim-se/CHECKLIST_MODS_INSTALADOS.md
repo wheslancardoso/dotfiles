@@ -4,8 +4,8 @@
 > **Ambiente:** Linux (CachyOS / Hyprland / Proton-GE / Heroic Games Launcher)  
 > **Caminho do Jogo:** `/mnt/dados/Jogos/Skyrim-AE/`  
 > **Executável Primário:** `skse64_loader.exe` (Engine Skyrim AE: `1.6.318.0`)  
-> **Total de Plugins Oficiais e da Comunidade:** **147 Plugins Ativos**  
-> **Total de Plugins Nativos SKSE em C++:** **34 DLLs**
+> **Total de Plugins Oficiais e da Comunidade:** **170 Plugins Ativos**  
+> **Total de Plugins Nativos SKSE em C++:** **38 DLLs**
 
 ---
 
@@ -20,6 +20,8 @@
 * 🟢 **JContainers SE:** Framework para manipulação de dados complexos em JSON.
 * 🟢 **Andrealphus Papyrus Functions:** Biblioteca complementar de funções lógicas para quests.
 * 🟢 **PrivateProfileRedirector:** Mantém arquivos `.ini` em memória RAM (loads até 5x mais rápidos).
+* 🟢 **Scrambled Bugs (v18 para AE 1.6.318):** Correções nativas no motor do jogo para bugs de hit scan, cálculos de perk e IA.
+* 🟢 **CrashLogger AE (v1.25):** Diagnóstico forense em tempo real com stack trace nativa em C++ caso ocorra falha.
 * 🟢 **Nemesis Unlimited Behavior Engine:** Framework gerador de comportamentos e físicas de combate.
 * 🟢 **Dynamic Animation Replacer (DAR) & Open Animation Replacer (OAR 3.2):** Sistema de ponta para injeção contextual de animações e replacers dinâmicos.
 * 🟢 **Animation Motion Revolution (AMR):** Framework para movimentação física precisa em animações de ataque e parkour.
@@ -30,6 +32,8 @@
 * 🟢 **Apocalypse - Magic of Skyrim:** 155 feitiços únicos com combos elementais épicos.
 * 🟢 **Apocalypse - Ordinator Patch:** Sinergia oficial entre feitiços do Apocalypse e perks do Ordinator.
 * 🟢 **Arcanum - A New Age of Magic:** Feitiços cinematográficos de alta complexidade (meteoros e buracos negros).
+* 🟢 **Magical College of Winterhold (MCoW):** Reconstrução imersiva do Colégio de Winterhold com laboratórios de alquimia, biblioteca arcana e salas de treino.
+* 🟢 **IHarvest:** Feitiço arcano de colheita remota em área via esferas telecinéticas luminosas.
 * 🟢 **Summermyst - Enchantments:** Dezenas de novos encantamentos para vestes e cajados.
 * 🟢 **Smart Cast SSE Patch:** Feitiços automáticos programáveis (cura ao cair vida, armadura em combate).
 * 🟢 **Strange Runes:** Runas mágicas circulares em 3D girando nas mãos do seu Mago ao canalizar feitiços.
@@ -52,6 +56,7 @@
 
 ### 🖥️ D. Interface de Usuário (UI) & Navegação
 * 🟢 **SkyUI SE (v5.2):** Interface de inventário limpa de PC e Mod Configuration Menu (MCM).
+* 🟢 **Custom Difficulty UI:** Controle granular de sliders de dano recebido e causado via menu in-game.
 * 🟢 **TrueHUD - HUD Additions:** Barras de chefes flutuantes, barra de postura e dano numérico.
 * 🟢 **Compass Navigation Overhaul:** Bússola moderna no topo mostrando distância exata em metros.
 * 🟢 **Infinity UI:** Framework dinâmico para interfaces modernas.
@@ -60,6 +65,7 @@
 * 🟢 **Dear Diary Dark Mode:** Menu pergaminho escuro elegante com textos legíveis em branco.
 * 🟢 **Quick Loot RE:** Saque em tempo real estilo Fallout 4 sem pausar o jogo ao olhar para baús e cadáveres.
 * 🟢 **Better Third Person Selection (BTPS):** Mira e seleção cirúrgica de itens pequenos e gazuas em 3ª pessoa.
+* 🟢 **Remember Lockpick Angle:** Lembra o último ângulo da gazua ao forçar fechaduras difíceis.
 * 🟢 **Better Dialogue Controls:** Elimina 100% dos cliques fantasmas em opções erradas de diálogo.
 * 🟢 **Better MessageBox Controls:** Confirmação de popups direto no teclado (`E` e `Espaço`).
 * 🟢 **Stay At The System Page:** Menu Esc abre diretamente na aba de Salvar / Opções / Sair.
@@ -79,7 +85,16 @@
 * 🟢 **A Quality World Map (Vivid):** Mapa desenhado com estradas principais e secundárias nítidas.
 * 🟢 **A Clear Map of Skyrim:** Mapa límpido sem névoa cobrindo o mundo.
 
-### ⚖️ F. Economia Justa, Leveling & Eliminação de Atritos
+### 👥 F. Vida Orgânica, NPCs & Expansão de Quests
+* 🟢 **Interesting NPCs (3DNPC - 2.3 GB):** Mais de 250 NPCs totalmente dublados profissionalmente, dezenas de missões profundas e seguidores de elite espalhados pelo mapa.
+* 🟢 **The Brotherhood of Old:** Grande expansão da Dark Brotherhood continuando a história após a morte do Imperador, reconstruindo santuários.
+* 🟢 **At Your Own Pace (AYOP):** Modularização de missões principais e guildas (Main Quest, College of Winterhold, Dawnguard, Companions, Thieves Guild) sem atropelos nem urgência artificial.
+
+### 💰 G. Economia Justa, Propriedades & Imersão
+* 🟢 **Real Estate Core + v3.2 + USSEP:** Sistema financeiro de aquisição de terras, fazendas, lojas e minas para geração de renda passiva de aluguel.
+* 🟢 **Imperial Mail - Post and Banking:** Serviço de correios, agências bancárias nas capitais e cofres de mercadorias.
+* 🟢 **Carriage and Ferry Travel Overhaul (CFTO):** Sistema de carruagens e balsas expandido para todos os povoados menores de Skyrim com animações de viagem.
+* 🟢 **Train and Study:** Possibilidade de treinar e estudar lendo livros em bancadas para ganhar experiência orgânica.
 * 🟢 **Experience:** Suba de nível completando missões e descobrindo masmorras (sem grind de adagas).
 * 🟢 **Honed Metal:** Ferreiros e magos NPCs forjam e encantam equipamentos lendários por encomenda.
 * 🟢 **Trade and Barter SE:** Economia balanceada e preços dinâmicos conforme reputação.
@@ -100,7 +115,12 @@
 * 🟢 **Yes I'm Sure:** Elimina popups redundantes de confirmação de forja e craft.
 * 🟢 **Easy Lockpicking:** Abertura rápida de fechaduras sem perda de tempo.
 
-### 🌲 G. Imersão de Mundo, Clima, Áudio & Gráficos
+### 🌲 H. Gráficos de Próxima Geração, Clima & Iluminação Cinematográfica
+* 🟢 **Cathedral Landscapes:** Texturas de terreno fotorrealistas e grama densa sem impacto de FPS.
+* 🟢 **Realistic Water Two SE:** Água com refrações físicas, correntezas dinâmicas e sons de ondas costeiras.
+* 🟢 **Lux Master & Lux Lighting Suite (com patches para JK's Skyrim e 3DNPC):** Iluminação volumétrica interior ultra-realista com sombras direcionais e feixes de luz nas janelas.
+* 🟢 **Cathedral Weathers and Seasons:** Sistema dinâmico de clima, nevascas volumétricas e iluminação atmosférica natural.
+* 🟢 **Happy Little Trees:** Modelos 3D densos de pinheiros e faias com balanço de vento e alta performance.
 * 🟢 **Static Mesh Improvement Mod (SMIM):** Substituição de modelos 3D pontudos e cordas poligonais por alta definição.
 * 🟢 **Audio Overhaul for Skyrim (AOS):** Acústica com reverbação física em catacumbas e sons de impacto visceral.
 * 🟢 **Security Overhaul SKSE - Lock Variations & Add-ons:** Modelos 3D regionais de fechaduras nórdicas, Dwemer e medievais.
@@ -110,8 +130,6 @@
 * 🟢 **Ish's Respec Mod:** Poção de redistribuição de perks vendida em boticários.
 * 🟢 **Convenient Horses:** Alforjes de carga, combate a cavalo, assobio e IA que foge de perigos.
 * 🟢 **Point The Way:** Placas de madeira autênticas indicando cidades nas encruzilhadas.
-* 🟢 **Cathedral Weathers and Seasons:** Sistema dinâmico de clima, nevascas volumétricas e iluminação atmosférica natural.
-* 🟢 **Happy Little Trees:** Modelos 3D densos de pinheiros e faias com balanço de vento e alta performance.
 * 🟢 **JK's Skyrim All in One:** Overhaul visual completo de todas as 5 grandes capitais (Whiterun, Solitude, Windhelm, Riften, Markarth) e pequenos vilarejos.
 * 🟢 **Open Civil War:** Batalhas de cerco e disputas territoriais dinâmicas na Guerra Civil.
 * 🟢 **Missives:** Quadros de avisos e contratos nas estalagens estilo Witcher 3 / RDR2.
@@ -131,6 +149,8 @@
 ---
 
 ## 🏁 CONCLUSÃO DA AUDITORIA
-* **Todos os arquivos baixados pelo usuário foram extraídos e normalizados.**
-* **Não há nenhum mod pendente de download na lista.**
-* O motor está 100% configurado para iniciar via **`skse64_loader.exe`** através do Heroic Games Launcher.
+* **100% dos mods do plano mestre foram instalados, configurados e validados.**
+* **170 plugins ativos** sincronizados entre os prefixes do Heroic.
+* **38 DLLs SKSE em C++ nativo** operando sem colisões.
+* **Pipeline de DLSS 5 ativo** para a RTX 5060 (Blackwell).
+* O motor está 100% pronto para iniciar via **`skse64_loader.exe`** através do Heroic Games Launcher.
