@@ -1,10 +1,10 @@
 {
   "entries": [
     {
-      "path": "~/.gemini/config/skills"
+      "path": "/home/lanwsl/.gemini/config/skills"
     },
     {
-      "path": "/home/lan/dotfiles/skills"
+      "path": "/home/lanwsl/dotfiles/skills"
     }
   ]
 }

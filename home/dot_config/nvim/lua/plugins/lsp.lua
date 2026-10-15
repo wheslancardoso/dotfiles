@@ -11,7 +11,7 @@ return {
         "vtsls",
         "angular-language-server",
         "html-lsp",
-        "emmet-ls",
+        "emmet-language-server",
         "tailwindcss-language-server",
         "prettier",
         "pyright",
@@ -72,9 +72,10 @@ return {
       servers = {
         angularls = {},
         html = {},
-        emmet_ls = {
+        emmet_language_server = {
           filetypes = {
             "html",
+            "htmlangular",
             "javascript",
             "typescript",
             "javascriptreact",

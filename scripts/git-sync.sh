@@ -228,6 +228,8 @@ get_repositories() {
         "$HOME/dynamic-water-reminder"
         "$HOME/Brazilian-Real-Estate-Intelligence"
         "$HOME/projects"
+        "$HOME/projetos"
+        "$HOME/Projetos"
     )
 
     for d in "${candidate_dirs[@]}"; do

@@ -85,4 +85,25 @@ with open(win_mcp_file, "w", encoding="utf-8") as f:
 print("  [OK] mcp_config.json do Windows mesclado com sucesso!")
 EOF
 
+# 3. Sincroniza plugins globais para o Windows (mcp-engineering-policy / regras do Dojo)
+SOURCE_PLUGINS="$DOTFILES_DIR/home/dot_gemini/config/plugins"
+if [ -d "$SOURCE_PLUGINS" ]; then
+    mkdir -p "$WIN_CONFIG_DIR/plugins"
+    cp -r "$SOURCE_PLUGINS"/* "$WIN_CONFIG_DIR/plugins/"
+    echo "  [OK] Plugins sincronizados para o Windows ($WIN_CONFIG_DIR/plugins)."
+fi
+
+# 4. Sincroniza catálogo de skills para o Windows
+if [ -d "$DOTFILES_DIR/skills" ]; then
+    mkdir -p "$WIN_CONFIG_DIR/skills"
+    for skill_dir in "$DOTFILES_DIR/skills"/*; do
+        if [ -d "$skill_dir" ]; then
+            skill_name="$(basename "$skill_dir")"
+            mkdir -p "$WIN_CONFIG_DIR/skills/$skill_name"
+            cp -r "$skill_dir"/* "$WIN_CONFIG_DIR/skills/$skill_name/"
+        fi
+    done
+    echo "  [OK] Skills sincronizadas para o Windows ($WIN_CONFIG_DIR/skills)."
+fi
+
 echo "==> Concluído! O Antigravity IDE e o Antigravity App 2.0 no Windows já estão sincronizados."

@@ -62,3 +62,37 @@ map("n", "<leader>vk", function()
 end, { desc = "Vim King Cheatsheet Mestre" })
 map("n", "<leader>vg", "<cmd>VimBeGood<cr>", { desc = "Jogar Vim-Be-Good (Treino de Memória Muscular)" })
 
+-- 🎯 Formatação Cirúrgica de Seleção Visual (<leader>cf)
+-- Se for JS/TS/CSS/JSON, usa Conform/Prettier com range.
+-- Se for HTML/Angular/XML (onde Prettier recusa range), usa Treesitter/Vim '=' para reindentar perfeitamente sem alterar o restante do arquivo.
+map("x", "<leader>cf", function()
+  local vstart = vim.fn.getpos("v")[2]
+  local cur = vim.fn.getpos(".")[2]
+  local start_line = math.min(vstart, cur)
+  local end_line = math.max(vstart, cur)
+  local ft = vim.bo.filetype
+
+  -- Sai do modo visual para aplicar o comando
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<esc>", true, false, true), "n", true)
+
+  vim.schedule(function()
+    if ft == "html" or ft == "htmlangular" or ft == "xml" then
+      vim.cmd(string.format("silent! normal! %dG=%dG", start_line, end_line))
+    else
+      local ok, conform = pcall(require, "conform")
+      if ok then
+        conform.format({
+          range = {
+            start = { start_line, 0 },
+            ["end"] = { end_line, 0 },
+          },
+          async = false,
+          lsp_format = "fallback",
+        })
+      else
+        vim.cmd(string.format("silent! normal! %dG=%dG", start_line, end_line))
+      end
+    end
+  end)
+end, { desc = "Formatar Seleção Visual Cirurgicamente" })
+

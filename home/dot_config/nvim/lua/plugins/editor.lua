@@ -11,6 +11,7 @@ return {
       },
       per_filetype = {
         ["html"] = { enable_close = true, enable_rename = true, enable_close_on_slash = true },
+        ["htmlangular"] = { enable_close = true, enable_rename = true, enable_close_on_slash = true },
         ["javascript"] = { enable_close = true, enable_rename = true, enable_close_on_slash = true },
         ["typescript"] = { enable_close = true, enable_rename = true, enable_close_on_slash = true },
         ["javascriptreact"] = { enable_close = true, enable_rename = true, enable_close_on_slash = true },
@@ -209,7 +210,7 @@ return {
             return true
           end
           local client = vim.lsp.get_client_by_id(item.client_id)
-          return not (client and client.name == "emmet_ls")
+          return not (client and (client.name == "emmet_ls" or client.name == "emmet_language_server"))
         end, items)
       end
     end,
