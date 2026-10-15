@@ -1169,5 +1169,17 @@ Em vez de remover mecânicas perigosas que definem a identidade das criaturas, e
 | **5. Chaurus Hunters (Subcategoria Voadora)** | Saem de casulos de surpresa, possuem vida muito maior que o Chaurus rasteiro e cuspe de longo alcance. | O veneno causa dano contínuo à vida. A versão voadora tem alta mobilidade vertical e cadência de cuspe superior. | • **Identificação:** Destrua casulos suspeitos à distância com arco/magia antes que eclodam.<br>• **Mitigação:** Escudo levantado bloqueia o projétil físico do cuspe; poções de cura imediata contrariam o dano por segundo. | **Precision** (`72347`) + **SmoothCam** (`41252`) |
 | **6. Feedback de Resistências e Status no HUD** | O jogador não sabe se o monstro é imune a fogo, choque ou corte, gerando frustração de bater sem efeito. | O motor vanilla esconde todos os valores de resistência (AVs) dos inimigos atrás de barras genéricas de vida. | • **Enemy Combat Parameters:** Exibe ícones de resistência elemental (Fogo/Gelo/Raio), armadura e fraquezas ao focar a mira no inimigo.<br>• **TrueHUD:** Exibe barras de postura/stagger e vida numérica clara. | **Enemy Combat Parameters** + **TrueHUD** (`62775`) |
 
+---
 
+## 53. MICRO-ATRICIONAL FIXES & BLINDAGEM CONTRA FALHAS OCULTAS DA ENGINE
 
+Neutralização de micro-atritos sistêmicos que não constavam nas camadas iniciais da modlist:
+
+| # | Atrito Oculto Vanilla | Solução Técnica & Mod | ID Nexus | Mecanismo Prático de Correção |
+| :-: | :--- | :--- | :---: | :--- |
+| **1** | **Morte ao Tropeçar em Panelas, Ossos ou Carroças** | **No Silly Physics Damage** | `36132` | Anula o bug do motor *Havok* que calcula dano de impacto letal infinito quando o jogador corre contra crânios, potes e baldes soltos no chão. Mantém quedas e telecinese intactas. |
+| **2** | **NPCs Empurrando o Jogador em Diálogos/Crafting** | **Don't Push Me Around** (por tarlazo) | `52874` | Cria dinamicamente uma área de recorte de malha (*navcut*) ao redor do jogador enquanto ele fala com alguém ou usa bancadas, obrigando os NPCs a contornarem educadamente. |
+| **3** | **Bug de 30.000 de Ouro nos Mercadores (Zero Gold)** | **Barter Limit Fix** (por po3) | `77173` | Corrige o estouro do inteiro de 16-bits da engine (teto de 32.767 septims) que fazia mercadores ricos aceitarem itens mas darem 0 ouro em troca. Permite comércio sem teto de ouro. |
+| **4** | **"Quest items cannot be removed" Sem Saber Qual Quest** | **Whose Quest Is It Anyway NG** | `77065` | Substitui a mensagem genérica vanilla por uma notificação precisa informando exatamente a qual quest aquele item pesado de peso preso pertence. |
+| **5** | **Diário de Quests Poluído por Fofocas Ouvidas** | **The Choice is Yours** | `3850` | Impede que conversas de taverna ouvidas sem querer joguem dezenas de missões no seu diário. As missões só iniciam se você ativamente aceitar o trabalho com o NPC. |
+| **6** | **Venda ou Desencantamento Acidental de Armas** | **Essential Favorites** (por po3) | `42997` | Bloqueia no código da interface: itens marcados com a estrela de favoritos tornam-se invisíveis em menus de venda e desencantamento, impedindo destruição por erro de clique. |
