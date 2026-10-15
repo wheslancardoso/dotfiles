@@ -1210,3 +1210,19 @@ Substitui as faces poligonais e rostos envelhecidos/sujos da engine de 2011 por 
 | **3. Pandorable's NPCs (Série Feminina)** | `19012` | Cobre mais de 80 mulheres adicionais do jogo base que não estão no Bijin (Ingun Black-Briar, Olfina, Danica, Carlotta, etc.). | Estilo realista e sóbrio criado pela artista *Pandorable*. Mantém rugas e marcas de idade em personagens mais velhas enquanto embeleza naturalmente as mais jovens. |
 | **4. CBBE SFW Edition (Caliente's Beautiful Bodies)** | `198` | Substituição da malha corporal de todas as mulheres do jogo. | **100% Não-Sexual / NeverNude:** A versão **SFW (Safe For Work)** vem com roupas de baixo (*underwear*) fixas e modeladas. Elimina os corpos angulares e costuras visíveis de pescoço da Bethesda de 2011. |
 | **5. KS Hairdos SSE** | `6817` | Pacote com centenas de penteados modernos e limpos. | Dependência visual opcional/integrada que substitui os cabelos com textura de palha do jogo vanilla. |
+
+---
+
+## 56. HARMONIZAÇÃO ESTÉTICA UNIVERSAL (HOMENS, KHAJIITS, ARGONIANOS & ORCS)
+
+Para eliminar o contraste de "mulheres bonitas vs. resto do mundo feio e poligonal", esta camada aplica um salto visual consistente em **todos os NPCs do jogo, sem exceção de raça ou gênero**:
+
+| Raça / Categoria | Solução Técnica & Mod | ID Nexus | O Que Altera no Jogo? | Por Que Fica Harmonioso? |
+| :--- | :--- | :---: | :--- | :--- |
+| **1. Base Universal (Humanos e Elfos)** | **Nordic Faces - Immersive Characters Overhaul** | `40658` | Substitui a FaceGen, texturas e malhas de **100% dos NPCs do jogo** (homens, mulheres, velhos e jovens). | Cria a base homogênea de Skyrim em 2K/4K: remove o aspecto de "pele suja de carvão" e faces triangulares vanilla sem descaracterizar a idade ou a dureza nórdica dos personagens. |
+| **2. Homens Marcantes (Jarls e Companions)** | **Pandorable's NPCs - Males (Partes 1, 2 e 3)** | `42043` | Redesenha os guerreiros e líderes masculinos (Balgruuf, Ulfric, Vilkas, Farkas, Brynjolf, etc.). | Dá o mesmo nível de polimento cinematográfico do Bijin aos homens: barbas definidas, cabelos limpos e cicatrizes realistas de veteranos. |
+| **3. Raça Khajiit (Homens-Gato)** | **Project ja-Kha'jay - Khajiit Diversity Overhaul** + **Coverkhajiits** | `57610`<br>`9119` | • **Project ja-Kha'jay (`57610`):** Redesenha cada Khajiit nomeado com sub-raças canônicas do lore (*furstocks*), pelos fofos e traços felinos elegantes.<br>• **Coverkhajiits (`9119`):** Texturas de pelagem facial em alta definição. | Transforma os Khajiits de "humanos com focinho colado de 2011" em felinos de fantasia nobre com pelos nítidos e olhos expressivos. |
+| **4. Raça Argoniana (Homens-Lagarto)** | **Children of the Hist - Argonian NPC Overhaul** | `98103` | Redesenha todos os Argonianos de Skyrim com escamas detalhadas, chifres ornamentais tribais, penas e cores ricas. | Elimina o aspecto de borracha verde sem textura do vanilla; cada habitante de pântano ganha identidade visual viva. |
+| **5. Raça Orc (Orsimer)** | **Children of the Pariah - Orc NPC Overhaul** | `97981` | Redesenha os Orcs das fortalezas com presas proporcionais, tons de pele naturais e feições fortes e intimidadoras. | Remove as deformidades caricatas de massinha do jogo base, transformando os Orcs em guerreiros imponentes e bem-acabados. |
+| **6. Pelos e Animais (Shader de Pelagem)** | **Fluffworks (Fluffy Animals)** | `64445` | Aplica sombreamento de pelagem volumosa (*shell texturing*) em lobos, cavalos, ursos e dentes-de-sabre. | Os animais deixam de parecer estátuas de gesso pintado e ganham pelos com profundidade e reação à luz estilo *Red Dead Redemption 2*. |
+
