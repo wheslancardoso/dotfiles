@@ -34,6 +34,7 @@ audio/ogg=io.bassi.Amberol.desktop
 audio/aac=io.bassi.Amberol.desktop
 audio/opus=io.bassi.Amberol.desktop
 audio/webm=io.bassi.Amberol.desktop
+x-scheme-handler/hydralauncher=hydralauncher.desktop
 
 [Added Associations]
 inode/directory=yazi.desktop;
