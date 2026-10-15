@@ -1197,3 +1197,16 @@ Neutralização de micro-atritos sistêmicos que não constavam nas camadas inic
 | **2** | **Popups Repetitivos de Confirmação ("Tem Certeza que Quer Criar?")** | **Yes Im Sure (NG)** | `24898` | Desativa caixas de diálogo redundantes ao forjar, cozinhar, sair de menus e aprender feitiços, tornando o crafting rápido e direto em 1 clique. |
 | **3** | **Enxame Caótico de Inimigos Todos Atacando no Mesmo Décimo de Segundo** | **Wait Your Turn - Enemy Circling Behaviour** | `65091` | Adiciona inteligência espacial ao combate: enquanto 1 ou 2 inimigos atacam ativamente, os outros circulam em postura defensiva esperando a brecha, acabando com a sensação de espancamento cego sem janela de parry. |
 
+---
+
+## 55. ESTÉTICA VISUAL FEMININA DE ALTO PADRÃO (100% LORE-FRIENDLY & SFW)
+
+Substitui as faces poligonais e rostos envelhecidos/sujos da engine de 2011 por modelos e texturas de alta definição, preservando personalidades únicas e sem nudez (*NeverNude / Safe For Work*):
+
+| Mod / Ecossistema | ID Nexus | Foco / Personagens Afetadas | Por Que é o Padrão Ouro? (Sem Nudez) |
+| :--- | :---: | :--- | :--- |
+| **1. Trilogia Bijin (Warmaidens + Wives + NPCs)** | `1825`<br>`11240`<br>`11287` | **Guerreiras e Aliadas Principais:**<br>• *Warmaidens (`1825`):* Lydia, Aela, Mjoll, Frea, Jordis, Rayya, etc.<br>• *Wives (`11240`):* Ysolda, Camilla Valerius, Sylgja, etc.<br>• *NPCs (`11287`):* Vex, Karliah, Legate Rikke, Maven, etc. | Criado por *rxkx22*. É o overhaul estético feminino mais aclamado da comunidade. Cada NPC recebe cabelos de alta densidade, malhas faciais redesenhadas e maquiagem sutil que preserva o tom nórdico sem parecer anime. |
+| **2. Bijin AIO SE for USSEP** | *Pág. 1825* | Consolidação das 3 partes em 1 único arquivo `.esp`. | Funde as 3 partes e preserva as correções de scripts do patch oficial USSEP. |
+| **3. Pandorable's NPCs (Série Feminina)** | `19012` | Cobre mais de 80 mulheres adicionais do jogo base que não estão no Bijin (Ingun Black-Briar, Olfina, Danica, Carlotta, etc.). | Estilo realista e sóbrio criado pela artista *Pandorable*. Mantém rugas e marcas de idade em personagens mais velhas enquanto embeleza naturalmente as mais jovens. |
+| **4. CBBE SFW Edition (Caliente's Beautiful Bodies)** | `198` | Substituição da malha corporal de todas as mulheres do jogo. | **100% Não-Sexual / NeverNude:** A versão **SFW (Safe For Work)** vem com roupas de baixo (*underwear*) fixas e modeladas. Elimina os corpos angulares e costuras visíveis de pescoço da Bethesda de 2011. |
+| **5. KS Hairdos SSE** | `6817` | Pacote com centenas de penteados modernos e limpos. | Dependência visual opcional/integrada que substitui os cabelos com textura de palha do jogo vanilla. |
