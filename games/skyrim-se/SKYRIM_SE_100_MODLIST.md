@@ -1183,3 +1183,17 @@ Neutralização de micro-atritos sistêmicos que não constavam nas camadas inic
 | **4** | **"Quest items cannot be removed" Sem Saber Qual Quest** | **Whose Quest Is It Anyway NG** | `77065` | Substitui a mensagem genérica vanilla por uma notificação precisa informando exatamente a qual quest aquele item pesado de peso preso pertence. |
 | **5** | **Diário de Quests Poluído por Fofocas Ouvidas** | **The Choice is Yours** | `3850` | Impede que conversas de taverna ouvidas sem querer joguem dezenas de missões no seu diário. As missões só iniciam se você ativamente aceitar o trabalho com o NPC. |
 | **6** | **Venda ou Desencantamento Acidental de Armas** | **Essential Favorites** (por po3) | `42997` | Bloqueia no código da interface: itens marcados com a estrela de favoritos tornam-se invisíveis em menus de venda e desencantamento, impedindo destruição por erro de clique. |
+
+
+---
+
+## 54. ARQUITETURA ANTI-ATROFIO: INTERFACE INSTANTÂNEA & CORREÇÃO DE ENCANTAMENTOS
+
+Últimos refinamentos cirúrgicos para eliminar confirmações redundantes de menus e bugs de bônus de itens equipados:
+
+| # | Atrito Vanilla | Solução Técnica & Mod | ID Nexus | Como Funciona na Prática |
+| :-: | :--- | :--- | :---: | :--- |
+| **1** | **Encantamentos Falhando ao Equipar ou Trocar de Área** | **Equip Enchantment Fix (NG)** | `42839` | Corrige o bug silencioso da engine onde encantamentos passivos (como +Vida, +Magicka ou Resistência Elemental) deixam de aplicar seus efeitos após carregar uma nova área (*load screen*) ou ao trocar de anel/armadura rapidamente. |
+| **2** | **Popups Repetitivos de Confirmação ("Tem Certeza que Quer Criar?")** | **Yes Im Sure (NG)** | `24898` | Desativa caixas de diálogo redundantes ao forjar, cozinhar, sair de menus e aprender feitiços, tornando o crafting rápido e direto em 1 clique. |
+| **3** | **Enxame Caótico de Inimigos Todos Atacando no Mesmo Décimo de Segundo** | **Wait Your Turn - Enemy Circling Behaviour** | `65091` | Adiciona inteligência espacial ao combate: enquanto 1 ou 2 inimigos atacam ativamente, os outros circulam em postura defensiva esperando a brecha, acabando com a sensação de espancamento cego sem janela de parry. |
+
