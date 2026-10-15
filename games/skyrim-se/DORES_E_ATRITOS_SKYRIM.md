@@ -240,4 +240,17 @@ Auditoria forense sobre a promessa de *drops garantidos* em Skyrim: o que a engi
 
 ---
 
+## 11. AS ÚLTIMAS 4 "PEDRAS NO SAPATO" OCULTAS DE SKYRIM (BLINDAGEM FINAL)
+
+Auditoria cirúrgica dos 4 micro-atritos mais insidiosos que costumam passar despercebidos em modlists, mas geram frustração constante em campanhas longas:
+
+| Micro-Atrito Oculto ("Pedra no Sapato") | Causa Técnica na Engine Vanilla | Por Que Irrita na Prática? | Mod Específico & ID Nexus | Como Funciona a Solução |
+| :--- | :--- | :--- | :---: | :--- |
+| **1. Morte Instantânea ao Chutar Panelas, Ossos ou Carroças** | O motor de física *Havok* calcula dano de colisão baseado na velocidade relativa de *clutter* solto. Se você correr contra uma bacia ou crânio, ele quica na parede e atinge o jogador com dano infinito. | Morrer do nada dentro de uma masmorra limpa só por tropeçar num esqueleto no chão. | **No Silly Physics Damage**<br>ID: `36132` | Desativa o dano por impacto acidental de objetos estáticos soltos (ossos, potes, panelas e carrinhos), mantendo dano de queda e telecinese intactos. |
+| **2. NPCs Empurrando Você Durante Diálogos e Criação de Itens** | A IA de navegação (*NavMesh*) de transeuntes não detecta o jogador em diálogo como obstáculo fixo e empurra fisicamente o personagem. | Sua câmera é girada à força ou você é empurrado para longe do NPC enquanto tenta ler as opções de fala. | **Don't Push Me Around**<br>ID: `52874` | Cria dinamicamente uma área temporária de recorte (*navcut*) ao redor do jogador enquanto ele conversa ou usa bancadas, forçando NPCs a contornarem educadamente. |
+| **3. Venda ou Desencantamento Acidental de Armas Favoritas** | O menu de escambo e a bancada de desencantamento não bloqueiam itens marcados como favoritos no inventário. | Vender sua espada principal por engano num clique rápido de esvaziar a mochila ou destruí-la na mesa arcana. | **Essential Favorites**<br>ID: `42997` (por powerofthree) | Trava no código da engine: itens com a estrela de favorito **não podem ser vendidos, desencantados, forjados fora ou jogados no chão**. |
+| **4. Inimigos Espancando em Rodízio Coordenado sem Janela de Ataque** | Em combates contra 5 ou 6 bandidos, todos iniciam ataques fortes ao mesmo tempo, impedindo qualquer resposta tática. | Você é travado em animações de stagger contínuas até a morte sem conseguir esquivar ou bloquear. | **Wait Your Turn - Enemy Circling Behaviour**<br>ID: `65091` | Adiciona comportamento tático de cerco: enquanto 1 ou 2 inimigos atacam ativamente pela frente, os outros circulam aguardando brecha, criando um ritmo de luta estilo RPG de ação moderno. |
+
+---
+
 *Documento gerado e integrado no ecossistema dotfiles como referência perene para a modlist de Skyrim SE.*
