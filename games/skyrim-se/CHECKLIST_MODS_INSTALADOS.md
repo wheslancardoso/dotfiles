@@ -1,12 +1,12 @@
 # 🐉 SKYRIM ANNIVERSARY EDITION — CHECKLIST MESTRE DEFINITIVO & MATRIZ DE AUDITORIA
-## Relatório de Estado da Arte: 171 Plugins Ativos, 31 DLLs SKSE e Matriz de Aquisição dos Mods Pendentes
+## Relatório de Estado da Arte: 207 Plugins Ativos, 36 DLLs SKSE e Matriz de Aquisição dos Mods Pendentes
 
 > **Status Global do Sistema:**  
-> 🟢 **171 Plugins Ativos** no motor da Bethesda (100% auditados e sincronizados)  
-> 🟢 **31 Bibliotecas em C++ Nativo (SKSE DLLs)** em execução sem conflito de offsets  
-> 🟢 **142 Arquivos de Mods Baixados** e preservados em `/mnt/dados/Jogos/Skyrim-AE/Downloads_Mods/`  
-> 🟡 **3 Quarentenas Preventivas** (`lux_esp_backup`, `dlss5_full_backup`, `Plugins_incompatible_ae`)  
-> 🔴 **85 Mods Catalogados Pendentes de Download** (Documentados nas Camadas 1 a 60 do Roadmap)  
+> 🟢 **207 Plugins Ativos** no motor da Bethesda (100% auditados e sincronizados)  
+> 🟢 **36 Bibliotecas em C++ Nativo (SKSE DLLs)** em execução sem conflito de offsets  
+> 🟢 **180+ Arquivos de Mods Baixados** e preservados em `/mnt/dados/Jogos/Skyrim-AE/Downloads_Mods/`  
+> 🟡 **4 Quarentenas Preventivas** (`lux_esp_backup`, `dlss5_full_backup`, `Plugins_incompatible_ae`, `quarantine_incompatible_mods`)  
+> 🟢 **Camada de Compatibilidade Ativa:** Microsoft Visual C++ 2015-2022 (x64 & x86) + Wine Mono (.NET 4.0)  
 > **Ambiente Operacional:** CachyOS Linux (Kernel CachyOS-Bore) | Hyprland (Wayland) | NVIDIA RTX 5060 | Gamescope
 
 ---
@@ -23,13 +23,7 @@
    - [F. Vida Orgânica, NPCs & Expansão de Quests](#f-vida-orgânica-npcs--expansão-de-quests)
    - [G. Economia Justa, Propriedades & Imersão](#g-economia-justa-propriedades--imersão)
    - [H. Gráficos, Clima & Iluminação (Status Lux Via vs Lux Interior)](#h-gráficos-clima--iluminação-status-lux-via-vs-lux-interior)
-3. [PARTE II: Matriz dos 85 Mods Pendentes de Download (Wishlist das 60 Camadas)](#3-parte-ii-matriz-dos-85-mods-pendentes-de-download-wishlist-das-60-camadas)
-   - [Bloco 1: Micro-Atritos de Jogabilidade, Crimes, Havok e IA](#bloco-1-micro-atritos-de-jogabilidade-crimes-havok-e-ia-prioridade-máxima)
-   - [Bloco 2: Identidade de Classe, RPG & Rumo Guiado](#bloco-2-identidade-de-classe-rpg--rumo-guiado)
-   - [Bloco 3: Marcadores 100%, Navegação e Qualidade de Vida](#bloco-3-marcadores-100-navegação-e-qualidade-de-vida)
-   - [Bloco 4: Overhaul Estético Universal de NPCs (100% SFW)](#bloco-4-overhaul-estético-universal-de-npcs-100-sfw)
-   - [Bloco 5: Gráficos Next-Gen, Texturas 4K & Shaders Opcionais](#bloco-5-gráficos-next-gen-texturas-4k--shaders-opcionais)
-   - [Bloco 6: Alquimia Profunda, Culinária & Mecânicas Específicas](#bloco-6-alquimia-profunda-culinária--mecânicas-específicas)
+3. [PARTE II: Matriz dos Mods Pendentes de Download (Wishlist das 60 Camadas)](#3-parte-ii-matriz-dos-85-mods-pendentes-de-download-wishlist-das-60-camadas)
 4. [PARTE III: Como Baixar no AB Download Manager e Integrar em 1 Clique](#4-parte-iii-como-baixar-no-ab-download-manager-e-integrar-em-1-clique)
 
 ---
@@ -37,10 +31,10 @@
 ## 1. PAINEL EXECUTIVO DE STATUS (RAIO-X DO ECOSSISTEMA)
 
 ```mermaid
-pie title Distribuição do Ecossistema Skyrim AE (287 Componentes Catalogados)
-    "Plugins Ativos no Jogo" : 171
-    "DLLs SKSE em C++" : 31
-    "Mods Pendentes de Download" : 85
+pie title Distribuição do Ecossistema Skyrim AE
+    "Plugins Ativos no Jogo" : 207
+    "DLLs SKSE em C++" : 36
+    "Arquivos em Quarentena Preventiva" : 10
 ```
 
 ---

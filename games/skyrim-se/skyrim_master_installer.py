@@ -204,7 +204,7 @@ def cmd_sanitize():
     print_header("SANITIZAÇÃO DE CASE-SENSITIVITY (Linux EXT4/Btrfs)")
     script_fix = os.path.join(SCRIPT_DIR, "fix_case_dupes.py")
     if os.path.exists(script_fix):
-        res = subprocess.run([sys.executable, script_fix, DATA_DIR])
+        res = subprocess.run([sys.executable, script_fix, DATA_DIR, "--apply"])
         print(f"  Sanitização concluída (código {res.returncode}).")
     else:
         print("  Aviso: fix_case_dupes.py não encontrado.")
@@ -236,7 +236,30 @@ def cmd_sync_plugins():
         if p not in sorted_esms:
             sorted_esms.append(p)
 
-    final_order = sorted_esms + esls + esps
+    # Special sorting for bottom-loading mods
+    bottom_priority = [
+        "realisticwatertwo.esp",
+        "alternate start - live another life.esp",
+        "betterquestobjectives-alternatestartpatch.esp"
+    ]
+    
+    # Filter bottom plugins out of esps
+    normal_esps = []
+    bottom_esps = {k: None for k in bottom_priority}
+    
+    for p in esps:
+        p_low = p.lower()
+        matched_bottom = False
+        for bp in bottom_priority:
+            if p_low == bp:
+                bottom_esps[bp] = p
+                matched_bottom = True
+                break
+        if not matched_bottom:
+            normal_esps.append(p)
+            
+    sorted_bottom = [bottom_esps[k] for k in bottom_priority if bottom_esps[k] is not None]
+    final_order = sorted_esms + esls + normal_esps + sorted_bottom
     
     lines = ["# Load order gerado automaticamente pelo Skyrim Master Installer\n"]
     for p in final_order:
