@@ -1,149 +1,597 @@
 [
   {
-    "id": 72007,
-    "name": "No Crime Teleport RE",
-    "version": "1.1",
-    "summary": null,
-    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/72007?tab=files"
+    "nexus_id": 159,
+    "name": "Even Better Quest Objectives (EBQO)",
+    "category": "Quests & Navegação",
+    "description": "Descrições detalhadas de missões sem depender de bússola",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/159?tab=files"
   },
   {
-    "id": 17946,
-    "name": "NARC Remade  - No Animals Report Crimes for Skyrim SE",
-    "version": "1.1.0",
-    "summary": "Tired of that chicken going up to the guards and being a nark? Annoyed because that one bear ratted you out? Upset because horses are snitches? Then this is the mod for you!",
-    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/17946?tab=files"
+    "nexus_id": 173,
+    "name": "Immersive Citizens - AI Overhaul",
+    "category": "IA & Vida Orgânica",
+    "description": "Rotinas reais de sono, trabalho e sobrevivência de NPCs",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/173?tab=files"
   },
   {
-    "id": 1439,
-    "name": "Realistic Ragdolls and Force SE",
-    "version": "1.92",
-    "summary": "(ESP plugin)Reduces the extra force applied on ragdolls to a more reasonable level<br />(MESH)Replaces ragdolls so that they bend and twist realistically and fall at a faster velocity, and increases friction to fix ice-like ragdoll sliding",
-    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/1439?tab=files"
+    "nexus_id": 198,
+    "name": "CBBE SFW Edition (Caliente's Beautiful Bodies)",
+    "category": "Estética Feminina",
+    "description": "Corpos femininos de alta definição 100% SFW / NeverNude",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/198?tab=files"
   },
   {
-    "id": 1409,
-    "name": "Simply Knock SE",
-    "version": "1.0",
-    "summary": null,
-    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/1409?tab=files"
+    "nexus_id": 272,
+    "name": "Alternate Start - Live Another Life",
+    "category": "Início de Jogo",
+    "description": "Pula a introdução da carruagem de Helgen para novos testes",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/272?tab=files"
   },
   {
-    "id": 687,
+    "nexus_id": 687,
     "name": "Instant Mining",
-    "version": "1.2",
-    "summary": "Harvest ores instantly, with no animation (like alchemy ingredients). Makes no changes to the items you receive, and includes a version that removes the need to carry a pickaxe.",
-    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/687?tab=files"
+    "category": "Micro-Atrito / Coleta",
+    "description": "Mineração em 1 clique instantâneo sem animação lenta",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/687?tab=files"
   },
   {
-    "id": 26227,
-    "name": "Wintersun - More interesting Mara",
-    "version": "2.1",
-    "summary": "Add some functionalities to the worshippers of mara to keep it interesting while attempting to keep it balanced.",
-    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/26227?tab=files"
+    "nexus_id": 1409,
+    "name": "Simply Knock SE / NG",
+    "category": "Rotinas / Imersão",
+    "description": "Bater na porta de lojas fechadas durante o dia",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/1409?tab=files"
   },
   {
-    "id": 36132,
-    "name": "No Silly Physics Damage - Carts Pots Bones etc",
-    "version": "2",
-    "summary": "You will no longer lose HP when walking on dynamic objects such as bones or when walking towards a cart.",
-    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/36132?tab=files"
+    "nexus_id": 1439,
+    "name": "Realistic Ragdolls and Force SE",
+    "category": "Física Havok",
+    "description": "Física realista de corpos sem lançamentos absurdos a 50m",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/1439?tab=files"
   },
   {
-    "id": 52874,
-    "name": "Don't Push Me Around",
-    "version": "1.2.0",
-    "summary": "My personal take on the silly 'player pushed around' issue. --- esl",
-    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/52874?tab=files"
+    "nexus_id": 1473,
+    "name": "Modern Brawl Bug Fix",
+    "category": "Correção de Engine",
+    "description": "Impede que brigas de soco virem combate de morte com magia",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/1473?tab=files"
   },
   {
-    "id": 77173,
-    "name": "Barter Limit Fix",
-    "version": "1.0.2",
-    "summary": "SKSE plugin that fixes trading with merchants with more than 32,767 gold.",
-    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/77173?tab=files"
+    "nexus_id": 1825,
+    "name": "Trilogia Bijin (Warmaidens + Wives + NPCs)",
+    "category": "Estética Feminina",
+    "description": "Overhaul estético das principais guerreiras nórdicas",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/1825?tab=files"
   },
   {
-    "id": 3850,
+    "nexus_id": 1961,
+    "name": "Encounter Zones Unlocked SE",
+    "category": "Balanceamento",
+    "description": "Zonas de masmorras voltam a escalar de nível no endgame",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/1961?tab=files"
+  },
+  {
+    "nexus_id": 2345,
+    "name": "Realistic AI Detection (RAID)",
+    "category": "Stealth / Furtividade",
+    "description": "IA de detecção realista na luz/sombra sem stealth quebrado",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/2345?tab=files"
+  },
+  {
+    "nexus_id": 2347,
+    "name": "Skyrim 202X by Pfuscher (AIO)",
+    "category": "Texturas 4K",
+    "description": "Texturas 2K/4K fotorrealistas de arquitetura e pedras",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/2347?tab=files"
+  },
+  {
+    "nexus_id": 2398,
+    "name": "Harvest Overhaul Redone",
+    "category": "Alquimia & Drops",
+    "description": "Colheita de ervas e ingredientes proporcional à botânica",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/2398?tab=files"
+  },
+  {
+    "nexus_id": 2424,
+    "name": "Torches Cast Shadows & Longer Duration",
+    "category": "Iluminação",
+    "description": "Tochas projetam sombras dinâmicas e duram mais",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/2424?tab=files"
+  },
+  {
+    "nexus_id": 2725,
+    "name": "Character Creation Overhaul (CCO)",
+    "category": "RPG & Classes",
+    "description": "Classes clássicas de Morrowind/Oblivion desde o nível 1",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/2725?tab=files"
+  },
+  {
+    "nexus_id": 3079,
+    "name": "Achieve That! SE",
+    "category": "Conquistas / Complecionismo",
+    "description": "Painel de conquistas in-game no menu MCM",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/3079?tab=files"
+  },
+  {
+    "nexus_id": 3850,
     "name": "The Choice is Yours",
-    "version": "2.7",
-    "summary": "Stop quests from starting automatically. Pursue the quests you want, ignore the ones you don't.  Make your choices matter.",
-    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/3850?tab=files"
+    "category": "Quests & Diálogo",
+    "description": "Fofocas de taverna não iniciam missões sem aceitar",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/3850?tab=files"
   },
   {
-    "id": 42997,
-    "name": "Essential Favorites",
-    "version": "2.4.2",
-    "summary": "SKSE plugin that prevents favorited items from being sold, crafted, disarmed, disenchanted, or dropped.",
-    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/42997?tab=files"
+    "nexus_id": 3928,
+    "name": "Sacrosanct - Vampires of Skyrim",
+    "category": "Vampirismo / RPG",
+    "description": "Overhaul de Lorde Vampiro com progressão e passivas",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/3928?tab=files"
   },
   {
-    "id": 42839,
-    "name": "Equip Enchantment Fix",
-    "version": "1.3.7",
-    "summary": "Fixes engine bugs where item enchantments don't apply when equipped or stop working while the item is still equipped. SKSE64 plugin.",
-    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/42839?tab=files"
+    "nexus_id": 5962,
+    "name": "Better Master Spells",
+    "category": "Magia / Mago",
+    "description": "Feitiços de mestre com 1 mão e movimentação permitida",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/5962?tab=files"
   },
   {
-    "id": 65091,
-    "name": "Wait Your Turn - Enemy Circling Behaviour",
-    "version": "1.0.3",
-    "summary": "A lightweight combat add-on mod that adds circling behaviour to enemies. Now, group combat is more fair and fun for the player, as enemies will no longer attack all at once without a pattern. Lightweight, compatible other combat overhaul mods, and can be turned off or tweaked using the MCM. Requires SKSE64, SPID, and PapyrusUtil to be installed",
-    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/65091?tab=files"
+    "nexus_id": 6817,
+    "name": "KS Hairdos SSE",
+    "category": "Estética / Cabelos",
+    "description": "Pacote moderno de cabelos de alta resolução para NPCs",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/6817?tab=files"
   },
   {
-    "id": 141872,
-    "name": "Dragon Landing Overhaul",
-    "version": "1.0",
-    "summary": null,
-    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/141872?tab=files"
+    "nexus_id": 7919,
+    "name": "Quiet Dog",
+    "category": "Micro-Atrito / Áudio",
+    "description": "Silencia latidos repetitivos em loop fora de combate",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/7919?tab=files"
   },
   {
-    "id": 14159,
-    "name": "Draugr Shout less",
-    "version": "1.0.1",
-    "summary": "Isn't it strange that Draugr can shout much faster than The Last Dragonborn? Yes, yes it is. That's what this mod is for.",
-    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/14159?tab=files"
+    "nexus_id": 8234,
+    "name": "100% Max Pickpocket Chance",
+    "category": "Ladino / Furto",
+    "description": "Permite atingir 100% de furto em níveis altos",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/8234?tab=files"
   },
   {
-    "id": 13898,
-    "name": "Yet Another Attempt at fixing Giant Physics and Clubs",
-    "version": "1",
-    "summary": null,
-    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/13898?tab=files"
+    "nexus_id": 8889,
+    "name": "Skyrim Skill Uncapper",
+    "category": "Leveling & Perks",
+    "description": "Configuração granular de perks e pontos por nível",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/8889?tab=files"
   },
   {
-    "id": 13807,
-    "name": "Know Your Enemy - Trait-based resistances and weaknesses",
-    "version": "10.0.0",
-    "summary": "Uses a trait system to change the resistances and weaknesses of creatures and armors to magic (fire/frost/shock), physical damage (blade/blunt/axes/arrows), poison and disease.",
-    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/13807?tab=files"
+    "nexus_id": 9119,
+    "name": "Coverkhajiits",
+    "category": "Estética Khajiit",
+    "description": "Texturas faciais em alta resolução para a raça Khajiit",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/9119?tab=files"
   },
   {
-    "id": 75184,
-    "name": "Sailboats - Script Free Sailing EXPANDED SSE - Simplified and Traditional Chinese Translation",
-    "version": "2.5",
-    "summary": "\"划船 - 无脚本扩展版\" 简中繁中汉化补丁",
-    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/75184?tab=files"
+    "nexus_id": 11240,
+    "name": "Bijin Wives SE",
+    "category": "Estética Feminina",
+    "description": "Overhaul estético para esposas do jogo (Ysolda, Sylgja, etc.)",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/11240?tab=files"
   },
   {
-    "id": 94572,
-    "name": "Slightly Less Aggressive Animals",
-    "version": "1.0",
-    "summary": null,
-    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/94572?tab=files"
+    "nexus_id": 11287,
+    "name": "Bijin NPCs SE",
+    "category": "Estética Feminina",
+    "description": "Overhaul estético para NPCs femininas (Vex, Karliah, Maven)",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/11287?tab=files"
   },
   {
-    "id": 7919,
-    "name": "Landlord Special Edition Spanish",
-    "version": "1.0",
-    "summary": "Traducciones al español de Landlord Special Edition",
-    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/7919?tab=files"
+    "nexus_id": 11340,
+    "name": "Quests Award Perk Points",
+    "category": "Rumo & Progressão",
+    "description": "1 ponto de perk extra ao fechar grandes quests secundárias",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/11340?tab=files"
   },
   {
-    "id": 11765,
+    "nexus_id": 11497,
+    "name": "Ice Wraith Ice Spike Spell Remover",
+    "category": "Combate / Criaturas",
+    "description": "Remove estacas de gelo irritantes do Ice Wraith",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/11497?tab=files"
+  },
+  {
+    "nexus_id": 11604,
+    "name": "Dragon Priest Masks Quest Markers",
+    "category": "Marcadores 100%",
+    "description": "Marcadores para as 8 máscaras de Sacerdotes Dragão",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/11604?tab=files"
+  },
+  {
+    "nexus_id": 11765,
     "name": "Fast Travel from Interiors",
-    "version": "2",
-    "summary": "This mod allows the player to fast travel out from interiors. Other versions here and on Bethesda Net were spotty for me.",
-    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/11765?tab=files"
+    "category": "Qualidade de Vida",
+    "description": "Viagem rápida direta de casas, castelos e santuários",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/11765?tab=files"
+  },
+  {
+    "nexus_id": 13807,
+    "name": "Know Your Enemy / Troll Nerf",
+    "category": "Combate Tático",
+    "description": "Resistências e fraquezas elementais táticas em monstros",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/13807?tab=files"
+  },
+  {
+    "nexus_id": 13898,
+    "name": "Yet Another Attempt Giant Physics",
+    "category": "Física Havok",
+    "description": "Zera o lançamento espacial do tacape dos gigantes",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/13898?tab=files"
+  },
+  {
+    "nexus_id": 14060,
+    "name": "Dragon Stalking Fix",
+    "category": "Correção de Dragões",
+    "description": "Impede que carcaças de dragões mortos fiquem te perseguindo",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/14060?tab=files"
+  },
+  {
+    "nexus_id": 14159,
+    "name": "Draugr Shout Less",
+    "category": "Combate / Mortos-Vivos",
+    "description": "Aplica cooldown justo nos gritos dos Draugr",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/14159?tab=files"
+  },
+  {
+    "nexus_id": 14890,
+    "name": "The Wizard Warrior",
+    "category": "Spellsword / Magia",
+    "description": "Permite castar magias automaticamente no golpe de espada",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/14890?tab=files"
+  },
+  {
+    "nexus_id": 17946,
+    "name": "NARC Remade - No Animals Report Crimes",
+    "category": "Crimes & Leis",
+    "description": "Galinhas, vacas e cavalos não denunciam crimes",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/17946?tab=files"
+  },
+  {
+    "nexus_id": 18732,
+    "name": "BlockSteal - Prevents accidentally pick up",
+    "category": "Interface / Roubo",
+    "description": "Bloqueia pegar itens roubados por erro de clique",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/18732?tab=files"
+  },
+  {
+    "nexus_id": 19012,
+    "name": "Pandorable's NPCs (Feminina)",
+    "category": "Estética Feminina",
+    "description": "Mais de 80 mulheres adicionais com feições nobres",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/19012?tab=files"
+  },
+  {
+    "nexus_id": 19924,
+    "name": "Complete Alchemy and Cooking Overhaul (CACO)",
+    "category": "Alquimia & Culinária",
+    "description": "Culinária útil e poções dinâmicas equilibradas",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/19924?tab=files"
+  },
+  {
+    "nexus_id": 20853,
+    "name": "East Empire Pendant Quest Markers",
+    "category": "Marcadores 100%",
+    "description": "Marcadores para os 33 pingentes em Solstheim",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/20853?tab=files"
+  },
+  {
+    "nexus_id": 22934,
+    "name": "Roleplay Quests - Goals for Roleplaying",
+    "category": "Rumo & RPG",
+    "description": "Manuais em PDF de metas temáticas para 25 arquétipos",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/22934?tab=files"
+  },
+  {
+    "nexus_id": 26227,
+    "name": "Harvest While Mounted",
+    "category": "Qualidade de Vida",
+    "description": "Colhe flores e conversa com NPCs de cima do cavalo",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/26227?tab=files"
+  },
+  {
+    "nexus_id": 26414,
+    "name": "Reusable Corpses (Necromancy)",
+    "category": "Necromancia",
+    "description": "Lacaios reanimados não viram cinzas após morrer",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/26414?tab=files"
+  },
+  {
+    "nexus_id": 26513,
+    "name": "Character Behaviors Enhanced",
+    "category": "Combate Aquático",
+    "description": "Permite atacar e usar feitiços debaixo d'água",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/26513?tab=files"
+  },
+  {
+    "nexus_id": 28608,
+    "name": "Complete Crafting Overhaul (Batch Crafting)",
+    "category": "Forja & Crafting",
+    "description": "Slider de quantidade para forjar 50 lingotes de uma vez",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/28608?tab=files"
+  },
+  {
+    "nexus_id": 31245,
+    "name": "Growl - Werebeasts of Skyrim",
+    "category": "Lobisomem / RPG",
+    "description": "Overhaul de fera: saque de corpos e dano escalonado",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/31245?tab=files"
+  },
+  {
+    "nexus_id": 32161,
+    "name": "Serana Dialogue Add-On (SDA)",
+    "category": "Seguidores / Lore",
+    "description": "Milhares de novas falas dubladas para Serana",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/32161?tab=files"
+  },
+  {
+    "nexus_id": 32735,
+    "name": "Better Stealing SE / NG",
+    "category": "Crimes & Economia",
+    "description": "Itens de baixo valor (1-200 gold) sem tag Stolen",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/32735?tab=files"
+  },
+  {
+    "nexus_id": 34179,
+    "name": "Skyland AIO",
+    "category": "Texturas All-In-One",
+    "description": "Texturas nórdicas integradas de toda a província",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/34179?tab=files"
+  },
+  {
+    "nexus_id": 36132,
+    "name": "No Silly Physics Damage",
+    "category": "Física Havok",
+    "description": "Anula dano de morte ao chutar panelas e crânios no chão",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/36132?tab=files"
+  },
+  {
+    "nexus_id": 40484,
+    "name": "Stances - Dynamic Animation Sets",
+    "category": "Combate & Animações",
+    "description": "Posturas de combate alta, média e baixa estilo Nioh",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/40484?tab=files"
+  },
+  {
+    "nexus_id": 40541,
+    "name": "Combo Animation Framework",
+    "category": "Combate & Animações",
+    "description": "Combos encadeados fluidos de golpes de espada",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/40541?tab=files"
+  },
+  {
+    "nexus_id": 40658,
+    "name": "Nordic Faces - Immersive Characters Overhaul",
+    "category": "Estética Universal",
+    "description": "Texturas 2K/4K de rostos para 100% dos NPCs",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/40658?tab=files"
+  },
+  {
+    "nexus_id": 42043,
+    "name": "Pandorable's NPCs - Males",
+    "category": "Estética Masculina",
+    "description": "Overhaul estético para os homens e jarls de Skyrim",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/42043?tab=files"
+  },
+  {
+    "nexus_id": 42839,
+    "name": "Equip Enchantment Fix (NG)",
+    "category": "Correção de Engine",
+    "description": "Impede perda de bônus de itens ao trocar de tela",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/42839?tab=files"
+  },
+  {
+    "nexus_id": 42997,
+    "name": "Essential Favorites",
+    "category": "Interface / Segurança",
+    "description": "Oculta itens favoritados em menus de venda e desencanto",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/42997?tab=files"
+  },
+  {
+    "nexus_id": 44899,
+    "name": "Folkvangr - Grass and Landscape Overhaul",
+    "category": "Vegetação & Grama",
+    "description": "Campos densos de relva nórdica e flores na tundra",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/44899?tab=files"
+  },
+  {
+    "nexus_id": 46871,
+    "name": "Your Choices Matter - Dark Brotherhood",
+    "category": "Quests & Guildas",
+    "description": "Finais alternativos para a Dark Brotherhood",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/46871?tab=files"
+  },
+  {
+    "nexus_id": 52874,
+    "name": "Don't Push Me Around",
+    "category": "IA & Rotinas",
+    "description": "NPCs contornam o jogador em bancadas e diálogos",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/52874?tab=files"
+  },
+  {
+    "nexus_id": 55082,
+    "name": "Sets of Skills - a Skyrim Class Mod",
+    "category": "RPG & Classes",
+    "description": "Mais de 50 classes com metas de maestria e passivas",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/55082?tab=files"
+  },
+  {
+    "nexus_id": 55745,
+    "name": "Simple Offence Suppression - Block Friendly Fire",
+    "category": "Combate & Aliados",
+    "description": "Anula dano em área acidental contra aliados e summons",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/55745?tab=files"
+  },
+  {
+    "nexus_id": 56956,
+    "name": "TK Dodge RE - Script Free",
+    "category": "Combate & Esquiva",
+    "description": "Esquiva com i-frames rápidos sem atraso de script",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/56956?tab=files"
+  },
+  {
+    "nexus_id": 57610,
+    "name": "Project ja-Kha'jay - Khajiit Diversity",
+    "category": "Estética Khajiit",
+    "description": "Redesenho dos Khajiits com sub-raças canônicas e pelos",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/57610?tab=files"
+  },
+  {
+    "nexus_id": 57943,
+    "name": "Convenient Dialogue UI - SE",
+    "category": "Interface / Diálogos",
+    "description": "Menu de diálogo moderno exibindo até 12 opções",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/57943?tab=files"
+  },
+  {
+    "nexus_id": 58105,
+    "name": "Timing is Everything / CC Delayer",
+    "category": "Creation Club",
+    "description": "Atrasa spam de 40 quests do CC ao sair de Helgen",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/58105?tab=files"
+  },
+  {
+    "nexus_id": 63725,
+    "name": "Enhanced Volumetric Lighting (EVLaS)",
+    "category": "Iluminação / Céu",
+    "description": "Raios solares volumétricos físicos (Godrays)",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/63725?tab=files"
+  },
+  {
+    "nexus_id": 64445,
+    "name": "Fluffworks (Fluffy Animals)",
+    "category": "Estética / Feras",
+    "description": "Shader de pelagem volumosa em lobos, ursos e cavalos",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/64445?tab=files"
+  },
+  {
+    "nexus_id": 64679,
+    "name": "Intuitive Dragon Ride Control",
+    "category": "Pilotagem / Dragões",
+    "description": "Controle manual total da direção de dragões no ar",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/64679?tab=files"
+  },
+  {
+    "nexus_id": 65091,
+    "name": "Wait Your Turn - Enemy Circling Behaviour",
+    "category": "IA de Combate",
+    "description": "Inimigos circulam esperando brecha sem enxame caótico",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/65091?tab=files"
+  },
+  {
+    "nexus_id": 72007,
+    "name": "No Crime Teleport RE",
+    "category": "Crimes & Leis",
+    "description": "Pagar multa ao guarda sem teleporte forçado para prisão",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/72007?tab=files"
+  },
+  {
+    "nexus_id": 72347,
+    "name": "Precision - Accurate Melee Collisions",
+    "category": "Combate & Hitbox",
+    "description": "Hitbox milimétrica baseada no corte da lâmina",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/72347?tab=files"
+  },
+  {
+    "nexus_id": 75184,
+    "name": "Less Aggressive Bears",
+    "category": "Criaturas / Feras",
+    "description": "Ursos rugem como aviso territorial antes de atacar",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/75184?tab=files"
+  },
+  {
+    "nexus_id": 77065,
+    "name": "Whose Quest Is It Anyway NG",
+    "category": "Interface / Quests",
+    "description": "Exibe a qual quest o item bloqueado pertence",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/77065?tab=files"
+  },
+  {
+    "nexus_id": 77173,
+    "name": "Barter Limit Fix",
+    "category": "Economia / Mercadores",
+    "description": "Corrige o bug de 30.000 de ouro em mercadores ricos",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/77173?tab=files"
+  },
+  {
+    "nexus_id": 77530,
+    "name": "Northern Roads",
+    "category": "Mundo & Estradas",
+    "description": "Reconstrução física das estradas com pontes e pedras",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/77530?tab=files"
+  },
+  {
+    "nexus_id": 86492,
+    "name": "Community Shaders",
+    "category": "Gráficos / Shaders",
+    "description": "Alternativa moderna e aberta ao ENB com reflexos na água",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/86492?tab=files"
+  },
+  {
+    "nexus_id": 94572,
+    "name": "Slightly Less Aggressive Animals",
+    "category": "Criaturas / Feras",
+    "description": "Lobos mantêm distância tática e caçam em alcateia",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/94572?tab=files"
+  },
+  {
+    "nexus_id": 96876,
+    "name": "Gourmet - A Cooking Overhaul",
+    "category": "Culinária & Sobrevivência",
+    "description": "Overhaul moderno e leve de comidas e alquimia",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/96876?tab=files"
+  },
+  {
+    "nexus_id": 97981,
+    "name": "Children of the Pariah - Orc NPC Overhaul",
+    "category": "Estética Orcs",
+    "description": "Redesenho de todos os Orcs com feições nobres e presas",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/97981?tab=files"
+  },
+  {
+    "nexus_id": 98103,
+    "name": "Children of the Hist - Argonian NPC Overhaul",
+    "category": "Estética Argonianos",
+    "description": "Redesenho de todos os Argonianos com escamas e penas",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/98103?tab=files"
+  },
+  {
+    "nexus_id": 100869,
+    "name": "Smooth Arrow Trails and Fixes",
+    "category": "Combate Balístico",
+    "description": "Traçado suave contínuo no disparo de flechas",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/100869?tab=files"
+  },
+  {
+    "nexus_id": 113110,
+    "name": "Simply Knock NG",
+    "category": "Rotinas / Imersão",
+    "description": "Versão atualizada do Simply Knock para Skyrim AE",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/113110?tab=files"
+  },
+  {
+    "nexus_id": 126938,
+    "name": "Vile Venoms",
+    "category": "Criaturas / Venenos",
+    "description": "Rebalanceamento do veneno persistente de Chaurus e Falmer",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/126938?tab=files"
+  },
+  {
+    "nexus_id": 133649,
+    "name": "Emissive Ice Wraiths",
+    "category": "Criaturas / Gelo",
+    "description": "Iluminação própria para Espectros de Gelo na nevasca",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/133649?tab=files"
+  },
+  {
+    "nexus_id": 141872,
+    "name": "Dragon Landing Overhaul",
+    "category": "Dragões / Combate",
+    "description": "Força dragões a pousarem para duelo corpo a corpo",
+    "url": "https://www.nexusmods.com/skyrimspecialedition/mods/141872?tab=files"
   }
 ]
