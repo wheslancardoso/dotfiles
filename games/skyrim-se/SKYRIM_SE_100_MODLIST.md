@@ -1243,4 +1243,17 @@ Consolidação cirúrgica de todos os marcadores de mapa e checklist para elimin
 | **7. Mais de 700 Locais e Acampamentos Ocultos** | Locais do mundo que não possuem ícone no mapa vanilla. | **Atlas Map Markers SE (Updated)** | `24104` | Adiciona mais de 700 novos marcadores customizáveis no mapa (Skyrim, Blackreach e Vale Esquecido). |
 | **8. Checklist Mestre de 100% (Todas as Quests)** | Dúvida se faltou alguma missão secundária ou item único em uma cidade. | **The Completionist - Quest Tracker** | `46358` | Menu MCM interativo com **todas as missões primárias, secundárias, daédricas e do Creation Club**. Conforme você completa no jogo, ele marca automaticamente na checklist. |
 
+---
+
+## 58. SANEAMENTO FINAL DE SISTEMAS: CRIME, FÍSICA DE RAGDOLL & TESTEMUNHAS ANIMAIS
+
+Os últimos atritos sistêmicos do mundo aberto que quebravam o ritmo de exploração:
+
+| # | Atrito Vanilla | Causa Técnica | Solução Técnica & Mod | ID Nexus | Como Funciona a Correção |
+| :-: | :--- | :--- | :--- | :---: | :--- |
+| **1** | **Teleporte Obrigatório para a Prisão ao Pagar Recompensa** | Pagar uma multa de 5 moedas de ouro teleporta seu personagem para a entrada da masmorra da capital do Hold, interrompendo sua viagem. | **No Crime Teleport RE** (por dTry) | `72007` | Plugin SKSE que remove o teleporte forçado: você paga a multa para o guarda ali mesmo na estrada e continua sua jornada no mesmo lugar. |
+| **2** | **Galinhas e Cavalos Denunciando Crimes para os Guardas** | A facção de animais domésticos da Bethesda compartilha a flag de "Testemunha de Crime" (*Crime Witness*), gerando bounty imediato. | **NARC Remade - No Animals Report Crimes** | `17946` | Remove galinhas, vacas, cães e cavalos do sistema de denúncia legal. Se não houver humanos vendo, não há crime registrado. |
+| **3** | **Inimigos Voando a 50 Metros ao Sofrer Golpe Letal de Flecha** | O motor de física *Havok* exagera o multiplicador de impulso (*ragdoll force*), fazendo corpos voarem como bonecos de pano irreais. | **Realistic Ragdolls and Force SE** | `1439` | Reduz o impulso excessivo para valores físicos realistas: o inimigo cai no chão no exato local do impacto sem ser arremessado no horizonte. |
+
+
 
