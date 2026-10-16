@@ -1270,6 +1270,21 @@ A blindagem cirúrgica dos últimos micro-atritos de rotina e exploração que a
 | **5** | **Ter que Segurar Tocha na Mão e Perder Escudo / Magia no Escuro** | Para iluminar masmorras escuras, você é forçado a sacrificar a mão esquerda com uma tocha física, inviabilizando arcos, armas de duas mãos ou escudos. | **Quick Light SE** | `12633` | Segurar a tecla de ação ativa uma lanterna presa no cinto (ou orbe mágica discreta), iluminando o ambiente 360° enquanto mantém as duas mãos livres para o combate. |
 | **6** | **Cultistas de Miraak e Vampiros Matando Mercadores no Nível 6** | A Bethesda dispara o evento de cultistas mascarados de Solstheim e ataques de vampiros precocemente nas cidades, matando NPCs mercadores civis antes da hora. | **Timing is Everything SE** | `25464` | Permite calibrar no MCM o nível mínimo e pré-requisitos para os eventos de DLCs (ex: cultistas de Miraak só aparecem após derrotar Alduin ou atingir nível 30). |
 
+---
+
+## 60. ARQUITETURA DE RUMO, CLASSES & OBJETIVOS GUIADOS (ZERO DETONADO EXTERNO)
+
+Para quem joga limpando 100% das missões secundárias antes das primárias e quer propósito de classe sem precisar pausar para assistir maratonas no YouTube:
+
+| # | Pilar da Progressão | Mod Integrado | ID Nexus | Papel no Ecossistema (Como Guiar o Jogador?) |
+| :-: | :--- | :--- | :---: | :--- |
+| **1** | **Bússola Moral & Mandamentos Diários** | **Wintersun - Faiths of Skyrim** (por EnaiSiaion) | `22506` | Transforma a classe escolhida em uma **devoção ativa com regras claras**:<br>• **Guerreiros (Stendarr/Talos):** Devem orar antes de combates, caçar gigantes e banir Daedras.<br>• **Magos (Julianos/Magnus):** Devem pesquisar grimórios, restaurar locais sagrados e dominar feitiços.<br>• **Ladrões (Nocturnal/Rajhin):** Devem arrombar trancas e furtar bolsos sem testemunhas. |
+| **2** | **Progressão e Ranks de Classe** | **Sets of Skills - a Skyrim Class Mod** | `55082` | Adiciona mais de 50 classes (Knight, Hunter, Berserker, Pyromancer, Rogue) com **metas de progressão e habilidades passivas exclusivas**, sem modificar ou quebrar as árvores de perks vanilla. |
+| **3** | **Mural de Secundárias por Cidade** | **Missives** | `17576` | Coloca quadros de avisos em todas as 9 capitais de Skyrim com contratos locais (coleta de recursos, resgate de reféns, caçadas a monstros e bandidos). Permite limpar 100% da reputação de um Hold antes de partir para o próximo. |
+| **4** | **Checklist Completa de 100% no Menu** | **The Completionist - Quest Tracker** *(Camada 57)* | `46358` | Menu MCM interativo com **todas as missões primárias, secundárias, daédricas e de facções** catalogadas por cidade. Conforme você cumpre no jogo, ele marca automaticamente na lista. |
+| **5** | **Roteiro e Restrições de Roleplay (PDF)** | **Roleplay Quests - Goals for Roleplaying** | `22934` | Manuais e checklists complementares com **metas temáticas e limitações para mais de 25 arquétipos** (ex: Arqueólogo Dwemer, Mestre Ladrão, Cavaleiro dos Divinos). |
+
+
 
 
 
