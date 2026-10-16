@@ -1226,3 +1226,21 @@ Para eliminar o contraste de "mulheres bonitas vs. resto do mundo feio e poligon
 | **5. Raça Orc (Orsimer)** | **Children of the Pariah - Orc NPC Overhaul** | `97981` | Redesenha os Orcs das fortalezas com presas proporcionais, tons de pele naturais e feições fortes e intimidadoras. | Remove as deformidades caricatas de massinha do jogo base, transformando os Orcs em guerreiros imponentes e bem-acabados. |
 | **6. Pelos e Animais (Shader de Pelagem)** | **Fluffworks (Fluffy Animals)** | `64445` | Aplica sombreamento de pelagem volumosa (*shell texturing*) em lobos, cavalos, ursos e dentes-de-sabre. | Os animais deixam de parecer estátuas de gesso pintado e ganham pelos com profundidade e reação à luz estilo *Red Dead Redemption 2*. |
 
+---
+
+## 57. COBERTURA TOTAL DE MARCADORES PARA O 100% ABSOLUTO (ZERO BUSCA ÀS CEGAS)
+
+Consolidação cirúrgica de todos os marcadores de mapa e checklist para eliminar 100% da necessidade de abrir wikis externas durante a campanha:
+
+| Missão / Colecionável Vanilla | Onde Ficava o Gargalo Às Cegas? | Mod Integrado & Solução | ID Nexus | O Que Ele Faz no Mapa? |
+| :--- | :--- | :--- | :---: | :--- |
+| **1. As 24 Pedras de Barenziah** | Espalhadas por quartos de jarls, cavernas e mansões sem marcador algum. | **Stones of Barenziah Quest Markers** | `684` | Adiciona marcadores individuais flutuantes e na bússola para cada uma das 24 gemas. |
+| **2. Os 10 Textos de Jiub + Caveira de Arvak** | Área da Soul Cairn (sem mapa nativo da Bethesda e paisagem monocromática). | **Jiub's Opus & Arvak's Skull Quest Markers** | `818` | Coloca marcadores exatos sobre as 10 páginas perdidas do Santo Jiub e a caveira de Arvak. |
+| **3. As 30 Nirnroots Vermelhas** | Blackreach subterrânea gigante sem orientação de localização das plantas. | **Crimson Nirnroot Quest Markers** | `1016` | Adiciona marcadores de objetivo sobre as raízes sonoras no mapa subterrâneo. |
+| **4. As 8 Máscaras dos Sacerdotes Dragão** | Escondidas em picos montanhosos e túmulos remotos sem relação direta. | **Dragon Priest Masks Quest Markers** | `11604` | Cria trilha de objetivos apontando para os 8 sacerdotes e o altar de Bromjunaar. |
+| **5. Os 33 Pingentes da Cia. Império Oriental** | Solstheim (Dragonborn): 33 cofres trancados espalhados por ilhas e ruínas. | **East Empire Pendant Quest Markers** | `20853` | Adiciona marcadores na missão *Pain in the Necklace* para achar todos os 33 cofres. |
+| **6. Todos os Livros de Perícia (Skill Books)** | Centenas de livros espalhados sem saber qual dá ponto de habilidade ou magia. | **Unread Books Glow SSE** | `1296` | Faz livros de perícia brilharem intensamente até você lê-los; livros comuns ficam opacos. |
+| **7. Mais de 700 Locais e Acampamentos Ocultos** | Locais do mundo que não possuem ícone no mapa vanilla. | **Atlas Map Markers SE (Updated)** | `24104` | Adiciona mais de 700 novos marcadores customizáveis no mapa (Skyrim, Blackreach e Vale Esquecido). |
+| **8. Checklist Mestre de 100% (Todas as Quests)** | Dúvida se faltou alguma missão secundária ou item único em uma cidade. | **The Completionist - Quest Tracker** | `46358` | Menu MCM interativo com **todas as missões primárias, secundárias, daédricas e do Creation Club**. Conforme você completa no jogo, ele marca automaticamente na checklist. |
+
+
