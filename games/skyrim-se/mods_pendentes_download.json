@@ -1,0 +1,149 @@
+[
+  {
+    "id": 72007,
+    "name": "No Crime Teleport RE",
+    "version": "1.1",
+    "summary": null,
+    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/72007?tab=files"
+  },
+  {
+    "id": 17946,
+    "name": "NARC Remade  - No Animals Report Crimes for Skyrim SE",
+    "version": "1.1.0",
+    "summary": "Tired of that chicken going up to the guards and being a nark? Annoyed because that one bear ratted you out? Upset because horses are snitches? Then this is the mod for you!",
+    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/17946?tab=files"
+  },
+  {
+    "id": 1439,
+    "name": "Realistic Ragdolls and Force SE",
+    "version": "1.92",
+    "summary": "(ESP plugin)Reduces the extra force applied on ragdolls to a more reasonable level<br />(MESH)Replaces ragdolls so that they bend and twist realistically and fall at a faster velocity, and increases friction to fix ice-like ragdoll sliding",
+    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/1439?tab=files"
+  },
+  {
+    "id": 1409,
+    "name": "Simply Knock SE",
+    "version": "1.0",
+    "summary": null,
+    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/1409?tab=files"
+  },
+  {
+    "id": 687,
+    "name": "Instant Mining",
+    "version": "1.2",
+    "summary": "Harvest ores instantly, with no animation (like alchemy ingredients). Makes no changes to the items you receive, and includes a version that removes the need to carry a pickaxe.",
+    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/687?tab=files"
+  },
+  {
+    "id": 26227,
+    "name": "Wintersun - More interesting Mara",
+    "version": "2.1",
+    "summary": "Add some functionalities to the worshippers of mara to keep it interesting while attempting to keep it balanced.",
+    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/26227?tab=files"
+  },
+  {
+    "id": 36132,
+    "name": "No Silly Physics Damage - Carts Pots Bones etc",
+    "version": "2",
+    "summary": "You will no longer lose HP when walking on dynamic objects such as bones or when walking towards a cart.",
+    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/36132?tab=files"
+  },
+  {
+    "id": 52874,
+    "name": "Don't Push Me Around",
+    "version": "1.2.0",
+    "summary": "My personal take on the silly 'player pushed around' issue. --- esl",
+    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/52874?tab=files"
+  },
+  {
+    "id": 77173,
+    "name": "Barter Limit Fix",
+    "version": "1.0.2",
+    "summary": "SKSE plugin that fixes trading with merchants with more than 32,767 gold.",
+    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/77173?tab=files"
+  },
+  {
+    "id": 3850,
+    "name": "The Choice is Yours",
+    "version": "2.7",
+    "summary": "Stop quests from starting automatically. Pursue the quests you want, ignore the ones you don't.  Make your choices matter.",
+    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/3850?tab=files"
+  },
+  {
+    "id": 42997,
+    "name": "Essential Favorites",
+    "version": "2.4.2",
+    "summary": "SKSE plugin that prevents favorited items from being sold, crafted, disarmed, disenchanted, or dropped.",
+    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/42997?tab=files"
+  },
+  {
+    "id": 42839,
+    "name": "Equip Enchantment Fix",
+    "version": "1.3.7",
+    "summary": "Fixes engine bugs where item enchantments don't apply when equipped or stop working while the item is still equipped. SKSE64 plugin.",
+    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/42839?tab=files"
+  },
+  {
+    "id": 65091,
+    "name": "Wait Your Turn - Enemy Circling Behaviour",
+    "version": "1.0.3",
+    "summary": "A lightweight combat add-on mod that adds circling behaviour to enemies. Now, group combat is more fair and fun for the player, as enemies will no longer attack all at once without a pattern. Lightweight, compatible other combat overhaul mods, and can be turned off or tweaked using the MCM. Requires SKSE64, SPID, and PapyrusUtil to be installed",
+    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/65091?tab=files"
+  },
+  {
+    "id": 141872,
+    "name": "Dragon Landing Overhaul",
+    "version": "1.0",
+    "summary": null,
+    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/141872?tab=files"
+  },
+  {
+    "id": 14159,
+    "name": "Draugr Shout less",
+    "version": "1.0.1",
+    "summary": "Isn't it strange that Draugr can shout much faster than The Last Dragonborn? Yes, yes it is. That's what this mod is for.",
+    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/14159?tab=files"
+  },
+  {
+    "id": 13898,
+    "name": "Yet Another Attempt at fixing Giant Physics and Clubs",
+    "version": "1",
+    "summary": null,
+    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/13898?tab=files"
+  },
+  {
+    "id": 13807,
+    "name": "Know Your Enemy - Trait-based resistances and weaknesses",
+    "version": "10.0.0",
+    "summary": "Uses a trait system to change the resistances and weaknesses of creatures and armors to magic (fire/frost/shock), physical damage (blade/blunt/axes/arrows), poison and disease.",
+    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/13807?tab=files"
+  },
+  {
+    "id": 75184,
+    "name": "Sailboats - Script Free Sailing EXPANDED SSE - Simplified and Traditional Chinese Translation",
+    "version": "2.5",
+    "summary": "\"划船 - 无脚本扩展版\" 简中繁中汉化补丁",
+    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/75184?tab=files"
+  },
+  {
+    "id": 94572,
+    "name": "Slightly Less Aggressive Animals",
+    "version": "1.0",
+    "summary": null,
+    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/94572?tab=files"
+  },
+  {
+    "id": 7919,
+    "name": "Landlord Special Edition Spanish",
+    "version": "1.0",
+    "summary": "Traducciones al español de Landlord Special Edition",
+    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/7919?tab=files"
+  },
+  {
+    "id": 11765,
+    "name": "Fast Travel from Interiors",
+    "version": "2",
+    "summary": "This mod allows the player to fast travel out from interiors. Other versions here and on Bethesda Net were spotty for me.",
+    "nexus_url": "https://www.nexusmods.com/skyrimspecialedition/mods/11765?tab=files"
+  }
+]
