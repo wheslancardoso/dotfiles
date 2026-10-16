@@ -1255,5 +1255,21 @@ Os últimos atritos sistêmicos do mundo aberto que quebravam o ritmo de explora
 | **2** | **Galinhas e Cavalos Denunciando Crimes para os Guardas** | A facção de animais domésticos da Bethesda compartilha a flag de "Testemunha de Crime" (*Crime Witness*), gerando bounty imediato. | **NARC Remade - No Animals Report Crimes** | `17946` | Remove galinhas, vacas, cães e cavalos do sistema de denúncia legal. Se não houver humanos vendo, não há crime registrado. |
 | **3** | **Inimigos Voando a 50 Metros ao Sofrer Golpe Letal de Flecha** | O motor de física *Havok* exagera o multiplicador de impulso (*ragdoll force*), fazendo corpos voarem como bonecos de pano irreais. | **Realistic Ragdolls and Force SE** | `1439` | Reduz o impulso excessivo para valores físicos realistas: o inimigo cai no chão no exato local do impacto sem ser arremessado no horizonte. |
 
+---
+
+## 59. REFINAMENTO DE ROTINAS, EXPLORAÇÃO SEM INTERRUPÇÃO & MICRO-ATRITOS DO MUNDO ABERTO
+
+A blindagem cirúrgica dos últimos micro-atritos de rotina e exploração que ainda roubavam tempo do jogador:
+
+| # | Atrito Vanilla | Causa Técnica | Solução Técnica & Mod | ID Nexus | Como Funciona a Correção |
+| :-: | :--- | :--- | :--- | :---: | :--- |
+| **1** | **Portas Trancadas de Dia com o Dono Dentro** | O pacote de IA de rotina do NPC atrasa alguns minutos para abrir a loja às 08:00. Se você arrombar a porta para entregar a quest, comete crime de invasão de domicílio (*trespassing*). | **Simply Knock NG** (para 1.6.1170) | `113110`<br>`1409` | Permite **bater na porta** ('Knock'). Se houver alguém dentro e for horário comercial ou você tiver amizade com o NPC, ele atende, destranca a porta e te convida a entrar sem cometer crime. |
+| **2** | **Mineração Lenta de 20 Segundos por Veio de Minério** | O jogo obriga o personagem a travar numa animação lenta de 9 batidas repetitivas de picareta para extrair 3 pedras de minério. | **Instant Mining** | `687` | Ao interagir com o veio de minério (tendo picareta no inventário), **extrai todos os minérios e gemas instantaneamente em 1 segundo**. |
+| **3** | **Itens Baratos de 1 Septim Marcados como "Roubados" para Sempre** | Furtar uma maçã, prato de madeira ou tomate sem testemunhas marca o item com a tag vermelha *Stolen*. Lojistas comuns recusam a compra e guardas confiscam tudo do inventário ao pagar multa. | **Better Stealing SE / NG** | `32735` | Plugin SKSE: itens de valor baixo (configurável no `.ini`, ex: até 200–500 gold) pegos sem testemunhas **não recebem a tag de roubado**. |
+| **4** | **Desmontar do Cavalo a Cada 10 Metros para Colher Plantas** | No vanilla, colher flores de alquimia na beira da estrada exige parar, esperar a animação de descer do cavalo, colher o item e esperar subir novamente (8 segundos perdidos). | **Harvest While Mounted** | `26227` | Permite colher flores, ingredientes, coletar loot de barris e falar com NPCs diretamente de cima do cavalo sem desmontar. |
+| **5** | **Ter que Segurar Tocha na Mão e Perder Escudo / Magia no Escuro** | Para iluminar masmorras escuras, você é forçado a sacrificar a mão esquerda com uma tocha física, inviabilizando arcos, armas de duas mãos ou escudos. | **Quick Light SE** | `12633` | Segurar a tecla de ação ativa uma lanterna presa no cinto (ou orbe mágica discreta), iluminando o ambiente 360° enquanto mantém as duas mãos livres para o combate. |
+| **6** | **Cultistas de Miraak e Vampiros Matando Mercadores no Nível 6** | A Bethesda dispara o evento de cultistas mascarados de Solstheim e ataques de vampiros precocemente nas cidades, matando NPCs mercadores civis antes da hora. | **Timing is Everything SE** | `25464` | Permite calibrar no MCM o nível mínimo e pré-requisitos para os eventos de DLCs (ex: cultistas de Miraak só aparecem após derrotar Alduin ou atingir nível 30). |
+
+
 
 

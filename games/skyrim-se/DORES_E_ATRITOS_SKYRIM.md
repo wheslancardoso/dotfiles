@@ -15,6 +15,10 @@
 6. [Magia, Progressão de Classes e Escalonamento](#6-magia-progressão-de-classes-e-escalonamento)
 7. [Seguidores, Companheiros e Linha de Fogo](#7-seguidores-companheiros-e-linha-de-fogo)
 8. [Erros Comuns de Suposição & Retificações de Mods (Auditoria Forense)](#8-erros-comuns-de-suposição--retificações-de-mods-auditoria-forense)
+9. [Dissecação Forense do Compilado Clássico ("8 Minutes of Your Pain in Skyrim")](#9-dissecação-forense-do-compilado-clássico-8-minutes-of-your-pain-in-skyrim)
+10. [A Verdade Técnica sobre Drops de Criaturas & Dragões](#10-a-verdade-técnica-sobre-tudo-que-matar-dropar-sempre-drops-de-criaturas--dragões)
+11. [As Últimas 4 Pedras no Sapato Ocultas de Skyrim](#11-as-últimas-4-pedras-no-sapato-ocultas-de-skyrim-blindagem-final)
+12. [Rotinas de NPCs, Exploração Contínua & Pacing de DLCs](#12-rotinas-de-npcs-exploração-contínua--pacing-de-dlcs)
 
 ---
 
@@ -250,6 +254,21 @@ Auditoria cirúrgica dos 4 micro-atritos mais insidiosos que costumam passar des
 | **2. NPCs Empurrando Você Durante Diálogos e Criação de Itens** | A IA de navegação (*NavMesh*) de transeuntes não detecta o jogador em diálogo como obstáculo fixo e empurra fisicamente o personagem. | Sua câmera é girada à força ou você é empurrado para longe do NPC enquanto tenta ler as opções de fala. | **Don't Push Me Around**<br>ID: `52874` | Cria dinamicamente uma área temporária de recorte (*navcut*) ao redor do jogador enquanto ele conversa ou usa bancadas, forçando NPCs a contornarem educadamente. |
 | **3. Venda ou Desencantamento Acidental de Armas Favoritas** | O menu de escambo e a bancada de desencantamento não bloqueiam itens marcados como favoritos no inventário. | Vender sua espada principal por engano num clique rápido de esvaziar a mochila ou destruí-la na mesa arcana. | **Essential Favorites**<br>ID: `42997` (por powerofthree) | Trava no código da engine: itens com a estrela de favorito **não podem ser vendidos, desencantados, forjados fora ou jogados no chão**. |
 | **4. Inimigos Espancando em Rodízio Coordenado sem Janela de Ataque** | Em combates contra 5 ou 6 bandidos, todos iniciam ataques fortes ao mesmo tempo, impedindo qualquer resposta tática. | Você é travado em animações de stagger contínuas até a morte sem conseguir esquivar ou bloquear. | **Wait Your Turn - Enemy Circling Behaviour**<br>ID: `65091` | Adiciona comportamento tático de cerco: enquanto 1 ou 2 inimigos atacam ativamente pela frente, os outros circulam aguardando brecha, criando um ritmo de luta estilo RPG de ação moderno. |
+
+---
+
+## 12. ROTINAS DE NPCS, EXPLORAÇÃO CONTÍNUA & PACING DE DLCS
+
+Mapeamento forense dos gargalos de micro-interrupção e desequilíbrio de eventos do mundo aberto:
+
+| Dor / Micro-Interrupção | Causa-Raiz na Engine Vanilla | Por Que Rompe o Ritmo de Jogo? | Solução Validada & Mod | ID Nexus | Como Funciona a Solução |
+| :--- | :--- | :--- | :--- | :---: | :--- |
+| **1. Portas Trancadas de Dia com Dono Dentro** | O pacote de IA de rotina (*AI Sandbox/Sleep Package*) do lojista atrasa minutos para destrancar a porta às 08h. Se você destrancar a fechadura Master/Expert para entregar uma quest, vira invasão criminosa (*Trespassing*). | Obriga o jogador a parar na calçada e ficar apertando `T` para passar horas vazias até a porta abrir. | **Simply Knock NG** (para 1.6.1170) | `113110`<br>`1409` | Permite **bater na porta** ('Knock'). Se houver alguém dentro e for horário comercial ou você tiver relação positiva com o NPC, ele atende, destranca a porta e te convida a entrar sem gerar crime nem hostilidade. |
+| **2. Mineração Letárgica de 20 Segundos** | A extração de minério trava o jogador numa animação rígida de 9 batidas lentas de picareta para render apenas 3 pedras. Em minas com 10 veios, perdem-se minutos apenas olhando para a pedra. | Transforma a coleta de matéria-prima de forja em um tédio mecânico sem jogabilidade. | **Instant Mining** | `687` | Ao clicar no veio de minério com a picareta na mochila, **extrai instantaneamente todos os minérios e gemas da rocha em 1 segundo**, exatamente como colher plantas. |
+| **3. Tag Eterna de "Stolen" em Itens de 1 Moeda** | Pegar uma maçã, prato de madeira ou tomate de 1 septim sem ninguém vendo marca o item para sempre como "roubado". Mercadores comuns se recusam a comprar e guardas confiscam tudo se você pagar uma multa de trânsito. | Micro-itens sem testemunhas poluem o inventário e exigem o perk de nível 90 de *Speech* para comercializar. | **Better Stealing SE / NG** | `32735` | Plugin SKSE: itens de valor baixo (configurável no `.ini`, ex: até 200–500 moedas de ouro) surrupiados sem nenhuma testemunha **não recebem a tag de roubado**. |
+| **4. Descer do Cavalo a Cada 10 Metros para Colher Ervas** | A animação de montar e desmontar consome 8 segundos combinados. Para colher uma simples *Mountain Flower* ou conversar com um viajante na estrada, o jogador precisa desmontar. | Destrói a conveniência de usar cavalos para exploração terrestre rápida. | **Harvest While Mounted** | `26227` | Permite colher plantas, ingredientes de alquimia, abrir barris e dialogar com NPCs diretamente de cima da sela do cavalo sem desmontar. |
+| **5. Escuridão de Masmorras Exigindo Sacrificar a Mão Esquerda com Tocha** | Para iluminar catacumbas escuras sem feitiços que custam Magicka, o jogador precisa empunhar uma tocha na mão secundária, desabilitando escudos, magias e armas de duas mãos/arcos. | Desequilibra o combate de quem não joga de arma de uma mão pura. | **Quick Light SE** | `12633` | Segurar a tecla de ação ativa uma lanterna presa na cintura (ou orbe mágica luminosa), iluminando 360° com as duas mãos livres para armas e feitiços. |
+| **6. Pacing Agressivo e Prematuro de DLCs nas Cidades** | Ao visitar os Greybeards no nível 6, cultistas mascarados de Miraak atacam no meio de Whiterun, e vampiros da DLC Dawnguard atacam vilas à noite, matando lojistas civis antes do jogador ter preparo. | NPCs comerciantes úteis morrem precocemente e a narrativa atropela a ordem natural da campanha. | **Timing is Everything SE** | `25464` | Menu MCM que permite calibrar o nível mínimo e gatilhos para eventos de DLCs (ex: cultistas de Miraak só surgem após derrotar Alduin ou atingir nível 30). |
 
 ---
 
