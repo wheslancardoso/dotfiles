@@ -1274,15 +1274,60 @@ A blindagem cirúrgica dos últimos micro-atritos de rotina e exploração que a
 
 ## 60. ARQUITETURA DE RUMO, CLASSES & OBJETIVOS GUIADOS (ZERO DETONADO EXTERNO)
 
-Para quem joga limpando 100% das missões secundárias antes das primárias e quer propósito de classe sem precisar pausar para assistir maratonas no YouTube:
+Para quem joga limpando 100% das missões secundárias antes das primárias e quer propósito de classe e progressão de perks sem precisar de detonados externos no YouTube:
 
-| # | Pilar da Progressão | Mod Integrado | ID Nexus | Papel no Ecossistema (Como Guiar o Jogador?) |
-| :-: | :--- | :--- | :---: | :--- |
-| **1** | **Bússola Moral & Mandamentos Diários** | **Wintersun - Faiths of Skyrim** (por EnaiSiaion) | `22506` | Transforma a classe escolhida em uma **devoção ativa com regras claras**:<br>• **Guerreiros (Stendarr/Talos):** Devem orar antes de combates, caçar gigantes e banir Daedras.<br>• **Magos (Julianos/Magnus):** Devem pesquisar grimórios, restaurar locais sagrados e dominar feitiços.<br>• **Ladrões (Nocturnal/Rajhin):** Devem arrombar trancas e furtar bolsos sem testemunhas. |
-| **2** | **Progressão e Ranks de Classe** | **Sets of Skills - a Skyrim Class Mod** | `55082` | Adiciona mais de 50 classes (Knight, Hunter, Berserker, Pyromancer, Rogue) com **metas de progressão e habilidades passivas exclusivas**, sem modificar ou quebrar as árvores de perks vanilla. |
-| **3** | **Mural de Secundárias por Cidade** | **Missives** | `17576` | Coloca quadros de avisos em todas as 9 capitais de Skyrim com contratos locais (coleta de recursos, resgate de reféns, caçadas a monstros e bandidos). Permite limpar 100% da reputação de um Hold antes de partir para o próximo. |
-| **4** | **Checklist Completa de 100% no Menu** | **The Completionist - Quest Tracker** *(Camada 57)* | `46358` | Menu MCM interativo com **todas as missões primárias, secundárias, daédricas e de facções** catalogadas por cidade. Conforme você cumpre no jogo, ele marca automaticamente na lista. |
-| **5** | **Roteiro e Restrições de Roleplay (PDF)** | **Roleplay Quests - Goals for Roleplaying** | `22934` | Manuais e checklists complementares com **metas temáticas e limitações para mais de 25 arquétipos** (ex: Arqueólogo Dwemer, Mestre Ladrão, Cavaleiro dos Divinos). |
+### 🧩 1. Matriz Integrada de Direcionamento (Sem Redundâncias)
+
+| Pilar de Rumo | Mod Integrado | ID Nexus | Origem na Modlist | Papel no Ecossistema |
+| :--- | :--- | :---: | :---: | :--- |
+| **Respec Livre de Perks** | **Ish's Respec Mod** | `1960` | *Camada 10* | Permite redistribuir 100% dos perks investidos a qualquer momento via poção comprável, eliminando o medo de errar a build. |
+| **Conversão de Dragões** | **Dragon Souls to Perk Points** | `2879` | *Camada 10* | Transforma o excesso de almas de dragão em pontos de perk, viabilizando múltiplas classes no mesmo save. |
+| **Bússola Moral Diária** | **Wintersun - Faiths of Skyrim** | `22506` | *Camada 10* | Mandamentos e orações diárias para cada arquétipo (Aedras, Daedras e panteões). |
+| **Mural de Missões Locais** | **Missives** | `17576` | *Camada 11* | Contratos locais de caça, resgate e coleta para limpar cada Hold antes de avançar. |
+| **Checklist Mestre 100%** | **The Completionist** | `46358` | *Camada 57* | Menu MCM catalogando todas as quests do jogo por cidade e guilda. |
+| **Perks Extras por Quests** | **Quests Award Perk Points** | `11340` | **Novo** | Concede 1 ponto de perk extra ao fechar grandes missões secundárias (Thane, chefes de guildas, etc.), premiando o foco em secundárias. |
+| **Classes & Ranks Formais** | **Sets of Skills - a Skyrim Class Mod** | `55082` | **Novo** | Mais de 50 classes com metas de maestria, ranks e passivas exclusivas sem quebrar árvores vanilla. |
+| **Manuais de Roleplay (PDF)** | **Roleplay Quests - Goals for Roleplaying** | `22934` | **Novo** | Manuais complementares com metas temáticas e limitações para mais de 25 arquétipos. |
+
+---
+
+### 🌲 2. Roteiro Canônico de Prioridade de Perks no Ordinator (Build Roadmaps)
+
+Como a nossa modlist utiliza o **Ordinator - Perks of Skyrim** (`1137`) (com mais de 400 perks profundos), a progressão correta para não cair na armadilha do *level scaling* segue a seguinte ordem estrita:
+
+#### 🏹 Trilha A: Arqueiro Furtivo / Mestre das Sombras (A Build Mais Letal)
+1. **Níveis 1 ao 10 (Dano Base e Furtividade):**
+   - *Archery:* **Archery Mastery** (1/2 e 2/2) → Aumenta o dano de arco em escala contínua com a perícia.
+   - *Sneak:* **Sneak Mastery** (1/2) → **Sneak Attack** (ataques furtivos à distância causam 2.5x a 3.5x de dano crítico).
+2. **Níveis 11 ao 25 (Precisão Balística & Mobilidade):**
+   - *Archery:* **Long Shot** (aumenta o dano quanto mais longe o alvo estiver) + **Eagle Eye** / **Steady Hand** (zoom e câmera lenta ao puxar a corda).
+   - *Light Armor:* **Light Armor Mastery** (1/2) + **As a Leaf** (não consome vigor correndo com armadura leve).
+3. **Níveis 26 ao 40 (Finalização Absoluta):**
+   - *Sneak:* **Right Behind You** (bônus massivo de furtividade em inimigos de costas) + **Clean Escape** (inimigos perdem seu rastro ao entrar em furtividade).
+   - *Archery:* **Sniper** (disparos após ficar imóvel por 1s ignoram 50% de armadura e garantem crítico).
+
+#### ⚔️ Trilha B: Guerreiro Nórdico (Espada & Escudo / Duas Mãos)
+1. **Níveis 1 ao 10 (Dano de Arma e Bloqueio Reativo):**
+   - *One-Handed / Two-Handed:* **One-Handed Mastery** (1/2) + **Clash of Champions** (ataques reduzem o dano do adversário).
+   - *Block:* **Block Mastery** (1/2) + **Timed Block** (bloquear no exato momento do impacto anula 100% do dano e atordoa o atacante).
+2. **Níveis 11 ao 25 (Sobrevivência e Peso Zero):**
+   - *Heavy Armor:* **Heavy Armor Mastery** (1/2) + **Cushioned** (anula metade do dano de queda) + **Face of the Mountain** (inimigos cambaleiam ao golpear sua armadura).
+   - *Block:* **Quick Reflexes** (tempo desacelera durante ataques carregados do adversário).
+3. **Níveis 26 ao 40 (Controle de Multidões):**
+   - *Heavy Armor:* **Lead the Tempest** (aliados ganham armadura e velocidade; armadura pesada não pesa nada no inventário).
+   - *Block:* **Castling** / **Power Bash** (coronhadas que desarmam e derrubam oponentes no chão).
+
+#### 🧙‍♂️ Trilha C: Arquimago Supremo (Destruição + Conjuração + Alteração)
+1. **Níveis 1 ao 10 (Dano Escalável & Tanques Invocados):**
+   - *Destruction:* **Destruction Mastery** (1/2) → O dano mágico passa a escalar naturalmente com seu nível, anula a fraqueza de magos no início.
+   - *Conjuration:* **Conjuration Mastery** (1/2) + **Planemeld** (distância de invocação de Atronachs aumentada em 5x).
+2. **Níveis 11 ao 25 (Stagger Contínuo & Duas Mãos):**
+   - *Destruction:* **Dual Casting** + **Force of Nature** (magias lançadas com as duas mãos atordoam dragões e chefes).
+   - *Alteration:* **Alteration Mastery** + **Mage Armor** (armaduras arcanas têm efeito dobrado quando vestindo mantos de tecido).
+3. **Níveis 26 ao 40 (Poder Absoluto):**
+   - *Conjuration:* **Atromancy** + **March of Chaos** (permite manter múltiplos Senhores Dremora ou Golens elementais em campo simultaneamente).
+   - *Alteration:* **Welloc's Dormant Arcana** (permite programar buffs permanentes ativados automaticamente por armadura arcana).
+
 
 
 
