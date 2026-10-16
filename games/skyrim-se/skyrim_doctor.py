@@ -41,36 +41,79 @@ def audit_winedevices():
 
 def clean_stale_processes():
     print("[3/5] Limpando processos zumbis anteriores...")
-    for proc in ["SkyrimSE", "skse64", "wineserver", "notepad.exe"]:
+    subprocess.run(["systemctl", "--user", "stop", "skyrim-gamescope.service"], stderr=subprocess.DEVNULL)
+    for proc in ["SkyrimSE", "skse64", "wineserver", "notepad.exe", "gamescope"]:
         subprocess.run(["pkill", "-9", "-f", proc], stderr=subprocess.DEVNULL)
     time.sleep(1)
 
-def launch_and_monitor():
-    print("[4/5] Disparando Skyrim AE via Proton nativo...")
+def launch_and_monitor(use_gamescope=True):
+    print(f"[4/5] Disparando Skyrim AE via Proton nativo {'(com Gamescope & Force-Grab-Cursor)' if use_gamescope else ''}...")
     env = os.environ.copy()
     env["STEAM_COMPAT_CLIENT_INSTALL_PATH"] = "/home/lan/.local/share/Steam"
     env["STEAM_COMPAT_DATA_PATH"] = PREFIX_DIR
     env["PROTON_ENABLE_NVAPI"] = "1"
     env["PROTON_HIDE_NVIDIA_GPU"] = "0"
     env["WINEDLLOVERRIDES"] = "dxgi=n,b;d3d11=n,b;steam_api64=n,b"
+    env["XCURSOR_THEME"] = "Bibata-Modern-Ice"
+    env["XCURSOR_SIZE"] = "24"
     
-    cmd = [
-        PROTON_BIN,
-        "run",
-        os.path.join(GAME_DIR, "skse64_loader.exe")
-    ]
+    already_in_gamescope = "GAMESCOPE_WAYLAND_DISPLAY" in os.environ or "GAMESCOPE_EXTERNAL_OVERLAY" in os.environ
+    if use_gamescope and not already_in_gamescope and shutil.which("gamescope"):
+        runner_sh = os.path.join(GAME_DIR, "run_gamescope.sh")
+        cmd = [
+            "gamescope",
+            "-W", "1920",
+            "-H", "1080",
+            "-w", "1920",
+            "-h", "1080",
+            "-r", "100",
+            "-f",
+            "--",
+            runner_sh
+        ]
+    else:
+        cmd = [
+            PROTON_BIN,
+            "run",
+            os.path.join(GAME_DIR, "skse64_loader.exe")
+        ]
     
-    p = subprocess.Popen(cmd, cwd=GAME_DIR, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    print(f"      Processo lançado com PID de arranque: {p.pid}")
+    subprocess.run(["systemctl", "--user", "stop", "skyrim-gamescope.service"], stderr=subprocess.DEVNULL)
+    run_cmd = [
+        "systemd-run",
+        "--user",
+        "--unit=skyrim-gamescope",
+        f"--working-directory={GAME_DIR}",
+        f"--setenv=STEAM_COMPAT_CLIENT_INSTALL_PATH=/home/lan/.local/share/Steam",
+        f"--setenv=STEAM_COMPAT_DATA_PATH={PREFIX_DIR}",
+        "--setenv=PROTON_ENABLE_NVAPI=1",
+        "--setenv=PROTON_HIDE_NVIDIA_GPU=0",
+        "--setenv=WINEDLLOVERRIDES=dxgi=n,b;d3d11=n,b;steam_api64=n,b",
+        "--setenv=PROTON_USE_XALIA=0",
+        "--setenv=XCURSOR_THEME=Bibata-Modern-Ice",
+        "--setenv=XCURSOR_SIZE=24",
+    ] + cmd
+    
+    res = subprocess.run(run_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    print(f"      Serviço Gamescope registrado: {res.stdout.strip()}")
     
     print("[5/5] Monitorando inicialização do motor...")
-    for i in range(12):
+    for i in range(35):
         time.sleep(1)
         # Checar se SkyrimSE.exe subiu
         res = subprocess.run(["pgrep", "-f", "SkyrimSE.exe"], stdout=subprocess.PIPE)
         if res.returncode == 0:
             pid = res.stdout.decode().strip().split()[0]
             print(f"\n[SUCESSO] SkyrimSE.exe está ativo e rodando! (PID: {pid})")
+            
+            # Garantir foco no Workspace 8 e na janela do Gamescope
+            subprocess.run(["hyprctl", "dispatch", "workspace", "8"], stderr=subprocess.DEVNULL)
+            for _ in range(10):
+                time.sleep(1)
+                chk = subprocess.run(["hyprctl", "clients"], stdout=subprocess.PIPE, text=True)
+                if "gamescope" in chk.stdout:
+                    subprocess.run(["hyprctl", "dispatch", "focuswindow", "class:gamescope"], stderr=subprocess.DEVNULL)
+                    break
             
             # Verificar SKSE
             skse_log = os.path.join(DOCS_SKSE, "skse64.log")
@@ -84,8 +127,9 @@ def launch_and_monitor():
     return False
 
 if __name__ == "__main__":
+    use_gamescope = "--no-gamescope" not in sys.argv
     audit_environment()
     audit_winedevices()
     clean_stale_processes()
-    ok = launch_and_monitor()
+    ok = launch_and_monitor(use_gamescope=use_gamescope)
     sys.exit(0 if ok else 1)

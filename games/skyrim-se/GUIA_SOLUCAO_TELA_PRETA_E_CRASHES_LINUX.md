@@ -2,8 +2,9 @@
 ## Lições Aprendidas na Auditoria Forense, Causas da Tela Preta & Checklist Anti-Falha para Novas Instalações
 
 > **Autor:** Engenharia de Sistemas & Pair Programming  
-> **Data:** 15 de Outubro de 2026  
+> **Data:** 15 de Outubro de 2026 (Atualizado em 16 de Outubro de 2026)  
 > **Ambiente de Referência:** CachyOS Linux (Kernel CachyOS-Bore), Hyprland (Wayland), Proton-GE / Wine-GE, Heroic Games Launcher, GPU NVIDIA RTX 4060/5060, Skyrim Anniversary Edition (v1.6.318.0).  
+> **Documento Consolidado:** Consulte o [MANUAL_DEFINITIVO_ENGENHARIA_SKYRIM_LINUX.md](file:///home/lan/dotfiles/games/skyrim-se/MANUAL_DEFINITIVO_ENGENHARIA_SKYRIM_LINUX.md) para a visão completa de arquitetura, mouse no Hyprland, Gamescope e integração dos 172 mods.  
 > **Objetivo Deste Documento:** Registrar exaustivamente o raio-x técnico da batalha de resolução do problema de **tela preta (Black Screen) na gameplay 3D** e **crashes de inicialização**, fornecendo um protocolo rigoroso para garantir que novas instalações ou modpacks funcionem de primeira no Linux sem perda de tempo.
 
 ---
@@ -150,7 +151,7 @@ O prefixo fica em:
   - `bBorderless=1`
   - `iSize W=1920` (ou sua resolução nativa)
   - `iSize H=1080`
-  - `bUse64bitsHDRRenderTarget=1`
+  - `bUse64bitsHDRRenderTarget=0` (MANDATÓRIO no Linux sem ENB: se for 1, a swapchain FP16 do DXVK zera a iluminação e deixa o 3D 100% PRETO com HUD visível)
 - [ ] **`plugins.txt`:**
   - Deve ficar localizado em:
     `drive_c/users/steamuser/AppData/Local/Skyrim Special Edition/plugins.txt`
