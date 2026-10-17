@@ -128,10 +128,18 @@ return {
     end,
   },
 
-  -- 🍿 Snacks Indent: Guias de indentação com escopos visuais em chunk (╭ ─ │ ╰) e animação
+  -- 🍿 Snacks: Indentação animada e Smooth Scrolling amanteigado
   {
     "folke/snacks.nvim",
     opts = {
+      scroll = {
+        enabled = true,
+        animate = {
+          duration = { step = 15, total = 200 },
+          easing = "linear",
+        },
+        spamming = 10,
+      },
       indent = {
         enabled = true,
         priority = 1,
@@ -166,4 +174,17 @@ return {
       },
     },
   },
+
+  -- ⚡ Smear Cursor: Rastro elástico animado / feixe de luz pelo buffer estilo "Zap"
+  {
+    "sphamba/smear-cursor.nvim",
+    event = "VeryLazy",
+    opts = {
+      stiffness = 0.8,
+      trailing_stiffness = 0.6,
+      distance_stop_animating = 0.5,
+      cursor_color = "#89dceb", -- Catppuccin Sky / Cyan Elétrico combinando com o rastro do Kitty
+    },
+  },
 }
+
