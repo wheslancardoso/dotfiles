@@ -42,6 +42,7 @@ def audit_winedevices():
 def clean_stale_processes():
     print("[3/5] Limpando processos zumbis anteriores...")
     subprocess.run(["systemctl", "--user", "stop", "skyrim-gamescope.service"], stderr=subprocess.DEVNULL)
+    subprocess.run(["systemctl", "--user", "reset-failed", "skyrim-gamescope.service"], stderr=subprocess.DEVNULL)
     for proc in ["SkyrimSE", "skse64", "wineserver", "notepad.exe", "gamescope"]:
         subprocess.run(["pkill", "-9", "-f", proc], stderr=subprocess.DEVNULL)
     time.sleep(1)
@@ -80,6 +81,7 @@ def launch_and_monitor(use_gamescope=True):
         ]
     
     subprocess.run(["systemctl", "--user", "stop", "skyrim-gamescope.service"], stderr=subprocess.DEVNULL)
+    subprocess.run(["systemctl", "--user", "reset-failed", "skyrim-gamescope.service"], stderr=subprocess.DEVNULL)
     run_cmd = [
         "systemd-run",
         "--user",
