@@ -213,5 +213,14 @@ end
 
 
 
+# 🎆 Animações e Screensavers Cabulosos de Terminal
+alias matrix="cmatrix -C cyan -b"
+alias matrix-green="cmatrix -C green -b"
+alias matrix-red="cmatrix -C red -b"
+alias pipes="pipes.sh -p 5 -R"
+alias bonsai="cbonsai -l"
+alias bonsai-live="cbonsai -l -m 'Cockpit Soberano'"
+
 # Added by Antigravity CLI installer
 set -gx PATH "/home/lan/.local/bin" $PATH
+

@@ -128,7 +128,7 @@ return {
     end,
   },
 
-  -- 🍿 Snacks: Indentação animada e Smooth Scrolling amanteigado
+  -- 🍿 Snacks: Indentação animada, Dimming e Smooth Scrolling amanteigado
   {
     "folke/snacks.nvim",
     opts = {
@@ -139,6 +139,9 @@ return {
           easing = "linear",
         },
         spamming = 10,
+      },
+      dim = {
+        enabled = true,
       },
       indent = {
         enabled = true,
@@ -184,6 +187,32 @@ return {
       trailing_stiffness = 0.6,
       distance_stop_animating = 0.5,
       cursor_color = "#89dceb", -- Catppuccin Sky / Cyan Elétrico combinando com o rastro do Kitty
+    },
+  },
+
+  -- 🌧️ Cellular Automaton: Efeito Físico de Chuva de Código, Gravidade e Game of Life
+  {
+    "eandrju/cellular-automaton.nvim",
+    cmd = "CellularAutomaton",
+    keys = {
+      { "<leader>ur", "<cmd>CellularAutomaton make_it_rain<cr>", desc = "Make It Rain (Chuva de Código)" },
+      { "<leader>ug", "<cmd>CellularAutomaton game_of_life<cr>", desc = "Game of Life (Células Vivas)" },
+      { "<leader>us", "<cmd>CellularAutomaton scramble<cr>", desc = "Scramble (Glitch Matrix)" },
+    },
+  },
+
+  -- 🚨 Beacon: Flash de radar / sonar neon ao dar grandes saltos ou trocar de janela
+  {
+    "DanilaMihailov/beacon.nvim",
+    event = "BufReadPost",
+    opts = {
+      enable = true,
+      size = 35,
+      fade = true,
+      speed = 2,
+      minimal_jump = 10,
+      show_jumps = true,
+      focus_gained = true,
     },
   },
 }
