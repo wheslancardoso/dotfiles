@@ -107,8 +107,9 @@ Write-Host " [9] Instalar RUNTIMES DE JOGOS (Visual C++ AIO 2005-2022 + DirectX 
 Write-Host " [10] DESATIVAR Windows Defender e Windows Update Definitivamente"
 Write-Host " [11] Configurar DEV STACK (Git + Chaves SSH + WSL 2 Otimizado + Antigravity)"
 Write-Host " [12] Redirecionar PASTAS DE USUÁRIO (Downloads, Documentos, Desktop) para D:\"
+Write-Host " [13] Aplicar ULTRA TUNING DE PERFORMANCE (Plano Máximo, Sem VBS, HAGS, Latência 0)"
 Write-Host ""
-$opcao = Read-Host "Digite a opção desejada (0-12)"
+$opcao = Read-Host "Digite a opção desejada (0-13)"
 
 if ($opcao -eq "0") {
     Write-Host "`nBaixando e instalando o driver WinBtrfs v1.10..." -ForegroundColor Cyan
@@ -200,6 +201,16 @@ if ($opcao -eq "12") {
         & $moveFoldersScript
     } else {
         Write-Error "Script Mover-Pastas-Usuario-Para-D.ps1 não encontrado."
+    }
+    exit
+}
+
+if ($opcao -eq "13") {
+    $ultraTuningScript = Join-Path $PSScriptRoot "Otimizar-Desempenho-Ultra.ps1"
+    if (Test-Path $ultraTuningScript) {
+        & $ultraTuningScript
+    } else {
+        Write-Error "Script Otimizar-Desempenho-Ultra.ps1 não encontrado."
     }
     exit
 }

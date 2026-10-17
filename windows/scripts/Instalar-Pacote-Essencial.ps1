@@ -30,6 +30,8 @@ $packages = @(
     @{ Name = "Flameshot (Captura de Tela Pro)";   Id = "Flameshot.Flameshot" },
     @{ Name = "CopyQ (Clipboard Manager)";         Id = "Hluk.CopyQ" },
     @{ Name = "Brave Browser";                     Id = "Brave.Brave" },
+    @{ Name = "AB Download Manager (IDM Moderno)"; Id = "ABDownloadManager.ABDownloadManager" },
+    @{ Name = "NVIDIA App (Drivers & Otimização)"; Id = "Nvidia.App" },
     @{ Name = "Spotify";                           Id = "Spotify.Spotify" },
     @{ Name = "f.lux (Descanso Ocular)";           Id = "FluxSoftware.Flux" }
 )
