@@ -190,15 +190,47 @@ return {
     },
   },
 
-  -- 🌧️ Cellular Automaton: Efeito Físico de Chuva de Código, Gravidade e Game of Life
+  -- 🌧️ Cellular Automaton: Efeito Físico de Chuva de Código, Gravidade e Game of Life (com Toggle Inteligente)
   {
     "eandrju/cellular-automaton.nvim",
     cmd = "CellularAutomaton",
-    keys = {
-      { "<leader>ur", "<cmd>CellularAutomaton make_it_rain<cr>", desc = "Make It Rain (Chuva de Código)" },
-      { "<leader>ug", "<cmd>CellularAutomaton game_of_life<cr>", desc = "Game of Life (Células Vivas)" },
-      { "<leader>us", "<cmd>CellularAutomaton scramble<cr>", desc = "Scramble (Glitch Matrix)" },
-    },
+    keys = function()
+      local function toggle(anim)
+        local ok, manager = pcall(require, "cellular-automaton.manager")
+        if ok and manager then
+          local _, in_prog = debug.getupvalue(manager.clean, 1)
+          if in_prog then
+            manager.clean()
+            return
+          end
+        end
+        require("cellular-automaton").start_animation(anim)
+      end
+
+      return {
+        {
+          "<leader>ur",
+          function()
+            toggle("make_it_rain")
+          end,
+          desc = "Toggle Make It Rain (Chuva de Código)",
+        },
+        {
+          "<leader>ug",
+          function()
+            toggle("game_of_life")
+          end,
+          desc = "Toggle Game of Life (Células Vivas)",
+        },
+        {
+          "<leader>us",
+          function()
+            toggle("scramble")
+          end,
+          desc = "Toggle Scramble (Glitch Matrix)",
+        },
+      }
+    end,
   },
 
   -- 🚨 Beacon: Flash de radar / sonar neon ao dar grandes saltos ou trocar de janela
