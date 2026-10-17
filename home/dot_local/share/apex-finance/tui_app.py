@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ==============================================================================
-🏛️ APEX FINANCE TUI — O COCKPIT GRÁFICO DO HOMEM ROCHA (TERMINAL SOBERANO)
+🏛️ APEX FINANCE TUI — O COCKPIT GRÁFICO SOBERANO (TERMINAL SOBERANO)
 ==============================================================================
 Interface gráfica de alta fidelidade para o terminal baseada em Textual & Plotext.
 - Estética Brutalista & Catppuccin Mocha
@@ -582,7 +582,7 @@ class SundayRitualModal(ModalScreen):
         c3 = self.query_one("#c3", Checkbox).value
         c4 = self.query_one("#c4", Checkbox).value
         if c1 and c2 and c3 and c4:
-            self.app.notify("🛡️ Semana 100% blindada! Mente serena de Homem Rocha.", severity="information")
+            self.app.notify("🛡️ Semana 100% blindada! Mente serena e inabalável.", severity="information")
         self.dismiss(True)
 
 # ==============================================================================

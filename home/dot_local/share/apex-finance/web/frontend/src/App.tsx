@@ -1037,11 +1037,11 @@ export function App() {
                     </div>
                   </div>
 
-                  {/* Dica da Filosofia Homem Rocha */}
+                  {/* Dica da Filosofia Soberana */}
                   <div className="mt-4 p-3.5 bg-slate-900/90 rounded-xl text-xs text-slate-300 border border-slate-800 flex items-start gap-2.5">
                     <span className="text-base">🛡️</span>
                     <div>
-                      <strong className="text-indigo-300">Regra de Ouro do Homem Rocha:</strong>{' '}
+                      <strong className="text-indigo-300">Regra de Ouro da Alforria:</strong>{' '}
                       {oraculoForm.temJuros 
                         ? 'Juros compostos contra você são uma escravidão disfarçada de facilidade. Se não há desconto à vista e há juros no parcelamento, o caminho soberano é juntar o dinheiro na Caixinha antes e comprar à vista.'
                         : 'Se o parcelamento é estritamente sem juros e o desconto no PIX for menor do que ~5% a 7%, mantenha seu dinheiro no cofre rendendo e parcele no cartão para reter a liquidez.'}
@@ -1632,7 +1632,7 @@ export function App() {
                     </div>
 
                     <div className="p-3 rounded-xl bg-amber-500/5 border border-amber-500/20 text-[11px] text-amber-300/90 leading-relaxed">
-                      💡 <strong>Estratégia Homem Rocha:</strong> Comprar em 10x sem juros no cartão quando você tiver o valor integral rendendo na Caixinha a 115% do CDI. Você ganha os juros do banco todo mês enquanto paga as parcelas fixas sem juros!
+                      💡 <strong>Estratégia Soberana:</strong> Comprar em 10x sem juros no cartão quando você tiver o valor integral rendendo na Caixinha a 115% do CDI. Você ganha os juros do banco todo mês enquanto paga as parcelas fixas sem juros!
                     </div>
                   </div>
 

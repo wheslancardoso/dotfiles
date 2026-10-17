@@ -1257,7 +1257,7 @@ def efetivar_simulacao(descricao, valor_total, parcelas=1, tipo='cartao', cartao
 # ----------------------------------------------------------------------
 def exportar_para_excel(filepath=None):
     if not filepath:
-        filepath = os.path.expanduser("~/Planilha_Alforria_Homem_Rocha.xlsx")
+        filepath = os.path.expanduser("~/Planilha_Alforria_Soberana.xlsx")
         
     import openpyxl
     from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
@@ -1285,7 +1285,7 @@ def exportar_para_excel(filepath=None):
         bottom=Side(style='thin', color='E2E8F0')
     )
 
-    ws1['A1'] = "COCKPIT FINANCEIRO HOMEM ROCHA — ALFORRIA 2026-2028"
+    ws1['A1'] = "COCKPIT FINANCEIRO SOBERANO — ALFORRIA 2026-2028"
     ws1['A1'].font = Font(name="Segoe UI", size=14, bold=True, color="FFFFFF")
     ws1['A1'].fill = c_header_fill
     ws1.merge_cells('A1:E1')

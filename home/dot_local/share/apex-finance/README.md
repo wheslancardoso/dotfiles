@@ -1,6 +1,6 @@
 # 🏛️ APEX FINANCE — COCKPIT SOBERANO
 
-Suíte de Inteligência Financeira e Orçamento do Homem Rocha para Linux (Terminal / Hyprland).
+Suíte de Inteligência Financeira e Orçamento Soberano para Linux (Terminal / Hyprland).
 
 ## 🚀 Como Executar
 
@@ -11,7 +11,7 @@ apex-finance      # Comando base
 
 # Comandos Rápidos CLI
 apex-finance backup       # Gera snapshot SQLite e planilha Excel em ~/backups/finance/
-apex-finance export       # Exporta planilha Excel diretamente para ~/Planilha_Alforria_Homem_Rocha.xlsx
+apex-finance export       # Exporta planilha Excel diretamente para ~/Planilha_Alforria_Soberana.xlsx
 apex-finance fzf          # Inicia menu FZF alternativo
 apex-finance restore <db> # Restaura backup de segurança
 ```

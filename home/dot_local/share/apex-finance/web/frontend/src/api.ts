@@ -351,7 +351,7 @@ export const api = {
     // Dispara download automático no navegador
     const a = document.createElement('a');
     a.href = `${API_BASE}/exportar/excel/download`;
-    a.download = 'Planilha_Alforria_Homem_Rocha.xlsx';
+    a.download = 'Planilha_Alforria_Soberana.xlsx';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

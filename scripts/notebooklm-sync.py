@@ -66,7 +66,7 @@ CLUSTERS = {
     },
     "Notebook_02_Postura_Social_e_Financas.md": {
         "title": "⚔️ CLUSTER 02: COMUNICAÇÃO, POSTURA SOCIAL, FINANÇAS & DISCIPLINA",
-        "description": "Simulações sociais, oratória, postura de Homem Rocha, finanças, blindagem mental e NoFap.",
+        "description": "Simulações sociais, oratória, postura firme e serena, finanças, blindagem mental e NoFap.",
         "paths": [
             "04 - Comunicação, Postura & Simulações Sociais",
             "05 - Disciplina, Finanças & Blindagem Mental"
@@ -108,8 +108,8 @@ CLUSTERS = {
             "08 - Repertório Cultural (Cinema, Séries & Livros de Sabedoria)/07 - Compêndio de Sabedoria Prática & Modelos Mentais (Bárbara - Timeless Wisdom).md"
         ]
     },
-    "Notebook_09_Sabedoria_Desfigurado_Homem_Rocha.md": {
-        "title": "⚔️ CLUSTER 09: SABEDORIA DO DESFIGURADO (FORJA DO HOMEM ROCHA — 200 OBRAS)",
+    "Notebook_09_Sabedoria_Desfigurado_Masculinidade_Sobria.md": {
+        "title": "⚔️ CLUSTER 09: SABEDORIA DO DESFIGURADO (MASCULINIDADE INABALÁVEL — 200 OBRAS)",
         "description": "Têmpera militar, o poder do silêncio, as 48 leis do poder, forja na dor, memento mori e postura soberana perigosa.",
         "paths": [
             "08 - Repertório Cultural (Cinema, Séries & Livros de Sabedoria)/08 - Desfigurado (Homem Forjado no Fogo)"

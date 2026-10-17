@@ -1,7 +1,7 @@
 # 🏛️ GUIA MESTRE — APEX FINANCE (COCKPIT SOBERANO DE GESTÃO & SSOT)
 
 > ***"Quem é fiel no pouco, sobre o muito será colocado."*** *(Lucas 16:10 / Mateus 25:21)*  
-> *"Quem gasta o que não tem para impressionar quem não conhece vira escravo do sistema. O Homem Rocha constrói em silêncio, blinda o caixa e compra sua alforria."*
+> *"Quem gasta o que não tem para impressionar quem não conhece vira escravo do sistema. O homem consciente constrói em silêncio, blinda o caixa e compra sua alforria."*
 
 O **APEX FINANCE** é a suíte financeira definitiva integrada nativamente ao ambiente Linux (Hyprland / Terminal / Zsh / Zellij). Substitui planilhas desarticuladas e aplicações web infladas (como o antigo `~/finance-ia`) por uma arquitetura local de altíssimo desempenho baseada em **SQLite**, **Python 3.12**, **Textual TUI brutalista (Catppuccin Mocha)** e **Plotext**.
 
@@ -59,7 +59,7 @@ apex-finance
 | `d` | Excluir Registro | Exclui transação (com opção de apagar parcela única ou toda a série) |
 | `p` | Pagar Fatura | Liquida fatura de cartão com débito em conta bancária |
 | `b` | Backup Atômico | Gera snapshot seguro do SQLite e da planilha Excel em `~/backups/finance/` |
-| `e` | Exportar Excel | Salva planilha `Planilha_Alforria_Homem_Rocha.xlsx` na pasta pessoal |
+| `e` | Exportar Excel | Salva planilha `Planilha_Alforria_Soberana.xlsx` na pasta pessoal |
 | `r` | Atualizar | Recarrega todos os dados do banco |
 | `q` | Sair | Fecha a aplicação instantaneamente |
 

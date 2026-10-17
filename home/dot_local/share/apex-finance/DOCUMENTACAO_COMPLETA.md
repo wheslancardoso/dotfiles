@@ -114,7 +114,7 @@ O banco `finance.db` opera com 8 tabelas relacionais rigorosamente normalizadas:
 ```bash
 fin                 # Inicia o Cockpit Gráfico TUI
 fin --backup        # Realiza backup online SQLite + Planilha Excel
-fin --export-excel  # Gera a planilha estilizada Planilha_Alforria_Homem_Rocha.xlsx
+fin --export-excel  # Gera a planilha estilizada Planilha_Alforria_Soberana.xlsx
 fin --export-ia     # Exporta CONTEXTO_GLOBAL.md e todos os arquivos mensais para /mnt/dados
 ```
 

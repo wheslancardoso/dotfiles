@@ -2,7 +2,7 @@
 name: cockpit-sabedoria
 description: >-
   Ativa o Oráculo e Mecanismo de Busca Ultrarrápido de Sabedoria Prática & Modelos Mentais
-  (Bárbara - Timeless Wisdom, Desfigurado/Cadar - Homem Rocha & Matheus Ferreira - O Homem Clássico).
+  (Bárbara - Timeless Wisdom, Desfigurado/Cadar - Masculinidade Sóbria & Matheus Ferreira - O Homem Clássico).
   Use esta skill sempre que o usuário pedir conselhos sobre vida pessoal, família, postura masculina,
   fé cristã, pureza/NoFap, treino natural, falso magro, ansiedade, mulheres, foco, silêncio ou disciplina.
 ---

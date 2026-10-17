@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# 🏛️ APEX FINANCE CLI / TUI — O COCKPIT DO HOMEM ROCHA (VIM-STYLE & FZF)
+# 🏛️ APEX FINANCE CLI / TUI — O COCKPIT FINANCEIRO SOBERANO (VIM-STYLE & FZF)
 # ==============================================================================
 # Terminal Finance Suite integrado ao Linux:
 # - Navegação fluida com FZF (estilo Vim: j/k, / busca, Enter seleciona, ESC volta)
@@ -654,7 +654,7 @@ exportar_excel_cli() {
     header_banner
     echo -e "${GREEN}${BOLD}📑 EXPORTAÇÃO NATIVA PARA PLANILHA EXCEL (.XLSX)${NC}\n"
 
-    local default_dest="$HOME/Planilha_Alforria_Homem_Rocha.xlsx"
+    local default_dest="$HOME/Planilha_Alforria_Soberana.xlsx"
     read -rp "Salvar em [Padrão: $default_dest]: " dest_path
     dest_path="${dest_path:-$default_dest}"
 
