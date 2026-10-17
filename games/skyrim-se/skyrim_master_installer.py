@@ -239,6 +239,7 @@ def cmd_sync_plugins():
     # Special sorting for bottom-loading mods
     bottom_priority = [
         "realisticwatertwo.esp",
+        "skyland watercolor - slow green-rw2.esp",
         "alternate start - live another life.esp",
         "betterquestobjectives-alternatestartpatch.esp"
     ]

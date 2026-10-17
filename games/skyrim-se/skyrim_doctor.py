@@ -68,6 +68,7 @@ def launch_and_monitor(use_gamescope=True):
             "-h", "1080",
             "-r", "100",
             "-f",
+            "--force-grab-cursor",
             "--",
             runner_sh
         ]

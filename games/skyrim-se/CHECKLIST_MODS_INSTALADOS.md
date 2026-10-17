@@ -2,11 +2,13 @@
 ## Relatório de Estado da Arte: 213 Plugins Ativos, 40 DLLs SKSE e Matriz de Aquisição dos Mods Pendentes
 
 > **Status Global do Sistema:**  
-> 🟢 **213 Plugins Ativos** no motor da Bethesda (100% auditados e sincronizados)  
+> 🟢 **214 Plugins Ativos** no motor da Bethesda (100% auditados e sincronizados)  
 > 🟢 **40 Bibliotecas em C++ Nativo (SKSE DLLs)** em execução sem conflito de offsets  
-> 🟢 **195+ Arquivos de Mods Baixados** e preservados em `/mnt/dados/Jogos/Skyrim-AE/Downloads_Mods/`  
+> 🟢 **Skyland AIO Integrado:** Texturas de alta definição para todas as cidades, masmorras, pontes, estradas e DLCs  
+> 🟢 **196+ Arquivos de Mods Baixados** e preservados em `/mnt/dados/Jogos/Skyrim-AE/Downloads_Mods/`  
 > 🟡 **5 Quarentenas Preventivas** (`lux_esp_backup`, `dlss5_full_backup`, `Plugins_incompatible_ae`, `quarantine_incompatible_mods`)  
 > 🟢 **Camada de Compatibilidade Ativa:** Microsoft Visual C++ 2015-2022 (x64 & x86) + Wine Mono (.NET 4.0)  
+> 🟢 **Mouse Cursor & Gamescope Fix:** `--force-grab-cursor` ativo no Gamescope/Heroic + `winebus` anti-phantom gamepad  
 > **Ambiente Operacional:** CachyOS Linux (Kernel CachyOS-Bore) | Hyprland (Wayland) | NVIDIA RTX 5060 | Gamescope
 
 ---
@@ -138,6 +140,12 @@ pie title Distribuição do Ecossistema Skyrim AE
 * 🟢 **Easy Lockpicking:** Abertura rápida de fechaduras sem perda de tempo.
 
 ### 🌲 H. Gráficos, Clima & Iluminação (Status Lux Via vs Lux Interior)
+* 🟢 **Skyland AIO (Status: 100% INSTALADO & INTEGRADO):**
+  * Texturas e malhas de alta definição cobrindo Whiterun, Solitude, Windhelm, Markarth, Riften, Winterhold, vilarejos, ruínas nórdicas, cavernas, fortes imperiais, pontes, tendas e janelas.
+  * Inclui Blended Roads com suporte nativo a SMIM (`33_Blended Roads SMIM`).
+  * Inclui montanhas de granito cinza e céu noturno `Skyking Galaxy`.
+  * Integrado com `Skyland Watercolor - Slow Green-RW2.esp` posicionado com precisão após `RealisticWaterTwo.esp`.
+  * Suporte total às DLCs Dawnguard e Dragonborn.
 * 🟢 **Cathedral Landscapes:** Texturas de terreno fotorrealistas e grama densa sem impacto de FPS.
 * 🟢 **Realistic Water Two SE:** Água com refrações físicas, correntezas dinâmicas e sons de ondas costeiras.
 * 🟢 **Cathedral Weathers and Seasons:** Sistema dinâmico de clima, nevascas volumétricas e iluminação atmosférica natural.
