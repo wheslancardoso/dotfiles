@@ -70,7 +70,7 @@ O objetivo dele é **se tornar uma pessoa com quem qualquer um se sinta acolhido
      * `Neutralidade:` X/10
   5. **Comando de Registro Automático:** A IA gera o comando para salvar no histórico:
      ```bash
-     python3 ~/timeless_life/scripts/dojo_tracker.py registrar --tema "Nome do Treino" --notas X X X X X
+     python3 /mnt/dados/04_Desenvolvimento_e_Codigo/04.1_Projetos_Web_e_Apps/timeless_life/scripts/dojo_tracker.py registrar --tema "Nome do Treino" --notas X X X X X
      ```
 
 ### 2. `[TREINO sem tags]` — FLUXO LIVRE SEM INTERRUPÇÃO
@@ -88,10 +88,17 @@ O objetivo dele é **se tornar uma pessoa com quem qualquer um se sinta acolhido
 ### 6. `[SILÊNCIO]` — MICRO-TREINO DE PAUSA (1 MINUTO)
 * A IA manda uma provocação ou pergunta capciosa. O usuário deve mandar `[pausa]` + resposta curta, treinando o autocontrole da amígdala.
 
+### 7. `[BATMAN]` — CONTINGÊNCIA TÁTICA IMEDIATA
+* O usuário apresenta uma situação de atrito, saia-justa ou emergência (cliente reclamando, chefe cobrando prazo, parente manipulando, garota na igreja, branco mental). A IA puxa imediatamente o script correspondente do **Livro Negro de Contingências Sociais (O Protocolo Batman)** em 1 a 3 falas fatiadas no padrão poucas palavras.
+
 ---
 
-## 📊 BANCO DE DADOS & RASTREAMENTO DE EVOLUÇÃO (DOJO TRACKER)
-As sessões e notas de Wheslan são persistidas em SQLite em:
-`~/timeless_life/04 - Comunicação, Postura & Simulações Sociais/.dojo_metrics.db`
-via script `python3 ~/timeless_life/scripts/dojo_tracker.py`.
+## 📊 BANCO DE DADOS & RASTREAMENTO DE EVOLUÇÃO (DOJO TRACKER & CLI)
+As sessões, conversas, auditorias e notas de Wheslan são persistidas em SQLite em:
+`/mnt/dados/04_Desenvolvimento_e_Codigo/04.1_Projetos_Web_e_Apps/timeless_life/04 - Comunicação, Postura & Simulações Sociais/acervo_comunicacao.db`
+via scripts:
+- Rastreamento de métricas: `python3 scripts/dojo_tracker.py status`
+- Busca instantânea FTS5: `python3 "04 - Comunicação, Postura & Simulações Sociais/scripts/buscar_acervo.py" "termo"`
+- Cockpit do Dojo Batman: `python3 scripts/dojo_cli.py [buscar|status|batman|cliente]`
+
 Sempre compare o desempenho com as médias anteriores para mostrar o progresso real em números.
