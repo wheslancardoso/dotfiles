@@ -131,8 +131,8 @@ O congelamento absoluto do ponteiro do mouse decorria de uma colisão em três c
 4. **Solução Integrada:**
    * Hyprland: `cursor:no_warps = false`, `cursor:no_hardware_cursors = true`, `render:direct_scanout = 0`.
    * DXVK: criação de `dxvk.conf` com `dxvk.frameRate = 60` e `d3d11.presentInterval = 1`.
-   * Wine Registry: inclusão de `GrabPointer="Y"` e `MouseWarpOverride="force"`.
-   * Gamescope: inicialização com a flag `--force-grab-cursor`.
+   * Wine Registry: inclusão de `GrabPointer="Y"` e `MouseWarpOverride="enable"` (evitar "force", pois ele recentraliza o cursor perpetuamente e impede a navegação nos menus/UI).
+   * Gamescope: inicialização sem `--force-grab-cursor` (para permitir que o Gamescope alterne automaticamente entre o modo relativo de câmera 3D e o cursor absoluto na interface de menus).
 
 ### 3.6 A Família Lux: O Caso das Malhas Desamparadas vs Lux Via
 * **Causa-Raiz:** O pacote principal de interiores `Lux.esp` substitui as malhas 3D (`.nif`) de paredes, tetos e candelabros por geometrias que não utilizam a luz ambiente tradicional da Bethesda, dependendo exclusivamente dos emissores de luz cadastrados em **`Lux - Resources.esp`**.
@@ -287,7 +287,7 @@ windowrule = immediate 1, match:class ^(gamescope)$
 Na seção `[Software\\Wine\\X11 Driver]`:
 ```ini
 "GrabPointer"="Y"
-"MouseWarpOverride"="force"
+"MouseWarpOverride"="enable"
 ```
 
 ### Fase 8: Descongelamento do Mundo 3D via Console (`teofis`) & Criação de Saves Limpos
