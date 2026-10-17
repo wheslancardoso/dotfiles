@@ -105,8 +105,9 @@ Write-Host " [7] Instalar apenas meu PACOTE ESSENCIAL (12 Programas Favoritos)"
 Write-Host " [8] Aplicar CORREÇÕES DE DUAL BOOT (Relógio UTC, Desativar Fast Startup, Proteger Limine)"
 Write-Host " [9] Instalar RUNTIMES DE JOGOS (Visual C++ AIO 2005-2022 + DirectX + .NET)"
 Write-Host " [10] DESATIVAR Windows Defender e Windows Update Definitivamente"
+Write-Host " [11] Configurar DEV STACK (Git + Chaves SSH + WSL 2 Otimizado + Antigravity)"
 Write-Host ""
-$opcao = Read-Host "Digite a opção desejada (0-10)"
+$opcao = Read-Host "Digite a opção desejada (0-11)"
 
 if ($opcao -eq "0") {
     Write-Host "`nBaixando e instalando o driver WinBtrfs v1.10..." -ForegroundColor Cyan
@@ -178,6 +179,16 @@ if ($opcao -eq "10") {
         & $disablerScript
     } else {
         Write-Error "Script Desativar-Defender-e-WindowsUpdate.ps1 não encontrado."
+    }
+    exit
+}
+
+if ($opcao -eq "11") {
+    $devStackScript = Join-Path $PSScriptRoot "Instalar-DevStack-WSL.ps1"
+    if (Test-Path $devStackScript) {
+        & $devStackScript
+    } else {
+        Write-Error "Script Instalar-DevStack-WSL.ps1 não encontrado."
     }
     exit
 }
