@@ -1,11 +1,11 @@
 # 🐉 SKYRIM ANNIVERSARY EDITION — CHECKLIST MESTRE DEFINITIVO & MATRIZ DE AUDITORIA
-## Relatório de Estado da Arte: 207 Plugins Ativos, 36 DLLs SKSE e Matriz de Aquisição dos Mods Pendentes
+## Relatório de Estado da Arte: 213 Plugins Ativos, 40 DLLs SKSE e Matriz de Aquisição dos Mods Pendentes
 
 > **Status Global do Sistema:**  
-> 🟢 **207 Plugins Ativos** no motor da Bethesda (100% auditados e sincronizados)  
-> 🟢 **36 Bibliotecas em C++ Nativo (SKSE DLLs)** em execução sem conflito de offsets  
-> 🟢 **180+ Arquivos de Mods Baixados** e preservados em `/mnt/dados/Jogos/Skyrim-AE/Downloads_Mods/`  
-> 🟡 **4 Quarentenas Preventivas** (`lux_esp_backup`, `dlss5_full_backup`, `Plugins_incompatible_ae`, `quarantine_incompatible_mods`)  
+> 🟢 **213 Plugins Ativos** no motor da Bethesda (100% auditados e sincronizados)  
+> 🟢 **40 Bibliotecas em C++ Nativo (SKSE DLLs)** em execução sem conflito de offsets  
+> 🟢 **195+ Arquivos de Mods Baixados** e preservados em `/mnt/dados/Jogos/Skyrim-AE/Downloads_Mods/`  
+> 🟡 **5 Quarentenas Preventivas** (`lux_esp_backup`, `dlss5_full_backup`, `Plugins_incompatible_ae`, `quarantine_incompatible_mods`)  
 > 🟢 **Camada de Compatibilidade Ativa:** Microsoft Visual C++ 2015-2022 (x64 & x86) + Wine Mono (.NET 4.0)  
 > **Ambiente Operacional:** CachyOS Linux (Kernel CachyOS-Bore) | Hyprland (Wayland) | NVIDIA RTX 5060 | Gamescope
 
@@ -32,9 +32,9 @@
 
 ```mermaid
 pie title Distribuição do Ecossistema Skyrim AE
-    "Plugins Ativos no Jogo" : 207
-    "DLLs SKSE em C++" : 36
-    "Arquivos em Quarentena Preventiva" : 10
+    "Plugins Ativos no Jogo" : 213
+    "DLLs SKSE em C++" : 40
+    "Arquivos em Quarentena Preventiva" : 11
 ```
 
 ---
