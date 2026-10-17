@@ -142,3 +142,25 @@ No seu disco `D:\scripts_windows\` (ou clonando seu repositório `dotfiles`), ex
   - `[5]` Ativação Oficial Windows/Office (MAS - Massgrave)
   - `[7]` Instalar Pacote Essencial (12 Apps)
   - `[8]` Aplicar Correções de Dual Boot (Relógio UTC, Fast Startup, Limine)
+  - `[9]` Instalar Runtimes de Jogos (Visual C++ AIO 2005-2022 + DirectX + .NET)
+  - `[10]` Desativar Windows Defender e Windows Update Definitivamente
+
+---
+
+## 🛠️ Dica de Ouro sobre Drivers (Adeus Driver Booster)
+
+> [!CAUTION]
+> **Por que NUNCA usar Driver Booster / IObit:**
+> Programas como Driver Booster instalam bloatware, adware de segundo plano, telemetria chinesa e frequentemente instalam drivers genéricos ou incompatíveis com o chipset que geram micro-travamentos e Telas Azuis (BSOD).
+
+### Como instalar drivers com 100% de estabilidade:
+1. **Primeira Varredura Automática:**
+   Assim que instalar o Windows, conecte a internet e faça uma única verificação inicial do Windows Update para baixar os drivers oficiais certificados WHQL (Chipset, Áudio Realtek, Wi-Fi e Bluetooth) assinados pelo fabricante da placa-mãe.
+2. **Placa de Vídeo (GPU):**
+   Baixe o driver limpo oficial direto da fabricante:
+   - **NVIDIA:** Baixe o NVIDIA App ou Game Ready Driver limpo.
+   - **AMD:** Baixe o AMD Adrenalin oficial.
+3. **Se faltar algum driver:**
+   Use o **Snappy Driver Installer Origin (SDIO)** ([Página Oficial](https://www.snappy-driver-installer.org/)) — 100% open-source, gratuito, sem nenhum anúncio ou malware.
+4. **Após instalar os drivers:**
+   Execute a opção `[10]` do script para **desativar o Windows Update e o Defender** permanentemente, travando o sistema no estado perfeito.
