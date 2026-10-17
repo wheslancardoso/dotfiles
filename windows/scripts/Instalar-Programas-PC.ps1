@@ -101,8 +101,9 @@ Write-Host " [3] Executar apenas Configuração do GlazeWM (Hyprland Style)"
 Write-Host " [4] Executar apenas Debloat e Otimização do Windows (Chris Titus WinUtil)"
 Write-Host " [5] Executar apenas Ativação Oficial Windows/Office (MAS - Massgrave)"
 Write-Host " [6] Sair"
+Write-Host " [7] Instalar apenas meu PACOTE ESSENCIAL (12 Programas Favoritos)"
 Write-Host ""
-$opcao = Read-Host "Digite a opção desejada (0-6)"
+$opcao = Read-Host "Digite a opção desejada (0-7)"
 
 if ($opcao -eq "0") {
     Write-Host "`nBaixando e instalando o driver WinBtrfs v1.10..." -ForegroundColor Cyan
@@ -159,11 +160,28 @@ if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
 
 # Coleta lista de pacotes
 $selectedPackages = @()
-foreach ($cat in $categories.Keys) {
-    if ($opcao -eq "2" -and $cat -eq "Virtualização & Hardware") {
-        continue
+if ($opcao -eq "7") {
+    $selectedPackages = @(
+        @{ Name = "Anki";                Id = "Anki.Anki" },
+        @{ Name = "WinRAR";              Id = "RARLab.WinRAR" },
+        @{ Name = "PotPlayer";           Id = "Daum.PotPlayer" },
+        @{ Name = "VLC Media Player";    Id = "VideoLAN.VLC" },
+        @{ Name = "mpv";                 Id = "shinchiro.mpv" },
+        @{ Name = "ImageGlass";          Id = "DuongDieuPhap.ImageGlass" },
+        @{ Name = "qBittorrent";         Id = "qBittorrent.qBittorrent" },
+        @{ Name = "Foxit PDF Reader";    Id = "Foxit.FoxitReader" },
+        @{ Name = "Flameshot";           Id = "Flameshot.Flameshot" },
+        @{ Name = "CopyQ";               Id = "Hluk.CopyQ" },
+        @{ Name = "Spotify";             Id = "Spotify.Spotify" },
+        @{ Name = "f.lux";               Id = "FluxSoftware.Flux" }
+    )
+} else {
+    foreach ($cat in $categories.Keys) {
+        if ($opcao -eq "2" -and $cat -eq "Virtualização & Hardware") {
+            continue
+        }
+        $selectedPackages += $categories[$cat]
     }
-    $selectedPackages += $categories[$cat]
 }
 
 $total = $selectedPackages.Count
