@@ -1,4 +1,4 @@
-# 🪟 Guia Rápido Pós-Instalação: Windows 11, Partição D: e Skyrim Master (202 Mods)
+# 🪟 Guia Rápido Pós-Instalação: Windows 11, Dual Boot Perfeito, Partição D: e Skyrim Master (202 Mods)
 
 > **Este guia foi salvo para acesso imediato no seu disco local e na nuvem:**
 > - No Windows: `D:\GUIA_WINDOWS_E_SKYRIM.html` (Abra no navegador com 2 cliques)
@@ -8,11 +8,47 @@
 ---
 
 ## ⚡ Sumário das Etapas
+0. [Passo 0: Dual Boot & Sincronização Perfeita (Relógio UTC, Limine e Anti-Fast Startup)](#-passo-0-dual-boot--sincronização-perfeita)
 1. [Passo 1: Montar a Partição D:\ com o WinBtrfs](#-passo-1-fazer-o-windows-enxergar-a-partição-com-os-mods)
 2. [Passo 2: Instalar o Skyrim no Windows Nativo](#-passo-2-instalar-o-skyrim-no-windows)
 3. [Passo 3: Carregar os 202 Mods no Mod Organizer 2 (MO2)](#-passo-3-gerenciar-e-ativar-os-202-mods-com-o-mod-organizer-2-mo2)
 4. [Passo 4: Restaurar os 12 Saves de Personagem](#-passo-4-restaurar-seus-saves-de-personagem)
 5. [Passo 5: Instalar Programas em Lote e GlazeWM](#-passo-5-setup-do-resto-do-windows-programas--tiling-wm)
+
+---
+
+## 🛡️ Passo 0: Dual Boot & Sincronização Perfeita
+
+O Linux (CachyOS) e o Windows possuem diferenças históricas em como tratam o relógio da placa-mãe (RTC) e o desligamento do sistema. Nós já deixamos tudo pré-configurado no bootloader e criamos um script de 1 clique para resolver todos os problemas no Windows.
+
+### 1. Bootloader Limine (Menu de Inicialização)
+- O Limine já foi configurado para exibir o menu por **5 segundos** a cada inicialização.
+- O menu exibirá automaticamente:
+  - **CachyOS** (Linux Kernel padrão e LTS + Snapshots de rollback)
+  - **Other systems and bootloaders ➔ Windows 11**
+- O Limine possui a função `remember_last_entry: yes`: se você iniciou o Windows da última vez, ele já iniciará selecionado no próximo boot.
+
+> [!TIP]
+> Se após a instalação o Windows tentar tomar a prioridade de boot (iniciando direto sem passar pelo Limine):
+> 1. Basta entrar na BIOS da placa-mãe (tecla `Del` ou `F2` ao ligar) e colocar **Limine** como Opção de Boot #1.
+> 2. Ou execute o script `D:\scripts_windows\Configurar-DualBoot-Fixes.bat` dentro do Windows com privilégios de Administrador.
+
+### 2. Correção do Relógio (UTC / RealTimeIsUniversal)
+- Por padrão, o Linux usa horário UTC no relógio da placa-mãe, enquanto o Windows usa horário local. Isso causava o incômodo clássico do relógio atrasar ou adiantar 3 horas ao alternar de sistema operacional.
+- O script `Configurar-DualBoot-Fixes.bat` ativa a chave nativa da Microsoft `RealTimeIsUniversal = 1`.
+- **Resultado:** Tanto o Linux quanto o Windows operam 100% sincronizados em UTC. O horário fica sempre idêntico e exato ao segundo em ambos os sistemas.
+
+### 3. Desativação do Fast Startup (Fim das partições bloqueadas)
+- O "Fast Startup" do Windows não desliga o computador de verdade; ele hiberna o kernel e deixa as partições NTFS em estado "dirty" (bloqueadas).
+- O script desativa o Fast Startup (`powercfg /h off` e `HiberbootEnabled = 0`), garantindo que o Windows faça desligamentos limpos e seguros, permitindo que o Linux leia e escreva na partição do Windows sem nenhum risco de corrupção.
+
+### 4. Como aplicar as correções no Windows:
+1. Abra a pasta `D:\scripts_windows\` no Windows Explorer.
+2. Dê dois cliques no arquivo:
+   ```text
+   D:\scripts_windows\Configurar-DualBoot-Fixes.bat
+   ```
+3. O script solicitará permissão de Administrador e aplicará todas as 5 correções automaticamente em menos de 3 segundos!
 
 ---
 
@@ -27,6 +63,9 @@ A partição de dados de 203 GB (`/mnt/dados`) contém o instalador (22.6 GB) e 
 3. Clique com o botão direito no arquivo **`btrfs.inf`** e selecione **"Instalar"** (no Windows 11: clique em *Mostrar mais opções ➔ Instalar*).
 4. Reinicie o computador.
 5. **Resultado**: A partição aparecerá instantaneamente no Windows Explorer como **Disco Local (D:)** com velocidade máxima do NVMe (3.500 MB/s).
+
+> [!NOTE]
+> Você também pode instalar o WinBtrfs diretamente abrindo `Instalar-Programas-PC.bat` e escolhendo a opção `[0]`.
 
 ---
 
@@ -88,8 +127,18 @@ D:\06_Backups_ISOs_e_Sistemas\06.4_Games_e_Emuladores\01_Saves_e_Backups\Skyrim_
 
 ## ⚡ Passo 5: Setup do Resto do Windows (Programas + Tiling WM)
 
-No seu disco `D:\` (ou clonando seu repositório `dotfiles`), abra o PowerShell como Administrador e execute:
-1. `D:\dotfiles\windows\scripts\Instalar-Programas-PC.bat`:
-   - Escolha a opção `[1]` para instalar silenciosamente via Winget: Chrome, Brave, VS Code, Git, Python, NanaZip, Steam, Ludusavi, Discord, etc.
-2. `D:\dotfiles\windows\scripts\Configurar-GlazeWM.bat`:
-   - Configura o **GlazeWM** com a barra Zebar para você usar os mesmos atalhos do Hyprland no Windows (`Alt + H/J/K/L`).
+No seu disco `D:\scripts_windows\` (ou clonando seu repositório `dotfiles`), execute com duplo clique:
+
+### Opção A: Instalação Rápida do Pacote Essencial (12 Apps)
+- Dê duplo clique em `D:\scripts_windows\Instalar-Pacote-Essencial.bat`.
+- Instala automaticamente: Anki, WinRAR, PotPlayer, VLC, mpv, ImageGlass, qBittorrent, Foxit PDF Reader, Flameshot, CopyQ, Spotify e f.lux.
+
+### Opção B: Central Completa de Instalação & Otimização
+- Dê duplo clique em `D:\scripts_windows\Instalar-Programas-PC.bat`.
+- Menu de opções:
+  - `[0]` Instalar Driver WinBtrfs
+  - `[1]` Instalar Stack Completo (GlazeWM + Dev Tools + Programas)
+  - `[4]` Otimização e Debloat do Windows (Chris Titus WinUtil)
+  - `[5]` Ativação Oficial Windows/Office (MAS - Massgrave)
+  - `[7]` Instalar Pacote Essencial (12 Apps)
+  - `[8]` Aplicar Correções de Dual Boot (Relógio UTC, Fast Startup, Limine)

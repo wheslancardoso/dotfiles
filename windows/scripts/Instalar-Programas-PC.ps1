@@ -102,8 +102,9 @@ Write-Host " [4] Executar apenas Debloat e Otimização do Windows (Chris Titus 
 Write-Host " [5] Executar apenas Ativação Oficial Windows/Office (MAS - Massgrave)"
 Write-Host " [6] Sair"
 Write-Host " [7] Instalar apenas meu PACOTE ESSENCIAL (12 Programas Favoritos)"
+Write-Host " [8] Aplicar CORREÇÕES DE DUAL BOOT (Relógio UTC, Desativar Fast Startup, Proteger Limine)"
 Write-Host ""
-$opcao = Read-Host "Digite a opção desejada (0-7)"
+$opcao = Read-Host "Digite a opção desejada (0-8)"
 
 if ($opcao -eq "0") {
     Write-Host "`nBaixando e instalando o driver WinBtrfs v1.10..." -ForegroundColor Cyan
@@ -146,6 +147,16 @@ if ($opcao -eq "5") {
 
 if ($opcao -eq "6") {
     Write-Host "Operação cancelada." -ForegroundColor Yellow
+    exit
+}
+
+if ($opcao -eq "8") {
+    $dualBootScript = Join-Path $PSScriptRoot "Configurar-DualBoot-Fixes.ps1"
+    if (Test-Path $dualBootScript) {
+        & $dualBootScript
+    } else {
+        Write-Error "Script Configurar-DualBoot-Fixes.ps1 não encontrado."
+    }
     exit
 }
 
@@ -235,6 +246,15 @@ Write-Host "`nDeseja abrir o script de Ativação do Windows/Office (MAS)? (S/N)
 $masChoice = Read-Host
 if ($masChoice -match "^[sSyY]") {
     irm https://massgrave.dev/get | iex
+}
+
+Write-Host "`nDeseja aplicar as Correções de Dual Boot (Relógio UTC, Desativar Fast Startup, Proteger Limine)? (S/N): " -ForegroundColor Yellow -NoNewline
+$dualChoice = Read-Host
+if ($dualChoice -match "^[sSyY]") {
+    $dualBootScript = Join-Path $PSScriptRoot "Configurar-DualBoot-Fixes.ps1"
+    if (Test-Path $dualBootScript) {
+        & $dualBootScript
+    }
 }
 
 Write-Host "`nSetup finalizado com sucesso! Pressione qualquer tecla para sair..." -ForegroundColor Cyan
