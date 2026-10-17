@@ -1,15 +1,17 @@
 <#
 .SYNOPSIS
-    Script de Instalação e Setup Automatizado para Windows — Stack Power User & Desenvolvedor de Alto Nível.
+    Script Mestre de Setup Automatizado para Windows — Stack Power User, Developer & Gaming.
 .DESCRIPTION
-    Instala todos os programas essenciais, reprodutores, navegadores, ferramentas de dev,
-    tiling window manager (GlazeWM), aceleração de download e produtividade via Winget.
+    Menu cronológico e guiado em 3 fases lógicas:
+    FASE 1: Reconhecimento do SSD (WinBtrfs), Correções de Dual Boot (UTC) e Pastas para D:\.
+    FASE 2: Programas Essenciais (Brave, NVIDIA, AB Download, Anki), Runtimes e Dev Stack.
+    FASE 3: Ativação Oficial (MAS), Ultra Tuning de Performance e Debloat Avançado.
 .NOTES
     Execute no PowerShell como Administrador.
 #>
 
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-$Host.UI.RawUI.WindowTitle = "Setup Power User & Developer — Windows Master"
+$Host.UI.RawUI.WindowTitle = "Setup Power User & Developer — Windows Master Suite"
 
 function Check-Admin {
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
@@ -17,8 +19,8 @@ function Check-Admin {
 }
 
 if (-not (Check-Admin)) {
-    Write-Warning "Este script precisa de privilégios de Administrador para instalar programas."
-    Write-Host "Tentando reiniciar com permissões elevadas..." -ForegroundColor Yellow
+    Write-Warning "Este script precisa de privilégios de Administrador."
+    Write-Host "Elevando permissões com UAC..." -ForegroundColor Yellow
     Start-Process powershell.exe -Verb RunAs -ArgumentList ("-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"")
     exit
 }
@@ -36,8 +38,8 @@ $categories = [ordered]@{
         @{ Name = "Zebar (Status Bar HTML/CSS)";     Id = "glzr-io.zebar" }
     )
     "Navegadores & Web" = @(
-        @{ Name = "Google Chrome";                   Id = "Google.Chrome" },
-        @{ Name = "Brave Browser";                   Id = "Brave.Brave" }
+        @{ Name = "Brave Browser";                   Id = "Brave.Brave" },
+        @{ Name = "Google Chrome";                   Id = "Google.Chrome" }
     )
     "Sistema, Busca & Utilitários de Elite" = @(
         @{ Name = "Everything (Busca em <1s)";       Id = "voidtools.Everything" },
@@ -45,10 +47,8 @@ $categories = [ordered]@{
         @{ Name = "NanaZip (7-Zip Moderno Win11)";   Id = "M2Team.NanaZip" },
         @{ Name = "WinRAR";                          Id = "RARLab.WinRAR" },
         @{ Name = "CopyQ (Clipboard Manager Pro)";   Id = "Hluk.CopyQ" },
-        @{ Name = "Lightshot (Screenshot Rápido)";   Id = "Skillbrains.Lightshot" },
         @{ Name = "Flameshot (Screenshot Avançado)"; Id = "Flameshot.Flameshot" },
         @{ Name = "f.lux (Descanso Ocular)";         Id = "FluxSoftware.Flux" },
-        @{ Name = "AnyDesk (Acesso Remoto)";         Id = "AnyDeskSoftwareGmbH.AnyDesk" },
         @{ Name = "AB Download Manager (IDM Moderno)"; Id = "ABDownloadManager.ABDownloadManager" }
     )
     "Produtividade & Gestão do Conhecimento" = @(
@@ -62,14 +62,8 @@ $categories = [ordered]@{
         @{ Name = "PotPlayer (Player Vídeo Leve)";   Id = "Daum.PotPlayer" },
         @{ Name = "VLC Media Player";                Id = "VideoLAN.VLC" },
         @{ Name = "mpv (Player Minimalista)";        Id = "shinchiro.mpv" },
-        @{ Name = "Stremio";                         Id = "SmartCode.Stremio" },
         @{ Name = "Spotify";                         Id = "Spotify.Spotify" },
         @{ Name = "qBittorrent";                     Id = "qBittorrent.qBittorrent" }
-    )
-    "Comunicação & Chat" = @(
-        @{ Name = "Vesktop (Discord Otimizado)";     Id = "Vencord.Vesktop" },
-        @{ Name = "Discord";                         Id = "Discord.Discord" },
-        @{ Name = "Kotatogram / Telegram Desktop";   Id = "Telegram.TelegramDesktop" }
     )
     "Jogos & Gerenciamento de Saves" = @(
         @{ Name = "Steam";                           Id = "Valve.Steam" },
@@ -82,36 +76,45 @@ $categories = [ordered]@{
         @{ Name = "Python 3.12";                     Id = "Python.Python.3.12" },
         @{ Name = "Node.js LTS";                     Id = "OpenJS.NodeJS.LTS" },
         @{ Name = "Visual Studio Code";              Id = "Microsoft.VisualStudioCode" },
-        @{ Name = "DBeaver (GUI Universal SQL)";     Id = "dbeaver.dbeaver" },
-        @{ Name = "Bruno (API Client / Postman)";    Id = "Usebruno.Bruno" }
+        @{ Name = "DBeaver (GUI Universal SQL)";     Id = "dbeaver.dbeaver" }
     )
-    "Virtualização & Hardware" = @(
-        @{ Name = "NVIDIA App (Drivers & Otimização)"; Id = "Nvidia.App" },
-        @{ Name = "AMD Software: Adrenalin Edition"; Id = "AdvancedMicroDevices.AMDSoftwareAdrenalinEdition" },
-        @{ Name = "Oracle VirtualBox";               Id = "Oracle.VirtualBox" },
-        @{ Name = "VMware Workstation Pro (Free)";   Id = "VMware.WorkstationPro" }
+    "Hardware & Otimização de GPU" = @(
+        @{ Name = "NVIDIA App (Drivers & Otimização)"; Id = "Nvidia.App" }
     )
 }
 
-Write-Host "Escolha como deseja prosseguir:" -ForegroundColor Yellow
-Write-Host " [0] Instalar Driver WinBtrfs (Montar e Reconhecer Disco D:\ BTRFS)"
-Write-Host " [1] Instalar STACK COMPLETO (GlazeWM + Dev Tools + Todos os programas)"
-Write-Host " [2] Instalar apenas Essenciais + Navegadores + Dev Tools (Sem Virtualização Pesada)"
-Write-Host " [3] Executar apenas Configuração do GlazeWM (Hyprland Style)"
-Write-Host " [4] Executar apenas Debloat e Otimização do Windows (Chris Titus WinUtil)"
-Write-Host " [5] Executar apenas Ativação Oficial Windows/Office (MAS - Massgrave)"
-Write-Host " [6] Sair"
-Write-Host " [7] Instalar apenas meu PACOTE ESSENCIAL (12 Programas Favoritos)"
-Write-Host " [8] Aplicar CORREÇÕES DE DUAL BOOT (Relógio UTC, Desativar Fast Startup, Proteger Limine)"
-Write-Host " [9] Instalar RUNTIMES DE JOGOS (Visual C++ AIO 2005-2022 + DirectX + .NET)"
-Write-Host " [10] DESATIVAR Windows Defender e Windows Update Definitivamente"
-Write-Host " [11] Configurar DEV STACK (Git + Chaves SSH + WSL 2 Otimizado + Antigravity)"
-Write-Host " [12] Redirecionar PASTAS DE USUÁRIO (Downloads, Documentos, Desktop) para D:\"
-Write-Host " [13] Aplicar ULTRA TUNING DE PERFORMANCE (Plano Máximo, Sem VBS, HAGS, Latência 0)"
+Write-Host "ROTEIRO SEQUENCIAL RECOMENDADO (EM ORDEM CRONOLÓGICA):" -ForegroundColor Yellow
 Write-Host ""
-$opcao = Read-Host "Digite a opção desejada (0-13)"
+Write-Host "--- [FASE 1: Reconhecimento do SSD, Dual Boot e Pastas] ---" -ForegroundColor Cyan
+Write-Host " [1] Instalar Driver WinBtrfs (Montar e Reconhecer Disco D:\ BTRFS)"
+Write-Host " [2] Aplicar Correções de Dual Boot (Relógio UTC, Desativar Fast Startup, Proteger Limine)"
+Write-Host " [3] Redirecionar Pastas do Usuário (Downloads, Documentos, Desktop) para D:\"
+Write-Host ""
+Write-Host "--- [FASE 2: Programas Essenciais, Runtimes de Jogos e Dev Stack] ---" -ForegroundColor Green
+Write-Host " [4] Instalar PACOTE ESSENCIAL (15 Apps: Brave, NVIDIA, AB Download, Anki, etc.)"
+Write-Host " [5] Instalar RUNTIMES DE JOGOS (Visual C++ AIO 2005-2022 + DirectX + .NET para Skyrim)"
+Write-Host " [6] Configurar DEV STACK (Git + Chaves SSH + WSL 2 Otimizado + Antigravity)"
+Write-Host ""
+Write-Host "--- [FASE 3: Ativação e Ultra Tuning de Performance] ---" -ForegroundColor Magenta
+Write-Host " [7] Ativação Oficial do Windows/Office (MAS - Massgrave)"
+Write-Host " [8] Aplicar ULTRA TUNING DE PERFORMANCE (Plano Máximo, Sem VBS, HAGS, Latência 0)"
+Write-Host " [9] Debloat e Otimização Avançada do Sistema (Chris Titus WinUtil)"
+Write-Host ""
+Write-Host "--- [OPÇÕES EXTRAS E UTILITÁRIOS] ---" -ForegroundColor DarkGray
+Write-Host " [10] Instalar STACK COMPLETO (GlazeWM + Dev Tools + Todos os 30+ programas)"
+Write-Host " [11] Configurar Apenas GlazeWM + Zebar (Tiling Window Manager Hyprland Style)"
+Write-Host " [12] Desativar Windows Defender e Windows Update Definitivamente"
+Write-Host " [13] Gerar Código do Brave Sync (25ª Palavra de Hoje no Clipboard)"
+Write-Host " [14] Sair"
+Write-Host ""
+$opcao = Read-Host "Digite o número da opção desejada (1-14)"
 
-if ($opcao -eq "0") {
+# =============================================================
+# TRATAMENTO DAS OPÇÕES DO MENU
+# =============================================================
+
+# [1] WinBtrfs
+if ($opcao -eq "1") {
     Write-Host "`nBaixando e instalando o driver WinBtrfs v1.10..." -ForegroundColor Cyan
     $btrfsZip = "$env:TEMP\btrfs-1.10.zip"
     $btrfsDir = "$env:TEMP\btrfs-driver"
@@ -120,7 +123,7 @@ if ($opcao -eq "0") {
     $infPath = Join-Path $btrfsDir "btrfs.inf"
     if (Test-Path $infPath) {
         pnputil.exe /add-driver $infPath /install
-        Write-Host "✓ Driver WinBtrfs instalado com sucesso! Reinicie o PC para o disco D:\ aparecer." -ForegroundColor Green
+        Write-Host "✓ Driver WinBtrfs instalado com sucesso! O disco D:\ aparecerá no Explorer." -ForegroundColor Green
     } else {
         Write-Error "Arquivo btrfs.inf não encontrado no pacote extraído."
     }
@@ -128,34 +131,8 @@ if ($opcao -eq "0") {
     exit
 }
 
-if ($opcao -eq "3") {
-    $configGlazeScript = Join-Path $PSScriptRoot "Configurar-GlazeWM.ps1"
-    if (Test-Path $configGlazeScript) {
-        & $configGlazeScript
-    } else {
-        Write-Error "Script de configuração do GlazeWM não encontrado."
-    }
-    exit
-}
-
-if ($opcao -eq "4") {
-    Write-Host "`nIniciando Chris Titus Tech WinUtil..." -ForegroundColor Cyan
-    irm https://christitus.com/win | iex
-    exit
-}
-
-if ($opcao -eq "5") {
-    Write-Host "`nIniciando Microsoft Activation Scripts (MAS)..." -ForegroundColor Cyan
-    irm https://massgrave.dev/get | iex
-    exit
-}
-
-if ($opcao -eq "6") {
-    Write-Host "Operação cancelada." -ForegroundColor Yellow
-    exit
-}
-
-if ($opcao -eq "8") {
+# [2] Correções de Dual Boot
+if ($opcao -eq "2") {
     $dualBootScript = Join-Path $PSScriptRoot "Configurar-DualBoot-Fixes.ps1"
     if (Test-Path $dualBootScript) {
         & $dualBootScript
@@ -165,37 +142,8 @@ if ($opcao -eq "8") {
     exit
 }
 
-if ($opcao -eq "9") {
-    $runtimesScript = Join-Path $PSScriptRoot "Instalar-Runtimes-Games.ps1"
-    if (Test-Path $runtimesScript) {
-        & $runtimesScript
-    } else {
-        Write-Error "Script Instalar-Runtimes-Games.ps1 não encontrado."
-    }
-    exit
-}
-
-if ($opcao -eq "10") {
-    $disablerScript = Join-Path $PSScriptRoot "Desativar-Defender-e-WindowsUpdate.ps1"
-    if (Test-Path $disablerScript) {
-        & $disablerScript
-    } else {
-        Write-Error "Script Desativar-Defender-e-WindowsUpdate.ps1 não encontrado."
-    }
-    exit
-}
-
-if ($opcao -eq "11") {
-    $devStackScript = Join-Path $PSScriptRoot "Instalar-DevStack-WSL.ps1"
-    if (Test-Path $devStackScript) {
-        & $devStackScript
-    } else {
-        Write-Error "Script Instalar-DevStack-WSL.ps1 não encontrado."
-    }
-    exit
-}
-
-if ($opcao -eq "12") {
+# [3] Redirecionar Pastas de Usuário
+if ($opcao -eq "3") {
     $moveFoldersScript = Join-Path $PSScriptRoot "Mover-Pastas-Usuario-Para-D.ps1"
     if (Test-Path $moveFoldersScript) {
         & $moveFoldersScript
@@ -205,13 +153,98 @@ if ($opcao -eq "12") {
     exit
 }
 
-if ($opcao -eq "13") {
+# [5] Runtimes de Jogos (Visual C++ AIO + DirectX + .NET)
+if ($opcao -eq "5") {
+    $runtimesScript = Join-Path $PSScriptRoot "Instalar-Runtimes-Games.ps1"
+    if (Test-Path $runtimesScript) {
+        & $runtimesScript
+    } else {
+        Write-Error "Script Instalar-Runtimes-Games.ps1 não encontrado."
+    }
+    exit
+}
+
+# [6] Dev Stack & WSL 2
+if ($opcao -eq "6") {
+    $devStackScript = Join-Path $PSScriptRoot "Instalar-DevStack-WSL.ps1"
+    if (Test-Path $devStackScript) {
+        & $devStackScript
+    } else {
+        Write-Error "Script Instalar-DevStack-WSL.ps1 não encontrado."
+    }
+    exit
+}
+
+# [7] Ativação MAS (Massgrave)
+if ($opcao -eq "7") {
+    Write-Host "`nIniciando Microsoft Activation Scripts (MAS)..." -ForegroundColor Cyan
+    irm https://massgrave.dev/get | iex
+    exit
+}
+
+# [8] Ultra Tuning de Performance
+if ($opcao -eq "8") {
     $ultraTuningScript = Join-Path $PSScriptRoot "Otimizar-Desempenho-Ultra.ps1"
     if (Test-Path $ultraTuningScript) {
         & $ultraTuningScript
     } else {
         Write-Error "Script Otimizar-Desempenho-Ultra.ps1 não encontrado."
     }
+    exit
+}
+
+# [9] Chris Titus WinUtil
+if ($opcao -eq "9") {
+    Write-Host "`nIniciando Chris Titus Tech WinUtil..." -ForegroundColor Cyan
+    irm https://christitus.com/win | iex
+    exit
+}
+
+# [11] Configurar GlazeWM
+if ($opcao -eq "11") {
+    $configGlazeScript = Join-Path $PSScriptRoot "Configurar-GlazeWM.ps1"
+    if (Test-Path $configGlazeScript) {
+        & $configGlazeScript
+    } else {
+        Write-Error "Script de configuração do GlazeWM não encontrado."
+    }
+    exit
+}
+
+# [12] Desativar Defender e Windows Update
+if ($opcao -eq "12") {
+    $disablerScript = Join-Path $PSScriptRoot "Desativar-Defender-e-WindowsUpdate.ps1"
+    if (Test-Path $disablerScript) {
+        & $disablerScript
+    } else {
+        Write-Error "Script Desativar-Defender-e-WindowsUpdate.ps1 não encontrado."
+    }
+    exit
+}
+
+# [13] Gerar Código do Brave Sync
+if ($opcao -eq "13") {
+    $braveSyncScript = Join-Path $PSScriptRoot "Obter-Codigo-Brave-Sync.ps1"
+    if (Test-Path $braveSyncScript) {
+        & $braveSyncScript
+    } else {
+        Write-Error "Script Obter-Codigo-Brave-Sync.ps1 não encontrado."
+    }
+    exit
+}
+
+# [14] Sair
+if ($opcao -eq "14") {
+    Write-Host "Operação cancelada." -ForegroundColor Yellow
+    exit
+}
+
+# =============================================================
+# INSTALAÇÃO VIA WINGET: PACOTE ESSENCIAL [4] OU STACK COMPLETO [10]
+# =============================================================
+if ($opcao -ne "4" -and $opcao -ne "10") {
+    Write-Host "Opção inválida." -ForegroundColor Red
+    pause
     exit
 }
 
@@ -224,28 +257,30 @@ if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
     exit
 }
 
-# Coleta lista de pacotes
 $selectedPackages = @()
-if ($opcao -eq "7") {
+
+if ($opcao -eq "4") {
+    # PACOTE ESSENCIAL (15 Softwares Selecionados de Elite)
     $selectedPackages = @(
-        @{ Name = "Anki";                Id = "Anki.Anki" },
-        @{ Name = "WinRAR";              Id = "RARLab.WinRAR" },
-        @{ Name = "PotPlayer";           Id = "Daum.PotPlayer" },
-        @{ Name = "VLC Media Player";    Id = "VideoLAN.VLC" },
-        @{ Name = "mpv";                 Id = "shinchiro.mpv" },
-        @{ Name = "ImageGlass";          Id = "DuongDieuPhap.ImageGlass" },
-        @{ Name = "qBittorrent";         Id = "qBittorrent.qBittorrent" },
-        @{ Name = "Foxit PDF Reader";    Id = "Foxit.FoxitReader" },
-        @{ Name = "Flameshot";           Id = "Flameshot.Flameshot" },
-        @{ Name = "CopyQ";               Id = "Hluk.CopyQ" },
-        @{ Name = "Spotify";             Id = "Spotify.Spotify" },
-        @{ Name = "f.lux";               Id = "FluxSoftware.Flux" }
+        @{ Name = "Brave Browser";                     Id = "Brave.Brave" },
+        @{ Name = "NVIDIA App (Drivers & GPU)";        Id = "Nvidia.App" },
+        @{ Name = "AB Download Manager (IDM Moderno)"; Id = "ABDownloadManager.ABDownloadManager" },
+        @{ Name = "Anki (Repetição Espaçada)";         Id = "Anki.Anki" },
+        @{ Name = "WinRAR";                            Id = "RARLab.WinRAR" },
+        @{ Name = "PotPlayer (Player Vídeo Leve)";     Id = "Daum.PotPlayer" },
+        @{ Name = "VLC Media Player";                  Id = "VideoLAN.VLC" },
+        @{ Name = "mpv (Player Minimalista)";          Id = "shinchiro.mpv" },
+        @{ Name = "ImageGlass (Visualizador Fotos)";   Id = "DuongDieuPhap.ImageGlass" },
+        @{ Name = "qBittorrent";                       Id = "qBittorrent.qBittorrent" },
+        @{ Name = "Foxit PDF Reader";                  Id = "Foxit.FoxitReader" },
+        @{ Name = "Flameshot (Captura de Tela Pro)";   Id = "Flameshot.Flameshot" },
+        @{ Name = "CopyQ (Clipboard Manager Pro)";     Id = "Hluk.CopyQ" },
+        @{ Name = "Spotify";                           Id = "Spotify.Spotify" },
+        @{ Name = "f.lux (Descanso Ocular)";           Id = "FluxSoftware.Flux" }
     )
-} else {
+} elseif ($opcao -eq "10") {
+    # STACK COMPLETO
     foreach ($cat in $categories.Keys) {
-        if ($opcao -eq "2" -and $cat -eq "Virtualização & Hardware") {
-            continue
-        }
         $selectedPackages += $categories[$cat]
     }
 }
@@ -280,37 +315,6 @@ Write-Host "=====================================================" -ForegroundCo
 Write-Host " Concluídos / Já Instalados : $sucessos" -ForegroundColor Green
 Write-Host " Falhas ou Pendentes        : $falhas" -ForegroundColor $(if ($falhas -gt 0) { "Yellow" } else { "Green" })
 Write-Host "=====================================================" -ForegroundColor Green
-
-# Se instalou o stack completo, oferece aplicar a config do GlazeWM
-Write-Host "`nDeseja aplicar a configuração Catppuccin Mocha ao GlazeWM agora? (S/N): " -ForegroundColor Yellow -NoNewline
-$glazeChoice = Read-Host
-if ($glazeChoice -match "^[sSyY]") {
-    $configGlazeScript = Join-Path $PSScriptRoot "Configurar-GlazeWM.ps1"
-    if (Test-Path $configGlazeScript) {
-        & $configGlazeScript
-    }
-}
-
-Write-Host "`nDeseja abrir o utilitário de Debloat (WinUtil) agora? (S/N): " -ForegroundColor Yellow -NoNewline
-$debloatChoice = Read-Host
-if ($debloatChoice -match "^[sSyY]") {
-    irm https://christitus.com/win | iex
-}
-
-Write-Host "`nDeseja abrir o script de Ativação do Windows/Office (MAS)? (S/N): " -ForegroundColor Yellow -NoNewline
-$masChoice = Read-Host
-if ($masChoice -match "^[sSyY]") {
-    irm https://massgrave.dev/get | iex
-}
-
-Write-Host "`nDeseja aplicar as Correções de Dual Boot (Relógio UTC, Desativar Fast Startup, Proteger Limine)? (S/N): " -ForegroundColor Yellow -NoNewline
-$dualChoice = Read-Host
-if ($dualChoice -match "^[sSyY]") {
-    $dualBootScript = Join-Path $PSScriptRoot "Configurar-DualBoot-Fixes.ps1"
-    if (Test-Path $dualBootScript) {
-        & $dualBootScript
-    }
-}
 
 Write-Host "`nSetup finalizado com sucesso! Pressione qualquer tecla para sair..." -ForegroundColor Cyan
 $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
