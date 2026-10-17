@@ -280,6 +280,11 @@ qr() {
 
 
 
+# 🔕 Notificações & Modo Não Perturbe (SwayNC)
+alias silence='notif mute'
+alias unsilence='notif unmute'
+alias dnd='notif'
+
 # Added by Antigravity CLI installer
 export PATH="$HOME/.local/bin:$PATH"
 

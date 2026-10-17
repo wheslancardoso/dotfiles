@@ -613,6 +613,11 @@ alias financas='apex-finance'
 alias fin-web='apex-web'
 alias apex-web='apex-web'
 
+# 🔕 Notificações & Modo Não Perturbe (SwayNC)
+alias silence='notif mute'
+alias unsilence='notif unmute'
+alias dnd='notif'
+
 
 # Keyring & Secrets Integration
 export GNOME_KEYRING_CONTROL="${GNOME_KEYRING_CONTROL:-$XDG_RUNTIME_DIR/keyring}"
