@@ -84,6 +84,10 @@ class SystemDoctor:
                 results["total_dirs"] += 1
                 continue
 
+            # Ignora pastas de dependências de código, ambientes virtuais e montagens virtuais
+            if any(part in item.parts for part in ["node_modules", ".git", ".venv", "__pycache__", "00_GoogleDrive"]):
+                continue
+
             results["total_files"] += 1
             name = item.name
 
