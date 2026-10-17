@@ -94,6 +94,7 @@ $categories = [ordered]@{
 }
 
 Write-Host "Escolha como deseja prosseguir:" -ForegroundColor Yellow
+Write-Host " [0] Instalar Driver WinBtrfs (Montar e Reconhecer Disco D:\ BTRFS)"
 Write-Host " [1] Instalar STACK COMPLETO (GlazeWM + Dev Tools + Todos os programas)"
 Write-Host " [2] Instalar apenas Essenciais + Navegadores + Dev Tools (Sem Virtualização Pesada)"
 Write-Host " [3] Executar apenas Configuração do GlazeWM (Hyprland Style)"
@@ -101,7 +102,24 @@ Write-Host " [4] Executar apenas Debloat e Otimização do Windows (Chris Titus 
 Write-Host " [5] Executar apenas Ativação Oficial Windows/Office (MAS - Massgrave)"
 Write-Host " [6] Sair"
 Write-Host ""
-$opcao = Read-Host "Digite a opção desejada (1-6)"
+$opcao = Read-Host "Digite a opção desejada (0-6)"
+
+if ($opcao -eq "0") {
+    Write-Host "`nBaixando e instalando o driver WinBtrfs v1.10..." -ForegroundColor Cyan
+    $btrfsZip = "$env:TEMP\btrfs-1.10.zip"
+    $btrfsDir = "$env:TEMP\btrfs-driver"
+    Invoke-WebRequest -Uri "https://github.com/maharmstone/btrfs/releases/download/v1.10/btrfs-1.10.zip" -OutFile $btrfsZip
+    Expand-Archive -Path $btrfsZip -DestinationPath $btrfsDir -Force
+    $infPath = Join-Path $btrfsDir "btrfs.inf"
+    if (Test-Path $infPath) {
+        pnputil.exe /add-driver $infPath /install
+        Write-Host "✓ Driver WinBtrfs instalado com sucesso! Reinicie o PC para o disco D:\ aparecer." -ForegroundColor Green
+    } else {
+        Write-Error "Arquivo btrfs.inf não encontrado no pacote extraído."
+    }
+    pause
+    exit
+}
 
 if ($opcao -eq "3") {
     $configGlazeScript = Join-Path $PSScriptRoot "Configurar-GlazeWM.ps1"
