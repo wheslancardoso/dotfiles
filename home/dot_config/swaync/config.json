@@ -34,51 +34,47 @@
       "dnd",
       "buttons-grid",
       "mpris",
-      "volume", 
-      "backlight",
+      "volume",
       "title",
       "notifications"
   ],
   "widget-config": {
       "title": {
-          "text": "Notifications",
+          "text": "Notificações",
           "clear-all-button": true,
-          "button-text": "Clear"
+          "button-text": "Limpar Tudo"
       },
       "dnd": {
-          "text": "Do Not Disturb"
+          "text": "Modo Não Perturbe"
       },
       "label": {
           "max-lines": 1,
-          "text": "Notification"
+          "text": "Notificação"
       },
       "mpris": {
-          "image-size": 96,
-          "image-radius": 8
+          "image-size": 84,
+          "image-radius": 12
       },
       "volume": {
           "label": "󰕾"
       },
-      "backlight": {
-          "label": "󰃟"
-      },
       "buttons-grid": {
           "actions": [
               {
-                  "label": "󰐥",
-                  "command": "bash -c $HOME/.config/hypr/scripts/Wlogout.sh"
-              },
-              {
                   "label": "󰌾",
                   "command": "bash -c $HOME/.config/hypr/scripts/LockScreen.sh"
+              },
+              {
+                  "label": "󰐥",
+                  "command": "bash -c $HOME/.config/hypr/scripts/Wlogout.sh"
               },
               {
                   "label": "󰍃",
                   "command": "hyprctl dispatch exit"
               },
               {
-                  "label": "󰀝",
-                  "command": "bash -c $HOME/.config/hypr/scripts/AirplaneMode.sh"
+                  "label": "󰖔",
+                  "command": "bash -c $HOME/.config/hypr/scripts/Hyprsunset.sh toggle"
               },
               {
                   "label": "󰝟",
