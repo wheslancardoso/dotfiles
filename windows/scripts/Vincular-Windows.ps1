@@ -1,10 +1,21 @@
-param(
-    [string]$DataDir = "D:\"
+﻿param(
+    [string]$DataDir = ""
 )
+
+if ([string]::IsNullOrWhiteSpace($DataDir) -or -not (Test-Path (Join-Path $DataDir "01_Pessoal_e_Vida"))) {
+    $btrfsVolumes = Get-Volume | Where-Object { $_.FileSystem -eq 'Btrfs' -and $_.DriveType -eq 'Fixed' }
+    foreach ($vol in $btrfsVolumes) {
+        if ($vol.DriveLetter -and (Test-Path "$($vol.DriveLetter):\01_Pessoal_e_Vida")) {
+            $DataDir = "$($vol.DriveLetter):\"
+            break
+        }
+    }
+    if ([string]::IsNullOrWhiteSpace($DataDir)) { $DataDir = "F:\" }
+}
 
 $DataDir = $DataDir.TrimEnd('\')
 
-Write-Host "Iniciando criacao de juncoes no Windows..." -ForegroundColor Cyan
+Write-Host "Iniciando criação de junções mestras no Windows (Unidade: $DataDir\)..." -ForegroundColor Cyan
 
 $mappings = @{
     "$env:USERPROFILE\Documentos_Mestre" = "$DataDir\01_Pessoal_e_Vida"
@@ -22,7 +33,7 @@ foreach ($link in $mappings.Keys) {
             Write-Host "  [EXISTE] $link já existe. Pulando." -ForegroundColor Yellow
         } else {
             cmd /c mklink /J "`"$link`"" "`"$target`"" | Out-Null
-            Write-Host "  [OK] Junção criada: $link -> $target" -ForegroundColor Green
+            Write-Host "  ✓ [OK] Junção criada: $link -> $target" -ForegroundColor Green
         }
     }
 }

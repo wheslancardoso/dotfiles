@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Gerador Automático da Frase de 25 Palavras do Brave Sync (com a 25ª palavra dinâmica do dia).
 .DESCRIPTION

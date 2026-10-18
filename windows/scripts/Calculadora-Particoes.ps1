@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Calculadora e Assistente de Particionamento de SSD/HD (Organizador Master).
 .DESCRIPTION

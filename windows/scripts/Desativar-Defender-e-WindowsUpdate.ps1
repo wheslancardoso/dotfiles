@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Script Definitivo para Desativar Windows Defender e Windows Update.
 .DESCRIPTION

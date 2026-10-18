@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Otimização Extrema de Performance, Latência e Resposta do Windows (Estilo Linux/Hyprland).
 .DESCRIPTION

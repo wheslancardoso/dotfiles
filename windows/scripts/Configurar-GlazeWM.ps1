@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Script de Instalação e Configuração Automática do GlazeWM (Hyprland Style no Windows).
 .DESCRIPTION

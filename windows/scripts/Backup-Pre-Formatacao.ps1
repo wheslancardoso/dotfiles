@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Script Automatizado de Backup Pré-Formatação para Windows.
 .DESCRIPTION

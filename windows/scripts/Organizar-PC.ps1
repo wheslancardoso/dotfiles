@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Script PowerShell para execução do Organizador Master no Windows.
 .DESCRIPTION

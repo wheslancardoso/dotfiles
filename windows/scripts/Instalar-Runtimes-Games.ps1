@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Instalação Automatizada de Runtimes Essenciais para Jogos, Modding (Skyrim AE) e Aplicações.
 .DESCRIPTION

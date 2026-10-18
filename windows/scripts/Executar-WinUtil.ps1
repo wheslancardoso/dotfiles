@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Inicia o utilitário oficial Chris Titus Tech Windows Utility (WinUtil).
 .DESCRIPTION

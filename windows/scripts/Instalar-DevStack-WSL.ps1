@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Script Automatizado para Configuração do Ambiente de Desenvolvimento (Git, Token GitHub, Dotfiles, SSH, WSL 2 e Antigravity).
 .DESCRIPTION
@@ -107,8 +107,22 @@ if (-not (Test-Path $dotfilesDir)) {
     git -C $dotfilesDir pull origin main
 }
 
-# Se o disco D:\ estiver acessível, clona ou sincroniza também em 04_Desenvolvimento_e_Codigo
-$devDDir = "D:\04_Desenvolvimento_e_Codigo"
+function Detect-FastDataDrive {
+    $btrfsVolumes = Get-Volume | Where-Object { $_.FileSystem -eq 'Btrfs' -and $_.DriveType -eq 'Fixed' }
+    foreach ($vol in $btrfsVolumes) {
+        if ($vol.DriveLetter) {
+            $r = "$($vol.DriveLetter):\"
+            if ((Test-Path "$r\01_Pessoal_e_Vida") -or (Test-Path "$r\00_Inbox_Triagem") -or (-not (Test-Path "$r\@"))) {
+                return "$($vol.DriveLetter):"
+            }
+        }
+    }
+    return "F:"
+}
+$dataDrive = Detect-FastDataDrive
+
+# Se o disco de dados estiver acessível, clona ou sincroniza também em 04_Desenvolvimento_e_Codigo
+$devDDir = "$dataDrive\04_Desenvolvimento_e_Codigo"
 if (Test-Path $devDDir) {
     $dDotfiles = Join-Path $devDDir "dotfiles"
     if (-not (Test-Path $dDotfiles)) {
@@ -126,7 +140,7 @@ if (-not (Test-Path $userSshDir)) {
     New-Item -ItemType Directory -Path $userSshDir -Force | Out-Null
 }
 
-$backupDir = "D:\06_Backups_ISOs_e_Sistemas\06.2_Backups_e_Snapshots"
+$backupDir = "$dataDrive\06_Backups_ISOs_e_Sistemas\06.2_Backups_e_Snapshots"
 $backupZip = Get-ChildItem -Path $backupDir -Filter "BACKUP_PRE_WINDOWS_*.zip" -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
 
 if ($backupZip) {
@@ -141,7 +155,7 @@ if ($backupZip) {
     }
     Remove-Item -Path $tempExtract -Recurse -Force -ErrorAction SilentlyContinue
 } else {
-    Write-Host "  ℹ Backup automático não encontrado em D:\. Prosseguindo..." -ForegroundColor DarkCyan
+    Write-Host "  ℹ Backup automático não encontrado em $dataDrive\. Prosseguindo..." -ForegroundColor DarkCyan
 }
 
 # -------------------------------------------------------------
@@ -205,7 +219,7 @@ Write-Host "  ✓ Script de pós-instalação do Ubuntu gerado em: $wslSetupScri
 # -------------------------------------------------------------
 # GOOGLE ANTIGRAVITY APP & PROJETOS
 # -------------------------------------------------------------
-$projectsDir = "D:\04_Desenvolvimento_e_Codigo"
+$projectsDir = "$dataDrive\04_Desenvolvimento_e_Codigo"
 if (Test-Path $projectsDir) {
     Write-Host "`n  ✓ Diretório de projetos canônico detectado: $projectsDir" -ForegroundColor Green
 } else {

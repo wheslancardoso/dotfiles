@@ -42,3 +42,10 @@ home/pictures/wallpapers/Dynamic-Wallpapers/Light/*
 !home/pictures/wallpapers/Northern Lights3.png
 !home/pictures/wallpapers/Dynamic-Wallpapers/Dark/Beach-Dark.png
 !home/pictures/wallpapers/Dynamic-Wallpapers/Light/Beach_light.png
+
+# Instaladores binários e arquivos sensíveis do setup Windows
+windows/scripts/*.exe
+windows/scripts/*.token*
+windows/scripts/github_token.txt
+*.exe
+

@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Script Definitivo de Otimização e Correções de Dual Boot (Windows + CachyOS Linux / Limine).
 .DESCRIPTION

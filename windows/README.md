@@ -9,16 +9,23 @@
 
 ```text
 ~/dotfiles/windows/
-├── README.md                           # Este guia
+├── CLIQUE_AQUI_APOS_INSTALAR_WINDOWS.bat # Atalho mestre (executar direto do pendrive ou repo)
+├── README.md                             # Este guia
+├── GUIA_POS_INSTALACAO_WINDOWS_E_SKYRIM.md # Roteiro de configuração de mods, dual boot e áudio
 ├── glazewm/
-│   └── config.yaml                     # Configuração do GlazeWM estilo Hyprland (Super + H/J/K/L)
+│   └── config.yaml                       # Configuração do GlazeWM estilo Hyprland (Super + H/J/K/L)
 └── scripts/
-    ├── Instalar-Programas-PC.bat / .ps1 # Setup mestre de programas, debloat e ativação
-    ├── Configurar-GlazeWM.bat / .ps1    # Instala e aplica a config do GlazeWM
-    ├── Backup-Pre-Formatacao.bat / .ps1 # Coleta chaves SSH, perfis e saves com Ludusavi
-    ├── Calculadora-Particoes.bat / .ps1 # Assistente de particionamento C: e D:
-    ├── Organizar-PC.ps1                 # Wrapper do organizador de arquivos no Windows
-    └── *.bat                            # Executáveis rápidos com 2 cliques
+    ├── Instalar-Programas-PC.bat / .ps1  # Central mestre interativa (15 opções em 3 fases lógicas)
+    ├── Instalar-Pacote-Essencial.bat / .ps1 # Instala os 15 programas essenciais via Winget
+    ├── Mover-Pastas-Usuario-Para-D.bat / .ps1 # Redireciona pastas para o SSD BTRFS/Dados
+    ├── Nomear-Discos.bat / .ps1          # Nomeia Windows_OS (C:), Dados (F:) e CachyOS_Linux (G:)
+    ├── Configurar-DualBoot-Fixes.bat / .ps1 # Relógio UTC, Fast Startup OFF e proteção do Limine
+    ├── Instalar-DevStack-WSL.bat / .ps1  # Git, Token PAT, Clone Dotfiles, SSH e WSL 2
+    ├── Configurar-GlazeWM.bat / .ps1     # Instala e aplica a config do GlazeWM + Zebar
+    ├── Backup-Pre-Formatacao.bat / .ps1  # Coleta chaves SSH, perfis e saves com Ludusavi
+    ├── Calculadora-Particoes.bat / .ps1  # Assistente de particionamento C: e D:
+    ├── Organizar-PC.ps1                  # Wrapper do organizador de arquivos no Windows
+    └── *.bat                             # Executáveis rápidos com 2 cliques (CRLF nativo)
 ```
 
 ---
@@ -26,9 +33,11 @@
 ## ⚡ Como Usar no Windows
 
 ### 1. Setup Automatizado Pós-Formatação (Com 2 Cliques)
-1. Abra a pasta `windows/scripts/`.
-2. Clique com botão direito em **`Instalar-Programas-PC.bat`** e execute como Administrador.
-3. Escolha a opção `[1]` para instalar o stack completo silenciosamente (Chrome, Brave, VS Code, Git, Python, Node, VLC, NanaZip, Flow Launcher, etc.).
+1. Dê dois cliques em **`CLIQUE_AQUI_APOS_INSTALAR_WINDOWS.bat`** (na raiz do pendrive ou na pasta `windows/`).
+2. Ele abrirá o menu mestre interativo em **3 fases cronológicas**:
+   - **FASE 1 (Reconhecimento do SSD & Pastas):** Instala o driver WinBtrfs, aplica correções de Dual Boot (UTC / Fast Startup) e redireciona suas pastas (Downloads, Documentos, Desktop) direto para o disco de dados BTRFS.
+   - **FASE 2 (Programas & Dev):** Instala o pacote essencial de 15 programas (Brave, NVIDIA App, AB Download, Anki, Spotify, etc.), runtimes de jogos para Skyrim e o Dev Stack (Git + WSL 2).
+   - **FASE 3 (Ativação & Otimização):** Ativação permanente oficial (MAS) e ultra tuning de performance para latência zero.
 
 ---
 

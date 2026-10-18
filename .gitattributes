@@ -1,0 +1,12 @@
+# Auto-detect text files and perform LF normalization by default
+* text=auto
+
+# Windows scripts MUST have CRLF line endings to prevent cmd.exe and powershell parsing errors
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Shell scripts and Linux dotfiles MUST have LF line endings
+*.sh text eol=lf
+*.zsh text eol=lf
+*.bash text eol=lf

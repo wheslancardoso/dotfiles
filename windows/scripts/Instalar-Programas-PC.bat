@@ -7,6 +7,6 @@ echo.
 echo Solicitando privilégios de administrador...
 echo.
 
-powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0\Instalar-Programas-PC.ps1"
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0Instalar-Programas-PC.ps1"
 
 pause

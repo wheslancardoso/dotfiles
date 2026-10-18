@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Script para REATIVAR o Windows Defender e o Windows Update (Reversão Segura).
 .DESCRIPTION

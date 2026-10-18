@@ -1,4 +1,4 @@
-# Setup Automatizado - Pacote Essencial (12 Programas)
+﻿# Setup Automatizado - Pacote Essencial (12 Programas)
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $Host.UI.RawUI.WindowTitle = "Instalador do Pacote Essencial - 12 Softwares"
 
@@ -19,6 +19,9 @@ Write-Host "=================================================================" -
 Write-Host ""
 
 $packages = @(
+    @{ Name = "Brave Browser";                     Id = "Brave.Brave" },
+    @{ Name = "NVIDIA App (Drivers & GPU)";        Id = "XP8CLZL93F5Z4P"; Source = "msstore" },
+    @{ Name = "AB Download Manager (IDM Moderno)"; Id = "amir1376.ABDownloadManager" },
     @{ Name = "Anki (Repetição Espaçada)";         Id = "Anki.Anki" },
     @{ Name = "WinRAR";                            Id = "RARLab.WinRAR" },
     @{ Name = "PotPlayer (Vídeo Leve & HDR)";      Id = "Daum.PotPlayer" },
@@ -28,12 +31,9 @@ $packages = @(
     @{ Name = "qBittorrent";                       Id = "qBittorrent.qBittorrent" },
     @{ Name = "Foxit PDF Reader";                  Id = "Foxit.FoxitReader" },
     @{ Name = "Flameshot (Captura de Tela Pro)";   Id = "Flameshot.Flameshot" },
-    @{ Name = "CopyQ (Clipboard Manager)";         Id = "Hluk.CopyQ" },
-    @{ Name = "Brave Browser";                     Id = "Brave.Brave" },
-    @{ Name = "AB Download Manager (IDM Moderno)"; Id = "ABDownloadManager.ABDownloadManager" },
-    @{ Name = "NVIDIA App (Drivers & Otimização)"; Id = "Nvidia.App" },
+    @{ Name = "CopyQ (Clipboard Manager)";         Id = "hluk.CopyQ" },
     @{ Name = "Spotify";                           Id = "Spotify.Spotify" },
-    @{ Name = "f.lux (Descanso Ocular)";           Id = "FluxSoftware.Flux" }
+    @{ Name = "f.lux (Descanso Ocular)";           Id = "flux.flux" }
 )
 
 $total = $packages.Count
@@ -42,7 +42,8 @@ $falhas = 0
 
 foreach ($pkg in $packages) {
     Write-Host "Instalando: $($pkg.Name) [$($pkg.Id)]..." -ForegroundColor Cyan
-    $proc = Start-Process -FilePath "winget" -ArgumentList "install --id $($pkg.Id) --exact --silent --accept-package-agreements --accept-source-agreements" -NoNewWindow -PassThru -Wait
+    $sourceArg = if ($pkg.Source) { "--source $($pkg.Source)" } else { "--exact" }
+    $proc = Start-Process -FilePath "winget" -ArgumentList "install --id $($pkg.Id) $sourceArg --silent --accept-package-agreements --accept-source-agreements" -NoNewWindow -PassThru -Wait
     if ($proc.ExitCode -eq 0 -or $proc.ExitCode -eq -1978335189) {
         Write-Host "✓ $($pkg.Name) instalado com sucesso!" -ForegroundColor Green
         $sucessos++
