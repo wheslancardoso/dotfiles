@@ -22,6 +22,7 @@
     ├── Configurar-DualBoot-Fixes.bat / .ps1 # Relógio UTC, Fast Startup OFF e proteção do Limine
     ├── Instalar-DevStack-WSL.bat / .ps1  # Git, Token PAT, Clone Dotfiles, SSH e WSL 2
     ├── Configurar-GlazeWM.bat / .ps1     # Instala e aplica a config do GlazeWM + Zebar
+    ├── Ativar-Windows-MAS.bat            # Ativação oficial permanente Windows e Office (MAS offline/online)
     ├── Backup-Pre-Formatacao.bat / .ps1  # Coleta chaves SSH, perfis e saves com Ludusavi
     ├── Calculadora-Particoes.bat / .ps1  # Assistente de particionamento C: e D:
     ├── Organizar-PC.ps1                  # Wrapper do organizador de arquivos no Windows

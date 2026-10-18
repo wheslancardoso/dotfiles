@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Script Mestre de Setup Automatizado para Windows — Stack Power User, Developer & Gaming.
 .DESCRIPTION
@@ -286,7 +286,49 @@ while ($true) {
         # [7] Ativação MAS (Massgrave)
         "7" {
             Write-Host "`nIniciando Microsoft Activation Scripts (MAS)..." -ForegroundColor Cyan
-            irm https://massgrave.dev/get | iex
+            $localMas = Join-Path $PSScriptRoot "MAS_AIO.cmd"
+            if (Test-Path $localMas) {
+                Write-Host "Executando versão local offline do MAS..." -ForegroundColor Green
+                Start-Process -FilePath "cmd.exe" -ArgumentList "/c `"$localMas`"" -Wait -Verb RunAs
+            } else {
+                $masExecuted = $false
+                try {
+                    Write-Host "Baixando script MAS via DoH seguro (Cloudflare)..." -ForegroundColor DarkCyan
+                    $scriptText = & curl.exe -s --doh-url https://1.1.1.1/dns-query https://get.activated.win | Out-String
+                    if ($scriptText -and $scriptText -match "Microsoft-Activation-Scripts") {
+                        Invoke-Expression $scriptText
+                        $masExecuted = $true
+                    }
+                } catch {
+                    Write-Warning "Falha na conexão DoH: $_"
+                }
+
+                if (-not $masExecuted) {
+                    try {
+                        Write-Host "Tentando conexão direta via irm..." -ForegroundColor DarkCyan
+                        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+                        irm https://get.activated.win | iex
+                        $masExecuted = $true
+                    } catch {
+                        Write-Warning "Conexão direta falhou (bloqueio DNS da operadora)."
+                    }
+                }
+
+                if (-not $masExecuted) {
+                    Write-Host "Baixando MAS_AIO.cmd oficial do GitHub..." -ForegroundColor Yellow
+                    $masTemp = "$env:TEMP\MAS_AIO.cmd"
+                    & curl.exe -s -L -o $masTemp "https://raw.githubusercontent.com/massgravel/Microsoft-Activation-Scripts/master/MAS/All-In-One-Version-KL/MAS_AIO.cmd"
+                    if ((Test-Path $masTemp) -and ((Get-Item $masTemp).Length -gt 50000)) {
+                        Write-Host "✓ MAS baixado com sucesso! Executando..." -ForegroundColor Green
+                        Start-Process -FilePath "cmd.exe" -ArgumentList "/c `"$masTemp`"" -Wait -Verb RunAs
+                        $masExecuted = $true
+                    }
+                }
+
+                if (-not $masExecuted) {
+                    Write-Error "Não foi possível carregar o MAS. Verifique sua conexão ou acesse https://massgrave.dev manualmente."
+                }
+            }
         }
 
         # [8] Ultra Tuning de Performance
