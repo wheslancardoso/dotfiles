@@ -5,14 +5,6 @@ echo    ATIVACAO OFICIAL WINDOWS E OFFICE (MAS - MASSGRAVE)
 echo =================================================================
 echo.
 
-if exist "%~dp0MAS_AIO.cmd" (
-    echo Iniciando versao local offline do MAS...
-    call "%~dp0MAS_AIO.cmd"
-    goto :fim
-)
+powershell -NoProfile -ExecutionPolicy Bypass -Command "& { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; try { irm https://get.activated.win | iex } catch { iex (curl.exe -s --doh-url https://1.1.1.1/dns-query https://get.activated.win | Out-String) } }"
 
-echo Baixando e iniciando MAS via conexao segura...
-powershell -NoProfile -ExecutionPolicy Bypass -Command "& { try { iex (curl.exe -s --doh-url https://1.1.1.1/dns-query https://get.activated.win | Out-String) } catch { irm https://get.activated.win | iex } }"
-
-:fim
 pause
