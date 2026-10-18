@@ -27,10 +27,6 @@ if (-not (Check-Admin)) {
 
 # Categorias Estruturadas de Softwares de Elite
 $categories = [ordered]@{
-    "Tiling Window Manager (Estilo Hyprland)" = @(
-        @{ Name = "GlazeWM (Tiling Window Manager)"; Id = "glzr-io.glazewm" },
-        @{ Name = "Zebar (Status Bar HTML/CSS)";     Id = "glzr-io.zebar" }
-    )
     "Navegadores & Web" = @(
         @{ Name = "Brave Browser";                   Id = "Brave.Brave" },
         @{ Name = "Google Chrome";                   Id = "Google.Chrome" }
@@ -40,8 +36,6 @@ $categories = [ordered]@{
         @{ Name = "Flow Launcher (Barra Spotlight)"; Id = "Flow-Launcher.Flow-Launcher" },
         @{ Name = "NanaZip (7-Zip Moderno Win11)";   Id = "M2Team.NanaZip" },
         @{ Name = "WinRAR";                          Id = "RARLab.WinRAR" },
-        @{ Name = "CopyQ (Clipboard Manager Pro)";   Id = "Hluk.CopyQ" },
-        @{ Name = "Flameshot (Screenshot Avançado)"; Id = "Flameshot.Flameshot" },
         @{ Name = "CopyQ (Clipboard Manager Pro)";   Id = "hluk.CopyQ" },
         @{ Name = "Flameshot (Screenshot Avançado)"; Id = "Flameshot.Flameshot" },
         @{ Name = "f.lux (Descanso Ocular)";         Id = "flux.flux" },
@@ -166,12 +160,13 @@ while ($true) {
     Write-Host " [12] Desativar Windows Defender e Windows Update Definitivamente"
     Write-Host " [13] Gerar Código do Brave Sync (25ª Palavra de Hoje no Clipboard)"
     Write-Host " [14] Nomear Discos no Explorer (Windows_OS, Dados, CachyOS_Linux)"
-    Write-Host " [15] Sair"
+    Write-Host " [15] Alternar Wallpaper do Arch (Night City, Lofi, Cyberpunk, etc.)"
+    Write-Host " [16] Sair"
     Write-Host ""
     
-    $opcao = Read-Host "Digite o número da opção desejada (1-15)"
+    $opcao = Read-Host "Digite o número da opção desejada (1-16)"
 
-    if ($opcao -eq "15") {
+    if ($opcao -eq "16") {
         Write-Host "`nSaindo da Suite de Setup. Até logo!" -ForegroundColor Yellow
         break
     }
@@ -397,8 +392,18 @@ while ($true) {
             }
         }
 
+        # [15] Alternar Wallpaper do Arch
+        "15" {
+            $wpScript = Join-Path $PSScriptRoot "Trocar-Wallpaper.ps1"
+            if (Test-Path $wpScript) {
+                & $wpScript
+            } else {
+                Write-Error "Script Trocar-Wallpaper.ps1 não encontrado."
+            }
+        }
+
         default {
-            Write-Host "`nOpção inválida: '$opcao'. Escolha entre 1 e 15." -ForegroundColor Red
+            Write-Host "`nOpção inválida: '$opcao'. Escolha entre 1 e 16." -ForegroundColor Red
         }
     }
 
