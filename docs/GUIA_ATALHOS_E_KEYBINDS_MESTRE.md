@@ -48,8 +48,9 @@
 | `Super + '` (grave) / `Super + U` | 💻 **Terminal Quake Dropdown Scratchpad** (Terminal suspenso rápido 0ms) |
 | `Super + Ctrl + Space` | Play / Pause do Spotify em segundo plano |
 | `Super + Ctrl + ]` / `[` | Próxima faixa / Faixa anterior do Spotify |
-| `Super + Shift + N` | Central de Notificações e Controle (**SwayNC** com Não Perturbe) |
-| `Super + N` | Luz Noturna / f.lux (Alternar Automático ↔ Pausar) |
+| `Super + N` | Central de Notificações e Controle (**SwayNC**) |
+| `Super + Shift + N` | **Silenciar / Habilitar Notificações** (Alternar Modo Não Perturbe / DND) |
+| `Super + Ctrl + N` | Luz Noturna / f.lux (Alternar Automático ↔ Pausar) |
 | `Super + Alt + N` | Menu de Presets de Luz Noturna (f.lux, 3800K, 3000K, 2400K) |
 | `Super + P` ou `Ctrl + Alt + P` | Menu de saída / Desligar / Reiniciar (**Wlogout**) |
 

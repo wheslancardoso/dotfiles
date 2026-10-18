@@ -73,8 +73,9 @@ SUPER + ALT + D	🚀 Hyprland	Baixar Vídeo/Música do Clipboard	Baixa mídias d
 SUPER + CTRL + D	🚀 Hyprland	Baixar Música Tocando Agora	Captura a faixa em reprodução no Spotify/Browser e faz download em MP3/FLAC.	baixar musica atual tocando agora spotify download	/home/lan/.config/hypr/scripts/media-download.sh --now
 SUPER + CTRL + C	🚀 Hyprland	Continuar Assistindo Séries/Filmes	Menu com histórico de episódios e animes para retomar de onde parou no MPV.	continuar assistindo series filmes animes historico mpv	/home/lan/dotfiles/scripts/continuar.sh --rofi
 SUPER + Shift + L	🚀 Hyprland	Letras Sincronizadas (Karaokê)	Exibe letras de músicas em tempo real sincronizadas com o som (sptlrx).	letras lyrics musica spotify amberol karaoke sincronizada sptlrx	/home/lan/.config/hypr/scripts/lyrics-toggle.sh
-SUPER + Shift + N	🚀 Hyprland	Central de Notificações SwayNC	Abre o painel lateral com histórico de alertas e controles rápidos.	notificacoes swaync avisos alertas central lateral	swaync-client -t -sw
-SUPER + N	🚀 Hyprland	Luz Noturna f.lux (Pausar/Retomar)	Alterna o filtro de luz azul para descanso visual noturno.	luz noturna flux filtro azul noite descanso visual	/home/lan/.config/hypr/scripts/Hyprsunset.sh toggle
+SUPER + N	🚀 Hyprland	Central de Notificações SwayNC	Abre ou fecha o painel lateral com histórico de alertas e controles rápidos.	notificacoes swaync avisos alertas central lateral painel	swaync-client -t -sw
+SUPER + Shift + N	🚀 Hyprland	Silenciar / Habilitar Notificações	Alterna instantaneamente o Modo Não Perturbe (DND) com feedback visual.	notificacoes silenciar mudo dnd nao perturbe mutar alertas	/home/lan/.config/hypr/scripts/Notifications.sh toggle
+SUPER + CTRL + N	🚀 Hyprland	Luz Noturna f.lux (Pausar/Retomar)	Alterna o filtro de luz azul para descanso visual noturno.	luz noturna flux filtro azul noite descanso visual	/home/lan/.config/hypr/scripts/Hyprsunset.sh toggle
 SUPER + ALT + N	🚀 Hyprland	Temperatura da Tela (Presets)	Escolha a temperatura de cor da tela (3000K, 4000K, 5000K).	temperatura tela cores calor quente fria luz noturna	/home/lan/.config/hypr/scripts/Hyprsunset.sh menu
 SUPER + W	🚀 Hyprland	WhatsApp Web Scratchpad	Abre ou oculta a janela suspensa flutuante do WhatsApp Web.	whatsapp zap mensagem web scratchpad chat conversa	/home/lan/.config/hypr/scripts/whatsapp-toggle.sh
 SUPER + CTRL + W	🚀 Hyprland	Mudar Wallpaper & Paleta Wallust	Seletor visual de papéis de parede com miniaturas que adapta as cores do sistema.	wallpaper papel de parede fundo wallust tema cores	/home/lan/.config/hypr/UserScripts/WallpaperSelect.sh
@@ -242,6 +243,7 @@ fin / financas	💰 Finanças	APEX Finance TUI (Cockpit Soberano)	Gestão financ
 pacup / safe-update	⚡ Terminal	Atualização Blindada do Sistema	Atualiza chaveiro PGP antes, previne quebras e atualiza pacotes oficiais e AUR.	pacup safe-update atualizar sistema update upgrade pacman yay	ghostty --class=safe-update -e bash /home/lan/dotfiles/scripts/safe-update.sh
 quickgui	🖥️ Máquinas Virtuais	QuickGUI (Windows 11 em VM KVM)	Interface gráfica para rodar e gerenciar máquinas virtuais KVM/QEMU com 1 clique.	quickgui quickemu vm maquina virtual windows kvm	quickgui
 emoji	😀 Emojis	Apex Emoji Engine via Terminal	Abre o seletor universal de emojis com busca inteligente em português do Brasil.	emoji carinha simbolo rofi seletor pt-br	/home/lan/dotfiles/home/dot_config/hypr/scripts/RofiEmoji.sh
+notif / silence	🔕 Notificações	Silenciar / Habilitar Notificações (DND)	Alterna ou controla o Modo Não Perturbe no SwayNC com feedback visual.	notif silence unsilence dnd silenciar nao perturbe notificacoes avisos	notif toggle
 EOF
 }
 
