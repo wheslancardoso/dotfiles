@@ -5,7 +5,7 @@
 ---
 ## 📑 Sumário de Estrutura do Modpack
 1. [Fundação e Carregadores (Loaders)](#1-fundação-e-carregadores-loaders)
-2. [Matador de Atritos: 31 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-31-mecânicas-irritantes-do-gta-sa-resolvidas)
+2. [Matador de Atritos: 32 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-32-mecânicas-irritantes-do-gta-sa-resolvidas)
 3. [Guia Cirúrgico: 100% do Jogo, Coletáveis no Radar & Ouro em Todas as Escolas](#3-guia-cirúrgico-100-do-jogo-coletáveis-no-radar--ouro-em-todas-as-escolas)
 4. [Gráficos de Última Geração (Pacote Otimizado para RTX / 4K)](#4-gráficos-de-última-geração-pacote-otimizado-para-rtx--4k)
 5. [Física Realista, Colisões & Deformação de Veículos](#5-física-realista-colisões--deformação-de-veículos)
@@ -25,10 +25,11 @@
 * **CLEO 4 + CLEO+ (`cleo/` + `cleo.asi` + `cleo_plus.asi`):** Suporte moderno a opcodes de scripts criados por Junior_Djjr.
 * **Open Limit Adjuster (OLA):** Remove travas da engine (limites de colisão, modelos, IDs).
 * **Proper Streaming (Lançado em 10/2026):** Quebra o teto de 32 bits de RAM com o *Texture Bridge*, eliminando mapa sumindo ou piscando com texturas em alta resolução.
+* **[MoonLoader v0.26+](https://www.mixmods.com.br/2020/10/moonloader/) + [ModLoader Support for MoonLoader](https://www.mixmods.com.br/2020/10/modloader-support-for-moonloader-mods-lua-no-modloader/):** Carregador moderno de scripts em Lua que roda isolado dentro do ModLoader sem poluir a pasta raiz do jogo.
 
 ---
 
-## 2. Matador de Atritos: 31 Mecânicas Irritantes do GTA SA Resolvidas
+## 2. Matador de Atritos: 32 Mecânicas Irritantes do GTA SA Resolvidas
 *Como resolver cada frustração clássica de gameplay usando o MixSets e mods dedicados.*  
 *(Um perfil pronto e customizado foi gerado e salvo em [`MixSets_Otimizado.ini`](file:///home/lanwsl/dotfiles/MixSets_Otimizado.ini) com desfoque de movimento, calor e atritos 100% desativados).*
 
@@ -65,6 +66,7 @@
 | **29** | **Tiros batendo em paredes invisíveis** (quinas de prédios e muretas com colisão estendida no ar e cercas de arame bloqueando balas como concreto). | Recorta as caixas de colisão de mais de 10.000 objetos milimetricamente no contorno visual e permite tiros através de grades e cercas. | [Proper Fixes v2.1.1](https://www.mixmods.com.br/2026/06/sa-proper-fixes/) + *Shooting Through Fences Fix* |
 | **30** | **Empilhadeira da missão do Ryder (*Robbing Uncle Sam*)** com garfo travado no Numpad e caixas escorregando e caindo ao carregar 2 ao mesmo tempo. | Remapeia a elevação do garfo para Shift/Espaço, adiciona atrito estático nas caixas para não escorregarem nas curvas e Ryder ganha IA defensiva para não morrer. | [Proper Fixes](https://www.mixmods.com.br/2026/06/sa-proper-fixes/) + [Story Mode v2.0](https://www.mixmods.com.br/2022/11/story-mode/) |
 | **31** | **Lança-mísseis lerdo e frustrante** (missão da plantação de maconha do The Truth — *Are You Going to San Fierro?* com o helicóptero da polícia) e **trava de mira lerda do caça Hydra e helicóptero Hunter**. | Reduz o lock-on do Hydra de 1000ms para 150ms no MixSets, mísseis ganham física supersônica e curva de perseguição realista contra aeronaves, e mira livre em 3ª pessoa para armas pesadas sem câmera travada. | [SA] Missile by Ryosuke839 + **MixSets.ini** (`HydraLockDelay = 150`, `HydraRocketDelay = 150`, `NoHydraSpeedLimit = 1`) + *Third Person Aiming for Heavy Weapons* |
+| **32** | **Alcance ridículo da Sniper Rifle** (pedestres e veículos somem na mira telescópica a ~100 metros e balas não causam dano à longa distância). | Aumenta o raio de renderização de alvos e o alcance balístico do projétil na mira da Sniper em até 10x, permitindo tiros de precisão de topos de arranha-céus e montanhas. | [Sniper Distance Fix](https://www.mixmods.com.br/2018/09/sniper-distance-fix-aumentar-alcance-da-sniper/) |
 
 ---
 
@@ -184,6 +186,21 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
 * **[Bullet Tracers & Dynamic Recoil (FxsFuncs)]:**
   - Balas deixam rastro balístico luminoso visível (*tracers*).
   - Recuo vertical real e progressivo nos disparos, exigindo controle fino de mira e disparos em rajada.
+
+---
+
+### E. Miras de Alta Precisão, Ícones HD & Feedback de Tiro
+* **[CustomCrosshairs v2.0](https://www.mixmods.com.br/2022/04/customcrosshairs-personalizar-miras/):**
+  - Elimina o círculo verde esticado e pixelizado original em telas 16:9 / 4K.
+  - Permite retículos dedicados por classe de arma: ponto holográfico (*red dot*) para pistolas, retículo militar tático para fuzis M4/AK, e retículo balístico mil-dot com escala correta para snipers.
+* **[Crosshairs Pack (300+ Miras & 46 Discos de Radar)](https://www.mixmods.com.br/2018/08/crosshairs-mais-de-300-miras-e-46-discos-de-radar-pack-colecao/):**
+  - Coleção completa de texturas de miras customizadas em alta definição prontas para uso com o CustomCrosshairs.
+* **[nadalao Weapon Icons (Ícones HD Fiéis Corrigidos)](https://www.mixmods.com.br/2022/02/icones-de-armas-fieis-desenhos-corrigidos/):**
+  - Redesenha todos os ícones de armas do HUD em alta resolução, corrigindo erros anatômicos históricos da Rockstar (cano da MP5, silhueta truncada da Sniper, proporções de escopeta).
+* **[Sniper Distance Fix](https://www.mixmods.com.br/2018/09/sniper-distance-fix-aumentar-alcance-da-sniper/):**
+  - Remove o limite artificial de alcance da mira telescópica (~100m). O tiro e a renderização de alvos acompanham o alcance visual de centenas de metros.
+* **[Hit Indicator (Damage Indicator / Hitmarker Tático)](https://www.mixmods.com.br/2016/09/iii-vc-hit-indicator-mudar-mira-ao-acertar/):**
+  - Adiciona o marcador dinâmico em X na mira ao acertar disparos e indicação vermelha em tiros fatais na cabeça (*headshots*), estilo GTA V e shooters modernos.
 
 ---
 
