@@ -33,6 +33,8 @@
     memberBadge: "#sponsor-comment-badge",
     authorBadgeOwner: "#author-comment-badge",
     editedBadge: "#published-time-text .edited",
+    replyCount: "#more-replies span, #replies #expander-contents #more-text",
+    continuationLoader: "ytd-comments#comments ytd-continuation-item-renderer, #comments #contents > ytd-continuation-item-renderer, ytd-item-section-renderer ytd-continuation-item-renderer",
   };
 
   function delay(ms) {
@@ -86,6 +88,25 @@
     }
     const num = parseInt(str, 10);
     return isNaN(num) ? 0 : num;
+  }
+
+  function parseReportedCommentCount() {
+    const selectors = [
+      "ytd-comments-header-renderer #count yt-formatted-string span:first-child",
+      "ytd-comments-header-renderer #count .count-text",
+      "#comments #count yt-formatted-string",
+      "#comments #title yt-formatted-string",
+      "#count.ytd-comments-header-renderer",
+    ];
+    for (const sel of selectors) {
+      const el = document.querySelector(sel);
+      if (el && el.textContent) {
+        const clean = el.textContent.replace(/\./g, "").replace(/,/g, "").trim();
+        const match = clean.match(/\d+/);
+        if (match) return parseInt(match[0], 10);
+      }
+    }
+    return 0;
   }
 
   function parseComment(commentEl, isReply = false) {
@@ -175,52 +196,22 @@
 
   async function scrollToComments() {
     let section = document.querySelector(SELECTORS.commentsSection);
-    if (!section) {
-      window.scrollTo(0, 750);
-      await delay(1200);
+    const scrollTargets = [600, 950, 1350, 1800];
+    let idx = 0;
+
+    while (!section && idx < scrollTargets.length) {
+      window.scrollTo({ top: scrollTargets[idx], behavior: "smooth" });
+      await delay(800);
       section = document.querySelector(SELECTORS.commentsSection);
+      idx++;
     }
+
     if (section) {
       section.scrollIntoView({ behavior: "smooth", block: "start" });
-      await delay(800);
+      await delay(1000);
       return true;
     }
     return false;
-  }
-
-  // Expand replies for a specific thread element
-  async function expandThreadReplies(thread, throttle) {
-    const threadKey = thread.getAttribute("id") || thread.querySelector("#comment")?.textContent?.substring(0, 50);
-    if (expandedThreadIds.has(threadKey)) return;
-
-    // Click "View replies" button
-    const replyButtons = thread.querySelectorAll(SELECTORS.replyButton);
-    for (const btn of replyButtons) {
-      if (btn && !shouldStop) {
-        btn.click();
-        await delay(throttle);
-      }
-    }
-
-    // Expand additional replies pagination ("Show more replies")
-    let moreReplies = thread.querySelector(SELECTORS.showMoreReplies);
-    let attempts = 0;
-    while (moreReplies && !shouldStop && attempts < 30) {
-      moreReplies.click();
-      await delay(throttle);
-      moreReplies = thread.querySelector(SELECTORS.showMoreReplies);
-      attempts++;
-    }
-
-    // Expand "Read more" truncated text expanders
-    const expanders = thread.querySelectorAll(SELECTORS.commentExpander);
-    for (const exp of expanders) {
-      if (exp && exp.offsetParent !== null) {
-        exp.click();
-      }
-    }
-
-    expandedThreadIds.add(threadKey);
   }
 
   function pauseVideoPlayer() {
@@ -250,7 +241,7 @@
       );
       if (!sortBtn) return;
       sortBtn.click();
-      await delay(400);
+      await delay(450);
 
       const menuItems = document.querySelectorAll(
         "tp-yt-paper-listbox ytd-menu-service-item-renderer, tp-yt-paper-listbox a, tp-yt-paper-item, ytd-menu-service-item-renderer"
@@ -260,7 +251,7 @@
         if (txt.includes("recent") || txt.includes("newest")) {
           item.click();
           console.log("[YT Extractor] Ordenação alternada para 'Mais recentes primeiro'.");
-          await delay(1200);
+          await delay(2000); // Aguarda o YouTube reconstruir a lista no DOM
           break;
         }
       }
@@ -281,13 +272,13 @@
     }).catch(() => {});
   });
 
-  // Main Streaming Extraction Loop
+  // Main Streaming Extraction Loop (Arquitetura 2 Fases Soberana)
   async function runStreamingExtraction(options) {
     const { videoId, throttle = 600, maxComments = 0, autoPause = true, sortOrder = "newest" } = options;
     isRunning = true;
     shouldStop = false;
 
-    console.log("[YT Extractor] Starting streaming extraction for video:", videoId);
+    console.log("[YT Extractor] Iniciando extração exaustiva de 2 fases para vídeo:", videoId);
 
     // Auto-pause video to save CPU/GPU/RAM
     if (autoPause) {
@@ -326,7 +317,7 @@
         isRunning = false;
         return;
       }
-      console.warn("[YT Extractor] Seção de comentários não detectada ainda.");
+      console.warn("[YT Extractor] Seção de comentários demorou a responder, prosseguindo com busca profunda.");
     }
 
     // Apply Sort Order (Mais recentes primeiro)
@@ -334,9 +325,6 @@
       await applySortOrder("newest");
     }
 
-    let previousThreadsCount = 0;
-    let sameCountAttempts = 0;
-    const maxSameCount = 6;
     let totalExtractedRoots = 0;
     let pendingBatch = [];
 
@@ -354,11 +342,21 @@
       }
     }
 
+    // =========================================================================
+    // FASE 1: ROLAGEM EXAUSTIVA & STREAMING DOS COMENTÁRIOS PRINCIPAIS (ROOTS)
+    // =========================================================================
+    let previousThreadsCount = 0;
+    let stallCount = 0;
+    const maxStallAttempts = 22; // Tolerância estendida contra latência e throttling de rede
+    const expectedTotal = parseReportedCommentCount();
+
+    console.log(`[YT Extractor] FASE 1 iniciada. Total informado pelo YouTube: ${expectedTotal || "desconhecido"}`);
+
     while (!shouldStop) {
       const threadElements = document.querySelectorAll(SELECTORS.commentThread);
       const currentThreadsCount = threadElements.length;
 
-      // Process newly discovered threads
+      // Extrai novos comentários principais encontrados no DOM
       for (let i = 0; i < threadElements.length && !shouldStop; i++) {
         const thread = threadElements[i];
         const mainCommentEl = thread.querySelector("#comment");
@@ -368,20 +366,164 @@
         if (!mainComment) continue;
 
         const rootId = mainComment.rawId || mainComment.id;
-
-        // Check if we need to expand replies
-        await expandThreadReplies(thread, Math.min(400, throttle));
-
-        // Add root comment if not yet known
         if (!knownCommentIds.has(rootId)) {
           knownCommentIds.add(rootId);
           pendingBatch.push(mainComment);
           totalExtractedRoots++;
         }
 
-        // Process replies in thread
+        // Streaming contínuo a cada 20 itens para o IndexedDB
+        if (pendingBatch.length >= 20) {
+          const pct = maxComments > 0
+            ? Math.min(60, (totalExtractedRoots / maxComments) * 60)
+            : expectedTotal > 0
+            ? Math.min(60, (totalExtractedRoots / expectedTotal) * 60)
+            : 30;
+          await flushBatch(
+            pct,
+            `Carregando comentários principais... (${totalExtractedRoots}${expectedTotal > 0 ? ` / ~${expectedTotal}` : ""} salvos)`
+          );
+        }
+
+        if (maxComments > 0 && totalExtractedRoots >= maxComments) {
+          break;
+        }
+      }
+
+      if (maxComments > 0 && totalExtractedRoots >= maxComments) {
+        console.log("[YT Extractor] Limite máximo de comentários atingido na Fase 1.");
+        break;
+      }
+
+      // Localiza o carregador de continuação do YouTube no DOM
+      const continuationLoader = document.querySelector(SELECTORS.continuationLoader);
+
+      if (currentThreadsCount === previousThreadsCount) {
+        stallCount++;
+
+        if (continuationLoader) {
+          // O elemento de continuação ainda está no DOM: O YouTube tem mais comentários!
+          // Desperta o IntersectionObserver com scroll wiggle
+          window.scrollBy({ top: -350, behavior: "smooth" });
+          await delay(180);
+          continuationLoader.scrollIntoView({ behavior: "smooth", block: "center" });
+          window.dispatchEvent(new Event("scroll"));
+
+          const pct = maxComments > 0
+            ? Math.min(60, (totalExtractedRoots / maxComments) * 60)
+            : expectedTotal > 0
+            ? Math.min(60, (totalExtractedRoots / expectedTotal) * 60)
+            : 35;
+          await flushBatch(
+            pct,
+            `Aguardando YouTube carregar mais comentários... (${currentThreadsCount} carregados, tentativa ${stallCount}/${maxStallAttempts})`
+          );
+
+          await delay(Math.min(1600, throttle + stallCount * 70));
+
+          if (stallCount >= maxStallAttempts) {
+            console.warn("[YT Extractor] Timeout aguardando continuação após várias tentativas.");
+            break;
+          }
+        } else {
+          // Nenhum continuationLoader: se persistir por 3 verificações, o YouTube encerrou os comentários
+          if (stallCount >= 3) {
+            console.log("[YT Extractor] Fim dos comentários principais detectado (continuationLoader ausente).");
+            break;
+          }
+          window.scrollTo(0, document.documentElement.scrollHeight);
+          await delay(throttle);
+        }
+      } else {
+        stallCount = 0;
+        previousThreadsCount = currentThreadsCount;
+
+        if (continuationLoader) {
+          continuationLoader.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else {
+          window.scrollTo(0, document.documentElement.scrollHeight);
+        }
+        await delay(throttle);
+      }
+    }
+
+    // Flush de encerramento da Fase 1
+    await flushBatch(
+      65,
+      `Comentários principais carregados (${totalExtractedRoots} tópicos). Iniciando expansão de respostas...`
+    );
+
+    // =========================================================================
+    // FASE 2: EXPANSÃO EXAUSTIVA DE RESPOSTAS (REPLIES) & STREAMING
+    // =========================================================================
+    if (!shouldStop) {
+      const allThreads = Array.from(document.querySelectorAll(SELECTORS.commentThread));
+      
+      const threadsWithReplies = allThreads.filter((t) => {
+        const hasReplyBtn = t.querySelector(SELECTORS.replyButton) !== null;
+        const hasRepliesContainer = t.querySelector(SELECTORS.repliesRenderer) !== null;
+        return hasReplyBtn || hasRepliesContainer;
+      });
+
+      console.log(`[YT Extractor] FASE 2: ${threadsWithReplies.length} tópicos com respostas identificados de ${allThreads.length} totais.`);
+
+      let totalRepliesFound = 0;
+
+      for (let i = 0; i < threadsWithReplies.length && !shouldStop; i++) {
+        const thread = threadsWithReplies[i];
+
+        // 1. Rola o thread para o centro (indispensável para o YouTube renderizar e buscar respostas)
+        thread.scrollIntoView({ behavior: "smooth", block: "center" });
+        await delay(120);
+
+        // 2. Clica no botão "Ver respostas" se presente
+        const replyButtons = thread.querySelectorAll(SELECTORS.replyButton);
+        for (const btn of replyButtons) {
+          if (btn && btn.offsetParent !== null && !shouldStop) {
+            btn.click();
+            await delay(throttle);
+          }
+        }
+
+        // 3. Pagina "Mostrar mais respostas" até esgotar
+        let moreReplies = thread.querySelector(SELECTORS.showMoreReplies);
+        let moreAttempts = 0;
+        let prevReplyCount = 0;
+        let sameReplyCount = 0;
+
+        while (moreReplies && !shouldStop && moreAttempts < 50) {
+          const clickTarget = moreReplies.querySelector("button") || moreReplies;
+          clickTarget.click();
+          await delay(throttle);
+
+          const currentReplyElements = thread.querySelectorAll(SELECTORS.commentRenderer);
+          if (currentReplyElements.length === prevReplyCount) {
+            sameReplyCount++;
+            if (sameReplyCount >= 2) break; // Botão travado ou sem novas respostas
+          } else {
+            sameReplyCount = 0;
+          }
+
+          prevReplyCount = currentReplyElements.length;
+          moreReplies = thread.querySelector(SELECTORS.showMoreReplies);
+          moreAttempts++;
+        }
+
+        // 4. Clica em expansores de texto "Ler mais" deste thread
+        const expanders = thread.querySelectorAll(SELECTORS.commentExpander);
+        for (const exp of expanders) {
+          if (exp && exp.offsetParent !== null) {
+            exp.click();
+          }
+        }
+
+        // 5. Extrai as respostas deste thread
+        const mainCommentEl = thread.querySelector("#comment");
+        const mainComment = parseComment(mainCommentEl, false);
+        const rootId = mainComment ? (mainComment.rawId || mainComment.id) : null;
+
         const repliesContainer = thread.querySelector(SELECTORS.repliesRenderer);
-        if (repliesContainer) {
+        if (repliesContainer && rootId) {
           const replyEls = repliesContainer.querySelectorAll(SELECTORS.commentRenderer);
           for (const repEl of replyEls) {
             const rep = parseComment(repEl, true);
@@ -391,66 +533,45 @@
                 knownCommentIds.add(repId);
                 rep.parentId = rootId;
                 pendingBatch.push(rep);
+                totalRepliesFound++;
               }
             }
           }
         }
 
-        // Flush batch every 15 items for silky smooth streaming into IndexedDB
-        if (pendingBatch.length >= 15) {
-          const pct = maxComments > 0 ? Math.min(95, (totalExtractedRoots / maxComments) * 100) : 50;
-          await flushBatch(pct, `Coletando... (${knownCommentIds.size} salvos no DB)`);
-        }
-
-        if (maxComments > 0 && totalExtractedRoots >= maxComments) {
-          break;
+        // Flush periódico para streaming no IndexedDB
+        if (pendingBatch.length >= 15 || i === threadsWithReplies.length - 1) {
+          const pct = Math.min(98, 65 + Math.round(((i + 1) / threadsWithReplies.length) * 33));
+          await flushBatch(
+            pct,
+            `Expandindo respostas (${i + 1}/${threadsWithReplies.length} tópicos)... ${knownCommentIds.size} no banco (${totalRepliesFound} respostas)`
+          );
         }
       }
-
-      // Check limits
-      if (maxComments > 0 && totalExtractedRoots >= maxComments) {
-        await flushBatch(100, `Limite atingido (${totalExtractedRoots} comentários)`);
-        break;
-      }
-
-      // Check bottom termination condition
-      if (currentThreadsCount === previousThreadsCount) {
-        sameCountAttempts++;
-        if (sameCountAttempts >= maxSameCount) {
-          await flushBatch(100, `Todos os comentários foram carregados`);
-          break;
-        }
-      } else {
-        sameCountAttempts = 0;
-      }
-
-      previousThreadsCount = currentThreadsCount;
-
-      // Scroll down for more comments
-      window.scrollTo(0, document.documentElement.scrollHeight);
-      await delay(throttle);
-
-      await flushBatch(
-        maxComments > 0 ? Math.min(90, (totalExtractedRoots / maxComments) * 100) : 60,
-        `Rolando página... (${knownCommentIds.size} comentários no banco)`
-      );
     }
 
-    // Final flush
-    await flushBatch(100, shouldStop ? "Extração pausada/interrompida" : "Extração concluída!");
+    // =========================================================================
+    // FASE 3: CONSOLIDAÇÃO & ENCERRAMENTO
+    // =========================================================================
+    await flushBatch(100, shouldStop ? "Extração pausada/interrompida" : "Extração concluída com sucesso!");
 
     chrome.runtime.sendMessage({
       action: "commentsBatch",
       videoId,
       videoInfo: getVideoInfo(),
       comments: [],
-      progress: { percentage: 100, message: shouldStop ? "Parado" : "Concluído!" },
+      progress: {
+        percentage: 100,
+        message: shouldStop
+          ? `Parado pelo usuário (${knownCommentIds.size} comentários e respostas salvos)`
+          : `Concluído! ${knownCommentIds.size} comentários e respostas salvos no banco.`
+      },
       isFinished: true,
       stoppedReason: shouldStop,
     });
 
     isRunning = false;
-    console.log("[YT Extractor] Streaming extraction finished. Total IDs indexed:", knownCommentIds.size);
+    console.log("[YT Extractor] Processo finalizado com sucesso. Total de IDs indexados:", knownCommentIds.size);
   }
 
   // Chrome Runtime Messaging Listener

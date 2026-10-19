@@ -64,12 +64,27 @@ sequenceDiagram
     Dev->>Dash: Clica em "Iniciar Extração"
     Dash->>Cont: chrome.tabs.sendMessage("startExtraction", { options })
     Cont->>Cont: autoPauseVideo() + applySortOrder("newest")
-    loop Loop de Rolagem e Captura em Lote (Streaming)
-        Cont->>Cont: Expande respostas do thread + extrai dados
-        Cont->>Dash: chrome.runtime.sendMessage("commentsBatch", { batch, progress })
-        Dash->>IDB: upsertCommentsBatch(videoId, batch)
-        Dash->>Dash: Atualiza contadores e feed ao vivo
+    
+    rect rgb(20, 30, 45)
+        note over Cont, Dash: FASE 1: Rolagem Exaustiva de Comentários Principais (Roots)
+        loop Auto-Scroll Contínuo & Wiggle Recovery
+            Cont->>Cont: Rola continuation-loader + extrai roots recém-descobertos
+            Cont->>Dash: chrome.runtime.sendMessage("commentsBatch", { batch, progress })
+            Dash->>IDB: upsertCommentsBatch(videoId, batch)
+            Dash->>Dash: Atualiza métricas e feed ao vivo
+        end
     end
+
+    rect rgb(30, 20, 45)
+        note over Cont, Dash: FASE 2: Expansão Exaustiva de Respostas (Replies)
+        loop Thread por Thread com Respostas
+            Cont->>Cont: scrollIntoView() + Clica "Ver respostas" + Pagina "Mostrar mais"
+            Cont->>Dash: chrome.runtime.sendMessage("commentsBatch", { replyBatch, progress })
+            Dash->>IDB: upsertCommentsBatch(videoId, replyBatch)
+            Dash->>Dash: Atualiza contadores de respostas
+        end
+    end
+
     Cont->>Dash: chrome.runtime.sendMessage("commentsBatch", { isFinished: true })
 ```
 
