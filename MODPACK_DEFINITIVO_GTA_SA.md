@@ -5,7 +5,7 @@
 ---
 ## 📑 Sumário de Estrutura do Modpack
 1. [Fundação e Carregadores (Loaders)](#1-fundação-e-carregadores-loaders)
-2. [Matador de Atritos: 21 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-21-mecânicas-irritantes-do-gta-sa-resolvidas)
+2. [Matador de Atritos: 28 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-28-mecânicas-irritantes-do-gta-sa-resolvidas)
 3. [Guia Cirúrgico: 100% do Jogo, Coletáveis no Radar & Ouro em Todas as Escolas](#3-guia-cirúrgico-100-do-jogo-coletáveis-no-radar--ouro-em-todas-as-escolas)
 4. [Gráficos de Última Geração (Pacote Otimizado para RTX / 4K)](#4-gráficos-de-última-geração-pacote-otimizado-para-rtx--4k)
 5. [Física Realista, Colisões & Deformação de Veículos](#5-física-realista-colisões--deformação-de-veículos)
@@ -27,7 +27,7 @@
 
 ---
 
-## 2. Matador de Atritos: 21 Mecânicas Irritantes do GTA SA Resolvidas
+## 2. Matador de Atritos: 28 Mecânicas Irritantes do GTA SA Resolvidas
 *Como resolver cada frustração clássica de gameplay usando o MixSets e mods dedicados.*  
 *(Um perfil pronto e customizado foi gerado e salvo em [`MixSets_Otimizado.ini`](file:///home/lanwsl/dotfiles/MixSets_Otimizado.ini) com desfoque de movimento, calor e atritos 100% desativados).*
 
@@ -54,6 +54,13 @@
 | **19** | **GPS traçando rotas apenas para pontos manuais** (sem caminho para as missões da campanha). | O GPS traça linha dinâmica em tempo real para os objetivos de qualquer missão ativa da história. | [GPS Redux v1.5](https://www.mixmods.com.br/2022/10/sa-gps-redux/) |
 | **20** | **Extintor de incêndio ineficaz** (spray com colisão quebrada, chamas que não apagam na missão da Denise e carros em chamas). | Corrige o cone de alcance da espuma, apaga o fogo na hora e permite usar o extintor para salvar carros em chamas antes de explodirem. | [SilentPatch](https://www.mixmods.com.br/2026/08/sa-silentpatch/) + [Extintor Apaga Fogo do Carro](https://www.mixmods.com.br/2016/03/extintor-apaga-fogo-do-carro.html) |
 | **21** | **Missão de Paramédico / Ambulância arruinada por NPCs suicidas** (pacientes que se jogam embaixo do pneu em Montgomery/Angel Pine). | Pacientes desviam do veículo em vez de correrem na frente das rodas, entram instantaneamente na ambulância e ambulância não tomba nem explode. | *Ped Evade Car Fix* + **MixSets.ini** (`NoCarFlipFire = 1`) |
+| **22** | **Tap-Tap na moto para ir mais rápido** (ter que ficar martelando a seta para cima para o CJ inclinar o corpo). | O CJ inclina o corpo aerodinamicamente de forma automática ao atingir velocidade máxima apenas segurando W, sem destruir teclas. | *Auto Lean Forward* / **MixSets.ini** |
+| **23** | **Carros desaparecendo sozinhos (*Despawn*)** na porta de lojas ao entrar no provador ou virar as costas. | O último veículo utilizado pelo jogador tem prioridade máxima de memória e NUNCA sofre despawn fora da tela. | *Never Despawn* / *Lock And Park* |
+| **24** | **Aviões caindo do céu do nada na sua cabeça** (aviões de ambiente colidindo com prédios e explodindo o CJ). | Corrige a altitude das rotas aéreas dos aviões de ambiente em San Andreas, impedindo quedas acidentais sobre o jogador. | [SilentPatch](https://www.mixmods.com.br/2026/08/sa-silentpatch/) + **MixSets** |
+| **25** | **Limite mentiroso das garagens** (garagem vazia dizendo que está cheia ao tentar guardar mais de 4 veículos). | Remove a trava arbitrária da Rockstar, permitindo armazenar até 8 veículos por garagem sem sumir com nenhum. | *Garage eXtender* / [Open Limit Adjuster] |
+| **26** | **Pedestres ladrões roubando seu carro raro estacionado** (CJ desce do Turismo e um NPC entra e foge). | Tranca automaticamente as portas do veículo e aciona alarme sonoro ao descer, impedindo qualquer pedestre de abrir. | *Auto Car Lock* / *Lock And Park* |
+| **27** | **O pesadelo da missão *Stowaway*** (subir de moto na rampa do avião enquanto barris caem). | Normaliza a taxa de aceleração da moto e do avião cargueiro, permitindo alcançar a rampa com facilidade em 60 FPS. | [Framerate Vigilante](https://www.mixmods.com.br/2022/08/iii-vc-sa-framerate-vigilante/) |
+| **28** | **Carro recém-tunado batido na saída da oficina** (NPCs spawnando e colidindo na porta da Wheel Arch Angels). | Cria um raio de colisão limpo e seguro na saída das oficinas de modificação para manobrar sem toques. | *Safe Tuning Exit* + [Real Traffic Fix](https://www.mixmods.com.br/) |
 
 ---
 
