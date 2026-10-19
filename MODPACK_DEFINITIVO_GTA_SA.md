@@ -5,7 +5,7 @@
 ---
 ## 📑 Sumário de Estrutura do Modpack
 1. [Fundação e Carregadores (Loaders)](#1-fundação-e-carregadores-loaders)
-2. [Matador de Atritos: 40 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-40-mecânicas-irritantes-do-gta-sa-resolvidas)
+2. [Matador de Atritos: 42 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-42-mecânicas-irritantes-do-gta-sa-resolvidas)
 3. [Guia Cirúrgico: 100% do Jogo, Coletáveis no Radar & Ouro em Todas as Escolas](#3-guia-cirúrgico-100-do-jogo-coletáveis-no-radar--ouro-em-todas-as-escolas)
 4. [Gráficos de Última Geração (Pacote Otimizado para RTX / 4K)](#4-gráficos-de-última-geração-pacote-otimizado-para-rtx--4k)
 5. [Física Realista, Ragdoll & Animações de Nova Geração](#5-física-realista-ragdoll--animações-de-nova-geração)
@@ -32,7 +32,7 @@
 
 ---
 
-## 2. Matador de Atritos: 40 Mecânicas Irritantes do GTA SA Resolvidas
+## 2. Matador de Atritos: 42 Mecânicas Irritantes do GTA SA Resolvidas
 *Como resolver cada frustração clássica de gameplay usando o MixSets e mods dedicados.*  
 *(Um perfil pronto e customizado foi gerado e salvo em [`MixSets_Otimizado.ini`](file:///home/lanwsl/dotfiles/MixSets_Otimizado.ini) com desfoque de movimento, calor e atritos 100% desativados).*
 
@@ -78,6 +78,8 @@
 | **38** | **Cidades escuras como breu à noite, prédios com janelas apagadas e postes sem projeção real de luz** (visão noturna cortada a 50m por névoa cinza e ruas sem vida após o pôr do sol). | Renderiza coronas de luzes LOD até o horizonte, acende janelas aleatórias em alta definição com profundidade interna nos arranha-céus, refaz o prelight de solo em degradê suave nos postes e adiciona insetos voando nas lâmpadas. | [Project2DFX v4.4](https://www.mixmods.com.br/2020/02/sa-project2dfx/) + [Improved Night Windows](https://www.mixmods.com.br/2022/09/sa-improved-night-windows-by-hysen-mais-janelas-noturnas/) + [Project Immerse-Yourself](https://www.mixmods.com.br/2022/01/project-immerse-yourself-prelight-melhorado/) + [Missing Lampposts Fix](https://www.mixmods.com.br/2022/04/missing-lampposts-fix-more-light-posts/) + [Proper Shaders](https://www.mixmods.com.br/2026/10/sa-proper-shaders/) |
 | **39** | **Ter que espremer e martelar teclas na academia (*Button Mashing*)** (ficar apertando Espaço e Shift freneticamente no supino, esteira e bicicleta, além do limite diário de treino e degradação passiva de massa muscular). | Converte o minigame em "segurar a tecla" (*Hold Key to Workout*), remove o limite diário de treino permitindo evoluir sem interrupções e congela a perda passiva de músculos permanentemente. | *Hold Key Gym Minigame* + *No Gym Daily Limit* + **MixSets.ini** (`NoMuscleDecay = 1`, `NoFatDecay = 1`) ou *Cheat Menu Stats Editor* |
 | **40** | **Polícia onisciente/telepática e cega para outras gangues** (atirar no deserto vazio dá estrela sem testemunhas enquanto Ballas atiram na viatura impunes) e **paramédicos/bombeiros que não salvam ninguém**. | A polícia só é acionada se testemunhas ligarem no 911 ou verem o crime, policiais enquadram e atiram em gangues rivais armadas, médicos reanimam pedestres caídos com desfibrilador e bombeiros apagam fogo em veículos. | [Sensible Police & Crime Report Mod] + [Paramedics Revive Peds] + [Firefighters Extinguish Cars] + [More Locked Cars] + [Alarm Touching Cars] + **MixSets.ini** (`CopsShootGangs = 1`) |
+| **41** | **Carros com física de "banheira sobre sabão"** (carroceria rolando excessivamente nas curvas feito barco, direção instável e falta de ângulo de contra-esterço para drift). | Calibra o centro de gravidade e rigidez da suspensão de todas as categorias automotivas, aumenta o ângulo de esterço para 55° e adiciona modo de drift em tempo real com contador de pontos e fumaça volumétrica. | *Proper & Realistic Handling Pack* + *Toggle Drift Mod* + **MixSets.ini** (`BrakePower = 1.25`, `CarsSteeringAngleHighSpeed = 0.6`) |
+| **42** | **Telas pretas de loading a cada porta, menus demorados, limite de 3 aliados em vans e roubo de casas restrito à Boxville**. | Auto-carrega o save direto na rua em <2s sem menus, elimina fade preto em interiores, libera 7 aliados armados em vans/caçambas, permite roubar casas com qualquer veículo e adiciona arsenal no porta-malas. | [SaveLoader v2.7](https://www.mixmods.com.br/2020/01/iii-vc-sa-saveloader-v2-7-fast-loader-carregamento-rapido/) + [Gang Rider v2](https://www.mixmods.com.br/2020/08/gang-rider-v2-carregar-mais-gangue/) + [Burglary With Any Car v2.0](https://www.mixmods.com.br/2022/01/sa-sade-burglary-with-any-car-roubar-casa-com-qualquer-carro/) + [Trunk Store Weapons](https://www.mixmods.com.br/2021/04/trunk-store-weapons-guardar-armas-no-porta-malas/) |
 
 ---
 
@@ -232,6 +234,15 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
     - **Inércia Dinâmica:** A cabeça do piloto inclina para a frente em frenagens fortes, recua na aceleração e inclina nas curvas reagindo à força G.
 * **[Car Audio Bass Resonance (Vibração e Ressonância de Graves)]:**
   - Ao sintonizar rádios de rap e hip-hop dos anos 90 (*Radio Los Santos, Playback FM*) com o som automotivo ligado, a pressão sonora dos subwoofers gera vibração física audível e visual: a tampa do porta-malas, os espelhos retrovisores e a lataria tremem levemente no ritmo das batidas graves, reproduzindo a cultura real de *Lowriders*.
+
+### E. Handling Firme (Fim das "Banheiras") & Máquina de Drift
+* **[SA] Proper & Realistic Handling Overhaul:**
+  - Elimina a física de "banheira sobre sabão" do jogo original: baixa o centro de gravidade (`CentreOfMass.z`), calibra barras estabilizadoras (`SuspensionAntiRollBarMult`) e ajusta a tração (RWD/AWD/FWD) real para cada classe (Tuners/JDM, Muscle Cars, Sedans e Esportivos).
+* **[SA] Toggle Drift Mod + Steering Lock 55° & Drift Counter HUD:**
+  - Amplia o ângulo máximo de esterçamento das rodas dianteiras de 35° para **55°**, permitindo contra-esterço profundo em alta velocidade sem rodar.
+  - Ativa modo drift sob demanda segurando `Shift` / `Espaço`, acompanhado de fumaça volumétrica densa nos pneus traseiros (**FxsFuncs**) e contador de pontuação e combos na tela (*Wall Taps*).
+* **[Mesh Smoothed Pack (Objetos Mais Redondos)](https://www.mixmods.com.br/2021/05/mesh-smoothed-pack-objetos-mais-redondos/) + [[SA] Meshsmooth Pack by Hysen](https://www.mixmods.com.br/2022/07/sa-meshsmooth-pack-by-hysen/):**
+  - "Despoligona" hidrantes, lixeiras, tambores, barris, postes, bicicletas ([Smooth Criminal Bicycles](https://www.mixmods.com.br/2019/06/smooth-criminal-bicycles-bicicletas-mais-arredondadas/)) e estruturas cilíndricas por todo o mapa.
 
 ---
 
@@ -435,6 +446,19 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
   - **[More Locked Cars](https://www.mixmods.com.br/2018/08/more-locked-cars-mais-carros-trancados-e-com-alarme/) + [Alarm Touching Cars](https://www.mixmods.com.br/2021/07/alarm-touching-cars-alarme-ao-tocar-carros/):** Carros estacionados têm chances de estarem trancados; forçar portas ou quebrar vidros dispara o alarme automotivo e atrai pedestres e policiais.
   - **[Open Door Anim v1.2.2](https://www.mixmods.com.br/2021/04/open-door-anim-v1-2-1-animacao-abrindo-porta/):** CJ gira maçanetas fisicamente para entrar em edifícios em vez de teletransportar magicamente em cones amarelos.
   - **[Swim FPS Fix](https://www.mixmods.com.br/2019/04/swim-fps-fix-corrigir-nadar-com-fps-alto/):** Calibra a impulsão e fôlego das braçadas ao nadar para monitores de 60 FPS cravados sem afogamentos acidentais.
+* **[NPCs & Todos os Personagens Realistas (Fim dos Clones)]:**
+  - **[[SA] Proper Characters Retex HD](https://www.mixmods.com.br/2021/08/proper-characters-retex-hd-peds-remasterizados/):** Remasteriza 100% dos personagens da história e mais de 300 pedestres civis/gangues com texturas 2K/4K fiéis à arte original da Rockstar.
+  - **[PedFuncs v0.5.1](https://www.mixmods.com.br/2022/07/pedfuncs/) + [Peds Extender](https://www.mixmods.com.br/2022/08/peds-extender/) + [Model Variations](https://www.mixmods.com.br/2022/06/model-variations/):** Gera quase 4.000 variações procedurais (roupas, óculos, bonés, tons de pele e tatuagens), erradicando pedestres gêmeos.
+  - **[Peds Bleeding](https://www.mixmods.com.br/2022/12/atualizados-peds-bleeding-wind-project-skygfx-extended/) + [Death In Car](https://www.mixmods.com.br/2022/06/death-in-car-morrer-dentro-do-carro/):** Sangramento dinâmico localizado e motoristas abatidos ao volante que tombam sobre a buzina.
+* **[Praias Vivas & Píer de Santa Maria Expandido]:**
+  - **[[SA] Santa Maria Pier Extended](https://www.mixmods.com.br/2022/12/sa-santa-maria-pier-extended/) + [[SA] Pacific Park Rotating Ferris Wheel](https://www.mixmods.com.br/2022/12/sa-pacific-park-rotating-ferris-wheel-roda-gigante-animada/):** Roda-gigante animada iluminada 24h, barracas de feira, quiosques, banhistas em toalhas, salva-vidas e redes de vôlei de praia.
+* **[Zero Loading, Arsenal Móvel, Comboios de Gangue & Concessionárias]:**
+  - **[[III/VC/SA] SaveLoader v2.7](https://www.mixmods.com.br/2020/01/iii-vc-sa-saveloader-v2-7-fast-loader-carregamento-rapido/) + [Phoenix Mode](https://www.mixmods.com.br/2018/03/phoenix-mode-voltar-onde-estava-quando-morrer/) + *No Fade Interiors* + *Borderless Gaming*:** Carrega o último save direto na rua em menos de 2s sem passar por menus, elimina telas pretas ao entrar em lojas e permite `Alt + Tab` instantâneo em 0 ms.
+  - **[Trunk Store Weapons (Arsenal no Porta-Malas)](https://www.mixmods.com.br/2021/04/trunk-store-weapons-guardar-armas-no-porta-malas/):** Permite abrir fisicamente o porta-malas do carro para armazenar e retirar armamento pesado e coletes.
+  - **[[SA/SA:DE] Burglary With Any Car v2.0](https://www.mixmods.com.br/2022/01/sa-sade-burglary-with-any-car-roubar-casa-com-qualquer-carro/) + [24/7 Robbery](https://www.mixmods.com.br/2019/08/24-7-robbery-roubar-lojas/):** Permite realizar roubos residenciais noturnos com qualquer veículo (sem depender da van Boxville) e assaltar caixas de lojas 24/7.
+  - **[Gang Rider v2 (Comboio de 7 Aliados)](https://www.mixmods.com.br/2020/08/gang-rider-v2-carregar-mais-gangue/) + [Random Car Talk](https://www.mixmods.com.br/2022/06/sa-random-car-talk/):** Libera todos os assentos e caçambas de caminhonetes/vans para levar até 7 membros da Grove Street atirando simultaneamente e conversando durante o trajeto.
+  - **[Car Dealership (Concessionárias Funcionais)](https://www.mixmods.com.br/2020/06/car-dealership-concessionaria-de-carros/) + *Garage eXtender*:** Showrooms interativos em Los Santos, San Fierro e Las Venturas para compra e *test-drive*, com garagens suportando até 8 veículos salvos sem sumiço.
+  - **Ciclo Solar Estendido & Tempestades de Areia (*Sandstorm Overhaul*):** Relógio interno ajustado (1h in-game = 2 a 3 min reais) e tempestades volumétricas densas em Bone County.
 
 ---
 
