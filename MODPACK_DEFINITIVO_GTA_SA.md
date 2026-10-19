@@ -3,9 +3,9 @@
 *Total de mods indexados no banco local:* `270`
 
 ---
-## 📑 Sumário de Estrutura do Modpack
+### 📑 Sumário de Estrutura do Modpack
 1. [Fundação e Carregadores (Loaders)](#1-fundação-e-carregadores-loaders)
-2. [Matador de Atritos: 50 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-50-mecânicas-irritantes-do-gta-sa-resolvidas)
+2. [Matador de Atritos: 51 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-51-mecânicas-irritantes-do-gta-sa-resolvidas)
 3. [Guia Cirúrgico: 100% do Jogo, Coletáveis no Radar & Ouro em Todas as Escolas](#3-guia-cirúrgico-100-do-jogo-coletáveis-no-radar--ouro-em-todas-as-escolas)
 4. [Gráficos de Última Geração (Pacote Otimizado para RTX / 4K)](#4-gráficos-de-última-geração-pacote-otimizado-para-rtx--4k)
 5. [Física Realista, Ragdoll & Animações de Nova Geração](#5-física-realista-ragdoll--animações-de-nova-geração)
@@ -32,7 +32,7 @@
 
 ---
 
-## 2. Matador de Atritos: 50 Mecânicas Irritantes do GTA SA Resolvidas
+## 2. Matador de Atritos: 51 Mecânicas Irritantes do GTA SA Resolvidas
 *Como resolver cada frustração clássica de gameplay usando o MixSets e mods dedicados.*  
 *(Um perfil pronto e customizado foi gerado e salvo em [`MixSets_Otimizado.ini`](file:///home/lanwsl/dotfiles/MixSets_Otimizado.ini) com desfoque de movimento, calor e atritos 100% desativados).*
 
@@ -60,7 +60,7 @@
 | **20** | **Extintor de incêndio ineficaz** (spray com colisão quebrada, chamas que não apagam na missão da Denise e carros em chamas). | Corrige o cone de alcance da espuma, apaga o fogo na hora e permite usar o extintor para salvar carros em chamas antes de explodirem. | [SilentPatch](https://www.mixmods.com.br/2026/08/sa-silentpatch/) + [Extintor Apaga Fogo do Carro](https://www.mixmods.com.br/2016/03/extintor-apaga-fogo-do-carro.html) |
 | **21** | **Missão de Paramédico / Ambulância arruinada por NPCs suicidas** (pacientes que se jogam embaixo do pneu em Montgomery/Angel Pine). | Pacientes desviam do veículo em vez de correrem na frente das rodas, entram instantaneamente na ambulância e ambulância não tomba nem explode. | *Ped Evade Car Fix* + **MixSets.ini** (`NoCarFlipFire = 1`) |
 | **22** | **Tap-Tap na moto para ir mais rápido** (ter que ficar martelando a seta para cima para o CJ inclinar o corpo). | O CJ inclina o corpo aerodinamicamente de forma automática ao atingir velocidade máxima apenas segurando W, sem destruir teclas. | *Auto Lean Forward* / **MixSets.ini** |
-| **23** | **Carros desaparecendo sozinhos (*Despawn*)** na porta de lojas ao entrar no provador ou virar as costas. | O último veículo utilizado pelo jogador tem prioridade máxima de memória e NUNCA sofre despawn fora da tela. | *Never Despawn* / *Lock And Park* |
+| **23** | **Carros desaparecendo sozinhos (*Despawn*)** na porta de lojas ao entrar no provador ou virar as costas. | O último veículo utilizado pelo jogador tem prioridade máxima de memória e NUNCA sofre despawn fora da tela. | *Auto Car Lock* / *Never Despawn* |
 | **24** | **Aviões caindo do céu do nada na sua cabeça** (aviões de ambiente colidindo com prédios e explodindo o CJ). | Corrige a altitude das rotas aéreas dos aviões de ambiente em San Andreas, impedindo quedas acidentais sobre o jogador. | [SilentPatch](https://www.mixmods.com.br/2026/08/sa-silentpatch/) + **MixSets** |
 | **25** | **Limite mentiroso das garagens** (garagem vazia dizendo que está cheia ao tentar guardar mais de 4 veículos). | Remove a trava arbitrária da Rockstar, permitindo armazenar até 8 veículos por garagem sem sumir com nenhum. | *Garage eXtender* / [Open Limit Adjuster] |
 | **26** | **Pedestres ladrões roubando seu carro raro estacionado** (CJ desce do Turismo e um NPC entra e foge). | Tranca automaticamente as portas do veículo e aciona alarme sonoro ao descer, impedindo qualquer pedestre de abrir. | *Auto Car Lock* / *Lock And Park* |
@@ -88,6 +88,7 @@
 | **48** | **Escadas puramente decorativas no porto e píeres** (cair na água em San Fierro/Easter Basin e ficar preso nadando porque as escadas na parede são apenas textura pintada sem função). | Torna todas as escadas de mão em portos, docas, navios, fachadas de prédios e torres de controle **100% escaláveis com animação real**. | [Use All Ladders (Subir em Escadas)](https://www.mixmods.com.br/2020/05/use-all-ladders-subir-em-escadas/) |
 | **49** | **Ser espancado até a morte no chão sem conseguir levantar (*Stunlock*)** enquanto membros da Grove Street assistem de braços cruzados, ou ser preso em 0.5s (*Instant Busted*) ao subir numa moto. | Habilita rolamento tático de esquiva no chão, faz aliados da Grove Street defenderem o CJ imediatamente a socos/tiros e exige que o policial imobilize o CJ de verdade antes de dar *Busted*. | *Grove Street Backup AI* + *No Instant Busted* + [Awesome IFP v3](https://www.mixmods.com.br/2021/11/sa-sade-awesome-ifp/) |
 | **50** | **Demora de 5 segundos rastejando para sair de carro capotado** e ser puxado de volta por motoristas enquanto leva tiros dos Ballas. | Permite desvirar o carro com `A`/`D` (`VehiclesAirRoll = 1`), nunca pega fogo capotado (`NoCarFlipFire = 1`) e o CJ entra/sai de veículos em menos de 1s sob tiroteio (*Combat Enter/Exit*). | **MixSets.ini** (`NoCarFlipFire = 1`, `VehiclesAirRoll = 1`) + *Combat Enter/Exit* |
+| **51** | **Helicópteros afundando e perdendo altitude ao inclinar para acelerar** (especialmente o *Leviathan* carregando o carro-forte no ímã na missão *Up, Up and Away!* em Las Venturas, que arrasta o furgão nos prédios e árvores). | Ativa compensação automática de sustentação vertical (*Auto-Altitude Hold* estilo GTA V), aumenta o empuxo do rotor (` Thrust = 1.45` no `$`flying.cfg), estabiliza o pêndulo do cabo magnético e adiciona *Hover Lock* (pairar imóvel no ar) com 1 botão. | *Helicopter Altitude Hold & Modern Flight Control* + *Flying.cfg Overhaul* + [Framerate Vigilante](https://www.mixmods.com.br/2022/08/iii-vc-sa-framerate-vigilante/) + [HeliFix v1.4](https://www.mixmods.com.br/2021/10/helifix-piloto-nos-helicopteros/) |
 
 ---
 
@@ -263,6 +264,16 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
 * **[Mesh Smoothed Pack (Objetos Mais Redondos)](https://www.mixmods.com.br/2021/05/mesh-smoothed-pack-objetos-mais-redondos/) + [[SA] Meshsmooth Pack by Hysen](https://www.mixmods.com.br/2022/07/sa-meshsmooth-pack-by-hysen/):**
   - "Despoligona" hidrantes, lixeiras, tambores, barris, postes, bicicletas ([Smooth Criminal Bicycles](https://www.mixmods.com.br/2019/06/smooth-criminal-bicycles-bicicletas-mais-arredondadas/)) e estruturas cilíndricas por todo o mapa.
 
+### F. Física de Helicópteros com Sustentação Automática (Acelerar Sem Perder Altitude & Fim do Trauma do Ímã)
+* **Compensação Automática de Sustentação Vertical (*Helicopter Auto-Altitude Hold* — Estilo GTA V):**
+  - **A dor de engenharia original:** Na engine de 2004, inclinar o bico do helicóptero para frente (`Seta para Cima` / `Numpad 8`) divide o vetor vertical do rotor principal sem aumentar o empuxo compensatório. Resultado: toda vez que você acelera para a frente, o helicóptero **afunda em direção ao chão**, e a situação piora 3x quando o *Skycrane / Leviathan* engata o peso de 5 toneladas do carro-forte no ímã (*Up, Up and Away!*).
+  - **A solução técnica:** Aplica compensação trigonométrica em tempo real ($\text{Thrust}_{\text{comp}} = \text{Thrust} / \cos(\theta_{\text{pitch}})$). Agora você pode inclinar o nariz do helicóptero no máximo para acelerar em linha reta a toda velocidade **mantendo a altitude 100% cravada**, sem nunca afundar nos telhados ou postes.
+* **Recalibração de Empuxo de Carga Pesada (`$`flying.cfg Overhaul):**
+  - Eleva o coeficiente de sustentação (`fThrust` de `0.40` para `0.85` e `fThrustFallOff` otimizado) de todos os helicópteros (*Leviathan, Maverick, Hunter, Sparrow, Cargobob, Raindance, Police Maverick*).
+  - Mesmo rebocando a van blindada no cabo magnético na missão *Up, Up and Away!*, o *Leviathan* sobe rapidamente na vertical, estabiliza o balanço pendular do cabo e cruza Las Venturas até o cemitério de aviões em Verdant Meadows sem perder 1 metro de altitude.
+* **Hover Lock / Pairar Estabilizado (*Auto-Hover Mode*) + [SA] HeliFix v1.4:**
+  - Permite travar o helicóptero imóvel no ar com 1 tecla exatamente em cima do carro-forte para engatar o ímã na primeira tentativa sem ficar sambando para os lados, além de adicionar pilotos animados e rotores com *motion blur* realista ([HeliFix v1.4](https://www.mixmods.com.br/2021/10/helifix-piloto-nos-helicopteros/)).
+
 ---
 
 ## 6. Gunplay AAA & Ammu-Nation de Próxima Geração (Nível GTA V / Superior)
@@ -424,6 +435,8 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
   - Este mod atualiza o estoque do Emmet conforme você avança na campanha: ele passa a vender armamento pesado, fuzis e coletes mais baratos que na Ammu-Nation.
 * **A Solução do Trem do Big Smoke (*Wrong Side of the Tracks*):**
   - Com o [Manual Driveby Remake](https://www.mixmods.com.br/2021/10/manual-driveby-remake-fixed-mirar-de-dentro-do-carro/), o próprio CJ saca a submetralhadora pelo guidão da moto e atira nos Vagos em cima do vagão, eliminando os 4 alvos em menos de 15 segundos antes mesmo do primeiro túnel.
+* **Fim do Pesadelo do Helicóptero com Ímã (*Up, Up and Away!*):**
+  - Com o *Helicopter Auto-Altitude Hold* + *Flying.cfg Overhaul* (**Seção 5.F**), o helicóptero *Leviathan* **nunca mais perde altitude ao inclinar para a frente** nem afunda com o peso do carro-forte preso no ímã, permitindo cruzar Las Venturas em linha reta a toda velocidade.
 * **Fim do Bloqueio de Pulmão na Missão do Woozie (*Amphibious Assault*):**
   - No [Cheat Menu v3.52](https://www.mixmods.com.br/2021/11/cheat-menu-by-grinch-v3-52/), basta ir em **Stats > Lung Capacity** e preencher 100% com 1 clique, sem precisar gastar 30 minutos mergulhando na praia de San Fierro.
 * **[Things To Do In San Andreas (TTDISA) - Mais de 25 Missões Novas](https://www.mixmods.com.br/):**
