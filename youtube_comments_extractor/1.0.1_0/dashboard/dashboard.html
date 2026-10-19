@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Comments Extractor - Painel Soberano</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar de Vídeos & Histórico -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">📺</div>
+        <div class="brand-text">
+          <h2>YT Comments</h2>
+          <span>AI Context Extractor</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="section-header">
+          <h3>Abas Abertas do YouTube</h3>
+          <button id="refresh-tabs-btn" class="icon-btn" title="Atualizar abas">🔄</button>
+        </div>
+        <div id="open-tabs-list" class="video-list">
+          <!-- Injetado dinamicamente via JS -->
+          <p class="empty-state">Nenhum vídeo aberto detectado.</p>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="section-header">
+          <h3>Histórico no Banco Local (DB)</h3>
+          <button id="clear-all-db-btn" class="text-danger-btn" title="Limpar todo o banco">Limpar Tudo</button>
+        </div>
+        <div id="saved-videos-list" class="video-list">
+          <!-- Injetado dinamicamente -->
+          <p class="empty-state">Nenhum vídeo salvo no banco.</p>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <small>v1.1.0 · Persistência Segura em Background</small>
+      </div>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+      <!-- Header do Vídeo Selecionado -->
+      <header class="video-header card">
+        <div class="video-info-wrapper">
+          <div class="video-details">
+            <span id="video-channel" class="badge channel-badge">Canal Desconhecido</span>
+            <h1 id="video-title">Selecione ou abra um vídeo no YouTube</h1>
+            <div class="video-meta">
+              <span id="video-id-tag">ID: -</span>
+              <span class="meta-dot">·</span>
+              <span id="video-reported-count">Total no YouTube: -</span>
+              <span class="meta-dot">·</span>
+              <a id="video-url-link" href="#" target="_blank" class="video-link">Abrir no YouTube ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="header-status">
+          <div id="status-pill" class="status-pill status-idle">Pronto</div>
+          <div id="rate-counter" class="rate-counter">0 com/s</div>
+        </div>
+      </header>
+
+      <!-- Painel de Controle e Métricas -->
+      <div class="control-grid">
+        <!-- Controles de Operação -->
+        <div class="card operation-card">
+          <h3>⚙️ Controles de Extração</h3>
+          <div class="action-buttons">
+            <button id="start-btn" class="btn btn-primary">
+              <span class="btn-icon">▶️</span> Iniciar Extração
+            </button>
+            <button id="pause-btn" class="btn btn-warning" disabled>
+              <span class="btn-icon">⏸️</span> Pausar
+            </button>
+            <button id="stop-btn" class="btn btn-danger" disabled>
+              <span class="btn-icon">⏹️</span> Finalizar
+            </button>
+          </div>
+
+          <div class="config-row">
+            <div class="config-field">
+              <label for="throttle-input">Throttle Delay (ms):</label>
+              <input type="number" id="throttle-input" value="600" min="200" max="3000" step="100">
+              <small>Velocidade segura anti-bloqueio</small>
+            </div>
+            <div class="config-field">
+              <label for="max-comments-input">Limite de Comentários:</label>
+              <input type="number" id="max-comments-input" value="0" min="0" step="500">
+              <small>0 = sem limite (extrair tudo)</small>
+            </div>
+          </div>
+
+          <div class="progress-bar-container">
+            <div class="progress-track">
+              <div id="progress-bar-fill" class="progress-fill"></div>
+            </div>
+            <div class="progress-legend">
+              <span id="progress-message">Aguardando início...</span>
+              <span id="progress-percentage">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estatísticas no Banco de Dados -->
+        <div class="card stats-card">
+          <h3>📊 Dados Gravados no DB</h3>
+          <div class="stats-counters">
+            <div class="stat-box">
+              <span class="stat-num" id="stat-total">0</span>
+              <span class="stat-label">Total Gravado</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-num" id="stat-roots">0</span>
+              <span class="stat-label">Comentários Raiz</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-num" id="stat-replies">0</span>
+              <span class="stat-label">Respostas (Replies)</span>
+            </div>
+          </div>
+
+          <div class="export-actions">
+            <h4>Exportação de Elite (Otimizada para IA)</h4>
+            <div class="export-buttons-grid">
+              <button id="export-llm-btn" class="btn btn-ai" title="Markdown com Árvore de Diálogo Hierárquica">
+                🤖 Baixar Markdown p/ IA
+              </button>
+              <button id="copy-llm-btn" class="btn btn-ai-outline" title="Copiar contexto para a área de transferência">
+                📋 Copiar Contexto IA
+              </button>
+              <button id="export-jsonl-btn" class="btn btn-secondary">
+                📑 JSONL (RAG)
+              </button>
+              <button id="export-json-btn" class="btn btn-secondary">
+                🌳 JSON Completo
+              </button>
+              <button id="export-csv-btn" class="btn btn-secondary">
+                📊 CSV Enriquecido
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feed / Tabela Viva dos Comentários -->
+      <section class="card feed-section">
+        <div class="feed-header">
+          <div class="feed-title">
+            <h3>💬 Comentários Indexados em Tempo Real</h3>
+            <span id="feed-count-badge" class="badge">0 itens</span>
+          </div>
+          <div class="feed-filters">
+            <input type="text" id="search-input" placeholder="Buscar por autor ou palavra-chave..." class="search-field">
+            <select id="sort-select" class="sort-field">
+              <option value="recent">Mais Recentes Primeiro</option>
+              <option value="likes">Mais Curtidos (Top Likes)</option>
+              <option value="replies">Mais Respondidos</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="comments-feed-container" class="comments-feed">
+          <div class="empty-feed">
+            <p>Nenhum comentário carregado na visualização.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Toast de Notificação -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- Scripts -->
+  <script src="../lib/db.js"></script>
+  <script src="../lib/exporter.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

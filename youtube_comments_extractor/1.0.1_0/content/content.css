@@ -1,0 +1,22 @@
+/* YouTube Comments Extractor - Content Script Styles */
+
+/* Visual indicator when extraction is running */
+.yt-comments-extractor-running {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 0, 0, 0.9);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  z-index: 999999;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Highlight extracted comments (optional, can be toggled) */
+.yt-comments-extractor-highlight ytd-comment-renderer {
+  border-left: 3px solid #ff0000 !important;
+  background: rgba(255, 0, 0, 0.05) !important;
+}

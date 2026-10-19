@@ -1,0 +1,35 @@
+{
+   "action": {
+      "default_icon": {
+         "128": "icons/icon128.png",
+         "16": "icons/icon16.png",
+         "48": "icons/icon48.png"
+      },
+      "default_popup": "popup/popup.html"
+   },
+   "background": {
+      "service_worker": "background/background.js"
+   },
+   "content_scripts": [ {
+      "css": [ "content/content.css" ],
+      "js": [ "content/content.js" ],
+      "matches": [ "https://www.youtube.com/*" ]
+   } ],
+   "description": "Extract all YouTube video comments and replies with thread structure and export to JSON or CSV",
+   "host_permissions": [ "https://www.youtube.com/*" ],
+   "icons": {
+      "128": "icons/icon128.png",
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAq9r5liIZrhj9Q+twH9d8uGVd58h+Ys8IoooGdyVUgQfiehcvymb6Jg5DO5/smmco1us87ey5jXEhyqeKcBGrcdvzyhTNtnZKaw9sMQZoEnOynDKnGePWsRuqT7WbGE1Uy4wx4EQ4mqNkQd6OE9OJMU7u9ubYl1V2c6k0h8LARQih0RxHBJLnNwfuNU6mRnus3d7ay25DmSEQegqtSJBYsuQFYP3SCqquxP/vz8wuc/35IbcTAZiqHkhSoNWzOBLk6J6fYYwPOSiVTZvMlY17HefLCjgphoMOqLpsZ6NfzzTzCOcbIXu6fjWaF4IY3718ZbRORSnVHK/tSR+yq0/0kQIDAQAB",
+   "manifest_version": 3,
+   "name": "YouTube Comments & Replies Extractor",
+   "permissions": [
+      "activeTab",
+      "storage",
+      "unlimitedStorage",
+      "tabs"
+   ],
+   "version": "1.1.0"
+}

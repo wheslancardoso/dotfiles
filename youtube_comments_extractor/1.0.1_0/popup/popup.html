@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Comments Extractor</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <span class="icon">📺</span>
+      <h2>YT Comments Extractor</h2>
+    </div>
+
+    <div id="youtube-detected" class="card hidden">
+      <span class="badge-active">Vídeo Detectado</span>
+      <p id="video-title" class="video-title">Carregando...</p>
+      
+      <button id="open-dashboard-btn" class="btn btn-primary">
+        🚀 Abrir Painel em Nova Aba
+      </button>
+      <p class="helper-text">
+        ⚡ A aba dedicada permanece ativa em segundo plano sem pausar ao perder o foco!
+      </p>
+    </div>
+
+    <div id="not-youtube" class="card">
+      <p class="status-msg">Nenhum vídeo do YouTube ativo nesta aba.</p>
+      <button id="open-general-dashboard-btn" class="btn btn-secondary">
+        📂 Abrir Painel & Histórico
+      </button>
+      <p class="helper-text">
+        Acesse seus dados salvos no banco local e exportações para IA.
+      </p>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
