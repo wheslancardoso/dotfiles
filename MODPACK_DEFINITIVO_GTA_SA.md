@@ -130,6 +130,10 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
 * **[Project2DFX v4.4](https://www.mixmods.com.br/):** Distância de visão infinita e iluminação noturna volumétrica (*LOD lights*) por todo o horizonte de San Andreas.
 * **[Behind Space of Realities (BSOR) / Insanity Vegetation]:** Árvores, palmeiras e grama densa em modelos 3D volumétricos completos.
 * **[FxsFuncs v1.2 (2025/2026)](https://www.mixmods.com.br/2025/06/fxsfuncs/):** Efeitos de partículas em HD (fumaça volumétrica, chamas, explosões e faíscas dinâmicas).
+* **[Proper Rain & PBR Wet Road Reflections (Proper Shaders + FxsFuncs)]:**
+  - Substitui as linhas cinzas arcaicas da tempestade original por chuva com refração de luz e efeito de lente molhada.
+  - O asfalto e calçadas ganham poças de água dinâmicas que refletem faróis de carros, postes e néon da cidade em tempo real (*Screen-Space Reflections*).
+  - Pneus de veículos levantam spray e névoa volumétrica (*water mist*) ao cruzar pistas molhadas em alta velocidade.
 * **[Remastered GUI 4K]:** HUD, mapa, radar, miras e fontes vetorizados em alta resolução nativa.
 
 ---
@@ -293,10 +297,13 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
 ---
 
 ### B. Músicas Cortadas Restauradas & Rádio em Alta Fidelidade
-* **[Original Radio Extended (Restauração Completa de Músicas)](https://www.mixmods.com.br/):**
+* **[Original Radio Extended (1000 Músicas Sem Cortes)](https://www.mixmods.com.br/2024/08/original-radio-extended/):**
   - A Rockstar removeu dezenas de músicas históricas em relançamentos por expiração de direitos autorais.
-  - Este mod restaura todas as faixas lendárias de *2Pac, N.W.A, Dr. Dre, Snoop Dogg, Guns N' Roses, Rage Against the Machine e James Brown*.
+  - Este mod restaura todas as faixas lendárias de *2Pac, N.W.A, Dr. Dre, Snoop Dogg, Guns N' Roses, Rage Against the Machine e James Brown*, expandindo o acervo para **mais de 1.000 músicas** fiéis aos anos 90 com vinhetas raras de DJs e comerciais de rádio completos da época.
   - Áudio sem compressão (qualidade Master de estúdio / Lossless) em todas as estações de rádio (*Radio Los Santos, K-DST, Radio X, Bounce FM, K-Rose*).
+* **[MP3 Player & Sony Headphones (Ouvir Rádio e Músicas a Pé)](https://www.mixmods.com.br/):**
+  - Permite ao CJ escutar as rádios do jogo ou suas próprias faixas em fones de ouvido portáteis enquanto caminha pelas ruas, faz musculação na academia, anda de skate ou pilota bicicleta.
+  - Inclui controles completos de reprodução (play/pause, shuffle, avançar faixa) e exibe o fone de ouvido 3D modelado na cabeça do CJ.
 
 ---
 
@@ -330,6 +337,9 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
   - No [Cheat Menu v3.52](https://www.mixmods.com.br/2021/11/cheat-menu-by-grinch-v3-52/), basta ir em **Stats > Lung Capacity** e preencher 100% com 1 clique, sem precisar gastar 30 minutos mergulhando na praia de San Fierro.
 * **[Things To Do In San Andreas (TTDISA) - Mais de 25 Missões Novas](https://www.mixmods.com.br/):**
   - Adiciona novos contratos de assassinato por cabines telefônicas (estilo Vice City), entregas expressas pelas rodovias, missões de caminhoneiro expandidas e encontros aleatórios de pedestres precisando de carona e resgate pelo mapa.
+* **[Storyline Cutscenes 60 FPS Remastered (Cutscenes em Alta Fidelidade)]:**
+  - Elimina o travamento e os engasgos das cutscenes originais limitadas a 30 FPS; todas as cinemáticas de história rodam a **60 FPS nativos**.
+  - Sincroniza com as texturas HD e dedos separados do RoSA Evolved e INSANITY Weapons, eliminando discrepâncias visuais entre história e gameplay.
 
 ---
 
