@@ -11,7 +11,8 @@
 5. [Física Realista, Colisões & Deformação de Veículos](#5-física-realista-colisões--deformação-de-veículos)
 6. [Gunplay AAA & Ammu-Nation de Próxima Geração (Nível GTA V / Superior)](#6-gunplay-aaa--ammu-nation-de-próxima-geração-nível-gta-v--superior)
 7. [Lojas de Roupas, Barbearias Modernas & Customização Tática de Armas](#7-lojas-de-roupas-barbearias-modernas--customização-tática-de-armas)
-8. [Todos os Mods Indexados (Catálogo Geral do Scraper)](#8-todos-os-mods-indexados-catálogo-geral-do-scraper)
+8. [A Trindade Final: Tradução PT-BR Sem Censura, Rádios Restauradas, 1ª Pessoa & Casas Abertas](#8-a-trindade-final-tradução-pt-br-sem-censura-rádios-restauradas-1ª-pessoa--casas-abertas)
+9. [Todos os Mods Indexados (Catálogo Geral do Scraper)](#9-todos-os-mods-indexados-catálogo-geral-do-scraper)
 
 ---
 
@@ -216,7 +217,40 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
 
 ---
 
-## 8. Todos os Mods Indexados (Catálogo Geral do Scraper)
+## 8. A Trindade Final: Tradução PT-BR Sem Censura, Rádios Restauradas, 1ª Pessoa & Casas Abertas
+
+### A. Tradução PT-BR Definitiva (MixMods & MJay)
+* **[Tradução Português para GTA SA (PC)](https://www.mixmods.com.br/):**
+  - **O que resolve:** Substitui a tradução arcaica e truncada da GameVicio/Tribo Gamer.
+  - Traduzida do zero com gírias reais da Costa Oeste dos anos 90, sem censura em palavrões e diálogos das gangues.
+  - Corrige erros crassos de tradução que confundiam a história e causavam bugs em objetivos de missões.
+  - Fontes em alta resolução perfeitamente alinhadas para monitores Widescreen e 4K.
+
+---
+
+### B. Músicas Cortadas Restauradas & Rádio em Alta Fidelidade
+* **[Original Radio Extended (Restauração Completa de Músicas)](https://www.mixmods.com.br/):**
+  - A Rockstar removeu dezenas de músicas históricas em relançamentos por expiração de direitos autorais.
+  - Este mod restaura todas as faixas lendárias de *2Pac, N.W.A, Dr. Dre, Snoop Dogg, Guns N' Roses, Rage Against the Machine e James Brown*.
+  - Áudio sem compressão (qualidade Master de estúdio / Lossless) em todas as estações de rádio (*Radio Los Santos, K-DST, Radio X, Bounce FM, K-Rose*).
+
+---
+
+### C. Câmera em Primeira Pessoa Real (*GTA V First Person Style*)
+* **[First Person Mod v3.0 Fixed (por BoPoH & Junior_Djjr)](https://www.mixmods.com.br/):**
+  - Permite alternar instantaneamente entre terceira pessoa e primeira pessoa pelos olhos do CJ pressionando a tecla `V`.
+  - Inclui visada holográfica e alinhamento de ferrolho ao mirar com fuzis e pistolas.
+  - Cockpits detalhados em veículos: dirija olhando pelos retrovisores, volante e velocímetros em alta definição.
+
+---
+
+### D. Casas e Interiores Abertos no Mapa (*Open Houses*)
+* **Ativado diretamente no [`MixSets_Otimizado.ini`](file:///home/lanwsl/dotfiles/MixSets_Otimizado.ini) (`OpenHouses = 1`):**
+  - Permite entrar livremente em centenas de casas residenciais, motéis, escritórios e armazéns espalhados por Los Santos, San Fierro e Las Venturas sem precisar estar em missões de roubo noturno com o Ryder.
+
+---
+
+## 9. Todos os Mods Indexados (Catálogo Geral do Scraper)
 
 ### [[SA] Proper Streaming (corrigir mapa não carregando)](https://www.mixmods.com.br/2026/10/proper-streaming/)
 **Data da Publicação:** `2026-10-16`
