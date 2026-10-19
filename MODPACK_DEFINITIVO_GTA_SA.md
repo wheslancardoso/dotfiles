@@ -5,7 +5,7 @@
 ---
 ## 📑 Sumário de Estrutura do Modpack
 1. [Fundação e Carregadores (Loaders)](#1-fundação-e-carregadores-loaders)
-2. [Matador de Atritos: 39 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-39-mecânicas-irritantes-do-gta-sa-resolvidas)
+2. [Matador de Atritos: 40 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-40-mecânicas-irritantes-do-gta-sa-resolvidas)
 3. [Guia Cirúrgico: 100% do Jogo, Coletáveis no Radar & Ouro em Todas as Escolas](#3-guia-cirúrgico-100-do-jogo-coletáveis-no-radar--ouro-em-todas-as-escolas)
 4. [Gráficos de Última Geração (Pacote Otimizado para RTX / 4K)](#4-gráficos-de-última-geração-pacote-otimizado-para-rtx--4k)
 5. [Física Realista, Ragdoll & Animações de Nova Geração](#5-física-realista-ragdoll--animações-de-nova-geração)
@@ -32,7 +32,7 @@
 
 ---
 
-## 2. Matador de Atritos: 39 Mecânicas Irritantes do GTA SA Resolvidas
+## 2. Matador de Atritos: 40 Mecânicas Irritantes do GTA SA Resolvidas
 *Como resolver cada frustração clássica de gameplay usando o MixSets e mods dedicados.*  
 *(Um perfil pronto e customizado foi gerado e salvo em [`MixSets_Otimizado.ini`](file:///home/lanwsl/dotfiles/MixSets_Otimizado.ini) com desfoque de movimento, calor e atritos 100% desativados).*
 
@@ -77,6 +77,7 @@
 | **37** | **Chuva arcaica de "linhas de giz" brancas piscando que cegam a visão** (para-brisas secos, tempestades sem raios reais e pedestres tomando chuva sem reação). | Substitui a tempestade por chuva translúcida com gotas no para-brisa limpas pelos limpadores, raios dinâmicos com delay sônico de trovão, asfalto com poças refletivas PBR e pedestres com guarda-chuva. | [Proper Shaders](https://www.mixmods.com.br/2026/10/sa-proper-shaders/) + [Thunder Mod](https://www.mixmods.com.br/2022/07/thunder-mod-cleo/) + [Rain Drops on Screen](https://www.mixmods.com.br/2017/07/rain-drops-on-screen-pingos-de-chuva-na-tela/) + [Hard Rain Remake](https://www.mixmods.com.br/2019/07/hard-rain-remake-pedestres-com-guarda-chuva/) |
 | **38** | **Cidades escuras como breu à noite, prédios com janelas apagadas e postes sem projeção real de luz** (visão noturna cortada a 50m por névoa cinza e ruas sem vida após o pôr do sol). | Renderiza coronas de luzes LOD até o horizonte, acende janelas aleatórias em alta definição com profundidade interna nos arranha-céus, refaz o prelight de solo em degradê suave nos postes e adiciona insetos voando nas lâmpadas. | [Project2DFX v4.4](https://www.mixmods.com.br/2020/02/sa-project2dfx/) + [Improved Night Windows](https://www.mixmods.com.br/2022/09/sa-improved-night-windows-by-hysen-mais-janelas-noturnas/) + [Project Immerse-Yourself](https://www.mixmods.com.br/2022/01/project-immerse-yourself-prelight-melhorado/) + [Missing Lampposts Fix](https://www.mixmods.com.br/2022/04/missing-lampposts-fix-more-light-posts/) + [Proper Shaders](https://www.mixmods.com.br/2026/10/sa-proper-shaders/) |
 | **39** | **Ter que espremer e martelar teclas na academia (*Button Mashing*)** (ficar apertando Espaço e Shift freneticamente no supino, esteira e bicicleta, além do limite diário de treino e degradação passiva de massa muscular). | Converte o minigame em "segurar a tecla" (*Hold Key to Workout*), remove o limite diário de treino permitindo evoluir sem interrupções e congela a perda passiva de músculos permanentemente. | *Hold Key Gym Minigame* + *No Gym Daily Limit* + **MixSets.ini** (`NoMuscleDecay = 1`, `NoFatDecay = 1`) ou *Cheat Menu Stats Editor* |
+| **40** | **Polícia onisciente/telepática e cega para outras gangues** (atirar no deserto vazio dá estrela sem testemunhas enquanto Ballas atiram na viatura impunes) e **paramédicos/bombeiros que não salvam ninguém**. | A polícia só é acionada se testemunhas ligarem no 911 ou verem o crime, policiais enquadram e atiram em gangues rivais armadas, médicos reanimam pedestres caídos com desfibrilador e bombeiros apagam fogo em veículos. | [Sensible Police & Crime Report Mod] + [Paramedics Revive Peds] + [Firefighters Extinguish Cars] + [More Locked Cars] + [Alarm Touching Cars] + **MixSets.ini** (`CopsShootGangs = 1`) |
 
 ---
 
@@ -426,6 +427,14 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
 * **[SA] CamHunt (Modo Foto Profissional & Câmera Livre 360°)](https://www.mixmods.com.br/2022/09/sa-camhunt/):**
   - Permite desacoplar a câmera livremente a qualquer momento (a pé ou dirigindo a 200 km/h) com controle total de rotação 360°, ângulo de visão (FOV), inclinação lateral (*roll*) e profundidade de campo (*Depth of Field* / desfoque cinematográfico estilo DSLR).
   - Inclui congelamento de cena para capturas fotográficas de explosões, saltos acrobáticos e paisagens de San Andreas em resolução nativa 4K.
+* **[Lógica & Bom Senso do Mundo Vivo (World Logic Overhaul)]:**
+  - **[Sensible Police & Crime Report Mod]:** A polícia só recebe chamados se testemunhas correrem até orelhões/celulares ou se viaturas presenciarem o crime. Disparos no deserto ou áreas isoladas sem testemunhas não geram estrelas de procurado.
+  - **Polícia Equânime (MixSets `CopsShootGangs = 1`):** Policiais enquadram, perseguem e trocam tiros com membros de gangues rivais (Ballas, Vagos) armados em vez de focarem cegamente apenas no CJ.
+  - **[Paramedics Revive Peds Mod]:** Paramédicos utilizam desfibrilador em vítimas de atropelamento/tiroteio no chão, reanimando pedestres com sucesso.
+  - **[Firefighters Extinguish Cars & Fires]:** Bombeiros miram jatos d'água no motor de carros em chamas e em focos de incêndio, salvando veículos antes da explosão.
+  - **[More Locked Cars](https://www.mixmods.com.br/2018/08/more-locked-cars-mais-carros-trancados-e-com-alarme/) + [Alarm Touching Cars](https://www.mixmods.com.br/2021/07/alarm-touching-cars-alarme-ao-tocar-carros/):** Carros estacionados têm chances de estarem trancados; forçar portas ou quebrar vidros dispara o alarme automotivo e atrai pedestres e policiais.
+  - **[Open Door Anim v1.2.2](https://www.mixmods.com.br/2021/04/open-door-anim-v1-2-1-animacao-abrindo-porta/):** CJ gira maçanetas fisicamente para entrar em edifícios em vez de teletransportar magicamente em cones amarelos.
+  - **[Swim FPS Fix](https://www.mixmods.com.br/2019/04/swim-fps-fix-corrigir-nadar-com-fps-alto/):** Calibra a impulsão e fôlego das braçadas ao nadar para monitores de 60 FPS cravados sem afogamentos acidentais.
 
 ---
 
