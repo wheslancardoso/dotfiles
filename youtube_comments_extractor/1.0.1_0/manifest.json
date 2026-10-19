@@ -27,6 +27,7 @@
    "name": "YouTube Comments & Replies Extractor",
    "permissions": [
       "activeTab",
+      "scripting",
       "storage",
       "unlimitedStorage",
       "tabs"

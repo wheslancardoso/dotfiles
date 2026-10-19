@@ -86,7 +86,27 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function sendMessageToContent(message) {
     const tab = await getYouTubeTab();
     if (!tab) throw new Error("Aba do YouTube não encontrada.");
-    return await chrome.tabs.sendMessage(tab.id, message);
+    try {
+      return await chrome.tabs.sendMessage(tab.id, message);
+    } catch (err) {
+      if (err.message && err.message.includes("Receiving end does not exist")) {
+        // Aba do YouTube foi aberta antes da extensão ser recarregada.
+        // Injeta automaticamente o content script na aba ativa e tenta novamente.
+        if (chrome.scripting && chrome.scripting.executeScript) {
+          await chrome.scripting.insertCSS({
+            target: { tabId: tab.id },
+            files: ["content/content.css"]
+          }).catch(() => {});
+          await chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            files: ["content/content.js"]
+          });
+          await new Promise((r) => setTimeout(r, 400));
+          return await chrome.tabs.sendMessage(tab.id, message);
+        }
+      }
+      throw err;
+    }
   }
 
   function countReplies(comments) {
