@@ -116,6 +116,29 @@ document.addEventListener("DOMContentLoaded", async () => {
     }, 0);
   }
 
+  let progressPoller = null;
+
+  function startPollingStatus() {
+    if (progressPoller) clearInterval(progressPoller);
+    progressPoller = setInterval(async () => {
+      try {
+        const status = await sendMessageToContent({ action: "getStatus" });
+        if (status && status.progress && status.isRunning) {
+          updateProgress(status.progress);
+        } else if (status && !status.isRunning && isRunning) {
+          stopPollingStatus();
+        }
+      } catch (e) {}
+    }, 500);
+  }
+
+  function stopPollingStatus() {
+    if (progressPoller) {
+      clearInterval(progressPoller);
+      progressPoller = null;
+    }
+  }
+
   async function startExpanding() {
     hideError();
     isRunning = true;
@@ -132,12 +155,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     const throttle = parseInt(throttleInput.value) || 500;
     const maxComments = parseInt(maxCommentsInput.value) || 0;
 
+    startPollingStatus();
+
     try {
       const response = await sendMessageToContent({
         action: "expandComments",
         throttle,
         maxComments,
       });
+
+      stopPollingStatus();
 
       if (response && response.success) {
         extractedData = response.data;
@@ -160,8 +187,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         showError(response?.error || "Erro durante a extração dos comentários.");
       }
     } catch (err) {
+      stopPollingStatus();
       showError(err.message || "Falha na comunicação com a página do YouTube.");
     } finally {
+      stopPollingStatus();
       isRunning = false;
       stopBtn.classList.add("hidden");
       expandBtn.classList.remove("hidden");
@@ -371,12 +400,17 @@ extracted_at: "${new Date().toISOString()}"
         stopBtn.classList.remove("hidden");
         progressSection.classList.remove("hidden");
         statsEl.classList.remove("hidden");
-        updateProgress({
-          percentage: 50,
-          message: "Extração em andamento em segundo plano...",
-          commentCount: status.knownCount || 0,
-          replyCount: 0
-        });
+        if (status.progress) {
+          updateProgress(status.progress);
+        } else {
+          updateProgress({
+            percentage: 50,
+            message: "Extração em andamento em segundo plano...",
+            commentCount: status.knownCount || 0,
+            replyCount: 0
+          });
+        }
+        startPollingStatus();
       }
     } catch (e) {}
   }

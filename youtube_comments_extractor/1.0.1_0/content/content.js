@@ -8,6 +8,7 @@
   let shouldStop = false;
   let knownCommentIds = new Set();
   let expandedThreadIds = new Set();
+  let liveProgress = { percentage: 0, message: "", commentCount: 0, replyCount: 0, isRunning: false };
 
   const SELECTORS = {
     commentsSection: "ytd-comments#comments",
@@ -361,25 +362,24 @@
       console.warn("[YT Extractor] Seção de comentários demorou a responder, prosseguindo com busca profunda.");
     }
 
-    // Apply Sort Order (Mais recentes primeiro)
-    if (sortOrder === "newest") {
-      await applySortOrder("newest");
-    }
-
+    // Removemos applySortOrder automático: o YouTube reseta o feed interno e quebra a sincronização do DOM
+    
     let totalExtractedRoots = 0;
     let totalRepliesFound = 0;
     let pendingBatch = [];
     const allExtractedRootsMap = new Map();
 
     function sendProgress(percentage, message, commentCount = 0, replyCount = 0) {
+      liveProgress = {
+        percentage,
+        message,
+        commentCount,
+        replyCount,
+        isRunning: true,
+      };
       chrome.runtime.sendMessage({
         action: "progressUpdate",
-        progress: {
-          percentage,
-          message,
-          commentCount,
-          replyCount,
-        },
+        progress: liveProgress,
       }).catch(() => {});
     }
 
@@ -400,18 +400,18 @@
     // =========================================================================
     // FASE 1: ROLAGEM EXAUSTIVA & STREAMING DOS COMENTÁRIOS PRINCIPAIS (ROOTS)
     // =========================================================================
-    let previousThreadsCount = 0;
-    let stallCount = 0;
-    const maxStallAttempts = 22; // Tolerância estendida contra latência e throttling de rede
+    let previousCount = 0;
+    let sameCountIterations = 0;
+    const maxSameCount = 30; // 30 tentativas consecutivas sem novos tópicos (~15s) antes de declarar fim
     const expectedTotal = parseReportedCommentCount();
 
     console.log(`[YT Extractor] FASE 1 iniciada. Total informado pelo YouTube: ${expectedTotal || "desconhecido"}`);
 
     while (!shouldStop) {
       const threadElements = document.querySelectorAll(SELECTORS.commentThread);
-      const currentThreadsCount = threadElements.length;
+      const currentCount = threadElements.length;
 
-      // Extrai novos comentários principais encontrados no DOM
+      // Extrai comentários principais ainda não catalogados
       for (let i = 0; i < threadElements.length && !shouldStop; i++) {
         const thread = threadElements[i];
         const mainCommentEl = thread.querySelector("#comment");
@@ -429,28 +429,27 @@
           totalExtractedRoots++;
         }
 
-        // Streaming contínuo a cada 20 itens para o IndexedDB
-        if (pendingBatch.length >= 20) {
-          const pct = maxComments > 0
-            ? Math.min(60, (totalExtractedRoots / maxComments) * 60)
-            : expectedTotal > 0
-            ? Math.min(60, (totalExtractedRoots / expectedTotal) * 60)
-            : 30;
-          await flushBatch(
-            pct,
-            `Carregando comentários principais... (${totalExtractedRoots}${expectedTotal > 0 ? ` / ~${expectedTotal}` : ""} salvos)`
-          );
-          sendProgress(
-            pct,
-            `Carregando comentários principais... (${totalExtractedRoots}${expectedTotal > 0 ? ` / ~${expectedTotal}` : ""})`,
-            totalExtractedRoots,
-            0
-          );
-        }
-
         if (maxComments > 0 && totalExtractedRoots >= maxComments) {
           break;
         }
+      }
+
+      // Atualiza progresso e envia streaming de dados
+      const pct = maxComments > 0
+        ? Math.min(65, Math.round((totalExtractedRoots / maxComments) * 65))
+        : expectedTotal > 0
+        ? Math.min(65, Math.round((totalExtractedRoots / expectedTotal) * 65))
+        : 35;
+
+      sendProgress(
+        pct,
+        `Carregando comentários... (${totalExtractedRoots}${expectedTotal > 0 ? ` / ~${expectedTotal}` : ""} tópicos)`,
+        totalExtractedRoots,
+        0
+      );
+
+      if (pendingBatch.length >= 10) {
+        await flushBatch(pct, `Carregando comentários... (${totalExtractedRoots} salvos)`);
       }
 
       if (maxComments > 0 && totalExtractedRoots >= maxComments) {
@@ -458,58 +457,41 @@
         break;
       }
 
-      // Localiza o carregador de continuação do YouTube no DOM (apenas dos comentários principais)
-      const continuationLoader = getMainContinuationLoader();
+      // Verificação de parada: chegamos ao fim dos comentários?
+      if (currentCount === previousCount) {
+        sameCountIterations++;
 
-      if (currentThreadsCount === previousThreadsCount) {
-        stallCount++;
-
+        // Continuation loader do YouTube
+        const continuationLoader = getMainContinuationLoader();
         if (continuationLoader) {
-          // O elemento de continuação ainda está no DOM: O YouTube tem mais comentários!
-          // Desperta o IntersectionObserver com scroll instantâneo
-          window.scrollBy({ top: -350, behavior: "instant" });
-          await delay(150);
+          // Wiggle scroll para forçar trigger do IntersectionObserver
+          window.scrollBy(0, -300);
+          await delay(100);
           continuationLoader.scrollIntoView({ behavior: "instant", block: "center" });
           window.dispatchEvent(new Event("scroll"));
-
-          const pct = maxComments > 0
-            ? Math.min(60, (totalExtractedRoots / maxComments) * 60)
-            : expectedTotal > 0
-            ? Math.min(60, (totalExtractedRoots / expectedTotal) * 60)
-            : 35;
-          await flushBatch(
-            pct,
-            `Aguardando YouTube carregar mais comentários... (${currentThreadsCount} carregados, tentativa ${stallCount}/${maxStallAttempts})`
-          );
-
-          await delay(Math.min(1500, throttle + stallCount * 60));
-
-          if (stallCount >= maxStallAttempts) {
-            console.warn("[YT Extractor] Timeout aguardando continuação após várias tentativas.");
-            break;
-          }
         } else {
-          // Nenhum continuationLoader: se persistir por 3 verificações, o YouTube encerrou os comentários
-          if (stallCount >= 3) {
-            console.log("[YT Extractor] Fim dos comentários principais detectado (continuationLoader ausente).");
-            break;
-          }
-          window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" });
+          window.scrollTo(0, document.documentElement.scrollHeight);
           window.dispatchEvent(new Event("scroll"));
-          await delay(throttle);
+        }
+
+        if (sameCountIterations >= maxSameCount) {
+          console.log(`[YT Extractor] Fim dos comentários principais atingido: ${currentCount} tópicos carregados.`);
+          break;
         }
       } else {
-        stallCount = 0;
-        previousThreadsCount = currentThreadsCount;
+        sameCountIterations = 0;
+        previousCount = currentCount;
 
+        const continuationLoader = getMainContinuationLoader();
         if (continuationLoader) {
           continuationLoader.scrollIntoView({ behavior: "instant", block: "center" });
         } else {
-          window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" });
+          window.scrollTo(0, document.documentElement.scrollHeight);
         }
         window.dispatchEvent(new Event("scroll"));
-        await delay(throttle);
       }
+
+      await delay(throttle);
     }
 
     // Flush de encerramento da Fase 1
@@ -685,6 +667,7 @@
         isRunning,
         knownCount: knownCommentIds.size,
         videoId: getVideoInfo().videoId,
+        progress: liveProgress,
       });
       return true;
     }

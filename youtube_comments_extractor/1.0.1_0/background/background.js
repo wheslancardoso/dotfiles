@@ -20,6 +20,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
   }
 
+  // Forward progressUpdate to popup/dashboard
+  if (message.action === "progressUpdate") {
+    chrome.runtime.sendMessage(message).catch(() => {});
+    return true;
+  }
+
   // Forward comments batch to any open dashboard tabs AND persist to IndexedDB
   if (message.action === "commentsBatch") {
     const { videoId, videoInfo, comments } = message;

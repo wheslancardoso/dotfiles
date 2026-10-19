@@ -243,6 +243,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // Refresh Stats and Live Feed for Selected Video
+  let refreshTimer = null;
+  function debouncedRefreshStatsAndFeed() {
+    if (refreshTimer) clearTimeout(refreshTimer);
+    refreshTimer = setTimeout(() => {
+      refreshStatsAndFeed();
+      loadSavedVideos();
+    }, 400);
+  }
+
   async function refreshStatsAndFeed() {
     if (!currentVideo) return;
 
@@ -433,19 +442,31 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // --- Message Listener for Streaming Batches from Content Script ---
   chrome.runtime.onMessage.addListener(async (message) => {
+    if (message.action === "progressUpdate" && message.progress) {
+      if (currentVideo) {
+        updateProgress(message.progress.percentage, message.progress.message);
+        if (message.progress.isRunning) {
+          updateStatus("running");
+        }
+      }
+    }
+
     if (message.action === "commentsBatch") {
       const { videoId, videoInfo, comments, progress, isFinished, stoppedReason } = message;
 
       if (!currentVideo || currentVideo.videoId === videoId) {
+        if (!currentVideo && videoId) {
+          currentVideo = { videoId, title: videoInfo?.title || videoId };
+        }
         // Upsert video details
         if (videoInfo) {
           currentVideo = { ...currentVideo, ...videoInfo };
-          videoTitleEl.textContent = currentVideo.title;
-          videoChannelEl.textContent = currentVideo.channel;
+          videoTitleEl.textContent = currentVideo.title || "Vídeo sem título";
+          videoChannelEl.textContent = currentVideo.channel || "YouTube";
           videoReportedCountEl.textContent = `Total YouTube: ${currentVideo.totalComments || "-"}`;
         }
 
-        // Persist batch to IndexedDB
+        // Persist batch to IndexedDB if dashboard receives it
         if (comments && comments.length > 0) {
           await window.commentsDB.upsertCommentsBatch(videoId, comments);
         }
@@ -455,9 +476,10 @@ document.addEventListener("DOMContentLoaded", async () => {
           updateProgress(progress.percentage, progress.message);
         }
 
-        await refreshStatsAndFeed();
+        debouncedRefreshStatsAndFeed();
 
         if (isFinished) {
+          await refreshStatsAndFeed();
           updateStatus("completed", stoppedReason ? "Interrompido" : "Concluído");
           showToast(`Finalizado! ${statTotalEl.textContent} comentários gravados com sucesso.`);
           loadSavedVideos();

@@ -290,5 +290,10 @@ class CommentsDB {
   }
 }
 
-// Export singleton instance for browser global / module context
-window.commentsDB = new CommentsDB();
+// Export singleton instance for browser global / service worker context
+const globalScope = typeof window !== "undefined" ? window : typeof self !== "undefined" ? self : this;
+globalScope.commentsDB = new CommentsDB();
+if (typeof self !== "undefined" && typeof self.CommentsDB === "undefined") {
+  self.CommentsDB = CommentsDB;
+}
+
