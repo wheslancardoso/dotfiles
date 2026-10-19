@@ -166,6 +166,13 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
     - Adiciona enxames sutis de insetos noturnos voando ao redor das cúpulas de luz dos postes de iluminação pública, recriando o detalhe biológico e imersivo presente no GTA V e RDR2.
   - **Faróis Volumétricos e Sombras em Tempo Real (Proper Shaders + VehFuncs):**
     - Os faróis dos veículos e lâmpadas dos postes projetam cones volumétricos nítidos que geram sombras dinâmicas de pedestres e carros no chão, integrando-se aos reflexos no asfalto molhado.
+* **[Sombras Suaves em Tempo Real (Soft Shadows & Ambient Occlusion)]:**
+  - **[Shadows Settings Extender v2.1.2](https://www.mixmods.com.br/2020/03/shadows-settings-extender-v2-1-2-extensor-de-sombras/):**
+    - Substitui as sombras redondas estáticas simplórias por sombras dinâmicas de alta definição em tempo real para **todos os veículos do tráfego, pedestres, postes, árvores e prédios**, projetadas pela rotação física do sol e da lua.
+  - **[Dynamic Shadow Color (Sombras com Cores Atmosféricas)](https://www.mixmods.com.br/2019/04/dynamic-shadow-color-sombras-com-cor-realista/):**
+    - As sombras absorvem a luz difusa da atmosfera: ganham tonalidade azulada sob o céu aberto de San Andreas e tonalidade dourada/âmbar ao entardecer, eliminando o aspecto preto plástico de 2004.
+* **[Propagação de Fogo & Física Térmica (Estilo Far Cry / RDR2)]:**
+  - Explosões, coquetéis molotov e lança-chamas criam focos de incêndio com física ativa que se **alastram organicamente por grama seca, cercas de madeira e arbustos**, criando barreiras de chamas dinâmicas em áreas rurais e florestais.
 * **[Remastered GUI 4K]:** HUD, mapa, radar, miras e fontes vetorizados em alta resolução nativa.
 
 ---
@@ -222,6 +229,8 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
     - **Instrumentos Vivos:** Velocímetro analógico e conta-giros (RPM) têm agulhas 3D que sobem e descem em tempo real no painel de acordo com a aceleração e marcha engatada.
     - **Volante Ativo:** As mãos do CJ giram o volante suavemente até 900° nas curvas, com os pés acionando os pedais de acelerador e freio.
     - **Inércia Dinâmica:** A cabeça do piloto inclina para a frente em frenagens fortes, recua na aceleração e inclina nas curvas reagindo à força G.
+* **[Car Audio Bass Resonance (Vibração e Ressonância de Graves)]:**
+  - Ao sintonizar rádios de rap e hip-hop dos anos 90 (*Radio Los Santos, Playback FM*) com o som automotivo ligado, a pressão sonora dos subwoofers gera vibração física audível e visual: a tampa do porta-malas, os espelhos retrovisores e a lataria tremem levemente no ritmo das batidas graves, reproduzindo a cultura real de *Lowriders*.
 
 ---
 
@@ -414,6 +423,9 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
   - Substitui o fundo do oceano cinzento e vazio por corais coloridos em alta definição, algas animadas e cardumes de peixes tropicais convertidos do GTA Trilogy.
 * **[GInput (Suporte Nativo a Controles Modernos Xbox / DualSense)](https://www.mixmods.com.br/2020/06/ginput/):**
   - Suporte completo a XInput e DirectInput com vibração tátil realista (rumble), aceleração suave nos gatilhos analógicos e ícones dos botões exibidos na interface do jogo.
+* **[SA] CamHunt (Modo Foto Profissional & Câmera Livre 360°)](https://www.mixmods.com.br/2022/09/sa-camhunt/):**
+  - Permite desacoplar a câmera livremente a qualquer momento (a pé ou dirigindo a 200 km/h) com controle total de rotação 360°, ângulo de visão (FOV), inclinação lateral (*roll*) e profundidade de campo (*Depth of Field* / desfoque cinematográfico estilo DSLR).
+  - Inclui congelamento de cena para capturas fotográficas de explosões, saltos acrobáticos e paisagens de San Andreas em resolução nativa 4K.
 
 ---
 
