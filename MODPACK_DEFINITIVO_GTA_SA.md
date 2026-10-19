@@ -5,10 +5,10 @@
 ---
 ## 📑 Sumário de Estrutura do Modpack
 1. [Fundação e Carregadores (Loaders)](#1-fundação-e-carregadores-loaders)
-2. [Matador de Atritos: 33 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-33-mecânicas-irritantes-do-gta-sa-resolvidas)
+2. [Matador de Atritos: 34 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-34-mecânicas-irritantes-do-gta-sa-resolvidas)
 3. [Guia Cirúrgico: 100% do Jogo, Coletáveis no Radar & Ouro em Todas as Escolas](#3-guia-cirúrgico-100-do-jogo-coletáveis-no-radar--ouro-em-todas-as-escolas)
 4. [Gráficos de Última Geração (Pacote Otimizado para RTX / 4K)](#4-gráficos-de-última-geração-pacote-otimizado-para-rtx--4k)
-5. [Física Realista, Colisões & Deformação de Veículos](#5-física-realista-colisões--deformação-de-veículos)
+5. [Física Realista, Ragdoll & Animações de Nova Geração](#5-física-realista-ragdoll--animações-de-nova-geração)
 6. [Gunplay AAA & Ammu-Nation de Próxima Geração (Nível GTA V / Superior)](#6-gunplay-aaa--ammu-nation-de-próxima-geração-nível-gta-v--superior)
 7. [Lojas de Roupas, Barbearias Modernas & Customização Tática de Armas](#7-lojas-de-roupas-barbearias-modernas--customização-tática-de-armas)
 8. [A Trindade Final: Tradução PT-BR Sem Censura, Rádios Restauradas, 1ª Pessoa & Casas Abertas](#8-a-trindade-final-tradução-pt-br-sem-censura-rádios-restauradas-1ª-pessoa--casas-abertas)
@@ -31,7 +31,7 @@
 
 ---
 
-## 2. Matador de Atritos: 33 Mecânicas Irritantes do GTA SA Resolvidas
+## 2. Matador de Atritos: 34 Mecânicas Irritantes do GTA SA Resolvidas
 *Como resolver cada frustração clássica de gameplay usando o MixSets e mods dedicados.*  
 *(Um perfil pronto e customizado foi gerado e salvo em [`MixSets_Otimizado.ini`](file:///home/lanwsl/dotfiles/MixSets_Otimizado.ini) com desfoque de movimento, calor e atritos 100% desativados).*
 
@@ -70,6 +70,7 @@
 | **31** | **Lança-mísseis lerdo e frustrante** (missão da plantação de maconha do The Truth — *Are You Going to San Fierro?* com o helicóptero da polícia) e **trava de mira lerda do caça Hydra e helicóptero Hunter**. | Reduz o lock-on do Hydra de 1000ms para 150ms no MixSets, mísseis ganham física supersônica e curva de perseguição realista contra aeronaves, e mira livre em 3ª pessoa para armas pesadas sem câmera travada. | [SA] Missile by Ryosuke839 + **MixSets.ini** (`HydraLockDelay = 150`, `HydraRocketDelay = 150`, `NoHydraSpeedLimit = 1`) + *Third Person Aiming for Heavy Weapons* |
 | **32** | **Alcance ridículo da Sniper Rifle** (pedestres e veículos somem na mira telescópica a ~100 metros e balas não causam dano à longa distância). | Aumenta o raio de renderização de alvos e o alcance balístico do projétil na mira da Sniper em até 10x, permitindo tiros de precisão de topos de arranha-céus e montanhas. | [Sniper Distance Fix](https://www.mixmods.com.br/2018/09/sniper-distance-fix-aumentar-alcance-da-sniper/) |
 | **33** | **Alvos de sub-missões gerados no fim do mundo** (pacientes da ambulância e bandidos do vigilante spawnando a quilômetros de distância no nível 11/12 fazendo o tempo expirar). | Restringe o raio de spawn dos alvos para até 600m do veículo, salva checkpoints por nível para não recomeçar do 1 se falhar, e escala pagamentos para fortunas reais ($50k+ e renda passiva). | *Local Sub-Missions Spawns* + *Sub-Missions Checkpoints* + [Vigilante Special](https://www.mixmods.com.br/2021/04/vigilante-special-missao-de-policia-em-qualquer-carro/) |
+| **34** | **Correr travado como uma tartaruga com armas longas** (fuzis M4, AK-47, escopetas e sniper forçando o CJ a andar devagar) e **cair da moto por raspar no meio-fio a 10 km/h**. | Permite sprintar e correr no máximo segurando rifles e armas de duas mãos, e ajusta a tolerância de queda de motos apenas para choques frontais violentos. | [Sprinting With Two Handed Weapons](https://www.mixmods.com.br/2018/10/correr-com-armas-pesadas-correr-com-rifle/) + *Bike Fall Physics Fix* + **MixSets** |
 
 ---
 
@@ -133,21 +134,42 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
 
 ---
 
-## 5. Física Realista, Colisões & Deformação de Veículos
+## 5. Física Realista, Ragdoll & Animações de Nova Geração
 
+### A. Física Dinâmica de Veículos & Colisões
 * **[VehDeform v1.3c (Amassar Carros Dinamicamente)](https://www.mixmods.com.br/2025/06/sa-vehdeform-amassar-carros/):**
   - **O que faz:** Adiciona deformação de lataria realista nas colisões (estilo *GTA IV / Wreckfest*).
   - Em vez dos carros apenas trocarem texturas para "amassado pré-programado", a malha metálica se deforma de acordo com a velocidade, ângulo e ponto de impacto do choque.
+* **[VehFuncs v2.5.5 (Física de Peças Móveis)](https://www.mixmods.com.br/2025/12/sa-vehfuncs/):**
+  - Adiciona peças dinâmicas com física ativa a todos os veículos: suspensão independente que amortece e oscila de verdade em buracos, limpadores de para-brisa em dias de chuva, pedais de freio e acelerador móveis acionados pelos pés do CJ, volantes funcionais e faróis escamoteáveis (*pop-up*).
 * **[Improved Surface Physics (Superfícies com Física Aprimorada)](https://www.mixmods.com.br/2021/11/improved-surface-physics-superficies-com-fisica-melhorada/):**
   - Diferencia o atrito físico e aderência dos pneus em: asfalto molhado, areia, terra fofa, cascalho e grama.
 * **[Wheel Detach (Soltar e Arrancar Rodas em Colisões)](https://www.mixmods.com.br/2020/07/wheel-detach-soltar-ou-estourar-roda/):**
-  - Impactos frontais e laterais violentos em alta velocidade agora têm chance de quebrar o eixo e arrancar a roda do veículo.
-* **[Collision Interiors Fix (Correção de Colisões em Interiores)](https://www.mixmods.com.br/2022/01/sa-collision-interiors-fix/):**
-  - Corrige colisões invisíveis, paredes falsas e objetos sem hitbox em casas, cassinos, lojas de roupas e delegacias.
-* **[Ragdoll Bullet Physics (Física Euphoria para Pedestres & CJ)]:**
-  - Tiros de espingarda, fuzil ou atropelamentos fazem o corpo reagir com física de boneco de pano (*ragdoll*) dinâmica, calculando peso, gravidade e impacto sem animações pré-gravadas rígidas.
-* **[Ped Evade Car Fix]:**
-  - Corrige o comportamento suicida de pedestres que pulavam na frente do carro em frenagens bruscas; os NPCs agora desviam em direção às calçadas.
+  - Impactos violentos em alta velocidade agora têm chance de romper eixos e arrancar rodas, obrigando o jogador a manobrar no aro metálico soltando faíscas.
+* **Tolerância Realista de Queda de Moto (*Bike Fall Physics Fix*):**
+  - Acaba com o CJ sendo ejetado da moto por esbarrar no meio-fio ou raspar num poste a 10 km/h; quedas só acontecem em batidas frontais violentas.
+
+### B. Ragdoll Euphoria / Bullet Physics para Pedestres & CJ
+* **[Mod Ragdoll Bullet Physics + Fix](https://www.mixmods.com.br/2021/09/mod-ragdoll-bullet-physics-fix-fisica-realista/):**
+  - **O fim das mortes duras e pré-gravadas de 2004:** Injeta física esquelética ativa (*ragdoll*) usando a biblioteca *Bullet Physics* (estilo *Euphoria* do GTA IV/V).
+  - Tiros de espingarda arremessam corpos para trás; tiros nas pernas fazem o inimigo mancar e tombar de joelhos.
+  - Atropelamentos fazem o pedestre rolar por cima do capô e chocar-se contra o para-brisa com peso e inércia reais.
+  - Corpos alvejados no alto de escadarias ou sacadas rolam naturalmente degrau por degrau pela gravidade.
+
+### C. Animações de Nova Geração & Movimentação Fluida
+* **[Animation Fix + M4k3's Car Animations](https://www.mixmods.com.br/2022/02/animation-fix-v1-5-corrigir-bugs-de-animacoes/):**
+  - Corrige **mais de 70 bugs e inconsistências anatômicas**:
+    - As mãos seguram o volante no ângulo correto e os pés não atravessam o assoalho do veículo.
+    - O CJ vira o rosto e usa o espelho retrovisor lateral ao engatar a marcha a ré em caminhões e vans.
+    - Corrige sincronização labial e expressões faciais em diálogos.
+* **[Awesome IFP v3 (Movimentação Atlética e Fluida)](https://www.mixmods.com.br/2021/11/sa-sade-awesome-ifp/):**
+  - Substitui o andar engessado do CJ por animações atléticas modernas: passada fluida, corrida com impulso, transição natural de peso sem cortes bruscos e esquivas suaves.
+* **[Sprinting With Two Handed Weapons (Correr com Armas Longas)](https://www.mixmods.com.br/2018/10/correr-com-armas-pesadas-correr-com-rifle/):**
+  - Permite correr em velocidade máxima segurando fuzis (M4, AK-47), escopetas táticas e rifles sniper, eliminando a lentidão forçada em combates abertos.
+* **Entrada e Saída Tática de Veículos (*Combat Enter/Exit*):**
+  - Sob tiroteio ou perseguição policial, o CJ mergulha para dentro do carro e fecha a porta com rapidez e urgência tática, em vez da animação lenta de passeio.
+* **Subida Ágil de Muros (*Fluid Vaulting & Climbing*):**
+  - Permite transpor muros, cercas e muretas em movimento contínuo sem travar no topo, com aterrissagem amortecida.
 
 ---
 
