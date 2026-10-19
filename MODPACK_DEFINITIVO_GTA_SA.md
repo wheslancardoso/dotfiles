@@ -5,7 +5,7 @@
 ---
 ## 📑 Sumário de Estrutura do Modpack
 1. [Fundação e Carregadores (Loaders)](#1-fundação-e-carregadores-loaders)
-2. [Matador de Atritos: 19 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-19-mecânicas-irritantes-do-gta-sa-resolvidas)
+2. [Matador de Atritos: 21 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-21-mecânicas-irritantes-do-gta-sa-resolvidas)
 3. [Guia Cirúrgico: 100% do Jogo, Coletáveis no Radar & Ouro em Todas as Escolas](#3-guia-cirúrgico-100-do-jogo-coletáveis-no-radar--ouro-em-todas-as-escolas)
 4. [Gráficos de Última Geração (Pacote Otimizado para RTX / 4K)](#4-gráficos-de-última-geração-pacote-otimizado-para-rtx--4k)
 5. [Física Realista, Colisões & Deformação de Veículos](#5-física-realista-colisões--deformação-de-veículos)
@@ -27,7 +27,7 @@
 
 ---
 
-## 2. Matador de Atritos: 19 Mecânicas Irritantes do GTA SA Resolvidas
+## 2. Matador de Atritos: 21 Mecânicas Irritantes do GTA SA Resolvidas
 *Como resolver cada frustração clássica de gameplay usando o MixSets e mods dedicados.*  
 *(Um perfil pronto e customizado foi gerado e salvo em [`MixSets_Otimizado.ini`](file:///home/lanwsl/dotfiles/MixSets_Otimizado.ini) com desfoque de movimento, calor e atritos 100% desativados).*
 
@@ -52,6 +52,8 @@
 | **17** | **Missão de Roubo da Van do Ryder (*Home Invasion*)** com medidor de barulho hipersensível ao andar agachado. | Normaliza o raio acústico de passos e acelera a movimentação ao carregar as caixas de munição. | **MixSets.ini** + *Stealth Fix* |
 | **18** | **Motos ejetando o CJ em colisões leves** e virando de forma rígida sem inclinação natural. | Adiciona inclinação dinâmica do corpo nas curvas (*Bike Lean*) e amortecimento progressivo nas duas rodas. | [VehFuncs v2.5.5](https://www.mixmods.com.br/2025/12/sa-vehfuncs/) + **MixSets** |
 | **19** | **GPS traçando rotas apenas para pontos manuais** (sem caminho para as missões da campanha). | O GPS traça linha dinâmica em tempo real para os objetivos de qualquer missão ativa da história. | [GPS Redux v1.5](https://www.mixmods.com.br/2022/10/sa-gps-redux/) |
+| **20** | **Extintor de incêndio ineficaz** (spray com colisão quebrada, chamas que não apagam na missão da Denise e carros em chamas). | Corrige o cone de alcance da espuma, apaga o fogo na hora e permite usar o extintor para salvar carros em chamas antes de explodirem. | [SilentPatch](https://www.mixmods.com.br/2026/08/sa-silentpatch/) + [Extintor Apaga Fogo do Carro](https://www.mixmods.com.br/2016/03/extintor-apaga-fogo-do-carro.html) |
+| **21** | **Missão de Paramédico / Ambulância arruinada por NPCs suicidas** (pacientes que se jogam embaixo do pneu em Montgomery/Angel Pine). | Pacientes desviam do veículo em vez de correrem na frente das rodas, entram instantaneamente na ambulância e ambulância não tomba nem explode. | *Ped Evade Car Fix* + **MixSets.ini** (`NoCarFlipFire = 1`) |
 
 ---
 
