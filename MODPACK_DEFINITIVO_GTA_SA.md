@@ -12,7 +12,8 @@
 6. [Gunplay AAA & Ammu-Nation de Próxima Geração (Nível GTA V / Superior)](#6-gunplay-aaa--ammu-nation-de-próxima-geração-nível-gta-v--superior)
 7. [Lojas de Roupas, Barbearias Modernas & Customização Tática de Armas](#7-lojas-de-roupas-barbearias-modernas--customização-tática-de-armas)
 8. [A Trindade Final: Tradução PT-BR Sem Censura, Rádios Restauradas, 1ª Pessoa & Casas Abertas](#8-a-trindade-final-tradução-pt-br-sem-censura-rádios-restauradas-1ª-pessoa--casas-abertas)
-9. [Todos os Mods Indexados (Catálogo Geral do Scraper)](#9-todos-os-mods-indexados-catálogo-geral-do-scraper)
+9. [Overhaul das Missões & Campanha: Story Mode v2.0 & Lógica da História](#9-overhaul-das-missões--campanha-story-mode-v20--lógica-da-história)
+10. [Todos os Mods Indexados (Catálogo Geral do Scraper)](#10-todos-os-mods-indexados-catálogo-geral-do-scraper)
 
 ---
 
@@ -259,7 +260,24 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
 
 ---
 
-## 9. Todos os Mods Indexados (Catálogo Geral do Scraper)
+## 9. Overhaul das Missões & Campanha: Story Mode v2.0 & Lógica da História
+
+* **[Story Mode v2.0 (Melhorias para a Storyline)](https://www.mixmods.com.br/2022/11/story-mode/):**
+  - **O que faz:** Corrige dezenas de incoerências de roteiro, falhas lógicas e mortes injustas nas missões da campanha oficial:
+    - **Inteligência de Aliados:** Sweet, Ryder e Big Smoke não correm suicidas para a linha de tiro em emboscadas; buscam cobertura e recuam se a vida estiver crítica.
+    - **Tráfego de Pontes Realista:** As pontes bloqueadas não são mais barreiras invisíveis com o mar estático; veículos de pedestres circulam normalmente, mantendo as 4 estrelas se você tentar atravessar antes da hora.
+    - **Noticiário WCTR Dinâmico:** As notícias no rádio de Los Santos atualizam de acordo com os acontecimentos reais das missões (*The Green Sabre, Yay Ka-Boom-Boom*).
+* **[Emmet But Useful (Emmet Útil no Jogo Inteiro)](https://www.mixmods.com.br/2022/08/atualizados-traducao-emmet-useful-vehicle-immunities/):**
+  - No jogo base, o velho Emmet só servia para ensinar a atirar em garrafas e dava uma pistola 9mm.
+  - Este mod atualiza o estoque do Emmet conforme você avança na campanha: ele passa a vender armamento pesado, fuzis e coletes mais baratos que na Ammu-Nation.
+* **A Solução do Trem do Big Smoke (*Wrong Side of the Tracks*):**
+  - Com o [Manual Driveby Remake](https://www.mixmods.com.br/2021/10/manual-driveby-remake-fixed-mirar-de-dentro-do-carro/), o próprio CJ saca a submetralhadora pelo guidão da moto e atira nos Vagos em cima do vagão, eliminando os 4 alvos em menos de 15 segundos antes mesmo do primeiro túnel.
+* **Fim do Bloqueio de Pulmão na Missão do Woozie (*Amphibious Assault*):**
+  - No [Cheat Menu v3.52](https://www.mixmods.com.br/2021/11/cheat-menu-by-grinch-v3-52/), basta ir em **Stats > Lung Capacity** e preencher 100% com 1 clique, sem precisar gastar 30 minutos mergulhando na praia de San Fierro.
+
+---
+
+## 10. Todos os Mods Indexados (Catálogo Geral do Scraper)
 
 ### [[SA] Proper Streaming (corrigir mapa não carregando)](https://www.mixmods.com.br/2026/10/proper-streaming/)
 **Data da Publicação:** `2026-10-16`
