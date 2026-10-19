@@ -5,7 +5,7 @@
 ---
 ## 📑 Sumário de Estrutura do Modpack
 1. [Fundação e Carregadores (Loaders)](#1-fundação-e-carregadores-loaders)
-2. [Matador de Atritos: 42 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-42-mecânicas-irritantes-do-gta-sa-resolvidas)
+2. [Matador de Atritos: 43 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-43-mecânicas-irritantes-do-gta-sa-resolvidas)
 3. [Guia Cirúrgico: 100% do Jogo, Coletáveis no Radar & Ouro em Todas as Escolas](#3-guia-cirúrgico-100-do-jogo-coletáveis-no-radar--ouro-em-todas-as-escolas)
 4. [Gráficos de Última Geração (Pacote Otimizado para RTX / 4K)](#4-gráficos-de-última-geração-pacote-otimizado-para-rtx--4k)
 5. [Física Realista, Ragdoll & Animações de Nova Geração](#5-física-realista-ragdoll--animações-de-nova-geração)
@@ -32,7 +32,7 @@
 
 ---
 
-## 2. Matador de Atritos: 42 Mecânicas Irritantes do GTA SA Resolvidas
+## 2. Matador de Atritos: 43 Mecânicas Irritantes do GTA SA Resolvidas
 *Como resolver cada frustração clássica de gameplay usando o MixSets e mods dedicados.*  
 *(Um perfil pronto e customizado foi gerado e salvo em [`MixSets_Otimizado.ini`](file:///home/lanwsl/dotfiles/MixSets_Otimizado.ini) com desfoque de movimento, calor e atritos 100% desativados).*
 
@@ -80,6 +80,7 @@
 | **40** | **Polícia onisciente/telepática e cega para outras gangues** (atirar no deserto vazio dá estrela sem testemunhas enquanto Ballas atiram na viatura impunes) e **paramédicos/bombeiros que não salvam ninguém**. | A polícia só é acionada se testemunhas ligarem no 911 ou verem o crime, policiais enquadram e atiram em gangues rivais armadas, médicos reanimam pedestres caídos com desfibrilador e bombeiros apagam fogo em veículos. | [Sensible Police & Crime Report Mod] + [Paramedics Revive Peds] + [Firefighters Extinguish Cars] + [More Locked Cars] + [Alarm Touching Cars] + **MixSets.ini** (`CopsShootGangs = 1`) |
 | **41** | **Carros com física de "banheira sobre sabão"** (carroceria rolando excessivamente nas curvas feito barco, direção instável e falta de ângulo de contra-esterço para drift). | Calibra o centro de gravidade e rigidez da suspensão de todas as categorias automotivas, aumenta o ângulo de esterço para 55° e adiciona modo de drift em tempo real com contador de pontos e fumaça volumétrica. | *Proper & Realistic Handling Pack* + *Toggle Drift Mod* + **MixSets.ini** (`BrakePower = 1.25`, `CarsSteeringAngleHighSpeed = 0.6`) |
 | **42** | **Telas pretas de loading a cada porta, menus demorados, limite de 3 aliados em vans e roubo de casas restrito à Boxville**. | Auto-carrega o save direto na rua em <2s sem menus, elimina fade preto em interiores, libera 7 aliados armados em vans/caçambas, permite roubar casas com qualquer veículo e adiciona arsenal no porta-malas. | [SaveLoader v2.7](https://www.mixmods.com.br/2020/01/iii-vc-sa-saveloader-v2-7-fast-loader-carregamento-rapido/) + [Gang Rider v2](https://www.mixmods.com.br/2020/08/gang-rider-v2-carregar-mais-gangue/) + [Burglary With Any Car v2.0](https://www.mixmods.com.br/2022/01/sa-sade-burglary-with-any-car-roubar-casa-com-qualquer-carro/) + [Trunk Store Weapons](https://www.mixmods.com.br/2021/04/trunk-store-weapons-guardar-armas-no-porta-malas/) |
+| **43** | **Armas substituindo e apagando umas às outras no mesmo slot** (comprar ou coletar uma AK-47 destrói a M4 e toda a munição dela; pegar uma 9mm apaga a Desert Eagle). | Permite carregar simultaneamente todas as armas de cada categoria (AK-47 + M4, Desert Eagle + 9mm Silenciada + 9mm, todas as escopetas e submetralhadoras) alternando entre elas na Roda de Armas ou nas teclas numéricas sem perder nenhuma. | [[III/VC/SA] AllWeapon](https://www.mixmods.com.br/2021/06/iii-vc-sa-allweapon-ter-todas-as-armas/) + [Weapon Inventory](https://www.mixmods.com.br/2015/04/weapon-inventory-inventario-de-armas.html) + **MixSets.ini** (`NoWeaponDropOnPickup = 1`) |
 
 ---
 
@@ -256,6 +257,9 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
   - Permite adicionar armas customizadas novas no catálogo de compra sem quebrar o arquivo de missões `main.scm`.
 * **[Ammu-Nation Interior HD & Walk-In Shelves]:**
   - Substitui as prateleiras embaçadas da loja por vitrines em 3D iluminadas em alta definição, com caixas de munição realistas e pôsteres temáticos.
+* **[[III/VC/SA] AllWeapon (Carregar Todas as Armas Sem Substituir)](https://www.mixmods.com.br/2021/06/iii-vc-sa-allweapon-ter-todas-as-armas/) + [Weapon Inventory](https://www.mixmods.com.br/2015/04/weapon-inventory-inventario-de-armas.html):**
+  - **O fim da perda de armas do mesmo slot:** No jogo original, o array `m_aWeapons[13]` só permite 1 arma por categoria (comprar uma *M4* apaga a sua *AK-47* e toda a munição dela; pegar uma *9mm* apaga a *Desert Eagle*).
+  - Com o *AllWeapon* integrado ao `NoWeaponDropOnPickup = 1` do [`MixSets_Otimizado.ini`](file:///home/lanwsl/dotfiles/MixSets_Otimizado.ini#L39), todas as armas da mesma categoria ficam salvas simultaneamente com suas respectivas munições. Você alterna entre elas dentro do próprio slot na **Roda de Armas (GTA V HUD)** ou pressionando a tecla numérica correspondente (`1`–`9`), exatamente como no *GTA V*.
 
 ---
 
