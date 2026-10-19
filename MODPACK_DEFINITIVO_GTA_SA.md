@@ -5,7 +5,7 @@
 ---
 ## 📑 Sumário de Estrutura do Modpack
 1. [Fundação e Carregadores (Loaders)](#1-fundação-e-carregadores-loaders)
-2. [Matador de Atritos: 36 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-36-mecânicas-irritantes-do-gta-sa-resolvidas)
+2. [Matador de Atritos: 37 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-37-mecânicas-irritantes-do-gta-sa-resolvidas)
 3. [Guia Cirúrgico: 100% do Jogo, Coletáveis no Radar & Ouro em Todas as Escolas](#3-guia-cirúrgico-100-do-jogo-coletáveis-no-radar--ouro-em-todas-as-escolas)
 4. [Gráficos de Última Geração (Pacote Otimizado para RTX / 4K)](#4-gráficos-de-última-geração-pacote-otimizado-para-rtx--4k)
 5. [Física Realista, Ragdoll & Animações de Nova Geração](#5-física-realista-ragdoll--animações-de-nova-geração)
@@ -32,7 +32,7 @@
 
 ---
 
-## 2. Matador de Atritos: 36 Mecânicas Irritantes do GTA SA Resolvidas
+## 2. Matador de Atritos: 37 Mecânicas Irritantes do GTA SA Resolvidas
 *Como resolver cada frustração clássica de gameplay usando o MixSets e mods dedicados.*  
 *(Um perfil pronto e customizado foi gerado e salvo em [`MixSets_Otimizado.ini`](file:///home/lanwsl/dotfiles/MixSets_Otimizado.ini) com desfoque de movimento, calor e atritos 100% desativados).*
 
@@ -74,6 +74,7 @@
 | **34** | **Correr travado como uma tartaruga com armas longas** (fuzis M4, AK-47, escopetas e sniper forçando o CJ a andar devagar) e **cair da moto por raspar no meio-fio a 10 km/h**. | Permite sprintar e correr no máximo segurando rifles e armas de duas mãos, e ajusta a tolerância de queda de motos apenas para choques frontais violentos. | [Sprinting With Two Handed Weapons](https://www.mixmods.com.br/2018/10/correr-com-armas-pesadas-correr-com-rifle/) + *Bike Fall Physics Fix* + **MixSets** |
 | **35** | **Interior e florestas sem nenhuma vida selvagem** (deserto biológico no Mount Chiliad e Flint County cortado pela Rockstar em 2004) e **armas invisíveis no bolso do CJ**. | Povoa florestas e desertos com animais nativos, caça e cães com IA própria, e torna armas do inventário visíveis em coldres e bandoleiras nas costas. | [Myths Maker – Animals Pack](https://www.mixmods.com.br/2022/10/myths-maker-animals-pack-mod-de-animais/) + [Weapons OutFit](https://www.mixmods.com.br/2021/08/weapons-outfit-armas-pelo-corpo/) |
 | **36** | **Veículos com rodas quadradas/octogonais, interiores borrados e câmera interna dura** (painéis sem instrumentos ativos e rodas poligonais de 2004). | Remasteriza todos os carros originais com alta contagem poligonal, adiciona interiores com texturas PBR, rodas perfeitamente redondas, painéis com velocímetros/RPM funcionais e câmera de cockpit estilo Forza. | [Revamped Vehicles Project](https://www.mixmods.com.br/2022/08/sa-revamped-vehicles-project/) + [Proper Vehicles Retex](https://www.mixmods.com.br/2022/02/sa-sade-proper-vehicles-retex/) + [Round Tuning Wheels CE](https://www.mixmods.com.br/2022/01/sa-round-tuning-wheels-ce-rodas-mais-redondas/) |
+| **37** | **Chuva arcaica de "linhas de giz" brancas piscando que cegam a visão** (para-brisas secos, tempestades sem raios reais e pedestres tomando chuva sem reação). | Substitui a tempestade por chuva translúcida com gotas no para-brisa limpas pelos limpadores, raios dinâmicos com delay sônico de trovão, asfalto com poças refletivas PBR e pedestres com guarda-chuva. | [Proper Shaders](https://www.mixmods.com.br/2026/10/sa-proper-shaders/) + [Thunder Mod](https://www.mixmods.com.br/2022/07/thunder-mod-cleo/) + [Rain Drops on Screen](https://www.mixmods.com.br/2017/07/rain-drops-on-screen-pingos-de-chuva-na-tela/) + [Hard Rain Remake](https://www.mixmods.com.br/2019/07/hard-rain-remake-pedestres-com-guarda-chuva/) |
 
 ---
 
@@ -133,10 +134,20 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
 * **[Project2DFX v4.4](https://www.mixmods.com.br/):** Distância de visão infinita e iluminação noturna volumétrica (*LOD lights*) por todo o horizonte de San Andreas.
 * **[Behind Space of Realities (BSOR) / Insanity Vegetation]:** Árvores, palmeiras e grama densa em modelos 3D volumétricos completos.
 * **[FxsFuncs v1.2 (2025/2026)](https://www.mixmods.com.br/2025/06/fxsfuncs/):** Efeitos de partículas em HD (fumaça volumétrica, chamas, explosões e faíscas dinâmicas).
-* **[Proper Rain & PBR Wet Road Reflections (Proper Shaders + FxsFuncs)]:**
-  - Substitui as linhas cinzas arcaicas da tempestade original por chuva com refração de luz e efeito de lente molhada.
-  - O asfalto e calçadas ganham poças de água dinâmicas que refletem faróis de carros, postes e néon da cidade em tempo real (*Screen-Space Reflections*).
-  - Pneus de veículos levantam spray e névoa volumétrica (*water mist*) ao cruzar pistas molhadas em alta velocidade.
+* **[Sistema de Tempestades & Chuva Hiper-Realista]:**
+  - **[Proper Rain & PBR Wet Road Reflections (Proper Shaders + FxsFuncs)]:**
+    - Substitui as linhas cinzas arcaicas da tempestade original por chuva com refração ótica de luz, sem cegar a visão do jogador.
+    - O asfalto e calçadas ganham poças d'água dinâmicas com mapa de relevo que refletem faróis de carros, postes e letreiros de néon em tempo real (*Screen-Space Reflections*).
+    - Pneus de veículos levantam spray e névoa d'água volumétrica (*water mist*) ao acelerar sobre pistas molhadas.
+  - **[Rain Drops on Screen & Windshield (Pingos na Tela e Para-brisa)](https://www.mixmods.com.br/2017/07/rain-drops-on-screen-pingos-de-chuva-na-tela/):**
+    - Gotas d'água atingem dinamicamente a tela e o para-brisa dos carros em tempo real, escorrendo com o vento da velocidade.
+    - Os limpadores de para-brisa do **VehFuncs** varrem as gotas fisicamente ao passarem pelo vidro.
+  - **[Thunder Mod (Raios Volumétricos & Trovões com Atraso Sônico)](https://www.mixmods.com.br/2022/07/thunder-mod-cleo/):**
+    - O céu se ilumina com raios volumétricos bifurcados cortando as nuvens, seguidos por estrondos de trovão com delay sônico realista (a luz do raio chega antes do som, de acordo com a distância).
+    - Trovões próximos geram um leve tremor de câmera e estrondo de sub-graves no áudio 3D do **Soundize**.
+  - **[Hard Rain Remake (Reação Social e Guarda-Chuvas)](https://www.mixmods.com.br/2019/07/hard-rain-remake-pedestres-com-guarda-chuva/):**
+    - Pedestres sacam guarda-chuvas coloridos automaticamente e correm procurando abrigo sob marquises e pontos de ônibus.
+    - Motoristas acionam faróis baixos e os limpadores de para-brisa dos veículos começam a funcionar na hora.
 * **[Remastered GUI 4K]:** HUD, mapa, radar, miras e fontes vetorizados em alta resolução nativa.
 
 ---
