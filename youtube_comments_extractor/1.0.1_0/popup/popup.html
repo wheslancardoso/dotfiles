@@ -1,41 +1,82 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>YouTube Comments Extractor</title>
   <link rel="stylesheet" href="popup.css">
 </head>
+
 <body>
   <div class="container">
-    <div class="header">
-      <span class="icon">📺</span>
-      <h2>YT Comments Extractor</h2>
+    <h1>📺 YouTube Comments Extractor</h1>
+
+    <div id="not-youtube" class="status-message hidden">
+      <p>⚠️ Navegue até uma página de vídeo do YouTube para usar a extensão.</p>
+      <button id="open-general-dashboard-btn" class="btn btn-secondary" style="margin-top: 12px;">
+        📂 Abrir Histórico no Painel
+      </button>
     </div>
 
-    <div id="youtube-detected" class="card hidden">
-      <span class="badge-active">Vídeo Detectado</span>
-      <p id="video-title" class="video-title">Carregando...</p>
-      
-      <button id="open-dashboard-btn" class="btn btn-primary">
-        🚀 Abrir Painel em Nova Aba
-      </button>
-      <p class="helper-text">
-        ⚡ A aba dedicada permanece ativa em segundo plano sem pausar ao perder o foco!
-      </p>
-    </div>
+    <div id="youtube-detected" class="hidden">
+      <div class="video-info">
+        <p id="video-title" class="video-title">Carregando informações do vídeo...</p>
+      </div>
 
-    <div id="not-youtube" class="card">
-      <p class="status-msg">Nenhum vídeo do YouTube ativo nesta aba.</p>
-      <button id="open-general-dashboard-btn" class="btn btn-secondary">
-        📂 Abrir Painel & Histórico
-      </button>
-      <p class="helper-text">
-        Acesse seus dados salvos no banco local e exportações para IA.
-      </p>
+      <div class="settings">
+        <label for="throttle">Throttle delay (ms):</label>
+        <input type="number" id="throttle" value="500" min="100" max="5000" step="100">
+        <small>Velocidade segura anti-throttling (padrão: 500ms)</small>
+      </div>
+
+      <div class="settings">
+        <label for="max-comments">Limite de comentários:</label>
+        <input type="number" id="max-comments" value="0" min="0" step="100">
+        <small>0 = ilimitado (extrai todos os comentários e respostas)</small>
+      </div>
+
+      <div class="progress-section hidden" id="progress-section">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <p id="progress-text">Iniciando extração...</p>
+      </div>
+
+      <div class="stats hidden" id="stats">
+        <p>📊 <strong>Comentários carregados:</strong> <span id="comment-count">0</span></p>
+        <p>💬 <strong>Respostas carregadas:</strong> <span id="reply-count">0</span></p>
+      </div>
+
+      <div class="buttons">
+        <button id="expand-btn" class="btn btn-primary">
+          🔄 Extrair Todos os Comentários & Respostas
+        </button>
+        <button id="stop-btn" class="btn btn-warning hidden">
+          ⏹️ Parar & Extrair Parcial
+        </button>
+        <button id="export-llm-btn" class="btn btn-accent hidden">
+          🤖 Exportar para IA (Markdown)
+        </button>
+        <button id="export-csv-btn" class="btn btn-success hidden">
+          📊 Exportar para CSV
+        </button>
+        <button id="export-btn" class="btn btn-success hidden">
+          💾 Exportar para JSON
+        </button>
+      </div>
+
+      <div class="dashboard-link-container">
+        <button id="open-dashboard-btn" class="link-btn">
+          🚀 Abrir Painel Avançado em Nova Aba ↗
+        </button>
+      </div>
+
+      <div id="error-message" class="error hidden"></div>
     </div>
   </div>
 
   <script src="popup.js"></script>
 </body>
+
 </html>

@@ -210,8 +210,9 @@
     const allBtns = thread.querySelectorAll("button");
     const valid = [];
     for (const b of allBtns) {
-      const txt = (b.innerText || b.getAttribute("aria-label") || "").toLowerCase();
-      const isReply = (txt.includes("resposta") || txt.includes("repl")) && !txt.includes("ocultar") && !txt.includes("hide");
+      const txt = (b.innerText || b.getAttribute("aria-label") || "").toLowerCase().trim();
+      const isSingleReplyAction = txt === "reply" || txt === "responder";
+      const isReply = (txt.includes("resposta") || txt.includes("repl")) && !txt.includes("ocultar") && !txt.includes("hide") && !isSingleReplyAction;
       if (isReply && b.offsetParent !== null && b.getBoundingClientRect().height > 0) {
         valid.push(b);
       }
@@ -222,10 +223,11 @@
   function getThreadReplyPaginator(thread) {
     const replies = thread.querySelector(SELECTORS.repliesRenderer);
     if (!replies) return null;
-    const btns = replies.querySelectorAll("ytd-continuation-item-renderer button, #continuation button, ytd-button-renderer button");
+    const btns = replies.querySelectorAll("ytd-continuation-item-renderer button, #continuation button");
     for (const b of btns) {
-      const txt = (b.innerText || b.getAttribute("aria-label") || "").toLowerCase();
-      const isMoreReplies = (txt.includes("resposta") || txt.includes("repl") || txt.includes("mais") || txt.includes("more")) && !txt.includes("ocultar") && !txt.includes("hide");
+      const txt = (b.innerText || b.getAttribute("aria-label") || "").toLowerCase().trim();
+      const isSingleReplyAction = txt === "reply" || txt === "responder";
+      const isMoreReplies = (txt.includes("resposta") || txt.includes("repl") || txt.includes("mais") || txt.includes("more")) && !txt.includes("ocultar") && !txt.includes("hide") && !isSingleReplyAction;
       if (isMoreReplies && b.offsetParent !== null && b.getBoundingClientRect().height > 0) {
         return b;
       }
@@ -365,7 +367,21 @@
     }
 
     let totalExtractedRoots = 0;
+    let totalRepliesFound = 0;
     let pendingBatch = [];
+    const allExtractedRootsMap = new Map();
+
+    function sendProgress(percentage, message, commentCount = 0, replyCount = 0) {
+      chrome.runtime.sendMessage({
+        action: "progressUpdate",
+        progress: {
+          percentage,
+          message,
+          commentCount,
+          replyCount,
+        },
+      }).catch(() => {});
+    }
 
     async function flushBatch(percentage, message) {
       if (pendingBatch.length > 0) {
@@ -376,7 +392,7 @@
           comments: pendingBatch,
           progress: { percentage, message },
           isFinished: false,
-        });
+        }).catch(() => {});
         pendingBatch = [];
       }
     }
@@ -407,6 +423,8 @@
         const rootId = mainComment.rawId || mainComment.id;
         if (!knownCommentIds.has(rootId)) {
           knownCommentIds.add(rootId);
+          mainComment.replies = [];
+          allExtractedRootsMap.set(rootId, mainComment);
           pendingBatch.push(mainComment);
           totalExtractedRoots++;
         }
@@ -421,6 +439,12 @@
           await flushBatch(
             pct,
             `Carregando comentários principais... (${totalExtractedRoots}${expectedTotal > 0 ? ` / ~${expectedTotal}` : ""} salvos)`
+          );
+          sendProgress(
+            pct,
+            `Carregando comentários principais... (${totalExtractedRoots}${expectedTotal > 0 ? ` / ~${expectedTotal}` : ""})`,
+            totalExtractedRoots,
+            0
           );
         }
 
@@ -498,7 +522,10 @@
     // FASE 2: EXPANSÃO EXAUSTIVA DE RESPOSTAS (REPLIES) & STREAMING
     // =========================================================================
     if (!shouldStop) {
-      const allThreads = Array.from(document.querySelectorAll(SELECTORS.commentThread));
+      let allThreads = Array.from(document.querySelectorAll(SELECTORS.commentThread));
+      if (maxComments > 0 && allThreads.length > maxComments) {
+        allThreads = allThreads.slice(0, maxComments);
+      }
       
       const threadsWithReplies = allThreads.filter((t) => {
         const hasReplyBtn = getThreadReplyButtons(t).length > 0;
@@ -507,8 +534,6 @@
       });
 
       console.log(`[YT Extractor] FASE 2: ${threadsWithReplies.length} tópicos com respostas identificados de ${allThreads.length} totais.`);
-
-      let totalRepliesFound = 0;
 
       for (let i = 0; i < threadsWithReplies.length && !shouldStop; i++) {
         const thread = threadsWithReplies[i];
@@ -533,7 +558,17 @@
         while (paginator && !shouldStop && moreAttempts < 50) {
           const prevReplyCount = thread.querySelectorAll(SELECTORS.commentRenderer).length;
           paginator.click();
-          await delay(throttle);
+          
+          // Aguarda chegada de novos nós no DOM (polling ativo até 2s)
+          let waitCycles = 0;
+          while (waitCycles < 8) {
+            await delay(250);
+            const currentReplyElements = thread.querySelectorAll(SELECTORS.commentRenderer);
+            if (currentReplyElements.length > prevReplyCount) {
+              break;
+            }
+            waitCycles++;
+          }
 
           const currentReplyElements = thread.querySelectorAll(SELECTORS.commentRenderer);
           if (currentReplyElements.length === prevReplyCount) {
@@ -567,6 +602,9 @@
               if (!knownCommentIds.has(repId)) {
                 knownCommentIds.add(repId);
                 rep.parentId = rootId;
+                if (allExtractedRootsMap.has(rootId)) {
+                  allExtractedRootsMap.get(rootId).replies.push(rep);
+                }
                 pendingBatch.push(rep);
                 totalRepliesFound++;
               }
@@ -581,6 +619,12 @@
             pct,
             `Expandindo respostas (${i + 1}/${threadsWithReplies.length} tópicos)... ${knownCommentIds.size} no banco (${totalRepliesFound} respostas)`
           );
+          sendProgress(
+            pct,
+            `Expandindo respostas (${i + 1}/${threadsWithReplies.length} tópicos)...`,
+            totalExtractedRoots,
+            totalRepliesFound
+          );
         }
       }
     }
@@ -589,6 +633,14 @@
     // FASE 3: CONSOLIDAÇÃO & ENCERRAMENTO
     // =========================================================================
     await flushBatch(100, shouldStop ? "Extração pausada/interrompida" : "Extração concluída com sucesso!");
+
+    const finalComments = Array.from(allExtractedRootsMap.values());
+    sendProgress(
+      100,
+      shouldStop ? "Extração interrompida pelo usuário." : "Extração concluída!",
+      finalComments.length,
+      totalRepliesFound
+    );
 
     chrome.runtime.sendMessage({
       action: "commentsBatch",
@@ -603,16 +655,60 @@
       },
       isFinished: true,
       stoppedReason: shouldStop,
-    });
+    }).catch(() => {});
 
     isRunning = false;
     console.log("[YT Extractor] Processo finalizado com sucesso. Total de IDs indexados:", knownCommentIds.size);
+
+    return {
+      success: true,
+      stoppedEarly: shouldStop,
+      data: {
+        videoInfo: getVideoInfo(),
+        extractionInfo: {
+          extractedAt: new Date().toISOString(),
+          totalComments: finalComments.length,
+          totalReplies: totalRepliesFound,
+          throttleMs: throttle,
+          maxComments: maxComments,
+          stoppedEarly: shouldStop,
+        },
+        comments: finalComments,
+      },
+    };
   }
 
   // Chrome Runtime Messaging Listener
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === "getVideoInfo") {
       sendResponse(getVideoInfo());
+      return true;
+    }
+
+    if (message.action === "expandComments") {
+      const throttle = message.throttle || 500;
+      const maxComments = message.maxComments || 0;
+      shouldStop = false;
+      const vInfo = getVideoInfo();
+
+      runStreamingExtraction({
+        videoId: vInfo.videoId,
+        throttle,
+        maxComments,
+        autoPause: true,
+        sortOrder: "newest",
+      }).then((result) => {
+        sendResponse(result);
+      }).catch((err) => {
+        sendResponse({ success: false, error: err.message });
+      });
+
+      return true; // Keep channel open for async response
+    }
+
+    if (message.action === "stopExpanding") {
+      shouldStop = true;
+      sendResponse({ success: true });
       return true;
     }
 
