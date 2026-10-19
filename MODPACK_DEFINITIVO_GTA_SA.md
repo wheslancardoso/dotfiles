@@ -5,7 +5,7 @@
 ---
 ## 📑 Sumário de Estrutura do Modpack
 1. [Fundação e Carregadores (Loaders)](#1-fundação-e-carregadores-loaders)
-2. [Matador de Atritos: 29 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-29-mecânicas-irritantes-do-gta-sa-resolvidas)
+2. [Matador de Atritos: 30 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-30-mecânicas-irritantes-do-gta-sa-resolvidas)
 3. [Guia Cirúrgico: 100% do Jogo, Coletáveis no Radar & Ouro em Todas as Escolas](#3-guia-cirúrgico-100-do-jogo-coletáveis-no-radar--ouro-em-todas-as-escolas)
 4. [Gráficos de Última Geração (Pacote Otimizado para RTX / 4K)](#4-gráficos-de-última-geração-pacote-otimizado-para-rtx--4k)
 5. [Física Realista, Colisões & Deformação de Veículos](#5-física-realista-colisões--deformação-de-veículos)
@@ -28,7 +28,7 @@
 
 ---
 
-## 2. Matador de Atritos: 29 Mecânicas Irritantes do GTA SA Resolvidas
+## 2. Matador de Atritos: 30 Mecânicas Irritantes do GTA SA Resolvidas
 *Como resolver cada frustração clássica de gameplay usando o MixSets e mods dedicados.*  
 *(Um perfil pronto e customizado foi gerado e salvo em [`MixSets_Otimizado.ini`](file:///home/lanwsl/dotfiles/MixSets_Otimizado.ini) com desfoque de movimento, calor e atritos 100% desativados).*
 
@@ -63,6 +63,7 @@
 | **27** | **O pesadelo da missão *Stowaway*** (subir de moto na rampa do avião enquanto barris caem). | Normaliza a taxa de aceleração da moto e do avião cargueiro, permitindo alcançar a rampa com facilidade em 60 FPS. | [Framerate Vigilante](https://www.mixmods.com.br/2022/08/iii-vc-sa-framerate-vigilante/) |
 | **28** | **Carro recém-tunado batido na saída da oficina** (NPCs spawnando e colidindo na porta da Wheel Arch Angels). | Cria um raio de colisão limpo e seguro na saída das oficinas de modificação para manobrar sem toques. | *Safe Tuning Exit* + [Real Traffic Fix](https://www.mixmods.com.br/) |
 | **29** | **Tiros batendo em paredes invisíveis** (quinas de prédios e muretas com colisão estendida no ar e cercas de arame bloqueando balas como concreto). | Recorta as caixas de colisão de mais de 10.000 objetos milimetricamente no contorno visual e permite tiros através de grades e cercas. | [Proper Fixes v2.1.1](https://www.mixmods.com.br/2026/06/sa-proper-fixes/) + *Shooting Through Fences Fix* |
+| **30** | **Empilhadeira da missão do Ryder (*Robbing Uncle Sam*)** com garfo travado no Numpad e caixas escorregando e caindo ao carregar 2 ao mesmo tempo. | Remapeia a elevação do garfo para Shift/Espaço, adiciona atrito estático nas caixas para não escorregarem nas curvas e Ryder ganha IA defensiva para não morrer. | [Proper Fixes](https://www.mixmods.com.br/2026/06/sa-proper-fixes/) + [Story Mode v2.0](https://www.mixmods.com.br/2022/11/story-mode/) |
 
 ---
 
