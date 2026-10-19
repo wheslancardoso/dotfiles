@@ -13,7 +13,8 @@
 7. [Lojas de Roupas, Barbearias Modernas & Customização Tática de Armas](#7-lojas-de-roupas-barbearias-modernas--customização-tática-de-armas)
 8. [A Trindade Final: Tradução PT-BR Sem Censura, Rádios Restauradas, 1ª Pessoa & Casas Abertas](#8-a-trindade-final-tradução-pt-br-sem-censura-rádios-restauradas-1ª-pessoa--casas-abertas)
 9. [Overhaul das Missões & Campanha: Story Mode v2.0 & Lógica da História](#9-overhaul-das-missões--campanha-story-mode-v20--lógica-da-história)
-10. [Todos os Mods Indexados (Catálogo Geral do Scraper)](#10-todos-os-mods-indexados-catálogo-geral-do-scraper)
+10. [Vida Urbana Viva, Trânsito Inteligente & Qualidade de Vida (QoL)](#10-vida-urbana-viva-trânsito-inteligente--qualidade-de-vida-qol)
+11. [Todos os Mods Indexados (Catálogo Geral do Scraper)](#11-todos-os-mods-indexados-catálogo-geral-do-scraper)
 
 ---
 
@@ -308,7 +309,33 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
 
 ---
 
-## 10. Todos os Mods Indexados (Catálogo Geral do Scraper)
+## 10. Vida Urbana Viva, Trânsito Inteligente & Qualidade de Vida (QoL)
+
+* **[Urbanize (Ambient NPCs & World Props - 02/2026)](https://www.mixmods.com.br/2026/02/urbanize/):**
+  - **O que faz:** O projeto mais ambicioso de vida urbana do MixMods. Preenche o mapa de San Andreas com **mais de 20.000 objetos de ambientação** e comportamentos dinâmicos para pedestres (animações do GTA IV e Mixamo):
+    - Gangues jogam dados e conversam nas esquinas da Grove Street, Glen Park e El Corona.
+    - Caçadores armados com cães exploram as florestas de Flint County (integrado com animais silvestres).
+    - Policiais e paramédicos conversam e interagem em frente a delegacias e hospitais.
+    - Banhistas deitados em espreguiçadeiras e quiosques com vendedores ativos no Pier de Santa Maria.
+    - Filas de pessoas aguardando sessões nas portas dos cinemas de Los Santos.
+* **[Real Traffic Fix v2.2.1 beta](https://www.mixmods.com.br/2022/04/real-traffic-fix/):**
+  - **O que faz:** Reescreve a inteligência artificial dos motoristas do trânsito:
+    - Motoristas respeitam os semáforos e freiam na luz vermelha/amarela.
+    - Mantêm distância de segurança do carro da frente, impedindo colisões idiotas e engavetamentos em cadeia.
+    - Desaceleram antes de fazer curvas fechadas em vez de capotar ou rodar.
+    - Elimina motoristas que mudam de faixa repentinamente para colidir no carro do jogador na rodovia.
+* **[Autosave Mod & Tela de Salvamento ao Concluir Missões](https://www.mixmods.com.br/2019/08/tela-de-salvamento-ao-terminar-missoes-v2-0-1/):**
+  - Salva o progresso automaticamente ao completar qualquer missão ou checkpoint (ou abre imediatamente a tela de seleção de slot), eliminando a necessidade de dirigir de volta até uma safehouse.
+* **[Taxi Fare / Ride as Passenger (Andar de Táxi como Passageiro)](https://www.mixmods.com.br/):**
+  - Permite assobiar e embarcar no banco de trás de qualquer táxi (`F` ou buzina). Você pode pular direto para o destino marcado no radar ou curtir a viagem ouvindo as rádios em 1ª pessoa.
+* **[HD Underwater v2.0 (Corais, Peixes e Vida Marinha)](https://www.mixmods.com.br/2022/06/sa-hd-underwater/):**
+  - Substitui o fundo do oceano cinzento e vazio por corais coloridos em alta definição, algas animadas e cardumes de peixes tropicais convertidos do GTA Trilogy.
+* **[GInput (Suporte Nativo a Controles Modernos Xbox / DualSense)](https://www.mixmods.com.br/2020/06/ginput/):**
+  - Suporte completo a XInput e DirectInput com vibração tátil realista (rumble), aceleração suave nos gatilhos analógicos e ícones dos botões exibidos na interface do jogo.
+
+---
+
+## 11. Todos os Mods Indexados (Catálogo Geral do Scraper)
 
 ### [[SA] Proper Streaming (corrigir mapa não carregando)](https://www.mixmods.com.br/2026/10/proper-streaming/)
 **Data da Publicação:** `2026-10-16`
