@@ -5,7 +5,7 @@
 ---
 ## 📑 Sumário de Estrutura do Modpack
 1. [Fundação e Carregadores (Loaders)](#1-fundação-e-carregadores-loaders)
-2. [Matador de Atritos: 15 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-15-mecânicas-irritantes-do-gta-sa-resolvidas)
+2. [Matador de Atritos: 19 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-19-mecânicas-irritantes-do-gta-sa-resolvidas)
 3. [Guia Cirúrgico: 100% do Jogo, Coletáveis no Radar & Ouro em Todas as Escolas](#3-guia-cirúrgico-100-do-jogo-coletáveis-no-radar--ouro-em-todas-as-escolas)
 4. [Gráficos de Última Geração (Pacote Otimizado para RTX / 4K)](#4-gráficos-de-última-geração-pacote-otimizado-para-rtx--4k)
 5. [Física Realista, Colisões & Deformação de Veículos](#5-física-realista-colisões--deformação-de-veículos)
@@ -26,7 +26,7 @@
 
 ---
 
-## 2. Matador de Atritos: 15 Mecânicas Irritantes do GTA SA Resolvidas
+## 2. Matador de Atritos: 19 Mecânicas Irritantes do GTA SA Resolvidas
 *Como resolver cada frustração clássica de gameplay usando o MixSets e mods dedicados.*  
 *(Um perfil pronto e customizado foi gerado e salvo em [`MixSets_Otimizado.ini`](file:///home/lanwsl/dotfiles/MixSets_Otimizado.ini) com desfoque de movimento, calor e atritos 100% desativados).*
 
@@ -47,6 +47,10 @@
 | **13** | **Salvar o jogo apenas em safehouses** (ter que cruzar o estado para registrar o progresso). | Quick Save a qualquer momento pressionando F4 fora de missões. | [Save Anywhere Mod](https://www.mixmods.com.br/) / Script CLEO |
 | **14** | **Tráfego homicida** (NPCs batendo de propósito na traseira e mudando de faixa de forma caótica). | IA de trânsito realista com distância segura, frenagem lógica e sem manobras suicidas. | [Real Traffic Fix](https://www.mixmods.com.br/2023/02/atualizados-radar-map-by-wd-d159-gps-redux-rvp/) |
 | **15** | **Suporte horrível a controles modernos** (falta de vibração, botões trocados, mira descalibrada). | Suporte completo a gamepads de Xbox e PS4/PS5 com XInput nativo e ícones na tela. | [GInput](https://www.mixmods.com.br/) |
+| **16** | **Minigame do Lowrider & Dança na Praia impossíveis no PC** (setas fora do ritmo e comandos travados no Numpad). | Sincroniza o timing musical com taxas altas de quadros e libera o uso de WASD ou Setas sem depender de teclado numérico. | [SilentPatch](https://www.mixmods.com.br/2026/08/sa-silentpatch/) + [Framerate Vigilante](https://www.mixmods.com.br/2022/08/iii-vc-sa-framerate-vigilante/) |
+| **17** | **Missão de Roubo da Van do Ryder (*Home Invasion*)** com medidor de barulho hipersensível ao andar agachado. | Normaliza o raio acústico de passos e acelera a movimentação ao carregar as caixas de munição. | **MixSets.ini** + *Stealth Fix* |
+| **18** | **Motos ejetando o CJ em colisões leves** e virando de forma rígida sem inclinação natural. | Adiciona inclinação dinâmica do corpo nas curvas (*Bike Lean*) e amortecimento progressivo nas duas rodas. | [VehFuncs v2.5.5](https://www.mixmods.com.br/2025/12/sa-vehfuncs/) + **MixSets** |
+| **19** | **GPS traçando rotas apenas para pontos manuais** (sem caminho para as missões da campanha). | O GPS traça linha dinâmica em tempo real para os objetivos de qualquer missão ativa da história. | [GPS Redux v1.5](https://www.mixmods.com.br/2022/10/sa-gps-redux/) |
 
 ---
 
