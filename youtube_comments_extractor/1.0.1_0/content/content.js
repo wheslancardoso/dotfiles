@@ -194,20 +194,59 @@
     }
   }
 
+  function getMainContinuationLoader() {
+    const comments = document.querySelector(SELECTORS.commentsSection);
+    if (!comments) return null;
+    const all = comments.querySelectorAll("ytd-continuation-item-renderer");
+    for (const c of all) {
+      if (!c.closest("ytd-comment-thread-renderer") && !c.closest("#replies") && !c.closest("ytd-comment-replies-renderer")) {
+        return c;
+      }
+    }
+    return null;
+  }
+
+  function getThreadReplyButtons(thread) {
+    const allBtns = thread.querySelectorAll("button");
+    const valid = [];
+    for (const b of allBtns) {
+      const txt = (b.innerText || b.getAttribute("aria-label") || "").toLowerCase();
+      const isReply = (txt.includes("resposta") || txt.includes("repl")) && !txt.includes("ocultar") && !txt.includes("hide");
+      if (isReply && b.offsetParent !== null && b.getBoundingClientRect().height > 0) {
+        valid.push(b);
+      }
+    }
+    return valid;
+  }
+
+  function getThreadReplyPaginator(thread) {
+    const replies = thread.querySelector(SELECTORS.repliesRenderer);
+    if (!replies) return null;
+    const btns = replies.querySelectorAll("ytd-continuation-item-renderer button, #continuation button, ytd-button-renderer button");
+    for (const b of btns) {
+      const txt = (b.innerText || b.getAttribute("aria-label") || "").toLowerCase();
+      const isMoreReplies = (txt.includes("resposta") || txt.includes("repl") || txt.includes("mais") || txt.includes("more")) && !txt.includes("ocultar") && !txt.includes("hide");
+      if (isMoreReplies && b.offsetParent !== null && b.getBoundingClientRect().height > 0) {
+        return b;
+      }
+    }
+    return null;
+  }
+
   async function scrollToComments() {
     let section = document.querySelector(SELECTORS.commentsSection);
-    const scrollTargets = [600, 950, 1350, 1800];
+    const scrollTargets = [600, 1000, 1500, 2000];
     let idx = 0;
 
     while (!section && idx < scrollTargets.length) {
-      window.scrollTo({ top: scrollTargets[idx], behavior: "smooth" });
-      await delay(800);
+      window.scrollTo({ top: scrollTargets[idx], behavior: "instant" });
+      await delay(700);
       section = document.querySelector(SELECTORS.commentsSection);
       idx++;
     }
 
     if (section) {
-      section.scrollIntoView({ behavior: "smooth", block: "start" });
+      section.scrollIntoView({ behavior: "instant", block: "start" });
       await delay(1000);
       return true;
     }
@@ -395,18 +434,18 @@
         break;
       }
 
-      // Localiza o carregador de continuação do YouTube no DOM
-      const continuationLoader = document.querySelector(SELECTORS.continuationLoader);
+      // Localiza o carregador de continuação do YouTube no DOM (apenas dos comentários principais)
+      const continuationLoader = getMainContinuationLoader();
 
       if (currentThreadsCount === previousThreadsCount) {
         stallCount++;
 
         if (continuationLoader) {
           // O elemento de continuação ainda está no DOM: O YouTube tem mais comentários!
-          // Desperta o IntersectionObserver com scroll wiggle
-          window.scrollBy({ top: -350, behavior: "smooth" });
-          await delay(180);
-          continuationLoader.scrollIntoView({ behavior: "smooth", block: "center" });
+          // Desperta o IntersectionObserver com scroll instantâneo
+          window.scrollBy({ top: -350, behavior: "instant" });
+          await delay(150);
+          continuationLoader.scrollIntoView({ behavior: "instant", block: "center" });
           window.dispatchEvent(new Event("scroll"));
 
           const pct = maxComments > 0
@@ -419,7 +458,7 @@
             `Aguardando YouTube carregar mais comentários... (${currentThreadsCount} carregados, tentativa ${stallCount}/${maxStallAttempts})`
           );
 
-          await delay(Math.min(1600, throttle + stallCount * 70));
+          await delay(Math.min(1500, throttle + stallCount * 60));
 
           if (stallCount >= maxStallAttempts) {
             console.warn("[YT Extractor] Timeout aguardando continuação após várias tentativas.");
@@ -431,7 +470,8 @@
             console.log("[YT Extractor] Fim dos comentários principais detectado (continuationLoader ausente).");
             break;
           }
-          window.scrollTo(0, document.documentElement.scrollHeight);
+          window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" });
+          window.dispatchEvent(new Event("scroll"));
           await delay(throttle);
         }
       } else {
@@ -439,10 +479,11 @@
         previousThreadsCount = currentThreadsCount;
 
         if (continuationLoader) {
-          continuationLoader.scrollIntoView({ behavior: "smooth", block: "center" });
+          continuationLoader.scrollIntoView({ behavior: "instant", block: "center" });
         } else {
-          window.scrollTo(0, document.documentElement.scrollHeight);
+          window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" });
         }
+        window.dispatchEvent(new Event("scroll"));
         await delay(throttle);
       }
     }
@@ -460,7 +501,7 @@
       const allThreads = Array.from(document.querySelectorAll(SELECTORS.commentThread));
       
       const threadsWithReplies = allThreads.filter((t) => {
-        const hasReplyBtn = t.querySelector(SELECTORS.replyButton) !== null;
+        const hasReplyBtn = getThreadReplyButtons(t).length > 0;
         const hasRepliesContainer = t.querySelector(SELECTORS.repliesRenderer) !== null;
         return hasReplyBtn || hasRepliesContainer;
       });
@@ -473,39 +514,33 @@
         const thread = threadsWithReplies[i];
 
         // 1. Rola o thread para o centro (indispensável para o YouTube renderizar e buscar respostas)
-        thread.scrollIntoView({ behavior: "smooth", block: "center" });
-        await delay(120);
+        thread.scrollIntoView({ behavior: "instant", block: "center" });
+        await delay(100);
 
-        // 2. Clica no botão "Ver respostas" se presente
-        const replyButtons = thread.querySelectorAll(SELECTORS.replyButton);
+        // 2. Clica no botão "Ver respostas" visível
+        const replyButtons = getThreadReplyButtons(thread);
         for (const btn of replyButtons) {
-          if (btn && btn.offsetParent !== null && !shouldStop) {
+          if (!shouldStop) {
             btn.click();
             await delay(throttle);
           }
         }
 
         // 3. Pagina "Mostrar mais respostas" até esgotar
-        let moreReplies = thread.querySelector(SELECTORS.showMoreReplies);
+        let paginator = getThreadReplyPaginator(thread);
         let moreAttempts = 0;
-        let prevReplyCount = 0;
-        let sameReplyCount = 0;
 
-        while (moreReplies && !shouldStop && moreAttempts < 50) {
-          const clickTarget = moreReplies.querySelector("button") || moreReplies;
-          clickTarget.click();
+        while (paginator && !shouldStop && moreAttempts < 50) {
+          const prevReplyCount = thread.querySelectorAll(SELECTORS.commentRenderer).length;
+          paginator.click();
           await delay(throttle);
 
           const currentReplyElements = thread.querySelectorAll(SELECTORS.commentRenderer);
           if (currentReplyElements.length === prevReplyCount) {
-            sameReplyCount++;
-            if (sameReplyCount >= 2) break; // Botão travado ou sem novas respostas
-          } else {
-            sameReplyCount = 0;
+            break; // Botão travado ou sem novas respostas
           }
 
-          prevReplyCount = currentReplyElements.length;
-          moreReplies = thread.querySelector(SELECTORS.showMoreReplies);
+          paginator = getThreadReplyPaginator(thread);
           moreAttempts++;
         }
 
