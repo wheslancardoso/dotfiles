@@ -5,7 +5,7 @@
 ---
 ### 📑 Sumário de Estrutura do Modpack
 1. [Fundação e Carregadores (Loaders)](#1-fundação-e-carregadores-loaders)
-2. [Matador de Atritos: 51 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-51-mecânicas-irritantes-do-gta-sa-resolvidas)
+2. [Matador de Atritos: 52 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-52-mecânicas-irritantes-do-gta-sa-resolvidas)
 3. [Guia Cirúrgico: 100% do Jogo, Coletáveis no Radar & Ouro em Todas as Escolas](#3-guia-cirúrgico-100-do-jogo-coletáveis-no-radar--ouro-em-todas-as-escolas)
 4. [Gráficos de Última Geração (Pacote Otimizado para RTX / 4K)](#4-gráficos-de-última-geração-pacote-otimizado-para-rtx--4k)
 5. [Física Realista, Ragdoll & Animações de Nova Geração](#5-física-realista-ragdoll--animações-de-nova-geração)
@@ -32,7 +32,7 @@
 
 ---
 
-## 2. Matador de Atritos: 51 Mecânicas Irritantes do GTA SA Resolvidas
+## 2. Matador de Atritos: 52 Mecânicas Irritantes do GTA SA Resolvidas
 *Como resolver cada frustração clássica de gameplay usando o MixSets e mods dedicados.*  
 *(Um perfil pronto e customizado foi gerado e salvo em [`MixSets_Otimizado.ini`](file:///home/lanwsl/dotfiles/MixSets_Otimizado.ini) com desfoque de movimento, calor e atritos 100% desativados).*
 
@@ -89,6 +89,7 @@
 | **49** | **Ser espancado até a morte no chão sem conseguir levantar (*Stunlock*)** enquanto membros da Grove Street assistem de braços cruzados, ou ser preso em 0.5s (*Instant Busted*) ao subir numa moto. | Habilita rolamento tático de esquiva no chão, faz aliados da Grove Street defenderem o CJ imediatamente a socos/tiros e exige que o policial imobilize o CJ de verdade antes de dar *Busted*. | *Grove Street Backup AI* + *No Instant Busted* + [Awesome IFP v3](https://www.mixmods.com.br/2021/11/sa-sade-awesome-ifp/) |
 | **50** | **Demora de 5 segundos rastejando para sair de carro capotado** e ser puxado de volta por motoristas enquanto leva tiros dos Ballas. | Permite desvirar o carro com `A`/`D` (`VehiclesAirRoll = 1`), nunca pega fogo capotado (`NoCarFlipFire = 1`) e o CJ entra/sai de veículos em menos de 1s sob tiroteio (*Combat Enter/Exit*). | **MixSets.ini** (`NoCarFlipFire = 1`, `VehiclesAirRoll = 1`) + *Combat Enter/Exit* |
 | **51** | **Helicópteros afundando e perdendo altitude ao inclinar para acelerar** (especialmente o *Leviathan* carregando o carro-forte no ímã na missão *Up, Up and Away!* em Las Venturas, que arrasta o furgão nos prédios e árvores). | Ativa compensação automática de sustentação vertical (*Auto-Altitude Hold* estilo GTA V), aumenta o empuxo do rotor (` Thrust = 1.45` no `$`flying.cfg), estabiliza o pêndulo do cabo magnético e adiciona *Hover Lock* (pairar imóvel no ar) com 1 botão. | *Helicopter Altitude Hold & Modern Flight Control* + *Flying.cfg Overhaul* + [Framerate Vigilante](https://www.mixmods.com.br/2022/08/iii-vc-sa-framerate-vigilante/) + [HeliFix v1.4](https://www.mixmods.com.br/2021/10/helifix-piloto-nos-helicopteros/) |
+| **52** | **Guerras de gangue frustrantes e arrastadas** (micro-territórios minúsculos onde nenhum inimigo anda a pé, dificuldade para iniciar a invasão e 3 ondas longas onde inimigos spawnam a 2 quadras de distância). | Corrige e funde os micro-territórios em zonas disputáveis reais, permite iniciar a guerra eliminando inimigos em carros rivais ou atraindo grupos a pé (`GangDensityMultiplier`), gera ondas dinâmicas e reduz o tempo de conquista para tiroteios ágeis e intensos. | [Extended Gang Wars](https://www.mixmods.com.br/2017/07/extended-gang-wars/) + *Gang Wars Fast Wave Fix* + **MixSets.ini** (`PedDensityMultiplier = 2.0`) + [Cheat Menu v3.52](https://www.mixmods.com.br/2021/11/cheat-menu-by-grinch-v3-52/) |
 
 ---
 
@@ -439,6 +440,13 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
   - Com o *Helicopter Auto-Altitude Hold* + *Flying.cfg Overhaul* (**Seção 5.F**), o helicóptero *Leviathan* **nunca mais perde altitude ao inclinar para a frente** nem afunda com o peso do carro-forte preso no ímã, permitindo cruzar Las Venturas em linha reta a toda velocidade.
 * **Fim do Bloqueio de Pulmão na Missão do Woozie (*Amphibious Assault*):**
   - No [Cheat Menu v3.52](https://www.mixmods.com.br/2021/11/cheat-menu-by-grinch-v3-52/), basta ir em **Stats > Lung Capacity** e preencher 100% com 1 clique, sem precisar gastar 30 minutos mergulhando na praia de San Fierro.
+* **Guerras de Gangues Sem Enrolação & Fim dos Micro-Territórios:**
+  - **A dor original:** Zonas minúsculas (como a calçada do motel de Jefferson ou cantos estreitos de Temple e Bayside) onde nenhum membro dos Ballas anda a pé, forçando você a ficar 20 minutos esperando passar um carro rival para tentar iniciar a guerra; e ao iniciar, as 3 ondas demoram uma eternidade porque os inimigos spawnam a 2 quadras de distância ou ficam presos atrás de muros.
+  - **A solução técnica:**
+    - **[Extended Gang Wars](https://www.mixmods.com.br/2017/07/extended-gang-wars/):** Corrige e funde as micro-zonas em territórios lógicos contínuos, garantindo pedestres rivais andando a pé nas calçadas de qualquer pedaço em disputa.
+    - **Início Imediato de Conquista:** Eliminar inimigos dentro de carros rivais da facção no território conta instantaneamente para acionar a invasão (não precisa esperar descerem do carro).
+    - **Ondas Ágeis (*Fast Wave Spawner*):** Os inimigos da 2ª e 3ª onda avançam de forma agressiva e direta em linha de visão, cortando o tempo morto pela metade e transformando as guerras em tiroteios táticos rápidos e intensos.
+    - **Conquista de Território em 1 Clique (Cheat Menu v3.52):** Na aba **Missions / World**, permite dominar qualquer território selecionado imediatamente para os 100%, caso você não queira gastar horas na reta final da campanha.
 * **[Things To Do In San Andreas (TTDISA) - Mais de 25 Missões Novas](https://www.mixmods.com.br/):**
   - Adiciona novos contratos de assassinato por cabines telefônicas (estilo Vice City), entregas expressas pelas rodovias, missões de caminhoneiro expandidas e encontros aleatórios de pedestres precisando de carona e resgate pelo mapa.
 * **[Storyline Cutscenes 60 FPS Remastered (Cutscenes em Alta Fidelidade)]:**
