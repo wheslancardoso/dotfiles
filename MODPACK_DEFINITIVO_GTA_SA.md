@@ -5,7 +5,7 @@
 ---
 ## 📑 Sumário de Estrutura do Modpack
 1. [Fundação e Carregadores (Loaders)](#1-fundação-e-carregadores-loaders)
-2. [Matador de Atritos: 37 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-37-mecânicas-irritantes-do-gta-sa-resolvidas)
+2. [Matador de Atritos: 38 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-38-mecânicas-irritantes-do-gta-sa-resolvidas)
 3. [Guia Cirúrgico: 100% do Jogo, Coletáveis no Radar & Ouro em Todas as Escolas](#3-guia-cirúrgico-100-do-jogo-coletáveis-no-radar--ouro-em-todas-as-escolas)
 4. [Gráficos de Última Geração (Pacote Otimizado para RTX / 4K)](#4-gráficos-de-última-geração-pacote-otimizado-para-rtx--4k)
 5. [Física Realista, Ragdoll & Animações de Nova Geração](#5-física-realista-ragdoll--animações-de-nova-geração)
@@ -32,7 +32,7 @@
 
 ---
 
-## 2. Matador de Atritos: 37 Mecânicas Irritantes do GTA SA Resolvidas
+## 2. Matador de Atritos: 38 Mecânicas Irritantes do GTA SA Resolvidas
 *Como resolver cada frustração clássica de gameplay usando o MixSets e mods dedicados.*  
 *(Um perfil pronto e customizado foi gerado e salvo em [`MixSets_Otimizado.ini`](file:///home/lanwsl/dotfiles/MixSets_Otimizado.ini) com desfoque de movimento, calor e atritos 100% desativados).*
 
@@ -75,6 +75,7 @@
 | **35** | **Interior e florestas sem nenhuma vida selvagem** (deserto biológico no Mount Chiliad e Flint County cortado pela Rockstar em 2004) e **armas invisíveis no bolso do CJ**. | Povoa florestas e desertos com animais nativos, caça e cães com IA própria, e torna armas do inventário visíveis em coldres e bandoleiras nas costas. | [Myths Maker – Animals Pack](https://www.mixmods.com.br/2022/10/myths-maker-animals-pack-mod-de-animais/) + [Weapons OutFit](https://www.mixmods.com.br/2021/08/weapons-outfit-armas-pelo-corpo/) |
 | **36** | **Veículos com rodas quadradas/octogonais, interiores borrados e câmera interna dura** (painéis sem instrumentos ativos e rodas poligonais de 2004). | Remasteriza todos os carros originais com alta contagem poligonal, adiciona interiores com texturas PBR, rodas perfeitamente redondas, painéis com velocímetros/RPM funcionais e câmera de cockpit estilo Forza. | [Revamped Vehicles Project](https://www.mixmods.com.br/2022/08/sa-revamped-vehicles-project/) + [Proper Vehicles Retex](https://www.mixmods.com.br/2022/02/sa-sade-proper-vehicles-retex/) + [Round Tuning Wheels CE](https://www.mixmods.com.br/2022/01/sa-round-tuning-wheels-ce-rodas-mais-redondas/) |
 | **37** | **Chuva arcaica de "linhas de giz" brancas piscando que cegam a visão** (para-brisas secos, tempestades sem raios reais e pedestres tomando chuva sem reação). | Substitui a tempestade por chuva translúcida com gotas no para-brisa limpas pelos limpadores, raios dinâmicos com delay sônico de trovão, asfalto com poças refletivas PBR e pedestres com guarda-chuva. | [Proper Shaders](https://www.mixmods.com.br/2026/10/sa-proper-shaders/) + [Thunder Mod](https://www.mixmods.com.br/2022/07/thunder-mod-cleo/) + [Rain Drops on Screen](https://www.mixmods.com.br/2017/07/rain-drops-on-screen-pingos-de-chuva-na-tela/) + [Hard Rain Remake](https://www.mixmods.com.br/2019/07/hard-rain-remake-pedestres-com-guarda-chuva/) |
+| **38** | **Cidades escuras como breu à noite, prédios com janelas apagadas e postes sem projeção real de luz** (visão noturna cortada a 50m por névoa cinza e ruas sem vida após o pôr do sol). | Renderiza coronas de luzes LOD até o horizonte, acende janelas aleatórias em alta definição com profundidade interna nos arranha-céus, refaz o prelight de solo em degradê suave nos postes e adiciona insetos voando nas lâmpadas. | [Project2DFX v4.4](https://www.mixmods.com.br/2020/02/sa-project2dfx/) + [Improved Night Windows](https://www.mixmods.com.br/2022/09/sa-improved-night-windows-by-hysen-mais-janelas-noturnas/) + [Project Immerse-Yourself](https://www.mixmods.com.br/2022/01/project-immerse-yourself-prelight-melhorado/) + [Missing Lampposts Fix](https://www.mixmods.com.br/2022/04/missing-lampposts-fix-more-light-posts/) + [Proper Shaders](https://www.mixmods.com.br/2026/10/sa-proper-shaders/) |
 
 ---
 
@@ -148,6 +149,22 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
   - **[Hard Rain Remake (Reação Social e Guarda-Chuvas)](https://www.mixmods.com.br/2019/07/hard-rain-remake-pedestres-com-guarda-chuva/):**
     - Pedestres sacam guarda-chuvas coloridos automaticamente e correm procurando abrigo sob marquises e pontos de ônibus.
     - Motoristas acionam faróis baixos e os limpadores de para-brisa dos veículos começam a funcionar na hora.
+* **[Iluminação Noturna de Próxima Geração (Padrão GTA V / Superior: Prédios, Casas e Postes)]:**
+  - **[SA] Project2DFX v4.4 (LOD Lights & Horizonte sem Fim)](https://www.mixmods.com.br/2020/02/sa-project2dfx/):**
+    - Renderiza coronas de luzes de postes, semáforos, antenas e edifícios até o limite do mapa de San Andreas sem neblina de corte.
+    - Do topo do Mount Chiliad ou de um avião à noite, as metrópoles de Los Santos, San Fierro e Las Venturas brilham como um mar infinito de luzes pulsantes, idêntico à vista panorâmica de Los Santos no GTA V.
+  - **[SA] Improved Night Windows by Hysen (Janelas Vivas & Interiores de Arranha-Céus)](https://www.mixmods.com.br/2022/09/sa-improved-night-windows-by-hysen-mais-janelas-noturnas/):**
+    - Elimina os monólitos pretos e apagados de 2004. Acende janelas aleatórias em alta definição com interiores visíveis de escritórios e apartamentos, dando vida arquitetônica noturna a todos os edifícios e casas.
+  - **[SA] Proper Night Windows & Project Lumos (Proper Fixes Pack)](https://www.mixmods.com.br/2022/11/sa-project-lumos/):**
+    - Adiciona iluminação noturna 2DFX detalhada em marcos urbanos esquecidos pela Rockstar: a pirâmide de Las Venturas acesa, outdoors publicitários iluminados por refletores de topo, igrejas históricas com vitrais brilhando e torres de transmissão com luzes de balizamento aéreo.
+  - **[Project Immerse-Yourself v0.3 & Pre-lighting Fixes Pack (Prelight de Solo & Fachadas)](https://www.mixmods.com.br/2022/01/project-immerse-yourself-prelight-melhorado/):**
+    - Reconstrói a iluminação de vértices pré-computada (pre-lighting) do mapa: a luz das lâmpadas dos postes agora banha o asfalto, calçadas e muros com cones e gradientes quentes e suaves de cor âmbar, acabando com a sensação de escuridão plástica e plana.
+  - **[SA] Missing Lampposts Fix (Rede de Postes de Luz Completa)](https://www.mixmods.com.br/2022/04/missing-lampposts-fix-more-light-posts/):**
+    - Adiciona postes de iluminação pública em rodovias interestaduais, avenidas expressas e ruelas que a Rockstar deixou na escuridão total em 2004.
+  - **[SA/SA:DE/Mobile] Insects Mod v1.1 (Moscas e Mariposas nas Lâmpadas dos Postes)](https://www.mixmods.com.br/2022/08/insects-mod/):**
+    - Adiciona enxames sutis de insetos noturnos voando ao redor das cúpulas de luz dos postes de iluminação pública, recriando o detalhe biológico e imersivo presente no GTA V e RDR2.
+  - **Faróis Volumétricos e Sombras em Tempo Real (Proper Shaders + VehFuncs):**
+    - Os faróis dos veículos e lâmpadas dos postes projetam cones volumétricos nítidos que geram sombras dinâmicas de pedestres e carros no chão, integrando-se aos reflexos no asfalto molhado.
 * **[Remastered GUI 4K]:** HUD, mapa, radar, miras e fontes vetorizados em alta resolução nativa.
 
 ---
