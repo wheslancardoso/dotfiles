@@ -10,7 +10,7 @@
 4. [Gráficos de Última Geração (Pacote Otimizado para RTX / 4K)](#4-gráficos-de-última-geração-pacote-otimizado-para-rtx--4k)
 5. [Física Realista, Colisões & Deformação de Veículos](#5-física-realista-colisões--deformação-de-veículos)
 6. [Gunplay AAA & Ammu-Nation de Próxima Geração (Nível GTA V / Superior)](#6-gunplay-aaa--ammu-nation-de-próxima-geração-nível-gta-v--superior)
-7. [Lojas de Roupas Modernas & Customização Tática de Armas](#7-lojas-de-roupas-modernas--customização-tática-de-armas)
+7. [Lojas de Roupas, Barbearias Modernas & Customização Tática de Armas](#7-lojas-de-roupas-barbearias-modernas--customização-tática-de-armas)
 8. [Todos os Mods Indexados (Catálogo Geral do Scraper)](#8-todos-os-mods-indexados-catálogo-geral-do-scraper)
 
 ---
@@ -169,7 +169,7 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
 
 ---
 
-## 7. Lojas de Roupas Modernas & Customização Tática de Armas
+## 7. Lojas de Roupas, Barbearias Modernas & Customização Tática de Armas
 
 ### A. Eliminação de Atritos nas Lojas de Roupas
 * **[All Clothing Stores & Items Unlocked]:**
@@ -183,7 +183,22 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
 
 ---
 
-### B. Customização de Armas & Anexos Táticos (Attachments)
+### B. A Barbearia Reinventada: Fim do Menu Arcaico e Barba Dinâmica
+* **[Hairstyles & Beards (Escolher Separadamente Cabelo e Barba)](https://www.mixmods.com.br/2021/02/hairstyles-beards-escolher-penteado-e-barba/):**
+  - **A dor original:** No GTA SA padrão, a barba e o cabelo vinham grudados na mesma opção fixa (você não conseguia usar um corte Afro ou Tranças com barba rala, pois barba só existia com cortes carecas).
+  - **A solução:** Desacopla 100% o cabelo da barba. Escolha qualquer penteado da sua preferência e combine com cavanhaque, barba por fazer, bigode ou costeletas em mais de **300 combinações novas**.
+* **[Beard Grow Mod v1.2 (Crescimento de Barba estilo RDR2)](https://www.mixmods.com.br/2019/09/beard-grow-mod-v1-2-crescer-barba/):**
+  - **Mecânica realista:** A barba do CJ cresce dinamicamente com o passar dos dias no relógio interno do jogo.
+  - Começa com o rosto liso pós-barba, passa pela fase de barba rala, barba cerrada até atingir barba cheia.
+  - A barbearia ganha propósito real no jogo para manter o corte aparado e desenhado.
+* **[MenuUI v2.0 (Interface Moderna para Barbearias e Lojas)](https://www.mixmods.com.br/2021/09/menuui-v1-5-menus-modernos/):**
+  - Substitui a lista de texto arcaica dos anos 90 por uma interface gráfica com preview em tempo real e corte instantâneo, sem precisar esperar a animação do barbeiro passar a tesoura devagar.
+* **[Proper Player Retex v3.2 & CJ Upscale HD]:**
+  - Texturas de alta definição para todos os cortes de cabelo (com degradê/fade nítido e natural) e barbas com sombreamento e textura realista.
+
+---
+
+### C. Customização de Armas & Anexos Táticos (Attachments)
 * **[Weapon Details Mod (ArtemQa146)]:**
   - Adiciona **partes móveis e mecânica funcional em 3D** para as armas:
     - O ferrolho e o cão das pistolas recuam dinamicamente a cada disparo.
