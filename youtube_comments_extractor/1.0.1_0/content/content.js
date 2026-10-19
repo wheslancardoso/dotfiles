@@ -223,13 +223,76 @@
     expandedThreadIds.add(threadKey);
   }
 
+  function pauseVideoPlayer() {
+    const video = document.querySelector("video.html5-main-video, video");
+    if (video && !video.paused) {
+      video.pause();
+      console.log("[YT Extractor] Vídeo pausado automaticamente para economizar CPU/GPU.");
+    }
+  }
+
+  function checkCommentsDisabled() {
+    const disabledMsg = document.querySelector("ytd-comments#comments #message, ytd-message-renderer #message");
+    if (disabledMsg) {
+      const text = disabledMsg.textContent?.toLowerCase() || "";
+      if (text.includes("desativad") || text.includes("disabled") || text.includes("turned off")) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  async function applySortOrder(desiredOrder = "newest") {
+    if (desiredOrder !== "newest") return;
+    try {
+      const sortBtn = document.querySelector(
+        "#sort-menu button, yt-sort-filter-sub-menu-renderer yt-dropdown-menu, #sort-menu tp-yt-paper-button, #sort-menu yt-button-shape button"
+      );
+      if (!sortBtn) return;
+      sortBtn.click();
+      await delay(400);
+
+      const menuItems = document.querySelectorAll(
+        "tp-yt-paper-listbox ytd-menu-service-item-renderer, tp-yt-paper-listbox a, tp-yt-paper-item, ytd-menu-service-item-renderer"
+      );
+      for (const item of menuItems) {
+        const txt = item.textContent?.toLowerCase() || "";
+        if (txt.includes("recent") || txt.includes("newest")) {
+          item.click();
+          console.log("[YT Extractor] Ordenação alternada para 'Mais recentes primeiro'.");
+          await delay(1200);
+          break;
+        }
+      }
+    } catch (e) {
+      console.warn("[YT Extractor] Não foi possível alternar ordenação:", e);
+    }
+  }
+
+  // Listen for SPA navigation within YouTube
+  window.addEventListener("yt-navigate-finish", () => {
+    console.log("[YT Extractor] Navegação interna detectada no YouTube.");
+    knownCommentIds.clear();
+    expandedThreadIds.clear();
+    shouldStop = true;
+    chrome.runtime.sendMessage({
+      action: "videoNavigated",
+      videoInfo: getVideoInfo(),
+    }).catch(() => {});
+  });
+
   // Main Streaming Extraction Loop
   async function runStreamingExtraction(options) {
-    const { videoId, throttle = 600, maxComments = 0 } = options;
+    const { videoId, throttle = 600, maxComments = 0, autoPause = true, sortOrder = "newest" } = options;
     isRunning = true;
     shouldStop = false;
 
     console.log("[YT Extractor] Starting streaming extraction for video:", videoId);
+
+    // Auto-pause video to save CPU/GPU/RAM
+    if (autoPause) {
+      pauseVideoPlayer();
+    }
 
     const videoInfo = getVideoInfo();
 
@@ -243,9 +306,32 @@
       isFinished: false,
     });
 
+    // Check if comments are disabled
+    if (checkCommentsDisabled()) {
+      chrome.runtime.sendMessage({
+        action: "commentsDisabled",
+        videoId,
+      });
+      isRunning = false;
+      return;
+    }
+
     const loaded = await scrollToComments();
     if (!loaded) {
+      if (checkCommentsDisabled()) {
+        chrome.runtime.sendMessage({
+          action: "commentsDisabled",
+          videoId,
+        });
+        isRunning = false;
+        return;
+      }
       console.warn("[YT Extractor] Seção de comentários não detectada ainda.");
+    }
+
+    // Apply Sort Order (Mais recentes primeiro)
+    if (sortOrder === "newest") {
+      await applySortOrder("newest");
     }
 
     let previousThreadsCount = 0;

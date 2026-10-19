@@ -367,13 +367,34 @@ body {
   color: var(--text-sub);
 }
 
-.config-field input {
+.config-field input,
+.config-field select {
   background-color: var(--bg-main);
   border: 1px solid var(--border-color);
   padding: 8px 10px;
   border-radius: var(--radius-sm);
   color: var(--text-main);
   font-size: 13px;
+}
+
+.checkbox-field {
+  justify-content: center;
+}
+
+.checkbox-label {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 13px !important;
+  color: var(--text-main) !important;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+  cursor: pointer;
 }
 
 .config-field small {

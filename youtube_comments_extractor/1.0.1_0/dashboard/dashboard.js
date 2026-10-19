@@ -25,6 +25,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const throttleInput = document.getElementById("throttle-input");
   const maxCommentsInput = document.getElementById("max-comments-input");
+  const sortOrderSelect = document.getElementById("sort-order-select");
+  const autoPauseInput = document.getElementById("auto-pause-input");
 
   const progressBarFill = document.getElementById("progress-bar-fill");
   const progressMessage = document.getElementById("progress-message");
@@ -363,6 +365,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const throttle = parseInt(throttleInput.value) || 600;
     const maxComments = parseInt(maxCommentsInput.value) || 0;
+    const sortOrder = sortOrderSelect ? sortOrderSelect.value : "newest";
+    const autoPause = autoPauseInput ? autoPauseInput.checked : true;
 
     // Get existing IDs from DB so content script can skip them
     const existingIds = Array.from(await window.commentsDB.getExistingCommentIds(currentVideo.videoId));
@@ -383,6 +387,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         videoId: currentVideo.videoId,
         throttle,
         maxComments,
+        sortOrder,
+        autoPause,
         existingIds,
       });
       showToast("Extração rodando com persistência em background!");
@@ -457,6 +463,17 @@ document.addEventListener("DOMContentLoaded", async () => {
           loadSavedVideos();
         }
       }
+    }
+
+    if (message.action === "commentsDisabled") {
+      updateStatus("idle", "Desativado");
+      updateProgress(0, "Comentários desativados pelo criador para este vídeo.");
+      showToast("Aviso: Os comentários estão desativados para este vídeo no YouTube.", 5000);
+    }
+
+    if (message.action === "videoNavigated") {
+      // Reload open tabs when user navigates inside YouTube
+      loadOpenYouTubeTabs();
     }
   });
 

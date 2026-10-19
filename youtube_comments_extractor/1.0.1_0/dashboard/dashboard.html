@@ -99,6 +99,24 @@
             </div>
           </div>
 
+          <div class="config-row">
+            <div class="config-field">
+              <label for="sort-order-select">Ordenação no YouTube:</label>
+              <select id="sort-order-select" class="sort-field">
+                <option value="newest" selected>Mais Recentes Primeiro (Exaustivo)</option>
+                <option value="top">Principais Comentários (Algorítmico)</option>
+              </select>
+              <small>Garante captura de todos os comentários</small>
+            </div>
+            <div class="config-field checkbox-field">
+              <label class="checkbox-label">
+                <input type="checkbox" id="auto-pause-input" checked>
+                <span>Pausar vídeo automaticamente</span>
+              </label>
+              <small>Economiza 100% de CPU/GPU e dados</small>
+            </div>
+          </div>
+
           <div class="progress-bar-container">
             <div class="progress-track">
               <div id="progress-bar-fill" class="progress-fill"></div>
