@@ -680,6 +680,15 @@
 
   // Chrome Runtime Messaging Listener
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.action === "getStatus") {
+      sendResponse({
+        isRunning,
+        knownCount: knownCommentIds.size,
+        videoId: getVideoInfo().videoId,
+      });
+      return true;
+    }
+
     if (message.action === "getVideoInfo") {
       sendResponse(getVideoInfo());
       return true;

@@ -361,6 +361,24 @@ extracted_at: "${new Date().toISOString()}"
   });
 
   // Init
-  await checkYouTubePage();
+  const isPage = await checkYouTubePage();
+  if (isPage) {
+    try {
+      const status = await sendMessageToContent({ action: "getStatus" });
+      if (status && status.isRunning) {
+        isRunning = true;
+        expandBtn.classList.add("hidden");
+        stopBtn.classList.remove("hidden");
+        progressSection.classList.remove("hidden");
+        statsEl.classList.remove("hidden");
+        updateProgress({
+          percentage: 50,
+          message: "Extração em andamento em segundo plano...",
+          commentCount: status.knownCount || 0,
+          replyCount: 0
+        });
+      }
+    } catch (e) {}
+  }
 });
 
