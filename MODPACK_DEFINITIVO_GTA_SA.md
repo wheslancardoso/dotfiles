@@ -5,7 +5,7 @@
 ---
 ## 📑 Sumário de Estrutura do Modpack
 1. [Fundação e Carregadores (Loaders)](#1-fundação-e-carregadores-loaders)
-2. [Matador de Atritos: 32 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-32-mecânicas-irritantes-do-gta-sa-resolvidas)
+2. [Matador de Atritos: 33 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-33-mecânicas-irritantes-do-gta-sa-resolvidas)
 3. [Guia Cirúrgico: 100% do Jogo, Coletáveis no Radar & Ouro em Todas as Escolas](#3-guia-cirúrgico-100-do-jogo-coletáveis-no-radar--ouro-em-todas-as-escolas)
 4. [Gráficos de Última Geração (Pacote Otimizado para RTX / 4K)](#4-gráficos-de-última-geração-pacote-otimizado-para-rtx--4k)
 5. [Física Realista, Colisões & Deformação de Veículos](#5-física-realista-colisões--deformação-de-veículos)
@@ -14,7 +14,8 @@
 8. [A Trindade Final: Tradução PT-BR Sem Censura, Rádios Restauradas, 1ª Pessoa & Casas Abertas](#8-a-trindade-final-tradução-pt-br-sem-censura-rádios-restauradas-1ª-pessoa--casas-abertas)
 9. [Overhaul das Missões & Campanha: Story Mode v2.0 & Lógica da História](#9-overhaul-das-missões--campanha-story-mode-v20--lógica-da-história)
 10. [Vida Urbana Viva, Trânsito Inteligente & Qualidade de Vida (QoL)](#10-vida-urbana-viva-trânsito-inteligente--qualidade-de-vida-qol)
-11. [Todos os Mods Indexados (Catálogo Geral do Scraper)](#11-todos-os-mods-indexados-catálogo-geral-do-scraper)
+11. [Overhaul de Sub-Missões (R3): Emergência, Vigilante, Táxi & Recompensas de Elite](#11-overhaul-de-sub-missões-r3-emergência-vigilante-táxi--recompensas-de-elite)
+12. [Todos os Mods Indexados (Catálogo Geral do Scraper)](#12-todos-os-mods-indexados-catálogo-geral-do-scraper)
 
 ---
 
@@ -30,7 +31,7 @@
 
 ---
 
-## 2. Matador de Atritos: 32 Mecânicas Irritantes do GTA SA Resolvidas
+## 2. Matador de Atritos: 33 Mecânicas Irritantes do GTA SA Resolvidas
 *Como resolver cada frustração clássica de gameplay usando o MixSets e mods dedicados.*  
 *(Um perfil pronto e customizado foi gerado e salvo em [`MixSets_Otimizado.ini`](file:///home/lanwsl/dotfiles/MixSets_Otimizado.ini) com desfoque de movimento, calor e atritos 100% desativados).*
 
@@ -68,6 +69,7 @@
 | **30** | **Empilhadeira da missão do Ryder (*Robbing Uncle Sam*)** com garfo travado no Numpad e caixas escorregando e caindo ao carregar 2 ao mesmo tempo. | Remapeia a elevação do garfo para Shift/Espaço, adiciona atrito estático nas caixas para não escorregarem nas curvas e Ryder ganha IA defensiva para não morrer. | [Proper Fixes](https://www.mixmods.com.br/2026/06/sa-proper-fixes/) + [Story Mode v2.0](https://www.mixmods.com.br/2022/11/story-mode/) |
 | **31** | **Lança-mísseis lerdo e frustrante** (missão da plantação de maconha do The Truth — *Are You Going to San Fierro?* com o helicóptero da polícia) e **trava de mira lerda do caça Hydra e helicóptero Hunter**. | Reduz o lock-on do Hydra de 1000ms para 150ms no MixSets, mísseis ganham física supersônica e curva de perseguição realista contra aeronaves, e mira livre em 3ª pessoa para armas pesadas sem câmera travada. | [SA] Missile by Ryosuke839 + **MixSets.ini** (`HydraLockDelay = 150`, `HydraRocketDelay = 150`, `NoHydraSpeedLimit = 1`) + *Third Person Aiming for Heavy Weapons* |
 | **32** | **Alcance ridículo da Sniper Rifle** (pedestres e veículos somem na mira telescópica a ~100 metros e balas não causam dano à longa distância). | Aumenta o raio de renderização de alvos e o alcance balístico do projétil na mira da Sniper em até 10x, permitindo tiros de precisão de topos de arranha-céus e montanhas. | [Sniper Distance Fix](https://www.mixmods.com.br/2018/09/sniper-distance-fix-aumentar-alcance-da-sniper/) |
+| **33** | **Alvos de sub-missões gerados no fim do mundo** (pacientes da ambulância e bandidos do vigilante spawnando a quilômetros de distância no nível 11/12 fazendo o tempo expirar). | Restringe o raio de spawn dos alvos para até 600m do veículo, salva checkpoints por nível para não recomeçar do 1 se falhar, e escala pagamentos para fortunas reais ($50k+ e renda passiva). | *Local Sub-Missions Spawns* + *Sub-Missions Checkpoints* + [Vigilante Special](https://www.mixmods.com.br/2021/04/vigilante-special-missao-de-policia-em-qualquer-carro/) |
 
 ---
 
@@ -335,7 +337,29 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
 
 ---
 
-## 11. Todos os Mods Indexados (Catálogo Geral do Scraper)
+## 11. Overhaul de Sub-Missões (R3): Emergência, Vigilante, Táxi & Recompensas de Elite
+
+* **Geração Local de Alvos (*Local Sub-Missions Spawner*):**
+  - **O fim dos alvos no outro lado do mapa:** Restringe a criação de pacientes da ambulância, bandidos do vigilante e incêndios para um raio máximo de **600 metros** do veículo atual dentro do mesmo bairro/distrito.
+  - Elimina o absurdo do jogo vanilla de mandar você buscar um paciente em Mulholland ou atravessar três rodovias com 40 segundos restantes no nível 11.
+* **Sistema de Checkpoint por Nível (*Sub-Missions Checkpoints*):**
+  - No jogo base, se a ambulância capotar ou explodir no nível 12, você é punido voltando para o nível 1.
+  - Com o mod de checkpoints, o progresso é gravado a cada 3 níveis (Checkpoints nos níveis 3, 6, 9 e 12). Se falhar ou o veículo quebrar, você recomeça imediatamente do último marco alcançado.
+* **[Vigilante Special (Missão de Polícia em Qualquer Veículo)](https://www.mixmods.com.br/2021/04/vigilante-special-missao-de-policia-em-qualquer-carro/):**
+  - Permite acionar o serviço de vigilante em **qualquer carro, moto esportiva, helicóptero ou tanque**. Você não fica mais refém das viaturas lentas e frágeis da polícia.
+* **Imunidade Policial durante Serviços Públicos (*No Wanted Level in Sub-Missions*):**
+  - Policiais não concedem estrelas de procurado ao jogador por atirar nos criminosos do Vigilante nem por derrubar postes/hidrantes ao socorrer vítimas na ambulância.
+* **Recompensas Exponenciais e Ativos de Renda Passiva:**
+  - **Ambulância (Nível 12):** +50% de Vida Máxima permanente (Barra em 150%) + **$50.000 em dinheiro limpo** + Ambulância de resgate especial permanente na safehouse com kit de primeiros socorros que recupera a vida do CJ instantaneamente.
+  - **Bombeiro (Nível 12):** Imunidade 100% contra fogo (*Fireproof*) + **$50.000** + Caminhão de Bombeiros com canhão d'água de alta pressão na garagem de Doherty.
+  - **Vigilante (Nível 12):** +50% de Colete Máximo (Barra em 150%) + **$100.000** + Viaturas especiais (Enforcer blindado e moto HPV-1000) estacionadas na Grove Street com coletes grátis.
+  - **Táxi (50 Corridas):** Todos os táxis ganham nitro hidráulico ao buzinar + **Empresa de Táxi de Los Santos vira um ativo financeiro com $5.000 de renda passiva diária** coletável na porta de casa + Corridas de táxi gratuitas para o CJ viajar como passageiro.
+  - **Cafetão (Pimping - Nível 10):** Prostitutas pagam a você + **$3.000 de renda passiva diária** + Broadway tunada blindada permanente na garagem.
+  - **Ladrão (Burglary - $10.000 roubados):** Stamina infinita para corrida + **$30.000 de bônus**.
+
+---
+
+## 12. Todos os Mods Indexados (Catálogo Geral do Scraper)
 
 ### [[SA] Proper Streaming (corrigir mapa não carregando)](https://www.mixmods.com.br/2026/10/proper-streaming/)
 **Data da Publicação:** `2026-10-16`
