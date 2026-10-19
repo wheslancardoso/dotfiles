@@ -5,7 +5,7 @@
 ---
 ## 📑 Sumário de Estrutura do Modpack
 1. [Fundação e Carregadores (Loaders)](#1-fundação-e-carregadores-loaders)
-2. [Matador de Atritos: 34 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-34-mecânicas-irritantes-do-gta-sa-resolvidas)
+2. [Matador de Atritos: 35 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-35-mecânicas-irritantes-do-gta-sa-resolvidas)
 3. [Guia Cirúrgico: 100% do Jogo, Coletáveis no Radar & Ouro em Todas as Escolas](#3-guia-cirúrgico-100-do-jogo-coletáveis-no-radar--ouro-em-todas-as-escolas)
 4. [Gráficos de Última Geração (Pacote Otimizado para RTX / 4K)](#4-gráficos-de-última-geração-pacote-otimizado-para-rtx--4k)
 5. [Física Realista, Ragdoll & Animações de Nova Geração](#5-física-realista-ragdoll--animações-de-nova-geração)
@@ -15,7 +15,8 @@
 9. [Overhaul das Missões & Campanha: Story Mode v2.0 & Lógica da História](#9-overhaul-das-missões--campanha-story-mode-v20--lógica-da-história)
 10. [Vida Urbana Viva, Trânsito Inteligente & Qualidade de Vida (QoL)](#10-vida-urbana-viva-trânsito-inteligente--qualidade-de-vida-qol)
 11. [Overhaul de Sub-Missões (R3): Emergência, Vigilante, Táxi & Recompensas de Elite](#11-overhaul-de-sub-missões-r3-emergência-vigilante-táxi--recompensas-de-elite)
-12. [Todos os Mods Indexados (Catálogo Geral do Scraper)](#12-todos-os-mods-indexados-catálogo-geral-do-scraper)
+12. [A Fronteira Viva: Transformando o GTA San Andreas no Nível RDR2 (Wilderness, Fauna & Imersão Orgânica)](#12-a-fronteira-viva-transformando-o-gta-san-andreas-no-nível-rdr2-wilderness-fauna--imersão-orgânica)
+13. [Todos os Mods Indexados (Catálogo Geral do Scraper)](#13-todos-os-mods-indexados-catálogo-geral-do-scraper)
 
 ---
 
@@ -31,7 +32,7 @@
 
 ---
 
-## 2. Matador de Atritos: 34 Mecânicas Irritantes do GTA SA Resolvidas
+## 2. Matador de Atritos: 35 Mecânicas Irritantes do GTA SA Resolvidas
 *Como resolver cada frustração clássica de gameplay usando o MixSets e mods dedicados.*  
 *(Um perfil pronto e customizado foi gerado e salvo em [`MixSets_Otimizado.ini`](file:///home/lanwsl/dotfiles/MixSets_Otimizado.ini) com desfoque de movimento, calor e atritos 100% desativados).*
 
@@ -71,6 +72,7 @@
 | **32** | **Alcance ridículo da Sniper Rifle** (pedestres e veículos somem na mira telescópica a ~100 metros e balas não causam dano à longa distância). | Aumenta o raio de renderização de alvos e o alcance balístico do projétil na mira da Sniper em até 10x, permitindo tiros de precisão de topos de arranha-céus e montanhas. | [Sniper Distance Fix](https://www.mixmods.com.br/2018/09/sniper-distance-fix-aumentar-alcance-da-sniper/) |
 | **33** | **Alvos de sub-missões gerados no fim do mundo** (pacientes da ambulância e bandidos do vigilante spawnando a quilômetros de distância no nível 11/12 fazendo o tempo expirar). | Restringe o raio de spawn dos alvos para até 600m do veículo, salva checkpoints por nível para não recomeçar do 1 se falhar, e escala pagamentos para fortunas reais ($50k+ e renda passiva). | *Local Sub-Missions Spawns* + *Sub-Missions Checkpoints* + [Vigilante Special](https://www.mixmods.com.br/2021/04/vigilante-special-missao-de-policia-em-qualquer-carro/) |
 | **34** | **Correr travado como uma tartaruga com armas longas** (fuzis M4, AK-47, escopetas e sniper forçando o CJ a andar devagar) e **cair da moto por raspar no meio-fio a 10 km/h**. | Permite sprintar e correr no máximo segurando rifles e armas de duas mãos, e ajusta a tolerância de queda de motos apenas para choques frontais violentos. | [Sprinting With Two Handed Weapons](https://www.mixmods.com.br/2018/10/correr-com-armas-pesadas-correr-com-rifle/) + *Bike Fall Physics Fix* + **MixSets** |
+| **35** | **Interior e florestas sem nenhuma vida selvagem** (deserto biológico no Mount Chiliad e Flint County cortado pela Rockstar em 2004) e **armas invisíveis no bolso do CJ**. | Povoa florestas e desertos com animais nativos, caça e cães com IA própria, e torna armas do inventário visíveis em coldres e bandoleiras nas costas. | [Myths Maker – Animals Pack](https://www.mixmods.com.br/2022/10/myths-maker-animals-pack-mod-de-animais/) + [Weapons OutFit](https://www.mixmods.com.br/2021/08/weapons-outfit-armas-pelo-corpo/) |
 
 ---
 
@@ -391,7 +393,34 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
 
 ---
 
-## 12. Todos os Mods Indexados (Catálogo Geral do Scraper)
+## 12. A Fronteira Viva: Transformando o GTA San Andreas no Nível RDR2 (Wilderness, Fauna & Imersão Orgânica)
+
+* **[Myths Maker – Animals Pack (Fauna Selvagem e Doméstica Completa)](https://www.mixmods.com.br/2022/10/myths-maker-animals-pack-mod-de-animais/):**
+  - **O que faz:** Acaba com o "deserto biológico" do mapa original da Rockstar. Povoa todo o interior do estado com vida selvagem e inteligência artificial biológica:
+    - **Florestas e Montanhas (Flint County, Whetstone, Mount Chiliad):** Cervos, veados e javalis pastando e reagindo ao som de passos/tiros; predadores territoriais como ursos pardos e lobos selvagens que atacam o jogador se encurralados.
+    - **Deserto de Bone County:** Coiotes caçando em bandos noturnos e abutres voando em círculos sobre carcaças.
+    - **Áreas Rurais e Cidades:** Vacas e galinhas em celeiros de fazendas; cães domésticos passeando com moradores e latindo para estranhos.
+    - **Céu Vivo:** Bandos de pássaros com formação em "V" que reagem a disparos de armas e sobrevoos de aeronaves.
+* **[Weapons OutFit (Armas Visíveis no Corpo Estilo Red Dead Redemption)](https://www.mixmods.com.br/2021/08/weapons-outfit-armas-pelo-corpo/):**
+  - **Fim das armas mágicas que somem no bolso:** Todas as armas equipadas no inventário ficam fisicamente presas ao corpo do CJ:
+    - Fuzis (M4, AK-47) e espingardas pendurados nas costas por bandoleiras.
+    - Pistolas, revólveres e submetralhadoras repousando em coldres táticos na cintura.
+    - Facas de caça e katanas embainhadas na lateral do corpo.
+* **Sistema de Diálogo com Pedestres (*Greet & Antagonize Mod*):**
+  - Permite interagir verbalmente com qualquer NPC na calçada usando teclas dedicadas:
+    - **Cumprimentar (*Greet*):** CJ dá bom dia amigável, puxa conversa com membros da comunidade e ganha respeito.
+    - **Provocar (*Antagonize*):** CJ insulta, intimida e desafia pedestres para brigas de rua ou trocas de tiros, com dezenas de falas dubladas pelo dublador original (Young Maylay).
+* **[Camping Mobile Save House 2.0a (Acampamento Selvagem & Sobrevivência)](https://www.mixmods.com.br/2015/11/camping-mobile-save-house-20a-trailer-attach.html):**
+  - Permite acampar nas matas e no topo do Mount Chiliad: monte fogueiras de acampamento para descansar, passar o tempo e salvar o jogo sob céu estrelado, com suporte a engate de trailers e casas móveis na van *Journey*.
+* **Pegadas Dinâmicas na Areia, Lama e Trilhas de Pneus (*Dynamic Tracks & Footprints*):**
+  - CJ, pedestres e animais deixam pegadas físicas profundas na areia da praia de Santa Maria e no barro úmido das estradas de Red County.
+  - Carros e motos deixam rastros de terra e sulcos de lama nas estradas de chão batido.
+* **Física de Vento nas Árvores & Vegetação (*Dynamic Foliage & Wind Physics*):**
+  - Pinheiros do Mount Chiliad, copas das árvores florestais e palmeiras de Los Santos balançam fisicamente de acordo com a velocidade do vento e rajadas de tempestades.
+
+---
+
+## 13. Todos os Mods Indexados (Catálogo Geral do Scraper)
 
 ### [[SA] Proper Streaming (corrigir mapa não carregando)](https://www.mixmods.com.br/2026/10/proper-streaming/)
 **Data da Publicação:** `2026-10-16`
