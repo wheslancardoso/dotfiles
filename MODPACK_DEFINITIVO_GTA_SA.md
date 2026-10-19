@@ -447,6 +447,11 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
     - **Início Imediato:** Eliminar inimigos dentro de carros rivais da facção no território aciona a invasão na hora (sem precisar esperar descerem do carro).
     - **1 Onda Única Condensada (*Fast Gang Wars - 1 Wave Blitz*):** Em vez de 3 ondas espaçadas com contagem regressiva e espera ociosa, o mod condensa o confronto em **1 onda única maciça de 15 a 20 inimigos** que spawnam a menos de 50 metros e avançam correndo contra o CJ. Você saca a M4 ou Minigun, varre o pelotão e **conquista o território inteiro em menos de 40 segundos**.
     - **Conquista de Território em 1 Clique (Cheat Menu v3.52):** Na aba **Missions / World > Gang Territories**, você pode dominar qualquer território individualmente ou clicar em *Take All Territories* para pintar 100% de Los Santos de verde em **1 segundo** sem corromper o save.
+  - > [!CAUTION] **O Maior Erro Clássico de Todo Jogador (A Armadilha de *The Green Sabre*):**
+    > **NUNCA gaste seu tempo tentando conquistar todos os territórios no início do jogo em Los Santos!**
+    > Na missão final de Los Santos (*The Green Sabre*), o Smoke e o Ryder traem a Grove Street, o Sweet é preso e o Tenente Tenpenny joga o CJ algemado no meio do mato em Angel Pine (Whetstone/Red County).
+    > **Nesse exato instante, o jogo reseta 100% dos territórios para os Ballas e Vagos por script do roteiro.** Todo o tempo gasto conquistando áreas antes de ir para o interior é **completamente apagado e jogado no lixo**.
+    > **A Regra de Ouro:** No começo, domine apenas os **2 territórios obrigatórios** que a missão do Sweet (*Doberman*) exige para avançar a história. Deixe para conquistar Los Santos inteira (ou usar o Cheat Menu / Blitzkrieg) somente quando você retornar com o Sweet na missão ***Home Coming***, quase no final da campanha.
 * **[Things To Do In San Andreas (TTDISA) - Mais de 25 Missões Novas](https://www.mixmods.com.br/):**
   - Adiciona novos contratos de assassinato por cabines telefônicas (estilo Vice City), entregas expressas pelas rodovias, missões de caminhoneiro expandidas e encontros aleatórios de pedestres precisando de carona e resgate pelo mapa.
 * **[Storyline Cutscenes 60 FPS Remastered (Cutscenes em Alta Fidelidade)]:**
