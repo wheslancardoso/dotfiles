@@ -580,6 +580,20 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
   - Carros e motos deixam rastros de terra e sulcos de lama nas estradas de chão batido.
 * **Física de Vento nas Árvores & Vegetação (*Dynamic Foliage & Wind Physics*):**
   - Pinheiros do Mount Chiliad, copas das árvores florestais e palmeiras de Los Santos balançam fisicamente de acordo com a velocidade do vento e rajadas de tempestades.
+* **Sistema de Biomas Climáticos & Vibe Atmosférica Regional (Estilo Red Dead Redemption 2):**
+  - **A dor original:** O GTA SA padrão usava um clima genérico que mudava aleatoriamente no mapa todo (podia chover no meio do deserto do nada com a mesma paleta de cores de Los Santos).
+  - **A solução técnica ([Real Linear Graphics v2.6](https://www.mixmods.com.br/2022/07/real-linear-graphics/) + [Graphics Tweaker](https://www.mixmods.com.br/2022/09/graphicstweaker/) + *Regional Timecycles & Weather System*):**
+    - 🌴 **Los Santos (Costa Oeste Quente):** Tonalidade ensolarada dourada e névoa leve de calor (*smog urbano dos anos 90*), com pôr do sol alaranjado nas praias de Santa Maria e céu aberto límpido.
+    - 🌲 **Red County, Flint County & Whetstone (Florestas Úmidas e Pinheiros):** Clima temperado com orvalho matinal denso, neblina rasteira entre os troncos das árvores, chuvas frequentes com cheiro de terra molhada e vento uivando nos galhos do Mount Chiliad.
+    - 🌁 **San Fierro (A Capital do Nevoeiro & Vento Costeiro):** Inspirado na névoa real de San Francisco (*Karl the Fog*): manhãs frias cobertas por névoa volumétrica pesada cobrindo a ponte Gant Bridge, umidade marítima constante e iluminação cinzenta melancólica.
+    - 🏜️ **Bone County & Tierra Robada (Deserto Árido & Tempestades de Areia):** Sol escaldante que projeta ondas de calor no horizonte, poeira avermelhada suspensa no ar, tempestades violentas de areia repentinas (*Sandstorms*) e noites desérticas com céu estrelado cristalino e ar gélido.
+    - 🎰 **Las Venturas (Néon Oásis no Deserto):** Céu seco de deserto durante o dia e contraste brutal à noite: néon vibrante iluminando as fachadas dos cassinos da Strip sob um céu noturno escuro e limpo.
+* **Sistema de Combate Tático, Cobertura & Reação Balística (Padrão GTA IV / Gears of War):**
+  - **Sistema de Cobertura (*Cover System*):** Pressione `Q` em muretas, quinas de edifícios e carros para entrar em cobertura tática, atirar às cegas (*blind fire*), espiar com o retículo da arma e deslizar para outra cobertura com `Espaço`.
+  - **IA Tática de Inimigos (*Tactical Squad AI*):** Policiais e gangues não avançam suicidas em linha reta; buscam cobertura mútua, avançam em pares e tentam flanquear o CJ por trás de veículos estacionados.
+  - **Dano Balístico & Gore Lite (*Bullet Holes on Peds*):** Disparos de fuzil e escopeta deixam ferimentos localizados e perfurações físicas nos modelos dos NPCs com marcas de sangue nas roupas.
+* **Economia Real & Investimentos Imobiliários (*Buy Any Property & Empires*):**
+  - Destrava a compra de mais de 80 imóveis, mansões em Mulholland com heliponto e galpões comerciais que geram renda passiva diária na sua conta.
 
 ---
 
