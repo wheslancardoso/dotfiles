@@ -612,6 +612,14 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
   - **Vida Noturna Selvagem nos Clubes (*Club Dancing & Rooftop Crowds*):** Os clubes *Alhambra* e *Pleasure Domes* lotados com mais de 60 NPCs dançando simultaneamente sob iluminação volumétrica dinâmica e som abafado no exterior.
   - **Interiores com Visibilidade Externa sem Telas de Loading (*Interior Outside World - IOW*):** As portas e janelas de restaurantes, delegacias e lojas de roupas são de vidro transparente translúcido — você enxerga os pedestres andando na calçada enquanto está lá dentro comprando um terno ou comendo no Cluckin' Bell.
   - **Física de Cabelo e Roupas ao Vento (*Dynamic Hair & Cloth Physics*):** O cabelo afro/tranças do CJ e as saias/camisas de pedestres balançam fisicamente com a velocidade da moto e rajadas de vento do clima.
+* **Ciclo Orgânico de Sujeira nos Veículos & [Car Wash v2.2](https://www.mixmods.com.br/2020/08/car-wash-v2-2-lava-rapido-funcional/) (Lava-Rápido Funcional):**
+  - Ao dirigir em estradas de terra de Red County ou no barro de Flint County, a lataria, pneus e vidros do veículo acumulam camadas dinâmicas de poeira e lama marrom via **VehFuncs**.
+  - O jogador pode levar o carro até os postos de gasolina com **Lava-Rápido Funcional**: pague $20, entre na esteira e assista às escovas rotativas gigantes lavando a lataria em 1ª pessoa com jatos d'água e sabão, saindo com o carro brilhando e com reflexo espelhado.
+* **Trens com Rotas de Passageiros & Sistema Ferroviário Vivo (*Train Passenger Mod*):**
+  - O CJ pode comprar bilhetes nas estações de trem de Los Santos (Market Station), San Fierro e Las Venturas, sentar no vagão de passageiros em 1ª pessoa e relaxar apreciando a paisagem do interior de San Andreas enquanto viaja entre as cidades ouvindo rádio nos fones de ouvido.
+* **Caixas Eletrônicos & Máquinas de Bebida Interativas ([Breakable Vending Machines](https://www.mixmods.com.br/2022/08/sa-breakeable-vending-machines/)):**
+  - Máquinas de refrigerante *Sprunk* espalhadas pelas calçadas podem ser usadas para comprar latinhas e recuperar vida, ou chutadas/baleadas soltando faíscas, derramando refrigerante e moedas no chão para coletar.
+  - Caixas eletrônicos (ATMs) de bancos funcionais para sacar dinheiro limpo na rua.
 
 ---
 
