@@ -5,7 +5,7 @@
 ---
 ### 📑 Sumário de Estrutura do Modpack
 1. [Fundação e Carregadores (Loaders)](#1-fundação-e-carregadores-loaders)
-2. [Matador de Atritos: 52 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-52-mecânicas-irritantes-do-gta-sa-resolvidas)
+2. [Matador de Atritos: 53 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-53-mecânicas-irritantes-do-gta-sa-resolvidas)
 3. [Guia Cirúrgico: 100% do Jogo, Coletáveis no Radar & Ouro em Todas as Escolas](#3-guia-cirúrgico-100-do-jogo-coletáveis-no-radar--ouro-em-todas-as-escolas)
 4. [Gráficos de Última Geração (Pacote Otimizado para RTX / 4K)](#4-gráficos-de-última-geração-pacote-otimizado-para-rtx--4k)
 5. [Física Realista, Ragdoll & Animações de Nova Geração](#5-física-realista-ragdoll--animações-de-nova-geração)
@@ -32,7 +32,7 @@
 
 ---
 
-## 2. Matador de Atritos: 52 Mecânicas Irritantes do GTA SA Resolvidas
+## 2. Matador de Atritos: 53 Mecânicas Irritantes do GTA SA Resolvidas
 *Como resolver cada frustração clássica de gameplay usando o MixSets e mods dedicados.*  
 *(Um perfil pronto e customizado foi gerado e salvo em [`MixSets_Otimizado.ini`](file:///home/lanwsl/dotfiles/MixSets_Otimizado.ini) com desfoque de movimento, calor e atritos 100% desativados).*
 
@@ -90,6 +90,7 @@
 | **50** | **Demora de 5 segundos rastejando para sair de carro capotado** e ser puxado de volta por motoristas enquanto leva tiros dos Ballas. | Permite desvirar o carro com `A`/`D` (`VehiclesAirRoll = 1`), nunca pega fogo capotado (`NoCarFlipFire = 1`) e o CJ entra/sai de veículos em menos de 1s sob tiroteio (*Combat Enter/Exit*). | **MixSets.ini** (`NoCarFlipFire = 1`, `VehiclesAirRoll = 1`) + *Combat Enter/Exit* |
 | **51** | **Helicópteros afundando e perdendo altitude ao inclinar para acelerar** (especialmente o *Leviathan* carregando o carro-forte no ímã na missão *Up, Up and Away!* em Las Venturas, que arrasta o furgão nos prédios e árvores). | Ativa compensação automática de sustentação vertical (*Auto-Altitude Hold* estilo GTA V), aumenta o empuxo do rotor (` Thrust = 1.45` no `$`flying.cfg), estabiliza o pêndulo do cabo magnético e adiciona *Hover Lock* (pairar imóvel no ar) com 1 botão. | *Helicopter Altitude Hold & Modern Flight Control* + *Flying.cfg Overhaul* + [Framerate Vigilante](https://www.mixmods.com.br/2022/08/iii-vc-sa-framerate-vigilante/) + [HeliFix v1.4](https://www.mixmods.com.br/2021/10/helifix-piloto-nos-helicopteros/) |
 | **52** | **Guerras de gangue lentas, micro-territórios vazios e 3 ondas intermináveis** (esperar passar inimigo a pé, ondas spawnando longe e demorar 10 min por bairro). | **Modo Blitzkrieg (30 a 45s por território):** Funde micro-zonas, condensa o confronto em **1 onda única massiva e violenta** (ou 2 ondas instantâneas de spawn colado em 50m), elimina a contagem regressiva e permite dominar o bairro em segundos com Minigun/M4 ou instantaneamente no Cheat Menu. | [Extended Gang Wars](https://www.mixmods.com.br/2017/07/extended-gang-wars/) + *Fast Gang Wars (1 Wave Blitz)* + **MixSets.ini** (`PedDensityMultiplier = 2.0`) + [Cheat Menu v3.52](https://www.mixmods.com.br/2021/11/cheat-menu-by-grinch-v3-52/) |
+| **53** | **Limitações e frustrações absurdas nas missões clássicas** (Sweet pedalando devagar na 1ª missão *Big Smoke*, aviãozinho do Zero com gasolina ridícula, falta de checkpoints ao falhar no final da missão e perseguições arrastadas). | Elimina a trava de velocidade na fuga de bicicleta dos Ballas, dá combustível infinito aos RC planes, adiciona reinício/checkpoint instantâneo no ponto de falha (estilo GTA V) e permite atirar livremente em 360° com drive-by. | [Story Mode v2.0](https://www.mixmods.com.br/2022/11/story-mode/) + [Recomeçar Missão](https://www.mixmods.com.br/2016/08/recomecar-missao/) + **MixSets.ini** (`InfiniteRCPlaneFuel = 1`) + [Manual Driveby Remake](https://www.mixmods.com.br/2021/10/manual-driveby-remake-fixed-mirar-de-dentro-do-carro/) |
 
 ---
 
@@ -426,11 +427,20 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
 
 ## 9. Overhaul das Missões & Campanha: Story Mode v2.0 & Lógica da História
 
-* **[Story Mode v2.0 (Melhorias para a Storyline)](https://www.mixmods.com.br/2022/11/story-mode/):**
+* **[Story Mode v2.0 (Melhorias para a Storyline)](https://www.mixmods.com.br/2022/11/story-mode/) + [Recomeçar Missão (Trip Skip / Checkpoints Estilo GTA V)](https://www.mixmods.com.br/2016/08/recomecar-missao/):**
   - **O que faz:** Corrige dezenas de incoerências de roteiro, falhas lógicas e mortes injustas nas missões da campanha oficial:
+    - **Fim da Viagem de Volta ao Falhar (Trip Skip / Restart Imediato):** Ao falhar em qualquer missão, pressionar `Shift` ou `Enter` reinicia a missão imediatamente no último marco/checkpoint ou na porta do contratante, sem precisar dirigir tudo de novo pela cidade ou pegar táxi no hospital.
+    - **A 1ª Missão Desbloqueada (*Big Smoke / Sweet & Kendl*):** O Sweet e o Ryder pedalam na velocidade real do CJ (sem ficarem travando na sua frente nem ficando para trás), os Ballas no Voodoo não atropelam os aliados injustamente por trás e você pedala sem fadiga no sprint.
     - **Inteligência de Aliados:** Sweet, Ryder e Big Smoke não correm suicidas para a linha de tiro em emboscadas; buscam cobertura e recuam se a vida estiver crítica.
     - **Tráfego de Pontes Realista:** As pontes bloqueadas não são mais barreiras invisíveis com o mar estático; veículos de pedestres circulam normalmente, mantendo as 4 estrelas se você tentar atravessar antes da hora.
     - **Noticiário WCTR Dinâmico:** As notícias no rádio de Los Santos atualizam de acordo com os acontecimentos reais das missões (*The Green Sabre, Yay Ka-Boom-Boom*).
+* **Fim do Pesadelo dos Aviões de Brinquedo do Zero (*Supply Lines... & Air Raid*):**
+  - **Combustível Infinito no MixSets:** [`InfiniteRCPlaneFuel = 1`](file:///home/lanwsl/dotfiles/MixSets_Otimizado.ini#L54) remove para sempre a barra de gasolina que secava em 2 minutos na missão do aviãozinho *Baron*.
+  - **Física Normalizada em 60 FPS ([Framerate Vigilante](https://www.mixmods.com.br/2022/08/iii-vc-sa-framerate-vigilante/)):** A metralhadora do avião não engasga e o motor não perde potência aerodinâmica em taxas altas de quadros.
+* **Fim da Tortura dos Carrinhos de Controle Remoto (*New Model Army*):**
+  - Os tanques e helicópteros de controle remoto do Berkeley recebem colisão física justa (não atravessam barricadas de forma trapaceira) e os barris podem ser movidos com empuxo dobrado do mini-imã.
+* **Perseguição ao Freddy no Bairro Latino (*OG Loc*):**
+  - Em vez de ser obrigado a seguir a moto do Freddy por 5 minutos numa rota pré-programada engessada, com o [Manual Driveby Remake](https://www.mixmods.com.br/2021/10/manual-driveby-remake-fixed-mirar-de-dentro-do-carro/), você saca a SMG pelo guidão da PCJ-600 e elimina o Freddy logo nas primeiras curvas de Los Santos.
 * **[Emmet But Useful (Emmet Útil no Jogo Inteiro)](https://www.mixmods.com.br/2022/08/atualizados-traducao-emmet-useful-vehicle-immunities/):**
   - No jogo base, o velho Emmet só servia para ensinar a atirar em garrafas e dava uma pistola 9mm.
   - Este mod atualiza o estoque do Emmet conforme você avança na campanha: ele passa a vender armamento pesado, fuzis e coletes mais baratos que na Ammu-Nation.
