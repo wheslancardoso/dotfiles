@@ -407,6 +407,18 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
   - A Rockstar removeu dezenas de músicas históricas em relançamentos por expiração de direitos autorais.
   - Este mod restaura todas as faixas lendárias de *2Pac, N.W.A, Dr. Dre, Snoop Dogg, Guns N' Roses, Rage Against the Machine e James Brown*, expandindo o acervo para **mais de 1.000 músicas** fiéis aos anos 90 com vinhetas raras de DJs e comerciais de rádio completos da época.
   - Áudio sem compressão (qualidade Master de estúdio / Lossless) em todas as estações de rádio (*Radio Los Santos, K-DST, Radio X, Bounce FM, K-Rose*).
+* **[Radio Track Display HD (Nome da Música e Artista na Tela Estilo GTA IV/V)]:**
+  - Toda vez que uma nova música começa a tocar no rádio ou ao trocar de estação, exibe no canto da tela uma notificação elegante com o **Nome da Música e Nome do Artista**, eliminando a frustração de ouvir um clássico dos anos 90 e não saber o título.
+* **[Rádio Regional Dinâmica & Identidade Sonora de Cada Região]:**
+  - O rádio do carro lembra a estação sintonizada em cada veículo e reage ao mapa:
+    - 🌴 Ao entrar em bairros da Grove Street ou Ganton, as viaturas e lowriders dos Ballas/Grove passam tocando *Radio Los Santos* e *Playback FM* com janelas abertas ecoando graves no asfalto.
+    - 🌲 Ao pegar estradas de terra de Flint County e Red County, as caminhonetes de fazendeiros sintonizam automaticamente na *K-Rose* (country clássico).
+    - 🌁 Ao cruzar para San Fierro, o som alternativo e rock de garagem da *Radio X* toma conta do ar.
+    - 🏜️ No deserto árido de Bone County, a *K-DST (The Dust)* de Tommy "The Nightmare" Smith ecoa pelas rodovias solitárias.
+* **[Rádio Ambiente no Mundo Aberto (Radios in World)]:**
+  - O rádio não existe só dentro do seu carro: você escuta a programação real tocando em rádios de pilha em garagens mecânicas, caixas de som no Pier de Santa Maria, churrascos nos quintais da Grove Street e balcões de lanchonetes *Cluckin' Bell* e *Burger Shot*.
+* **[Interferência Dinâmica em Túneis e Garagens Subterrâneas]:**
+  - Ao entrar em túneis longos ou no subsolo do aeroporto, o sinal da rádio sofre chiado sutil de estática e abafamento acústico tridimensional realista via **Soundize**.
 * **[MP3 Player & Sony Headphones (Ouvir Rádio e Músicas a Pé)](https://www.mixmods.com.br/):**
   - Permite ao CJ escutar as rádios do jogo ou suas próprias faixas em fones de ouvido portáteis enquanto caminha pelas ruas, faz musculação na academia, anda de skate ou pilota bicicleta.
   - Inclui controles completos de reprodução (play/pause, shuffle, avançar faixa) e exibe o fone de ouvido 3D modelado na cabeça do CJ.
