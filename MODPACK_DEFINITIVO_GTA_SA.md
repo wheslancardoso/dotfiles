@@ -607,6 +607,11 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
   - **Dano Balístico & Gore Lite (*Bullet Holes on Peds*):** Disparos de fuzil e escopeta deixam ferimentos localizados e perfurações físicas nos modelos dos NPCs com marcas de sangue nas roupas.
 * **Economia Real & Investimentos Imobiliários (*Buy Any Property & Empires*):**
   - Destrava a compra de mais de 80 imóveis, mansões em Mulholland com heliponto e galpões comerciais que geram renda passiva diária na sua conta.
+* **O Nível GTA VI de Densidade Orgânica (A Revolução de Vice City 2025):**
+  - **Densidade de Praia Hiper-Realista (*GTA VI Beach Density*):** A praia de Santa Maria e Verona Beach ganham toalhas de praia coloridas geradas proceduralmente, guarda-sóis, pedestres passando protetor solar, pessoas correndo com cães na beira da água e banhistas nadando no mar com jet-skis.
+  - **Vida Noturna Selvagem nos Clubes (*Club Dancing & Rooftop Crowds*):** Os clubes *Alhambra* e *Pleasure Domes* lotados com mais de 60 NPCs dançando simultaneamente sob iluminação volumétrica dinâmica e som abafado no exterior.
+  - **Interiores com Visibilidade Externa sem Telas de Loading (*Interior Outside World - IOW*):** As portas e janelas de restaurantes, delegacias e lojas de roupas são de vidro transparente translúcido — você enxerga os pedestres andando na calçada enquanto está lá dentro comprando um terno ou comendo no Cluckin' Bell.
+  - **Física de Cabelo e Roupas ao Vento (*Dynamic Hair & Cloth Physics*):** O cabelo afro/tranças do CJ e as saias/camisas de pedestres balançam fisicamente com a velocidade da moto e rajadas de vento do clima.
 
 ---
 
