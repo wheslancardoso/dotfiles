@@ -5,7 +5,7 @@
 ---
 ### 📑 Sumário de Estrutura do Modpack
 1. [Fundação e Carregadores (Loaders)](#1-fundação-e-carregadores-loaders)
-2. [Matador de Atritos: 53 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-53-mecânicas-irritantes-do-gta-sa-resolvidas)
+2. [Matador de Atritos: 55 Mecânicas Irritantes do GTA SA Resolvidas](#2-matador-de-atritos-55-mecânicas-irritantes-do-gta-sa-resolvidas)
 3. [Guia Cirúrgico: 100% do Jogo, Coletáveis no Radar & Ouro em Todas as Escolas](#3-guia-cirúrgico-100-do-jogo-coletáveis-no-radar--ouro-em-todas-as-escolas)
 4. [Gráficos de Última Geração (Pacote Otimizado para RTX / 4K)](#4-gráficos-de-última-geração-pacote-otimizado-para-rtx--4k)
 5. [Física Realista, Ragdoll & Animações de Nova Geração](#5-física-realista-ragdoll--animações-de-nova-geração)
@@ -32,7 +32,7 @@
 
 ---
 
-## 2. Matador de Atritos: 53 Mecânicas Irritantes do GTA SA Resolvidas
+## 2. Matador de Atritos: 55 Mecânicas Irritantes do GTA SA Resolvidas
 *Como resolver cada frustração clássica de gameplay usando o MixSets e mods dedicados.*  
 *(Um perfil pronto e customizado foi gerado e salvo em [`MixSets_Otimizado.ini`](file:///home/lanwsl/dotfiles/MixSets_Otimizado.ini) com desfoque de movimento, calor e atritos 100% desativados).*
 
@@ -91,6 +91,8 @@
 | **51** | **Helicópteros afundando e perdendo altitude ao inclinar para acelerar** (especialmente o *Leviathan* carregando o carro-forte no ímã na missão *Up, Up and Away!* em Las Venturas, que arrasta o furgão nos prédios e árvores). | Ativa compensação automática de sustentação vertical (*Auto-Altitude Hold* estilo GTA V), aumenta o empuxo do rotor (` Thrust = 1.45` no `$`flying.cfg), estabiliza o pêndulo do cabo magnético e adiciona *Hover Lock* (pairar imóvel no ar) com 1 botão. | *Helicopter Altitude Hold & Modern Flight Control* + *Flying.cfg Overhaul* + [Framerate Vigilante](https://www.mixmods.com.br/2022/08/iii-vc-sa-framerate-vigilante/) + [HeliFix v1.4](https://www.mixmods.com.br/2021/10/helifix-piloto-nos-helicopteros/) |
 | **52** | **Guerras de gangue lentas, micro-territórios vazios e 3 ondas intermináveis** (esperar passar inimigo a pé, ondas spawnando longe e demorar 10 min por bairro). | **Modo Blitzkrieg (30 a 45s por território):** Funde micro-zonas, condensa o confronto em **1 onda única massiva e violenta** (ou 2 ondas instantâneas de spawn colado em 50m), elimina a contagem regressiva e permite dominar o bairro em segundos com Minigun/M4 ou instantaneamente no Cheat Menu. | [Extended Gang Wars](https://www.mixmods.com.br/2017/07/extended-gang-wars/) + *Fast Gang Wars (1 Wave Blitz)* + **MixSets.ini** (`PedDensityMultiplier = 2.0`) + [Cheat Menu v3.52](https://www.mixmods.com.br/2021/11/cheat-menu-by-grinch-v3-52/) |
 | **53** | **Limitações e frustrações absurdas nas missões clássicas** (Sweet pedalando devagar na 1ª missão *Big Smoke*, aviãozinho do Zero com gasolina ridícula, falta de checkpoints ao falhar no final da missão e perseguições arrastadas). | Elimina a trava de velocidade na fuga de bicicleta dos Ballas, dá combustível infinito aos RC planes, adiciona reinício/checkpoint instantâneo no ponto de falha (estilo GTA V) e permite atirar livremente em 360° com drive-by. | [Story Mode v2.0](https://www.mixmods.com.br/2022/11/story-mode/) + [Recomeçar Missão](https://www.mixmods.com.br/2016/08/recomecar-missao/) + **MixSets.ini** (`InfiniteRCPlaneFuel = 1`) + [Manual Driveby Remake](https://www.mixmods.com.br/2021/10/manual-driveby-remake-fixed-mirar-de-dentro-do-carro/) |
+| **54** | **Trauma da missão de perseguição aérea *Freefall*** (tentar alcançar o jato Shamal voando em linha reta com o aviãozinho Dodo lento a hélice, e a tempestade de areia na missão do avião militar *NOE*). | Acelera a velocidade de cruzeiro do Dodo em 30% para alcançar o Shamal de frente com folga, remove a trava de teto de voo e estabiliza a visibilidade e o altímetro na missão *NOE*. | *Flight Missions Handling Overhaul* + [Framerate Vigilante](https://www.mixmods.com.br/2022/08/iii-vc-sa-framerate-vigilante/) + [Story Mode v2.0](https://www.mixmods.com.br/2022/11/story-mode/) |
+| **55** | **A tortura do caminhoneiro (*Tanker Commander*) e a empilhadeira militar (*Robbing Uncle Sam*)** (reboque da carreta soltando com 1 toque leve e caixas escorregando do garfo com a porta do armazém fechando na cara). | Trava o pino de engate do trailer para não soltar em batidas acidentais, estende o tempo de fechamento do portão militar e ancora as caixas de munição com atrito magnético nos dentes da empilhadeira. | [Proper Fixes v2.1.1](https://www.mixmods.com.br/2026/06/sa-proper-fixes/) + [Story Mode v2.0](https://www.mixmods.com.br/2022/11/story-mode/) + *Trailer Hitch Lock* |
 
 ---
 
@@ -450,6 +452,13 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
   - Com o *Helicopter Auto-Altitude Hold* + *Flying.cfg Overhaul* (**Seção 5.F**), o helicóptero *Leviathan* **nunca mais perde altitude ao inclinar para a frente** nem afunda com o peso do carro-forte preso no ímã, permitindo cruzar Las Venturas em linha reta a toda velocidade.
 * **Fim do Bloqueio de Pulmão na Missão do Woozie (*Amphibious Assault*):**
   - No [Cheat Menu v3.52](https://www.mixmods.com.br/2021/11/cheat-menu-by-grinch-v3-52/), basta ir em **Stats > Lung Capacity** e preencher 100% com 1 clique, sem precisar gastar 30 minutos mergulhando na praia de San Fierro.
+* **A Perseguição Impossível do Jato Shamal (*Freefall* Salvatore Leone):**
+  - **A dor original:** O jogo manda você pilotar um avião monomotor a hélice *Dodo* (lento como uma tartaruga) para interceptar por trás um jato executivo *Shamal* que voa a 3x a sua velocidade em alta altitude. Um milissegundo de atraso na curva e você nunca mais alcançava a coroa vermelha.
+  - **A melhoria:** O *Flight Missions Handling Overhaul* calibra o motor e o teto aerodinâmico do *Dodo* durante a missão, dando aceleração e velocidade suficientes para manobrar e mergulhar em direção à coroa sem perder o jato.
+* **Voo Militar Abaixo do Radar (*N.O.E. Mike Toreno*):**
+  - O limite de altitude do radar militar não apita falsamente em depressões e vales de rios, e a visibilidade contra árvores distantes é 100% desobstruída pelo **LOD Vegetation v1.2** e **Framerate Vigilante**.
+* **A Fuga da Carreta com a Catalina (*Tanker Commander*):**
+  - O pino de engate da quinta-roda do caminhão tanque (*Tanker Trailer*) ganha trava de segurança (*Trailer Hitch Lock*), impedindo que o trailer se solte em qualquer toque no meio-fio ou fechada do carro dos capangas.
 * **Auto-Dance & Lowrider Perfect Assist (Acertar Sempre no Perfeito ou Pular o Minigame):**
   - **A dor original:** Nas missões *Cesar Vialpando* (Lowrider) e *Life's a Beach* (van de som na praia), além do minigame de dança nos clubes para namoradas, a janela de precisão milimétrica e o delay de input faziam qualquer toque fora do centro dar "Bad" ou "Too Early/Late".
   - **As 2 Soluções Definitivas Integradas:**
