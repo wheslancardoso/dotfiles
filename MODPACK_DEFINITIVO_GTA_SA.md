@@ -26,8 +26,9 @@
 * **Silent's ASI Loader (`vorbisFile.dll`):** Permite injeção de bibliotecas dinâmicas `.asi`.
 * **ModLoader v0.3.8+ (`modloader/` + `modloader.asi`):** Injeta arquivos sem corromper `gta3.img`.
 * **CLEO 4 + CLEO+ (`cleo/` + `cleo.asi` + `cleo_plus.asi`):** Suporte moderno a opcodes de scripts criados por Junior_Djjr.
-* **Open Limit Adjuster (OLA):** Remove travas da engine (limites de colisão, modelos, IDs).
-* **Proper Streaming (Lançado em 10/2026):** Quebra o teto de 32 bits de RAM com o *Texture Bridge*, eliminando mapa sumindo ou piscando com texturas em alta resolução.
+* **Open Limit Adjuster (OLA) + Fastman92 Limit Adjuster (FLA):** Remove completamente as travas da engine RenderWare de 2004 (limites de memória de colisão, modelos de streaming, pools de objetos e IDs).
+* **Proper Streaming (Lançado em 10/2026):** Quebra o teto de 32 bits de RAM com o *Texture Bridge*, eliminando mapa sumindo ou piscando mesmo com centenas de veículos HD e pedestres simultâneos.
+* **[MixSets v4.3.7+](https://www.mixmods.com.br/2022/03/sa-mixsets/) (Configuração de Tráfego e População Máxima):** Eleva o limite de pedestres simultâneos na memória de 35 para **140 (`MaxPeds = 140`)** e veículos de 40 para **110 (`MaxVehicles = 110`)** com multiplicadores `3.5x` no [`MixSets_Otimizado.ini`](file:///home/lanwsl/dotfiles/MixSets_Otimizado.ini#L58-L64), transformando o estado numa metrópole pulsante de verdade.
 * **[MoonLoader v0.26+](https://www.mixmods.com.br/2020/10/moonloader/) + [ModLoader Support for MoonLoader](https://www.mixmods.com.br/2020/10/modloader-support-for-moonloader-mods-lua-no-modloader/):** Carregador moderno de scripts em Lua que roda isolado dentro do ModLoader sem poluir a pasta raiz do jogo.
 
 ---
