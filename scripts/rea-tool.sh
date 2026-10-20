@@ -7,6 +7,8 @@ set -euo pipefail
 
 REA_LOCAL_DIR="/home/lanwsl/projetos/rea"
 REA_BIN="${REA_LOCAL_DIR}/scripts/rea.mjs"
+export REA_JADX_MCP_JAR="${REA_JADX_MCP_JAR:-${REA_LOCAL_DIR}/_reference/apk-integration/jadx-headless-mcp-0.7.1-all.jar}"
+export REA_APKTOOL_COMMAND="${REA_APKTOOL_COMMAND:-/home/lanwsl/.local/bin/apktool}"
 
 if [[ ! -f "$REA_BIN" ]]; then
     echo "⚠️ Runtime local do REA não encontrado em $REA_BIN. Usando npx..." >&2
