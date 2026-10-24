@@ -6,8 +6,8 @@
     "downloads": [
       "https://sharemods.com/79u303jv0csa/Proper_Streaming.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
@@ -17,8 +17,8 @@
     "downloads": [
       "https://sharemods.com/px30jmq1k2xo/SA_-_Proper_Shaders_08-26___40_py8vte2gr7a__41_.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
@@ -29,8 +29,8 @@
       "https://github.com/CookiePLMonster/SilentPatch/releases/tag/1.1-BUILD34.1-SA",
       "https://sharemods.com/zdp5ii5d9z6s/SA_-_SilentPatch.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
@@ -41,8 +41,8 @@
       "https://sharemods.com/dnlu9kd7wejz/Improved_Streaming.zip.html",
       "https://sharemods.com/2gnk5klzuhwp/SA_Mobile_-_Improved_Streaming.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
@@ -55,8 +55,8 @@
       "https://drive.google.com/file/d/1-3y5MTDi01kGJuOgyt4fOrn79WFP4trv/view?usp=sharing",
       "https://sharemods.com/1gcvzcxijafz/Proper_Fixes_-_for_RoSA_Evolved.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
@@ -64,8 +64,8 @@
     "title": "[SA] Soundize (AAA audio system)",
     "post": "https://www.mixmods.com.br/2026/06/soundize/",
     "downloads": [],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
@@ -75,8 +75,8 @@
     "downloads": [
       "https://sharemods.com/7jrzxw0b8x9j/ModLoader.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
@@ -86,56 +86,72 @@
     "downloads": [
       "https://sharemods.com/moincval44bp/SA_-_Urbanize_12-25_Final_1.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
     "id": 9,
-    "title": "[SA] VehFuncs v2.5.5",
-    "post": "https://www.mixmods.com.br/2025/12/sa-vehfuncs/",
-    "downloads": [
-      "https://sharemods.com/zuym13s774r6/VehFuncs.zip.html"
-    ],
-    "author": "",
-    "size": "",
+    "title": "[GTA SA] Proper Shaders (teaser)",
+    "post": "https://www.mixmods.com.br/2026/02/gta-sa-proper-shaders-teaser/",
+    "downloads": [],
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
     "id": 10,
+    "title": "[SA] VehFuncs v2.5.5",
+    "post": "https://www.mixmods.com.br/2025/12/sa-vehfuncs/",
+    "downloads": [],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 11,
+    "title": "Muitos mods importantes foram atualizados",
+    "post": "https://www.mixmods.com.br/2025/07/muitos-mods-importantes-foram-atualizados/",
+    "downloads": [],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 12,
     "title": "[SA] Silent’s ASI Loader v1.5",
     "post": "https://www.mixmods.com.br/2025/07/sa-silent-asi-loader/",
     "downloads": [
       "https://sharemods.com/f67rcc920tm9/SA_-_Silent_ASI_Loader.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 11,
+    "id": 13,
     "title": "[SA] VehDeform v1.3c (amassar carros)",
     "post": "https://www.mixmods.com.br/2025/06/sa-vehdeform-amassar-carros/",
     "downloads": [
       "https://sharemods.com/w56pqdc3vr1v/VehDeform.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 12,
+    "id": 14,
     "title": "FxsFuncs v1.2 (melhorias para efeitos especiais)",
     "post": "https://www.mixmods.com.br/2025/06/fxsfuncs/",
     "downloads": [
       "https://sharemods.com/1ly65k5xchjr/FxsFuncs.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 13,
+    "id": 15,
     "title": "[SA/SA:DE] Proper Player Retex v3.2 (CJ com texturas em HD) (PC/Android)",
     "post": "https://www.mixmods.com.br/2024/12/proper-player-retex/",
     "downloads": [
@@ -143,355 +159,448 @@
       "https://sharemods.com/44gazw5mqqjt/Proper_Player_Retex_for_Android.7z.html",
       "https://sharemods.com/gewtp59idbrn/SADE_-_Proper_Player_Retex.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 14,
+    "id": 16,
+    "title": "In-Game Map Editor v0.7 (editor de mapa dentro do jogo)",
+    "post": "https://www.mixmods.com.br/2024/12/in-game-map-editor/",
+    "downloads": [
+      "https://sharemods.com/kmxsdpto6re8/In-Game_Map_Editor.zip.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 17,
     "title": "[SA] Original Radio Extended (1000 músicas)",
     "post": "https://www.mixmods.com.br/2024/08/original-radio-extended/",
     "downloads": [],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 15,
+    "id": 18,
     "title": "[SA] SkyGfx v4.2b + Extended v1.7",
     "post": "https://www.mixmods.com.br/2024/03/sa-skygfx/",
     "downloads": [
       "https://sharemods.com/stxvlyt5j4q4/SA_-_SkyGfx_Extended.zip.html",
       "https://sharemods.com/sge66plqjc1z/SkyGfx.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 16,
+    "id": 19,
     "title": "[SA] CLEO+ v1.2.0",
     "post": "https://www.mixmods.com.br/2023/10/cleoplus/",
     "downloads": [
       "https://sharemods.com/3yrdrs7l9v6r/CLEOPlus.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 17,
+    "id": 20,
     "title": "[SA] RoSA Evolved v1.5 (remaster texturas HD 2026) PC/Android",
     "post": "https://www.mixmods.com.br/2023/07/rosa-project-evolved-remaster-texturas-hd/",
     "downloads": [],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 18,
+    "id": 21,
     "title": "[SA] RTX Remix (download)",
     "post": "https://www.mixmods.com.br/2023/05/sa-rtx-remix/",
     "downloads": [
       "https://github.com/NVIDIAGameWorks/rtx-remix/releases/latest",
       "https://sharemods.com/5i461ooex6jt/SA_-_RTX_Remix.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 19,
+    "id": 22,
+    "title": "GTA San Andreas com RTX Remix supera expectativas",
+    "post": "https://www.mixmods.com.br/2023/05/gta-san-andreas-com-rtx-remix-supera-expectativas/",
+    "downloads": [],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 23,
     "title": "[SA] Santa Maria Pier Extended (parque de diversões)",
     "post": "https://www.mixmods.com.br/2022/12/sa-santa-maria-pier-extended/",
     "downloads": [
       "https://sharemods.com/qa2p3422m9am/SA_-_Santa_Maria_Pier_Extended.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 20,
+    "id": 24,
     "title": "[SA] Pacific Park Rotating Ferris Wheel (roda-gigante animada)",
     "post": "https://www.mixmods.com.br/2022/12/sa-pacific-park-rotating-ferris-wheel-roda-gigante-animada/",
     "downloads": [
       "https://sharemods.com/y5pkv6qmpy9y/SA_-_Pacific_Park_Rotating_Ferris_Wheel.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 21,
+    "id": 25,
     "title": "SA Snow Conversion 2022 (mod pack)",
     "post": "https://www.mixmods.com.br/2022/12/sa-snow-conversion-mod-pack/",
     "downloads": [
       "https://sharemods.com/bn17c3snstt1/SA_Snow_Conversion.7z.html",
       "https://sharemods.com/3ze6mgwah98q/Snow_Andreas_-_PNG_DEV.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 22,
+    "id": 26,
     "title": "[SA] DYOM – Design Your Own Mission (2022)",
     "post": "https://www.mixmods.com.br/2022/11/sa-dyom/",
     "downloads": [
       "https://sharemods.com/gq01h5shttg9/DYOM_8.1.zip.html",
       "https://sharemods.com/g0sgqn2gbg48/DYOM_8.2.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 23,
+    "id": 27,
     "title": "[SA] Tree House v1.1 (mod casa na árvore)",
     "post": "https://www.mixmods.com.br/2022/11/sa-tree-house-mod-casa-na-arvore/",
     "downloads": [
       "https://sharemods.com/zf4cw8dt5y0j/SA_-_Tree_House.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 24,
+    "id": 28,
     "title": "[SA] Story Mode v2.0 (melhorias pra storyline)",
     "post": "https://www.mixmods.com.br/2022/11/story-mode/",
     "downloads": [
       "https://sharemods.com/iq9lg1tafztf/Story_Mode.7z.html",
       "https://drive.google.com/file/d/11fAYbdAY-DbdR9VdOPWw6f5xf9JIambS/view?usp=sharing"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 25,
+    "id": 29,
     "title": "[SA] Ladders Mod (subir escadas)",
     "post": "https://www.mixmods.com.br/2022/11/ladders-mod-subir-escadas/",
     "downloads": [
       "https://sharemods.com/r9991nx53e61/SA_-_Ladders_Mod.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 26,
+    "id": 30,
+    "title": "Projeto Urbanize – Apoie!",
+    "post": "https://www.mixmods.com.br/2022/10/projeto-urbanize-apoie/",
+    "downloads": [],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 31,
     "title": "[SA] Wind Project v1.0.2 (mod de vento)",
     "post": "https://www.mixmods.com.br/2022/10/wind-project/",
     "downloads": [
       "https://sharemods.com/3b7uuwotoncu/SA_-_Wind_Project.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 27,
+    "id": 32,
     "title": "[SA] RepairGTA (corrigir problemas automaticamente)",
     "post": "https://www.mixmods.com.br/2022/10/repair-gta/",
     "downloads": [
       "https://sharemods.com/6s9h92i8pfd0/Girlfriend_Parked_Cars_Restore_Fix.zip.html",
       "https://sharemods.com/j9a31w31d3ob/RepairGTA.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 28,
+    "id": 33,
     "title": "Myths Maker v2.7 (criar mitos e lendas)",
     "post": "https://www.mixmods.com.br/2022/10/myths-maker-criar-mitos-lendas/",
     "downloads": [
       "https://sharemods.com/qi1khsdznvmg/Myths_Maker.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 29,
+    "id": 34,
     "title": "Myths Maker – Animals Pack (mod de animais)",
     "post": "https://www.mixmods.com.br/2022/10/myths-maker-animals-pack-mod-de-animais/",
     "downloads": [
       "https://sharemods.com/wia802k6ikkm/Myths_Maker_-_Animals_Pack.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 30,
+    "id": 35,
     "title": "[SA] Furniture Mod v1.0 beta (comprar móveis)",
     "post": "https://www.mixmods.com.br/2022/10/sa-furniture-mod/",
     "downloads": [
       "https://sharemods.com/0zi4kjql48g1/SA_-_Furniture_Mod.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 31,
+    "id": 36,
     "title": "[III|VC|SA] OLA – Open Limit Adjuster v1.7",
     "post": "https://www.mixmods.com.br/2022/10/open-limit-adjuster/",
     "downloads": [
       "https://sharemods.com/a8lp92fm5jz4/Open_Limit_Adjuster.zip.html",
       "https://sharemods.com/rl25v7qrylbv/Open_Limit_Adjuster_Windows_XP.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 32,
+    "id": 37,
     "title": "[SA] Cyber Cafe Interior (lan-house)",
     "post": "https://www.mixmods.com.br/2022/10/sa-cyber-cafe-interior/",
     "downloads": [
       "https://sharemods.com/jvdsgr5n0kf9/SA_-_Cyber_Cafe_Interior.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 33,
+    "id": 38,
     "title": "[SA/SAMP] GPS Redux v1.5 (mostrar caminho no mapa)",
     "post": "https://www.mixmods.com.br/2022/10/sa-gps-redux/",
     "downloads": [
       "https://sharemods.com/6gxnkrbws5wr/GPS_Redux.zip.html",
       "https://sharemods.com/7buxh1tvl0ob/GPU_Redux_-_For_SAMP.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 34,
+    "id": 39,
     "title": "[SA] Proper HD Models (objetos remasterizados)",
     "post": "https://www.mixmods.com.br/2022/10/sa-proper-hd-models/",
     "downloads": [
       "https://sharemods.com/uj564y9f94iy/SA_-_Proper_HD_Models.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 35,
+    "id": 40,
     "title": "[III/VC/SA] Windowed Mode (modo janela)",
     "post": "https://www.mixmods.com.br/2022/10/iii-vc-sa-windowed-mode/",
     "downloads": [
       "https://sharemods.com/4qoj2ti1l74c/SA_VC_III_-_Windowed_Mode.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 36,
+    "id": 41,
     "title": "[SA] Radar Map by wD.D159 (mapa redesenhado)",
     "post": "https://www.mixmods.com.br/2022/10/sa-radar-map-by-wd-d159/",
     "downloads": [
       "https://sharemods.com/xhb7m223eofm/Radar_Map_by_wD_D159.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 37,
+    "id": 42,
     "title": "[SA/SA:DE/Mobile] Cars On Dirt Roads Mod (veículos em estradas)",
     "post": "https://www.mixmods.com.br/2022/09/sa-cars-on-dirt-roads-mod/",
     "downloads": [
       "https://sharemods.com/8f2odk9nzebs/Cars_On_Dirt_Roads.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 38,
+    "id": 43,
+    "title": "[SA] Visual Path Editor (in-game)",
+    "post": "https://www.mixmods.com.br/2022/09/sa-visual-path-editor-in-game/",
+    "downloads": [],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 44,
     "title": "[III|VC|SA] CrashInfo v1.2.1 (mostrar solução de crash)",
     "post": "https://www.mixmods.com.br/2022/09/crashinfo/",
     "downloads": [
       "https://sharemods.com/g2boidmk6atl/CrashInfo.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 39,
+    "id": 45,
     "title": "[SA] Color Mod by Ryosuke v2 + Fix",
     "post": "https://www.mixmods.com.br/2022/09/sa-color-mod/",
     "downloads": [
       "https://sharemods.com/7pj7gxozu63l/Color_Mod_and_Fix.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 40,
+    "id": 46,
+    "title": "[SA] Graphics Tweaker v1.3.1 (melhorar gráficos)",
+    "post": "https://www.mixmods.com.br/2022/09/graphicstweaker/",
+    "downloads": [
+      "https://sharemods.com/6xafx05pnj6v/GraphicsTweaker.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 47,
+    "title": "[SA] Z Menu (mod trainer)",
+    "post": "https://www.mixmods.com.br/2022/08/z-menu-trainer/",
+    "downloads": [
+      "https://sharemods.com/1euifjsacuwu/SA_-_Z_Menu.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 48,
     "title": "[SA] Throw Rotate Fix v2.0 (molotov/granada rodando no ar)",
     "post": "https://www.mixmods.com.br/2022/08/throw-rotate-fix-molotov-granada-rodando-no-ar/",
     "downloads": [
       "https://sharemods.com/4bgzyt2gtpj2/SA_-_Throw_Rotate_Fix.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 41,
+    "id": 49,
     "title": "[SA] Revamped Vehicles Project (carros corrigidos e adaptados)",
     "post": "https://www.mixmods.com.br/2022/08/sa-revamped-vehicles-project/",
     "downloads": [],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 42,
+    "id": 50,
     "title": "[III/VC/SA] Framerate Vigilante (corrigir bugs de FPS alto)",
     "post": "https://www.mixmods.com.br/2022/08/iii-vc-sa-framerate-vigilante/",
     "downloads": [
       "https://sharemods.com/s1rxdti1yntv/Framerate_Vigilante.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 43,
+    "id": 51,
     "title": "[SA] Peds Extender v1.1.5 (corrigir, restaurar e variar pedestres)",
     "post": "https://www.mixmods.com.br/2022/08/peds-extender/",
     "downloads": [
       "https://sharemods.com/pfge1km3wdw3/SA_-_Peds_Extender.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 44,
+    "id": 52,
     "title": "[SA] Destructive Rhino Mod (explodir tanques)",
     "post": "https://www.mixmods.com.br/2022/08/sa-destructive-rhino-mod/",
     "downloads": [
       "https://sharemods.com/a4lbda6sgq5v/Destructive_Rhino_Mod.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 45,
+    "id": 53,
+    "title": "[SA] PedSkills v2.2 (aumentar dificuldade)",
+    "post": "https://www.mixmods.com.br/2022/08/pedskills/",
+    "downloads": [
+      "https://sharemods.com/2xibsxei9gan/PedSkills.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 54,
+    "title": "Real Linear Graphics v2.6 (cores realistas)",
+    "post": "https://www.mixmods.com.br/2022/07/real-linear-graphics/",
+    "downloads": [
+      "https://sharemods.com/dhjea67wrhm1/Real_Linear_Graphics.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 55,
+    "title": "[SA/SADE/Mobile] Remove Brass Knuckles (desativar soco-inglês)",
+    "post": "https://www.mixmods.com.br/2022/07/remove-brass-knuckles/",
+    "downloads": [
+      "https://sharemods.com/w1gml4nqvlo8/Remove_Brass_Knucles.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 56,
     "title": "[SA/SA:DE] Proper Radar v1.3 (mapa em HD corrigido)",
     "post": "https://www.mixmods.com.br/2022/07/proper-radar/",
     "downloads": [
@@ -499,90 +608,90 @@
       "https://sharemods.com/xskii1j30e2p/SADE_-_Proper_Radar.7z.html",
       "https://sharemods.com/8cxnu0k4xtdu/Proper_Radar_-_Source_Project.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 46,
+    "id": 57,
     "title": "[SA] Body Stats Fix in Interiors (corrigir corpo sem mudar)",
     "post": "https://www.mixmods.com.br/2022/07/sa-body-stats-fix-in-interiors/",
     "downloads": [
       "https://sharemods.com/a3tl94dgrzrb/Body_Stats_Fix.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 47,
+    "id": 58,
     "title": "[SA] PedFuncs v0.5.1",
     "post": "https://www.mixmods.com.br/2022/07/pedfuncs/",
     "downloads": [
       "https://sharemods.com/fkum0x0mhyu6/PedFuncs.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 48,
+    "id": 59,
     "title": "[SA/SA:DE] Torch Mod (tocha com luz)",
     "post": "https://www.mixmods.com.br/2022/06/sa-sade-torch-mod-tocha-com-luz/",
     "downloads": [
       "https://sharemods.com/pknk1m9jkooc/SADE_-_Torch_Mod.7z.html",
       "https://sharemods.com/nuioeuncz8zd/SA_-_Torch_Mod.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 49,
+    "id": 60,
     "title": "Death In Car (morrer dentro do carro)",
     "post": "https://www.mixmods.com.br/2022/06/death-in-car-morrer-dentro-do-carro/",
     "downloads": [
       "https://sharemods.com/2289owg3jx0m/Death_In_Car.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 50,
+    "id": 61,
     "title": "[SA] Gang Hands Texture Fix (corrigir mãos bugadas)",
     "post": "https://www.mixmods.com.br/2022/06/sa-gang-hands-texture-fix/",
     "downloads": [
       "https://sharemods.com/1u3i9l2uo4ao/Gang_Hands_Texture_Fix.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 51,
+    "id": 62,
     "title": "[SA/SA:DE/Mobile] SFDP Heli Fix (helicóptero da polícia de SF)",
     "post": "https://www.mixmods.com.br/2022/06/sa-sfdp-heli-fix/",
     "downloads": [
       "https://sharemods.com/s4l7mw43heuk/SFDP_Heli_Fix.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 52,
+    "id": 63,
     "title": "[SA] Proper Night Windows (mais janelas noturnas)",
     "post": "https://www.mixmods.com.br/2022/06/proper-night-windows/",
     "downloads": [
       "https://sharemods.com/q2gr7fu98fml/Proper_Night_Windows.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 53,
+    "id": 64,
     "title": "[SA/SA:DE] Skateboarding Mod (mod de skate)",
     "post": "https://www.mixmods.com.br/2022/06/skateboarding-mod-mod-de-skate-para-gta-sa/",
     "downloads": [
@@ -590,99 +699,108 @@
       "https://sharemods.com/icmqku1s5twm/SADE_-_Skateboarding_Mod.7z.html",
       "https://drive.google.com/file/d/1xiLRUuRpGwwCVaxiwmBbPprASTrtjtOo/view?usp=sharing"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 54,
+    "id": 65,
     "title": "[SA] No Auto Pickups (coletar armas manualmente)",
     "post": "https://www.mixmods.com.br/2022/05/no-auto-pickups/",
     "downloads": [
       "https://sharemods.com/vmhimyh5mm0k/No_Auto_Pickups.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 55,
+    "id": 66,
     "title": "[SA] Missing Smokes Fix (fumaça na tubulação das fábricas)",
     "post": "https://www.mixmods.com.br/2022/05/missing-smokes-fix/",
     "downloads": [
       "https://sharemods.com/0ff3q5jkuabp/Missing_Smokes_Fix.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 56,
+    "id": 67,
     "title": "[SA] Manual Firing v2.2.1 (tiros manuais)",
     "post": "https://www.mixmods.com.br/2022/05/manual-firing-tiros-manuais/",
     "downloads": [
       "https://sharemods.com/u2fwrrrj6hvn/Manual_Firing.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 57,
+    "id": 68,
+    "title": "[SA] Map Editor (editar mapa dentro do jogo com mouse)",
+    "post": "https://www.mixmods.com.br/2022/04/sa-map-editor/",
+    "downloads": [],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 69,
     "title": "[SA] Prostitutes Money Drop Fix (corrigir dinheiro de prostitutas)",
     "post": "https://www.mixmods.com.br/2022/04/prostitutes-money-drop-fix/",
     "downloads": [
       "https://sharemods.com/0l8a752l17ui/Prostitutes_Money_Drop_Fix.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 58,
+    "id": 70,
     "title": "[SA] No Minimap In Interiors (desativar mapa em interiores)",
     "post": "https://www.mixmods.com.br/2022/04/no-minimap-in-interiors/",
     "downloads": [],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 59,
+    "id": 71,
     "title": "[SA] NextGen Remaster Effects (efeitos realistas HD)",
     "post": "https://www.mixmods.com.br/2022/04/sa-nextgen-remaster-effects/",
     "downloads": [
       "https://sharemods.com/l0oi1e2w49d1/SA_-_NextGen_Remaster_Effects.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 60,
+    "id": 72,
     "title": "[VC/SA] Real Traffic Fix v2.2.1 beta",
     "post": "https://www.mixmods.com.br/2022/04/real-traffic-fix/",
     "downloads": [
       "https://sharemods.com/jlqyc2ya7lol/SA_-_Real_Traffic_Fix.7z.html",
       "https://sharemods.com/pxi03srhvive/VC_-_Real_Traffic_Fix.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 61,
+    "id": 73,
     "title": "[SA] Missing Lampposts Fix (mais postes de luz)",
     "post": "https://www.mixmods.com.br/2022/04/missing-lampposts-fix-more-light-posts/",
     "downloads": [
       "https://sharemods.com/28iie8htc4jq/Missing_Lampposts_Fix.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 62,
+    "id": 74,
     "title": "[SA/SA:DE] Proper Vehicles Retex v2.1 (texturas HD para veículos)",
     "post": "https://www.mixmods.com.br/2022/04/sa-sade-proper-vehicles-retex/",
     "downloads": [
@@ -691,299 +809,299 @@
       "https://sharemods.com/xd5lex6v5pme/Proper_Vehicles_Retex_v2.1_2K_VERSION.7z.html",
       "https://sharemods.com/3ullpauu22ab/SADE_-_Proper_Vehicles_Retex-V2.1.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 63,
+    "id": 75,
     "title": "[SA] GTA V Vehicles to SA by _F_ (carros convertidos do GTA V)",
     "post": "https://www.mixmods.com.br/2022/04/sa-gta-v-vehicles-converted/",
     "downloads": [
       "https://drive.google.com/file/d/1PUR5J0BexJI2lXtATiu68U86EXkNM7tC/view?usp=sharing"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 64,
+    "id": 76,
     "title": "[SA] Project Web Anims v7.5 (pack de animações)",
     "post": "https://www.mixmods.com.br/2022/04/sa-project-web-anims/",
     "downloads": [
       "https://sharemods.com/o07xb22y59nf/Project_Web_Anims.7z.html",
       "https://sharemods.com/mbet6rslp0nu/Project_Web_Anims.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 65,
+    "id": 77,
     "title": "Cheat Menu by Grinch_ v3.52",
     "post": "https://www.mixmods.com.br/2022/03/cheat-menu-by-grinch/",
     "downloads": [
       "https://sharemods.com/iy139fyfuyet/Cheat_Menu_by_Grinch_.zip.html",
       "https://sharemods.com/dvuo7sxezawl/VC_-_Cheat_Menu_by_Grinch_.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 66,
+    "id": 78,
     "title": "[SA] Projectile Shoot (atirar para explodir)",
     "post": "https://www.mixmods.com.br/2022/03/sa-projectile-shoot-atirar-para-explodir/",
     "downloads": [
       "https://sharemods.com/1rj82p2q33cz/Projectile_Shoot.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 67,
+    "id": 79,
     "title": "Rules Mod v1.2 (estrela de procurado ao quebrar leis)",
     "post": "https://www.mixmods.com.br/2022/03/rules-mod-estrela-de-procurado-ao-quebrar-leis/",
     "downloads": [
       "https://sharemods.com/o4fco3bicyin/Rules_Mod.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 68,
+    "id": 80,
     "title": "LS Lit Church (igreja com luzes acesas)",
     "post": "https://www.mixmods.com.br/2022/03/ls-lit-church-igreja-com-luzes-acesas/",
     "downloads": [
       "https://sharemods.com/ilp0t25k29gz/LS_Lit_Church.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 69,
+    "id": 81,
     "title": "[SA] MixSets v4.3.7",
     "post": "https://www.mixmods.com.br/2022/03/sa-mixsets/",
     "downloads": [
       "https://sharemods.com/llx280hsssre/SA_-_MixSets_-_password_mixmods.com.br.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 70,
+    "id": 82,
     "title": "Shader Stochastic no GTA San Andreas (correção de tiling nas texturas)",
     "post": "https://www.mixmods.com.br/2022/03/shader-stochastic-gta-sa/",
     "downloads": [
       "https://drive.google.com/file/d/1QecekuuyWgw68HU9tg6ENfrCTCVIjm6l/view"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 71,
+    "id": 83,
     "title": "[SA] Sprint Everywhere (correr em interiores)",
     "post": "https://www.mixmods.com.br/2022/02/sa-sprint-everywhere-correr-em-interiores/",
     "downloads": [
       "https://sharemods.com/z6yo02u4xvaf/Sprint_Everywhere.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 72,
+    "id": 84,
     "title": "[SA] Glasses Color Overlay (filtro de cor ao usar óculos)",
     "post": "https://www.mixmods.com.br/2022/02/sa-glasses-color-overlay/",
     "downloads": [
       "https://sharemods.com/o74eq9y76hjj/Glasses_Color_Overlay.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 73,
+    "id": 85,
     "title": "[SA] nadalao Weapon Icons (ícones HD fiéis corrigidos)",
     "post": "https://www.mixmods.com.br/2022/02/icones-de-armas-fieis-desenhos-corrigidos/",
     "downloads": [
       "https://sharemods.com/tysasyrhqebt/nadalao_Weapon_Icons_-_icones_fieis_corrigidos.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 74,
+    "id": 86,
     "title": "MW Project (mais água por SA)",
     "post": "https://www.mixmods.com.br/2022/02/mw-project-mais-agua-por-sa/",
     "downloads": [
       "https://sharemods.com/l01yekk929dh/MW_Project.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 75,
+    "id": 87,
     "title": "[SA] Animation Fix + M4k3 Anims (corrigir bugs de animações)",
     "post": "https://www.mixmods.com.br/2022/02/animation-fix-v1-5-corrigir-bugs-de-animacoes/",
     "downloads": [
       "https://sharemods.com/3xputk50vuec/Animation_Fix___M4k3_New_Car_Animations.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 76,
+    "id": 88,
     "title": "[SA/SA:DE] Ped Run Fix v2.2 (corrigir velhinhas correndo)",
     "post": "https://www.mixmods.com.br/2022/01/sa-sade-ped-run-fix-corrigir-velhinhas-correndo/",
     "downloads": [
       "https://sharemods.com/c08l1q6s8kxy/SA_SADE_-_Peds_Run_Fix.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 77,
+    "id": 89,
     "title": "Custom Ammunation Mod v3.5 (adicionar armas pra comprar)",
     "post": "https://www.mixmods.com.br/2022/01/custom-ammunation-mod-adicionar-armas-pra-comprar/",
     "downloads": [
       "https://sharemods.com/sl15wwdhyw7o/Custom_Ammunation.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 78,
+    "id": 90,
     "title": "LOD Vegetation v1.2 (árvores distantes)",
     "post": "https://www.mixmods.com.br/2021/12/lod-vegetation-distant-trees/",
     "downloads": [
       "https://sharemods.com/7u9q36epczhn/LOD_Vegetation.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 79,
+    "id": 91,
     "title": "CLEO Redux",
     "post": "https://www.mixmods.com.br/2021/12/cleo-redux/",
     "downloads": [],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 80,
+    "id": 92,
     "title": "[SA/SA:DE] Awesome IFP v3 (novas animações)",
     "post": "https://www.mixmods.com.br/2021/11/sa-sade-awesome-ifp/",
     "downloads": [
       "https://sharemods.com/47465yc6kq12/Awesome_IFP.7z.html",
       "https://sharemods.com/5c1yvuq4l5x4/SADE_-_Awesome_IFP.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 81,
+    "id": 93,
     "title": "MP5 (convertida do SA:DE)",
     "post": "https://www.mixmods.com.br/2021/11/mp5-convertida-do-sade/",
     "downloads": [
       "https://sharemods.com/s13yawvkfnwn/SADE_MP5.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 82,
+    "id": 94,
     "title": "Tesla Model S 2014 (fix + script)",
     "post": "https://www.mixmods.com.br/2021/11/tesla-model-s-2014-fix-script/",
     "downloads": [
       "https://sharemods.com/i8pyupgkl3ia/Tesla_Model_S_2014.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 83,
+    "id": 95,
     "title": "Illuminated Vinewood Sign (placa de Vinewood iluminada)",
     "post": "https://www.mixmods.com.br/2021/10/illuminated-vinewood-sign-placa-de-vinewood-iluminada/",
     "downloads": [
       "https://sharemods.com/uelr5g9m1eff/Illuminated_Vinewood_Sign.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 84,
+    "id": 96,
     "title": "Pre-lighting Fixes Pack (correções de iluminação)",
     "post": "https://www.mixmods.com.br/2021/10/pre-lighting-fixes-pack-correcoes-de-iluminacao/",
     "downloads": [
       "https://sharemods.com/z2uh6naoyg1i/Pre-lighting_Fixes_Pack.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 85,
+    "id": 97,
     "title": "Upgraded Vehicles Pack (carros originais corrigidos)",
     "post": "https://www.mixmods.com.br/2021/10/upgraded-vehicles-pack-carros-originais-corrigidos/",
     "downloads": [
       "https://sharemods.com/4s905tmgiphk/Upgraded_Vehicles_Pack.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 86,
+    "id": 98,
     "title": "RenderHook Fix (correções para o RH)",
     "post": "https://www.mixmods.com.br/2021/10/renderhook-fix-correcoes-para-o-rh/",
     "downloads": [
       "https://sharemods.com/dgcbm6ixj1pl/RenderHookFix.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 87,
+    "id": 99,
     "title": "GTA Healer (check & backup)",
     "post": "https://www.mixmods.com.br/2021/10/gta-healer-check-backup/",
     "downloads": [
       "https://sharemods.com/q2pnidt84vet/GTA_Healer.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 88,
+    "id": 100,
     "title": "RenderHook – Serendipity v1.1 (gráficos remasterizados em HD)",
     "post": "https://www.mixmods.com.br/2021/09/renderhook-serendipity-graficos-remasterizados-em-hd/",
     "downloads": [
       "https://sharemods.com/y6emrqj5rvbo/RenderHook_-_Serendipity.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 89,
+    "id": 101,
     "title": "[SA] Effects Mod by Ezekiel / Junior_Djjr (efeitos realistas)",
     "post": "https://www.mixmods.com.br/2021/09/effects-mod-by-ezekiel-junior_djjr-efeitos-realistas/",
     "downloads": [
@@ -991,69 +1109,69 @@
       "https://drive.google.com/file/d/10spWLp19GQeW-uWvrcEj_9-XbKNb0wHa/view?usp=sharing",
       "https://sharemods.com/uc2ujtl8z75p/Effects_Mod_-_by_Ezekiel_-_Junior_Djjr_-_Effects_Loader.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 90,
+    "id": 102,
     "title": "CloudWorks (volumetric clouds for ENB/RenderHook)",
     "post": "https://www.mixmods.com.br/2021/09/cloudworks-volumetric-clouds-for-enb-renderhook/",
     "downloads": [
       "https://sharemods.com/cz2vbf9kc9a2/ENB_Series_CloudWorks.7z.html",
       "https://sharemods.com/ht103j85mncm/CloudWorks_For_RenderHook.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 91,
+    "id": 103,
     "title": "Clipboard Teleport (teletransporte com CTRL+V)",
     "post": "https://www.mixmods.com.br/2021/09/clipboard-teleport-teletransporte-com-ctrlv/",
     "downloads": [
       "https://sharemods.com/1c6sk6faws7z/Clipboard_Teleport.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 92,
+    "id": 104,
     "title": "Mod Ragdoll Bullet Physics + Fix (física realista)",
     "post": "https://www.mixmods.com.br/2021/09/mod-ragdoll-bullet-physics-fix-fisica-realista/",
     "downloads": [
       "https://sharemods.com/txlr846ungla/Ragdoll_Bullet_Physics.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 93,
+    "id": 105,
     "title": "[SA] ImprovedMove v0.2.2 (melhorar movimentos e anims)",
     "post": "https://www.mixmods.com.br/2021/08/improvedmove/",
     "downloads": [
       "https://sharemods.com/98xo43wqfjlm/ImprovedMove.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 94,
+    "id": 106,
     "title": "FireType v6.0 (tiro seletivo: auto, semi, burst)",
     "post": "https://www.mixmods.com.br/2021/08/firetype-v6-0-tiro-seletivo-auto-semi-burst/",
     "downloads": [
       "https://sharemods.com/6ljnksq0hmrq/FireType.7z.html",
       "https://sharemods.com/y900dwixtnwf/FireType_-_Basic_version.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 95,
+    "id": 107,
     "title": "Mipmapping",
     "post": "https://www.mixmods.com.br/2021/07/mipmapping/",
     "downloads": [
@@ -1061,67 +1179,67 @@
       "https://sharemods.com/el5sjq7p9s0k/VC_-_Mipmaps.7z.html",
       "https://sharemods.com/bvsovmmgoadq/III_-_Mipmaps.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 96,
+    "id": 108,
     "title": "Generate Free IDs List (mostrar IDs vazios)",
     "post": "https://www.mixmods.com.br/2021/07/generate-free-ids-list-mostrar-ids-vazios/",
     "downloads": [
       "https://sharemods.com/qipof5weizvy/Generate_Free_IDs_List.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 97,
+    "id": 109,
     "title": "IMBEL IA2 & FN FAL (armas brasileiras em HD)",
     "post": "https://www.mixmods.com.br/2021/06/imbel-ia2-fn-fal-armas-brasileiras-em-hd/",
     "downloads": [
       "https://sharemods.com/v4buqzhgmour/IMBEL_IA2_FN_FAL.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 98,
+    "id": 110,
     "title": "Pistolas Taurus 24/7 e PT 58 (lowpoly)",
     "post": "https://www.mixmods.com.br/2021/06/pistolas-taurus-24-7-e-pt-58-lowpoly/",
     "downloads": [
       "https://sharemods.com/xiqp6ec07z44/Taurus_24_7_PT_58.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 99,
+    "id": 111,
     "title": "Proper Weapons Retex v1.3 (armas com texturas HD)",
     "post": "https://www.mixmods.com.br/2021/06/proper-weapons-retex-v1-3-armas-com-texturas-hd/",
     "downloads": [
       "https://sharemods.com/zh4lmnw9s3m4/Proper_Weapon_Retex.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 100,
+    "id": 112,
     "title": "Real Skybox v1.3.4 (céu realista)",
     "post": "https://www.mixmods.com.br/2021/06/sa-real-skybox/",
     "downloads": [
       "https://sharemods.com/asxvzdjkpa6m/Real_Skybox.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 101,
+    "id": 113,
     "title": "Widescreen Fix para GTA SA (corrigir widescreen)",
     "post": "https://www.mixmods.com.br/2021/05/widescreen-fix-para-gta-sa-corrigir-widescreen/",
     "downloads": [
@@ -1129,101 +1247,101 @@
       "https://sharemods.com/zv55ubycrdp8/Car_Speed_Dependant_FOV.zip.html",
       "https://sharemods.com/ati4o4vcxk6c/SA_-_Widescreen_Fix.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 102,
+    "id": 114,
     "title": "More Realistic Reload Weapon Animation Mod (anims de recarregar)",
     "post": "https://www.mixmods.com.br/2021/05/more-realistic-reload-weapon-animation-mod-anims-de-recarregar/",
     "downloads": [
       "https://sharemods.com/kyvwkd7vtt4i/More_Realistic_Reload_Animation_Mod.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 103,
+    "id": 115,
     "title": "GTA SA Discord Rich Presence (mostrar informações no Discord)",
     "post": "https://www.mixmods.com.br/2021/05/gta-sa-discord-rich-presence-mostrar-informacoes-no-discord/",
     "downloads": [
       "https://sharemods.com/ipzt2b4jipim/Discord_Rich_Presence.7z.html",
       "https://sharemods.com/azxe17aqhwel/GTA_SA_Discord_Rich_Presence.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 104,
+    "id": 116,
     "title": "NeXtGen Remaster Weapons (pack de armas em HD)",
     "post": "https://www.mixmods.com.br/2021/05/nextgen-remaster-weapons-pack-de-armas-em-hd/",
     "downloads": [
       "https://drive.google.com/file/d/1fAxvXqia40TEKuFvyDw-KGaQZEIBf3Wo/view?usp=sharing"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 105,
+    "id": 117,
     "title": "View Models Info v1.1 (ver ID de objetos)",
     "post": "https://www.mixmods.com.br/2021/04/view-models-info/",
     "downloads": [
       "https://sharemods.com/21ot2q919vjr/View_Models_Info.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 106,
+    "id": 118,
     "title": "Race Creator v0.1 (criador de corridas)",
     "post": "https://www.mixmods.com.br/2021/04/race-creator-v0-1-criador-de-corridas/",
     "downloads": [
       "https://sharemods.com/j7ee0xxh4rjn/Race_Creator.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 107,
+    "id": 119,
     "title": "Skyline Timecyc (cores corrigidas)",
     "post": "https://www.mixmods.com.br/2021/04/skyline-timecyc-cores-corrigidas/",
     "downloads": [
       "https://sharemods.com/izvr4xkn8brr/Skyline_Timecyc.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 108,
+    "id": 120,
     "title": "Open Door Anim v1.2.2 (animação abrindo porta)",
     "post": "https://www.mixmods.com.br/2021/04/open-door-anim-v1-2-1-animacao-abrindo-porta/",
     "downloads": [
       "https://sharemods.com/nd45td9y91fj/Open_Door_Anim.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 109,
+    "id": 121,
     "title": "Mesa Plus+ (SA style)",
     "post": "https://www.mixmods.com.br/2021/03/mesa-plus-sa-style/",
     "downloads": [
       "https://sharemods.com/1i8s8xh9yhsn/Mesa_Plus.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 110,
+    "id": 122,
     "title": "Improved Default Armoury (armas melhoradas com reflexos)",
     "post": "https://www.mixmods.com.br/2021/03/improved-default-armoury-armas-melhoradas-com-reflexos/",
     "downloads": [
@@ -1231,267 +1349,335 @@
       "https://sharemods.com/zq2h5phit29b/Improved_Default_Armoury_-_nadalao_icons.7z.html",
       "https://sharemods.com/o1v6qcux59kv/Improved_Default_Armoury_-_BONUS_files.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 111,
+    "id": 123,
     "title": "Improved Default Armoury For Cutscenes (armas remasterizadas)",
     "post": "https://www.mixmods.com.br/2021/03/improved-default-armoury-for-cutscenes-armas-remasterizadas/",
     "downloads": [
       "https://sharemods.com/z8idkvw7pxvs/Improved_Default_Armoury_For_Cutscenes.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 112,
+    "id": 124,
     "title": "AutoID (corrigir conflito de IDs) + AutoAdapt",
     "post": "https://www.mixmods.com.br/2021/03/autoid-v2-2-corrigir-conflito-de-ids-autoadapt/",
     "downloads": [],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 113,
+    "id": 125,
+    "title": "ENB Series v0.430 (.asi) + complex shadows, soft particles",
+    "post": "https://www.mixmods.com.br/2021/02/enb-series-v0-430-asi-complex-shadows-soft-particles/",
+    "downloads": [
+      "https://sharemods.com/6o30hb6d20nc/Disable_camera_-_Insert_key.7z.html",
+      "https://sharemods.com/tupuccmn5z43/ENB_Series.7z.html",
+      "https://sharemods.com/wa6l1ql42jda/Complex_Shadows_Culling_Fix.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 126,
     "title": "Added 70 Weapons Pack (70 novas armas adicionadas)",
     "post": "https://www.mixmods.com.br/2021/02/added-70-weapons-pack-70-novas-armas-adicionadas/",
     "downloads": [
       "https://sharemods.com/m7m47k8pbah5/Added_Weapons_Pack.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 114,
+    "id": 127,
     "title": "Save Tools – Jogo salvo 100% + Save Game Helper + Backup",
     "post": "https://www.mixmods.com.br/2021/01/save-tools-jogo-salvo-100-save-game-helper-backup/",
     "downloads": [
       "https://sharemods.com/v0mqs5d7wick/Save_Tools.7z.html",
       "https://sharemods.com/3dbi88seuxyu/Backup_MAIN.scm_SCRIPT.img.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 115,
+    "id": 128,
     "title": "Rikintosh’s Small Details Mod (carros com texturas HD)",
     "post": "https://www.mixmods.com.br/2021/01/rikintoshs-small-details-mod-carros-com-texturas-hd/",
     "downloads": [
       "https://sharemods.com/cg6r9vwvtdik/Rikintosh__x27_s_Small_Details_Mod_-_Improved.7z.html",
       "https://sharemods.com/wy0gbhr71ga2/Rikintosh__x27_s_Small_Details.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 116,
+    "id": 129,
     "title": "First Person Fixed Weapon Anims (corrigir anims em FPS)",
     "post": "https://www.mixmods.com.br/2021/01/first-person-fixed-weapon-anims-corrigir-anims-em-fps/",
     "downloads": [
       "https://sharemods.com/aaykvgve52wa/First_Person_Fixed_Weapon_Anims.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 117,
+    "id": 130,
+    "title": "Mod VR (Virtual Reality)",
+    "post": "https://www.mixmods.com.br/2021/01/mod-vr-virtual-reality/",
+    "downloads": [
+      "https://sharemods.com/5x07pblbqpxz/Mod_VR.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 131,
     "title": "SAORS v2 (mod rádio online)",
     "post": "https://www.mixmods.com.br/2020/12/saors-v2-mod-radio-online/",
     "downloads": [
       "https://sharemods.com/3bet7r9pi53t/SAORS.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 118,
+    "id": 132,
+    "title": "Acceleratorgen (gerador de MINFO.BIN e CINFO.BIN)",
+    "post": "https://www.mixmods.com.br/2020/12/acceleratorgen-gerador-de-minfo-bin-e-cinfo-bin/",
+    "downloads": [
+      "https://sharemods.com/dacnu6i4jbps/Acceleratorgen.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 133,
+    "title": "San Andreas Farming Equipment DLC (SAFE DLC) (trator HD)",
+    "post": "https://www.mixmods.com.br/2020/12/san-andreas-farming-equipment-dlc-safe-dlc-trator-hd/",
+    "downloads": [
+      "https://sharemods.com/z7cnx7ur9s5n/San_Andreas_Farming_Equipment_DLC.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 134,
     "title": "INSANITY Weapons Items (armas HD)",
     "post": "https://www.mixmods.com.br/2020/12/insanity-weapons-items-armas-hd/",
     "downloads": [
       "https://sharemods.com/a5ip9lonbiwc/INSANITY_Weapons_Items.7z.html",
       "https://drive.google.com/file/d/0B1sAJQAUfOOYTWMwcEhZbDZ5Tm8/view?usp=sharing"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 119,
+    "id": 135,
+    "title": "Draw Cols SA (modo debug de colisores)",
+    "post": "https://www.mixmods.com.br/2020/12/draw-cols-sa-modo-debug-de-colisores/",
+    "downloads": [
+      "https://sharemods.com/1swhpdai23zn/Draw_Cols_SA.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 136,
+    "title": "SA_DirectX 2.0 Final + Unofficial update (ASI version)",
+    "post": "https://www.mixmods.com.br/2020/12/sa_directx-2-0-final-unofficial-update-asi-version/",
+    "downloads": [
+      "https://sharemods.com/e07ksm6zefr3/SA_DirectX_2.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 137,
     "title": "Vehicle Shared HD Wheels (carros com rodas HD)",
     "post": "https://www.mixmods.com.br/2020/11/vehicle-shared-hd-wheels-carros-com-rodas-hd/",
     "downloads": [
       "https://sharemods.com/kgi120yjoqgc/Vehicle_Shared_HD_Wheels.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 120,
+    "id": 138,
     "title": "Beta Gang Skins Added (restaurar gangue beta)",
     "post": "https://www.mixmods.com.br/2020/11/beta-gang-skins-added-restaurar-gangue-beta/",
     "downloads": [
       "https://sharemods.com/t1oa3uuqyl8p/Beta_Gang_Skins_Added.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 121,
+    "id": 139,
     "title": "Revamped Arsenal (armas originais melhoradas)",
     "post": "https://www.mixmods.com.br/2020/10/revamped-arsenal-armas-originais-melhoradas/",
     "downloads": [
       "https://sharemods.com/04ywd5k9r0ps/Revamped_Arsenal.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 122,
+    "id": 140,
     "title": "NewOpcodes.cleo v2.1",
     "post": "https://www.mixmods.com.br/2020/10/newopcodes-cleo-v2-1/",
     "downloads": [
       "https://sharemods.com/69lwlady6yav/NewOpcodes.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 123,
+    "id": 141,
     "title": "[III/VC/SA] SCRLog 2020.3 (descobrir crash em mod CLEO)",
     "post": "https://www.mixmods.com.br/2020/10/iii-vc-sa-scrlog-2020-3-descobrir-crash-em-mod-cleo/",
     "downloads": [
       "https://sharemods.com/sjmd1yxgpf08/SCRLog.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 124,
+    "id": 142,
     "title": "MoonLoader",
     "post": "https://www.mixmods.com.br/2020/10/moonloader/",
     "downloads": [
       "https://sharemods.com/acne914kzt4m/MoonLoader_preview_version.7z.html",
       "https://sharemods.com/9cjkhj6qjt5p/MoonLoader___MoonAdditions___ImGui.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 125,
+    "id": 143,
     "title": "ModLoader support for MoonLoader (mods Lua no ModLoader)",
     "post": "https://www.mixmods.com.br/2020/10/modloader-support-for-moonloader-mods-lua-no-modloader/",
     "downloads": [
       "https://sharemods.com/1ssbaxmrs16v/ModLoader_support_for_MoonLoader.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 126,
+    "id": 144,
     "title": "VPJ – Vertex Paint Job (novas sombras e iluminação)",
     "post": "https://www.mixmods.com.br/2020/09/vpj-vertex-paint-job-novas-sombras-e-iluminacao/",
     "downloads": [
       "https://sharemods.com/d4ad9tj5ip4z/VPJ_by_Ezekiel.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 127,
+    "id": 145,
     "title": "Skyscrapers Reflections (reflexos nos vidros dos prédios)",
     "post": "https://www.mixmods.com.br/2020/09/skyscrapers-reflections-reflexos-nos-vidros-dos-predios/",
     "downloads": [
       "https://sharemods.com/i6mfm8lk10zv/Skyscrapers_Reflections.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 128,
+    "id": 146,
     "title": "Dynamic FOV v1.1 (campo de visão dinâmico)",
     "post": "https://www.mixmods.com.br/2020/09/dynamic-fov/",
     "downloads": [
       "https://sharemods.com/mzim2ufqseez/Dynamic_FOV.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 129,
+    "id": 147,
     "title": "SIG Sauer P226R do Escape from Tarkov",
     "post": "https://www.mixmods.com.br/2020/09/sig-sauer-p226r-do-escape-from-tarkov/",
     "downloads": [
       "https://sharemods.com/dj1g4aw1puhz/SIG_SAUER_P226R.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 130,
+    "id": 148,
     "title": "[SA] Glowing Pickups v1.0.3 (weapon coronas)",
     "post": "https://www.mixmods.com.br/2020/09/glowing-pickups-weapon-coronas/",
     "downloads": [
       "https://sharemods.com/c6bqk7phv6m5/Glowing_Pickups.zip.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 131,
+    "id": 149,
     "title": "Rhino Animated (tanque original animado)",
     "post": "https://www.mixmods.com.br/2020/09/rhino-animated-tanque-original-animado/",
     "downloads": [
       "https://sharemods.com/ebrx0xurrrq6/Rhino_Animated.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 132,
+    "id": 150,
     "title": "Cutscene Weapons Fix (corrigir armas das cutscenes)",
     "post": "https://www.mixmods.com.br/2020/09/cutscene-weapons-fix-corrigir-armas-das-cutscenes/",
     "downloads": [
       "https://sharemods.com/o7x9wiu40e31/Cutscene_Weapons_Fix.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 133,
+    "id": 151,
     "title": "Beta Weapons Pack (armas restauradas da versão beta)",
     "post": "https://www.mixmods.com.br/2020/09/beta-weapons-pack-armas-restauradas-da-versao-beta/",
     "downloads": [
       "https://sharemods.com/bdfmly3kxlww/Beta_Weapons.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 134,
+    "id": 152,
     "title": "Real Skybox skyboxes by Crowdigger (novos céus HD)",
     "post": "https://www.mixmods.com.br/2020/08/real-skybox-skyboxes-by-crowdigger-novos-ceus-hd/",
     "downloads": [
@@ -1500,248 +1686,398 @@
       "https://sharemods.com/2pdarqejc397/Real_Skybox_-_skyboxes_4096.7z.html",
       "https://sharemods.com/m3krz85iucbq/Real_Skybox_-_skyboxes_-_Real_Linear_Graphics.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 135,
+    "id": 153,
     "title": "Handshake Mod (aperto de mão)",
     "post": "https://www.mixmods.com.br/2020/08/handshake-mod-aperto-de-mao/",
     "downloads": [
       "https://sharemods.com/7ebe6hqzbcc8/Handshake_Mod.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 136,
+    "id": 154,
+    "title": "Stress Test (forçar jogo a crashar)",
+    "post": "https://www.mixmods.com.br/2020/08/stress-test-forcar-jogo-a-crashar/",
+    "downloads": [
+      "https://sharemods.com/shb6ml79ruhj/Stress_Test.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 155,
     "title": "Gang Rider v2 (carregar mais gangue)",
     "post": "https://www.mixmods.com.br/2020/08/gang-rider-v2-carregar-mais-gangue/",
     "downloads": [
       "https://sharemods.com/ejwih62ioxnz/Gang_Rider_Lua.7z.html",
       "https://sharemods.com/wus6c66kjang/Gang_Rider_CLEO.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 137,
+    "id": 156,
     "title": "fastman92 processor v1.9 + GUI",
     "post": "https://www.mixmods.com.br/2020/08/programa-fastman92-processor-v1-5-gui/",
     "downloads": [
       "https://sharemods.com/2zhd2ohur8hu/fastman92_processor.7z.html",
       "https://sharemods.com/xvx8na5ffljr/fastman92_processor_GUI.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 138,
+    "id": 157,
+    "title": "GTA SA Comic Edition",
+    "post": "https://www.mixmods.com.br/2020/08/gta-sa-comic-edition/",
+    "downloads": [
+      "https://drive.google.com/drive/folders/1gPYZm_H0i-h22r1TjSZCcKY8hiCEqI8t"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 158,
     "title": "Faithful Weapons Pack 2.0 (pack de armas fiéis)",
     "post": "https://www.mixmods.com.br/2020/07/faithful-weapons-pack-2-0-pack-de-armas-fieis/",
     "downloads": [
       "https://drive.google.com/file/d/1OjwyxUKqjRCYuv9y49dgHfV0EOnqiBTA/view?usp=sharing",
       "https://drive.google.com/file/d/1JJLIYR79zjsnm-e8-5zaXEBgszr4SIQN/view?usp=sharing"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 139,
+    "id": 159,
     "title": "Banshee Plus+ (SA style)",
     "post": "https://www.mixmods.com.br/2020/07/banshee-plus-sa-style/",
     "downloads": [
       "https://sharemods.com/t0qrb187b7qr/Banshee_Plus.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 140,
+    "id": 160,
+    "title": "Euryopa (visualizador de mapa para GTA)",
+    "post": "https://www.mixmods.com.br/2020/07/euryopa-visualizador-de-mapa-para-gta/",
+    "downloads": [
+      "https://sharemods.com/jm60r1j8pr72/Euryopa.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 161,
     "title": "Futo Trueno + Levin (AE86 SA style)",
     "post": "https://www.mixmods.com.br/2020/07/futo-trueno-levin-ae86-sa-style/",
     "downloads": [
       "https://sharemods.com/ywqqzuky007z/Futo_Trueno_Levin.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 141,
+    "id": 162,
     "title": "90s AWP – 90s Atmosphere Weapons Pack Reborn 4.0",
     "post": "https://www.mixmods.com.br/2020/07/90s-awp-atmosphere-weapons-pack-reborn/",
     "downloads": [
       "https://sharemods.com/s8bmfqkshpzo/90s_Atmosphere_Weapons_Pack_Reborn.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 142,
+    "id": 163,
+    "title": "ENB Series Auto Toggle (desativar ENB em interior e menu)",
+    "post": "https://www.mixmods.com.br/2020/07/enb-series-auto-toggle-desativar-enb-em-interior-e-menu/",
+    "downloads": [
+      "https://sharemods.com/coxoxpb23p35/ENBSeriesAutoToggle.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 164,
+    "title": "Peugeot 206 GTI (tunável)",
+    "post": "https://www.mixmods.com.br/2020/06/peugeot-206-gti-tunavel/",
+    "downloads": [
+      "https://sharemods.com/jvzzb61srlpb/Peugeot_206_GTI.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 165,
+    "title": "Clean Render (RenderHook)",
+    "post": "https://www.mixmods.com.br/2020/06/clean-render-renderhook/",
+    "downloads": [
+      "https://sharemods.com/w955w0xtii2a/Clean_Render_-_Renderhook.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 166,
     "title": "Hangout with Story Characters (recrutar personagens)",
     "post": "https://www.mixmods.com.br/2020/06/hangout-with-story-characters-recrutar-personagens/",
     "downloads": [
       "https://sharemods.com/zprw8r1npn0f/Hangout_with_Story_Characters.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 143,
+    "id": 167,
     "title": "Beta Gang Restore (restaurar gangue beta)",
     "post": "https://www.mixmods.com.br/2020/06/beta-gang-restore-restaurar-gangue-beta/",
     "downloads": [
       "https://sharemods.com/1gegyekjbnht/Beta_Gang_Restore.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 144,
+    "id": 168,
     "title": "LCS PlayIdles to SA",
     "post": "https://www.mixmods.com.br/2020/06/lcs-playidles-to-sa/",
     "downloads": [
       "https://sharemods.com/3mapd6624i7k/LCS_PlayIdles_to_SA.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 145,
+    "id": 169,
     "title": "PCJ600 Remastered HD",
     "post": "https://www.mixmods.com.br/2020/05/pcj600-remastered-hd/",
     "downloads": [
       "https://sharemods.com/nti33jp135j3/PCJ600_Remastered_HD.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 146,
+    "id": 170,
     "title": "Arma MAC-10 (lowpoly)",
     "post": "https://www.mixmods.com.br/2020/05/arma-mac-10-lowpoly/",
     "downloads": [
       "https://sharemods.com/8kbzd9j6ez1s/Arma_MAC-10.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 147,
+    "id": 171,
     "title": "Big Gangster Mod (mais gangues)",
     "post": "https://www.mixmods.com.br/2020/05/big-gangster-mod-v13-5-mais-gangues/",
     "downloads": [
       "https://sharemods.com/wyg3bh7dgbro/Big_Gangster_Mod.7z.html",
       "https://sharemods.com/4ydl0gxpgoas/Big_Gangster_Mod_-_Saves.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 148,
+    "id": 172,
     "title": "86′ Deluxo (SA style)",
     "post": "https://www.mixmods.com.br/2020/04/86-deluxo-sa-style/",
     "downloads": [
       "https://sharemods.com/r17sebrganh9/Deluxo.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 149,
+    "id": 173,
+    "title": "Chroma Key Mod",
+    "post": "https://www.mixmods.com.br/2020/04/chroma-key-mod/",
+    "downloads": [
+      "https://sharemods.com/2hzskb32rm52/Chroma_Key.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 174,
     "title": "Comet Plus+ (SA style)",
     "post": "https://www.mixmods.com.br/2020/04/comet-plus-sa-style/",
     "downloads": [
       "https://sharemods.com/nkqrfzf2uxti/Comet_Plus.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 150,
+    "id": 175,
+    "title": "Como copiar pastas sem ocupar espaço em disco (symbolic link)",
+    "post": "https://www.mixmods.com.br/2020/04/como-copiar-pastas-sem-ocupar-espaco-em-disco-symbolic-link/",
+    "downloads": [],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 176,
     "title": "90s Atmosphere Vehicles Pack Reborn 3 (latest official stable version)",
     "post": "https://www.mixmods.com.br/2020/04/90s-atmosphere-vehicles-pack-reborn-3/",
     "downloads": [
       "https://drive.google.com/file/d/18iLZ_IEoAQl-3nZgWa_kFy6q7lsszy0L/view",
       "https://sharemods.com/cq6dm0d6plas/90s_AVP_Reborn_3_Fix.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 151,
+    "id": 177,
+    "title": "[III/VC/SA] ReShade Auto Toggle (desativar efeitos no menu)",
+    "post": "https://www.mixmods.com.br/2020/04/iii-vc-sa-reshade-auto-toggle-desativar-efeitos-no-menu/",
+    "downloads": [
+      "https://sharemods.com/y1o3rvh75rzr/ReShade_Auto_Toggle.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 178,
+    "title": "PBR materials for RenderHook by jujubao (materiais para RH)",
+    "post": "https://www.mixmods.com.br/2020/04/pbr-materials-for-renderhook-by-jujubao-materiais-para-rh/",
+    "downloads": [
+      "https://sharemods.com/ov81mu97sllm/PBR_materials_for_RenderHook_by_jujubao.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 179,
     "title": "Shadows Settings Extender v2.1.2 (extensor de sombras)",
     "post": "https://www.mixmods.com.br/2020/03/shadows-settings-extender-v2-1-2-extensor-de-sombras/",
     "downloads": [
       "https://sharemods.com/xmsenlboaezt/Shadows_Settings_Extender.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 152,
+    "id": 180,
     "title": "Wayfarer Plus+ (sa style)",
     "post": "https://www.mixmods.com.br/2020/03/wayfarer-plus-sa-style/",
     "downloads": [
       "https://sharemods.com/4tj4ygjy8b99/Wayfarer_Plus_.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 153,
+    "id": 181,
+    "title": "Cartoon Mod Fixed (texturas e gráficos cartoon)",
+    "post": "https://www.mixmods.com.br/2020/03/cartoon-mod-fixed-texturas-e-graficos-cartoon/",
+    "downloads": [
+      "https://sharemods.com/9is4rzz7fd7w/Cartoon_Mod_Fixed.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 182,
     "title": "Dream Grass (grama HD do GTA V)",
     "post": "https://www.mixmods.com.br/2020/03/dream-grass-grama-hd-do-gta-v/",
     "downloads": [
       "https://sharemods.com/dv6ce6yan0dv/Dream_grass_.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 154,
+    "id": 183,
+    "title": "ReShade + Tutorial de como usar",
+    "post": "https://www.mixmods.com.br/2020/03/reshade-tutorial-de-como-usar/",
+    "downloads": [],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 184,
     "title": "Grip Animation (nova animação de segurar arma)",
     "post": "https://www.mixmods.com.br/2020/02/grip-animation-nova-animacao-de-segurar-arma/",
     "downloads": [
       "https://sharemods.com/b2djjhiwysxs/Grip_Animation.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 155,
+    "id": 185,
     "title": "Military Animation v9 (unofficial fix)",
     "post": "https://www.mixmods.com.br/2020/02/military-animation-v9-unofficial-fix/",
     "downloads": [
       "https://sharemods.com/cgdkdrp91z28/Military_Animation.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 156,
+    "id": 186,
+    "title": "ModdedSAA (carregar arquivos bloqueados no SAMP)",
+    "post": "https://www.mixmods.com.br/2020/01/moddedsaa-carregar-arquivos-bloqueados-no-samp/",
+    "downloads": [
+      "https://sharemods.com/vqvsr7ykuobm/ModdedSAA.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 187,
+    "title": "VW Gol G1 GTI 2000 Turbo",
+    "post": "https://www.mixmods.com.br/2020/01/vw-gol-g1-gti-2000-turbo/",
+    "downloads": [
+      "https://sharemods.com/uhuafeex1b5x/VW_Gol_G1_GTI_2000_Turbo.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 188,
     "title": "ImVehFt – Improved Vehicle Features",
     "post": "https://www.mixmods.com.br/2020/01/imvehft-improved-vehicle-features/",
     "downloads": [
@@ -1749,1196 +2085,897 @@
       "https://sharemods.com/n6y88j5b3tsx/ImVehFt_211.7z.html",
       "https://sharemods.com/p3fgjmintbcm/ImVehFt_211_new_unofficial.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 157,
+    "id": 189,
+    "title": "Snowmobile (SA style)",
+    "post": "https://www.mixmods.com.br/2019/12/snowmobile-sa-style/",
+    "downloads": [
+      "https://sharemods.com/x0i8t4lx8ayo/Snowmobile_SA_style.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 190,
     "title": "Rename vehicles (car names.fxt)",
     "post": "https://www.mixmods.com.br/2019/11/rename-vehicles-car-names-fxt/",
     "downloads": [
       "https://sharemods.com/7isw724uzmf4/Rename_vehicles.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 158,
+    "id": 191,
     "title": "NRG-500 Remastered HD by Ezekiel",
     "post": "https://www.mixmods.com.br/2019/10/nrg-500-remastered-hd-by-ezekiel/",
     "downloads": [
       "https://sharemods.com/ytebfstop2as/NRG_500_Remastered_by_Ezekiel.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 159,
+    "id": 192,
     "title": "Ford Focus ZX3/SVT 2000-2004 by Avant",
     "post": "https://www.mixmods.com.br/2019/10/ford-focus-zx3-svt-2000-2004-by-avant/",
     "downloads": [
       "https://sharemods.com/rqgayynoe9ly/Ford_Focus_ZX3-SVT_2000-2004_Low-High_Trim.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 160,
+    "id": 193,
     "title": "Infernus HD Remastered by Ezekiel",
     "post": "https://www.mixmods.com.br/2019/09/infernus-hd-remastered-by-ezekiel/",
     "downloads": [
       "https://sharemods.com/5xnjtf8aab38/Infernus_HD_Remastered_by_Ezekiel.7z.html",
       "https://sharemods.com/huo64vpo5wcf/Infernus_HD_Remastered_by_Ezekiel_-_IVF.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 161,
+    "id": 194,
     "title": "[SA] Improved Original Weapons (mod pack)",
     "post": "https://www.mixmods.com.br/2019/09/improved-original-weapons-mod-pack/",
     "downloads": [
       "https://sharemods.com/jwztx8xur9nc/AI_Upscaled_Weapon_Textures_and_Icons.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 162,
+    "id": 195,
     "title": "Arma Taurus M972/MT12 (brasileira) (lowpoly)",
     "post": "https://www.mixmods.com.br/2019/08/arma-taurus-m972-mt12-brasileira-lowpoly/",
     "downloads": [
       "https://sharemods.com/s39vzt0qts03/Taurus_M972.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 163,
+    "id": 196,
     "title": "IndieVehicles",
     "post": "https://www.mixmods.com.br/2019/08/indievehicles/",
     "downloads": [
       "https://sharemods.com/p8e8cq5qdr4k/IndieVehicles.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 164,
+    "id": 197,
     "title": "ImGui (interface gráfica para MoonLoader)",
     "post": "https://www.mixmods.com.br/2019/08/imgui-interface-grafica-para-moonloader/",
     "downloads": [
       "https://sharemods.com/3duli5cpn9bb/ImGui.7z.html",
       "https://sharemods.com/nync1aknfgwq/ImGui.7z_1.1.2.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 165,
+    "id": 198,
     "title": "Low Life Animation v1.2.2 (animação de saúde baixa)",
     "post": "https://www.mixmods.com.br/2019/07/low-life-animation-v1-2-2-animacao-de-saude-baixa/",
     "downloads": [
       "https://sharemods.com/iey3goqj7yma/Low_Life_Animation.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 166,
+    "id": 199,
     "title": "Tuning Mod v3.0.1",
     "post": "https://www.mixmods.com.br/2019/06/tuning-mod/",
     "downloads": [
       "https://sharemods.com/dh3hh64cs3wg/Tuning_Mod_v3.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 167,
+    "id": 200,
     "title": "Kawasaki Ninja H2R 2019",
     "post": "https://www.mixmods.com.br/2019/06/kawasaki-ninja-h2r-2019/",
     "downloads": [
       "https://sharemods.com/82ph468pxbvm/Kawasaki_Ninja_H2R_2019.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 168,
+    "id": 201,
     "title": "Panic Face (expressão facial nos pedestres)",
     "post": "https://www.mixmods.com.br/2019/05/panic-face-expressao-facial-nos-pedestres/",
     "downloads": [
       "https://sharemods.com/kah8arfbnvx0/Panic_Face.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 169,
+    "id": 202,
     "title": "Revive Friend (reanimar parceiro)",
     "post": "https://www.mixmods.com.br/2019/05/revive-friend-reanimar-parceiro/",
     "downloads": [
       "https://sharemods.com/8zyh3jyrt3hs/Revive_Friend_-_Junior_Djjr.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 170,
+    "id": 203,
     "title": "Sly’s Veh Textures Unofficial Build v1 (vehicle.txd HD)",
     "post": "https://www.mixmods.com.br/2019/04/slys-veh-textures-unofficial-build-v1-vehicle-txd-hd/",
     "downloads": [
       "https://sharemods.com/2sny0oq1g1m6/Sly_Veh_Textures_Unofficial_Build.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 171,
+    "id": 204,
     "title": "Change Gear Anim v3.2 (animação de mudar marcha)",
     "post": "https://www.mixmods.com.br/2019/04/change-gear-anim-mudar-marcha/",
     "downloads": [
       "https://sharemods.com/cuews8z5k6ew/Change_Gear_Anim.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 172,
+    "id": 205,
+    "title": "Mod Airsoft + Glock 18C",
+    "post": "https://www.mixmods.com.br/2019/04/mod-airsoft-glock-18c/",
+    "downloads": [
+      "https://sharemods.com/nt2bhj7tspt9/Airsoft_Glock_18C.7z.html",
+      "https://sharemods.com/3v5gw8ojitsi/Glock_18C.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 206,
     "title": "Gangs Relationships",
     "post": "https://www.mixmods.com.br/2019/03/gangs-relationships/",
     "downloads": [
       "https://sharemods.com/sjhzmtv05o0t/Gangs_relationships.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 173,
+    "id": 207,
     "title": "BeSlim (opções para o CJ musculoso e gordo)",
     "post": "https://www.mixmods.com.br/2019/03/beslim-opcoes-para-o-cj-musculoso-e-gordo/",
     "downloads": [
       "https://sharemods.com/zzblq4idkq1p/BeSlim.7z.html",
       "https://drive.google.com/file/d/1otcc6HbXeJJAW6ZuNorNAmr7VBZxmk4c/view?usp=sharing"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 174,
+    "id": 208,
     "title": "Land Mines (minas terrestres)",
     "post": "https://www.mixmods.com.br/2019/02/land-mines-minas-terrestres/",
     "downloads": [
       "https://sharemods.com/cp2ftd9u0re3/Land_Mines.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 175,
+    "id": 209,
+    "title": "[Tutorial] Adicionar armas sem substituir",
+    "post": "https://www.mixmods.com.br/2019/02/tutorial-adicionar-armas-sem-substituir/",
+    "downloads": [],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 210,
     "title": "Car Kick (chutar motorista pela janela do carro)",
     "post": "https://www.mixmods.com.br/2019/02/car-kick-chutar-motorista-pela-janela-do-carro/",
     "downloads": [
       "https://sharemods.com/hiy3o47xxd7w/Car_Kick.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 176,
+    "id": 211,
     "title": "Kawasaki Z1000 A1 1977",
     "post": "https://www.mixmods.com.br/2019/01/kawasaki-z1000-a1-1977/",
     "downloads": [
       "https://sharemods.com/9fu5fbdw3e5h/Kawasaki_Z1000_A1_1977.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 177,
+    "id": 212,
     "title": "Plymouth Belvedere Station Wagon 1965 by Avant",
     "post": "https://www.mixmods.com.br/2019/01/plymouth-belvedere-station-wagon-1965-by-avant/",
     "downloads": [
       "https://sharemods.com/vj9mky5k373a/Plymouth_Belvedere_Station_Wagon_1965_by_Avant.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 178,
+    "id": 213,
     "title": "Anim Play v2.0 (tocar animações)",
     "post": "https://www.mixmods.com.br/2019/01/anim-play-v2-0-tocar-animacoes/",
     "downloads": [
       "https://sharemods.com/1pshm7jmw1tf/Anim_Play.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 179,
+    "id": 214,
     "title": "Surrender Mod (se render / se entregar)",
     "post": "https://www.mixmods.com.br/2019/01/surrender-mod-se-render-se-entregar/",
     "downloads": [
       "https://sharemods.com/8dy2ncqtysbg/Surrender.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 180,
+    "id": 215,
     "title": "Original Weapons Fix 2.0 + Retex (corrigir posição das armas)",
     "post": "https://www.mixmods.com.br/2018/12/original-weapons-fix-retex/",
     "downloads": [
       "https://sharemods.com/b8q8e55loi0q/Original_Weapons_Fix___Retex.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 181,
+    "id": 216,
+    "title": "VW Gol G2 1.0 Plus (bola) by Dean 3D",
+    "post": "https://www.mixmods.com.br/2018/11/vw-gol-g2-1-0-plus-bola-by-dean-3d/",
+    "downloads": [
+      "https://sharemods.com/vf80kq9lsrhq/VW_Gol_G2_1.0_Plus___40_bola__41__by_Den_3D.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 217,
     "title": "Correr com armas pesadas (correr com rifle)",
     "post": "https://www.mixmods.com.br/2018/10/correr-com-armas-pesadas-correr-com-rifle/",
     "downloads": [
       "https://sharemods.com/zxvhj5rtn1jr/Sprinting_With_Two_Handed_Weapons.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 182,
+    "id": 218,
     "title": "Handbrake Mod [sound + anim] (freio de mão com som e anim)",
     "post": "https://www.mixmods.com.br/2018/09/handbrake-mod-sound-anim-freio-de-mao-com-som-e-anim/",
     "downloads": [
       "https://sharemods.com/ry8wc7z7bnaf/Handbrake_Mod.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 183,
+    "id": 219,
     "title": "Espingarda boito caipira (country bolt rifle) (lowpoly)",
     "post": "https://www.mixmods.com.br/2018/09/espingarda-boito-caipira-country-bolt-rifle-lowpoly/",
     "downloads": [
       "https://sharemods.com/agzcmqzekvof/Espingarda_boito.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 184,
+    "id": 220,
+    "title": "Pack de Armas do Combat Arms",
+    "post": "https://www.mixmods.com.br/2018/08/pack-de-armas-do-combat-arms/",
+    "downloads": [
+      "https://drive.google.com/file/d/1VgA-z5reCSf0NQDIMuP_pinkftjWKj1w/view?usp=sharing"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 221,
     "title": "1964 Chevrolet Impala SS Lowrider v2.1",
     "post": "https://www.mixmods.com.br/2018/07/1964-chevrolet-impala-ss-lowrider-v2-1/",
     "downloads": [
       "http://sharemods.com/cohrl1eh7rnn/1964_Chevrolet_Impala_SS.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 185,
+    "id": 222,
     "title": "Beta Cars Pack (carros da versão beta)",
     "post": "https://www.mixmods.com.br/2018/07/beta-cars-pack-carros-da-versao-beta/",
     "downloads": [
       "http://sharemods.com/2lo0mhpepqff/Beta_Cars_Pack.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 186,
+    "id": 223,
+    "title": "Rainbow Weapons (armas coloridas animadas)",
+    "post": "https://www.mixmods.com.br/2018/07/rainbow-weapons-armas-coloridas-animadas/",
+    "downloads": [
+      "http://sharemods.com/vm0zc1olju4k/Rainbow_Weapons.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 224,
     "title": "LQ Wheels (rodas tuning lowpoly / SA Style)",
     "post": "https://www.mixmods.com.br/2018/07/lq-wheels-rodas-tuning-lowpoly-sa-style/",
     "downloads": [
       "http://sharemods.com/kuyzylh9du4i/LQ_Wheels__rodas_tuning_lowpoly_SA_Style_.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 187,
+    "id": 225,
     "title": "Honda CRX by AllCash (tunable – tunável)",
     "post": "https://www.mixmods.com.br/2018/07/honda-crx-by-allcash-tunable-tunavel/",
     "downloads": [
       "https://sharemods.com/gi2txs6hwidv/Honda_CRX_by_AllCash.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 188,
+    "id": 226,
     "title": "Big Gangster Mod v5",
     "post": "https://www.mixmods.com.br/2018/06/big-gangster-mod-v5/",
     "downloads": [
       "http://sharemods.com/00izlnuf1r76/Big_Gangster.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 189,
+    "id": 227,
     "title": "Se jogar para esquivar de carros",
     "post": "https://www.mixmods.com.br/2018/06/se-jogar-para-esquivar-de-carros/",
     "downloads": [
       "http://sharemods.com/48eldouiaq1e/Se_jogar_para_esquivar_de_carros.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 190,
+    "id": 228,
+    "title": "Pack de armas e sons do Fortnite",
+    "post": "https://www.mixmods.com.br/2018/06/pack-de-armas-e-sons-do-fortnite/",
+    "downloads": [
+      "http://sharemods.com/4q0zw5rsc74h/Fortnite_Pack.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 229,
     "title": "Animações de Kung Fu melhoradas",
     "post": "https://www.mixmods.com.br/2018/06/animacoes-de-kung-fu-melhoradas/",
     "downloads": [
       "http://sharemods.com/zsw83kwdd2ag/Anima____es_de_Kung_Fu_melhoradas.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 191,
+    "id": 230,
     "title": "SASD Carpack by MCHammer (pack polícia SA Style)",
     "post": "https://www.mixmods.com.br/2018/05/sasd-carpack-by-mchammer-pack-policia-sa-style/",
     "downloads": [
       "http://sharemods.com/vgxjuwx0joou/SASD_Carpack_by_MCHammer.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 192,
+    "id": 231,
     "title": "EnhFuncs – Desert Eagle Mark XIX",
     "post": "https://www.mixmods.com.br/2018/05/enhfuncs-desert-eagle-mark-xix/",
     "downloads": [
       "http://sharemods.com/cchq803ez667/Desert_Eagle_Mark_XIX.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 193,
+    "id": 232,
+    "title": "Mount Akina + Toyota AE86 Trueno",
+    "post": "https://www.mixmods.com.br/2018/05/mount-akina-toyota-ae86-trueno/",
+    "downloads": [
+      "http://sharemods.com/d1ougyt80b8r/Mount_Akina___Toyota_AE86.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 233,
     "title": "CJ reclama com carros",
     "post": "https://www.mixmods.com.br/2018/04/cj-reclama-com-carros/",
     "downloads": [
       "http://sharemods.com/bi6t0xqvr5jj/CJ_reclama_com_carros_2.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 194,
+    "id": 234,
+    "title": "London Cabbie",
+    "post": "https://www.mixmods.com.br/2018/04/london-cabbie/",
+    "downloads": [
+      "http://sharemods.com/lzxs1w77ffh6/London_Cabbie.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 235,
+    "title": "Ganados v2.0 (Mod Resident Evil 4)",
+    "post": "https://www.mixmods.com.br/2018/04/ganados-v2-0-mod-resident-evil-4/",
+    "downloads": [
+      "http://sharemods.com/bgd4a3kbdjfw/Ganados__Mod_Resident_Evil_4_.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 236,
     "title": "GTA V Online Original Anims to SA (animações do GTA Online)",
     "post": "https://www.mixmods.com.br/2018/03/gta-v-online-original-anims-to-sa-animacoes-do-gta-online/",
     "downloads": [
       "http://sharemods.com/2yhtn7ed2utl/GTA_Online_Anims.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 195,
+    "id": 237,
     "title": "Parkour Mod v2.0.4 Unofficial Fix",
     "post": "https://www.mixmods.com.br/2018/03/parkour-mod-v2-0-4-unofficial-fix/",
     "downloads": [
       "http://sharemods.com/y7ny6i33w58q/Parkour_Mod.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 196,
+    "id": 238,
+    "title": "Trator Valtra 685 + carreta (SA Style)",
+    "post": "https://www.mixmods.com.br/2018/03/trator-valtra-685-carreta-sa-style/",
+    "downloads": [
+      "http://sharemods.com/wpmcvchn1nly/Trator_Valtra_685___carreta__SA_Style_.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 239,
     "title": "Infernus HD by Ezekiel",
     "post": "https://www.mixmods.com.br/2018/03/infernus-hd-by-ezekiel/",
     "downloads": [
       "http://sharemods.com/1osrp4cxex04/Infernus_HD_by_Ezekiel.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 197,
+    "id": 240,
+    "title": "Pack de armas do Battlegrounds",
+    "post": "https://www.mixmods.com.br/2018/02/pack-de-armas-do-battlegrounds/",
+    "downloads": [],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 241,
     "title": "Shotgun Reload (espingarda recarregando)",
     "post": "https://www.mixmods.com.br/2018/02/shotgun-reload-espingarda-recarregando/",
     "downloads": [
       "http://sharemods.com/81id5unk7jky/Shotgun_Reload.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 198,
+    "id": 242,
     "title": "Bar Drink (mod beber no bar / ficar bêbado)",
     "post": "https://www.mixmods.com.br/2018/01/bar-drink-mod-beber-no-bar-ficar-bebado/",
     "downloads": [
       "https://drive.google.com/file/d/1wnWITLTGQAuqLgB14bTWSjSk_CYxR0S2/view"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 199,
+    "id": 243,
     "title": "Animações do GTA VCS/LCS",
     "post": "https://www.mixmods.com.br/2017/12/animacoes-do-gta-vcs-lcs/",
     "downloads": [
       "https://drive.google.com/open?id=1asrLFdaJ702-Cy-Kqw0m6zTfEPK3Iho0"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 200,
+    "id": 244,
     "title": "Arremessar facas ou katanas",
     "post": "https://www.mixmods.com.br/2017/12/arremessar-facas-ou-katanas/",
     "downloads": [
       "https://drive.google.com/open?id=1Da9MWJ3qROTT62rnRwHM9AD1V7vwHEO9"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 201,
+    "id": 245,
     "title": "Arma IMBEL IA2 (brasileira) (lowpoly)",
     "post": "https://www.mixmods.com.br/2017/12/arma-imbel-ia2-brasileira-lowpoly/",
     "downloads": [
       "https://drive.google.com/file/d/1Gjx78UjDyXcKxQz37vdK17C9WGwfz5ap/view"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 202,
+    "id": 246,
     "title": "M4k3’s New Car Animations – Novas animações ao dirigir",
     "post": "https://www.mixmods.com.br/2017/11/m4k3s-new-car-animations-novas-animacoes-ao-dirigir/",
     "downloads": [
       "https://drive.google.com/open?id=1fWs2vr_sJv7djPRxDX3CI_4XsA6BDWsO"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 203,
+    "id": 247,
+    "title": "Max Payne Mod",
+    "post": "https://www.mixmods.com.br/2017/11/max-payne-mod/",
+    "downloads": [
+      "https://drive.google.com/open?id=1zgWe0bejROV0cdFQDR6zTr0-E7zK2bKD"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 248,
+    "title": "Amazing Player: Female v2.0 (skin feminina)",
+    "post": "https://www.mixmods.com.br/2017/10/amazing-player-female-v2-0-skin-feminina/",
+    "downloads": [
+      "https://drive.google.com/file/d/0B1sAJQAUfOOYNjhwLXFQTWFneG8/view"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 249,
+    "title": "Pack de Skins da AK-47 do CS:GO",
+    "post": "https://www.mixmods.com.br/2017/10/pack-de-skins-da-ak-47-do-csgo/",
+    "downloads": [],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 250,
     "title": "Pose Mod (beta)",
     "post": "https://www.mixmods.com.br/2017/10/pose-mod-beta/",
     "downloads": [
       "https://sharemods.com/zr8805cvzg0y/Pose_Mod.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 204,
+    "id": 251,
     "title": "Explosivo TNT (relógio com detonador)",
     "post": "https://www.mixmods.com.br/2017/10/explosivo-tnt-relogio-com-detonador/",
     "downloads": [
       "https://drive.google.com/open?id=0B04D_5yMCyl9bC16eTc2SnBHTmc",
       "https://drive.google.com/open?id=0B04D_5yMCyl9YlFVTWZLaVkySDg"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 205,
+    "id": 252,
     "title": "AK74 do Contract Wars",
     "post": "https://www.mixmods.com.br/2017/08/ak74-do-contract-wars/",
     "downloads": [],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 206,
+    "id": 253,
     "title": "Microphone Talk (mexer a boca ao falar no microfone)",
     "post": "https://www.mixmods.com.br/2017/08/microphone-talk-mexer-a-boca-ao-falar-no-microfone/",
     "downloads": [
       "https://drive.google.com/file/d/0B1sAJQAUfOOYdXNwNk9sSU1NUW8/view"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 207,
+    "id": 254,
     "title": "Parachute Randomizer (variar para-quedas)",
     "post": "https://www.mixmods.com.br/2017/07/parachute-randomizer-variar-para-quedas/",
     "downloads": [
       "https://drive.google.com/file/d/0B1sAJQAUfOOYYXFiS0pkX2dCVjg/view"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 208,
+    "id": 255,
     "title": "Hit the Entity Fix (Bater na parede)",
     "post": "https://www.mixmods.com.br/2017/07/hit-the-entity-fix-bater-na-parede/",
     "downloads": [],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 209,
+    "id": 256,
     "title": "Extended Gang Wars",
     "post": "https://www.mixmods.com.br/2017/07/extended-gang-wars/",
     "downloads": [
       "https://sharemods.com/azzbo9poul6r/Extended_Gang_Wars.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 210,
+    "id": 257,
     "title": "Visual Weapon Spawner",
     "post": "https://www.mixmods.com.br/2017/06/visual-weapon-spawner/",
     "downloads": [
       "https://sharemods.com/0cw2e8gpne29/Visual_Weapon_Spawner.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 211,
+    "id": 258,
     "title": "Ladders – Subir e descer escadas",
     "post": "https://www.mixmods.com.br/2017/03/ladders-subir-e-descer-escadas/",
     "downloads": [
       "http://sharemods.com/3hbsuxa6sgrf/Ladders_-_Subir_escadas.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 212,
+    "id": 259,
     "title": "Colocar/tirar silenciador da 9mm",
     "post": "https://www.mixmods.com.br/2017/03/colocar-tirar-silenciador-da-9mm/",
     "downloads": [
       "https://drive.google.com/open?id=0B04D_5yMCyl9RjIzbmVSOGU0bFk"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 213,
+    "id": 260,
     "title": "No Dual Wield + Segurar pistola com duas mãos",
     "post": "https://www.mixmods.com.br/2017/03/no-dual-wield-segurar-pistola-com-duas-maos/",
     "downloads": [
       "https://sharemods.com/bbvvho2ynd42/No_Dual_Wield___Segurar_pistola_com_duas_maos.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 214,
+    "id": 261,
+    "title": "Bloodz & CripZ (Remake)",
+    "post": "https://www.mixmods.com.br/2016/06/bloodz-cripz-remake/",
+    "downloads": [
+      "https://sharemods.com/jn47en03jynn/Bloodz_and_CripZ_Remake.7z.html"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 262,
     "title": "Grafites originais em HD",
     "post": "https://www.mixmods.com.br/2015/01/grafites-originais-em-hd/",
     "downloads": [],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 215,
+    "id": 263,
+    "title": "Pack Skins Da Nang Boyz HD",
+    "post": "https://www.mixmods.com.br/2012/09/pack-skins-da-nang-boyz-hd/",
+    "downloads": [
+      "https://drive.google.com/file/d/0B1sAJQAUfOOYRFZLUVVmc3Rhd2M/view"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 264,
+    "title": "Pack de Skins Vagos HD",
+    "post": "https://www.mixmods.com.br/2012/08/pack-de-skins-vagos-hd/",
+    "downloads": [],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 265,
+    "title": "Pack de skins Grove em HD (by AnRi)",
+    "post": "https://www.mixmods.com.br/2012/08/pack-de-skins-grove-em-hd-by-anri/",
+    "downloads": [
+      "https://drive.google.com/file/d/0B1sAJQAUfOOYTnJOeHBCM3I5WGc/view"
+    ],
+    "author": "MixMods",
+    "size": "N/D",
+    "description": ""
+  },
+  {
+    "id": 266,
     "title": "The Gang War",
     "post": "https://www.mixmods.com.br/2012/05/the-gang-war/",
     "downloads": [
       "https://sharemods.com/35z1qznzsx1w/The_Gang_War.7z.html"
     ],
-    "author": "",
-    "size": "",
+    "author": "MixMods",
+    "size": "N/D",
     "description": ""
   },
   {
-    "id": 216,
-    "title": "Advanced Aiming Mod v1.4",
-    "post": "https://www.mixmods.com.br/2022/06/advanced-aiming-mod/",
+    "id": 267,
+    "title": "Novas Skins para Grove em HD",
+    "post": "https://www.mixmods.com.br/2012/03/novas-skins-para-grove-em-hd/",
     "downloads": [
-      "https://sharemods.com/ekfp0ll7momd/Advanced_Aiming_Mod.7z.html",
-      "https://sharemods.com/7d4rw1ry9p68/SA_Mobile_-__Advanced_Aiming.7z.html"
+      "https://sharemods.com/i7fb2i43f55z/Novas_Skins_para_Grove_em_HD.7z.html"
     ],
-    "author": "MixMods Curated",
+    "author": "MixMods",
     "size": "N/D",
-    "description": "Mod essencial da análise inicial: Advanced Aiming Mod v1.4"
+    "description": ""
   },
   {
-    "id": 217,
-    "title": "Manual Driveby Remake (Fixed)",
-    "post": "https://www.mixmods.com.br/2021/10/manual-driveby-remake-fixed-mirar-de-dentro-do-carro/",
+    "id": 268,
+    "title": "Novos Ballas em HD",
+    "post": "https://www.mixmods.com.br/2012/01/novos-ballas-em-hd/",
     "downloads": [
-      "https://sharemods.com/svuvzea8cpa7/Manual_Driveby_Remake.7z.html"
+      "https://drive.google.com/file/d/0B1sAJQAUfOOYLXRLSFZxclFUMW8/view?usp=sharing"
     ],
-    "author": "MixMods Curated",
+    "author": "MixMods",
     "size": "N/D",
-    "description": "Mod essencial da análise inicial: Manual Driveby Remake (Fixed)"
+    "description": ""
   },
   {
-    "id": 218,
-    "title": "Extintor Apaga Fogo do Carro",
-    "post": "https://www.mixmods.com.br/2016/03/extintor-apaga-fogo-do-carro.html",
-    "downloads": [
-      "https://drive.google.com/open?id=0B04D_5yMCyl9N3h6emNOZHJRLW8"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Extintor Apaga Fogo do Carro"
-  },
-  {
-    "id": 219,
-    "title": "Sniper Distance Fix",
-    "post": "https://www.mixmods.com.br/2018/09/sniper-distance-fix-aumentar-alcance-da-sniper/",
-    "downloads": [
-      "https://sharemods.com/ykr4p8mtjmom/Sniper_Distance_Fix.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Sniper Distance Fix"
-  },
-  {
-    "id": 220,
-    "title": "Vigilante Special",
-    "post": "https://www.mixmods.com.br/2021/04/vigilante-special-missao-de-policia-em-qualquer-carro/",
+    "id": 269,
+    "title": "Nova Grove v2",
+    "post": "https://www.mixmods.com.br/2011/10/nova-grove-v2/",
     "downloads": [],
-    "author": "MixMods Curated",
+    "author": "MixMods",
     "size": "N/D",
-    "description": "Mod essencial da análise inicial: Vigilante Special"
+    "description": ""
   },
   {
-    "id": 221,
-    "title": "Weapons OutFit",
-    "post": "https://www.mixmods.com.br/2021/08/weapons-outfit-armas-pelo-corpo/",
+    "id": 270,
+    "title": "NOVA GROOVE V1",
+    "post": "https://www.mixmods.com.br/2011/05/nova-groove-v1/",
     "downloads": [],
-    "author": "MixMods Curated",
+    "author": "MixMods",
     "size": "N/D",
-    "description": "Mod essencial da análise inicial: Weapons OutFit"
-  },
-  {
-    "id": 222,
-    "title": "Proper Vehicles Retex",
-    "post": "https://www.mixmods.com.br/2022/02/sa-sade-proper-vehicles-retex/",
-    "downloads": [
-      "https://sharemods.com/2uesa2zbze2m/Proper_Vehicles_Retex_v2.1_512_VERSION.7z.html",
-      "https://sharemods.com/28ypvnxc3daa/Proper_Vehicles_Retex_v2.1_1024x_VERSION.7z.html",
-      "https://sharemods.com/xd5lex6v5pme/Proper_Vehicles_Retex_v2.1_2K_VERSION.7z.html",
-      "https://sharemods.com/3ullpauu22ab/SADE_-_Proper_Vehicles_Retex-V2.1.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Proper Vehicles Retex"
-  },
-  {
-    "id": 223,
-    "title": "Round Tuning Wheels CE",
-    "post": "https://www.mixmods.com.br/2022/01/sa-round-tuning-wheels-ce-rodas-mais-redondas/",
-    "downloads": [
-      "https://sharemods.com/rupfn9c41t3t/Round_Tuning_Wheels_CE.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Round Tuning Wheels CE"
-  },
-  {
-    "id": 224,
-    "title": "Thunder Mod",
-    "post": "https://www.mixmods.com.br/2022/07/thunder-mod-cleo/",
-    "downloads": [
-      "https://sharemods.com/bw24kx8xr9xa/Thunder_Mod.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Thunder Mod"
-  },
-  {
-    "id": 225,
-    "title": "Rain Drops on Screen",
-    "post": "https://www.mixmods.com.br/2017/07/rain-drops-on-screen-pingos-de-chuva-na-tela/",
-    "downloads": [
-      "https://drive.google.com/file/d/0B04D_5yMCyl9ZTZSY25DVEVkaGs/view"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Rain Drops on Screen"
-  },
-  {
-    "id": 226,
-    "title": "Hard Rain Remake",
-    "post": "https://www.mixmods.com.br/2019/07/hard-rain-remake-pedestres-com-guarda-chuva/",
-    "downloads": [
-      "https://sharemods.com/x5ncmg17msvb/Hard_Rain_Remake.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Hard Rain Remake"
-  },
-  {
-    "id": 227,
-    "title": "Project2DFX v4.4",
-    "post": "https://www.mixmods.com.br/2020/02/sa-project2dfx/",
-    "downloads": [
-      "https://sharemods.com/oh41bi0ir69k/SA_-_Project2dfx.zip.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Project2DFX v4.4"
-  },
-  {
-    "id": 228,
-    "title": "Improved Night Windows",
-    "post": "https://www.mixmods.com.br/2022/09/sa-improved-night-windows-by-hysen-mais-janelas-noturnas/",
-    "downloads": [
-      "https://sharemods.com/z4br8dabaeum/SA_-_Improved_Night_Windows.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Improved Night Windows"
-  },
-  {
-    "id": 229,
-    "title": "Project Immerse-Yourself",
-    "post": "https://www.mixmods.com.br/2022/01/project-immerse-yourself-prelight-melhorado/",
-    "downloads": [
-      "https://sharemods.com/b3k2k0v5e4pm/Project_Immerse-Yourself.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Project Immerse-Yourself"
-  },
-  {
-    "id": 230,
-    "title": "SaveLoader v2.7",
-    "post": "https://www.mixmods.com.br/2020/01/iii-vc-sa-saveloader-v2-7-fast-loader-carregamento-rapido/",
-    "downloads": [
-      "https://sharemods.com/82fetghs6l0z/III_VC_SA_-_SaveLoader.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: SaveLoader v2.7"
-  },
-  {
-    "id": 231,
-    "title": "Burglary With Any Car v2.0",
-    "post": "https://www.mixmods.com.br/2022/01/sa-sade-burglary-with-any-car-roubar-casa-com-qualquer-carro/",
-    "downloads": [
-      "https://sharemods.com/r880ibdugvnx/SA_SADE_-_Burglary_With_Any_Car.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Burglary With Any Car v2.0"
-  },
-  {
-    "id": 232,
-    "title": "Trunk Store Weapons",
-    "post": "https://www.mixmods.com.br/2021/04/trunk-store-weapons-guardar-armas-no-porta-malas/",
-    "downloads": [
-      "https://sharemods.com/udjhqbqcf6co/Trunk_Store_Weapons.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Trunk Store Weapons"
-  },
-  {
-    "id": 233,
-    "title": "Weapon Inventory",
-    "post": "https://www.mixmods.com.br/2015/04/weapon-inventory-inventario-de-armas.html",
-    "downloads": [
-      "https://drive.google.com/file/d/0B1sAJQAUfOOYUkJGMU9weEVnRDg/view"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Weapon Inventory"
-  },
-  {
-    "id": 234,
-    "title": "Enterable Hidden Interiors (EHI)",
-    "post": "https://www.mixmods.com.br/2021/01/enterable-hidden-interiors-entrar-em-interiores-escondidos/",
-    "downloads": [
-      "https://sharemods.com/iuerx95tkkup/Enterable_Hidden_Interiors.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Enterable Hidden Interiors (EHI)"
-  },
-  {
-    "id": 235,
-    "title": "Autosave Mod",
-    "post": "https://www.mixmods.com.br/2019/08/tela-de-salvamento-ao-terminar-missoes-v2-0-1/",
-    "downloads": [
-      "https://sharemods.com/u7gptzz36fct/Save_screen_after_mission.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Autosave Mod"
-  },
-  {
-    "id": 236,
-    "title": "Use All Ladders (Subir em Escadas)",
-    "post": "https://www.mixmods.com.br/2020/05/use-all-ladders-subir-em-escadas/",
-    "downloads": [],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Use All Ladders (Subir em Escadas)"
-  },
-  {
-    "id": 237,
-    "title": "HeliFix v1.4",
-    "post": "https://www.mixmods.com.br/2021/10/helifix-piloto-nos-helicopteros/",
-    "downloads": [
-      "https://sharemods.com/mjxz5fvpmt4p/HeliFix.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: HeliFix v1.4"
-  },
-  {
-    "id": 238,
-    "title": "Recomeçar Missão",
-    "post": "https://www.mixmods.com.br/2016/08/recomecar-missao/",
-    "downloads": [
-      "https://drive.google.com/open?id=0B04D_5yMCyl9RWNHdUdTQVZ0T2M"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Recomeçar Missão"
-  },
-  {
-    "id": 239,
-    "title": "Collectibles on Radar v1.1",
-    "post": "https://www.mixmods.com.br/2022/03/collectibles-on-radar-mostrar-coletaveis-no-mapa/",
-    "downloads": [
-      "https://sharemods.com/eo6bbf9psmeq/Collectibles_on_Radar.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Collectibles on Radar v1.1"
-  },
-  {
-    "id": 240,
-    "title": "Dynamic Shadow Color (Sombras com Cores Atmosféricas)",
-    "post": "https://www.mixmods.com.br/2019/04/dynamic-shadow-color-sombras-com-cor-realista/",
-    "downloads": [
-      "https://sharemods.com/duxyrps05sns/Dynamic_Shadow_Color.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Dynamic Shadow Color (Sombras com Cores Atmosféricas)"
-  },
-  {
-    "id": 241,
-    "title": "High Poly Desert",
-    "post": "https://www.mixmods.com.br/2021/05/mesh-smoothed-pack-objetos-mais-redondos/",
-    "downloads": [
-      "https://sharemods.com/j81zikfmhj4t/Mesh_Smoothed_Pack.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: High Poly Desert"
-  },
-  {
-    "id": 242,
-    "title": "Improved Lamps v0.8",
-    "post": "https://www.mixmods.com.br/2021/09/improved-lamps-v0-8-postes-remasterizados-em-hd/",
-    "downloads": [
-      "https://sharemods.com/iwbbggdxsnhy/Improved_Lamps.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Improved Lamps v0.8"
-  },
-  {
-    "id": 243,
-    "title": "More Radar Icons v2.0",
-    "post": "https://www.mixmods.com.br/2022/01/more-radar-icons/",
-    "downloads": [
-      "https://sharemods.com/rb96prexlrg9/More_Radar_Icons.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: More Radar Icons v2.0"
-  },
-  {
-    "id": 244,
-    "title": "Improved Surface Physics (Superfícies com Física Aprimorada)",
-    "post": "https://www.mixmods.com.br/2021/11/improved-surface-physics-superficies-com-fisica-melhorada/",
-    "downloads": [
-      "https://sharemods.com/e134w29j6xze/Improved_Surface_Physics.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Improved Surface Physics (Superfícies com Física Aprimorada)"
-  },
-  {
-    "id": 245,
-    "title": "Wheel Detach (Soltar e Arrancar Rodas em Colisões)",
-    "post": "https://www.mixmods.com.br/2020/07/wheel-detach-soltar-ou-estourar-roda/",
-    "downloads": [
-      "https://sharemods.com/e61gwxaw6zz8/Wheel_Detach.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Wheel Detach (Soltar e Arrancar Rodas em Colisões)"
-  },
-  {
-    "id": 246,
-    "title": "Smooth Criminal Bicycles",
-    "post": "https://www.mixmods.com.br/2019/06/smooth-criminal-bicycles-bicicletas-mais-arredondadas/",
-    "downloads": [
-      "https://sharemods.com/pl8akn9yotvd/Smooth_Criminal_Bicycles.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Smooth Criminal Bicycles"
-  },
-  {
-    "id": 247,
-    "title": "CustomCrosshairs v2.0",
-    "post": "https://www.mixmods.com.br/2022/04/customcrosshairs-personalizar-miras/",
-    "downloads": [
-      "https://sharemods.com/13giliprj62v/Custom_Crosshairs.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: CustomCrosshairs v2.0"
-  },
-  {
-    "id": 248,
-    "title": "Crosshairs Pack (300+ Miras & 46 Discos de Radar)",
-    "post": "https://www.mixmods.com.br/2018/08/crosshairs-mais-de-300-miras-e-46-discos-de-radar-pack-colecao/",
-    "downloads": [
-      "https://sharemods.com/bpkboyrbseb9/Miras_e_discos_de_radar_pack.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Crosshairs Pack (300+ Miras & 46 Discos de Radar)"
-  },
-  {
-    "id": 249,
-    "title": "Hit Indicator (Damage Indicator / Hitmarker Tático)",
-    "post": "https://www.mixmods.com.br/2016/09/iii-vc-hit-indicator-mudar-mira-ao-acertar/",
-    "downloads": [
-      "https://drive.google.com/file/d/0B1sAJQAUfOOYUEEtVVd5b2p2clU/view?usp=sharing",
-      "https://drive.google.com/file/d/0B1sAJQAUfOOYNGNjR1pjaGtaT2s/view?usp=sharing"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Hit Indicator (Damage Indicator / Hitmarker Tático)"
-  },
-  {
-    "id": 250,
-    "title": "Hairstyles & Beards (Escolher Separadamente Cabelo e Barba)",
-    "post": "https://www.mixmods.com.br/2021/02/hairstyles-beards-escolher-penteado-e-barba/",
-    "downloads": [
-      "https://sharemods.com/drr20mtaslro/Hairstyles_and_Beards.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Hairstyles & Beards (Escolher Separadamente Cabelo e Barba)"
-  },
-  {
-    "id": 251,
-    "title": "Beard Grow Mod v1.2 (Crescimento de Barba estilo RDR2)",
-    "post": "https://www.mixmods.com.br/2019/09/beard-grow-mod-v1-2-crescer-barba/",
-    "downloads": [
-      "https://sharemods.com/pwpz3eq28frz/Beard_Grow.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Beard Grow Mod v1.2 (Crescimento de Barba estilo RDR2)"
-  },
-  {
-    "id": 252,
-    "title": "MenuUI v2.0 (Interface Moderna para Barbearias e Lojas)",
-    "post": "https://www.mixmods.com.br/2021/09/menuui-v1-5-menus-modernos/",
-    "downloads": [
-      "https://sharemods.com/wpq8ylslxbx3/MenuUI.zip.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: MenuUI v2.0 (Interface Moderna para Barbearias e Lojas)"
-  },
-  {
-    "id": 253,
-    "title": "HD Underwater v2.0 (Corais, Peixes e Vida Marinha)",
-    "post": "https://www.mixmods.com.br/2022/06/sa-hd-underwater/",
-    "downloads": [
-      "https://sharemods.com/vhm7q61koy0g/SA_-_HD_Underwater.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: HD Underwater v2.0 (Corais, Peixes e Vida Marinha)"
-  },
-  {
-    "id": 254,
-    "title": "GInput (Suporte Nativo a Controles Modernos Xbox / DualSense)",
-    "post": "https://www.mixmods.com.br/2020/06/ginput/",
-    "downloads": [],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: GInput (Suporte Nativo a Controles Modernos Xbox / DualSense)"
-  },
-  {
-    "id": 255,
-    "title": "More Locked Cars",
-    "post": "https://www.mixmods.com.br/2018/08/more-locked-cars-mais-carros-trancados-e-com-alarme/",
-    "downloads": [
-      "https://sharemods.com/lozj8d9wsxip/More_Locked_Cars.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: More Locked Cars"
-  },
-  {
-    "id": 256,
-    "title": "Alarm Touching Cars",
-    "post": "https://www.mixmods.com.br/2021/07/alarm-touching-cars-alarme-ao-tocar-carros/",
-    "downloads": [
-      "https://sharemods.com/0gemwch5bivn/Alarm_Touching_Cars.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Alarm Touching Cars"
-  },
-  {
-    "id": 257,
-    "title": "Swim FPS Fix",
-    "post": "https://www.mixmods.com.br/2019/04/swim-fps-fix-corrigir-nadar-com-fps-alto/",
-    "downloads": [],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Swim FPS Fix"
-  },
-  {
-    "id": 258,
-    "title": "Model Variations",
-    "post": "https://www.mixmods.com.br/2022/06/model-variations/",
-    "downloads": [],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Model Variations"
-  },
-  {
-    "id": 259,
-    "title": "Phoenix Mode",
-    "post": "https://www.mixmods.com.br/2018/03/phoenix-mode-voltar-onde-estava-quando-morrer/",
-    "downloads": [
-      "http://sharemods.com/f0n5080m9quu/Phoenix_Mode.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Phoenix Mode"
-  },
-  {
-    "id": 260,
-    "title": "24/7 Robbery",
-    "post": "https://www.mixmods.com.br/2019/08/24-7-robbery-roubar-lojas/",
-    "downloads": [
-      "https://sharemods.com/6m3go2b7lqbx/Robbery_Mod.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: 24/7 Robbery"
-  },
-  {
-    "id": 261,
-    "title": "Random Car Talk",
-    "post": "https://www.mixmods.com.br/2022/06/sa-random-car-talk/",
-    "downloads": [
-      "https://sharemods.com/ao53yl4oua80/SA_-_Random_Car_Talk.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Random Car Talk"
-  },
-  {
-    "id": 262,
-    "title": "Car Dealership (Concessionárias Funcionais)",
-    "post": "https://www.mixmods.com.br/2020/06/car-dealership-concessionaria-de-carros/",
-    "downloads": [
-      "https://sharemods.com/a2odu18dk7wn/Car_Dealership.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Car Dealership (Concessionárias Funcionais)"
-  },
-  {
-    "id": 263,
-    "title": "Camping Mobile Save House 2.0a (Acampamento Selvagem & Sobrevivência)",
-    "post": "https://www.mixmods.com.br/2015/11/camping-mobile-save-house-20a-trailer-attach.html",
-    "downloads": [],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Camping Mobile Save House 2.0a (Acampamento Selvagem & Sobrevivência)"
-  },
-  {
-    "id": 264,
-    "title": "Car Wash v2.2",
-    "post": "https://www.mixmods.com.br/2020/08/car-wash-v2-2-lava-rapido-funcional/",
-    "downloads": [
-      "https://sharemods.com/m4rshrky14dw/Car_Wash.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Car Wash v2.2"
-  },
-  {
-    "id": 265,
-    "title": "Breakable Vending Machines",
-    "post": "https://www.mixmods.com.br/2022/08/sa-breakeable-vending-machines/",
-    "downloads": [
-      "https://sharemods.com/lss6fpp1ujm5/Breakable_Vending_Machines.7z.html"
-    ],
-    "author": "MixMods Curated",
-    "size": "N/D",
-    "description": "Mod essencial da análise inicial: Breakable Vending Machines"
+    "description": ""
   }
 ]

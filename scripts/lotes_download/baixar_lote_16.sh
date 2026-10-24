@@ -2,21 +2,21 @@
 echo "=== ABRINDO LOTE PENDENTE 16 DE 17 NO BRAVE (Mods 226 a 240) ==="
 
 URLS=(
-    "https://sharemods.com/pl8akn9yotvd/Smooth_Criminal_Bicycles.7z.html" # [246] Smooth Criminal Bicycles
-    "https://sharemods.com/13giliprj62v/Custom_Crosshairs.7z.html" # [247] CustomCrosshairs v2.0
-    "https://sharemods.com/bpkboyrbseb9/Miras_e_discos_de_radar_pack.7z.html" # [248] Crosshairs Pack (300+ Miras & 46 Discos de Radar)
-    "https://drive.google.com/file/d/0B1sAJQAUfOOYUEEtVVd5b2p2clU/view?usp=sharing" # [249] Hit Indicator (Damage Indicator / Hitmarker Tático)
-    "https://sharemods.com/drr20mtaslro/Hairstyles_and_Beards.7z.html" # [250] Hairstyles & Beards (Escolher Separadamente Cabelo e Barba)
-    "https://sharemods.com/pwpz3eq28frz/Beard_Grow.7z.html" # [251] Beard Grow Mod v1.2 (Crescimento de Barba estilo RDR2)
-    "https://sharemods.com/wpq8ylslxbx3/MenuUI.zip.html" # [252] MenuUI v2.0 (Interface Moderna para Barbearias e Lojas)
-    "https://sharemods.com/vhm7q61koy0g/SA_-_HD_Underwater.7z.html" # [253] HD Underwater v2.0 (Corais, Peixes e Vida Marinha)
-    "https://sharemods.com/lozj8d9wsxip/More_Locked_Cars.7z.html" # [255] More Locked Cars
-    "https://sharemods.com/0gemwch5bivn/Alarm_Touching_Cars.7z.html" # [256] Alarm Touching Cars
-    "https://www.mixmods.com.br/2019/04/swim-fps-fix-corrigir-nadar-com-fps-alto/" # [257] Swim FPS Fix
-    "https://www.mixmods.com.br/2022/06/model-variations/" # [258] Model Variations
-    "http://sharemods.com/f0n5080m9quu/Phoenix_Mode.7z.html" # [259] Phoenix Mode
-    "https://sharemods.com/6m3go2b7lqbx/Robbery_Mod.7z.html" # [260] 24/7 Robbery
-    "https://sharemods.com/ao53yl4oua80/SA_-_Random_Car_Talk.7z.html" # [261] Random Car Talk
+    "https://drive.google.com/open?id=1Da9MWJ3qROTT62rnRwHM9AD1V7vwHEO9" # [244] Arremessar facas ou katanas
+    "https://drive.google.com/file/d/1Gjx78UjDyXcKxQz37vdK17C9WGwfz5ap/view" # [245] Arma IMBEL IA2 (brasileira) (lowpoly)
+    "https://drive.google.com/open?id=1fWs2vr_sJv7djPRxDX3CI_4XsA6BDWsO" # [246] M4k3’s New Car Animations – Novas animações ao dirigir
+    "https://drive.google.com/open?id=1zgWe0bejROV0cdFQDR6zTr0-E7zK2bKD" # [247] Max Payne Mod
+    "https://drive.google.com/file/d/0B1sAJQAUfOOYNjhwLXFQTWFneG8/view" # [248] Amazing Player: Female v2.0 (skin feminina)
+    "https://www.mixmods.com.br/2017/10/pack-de-skins-da-ak-47-do-csgo/" # [249] Pack de Skins da AK-47 do CS:GO
+    "https://sharemods.com/zr8805cvzg0y/Pose_Mod.7z.html" # [250] Pose Mod (beta)
+    "https://drive.google.com/open?id=0B04D_5yMCyl9bC16eTc2SnBHTmc" # [251] Explosivo TNT (relógio com detonador)
+    "https://www.mixmods.com.br/2017/08/ak74-do-contract-wars/" # [252] AK74 do Contract Wars
+    "https://drive.google.com/file/d/0B1sAJQAUfOOYdXNwNk9sSU1NUW8/view" # [253] Microphone Talk (mexer a boca ao falar no microfone)
+    "https://drive.google.com/file/d/0B1sAJQAUfOOYYXFiS0pkX2dCVjg/view" # [254] Parachute Randomizer (variar para-quedas)
+    "https://www.mixmods.com.br/2017/07/hit-the-entity-fix-bater-na-parede/" # [255] Hit the Entity Fix (Bater na parede)
+    "https://sharemods.com/azzbo9poul6r/Extended_Gang_Wars.7z.html" # [256] Extended Gang Wars
+    "https://sharemods.com/0cw2e8gpne29/Visual_Weapon_Spawner.7z.html" # [257] Visual Weapon Spawner
+    "http://sharemods.com/3hbsuxa6sgrf/Ladders_-_Subir_escadas.7z.html" # [258] Ladders – Subir e descer escadas
 )
 
 for u in "${URLS[@]}"; do

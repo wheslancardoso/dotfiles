@@ -2,21 +2,21 @@
 echo "=== ABRINDO LOTE PENDENTE 13 DE 17 NO BRAVE (Mods 181 a 195) ==="
 
 URLS=(
-    "https://drive.google.com/file/d/1wnWITLTGQAuqLgB14bTWSjSk_CYxR0S2/view" # [198] Bar Drink (mod beber no bar / ficar bêbado)
-    "https://drive.google.com/open?id=1asrLFdaJ702-Cy-Kqw0m6zTfEPK3Iho0" # [199] Animações do GTA VCS/LCS
-    "https://drive.google.com/open?id=1Da9MWJ3qROTT62rnRwHM9AD1V7vwHEO9" # [200] Arremessar facas ou katanas
-    "https://drive.google.com/file/d/1Gjx78UjDyXcKxQz37vdK17C9WGwfz5ap/view" # [201] Arma IMBEL IA2 (brasileira) (lowpoly)
-    "https://drive.google.com/open?id=1fWs2vr_sJv7djPRxDX3CI_4XsA6BDWsO" # [202] M4k3’s New Car Animations – Novas animações ao dirigir
-    "https://sharemods.com/zr8805cvzg0y/Pose_Mod.7z.html" # [203] Pose Mod (beta)
-    "https://drive.google.com/open?id=0B04D_5yMCyl9bC16eTc2SnBHTmc" # [204] Explosivo TNT (relógio com detonador)
-    "https://www.mixmods.com.br/2017/08/ak74-do-contract-wars/" # [205] AK74 do Contract Wars
-    "https://drive.google.com/file/d/0B1sAJQAUfOOYdXNwNk9sSU1NUW8/view" # [206] Microphone Talk (mexer a boca ao falar no microfone)
-    "https://drive.google.com/file/d/0B1sAJQAUfOOYYXFiS0pkX2dCVjg/view" # [207] Parachute Randomizer (variar para-quedas)
-    "https://www.mixmods.com.br/2017/07/hit-the-entity-fix-bater-na-parede/" # [208] Hit the Entity Fix (Bater na parede)
-    "https://sharemods.com/azzbo9poul6r/Extended_Gang_Wars.7z.html" # [209] Extended Gang Wars
-    "https://sharemods.com/0cw2e8gpne29/Visual_Weapon_Spawner.7z.html" # [210] Visual Weapon Spawner
-    "http://sharemods.com/3hbsuxa6sgrf/Ladders_-_Subir_escadas.7z.html" # [211] Ladders – Subir e descer escadas
-    "https://drive.google.com/open?id=0B04D_5yMCyl9RjIzbmVSOGU0bFk" # [212] Colocar/tirar silenciador da 9mm
+    "https://sharemods.com/dh3hh64cs3wg/Tuning_Mod_v3.7z.html" # [199] Tuning Mod v3.0.1
+    "https://sharemods.com/82ph468pxbvm/Kawasaki_Ninja_H2R_2019.7z.html" # [200] Kawasaki Ninja H2R 2019
+    "https://sharemods.com/kah8arfbnvx0/Panic_Face.7z.html" # [201] Panic Face (expressão facial nos pedestres)
+    "https://sharemods.com/8zyh3jyrt3hs/Revive_Friend_-_Junior_Djjr.7z.html" # [202] Revive Friend (reanimar parceiro)
+    "https://sharemods.com/2sny0oq1g1m6/Sly_Veh_Textures_Unofficial_Build.7z.html" # [203] Sly’s Veh Textures Unofficial Build v1 (vehicle.txd HD)
+    "https://sharemods.com/cuews8z5k6ew/Change_Gear_Anim.7z.html" # [204] Change Gear Anim v3.2 (animação de mudar marcha)
+    "https://sharemods.com/nt2bhj7tspt9/Airsoft_Glock_18C.7z.html" # [205] Mod Airsoft + Glock 18C
+    "https://sharemods.com/sjhzmtv05o0t/Gangs_relationships.7z.html" # [206] Gangs Relationships
+    "https://sharemods.com/zzblq4idkq1p/BeSlim.7z.html" # [207] BeSlim (opções para o CJ musculoso e gordo)
+    "https://sharemods.com/cp2ftd9u0re3/Land_Mines.7z.html" # [208] Land Mines (minas terrestres)
+    "https://www.mixmods.com.br/2019/02/tutorial-adicionar-armas-sem-substituir/" # [209] [Tutorial] Adicionar armas sem substituir
+    "https://sharemods.com/hiy3o47xxd7w/Car_Kick.7z.html" # [210] Car Kick (chutar motorista pela janela do carro)
+    "https://sharemods.com/9fu5fbdw3e5h/Kawasaki_Z1000_A1_1977.7z.html" # [211] Kawasaki Z1000 A1 1977
+    "https://sharemods.com/vj9mky5k373a/Plymouth_Belvedere_Station_Wagon_1965_by_Avant.7z.html" # [212] Plymouth Belvedere Station Wagon 1965 by Avant
+    "https://sharemods.com/1pshm7jmw1tf/Anim_Play.7z.html" # [213] Anim Play v2.0 (tocar animações)
 )
 
 for u in "${URLS[@]}"; do

@@ -2,21 +2,21 @@
 echo "=== ABRINDO LOTE PENDENTE 10 DE 17 NO BRAVE (Mods 136 a 150) ==="
 
 URLS=(
-    "https://sharemods.com/dv6ce6yan0dv/Dream_grass_.7z.html" # [153] Dream Grass (grama HD do GTA V)
-    "https://sharemods.com/b2djjhiwysxs/Grip_Animation.7z.html" # [154] Grip Animation (nova animação de segurar arma)
-    "https://sharemods.com/cgdkdrp91z28/Military_Animation.7z.html" # [155] Military Animation v9 (unofficial fix)
-    "https://sharemods.com/l5fspyxy6ckk/ImVehFt_202.7z.html" # [156] ImVehFt – Improved Vehicle Features
-    "https://sharemods.com/7isw724uzmf4/Rename_vehicles.7z.html" # [157] Rename vehicles (car names.fxt)
-    "https://sharemods.com/ytebfstop2as/NRG_500_Remastered_by_Ezekiel.7z.html" # [158] NRG-500 Remastered HD by Ezekiel
-    "https://sharemods.com/rqgayynoe9ly/Ford_Focus_ZX3-SVT_2000-2004_Low-High_Trim.7z.html" # [159] Ford Focus ZX3/SVT 2000-2004 by Avant
-    "https://sharemods.com/5xnjtf8aab38/Infernus_HD_Remastered_by_Ezekiel.7z.html" # [160] Infernus HD Remastered by Ezekiel
-    "https://sharemods.com/jwztx8xur9nc/AI_Upscaled_Weapon_Textures_and_Icons.7z.html" # [161] [SA] Improved Original Weapons (mod pack)
-    "https://sharemods.com/s39vzt0qts03/Taurus_M972.7z.html" # [162] Arma Taurus M972/MT12 (brasileira) (lowpoly)
-    "https://sharemods.com/p8e8cq5qdr4k/IndieVehicles.7z.html" # [163] IndieVehicles
-    "https://sharemods.com/3duli5cpn9bb/ImGui.7z.html" # [164] ImGui (interface gráfica para MoonLoader)
-    "https://sharemods.com/iey3goqj7yma/Low_Life_Animation.7z.html" # [165] Low Life Animation v1.2.2 (animação de saúde baixa)
-    "https://sharemods.com/dh3hh64cs3wg/Tuning_Mod_v3.7z.html" # [166] Tuning Mod v3.0.1
-    "https://sharemods.com/82ph468pxbvm/Kawasaki_Ninja_H2R_2019.7z.html" # [167] Kawasaki Ninja H2R 2019
+    "https://sharemods.com/shb6ml79ruhj/Stress_Test.7z.html" # [154] Stress Test (forçar jogo a crashar)
+    "https://sharemods.com/ejwih62ioxnz/Gang_Rider_Lua.7z.html" # [155] Gang Rider v2 (carregar mais gangue)
+    "https://sharemods.com/2zhd2ohur8hu/fastman92_processor.7z.html" # [156] fastman92 processor v1.9 + GUI
+    "https://drive.google.com/drive/folders/1gPYZm_H0i-h22r1TjSZCcKY8hiCEqI8t" # [157] GTA SA Comic Edition
+    "https://drive.google.com/file/d/1OjwyxUKqjRCYuv9y49dgHfV0EOnqiBTA/view?usp=sharing" # [158] Faithful Weapons Pack 2.0 (pack de armas fiéis)
+    "https://sharemods.com/t0qrb187b7qr/Banshee_Plus.7z.html" # [159] Banshee Plus+ (SA style)
+    "https://sharemods.com/jm60r1j8pr72/Euryopa.7z.html" # [160] Euryopa (visualizador de mapa para GTA)
+    "https://sharemods.com/ywqqzuky007z/Futo_Trueno_Levin.7z.html" # [161] Futo Trueno + Levin (AE86 SA style)
+    "https://sharemods.com/s8bmfqkshpzo/90s_Atmosphere_Weapons_Pack_Reborn.7z.html" # [162] 90s AWP – 90s Atmosphere Weapons Pack Reborn 4.0
+    "https://sharemods.com/coxoxpb23p35/ENBSeriesAutoToggle.7z.html" # [163] ENB Series Auto Toggle (desativar ENB em interior e menu)
+    "https://sharemods.com/jvzzb61srlpb/Peugeot_206_GTI.7z.html" # [164] Peugeot 206 GTI (tunável)
+    "https://sharemods.com/w955w0xtii2a/Clean_Render_-_Renderhook.7z.html" # [165] Clean Render (RenderHook)
+    "https://sharemods.com/zprw8r1npn0f/Hangout_with_Story_Characters.7z.html" # [166] Hangout with Story Characters (recrutar personagens)
+    "https://sharemods.com/1gegyekjbnht/Beta_Gang_Restore.7z.html" # [167] Beta Gang Restore (restaurar gangue beta)
+    "https://sharemods.com/3mapd6624i7k/LCS_PlayIdles_to_SA.7z.html" # [168] LCS PlayIdles to SA
 )
 
 for u in "${URLS[@]}"; do
