@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE PENDENTE 01 DE 20 NO BRAVE (Mods 1 a 15) ==="
+echo "=== ABRINDO LOTE PENDENTE 01 DE 19 NO BRAVE (Mods 1 a 15) ==="
 
 URLS=(
     "https://sharemods.com/79u303jv0csa/Proper_Streaming.zip.html" # [1] [SA] Proper Streaming (corrigir mapa não carregando)
@@ -23,4 +23,4 @@ for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
     sleep 0.35
 done
-echo "✔ Lote 01/20 enviado para o navegador com sucesso!"
+echo "✔ Lote 01/19 enviado para o navegador com sucesso!"

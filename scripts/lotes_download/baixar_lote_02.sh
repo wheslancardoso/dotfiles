@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE PENDENTE 02 DE 20 NO BRAVE (Mods 16 a 30) ==="
+echo "=== ABRINDO LOTE PENDENTE 02 DE 19 NO BRAVE (Mods 16 a 30) ==="
 
 URLS=(
     "https://sharemods.com/y5pkv6qmpy9y/SA_-_Pacific_Park_Rotating_Ferris_Wheel.7z.html" # [20] [SA] Pacific Park Rotating Ferris Wheel (roda-gigante animada)
@@ -23,4 +23,4 @@ for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
     sleep 0.35
 done
-echo "✔ Lote 02/20 enviado para o navegador com sucesso!"
+echo "✔ Lote 02/19 enviado para o navegador com sucesso!"

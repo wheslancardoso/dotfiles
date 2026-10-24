@@ -7,10 +7,10 @@ if [[ ! -f "$STATE_FILE" ]]; then
 fi
 
 CURRENT=$(cat "$STATE_FILE")
-TOTAL=20
+TOTAL=19
 
 if (( CURRENT > TOTAL )); then
-    echo "Todos os 20 lotes já foram abertos! Se quiser reiniciar do lote 1, apague ${STATE_FILE}."
+    echo "Todos os 19 lotes já foram abertos! Se quiser reiniciar do lote 1, apague ${STATE_FILE}."
     exit 0
 fi
 
