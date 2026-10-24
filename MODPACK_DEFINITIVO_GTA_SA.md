@@ -708,9 +708,9 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
   - Texturas do mapa e radar em alta resolução, fiéis ao estilo clássico sem pixels esticados.
 * **[⚪ PENDENTE] Recomeçar Missão (Checkpoints Estilo GTA V):** [Post MixMods](https://www.mixmods.com.br/2016/08/recomecar-missao/)
   - Ao falhar na missão, aperte Shift/Enter para reiniciar direto no local sem viagem até o hospital.
-* **[⚪ PENDENTE] Collectibles on Radar v1.1:** [Post MixMods](https://www.mixmods.com.br/2022/03/collectibles-on-radar-mostrar-coletaveis-no-mapa/)
+* **[⚪ PENDENTE] Collectibles on Radar v1.1:** [Post MixMods](https://www.mixmods.com.br/2022/03/collectibles-on-radar-mostrar-coletaveis-no-mapa/) | [Download ShareMods](https://sharemods.com/eo6bbf9psmeq/Collectibles_on_Radar.7z.html)
   - Mostra pichações, ostras, ferraduras e fotos no mapa quando você passa por perto.
-* **[⚪ PENDENTE] GInput (Suporte Completo a Controles):** [Post MixMods](https://www.mixmods.com.br/2020/06/ginput/)
+* **[🟢 INSTALADO] GInput (Suporte Completo a Controles):** [Download Direto Silent](https://silent.rockstarvision.com/uploads/GInputSA.zip)
   - Suporte nativo a gamepads de Xbox, PlayStation e genéricos com vibração e botões modernos.
 * **[⚪ PENDENTE] Ladders Mod (Subir Escadas Verticais):** [Post MixMods](https://www.mixmods.com.br/2022/11/ladders-mod-subir-escadas/) | [Download ShareMods](https://sharemods.com/r9991nx53e61/SA_-_Ladders_Mod.zip.html)
   - CJ agora pode subir fisicamente por todas as escadas verticais de prédios e antenas.
@@ -734,11 +734,11 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
 ---
 
 ### 6. Armas, Tiro (Gunplay) e Câmera em Primeira Pessoa
-* **[⚪ PENDENTE] First Person Mod v3.0 Fixed (BoPoH & Junior_Djjr):** [Post MixMods](https://www.mixmods.com.br/2022/03/first-person-mod-primeira-pessoa/)
+* **[⚪ PENDENTE] First Person Mod v3.0 Fixed (BoPoH & Junior_Djjr):** [Post MixMods](https://www.mixmods.com.br/2022/03/first-person-mod-primeira-pessoa/) | [Download ShareMods](https://sharemods.com/w0fwn9cbc65k/First_Person_Mod_fixed.7z.html)
   - Câmera em primeira pessoa real alternável na tecla `V`, com cockpits funcionais e mira holográfica.
-* **[⚪ PENDENTE] Advanced Aiming Mod v1.4:** [Post MixMods](https://www.mixmods.com.br/2022/06/advanced-aiming-mod/)
+* **[⚪ PENDENTE] Advanced Aiming Mod v1.4:** [Post MixMods](https://www.mixmods.com.br/2022/06/advanced-aiming-mod/) | [Download ShareMods](https://sharemods.com/ekfp0ll7momd/Advanced_Aiming_Mod.7z.html)
   - Câmera no ombro moderna ao mirar (Over-the-shoulder), mira livre e movimentação ágil.
-* **[⚪ PENDENTE] Manual Driveby Remake (Fixed):** [Post MixMods](https://www.mixmods.com.br/2021/10/manual-driveby-remake-fixed-mirar-de-dentro-do-carro/)
+* **[⚪ PENDENTE] Manual Driveby Remake (Fixed):** [Post MixMods](https://www.mixmods.com.br/2021/10/manual-driveby-remake-fixed-mirar-de-dentro-do-carro/) | [Download ShareMods](https://sharemods.com/svuvzea8cpa7/Manual_Driveby_Remake.7z.html)
   - Mira livre 360° com o mouse ao atirar de dentro do carro com cadência realista da arma.
 * **[⚪ PENDENTE] INSANITY Weapons Items HD:** [Post MixMods](https://www.mixmods.com.br/2020/12/insanity-weapons-items-armas-hd/) | [Download ShareMods](https://sharemods.com/a5ip9lonbiwc/INSANITY_Weapons_Items.7z.html)
   - Remasterização definitiva de todo o arsenal de armas do jogo em alta definição.
