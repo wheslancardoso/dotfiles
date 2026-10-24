@@ -702,9 +702,9 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
 ### 4. Gameplay, Mecânicas, HUD e Campanha
 * **[🟢 INSTALADO] GPS Redux v1.5.1:** [Post MixMods](https://www.mixmods.com.br/2022/10/sa-gps-redux/) | [Download GitHub](https://github.com/juicermv/GTA-GPS-Redux/releases)
   - Linha de rota dinâmica traçada em tempo real no asfalto e no minimapa (nível GTA V).
-* **[⚪ PENDENTE] Story Mode v2.0:** [Post MixMods](https://www.mixmods.com.br/2022/11/story-mode/) | [Download ShareMods](https://sharemods.com/iq9lg1tafztf/Story_Mode.7z.html)
+* **[🟢 INSTALADO] Story Mode v2.0:** [Post MixMods](https://www.mixmods.com.br/2022/11/story-mode/) | [Download ShareMods](https://sharemods.com/iq9lg1tafztf/Story_Mode.7z.html)
   - Corrige dezenas de falhas de roteiro e mortes injustas de aliados nas missões da campanha.
-* **[⚪ PENDENTE] Proper Radar v1.3 (Minimapa HD):** [Post MixMods](https://www.mixmods.com.br/2022/07/proper-radar/) | [Download ShareMods](https://sharemods.com/eenyrp1bklvj/Proper_Radar.7z.html)
+* **[🟢 INSTALADO] Proper Radar v1.3 (Minimapa HD):** [Post MixMods](https://www.mixmods.com.br/2022/07/proper-radar/) | [Download ShareMods](https://sharemods.com/eenyrp1bklvj/Proper_Radar.7z.html)
   - Texturas do mapa e radar em alta resolução, fiéis ao estilo clássico sem pixels esticados.
 * **[⚪ PENDENTE] Recomeçar Missão (Checkpoints Estilo GTA V):** [Post MixMods](https://www.mixmods.com.br/2016/08/recomecar-missao/)
   - Ao falhar na missão, aperte Shift/Enter para reiniciar direto no local sem viagem até o hospital.
@@ -720,9 +720,9 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
 ---
 
 ### 5. Física, Animações, Ragdoll e Veículos
-* **[⚪ PENDENTE] Ragdoll Bullet Physics:** [Post MixMods](https://www.mixmods.com.br/2021/09/mod-ragdoll-bullet-physics-fix-fisica-realista/) | [Download ShareMods](https://sharemods.com/txlr846ungla/Ragdoll_Bullet_Physics.zip.html)
+* **[🟢 INSTALADO] Ragdoll Bullet Physics:** [Post MixMods](https://www.mixmods.com.br/2021/09/mod-ragdoll-bullet-physics-fix-fisica-realista/) | [Download ShareMods](https://sharemods.com/txlr846ungla/Ragdoll_Bullet_Physics.zip.html)
   - Física realista de ragdoll: corpos reagem ao impacto de balas, quedas e atropelamentos estilo Euphoria/GTA IV.
-* **[⚪ PENDENTE] VehFuncs v2.5.5:** [Post MixMods](https://www.mixmods.com.br/2025/12/sa-vehfuncs/)
+* **[🟢 INSTALADO] VehFuncs v2.5.5:** [Post MixMods](https://www.mixmods.com.br/2025/12/sa-vehfuncs/)
   - Destrava volantes funcionais, limpadores de para-brisa na chuva, faróis retráteis e vibração de motores.
 * **[⚪ PENDENTE] VehDeform v1.3c (Amassar Carros Realista):** [Post MixMods](https://www.mixmods.com.br/2025/06/sa-vehdeform-amassar-carros/) | [Download ShareMods](https://sharemods.com/w56pqdc3vr1v/VehDeform.zip.html)
   - Deformação progressiva de lataria e peças em colisões de alta velocidade.
@@ -748,9 +748,9 @@ Tirar medalha de ouro em todas as escolas é obrigatório para destravar veícul
 ---
 
 ### 7. Mundo Vivo, Pedestres, Trânsito e CJ
-* **[⚪ PENDENTE] Urbanize (Ambient NPCs):** [Post MixMods](https://www.mixmods.com.br/2026/02/urbanize/) | [Download ShareMods](https://sharemods.com/moincval44bp/SA_-_Urbanize_12-25_Final_1.zip.html)
+* **[🟢 INSTALADO] Urbanize (Ambient NPCs):** [Post MixMods](https://www.mixmods.com.br/2026/02/urbanize/) | [Download ShareMods](https://sharemods.com/moincval44bp/SA_-_Urbanize_12-25_Final_1.zip.html)
   - Mais de 12 mil pontos de pedestres vivos (conversando, comendo, sentando em bancos, limpando calçadas).
-* **[⚪ PENDENTE] Real Traffic Fix v2.2.1:** [Post MixMods](https://www.mixmods.com.br/2022/04/real-traffic-fix/) | [Download ShareMods](https://sharemods.com/jlqyc2ya7lol/SA_-_Real_Traffic_Fix.7z.html)
+* **[🟢 INSTALADO] Real Traffic Fix v2.2.1:** [Post MixMods](https://www.mixmods.com.br/2022/04/real-traffic-fix/) | [Download ShareMods](https://sharemods.com/jlqyc2ya7lol/SA_-_Real_Traffic_Fix.7z.html)
   - IA de trânsito inteligente: distância de frenagem segura, ultrapassagens lógicas e sem manobras suicidas.
 * **[⚪ PENDENTE] Proper Player Retex v3.2 (CJ em Alta Resolução):** [Post MixMods](https://www.mixmods.com.br/2024/12/proper-player-retex/) | [Download ShareMods](https://sharemods.com/dckdhp4ir86q/Proper_Player_Retex.7z.html)
   - Remasterização fiel do modelo e texturas do CJ com dedos separados e pele HD.
