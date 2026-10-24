@@ -1,26 +1,23 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE PENDENTE 05 DE 16 NO BRAVE (Mods 61 a 75) ==="
+echo "=== ABRINDO LOTE CURADO 05 DE 07 NO BRAVE (Mods 49 a 60) ==="
 
 URLS=(
-    "https://sharemods.com/o4fco3bicyin/Rules_Mod.7z.html" # [71] Rules Mod v1.2 (estrela de procurado ao quebrar leis)
-    "https://sharemods.com/ilp0t25k29gz/LS_Lit_Church.7z.html" # [72] LS Lit Church (igreja com luzes acesas)
-    "https://sharemods.com/llx280hsssre/SA_-_MixSets_-_password_mixmods.com.br.zip.html" # [73] [SA] MixSets v4.3.7
-    "https://drive.google.com/file/d/1QecekuuyWgw68HU9tg6ENfrCTCVIjm6l/view" # [74] Shader Stochastic no GTA San Andreas (correção de tiling nas texturas)
-    "https://sharemods.com/z6yo02u4xvaf/Sprint_Everywhere.7z.html" # [75] [SA] Sprint Everywhere (correr em interiores)
-    "https://sharemods.com/o74eq9y76hjj/Glasses_Color_Overlay.7z.html" # [76] [SA] Glasses Color Overlay (filtro de cor ao usar óculos)
-    "https://sharemods.com/tysasyrhqebt/nadalao_Weapon_Icons_-_icones_fieis_corrigidos.7z.html" # [77] [SA] nadalao Weapon Icons (ícones HD fiéis corrigidos)
-    "https://sharemods.com/l01yekk929dh/MW_Project.7z.html" # [78] MW Project (mais água por SA)
-    "https://sharemods.com/c08l1q6s8kxy/SA_SADE_-_Peds_Run_Fix.7z.html" # [80] [SA/SA:DE] Ped Run Fix v2.2 (corrigir velhinhas correndo)
-    "https://sharemods.com/sl15wwdhyw7o/Custom_Ammunation.7z.html" # [81] Custom Ammunation Mod v3.5 (adicionar armas pra comprar)
-    "https://sharemods.com/7u9q36epczhn/LOD_Vegetation.7z.html" # [82] LOD Vegetation v1.2 (árvores distantes)
-    "https://www.mixmods.com.br/2021/12/cleo-redux/" # [83] CLEO Redux
-    "https://sharemods.com/s13yawvkfnwn/SADE_MP5.7z.html" # [85] MP5 (convertida do SA:DE)
-    "https://sharemods.com/i8pyupgkl3ia/Tesla_Model_S_2014.7z.html" # [86] Tesla Model S 2014 (fix + script)
-    "https://sharemods.com/uelr5g9m1eff/Illuminated_Vinewood_Sign.7z.html" # [87] Illuminated Vinewood Sign (placa de Vinewood iluminada)
+    "https://sharemods.com/e61gwxaw6zz8/Wheel_Detach.7z.html" # [57] Wheel Detach (Soltar e Arrancar Rodas em Colisões)
+    "https://sharemods.com/pl8akn9yotvd/Smooth_Criminal_Bicycles.7z.html" # [60] Smooth Criminal Bicycles
+    "https://sharemods.com/sl15wwdhyw7o/Custom_Ammunation.7z.html" # [61] Custom Ammunation Mod v3.5
+    "https://www.mixmods.com.br/2026/06/soundize" # [62] Soundize (AAA Audio System - 06/2026)
+    "https://drive.google.com/file/d/1OjwyxUKqjRCYuv9y49dgHfV0EOnqiBTA/view?usp=sharing" # [64] Faithful Weapons Pack 2.0
+    "https://sharemods.com/13giliprj62v/Custom_Crosshairs.7z.html" # [65] CustomCrosshairs v2.0
+    "https://sharemods.com/bpkboyrbseb9/Miras_e_discos_de_radar_pack.7z.html" # [66] Crosshairs Pack (300+ Miras & 46 Discos de Radar)
+    "https://sharemods.com/tysasyrhqebt/nadalao_Weapon_Icons_-_icones_fieis_corrigidos.7z.html" # [67] nadalao Weapon Icons (Ícones HD Fiéis Corrigidos)
+    "https://drive.google.com/file/d/0B1sAJQAUfOOYUEEtVVd5b2p2clU/view?usp=sharing" # [68] Hit Indicator (Damage Indicator / Hitmarker Tático)
+    "https://sharemods.com/drr20mtaslro/Hairstyles_and_Beards.7z.html" # [69] Hairstyles & Beards (Escolher Separadamente Cabelo e Barba)
+    "https://sharemods.com/pwpz3eq28frz/Beard_Grow.7z.html" # [70] Beard Grow Mod v1.2 (Crescimento de Barba estilo RDR2)
+    "https://sharemods.com/wpq8ylslxbx3/MenuUI.zip.html" # [71] MenuUI v2.0 (Interface Moderna para Barbearias e Lojas)
 )
 
 for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
-    sleep 0.35
+    sleep 0.4
 done
-echo "✔ Lote 05/16 enviado para o navegador com sucesso!"
+echo "✔ Lote 05/07 aberto no Brave com sucesso!"

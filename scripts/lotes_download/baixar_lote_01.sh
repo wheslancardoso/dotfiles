@@ -1,26 +1,23 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE PENDENTE 01 DE 16 NO BRAVE (Mods 1 a 15) ==="
+echo "=== ABRINDO LOTE CURADO 01 DE 07 NO BRAVE (Mods 1 a 12) ==="
 
 URLS=(
-    "https://sharemods.com/79u303jv0csa/Proper_Streaming.zip.html" # [1] [SA] Proper Streaming (corrigir mapa não carregando)
-    "https://sharemods.com/px30jmq1k2xo/SA_-_Proper_Shaders_08-26___40_py8vte2gr7a__41_.zip.html" # [2] [SA] Proper Shaders (gráficos HD para GTA SA)
-    "https://github.com/CookiePLMonster/SilentPatch/releases/tag/1.1-BUILD34.1-SA" # [3] [SA] SilentPatch (Build 34.1 – 2026)
-    "https://sharemods.com/dnlu9kd7wejz/Improved_Streaming.zip.html" # [4] [SA/PC/Mobile] Improved Streaming v1.1 (corrigir mapa não carregando)
-    "https://drive.google.com/file/d/115LMhaNP6mh-Sip9Sbtdl9EulSUlaq2F/view" # [5] [SA] Proper Fixes v2.1.1 (pack de correções para PC)
-    "https://www.mixmods.com.br/2026/06/soundize/" # [6] [SA] Soundize (AAA audio system)
-    "https://sharemods.com/7jrzxw0b8x9j/ModLoader.zip.html" # [7] ModLoader 0.3.10 para GTA SA / VC / III
-    "https://www.mixmods.com.br/2026/02/gta-sa-proper-shaders-teaser/" # [9] [GTA SA] Proper Shaders (teaser)
-    "https://www.mixmods.com.br/2025/07/muitos-mods-importantes-foram-atualizados/" # [11] Muitos mods importantes foram atualizados
-    "https://sharemods.com/f67rcc920tm9/SA_-_Silent_ASI_Loader.zip.html" # [12] [SA] Silent’s ASI Loader v1.5
-    "https://sharemods.com/1ly65k5xchjr/FxsFuncs.7z.html" # [14] FxsFuncs v1.2 (melhorias para efeitos especiais)
-    "https://www.mixmods.com.br/2024/08/original-radio-extended/" # [16] [SA] Original Radio Extended (1000 músicas)
-    "https://sharemods.com/stxvlyt5j4q4/SA_-_SkyGfx_Extended.zip.html" # [17] [SA] SkyGfx v4.2b + Extended v1.7
-    "https://sharemods.com/3yrdrs7l9v6r/CLEOPlus.zip.html" # [18] [SA] CLEO+ v1.2.0
-    "https://www.mixmods.com.br/2023/07/rosa-project-evolved-remaster-texturas-hd/" # [19] [SA] RoSA Evolved v1.5 (remaster texturas HD 2026) PC/Android
+    "https://sharemods.com/llx280hsssre/SA_-_MixSets_-_password_mixmods.com.br.zip.html" # [01] MixSets v4.3.7+
+    "https://sharemods.com/acne914kzt4m/MoonLoader_preview_version.7z.html" # [02] MoonLoader v0.26+
+    "https://sharemods.com/1ssbaxmrs16v/ModLoader_support_for_MoonLoader.7z.html" # [03] ModLoader Support for MoonLoader
+    "https://sharemods.com/6gxnkrbws5wr/GPS_Redux.zip.html" # [04] GPS Redux v1.5
+    "https://www.mixmods.com.br/2022/03/atualizados-anderius-manual-driveby-v-hud-mesh-smoothed" # [07] GTA V HUD / Weapon Wheel
+    "https://sharemods.com/s1rxdti1yntv/Framerate_Vigilante.zip.html" # [08] Framerate Vigilante
+    "https://sharemods.com/79u303jv0csa/Proper_Streaming.zip.html" # [09] Save Anywhere Mod
+    "https://github.com/CookiePLMonster/SilentPatch/releases/tag/1.1-BUILD34.1-SA" # [11] SilentPatch
+    "https://www.mixmods.com.br/2021/11/cheat-menu-by-grinch-v3-52" # [12] Cheat Menu v3.52
+    "https://drive.google.com/open?id=0B04D_5yMCyl9N3h6emNOZHJRLW8" # [14] Extintor Apaga Fogo do Carro
+    "https://drive.google.com/file/d/115LMhaNP6mh-Sip9Sbtdl9EulSUlaq2F/view" # [15] Proper Fixes v2.1.1
+    "https://sharemods.com/ykr4p8mtjmom/Sniper_Distance_Fix.7z.html" # [17] Sniper Distance Fix
 )
 
 for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
-    sleep 0.35
+    sleep 0.4
 done
-echo "✔ Lote 01/16 enviado para o navegador com sucesso!"
+echo "✔ Lote 01/07 aberto no Brave com sucesso!"

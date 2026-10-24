@@ -1,26 +1,23 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE PENDENTE 06 DE 16 NO BRAVE (Mods 76 a 90) ==="
+echo "=== ABRINDO LOTE CURADO 06 DE 07 NO BRAVE (Mods 61 a 72) ==="
 
 URLS=(
-    "https://sharemods.com/z2uh6naoyg1i/Pre-lighting_Fixes_Pack.7z.html" # [88] Pre-lighting Fixes Pack (correções de iluminação)
-    "https://sharemods.com/4s905tmgiphk/Upgraded_Vehicles_Pack.7z.html" # [89] Upgraded Vehicles Pack (carros originais corrigidos)
-    "https://sharemods.com/dgcbm6ixj1pl/RenderHookFix.7z.html" # [90] RenderHook Fix (correções para o RH)
-    "https://sharemods.com/q2pnidt84vet/GTA_Healer.7z.html" # [91] GTA Healer (check & backup)
-    "https://sharemods.com/y6emrqj5rvbo/RenderHook_-_Serendipity.7z.html" # [92] RenderHook – Serendipity v1.1 (gráficos remasterizados em HD)
-    "https://sharemods.com/2m9bwht7zw96/Effects_Mod_-_by_Ezekiel_-_Junior_Djjr.7z.html" # [93] [SA] Effects Mod by Ezekiel / Junior_Djjr (efeitos realistas)
-    "https://sharemods.com/cz2vbf9kc9a2/ENB_Series_CloudWorks.7z.html" # [94] CloudWorks (volumetric clouds for ENB/RenderHook)
-    "https://sharemods.com/1c6sk6faws7z/Clipboard_Teleport.7z.html" # [95] Clipboard Teleport (teletransporte com CTRL+V)
-    "https://sharemods.com/98xo43wqfjlm/ImprovedMove.7z.html" # [97] [SA] ImprovedMove v0.2.2 (melhorar movimentos e anims)
-    "https://sharemods.com/6ljnksq0hmrq/FireType.7z.html" # [98] FireType v6.0 (tiro seletivo: auto, semi, burst)
-    "https://drive.google.com/file/d/1KcMiIBNyF7Z-hND1f8G4K3aRUzg6A7se/view?usp=sharing" # [99] Mipmapping
-    "https://sharemods.com/qipof5weizvy/Generate_Free_IDs_List.7z.html" # [100] Generate Free IDs List (mostrar IDs vazios)
-    "https://sharemods.com/v4buqzhgmour/IMBEL_IA2_FN_FAL.7z.html" # [101] IMBEL IA2 & FN FAL (armas brasileiras em HD)
-    "https://sharemods.com/xiqp6ec07z44/Taurus_24_7_PT_58.7z.html" # [102] Pistolas Taurus 24/7 e PT 58 (lowpoly)
-    "https://sharemods.com/zh4lmnw9s3m4/Proper_Weapon_Retex.7z.html" # [103] Proper Weapons Retex v1.3 (armas com texturas HD)
+    "https://www.mixmods.com.br/2024/08/original-radio-extended" # [72] Original Radio Extended (1000 Músicas Sem Cortes)
+    "https://www.mixmods.com.br/2022/08/atualizados-traducao-emmet-useful-vehicle-immunities" # [73] Emmet But Useful (Emmet Útil no Jogo Inteiro)
+    "https://sharemods.com/vhm7q61koy0g/SA_-_HD_Underwater.7z.html" # [76] HD Underwater v2.0 (Corais, Peixes e Vida Marinha)
+    "https://sharemods.com/lozj8d9wsxip/More_Locked_Cars.7z.html" # [78] More Locked Cars
+    "https://sharemods.com/0gemwch5bivn/Alarm_Touching_Cars.7z.html" # [79] Alarm Touching Cars
+    "https://sharemods.com/nd45td9y91fj/Open_Door_Anim.7z.html" # [80] Open Door Anim v1.2.2
+    "https://www.mixmods.com.br/2019/04/swim-fps-fix-corrigir-nadar-com-fps-alto" # [81] Swim FPS Fix
+    "https://sharemods.com/pfge1km3wdw3/SA_-_Peds_Extender.7z.html" # [83] Peds Extender
+    "https://www.mixmods.com.br/2022/06/model-variations" # [84] Model Variations
+    "https://www.mixmods.com.br/2022/12/atualizados-peds-bleeding-wind-project-skygfx-extended" # [85] Peds Bleeding
+    "https://sharemods.com/2289owg3jx0m/Death_In_Car.7z.html" # [86] Death In Car
+    "http://sharemods.com/f0n5080m9quu/Phoenix_Mode.7z.html" # [87] Phoenix Mode
 )
 
 for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
-    sleep 0.35
+    sleep 0.4
 done
-echo "✔ Lote 06/16 enviado para o navegador com sucesso!"
+echo "✔ Lote 06/07 aberto no Brave com sucesso!"

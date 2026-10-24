@@ -1,0 +1,733 @@
+[
+  {
+    "id": 1,
+    "title": "MixSets v4.3.7+",
+    "post": "https://www.mixmods.com.br/2022/03/sa-mixsets",
+    "downloads": [
+      "https://sharemods.com/llx280hsssre/SA_-_MixSets_-_password_mixmods.com.br.zip.html"
+    ]
+  },
+  {
+    "id": 2,
+    "title": "MoonLoader v0.26+",
+    "post": "https://www.mixmods.com.br/2020/10/moonloader",
+    "downloads": [
+      "https://sharemods.com/acne914kzt4m/MoonLoader_preview_version.7z.html",
+      "https://sharemods.com/9cjkhj6qjt5p/MoonLoader___MoonAdditions___ImGui.7z.html"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "ModLoader Support for MoonLoader",
+    "post": "https://www.mixmods.com.br/2020/10/modloader-support-for-moonloader-mods-lua-no-modloader",
+    "downloads": [
+      "https://sharemods.com/1ssbaxmrs16v/ModLoader_support_for_MoonLoader.7z.html"
+    ]
+  },
+  {
+    "id": 4,
+    "title": "GPS Redux v1.5",
+    "post": "https://www.mixmods.com.br/2022/10/sa-gps-redux",
+    "downloads": [
+      "https://sharemods.com/6gxnkrbws5wr/GPS_Redux.zip.html",
+      "https://sharemods.com/7buxh1tvl0ob/GPU_Redux_-_For_SAMP.zip.html"
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Advanced Aiming Mod v1.4",
+    "post": "https://www.mixmods.com.br/2022/06/advanced-aiming-mod",
+    "downloads": [
+      "https://sharemods.com/ekfp0ll7momd/Advanced_Aiming_Mod.7z.html",
+      "https://sharemods.com/7d4rw1ry9p68/SA_Mobile_-__Advanced_Aiming.7z.html"
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Manual Driveby Remake (Fixed)",
+    "post": "https://www.mixmods.com.br/2021/10/manual-driveby-remake-fixed-mirar-de-dentro-do-carro",
+    "downloads": [
+      "https://sharemods.com/svuvzea8cpa7/Manual_Driveby_Remake.7z.html"
+    ]
+  },
+  {
+    "id": 7,
+    "title": "GTA V HUD / Weapon Wheel",
+    "post": "https://www.mixmods.com.br/2022/03/atualizados-anderius-manual-driveby-v-hud-mesh-smoothed",
+    "downloads": []
+  },
+  {
+    "id": 8,
+    "title": "Framerate Vigilante",
+    "post": "https://www.mixmods.com.br/2022/08/iii-vc-sa-framerate-vigilante",
+    "downloads": [
+      "https://sharemods.com/s1rxdti1yntv/Framerate_Vigilante.zip.html"
+    ]
+  },
+  {
+    "id": 9,
+    "title": "Save Anywhere Mod",
+    "post": "https://www.mixmods.com.br",
+    "downloads": [
+      "https://sharemods.com/79u303jv0csa/Proper_Streaming.zip.html",
+      "https://sharemods.com/px30jmq1k2xo/SA_-_Proper_Shaders_08-26___40_py8vte2gr7a__41_.zip.html"
+    ]
+  },
+  {
+    "id": 10,
+    "title": "Real Traffic Fix",
+    "post": "https://www.mixmods.com.br/2023/02/atualizados-radar-map-by-wd-d159-gps-redux-rvp",
+    "downloads": []
+  },
+  {
+    "id": 11,
+    "title": "SilentPatch",
+    "post": "https://www.mixmods.com.br/2026/08/sa-silentpatch",
+    "downloads": [
+      "https://github.com/CookiePLMonster/SilentPatch/releases/tag/1.1-BUILD34.1-SA",
+      "https://sharemods.com/zdp5ii5d9z6s/SA_-_SilentPatch.zip.html"
+    ]
+  },
+  {
+    "id": 12,
+    "title": "Cheat Menu v3.52",
+    "post": "https://www.mixmods.com.br/2021/11/cheat-menu-by-grinch-v3-52",
+    "downloads": []
+  },
+  {
+    "id": 13,
+    "title": "VehFuncs v2.5.5",
+    "post": "https://www.mixmods.com.br/2025/12/sa-vehfuncs",
+    "downloads": [
+      "https://sharemods.com/zuym13s774r6/VehFuncs.zip.html"
+    ]
+  },
+  {
+    "id": 14,
+    "title": "Extintor Apaga Fogo do Carro",
+    "post": "https://www.mixmods.com.br/2016/03/extintor-apaga-fogo-do-carro.html",
+    "downloads": [
+      "https://drive.google.com/open?id=0B04D_5yMCyl9N3h6emNOZHJRLW8"
+    ]
+  },
+  {
+    "id": 15,
+    "title": "Proper Fixes v2.1.1",
+    "post": "https://www.mixmods.com.br/2026/06/sa-proper-fixes",
+    "downloads": [
+      "https://drive.google.com/file/d/115LMhaNP6mh-Sip9Sbtdl9EulSUlaq2F/view",
+      "https://sharemods.com/wfei1aulci38/Proper_Fixes.7z.html",
+      "https://drive.google.com/file/d/1-3y5MTDi01kGJuOgyt4fOrn79WFP4trv/view?usp=sharing",
+      "https://sharemods.com/1gcvzcxijafz/Proper_Fixes_-_for_RoSA_Evolved.7z.html"
+    ]
+  },
+  {
+    "id": 16,
+    "title": "Story Mode v2.0",
+    "post": "https://www.mixmods.com.br/2022/11/story-mode",
+    "downloads": [
+      "https://sharemods.com/iq9lg1tafztf/Story_Mode.7z.html",
+      "https://drive.google.com/file/d/11fAYbdAY-DbdR9VdOPWw6f5xf9JIambS/view?usp=sharing"
+    ]
+  },
+  {
+    "id": 17,
+    "title": "Sniper Distance Fix",
+    "post": "https://www.mixmods.com.br/2018/09/sniper-distance-fix-aumentar-alcance-da-sniper",
+    "downloads": [
+      "https://sharemods.com/ykr4p8mtjmom/Sniper_Distance_Fix.7z.html"
+    ]
+  },
+  {
+    "id": 18,
+    "title": "Vigilante Special",
+    "post": "https://www.mixmods.com.br/2021/04/vigilante-special-missao-de-policia-em-qualquer-carro",
+    "downloads": []
+  },
+  {
+    "id": 19,
+    "title": "Sprinting With Two Handed Weapons",
+    "post": "https://www.mixmods.com.br/2018/10/correr-com-armas-pesadas-correr-com-rifle",
+    "downloads": [
+      "https://sharemods.com/zxvhj5rtn1jr/Sprinting_With_Two_Handed_Weapons.7z.html"
+    ]
+  },
+  {
+    "id": 20,
+    "title": "Myths Maker – Animals Pack",
+    "post": "https://www.mixmods.com.br/2022/10/myths-maker-animals-pack-mod-de-animais",
+    "downloads": [
+      "https://sharemods.com/wia802k6ikkm/Myths_Maker_-_Animals_Pack.7z.html"
+    ]
+  },
+  {
+    "id": 21,
+    "title": "Weapons OutFit",
+    "post": "https://www.mixmods.com.br/2021/08/weapons-outfit-armas-pelo-corpo",
+    "downloads": []
+  },
+  {
+    "id": 22,
+    "title": "Revamped Vehicles Project",
+    "post": "https://www.mixmods.com.br/2022/08/sa-revamped-vehicles-project",
+    "downloads": []
+  },
+  {
+    "id": 23,
+    "title": "Proper Vehicles Retex",
+    "post": "https://www.mixmods.com.br/2022/02/sa-sade-proper-vehicles-retex",
+    "downloads": [
+      "https://sharemods.com/2uesa2zbze2m/Proper_Vehicles_Retex_v2.1_512_VERSION.7z.html",
+      "https://sharemods.com/28ypvnxc3daa/Proper_Vehicles_Retex_v2.1_1024x_VERSION.7z.html",
+      "https://sharemods.com/xd5lex6v5pme/Proper_Vehicles_Retex_v2.1_2K_VERSION.7z.html",
+      "https://sharemods.com/3ullpauu22ab/SADE_-_Proper_Vehicles_Retex-V2.1.7z.html"
+    ]
+  },
+  {
+    "id": 24,
+    "title": "Round Tuning Wheels CE",
+    "post": "https://www.mixmods.com.br/2022/01/sa-round-tuning-wheels-ce-rodas-mais-redondas",
+    "downloads": [
+      "https://sharemods.com/rupfn9c41t3t/Round_Tuning_Wheels_CE.7z.html"
+    ]
+  },
+  {
+    "id": 25,
+    "title": "Proper Shaders",
+    "post": "https://www.mixmods.com.br/2026/10/sa-proper-shaders",
+    "downloads": [
+      "https://sharemods.com/px30jmq1k2xo/SA_-_Proper_Shaders_08-26___40_py8vte2gr7a__41_.zip.html"
+    ]
+  },
+  {
+    "id": 26,
+    "title": "Thunder Mod",
+    "post": "https://www.mixmods.com.br/2022/07/thunder-mod-cleo",
+    "downloads": [
+      "https://sharemods.com/bw24kx8xr9xa/Thunder_Mod.7z.html"
+    ]
+  },
+  {
+    "id": 27,
+    "title": "Rain Drops on Screen",
+    "post": "https://www.mixmods.com.br/2017/07/rain-drops-on-screen-pingos-de-chuva-na-tela",
+    "downloads": [
+      "https://drive.google.com/file/d/0B04D_5yMCyl9ZTZSY25DVEVkaGs/view"
+    ]
+  },
+  {
+    "id": 28,
+    "title": "Hard Rain Remake",
+    "post": "https://www.mixmods.com.br/2019/07/hard-rain-remake-pedestres-com-guarda-chuva",
+    "downloads": [
+      "https://sharemods.com/x5ncmg17msvb/Hard_Rain_Remake.7z.html"
+    ]
+  },
+  {
+    "id": 29,
+    "title": "Project2DFX v4.4",
+    "post": "https://www.mixmods.com.br/2020/02/sa-project2dfx",
+    "downloads": [
+      "https://sharemods.com/oh41bi0ir69k/SA_-_Project2dfx.zip.html"
+    ]
+  },
+  {
+    "id": 30,
+    "title": "Improved Night Windows",
+    "post": "https://www.mixmods.com.br/2022/09/sa-improved-night-windows-by-hysen-mais-janelas-noturnas",
+    "downloads": [
+      "https://sharemods.com/z4br8dabaeum/SA_-_Improved_Night_Windows.7z.html"
+    ]
+  },
+  {
+    "id": 31,
+    "title": "Project Immerse-Yourself",
+    "post": "https://www.mixmods.com.br/2022/01/project-immerse-yourself-prelight-melhorado",
+    "downloads": [
+      "https://sharemods.com/b3k2k0v5e4pm/Project_Immerse-Yourself.7z.html"
+    ]
+  },
+  {
+    "id": 32,
+    "title": "Missing Lampposts Fix",
+    "post": "https://www.mixmods.com.br/2022/04/missing-lampposts-fix-more-light-posts",
+    "downloads": [
+      "https://sharemods.com/28iie8htc4jq/Missing_Lampposts_Fix.7z.html"
+    ]
+  },
+  {
+    "id": 33,
+    "title": "SaveLoader v2.7",
+    "post": "https://www.mixmods.com.br/2020/01/iii-vc-sa-saveloader-v2-7-fast-loader-carregamento-rapido",
+    "downloads": [
+      "https://sharemods.com/82fetghs6l0z/III_VC_SA_-_SaveLoader.7z.html"
+    ]
+  },
+  {
+    "id": 34,
+    "title": "Gang Rider v2",
+    "post": "https://www.mixmods.com.br/2020/08/gang-rider-v2-carregar-mais-gangue",
+    "downloads": [
+      "https://sharemods.com/ejwih62ioxnz/Gang_Rider_Lua.7z.html",
+      "https://sharemods.com/wus6c66kjang/Gang_Rider_CLEO.7z.html"
+    ]
+  },
+  {
+    "id": 35,
+    "title": "Burglary With Any Car v2.0",
+    "post": "https://www.mixmods.com.br/2022/01/sa-sade-burglary-with-any-car-roubar-casa-com-qualquer-carro",
+    "downloads": [
+      "https://sharemods.com/r880ibdugvnx/SA_SADE_-_Burglary_With_Any_Car.7z.html"
+    ]
+  },
+  {
+    "id": 36,
+    "title": "Trunk Store Weapons",
+    "post": "https://www.mixmods.com.br/2021/04/trunk-store-weapons-guardar-armas-no-porta-malas",
+    "downloads": [
+      "https://sharemods.com/udjhqbqcf6co/Trunk_Store_Weapons.7z.html"
+    ]
+  },
+  {
+    "id": 37,
+    "title": "Weapon Inventory",
+    "post": "https://www.mixmods.com.br/2015/04/weapon-inventory-inventario-de-armas.html",
+    "downloads": [
+      "https://drive.google.com/file/d/0B1sAJQAUfOOYUkJGMU9weEVnRDg/view"
+    ]
+  },
+  {
+    "id": 38,
+    "title": "LOD Vegetation v1.2",
+    "post": "https://www.mixmods.com.br/2021/12/lod-vegetation-distant-trees",
+    "downloads": [
+      "https://sharemods.com/7u9q36epczhn/LOD_Vegetation.7z.html"
+    ]
+  },
+  {
+    "id": 39,
+    "title": "Enterable Hidden Interiors (EHI)",
+    "post": "https://www.mixmods.com.br/2021/01/enterable-hidden-interiors-entrar-em-interiores-escondidos",
+    "downloads": [
+      "https://sharemods.com/iuerx95tkkup/Enterable_Hidden_Interiors.7z.html"
+    ]
+  },
+  {
+    "id": 40,
+    "title": "Autosave Mod",
+    "post": "https://www.mixmods.com.br/2019/08/tela-de-salvamento-ao-terminar-missoes-v2-0-1",
+    "downloads": [
+      "https://sharemods.com/u7gptzz36fct/Save_screen_after_mission.7z.html"
+    ]
+  },
+  {
+    "id": 41,
+    "title": "Use All Ladders (Subir em Escadas)",
+    "post": "https://www.mixmods.com.br/2020/05/use-all-ladders-subir-em-escadas",
+    "downloads": []
+  },
+  {
+    "id": 42,
+    "title": "Awesome IFP v3",
+    "post": "https://www.mixmods.com.br/2021/11/sa-sade-awesome-ifp",
+    "downloads": [
+      "https://sharemods.com/47465yc6kq12/Awesome_IFP.7z.html",
+      "https://sharemods.com/5c1yvuq4l5x4/SADE_-_Awesome_IFP.7z.html"
+    ]
+  },
+  {
+    "id": 43,
+    "title": "HeliFix v1.4",
+    "post": "https://www.mixmods.com.br/2021/10/helifix-piloto-nos-helicopteros",
+    "downloads": [
+      "https://sharemods.com/mjxz5fvpmt4p/HeliFix.7z.html"
+    ]
+  },
+  {
+    "id": 44,
+    "title": "Extended Gang Wars",
+    "post": "https://www.mixmods.com.br/2017/07/extended-gang-wars",
+    "downloads": [
+      "https://sharemods.com/azzbo9poul6r/Extended_Gang_Wars.7z.html"
+    ]
+  },
+  {
+    "id": 45,
+    "title": "Recomeçar Missão",
+    "post": "https://www.mixmods.com.br/2016/08/recomecar-missao",
+    "downloads": [
+      "https://drive.google.com/open?id=0B04D_5yMCyl9RWNHdUdTQVZ0T2M"
+    ]
+  },
+  {
+    "id": 46,
+    "title": "Collectibles on Radar v1.1",
+    "post": "https://www.mixmods.com.br/2022/03/collectibles-on-radar-mostrar-coletaveis-no-mapa",
+    "downloads": [
+      "https://sharemods.com/eo6bbf9psmeq/Collectibles_on_Radar.7z.html"
+    ]
+  },
+  {
+    "id": 47,
+    "title": "RoSA Project Evolved (v1.5 - 2026)",
+    "post": "https://www.mixmods.com.br/2023/07/rosa-project-evolved-remaster-texturas-hd",
+    "downloads": []
+  },
+  {
+    "id": 48,
+    "title": "SkyGfx v4.2b + Extended",
+    "post": "https://www.mixmods.com.br/2024/03/sa-skygfx",
+    "downloads": [
+      "https://sharemods.com/stxvlyt5j4q4/SA_-_SkyGfx_Extended.zip.html",
+      "https://sharemods.com/sge66plqjc1z/SkyGfx.7z.html"
+    ]
+  },
+  {
+    "id": 49,
+    "title": "FxsFuncs v1.2 (2025/2026)",
+    "post": "https://www.mixmods.com.br/2025/06/fxsfuncs",
+    "downloads": [
+      "https://sharemods.com/1ly65k5xchjr/FxsFuncs.7z.html"
+    ]
+  },
+  {
+    "id": 50,
+    "title": "Shadows Settings Extender v2.1.2",
+    "post": "https://www.mixmods.com.br/2020/03/shadows-settings-extender-v2-1-2-extensor-de-sombras",
+    "downloads": [
+      "https://sharemods.com/xmsenlboaezt/Shadows_Settings_Extender.7z.html"
+    ]
+  },
+  {
+    "id": 51,
+    "title": "Dynamic Shadow Color (Sombras com Cores Atmosféricas)",
+    "post": "https://www.mixmods.com.br/2019/04/dynamic-shadow-color-sombras-com-cor-realista",
+    "downloads": [
+      "https://sharemods.com/duxyrps05sns/Dynamic_Shadow_Color.7z.html"
+    ]
+  },
+  {
+    "id": 52,
+    "title": "High Poly Desert",
+    "post": "https://www.mixmods.com.br/2021/05/mesh-smoothed-pack-objetos-mais-redondos",
+    "downloads": [
+      "https://sharemods.com/j81zikfmhj4t/Mesh_Smoothed_Pack.7z.html"
+    ]
+  },
+  {
+    "id": 53,
+    "title": "Improved Lamps v0.8",
+    "post": "https://www.mixmods.com.br/2021/09/improved-lamps-v0-8-postes-remasterizados-em-hd",
+    "downloads": [
+      "https://sharemods.com/iwbbggdxsnhy/Improved_Lamps.7z.html"
+    ]
+  },
+  {
+    "id": 54,
+    "title": "More Radar Icons v2.0",
+    "post": "https://www.mixmods.com.br/2022/01/more-radar-icons",
+    "downloads": [
+      "https://sharemods.com/rb96prexlrg9/More_Radar_Icons.7z.html"
+    ]
+  },
+  {
+    "id": 55,
+    "title": "VehDeform v1.3c (Amassar Carros Dinamicamente)",
+    "post": "https://www.mixmods.com.br/2025/06/sa-vehdeform-amassar-carros",
+    "downloads": [
+      "https://sharemods.com/w56pqdc3vr1v/VehDeform.zip.html"
+    ]
+  },
+  {
+    "id": 56,
+    "title": "Improved Surface Physics (Superfícies com Física Aprimorada)",
+    "post": "https://www.mixmods.com.br/2021/11/improved-surface-physics-superficies-com-fisica-melhorada",
+    "downloads": [
+      "https://sharemods.com/e134w29j6xze/Improved_Surface_Physics.7z.html"
+    ]
+  },
+  {
+    "id": 57,
+    "title": "Wheel Detach (Soltar e Arrancar Rodas em Colisões)",
+    "post": "https://www.mixmods.com.br/2020/07/wheel-detach-soltar-ou-estourar-roda",
+    "downloads": [
+      "https://sharemods.com/e61gwxaw6zz8/Wheel_Detach.7z.html"
+    ]
+  },
+  {
+    "id": 58,
+    "title": "Mod Ragdoll Bullet Physics + Fix",
+    "post": "https://www.mixmods.com.br/2021/09/mod-ragdoll-bullet-physics-fix-fisica-realista",
+    "downloads": [
+      "https://sharemods.com/txlr846ungla/Ragdoll_Bullet_Physics.zip.html"
+    ]
+  },
+  {
+    "id": 59,
+    "title": "Animation Fix + M4k3's Car Animations",
+    "post": "https://www.mixmods.com.br/2022/02/animation-fix-v1-5-corrigir-bugs-de-animacoes",
+    "downloads": [
+      "https://sharemods.com/3xputk50vuec/Animation_Fix___M4k3_New_Car_Animations.7z.html"
+    ]
+  },
+  {
+    "id": 60,
+    "title": "Smooth Criminal Bicycles",
+    "post": "https://www.mixmods.com.br/2019/06/smooth-criminal-bicycles-bicicletas-mais-arredondadas",
+    "downloads": [
+      "https://sharemods.com/pl8akn9yotvd/Smooth_Criminal_Bicycles.7z.html"
+    ]
+  },
+  {
+    "id": 61,
+    "title": "Custom Ammunation Mod v3.5",
+    "post": "https://www.mixmods.com.br/2022/01/custom-ammunation-mod-adicionar-armas-pra-comprar",
+    "downloads": [
+      "https://sharemods.com/sl15wwdhyw7o/Custom_Ammunation.7z.html"
+    ]
+  },
+  {
+    "id": 62,
+    "title": "Soundize (AAA Audio System - 06/2026)",
+    "post": "https://www.mixmods.com.br/2026/06/soundize",
+    "downloads": []
+  },
+  {
+    "id": 63,
+    "title": "INSANITY Weapons Items HD",
+    "post": "https://www.mixmods.com.br/2020/12/insanity-weapons-items-armas-hd",
+    "downloads": [
+      "https://sharemods.com/a5ip9lonbiwc/INSANITY_Weapons_Items.7z.html",
+      "https://drive.google.com/file/d/0B1sAJQAUfOOYTWMwcEhZbDZ5Tm8/view?usp=sharing"
+    ]
+  },
+  {
+    "id": 64,
+    "title": "Faithful Weapons Pack 2.0",
+    "post": "https://www.mixmods.com.br/2020/07/faithful-weapons-pack-2-0-pack-de-armas-fieis",
+    "downloads": [
+      "https://drive.google.com/file/d/1OjwyxUKqjRCYuv9y49dgHfV0EOnqiBTA/view?usp=sharing",
+      "https://drive.google.com/file/d/1JJLIYR79zjsnm-e8-5zaXEBgszr4SIQN/view?usp=sharing"
+    ]
+  },
+  {
+    "id": 65,
+    "title": "CustomCrosshairs v2.0",
+    "post": "https://www.mixmods.com.br/2022/04/customcrosshairs-personalizar-miras",
+    "downloads": [
+      "https://sharemods.com/13giliprj62v/Custom_Crosshairs.7z.html"
+    ]
+  },
+  {
+    "id": 66,
+    "title": "Crosshairs Pack (300+ Miras & 46 Discos de Radar)",
+    "post": "https://www.mixmods.com.br/2018/08/crosshairs-mais-de-300-miras-e-46-discos-de-radar-pack-colecao",
+    "downloads": [
+      "https://sharemods.com/bpkboyrbseb9/Miras_e_discos_de_radar_pack.7z.html"
+    ]
+  },
+  {
+    "id": 67,
+    "title": "nadalao Weapon Icons (Ícones HD Fiéis Corrigidos)",
+    "post": "https://www.mixmods.com.br/2022/02/icones-de-armas-fieis-desenhos-corrigidos",
+    "downloads": [
+      "https://sharemods.com/tysasyrhqebt/nadalao_Weapon_Icons_-_icones_fieis_corrigidos.7z.html"
+    ]
+  },
+  {
+    "id": 68,
+    "title": "Hit Indicator (Damage Indicator / Hitmarker Tático)",
+    "post": "https://www.mixmods.com.br/2016/09/iii-vc-hit-indicator-mudar-mira-ao-acertar",
+    "downloads": [
+      "https://drive.google.com/file/d/0B1sAJQAUfOOYUEEtVVd5b2p2clU/view?usp=sharing",
+      "https://drive.google.com/file/d/0B1sAJQAUfOOYNGNjR1pjaGtaT2s/view?usp=sharing"
+    ]
+  },
+  {
+    "id": 69,
+    "title": "Hairstyles & Beards (Escolher Separadamente Cabelo e Barba)",
+    "post": "https://www.mixmods.com.br/2021/02/hairstyles-beards-escolher-penteado-e-barba",
+    "downloads": [
+      "https://sharemods.com/drr20mtaslro/Hairstyles_and_Beards.7z.html"
+    ]
+  },
+  {
+    "id": 70,
+    "title": "Beard Grow Mod v1.2 (Crescimento de Barba estilo RDR2)",
+    "post": "https://www.mixmods.com.br/2019/09/beard-grow-mod-v1-2-crescer-barba",
+    "downloads": [
+      "https://sharemods.com/pwpz3eq28frz/Beard_Grow.7z.html"
+    ]
+  },
+  {
+    "id": 71,
+    "title": "MenuUI v2.0 (Interface Moderna para Barbearias e Lojas)",
+    "post": "https://www.mixmods.com.br/2021/09/menuui-v1-5-menus-modernos",
+    "downloads": [
+      "https://sharemods.com/wpq8ylslxbx3/MenuUI.zip.html"
+    ]
+  },
+  {
+    "id": 72,
+    "title": "Original Radio Extended (1000 Músicas Sem Cortes)",
+    "post": "https://www.mixmods.com.br/2024/08/original-radio-extended",
+    "downloads": []
+  },
+  {
+    "id": 73,
+    "title": "Emmet But Useful (Emmet Útil no Jogo Inteiro)",
+    "post": "https://www.mixmods.com.br/2022/08/atualizados-traducao-emmet-useful-vehicle-immunities",
+    "downloads": []
+  },
+  {
+    "id": 74,
+    "title": "Urbanize (Ambient NPCs & World Props - 02/2026)",
+    "post": "https://www.mixmods.com.br/2026/02/urbanize",
+    "downloads": [
+      "https://sharemods.com/moincval44bp/SA_-_Urbanize_12-25_Final_1.zip.html"
+    ]
+  },
+  {
+    "id": 75,
+    "title": "Real Traffic Fix v2.2.1 beta",
+    "post": "https://www.mixmods.com.br/2022/04/real-traffic-fix",
+    "downloads": [
+      "https://sharemods.com/jlqyc2ya7lol/SA_-_Real_Traffic_Fix.7z.html",
+      "https://sharemods.com/pxi03srhvive/VC_-_Real_Traffic_Fix.7z.html"
+    ]
+  },
+  {
+    "id": 76,
+    "title": "HD Underwater v2.0 (Corais, Peixes e Vida Marinha)",
+    "post": "https://www.mixmods.com.br/2022/06/sa-hd-underwater",
+    "downloads": [
+      "https://sharemods.com/vhm7q61koy0g/SA_-_HD_Underwater.7z.html"
+    ]
+  },
+  {
+    "id": 77,
+    "title": "GInput (Suporte Nativo a Controles Modernos Xbox / DualSense)",
+    "post": "https://www.mixmods.com.br/2020/06/ginput",
+    "downloads": []
+  },
+  {
+    "id": 78,
+    "title": "More Locked Cars",
+    "post": "https://www.mixmods.com.br/2018/08/more-locked-cars-mais-carros-trancados-e-com-alarme",
+    "downloads": [
+      "https://sharemods.com/lozj8d9wsxip/More_Locked_Cars.7z.html"
+    ]
+  },
+  {
+    "id": 79,
+    "title": "Alarm Touching Cars",
+    "post": "https://www.mixmods.com.br/2021/07/alarm-touching-cars-alarme-ao-tocar-carros",
+    "downloads": [
+      "https://sharemods.com/0gemwch5bivn/Alarm_Touching_Cars.7z.html"
+    ]
+  },
+  {
+    "id": 80,
+    "title": "Open Door Anim v1.2.2",
+    "post": "https://www.mixmods.com.br/2021/04/open-door-anim-v1-2-1-animacao-abrindo-porta",
+    "downloads": [
+      "https://sharemods.com/nd45td9y91fj/Open_Door_Anim.7z.html"
+    ]
+  },
+  {
+    "id": 81,
+    "title": "Swim FPS Fix",
+    "post": "https://www.mixmods.com.br/2019/04/swim-fps-fix-corrigir-nadar-com-fps-alto",
+    "downloads": []
+  },
+  {
+    "id": 82,
+    "title": "PedFuncs v0.5.1",
+    "post": "https://www.mixmods.com.br/2022/07/pedfuncs",
+    "downloads": [
+      "https://sharemods.com/fkum0x0mhyu6/PedFuncs.7z.html"
+    ]
+  },
+  {
+    "id": 83,
+    "title": "Peds Extender",
+    "post": "https://www.mixmods.com.br/2022/08/peds-extender",
+    "downloads": [
+      "https://sharemods.com/pfge1km3wdw3/SA_-_Peds_Extender.7z.html"
+    ]
+  },
+  {
+    "id": 84,
+    "title": "Model Variations",
+    "post": "https://www.mixmods.com.br/2022/06/model-variations",
+    "downloads": []
+  },
+  {
+    "id": 85,
+    "title": "Peds Bleeding",
+    "post": "https://www.mixmods.com.br/2022/12/atualizados-peds-bleeding-wind-project-skygfx-extended",
+    "downloads": []
+  },
+  {
+    "id": 86,
+    "title": "Death In Car",
+    "post": "https://www.mixmods.com.br/2022/06/death-in-car-morrer-dentro-do-carro",
+    "downloads": [
+      "https://sharemods.com/2289owg3jx0m/Death_In_Car.7z.html"
+    ]
+  },
+  {
+    "id": 87,
+    "title": "Phoenix Mode",
+    "post": "https://www.mixmods.com.br/2018/03/phoenix-mode-voltar-onde-estava-quando-morrer",
+    "downloads": [
+      "http://sharemods.com/f0n5080m9quu/Phoenix_Mode.7z.html"
+    ]
+  },
+  {
+    "id": 88,
+    "title": "24/7 Robbery",
+    "post": "https://www.mixmods.com.br/2019/08/24-7-robbery-roubar-lojas",
+    "downloads": [
+      "https://sharemods.com/6m3go2b7lqbx/Robbery_Mod.7z.html"
+    ]
+  },
+  {
+    "id": 89,
+    "title": "Random Car Talk",
+    "post": "https://www.mixmods.com.br/2022/06/sa-random-car-talk",
+    "downloads": [
+      "https://sharemods.com/ao53yl4oua80/SA_-_Random_Car_Talk.7z.html"
+    ]
+  },
+  {
+    "id": 90,
+    "title": "Car Dealership (Concessionárias Funcionais)",
+    "post": "https://www.mixmods.com.br/2020/06/car-dealership-concessionaria-de-carros",
+    "downloads": [
+      "https://sharemods.com/a2odu18dk7wn/Car_Dealership.7z.html"
+    ]
+  },
+  {
+    "id": 91,
+    "title": "Camping Mobile Save House 2.0a (Acampamento Selvagem & Sobrevivência)",
+    "post": "https://www.mixmods.com.br/2015/11/camping-mobile-save-house-20a-trailer-attach.html",
+    "downloads": []
+  },
+  {
+    "id": 92,
+    "title": "Car Wash v2.2",
+    "post": "https://www.mixmods.com.br/2020/08/car-wash-v2-2-lava-rapido-funcional",
+    "downloads": [
+      "https://sharemods.com/m4rshrky14dw/Car_Wash.7z.html"
+    ]
+  },
+  {
+    "id": 93,
+    "title": "Breakable Vending Machines",
+    "post": "https://www.mixmods.com.br/2022/08/sa-breakeable-vending-machines",
+    "downloads": [
+      "https://sharemods.com/lss6fpp1ujm5/Breakable_Vending_Machines.7z.html"
+    ]
+  }
+]

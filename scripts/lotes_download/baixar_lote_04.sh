@@ -1,26 +1,23 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE PENDENTE 04 DE 16 NO BRAVE (Mods 46 a 60) ==="
+echo "=== ABRINDO LOTE CURADO 04 DE 07 NO BRAVE (Mods 37 a 48) ==="
 
 URLS=(
-    "https://sharemods.com/s4l7mw43heuk/SFDP_Heli_Fix.7z.html" # [55] [SA/SA:DE/Mobile] SFDP Heli Fix (helicóptero da polícia de SF)
-    "https://sharemods.com/q2gr7fu98fml/Proper_Night_Windows.7z.html" # [56] [SA] Proper Night Windows (mais janelas noturnas)
-    "https://sharemods.com/33090codslex/Skate_Mod.7z.html" # [57] [SA/SA:DE] Skateboarding Mod (mod de skate)
-    "https://sharemods.com/vmhimyh5mm0k/No_Auto_Pickups.7z.html" # [58] [SA] No Auto Pickups (coletar armas manualmente)
-    "https://sharemods.com/0ff3q5jkuabp/Missing_Smokes_Fix.7z.html" # [59] [SA] Missing Smokes Fix (fumaça na tubulação das fábricas)
-    "https://sharemods.com/u2fwrrrj6hvn/Manual_Firing.7z.html" # [60] [SA] Manual Firing v2.2.1 (tiros manuais)
-    "https://sharemods.com/0l8a752l17ui/Prostitutes_Money_Drop_Fix.7z.html" # [61] [SA] Prostitutes Money Drop Fix (corrigir dinheiro de prostitutas)
-    "https://www.mixmods.com.br/2022/04/no-minimap-in-interiors/" # [62] [SA] No Minimap In Interiors (desativar mapa em interiores)
-    "https://sharemods.com/l0oi1e2w49d1/SA_-_NextGen_Remaster_Effects.7z.html" # [63] [SA] NextGen Remaster Effects (efeitos realistas HD)
-    "https://sharemods.com/28iie8htc4jq/Missing_Lampposts_Fix.7z.html" # [65] [SA] Missing Lampposts Fix (mais postes de luz)
-    "https://sharemods.com/2uesa2zbze2m/Proper_Vehicles_Retex_v2.1_512_VERSION.7z.html" # [66] [SA/SA:DE] Proper Vehicles Retex v2.1 (texturas HD para veículos)
-    "https://drive.google.com/file/d/1PUR5J0BexJI2lXtATiu68U86EXkNM7tC/view?usp=sharing" # [67] [SA] GTA V Vehicles to SA by _F_ (carros convertidos do GTA V)
-    "https://sharemods.com/o07xb22y59nf/Project_Web_Anims.7z.html" # [68] [SA] Project Web Anims v7.5 (pack de animações)
-    "https://sharemods.com/iy139fyfuyet/Cheat_Menu_by_Grinch_.zip.html" # [69] Cheat Menu by Grinch_ v3.52
-    "https://sharemods.com/1rj82p2q33cz/Projectile_Shoot.7z.html" # [70] [SA] Projectile Shoot (atirar para explodir)
+    "https://sharemods.com/mjxz5fvpmt4p/HeliFix.7z.html" # [43] HeliFix v1.4
+    "https://sharemods.com/azzbo9poul6r/Extended_Gang_Wars.7z.html" # [44] Extended Gang Wars
+    "https://drive.google.com/open?id=0B04D_5yMCyl9RWNHdUdTQVZ0T2M" # [45] Recomeçar Missão
+    "https://www.mixmods.com.br/2023/07/rosa-project-evolved-remaster-texturas-hd" # [47] RoSA Project Evolved (v1.5 - 2026)
+    "https://sharemods.com/stxvlyt5j4q4/SA_-_SkyGfx_Extended.zip.html" # [48] SkyGfx v4.2b + Extended
+    "https://sharemods.com/1ly65k5xchjr/FxsFuncs.7z.html" # [49] FxsFuncs v1.2 (2025/2026)
+    "https://sharemods.com/xmsenlboaezt/Shadows_Settings_Extender.7z.html" # [50] Shadows Settings Extender v2.1.2
+    "https://sharemods.com/duxyrps05sns/Dynamic_Shadow_Color.7z.html" # [51] Dynamic Shadow Color (Sombras com Cores Atmosféricas)
+    "https://sharemods.com/j81zikfmhj4t/Mesh_Smoothed_Pack.7z.html" # [52] High Poly Desert
+    "https://sharemods.com/iwbbggdxsnhy/Improved_Lamps.7z.html" # [53] Improved Lamps v0.8
+    "https://sharemods.com/rb96prexlrg9/More_Radar_Icons.7z.html" # [54] More Radar Icons v2.0
+    "https://sharemods.com/e134w29j6xze/Improved_Surface_Physics.7z.html" # [56] Improved Surface Physics (Superfícies com Física Aprimorada)
 )
 
 for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
-    sleep 0.35
+    sleep 0.4
 done
-echo "✔ Lote 04/16 enviado para o navegador com sucesso!"
+echo "✔ Lote 04/07 aberto no Brave com sucesso!"

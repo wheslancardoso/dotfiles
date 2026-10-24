@@ -3,14 +3,14 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 STATE_FILE="${DIR}/.ultimo_lote"
 
 if [[ ! -f "$STATE_FILE" ]]; then
-    echo "4" > "$STATE_FILE"
+    echo "1" > "$STATE_FILE"
 fi
 
 CURRENT=$(cat "$STATE_FILE")
-TOTAL=16
+TOTAL=7
 
 if (( CURRENT > TOTAL )); then
-    echo "Todos os 16 lotes já foram abertos! Se quiser reiniciar, altere ${STATE_FILE}."
+    echo "Todos os 7 lotes curados já foram abertos! Se quiser reiniciar do 1, apague ${STATE_FILE}."
     exit 0
 fi
 
@@ -19,7 +19,7 @@ SCRIPT_PATH="${DIR}/${SCRIPT_NAME}"
 
 if [[ -f "$SCRIPT_PATH" ]]; then
     echo "=========================================================="
-    echo " Abrindo no Brave: Lote ${CURRENT} de ${TOTAL} (${SCRIPT_NAME})"
+    echo " Abrindo no Brave: Lote Curado ${CURRENT} de ${TOTAL} (${SCRIPT_NAME})"
     echo "=========================================================="
     bash "$SCRIPT_PATH"
     NEXT=$(( CURRENT + 1 ))
