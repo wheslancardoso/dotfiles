@@ -1,26 +1,26 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE PENDENTE 16 DE 19 NO BRAVE (Mods 226 a 240) ==="
+echo "=== ABRINDO LOTE PENDENTE 16 DE 17 NO BRAVE (Mods 226 a 240) ==="
 
 URLS=(
-    "https://www.mixmods.com.br/2015/01/grafites-originais-em-hd/" # [243] Grafites originais em HD
-    "https://drive.google.com/file/d/0B1sAJQAUfOOYRFZLUVVmc3Rhd2M/view" # [244] Pack Skins Da Nang Boyz HD
-    "https://www.mixmods.com.br/2012/08/pack-de-skins-vagos-hd/" # [245] Pack de Skins Vagos HD
-    "https://drive.google.com/file/d/0B1sAJQAUfOOYTnJOeHBCM3I5WGc/view" # [246] Pack de skins Grove em HD (by AnRi)
-    "https://sharemods.com/35z1qznzsx1w/The_Gang_War.7z.html" # [247] The Gang War
-    "https://sharemods.com/i7fb2i43f55z/Novas_Skins_para_Grove_em_HD.7z.html" # [248] Novas Skins para Grove em HD
-    "https://drive.google.com/file/d/0B1sAJQAUfOOYLXRLSFZxclFUMW8/view?usp=sharing" # [249] Novos Ballas em HD
-    "https://www.mixmods.com.br/2011/10/nova-grove-v2/" # [250] Nova Grove v2
-    "https://www.mixmods.com.br/2011/05/nova-groove-v1/" # [251] NOVA GROOVE V1
-    "https://drive.google.com/open?id=0B04D_5yMCyl9N3h6emNOZHJRLW8" # [254] Extintor Apaga Fogo do Carro
-    "https://sharemods.com/ykr4p8mtjmom/Sniper_Distance_Fix.7z.html" # [255] Sniper Distance Fix
-    "https://www.mixmods.com.br/2021/04/vigilante-special-missao-de-policia-em-qualquer-carro/" # [256] Vigilante Special
-    "https://www.mixmods.com.br/2021/08/weapons-outfit-armas-pelo-corpo/" # [257] Weapons OutFit
-    "https://sharemods.com/2uesa2zbze2m/Proper_Vehicles_Retex_v2.1_512_VERSION.7z.html" # [258] Proper Vehicles Retex
-    "https://sharemods.com/rupfn9c41t3t/Round_Tuning_Wheels_CE.7z.html" # [259] Round Tuning Wheels CE
+    "https://sharemods.com/pl8akn9yotvd/Smooth_Criminal_Bicycles.7z.html" # [246] Smooth Criminal Bicycles
+    "https://sharemods.com/13giliprj62v/Custom_Crosshairs.7z.html" # [247] CustomCrosshairs v2.0
+    "https://sharemods.com/bpkboyrbseb9/Miras_e_discos_de_radar_pack.7z.html" # [248] Crosshairs Pack (300+ Miras & 46 Discos de Radar)
+    "https://drive.google.com/file/d/0B1sAJQAUfOOYUEEtVVd5b2p2clU/view?usp=sharing" # [249] Hit Indicator (Damage Indicator / Hitmarker Tático)
+    "https://sharemods.com/drr20mtaslro/Hairstyles_and_Beards.7z.html" # [250] Hairstyles & Beards (Escolher Separadamente Cabelo e Barba)
+    "https://sharemods.com/pwpz3eq28frz/Beard_Grow.7z.html" # [251] Beard Grow Mod v1.2 (Crescimento de Barba estilo RDR2)
+    "https://sharemods.com/wpq8ylslxbx3/MenuUI.zip.html" # [252] MenuUI v2.0 (Interface Moderna para Barbearias e Lojas)
+    "https://sharemods.com/vhm7q61koy0g/SA_-_HD_Underwater.7z.html" # [253] HD Underwater v2.0 (Corais, Peixes e Vida Marinha)
+    "https://sharemods.com/lozj8d9wsxip/More_Locked_Cars.7z.html" # [255] More Locked Cars
+    "https://sharemods.com/0gemwch5bivn/Alarm_Touching_Cars.7z.html" # [256] Alarm Touching Cars
+    "https://www.mixmods.com.br/2019/04/swim-fps-fix-corrigir-nadar-com-fps-alto/" # [257] Swim FPS Fix
+    "https://www.mixmods.com.br/2022/06/model-variations/" # [258] Model Variations
+    "http://sharemods.com/f0n5080m9quu/Phoenix_Mode.7z.html" # [259] Phoenix Mode
+    "https://sharemods.com/6m3go2b7lqbx/Robbery_Mod.7z.html" # [260] 24/7 Robbery
+    "https://sharemods.com/ao53yl4oua80/SA_-_Random_Car_Talk.7z.html" # [261] Random Car Talk
 )
 
 for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
     sleep 0.35
 done
-echo "✔ Lote 16/19 enviado para o navegador com sucesso!"
+echo "✔ Lote 16/17 enviado para o navegador com sucesso!"

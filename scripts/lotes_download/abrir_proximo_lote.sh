@@ -3,14 +3,14 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 STATE_FILE="${DIR}/.ultimo_lote"
 
 if [[ ! -f "$STATE_FILE" ]]; then
-    echo "1" > "$STATE_FILE"
+    echo "4" > "$STATE_FILE"
 fi
 
 CURRENT=$(cat "$STATE_FILE")
-TOTAL=19
+TOTAL=17
 
 if (( CURRENT > TOTAL )); then
-    echo "Todos os 19 lotes já foram abertos! Se quiser reiniciar do lote 1, apague ${STATE_FILE}."
+    echo "Todos os 17 lotes já foram abertos! Se quiser reiniciar, altere ${STATE_FILE}."
     exit 0
 fi
 

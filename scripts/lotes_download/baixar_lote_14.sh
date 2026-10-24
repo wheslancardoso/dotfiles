@@ -1,26 +1,26 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE PENDENTE 14 DE 19 NO BRAVE (Mods 196 a 210) ==="
+echo "=== ABRINDO LOTE PENDENTE 14 DE 17 NO BRAVE (Mods 196 a 210) ==="
 
 URLS=(
-    "http://sharemods.com/d1ougyt80b8r/Mount_Akina___Toyota_AE86.7z.html" # [213] Mount Akina + Toyota AE86 Trueno
-    "http://sharemods.com/bi6t0xqvr5jj/CJ_reclama_com_carros_2.7z.html" # [214] CJ reclama com carros
-    "http://sharemods.com/lzxs1w77ffh6/London_Cabbie.7z.html" # [215] London Cabbie
-    "http://sharemods.com/bgd4a3kbdjfw/Ganados__Mod_Resident_Evil_4_.7z.html" # [216] Ganados v2.0 (Mod Resident Evil 4)
-    "http://sharemods.com/2yhtn7ed2utl/GTA_Online_Anims.7z.html" # [217] GTA V Online Original Anims to SA (animações do GTA Online)
-    "http://sharemods.com/y7ny6i33w58q/Parkour_Mod.7z.html" # [218] Parkour Mod v2.0.4 Unofficial Fix
-    "http://sharemods.com/wpmcvchn1nly/Trator_Valtra_685___carreta__SA_Style_.7z.html" # [219] Trator Valtra 685 + carreta (SA Style)
-    "http://sharemods.com/1osrp4cxex04/Infernus_HD_by_Ezekiel.7z.html" # [220] Infernus HD by Ezekiel
-    "https://www.mixmods.com.br/2018/02/pack-de-armas-do-battlegrounds/" # [221] Pack de armas do Battlegrounds
-    "http://sharemods.com/81id5unk7jky/Shotgun_Reload.7z.html" # [222] Shotgun Reload (espingarda recarregando)
-    "https://drive.google.com/file/d/1wnWITLTGQAuqLgB14bTWSjSk_CYxR0S2/view" # [223] Bar Drink (mod beber no bar / ficar bêbado)
-    "https://drive.google.com/open?id=1asrLFdaJ702-Cy-Kqw0m6zTfEPK3Iho0" # [224] Animações do GTA VCS/LCS
-    "https://drive.google.com/open?id=1Da9MWJ3qROTT62rnRwHM9AD1V7vwHEO9" # [225] Arremessar facas ou katanas
-    "https://drive.google.com/file/d/1Gjx78UjDyXcKxQz37vdK17C9WGwfz5ap/view" # [226] Arma IMBEL IA2 (brasileira) (lowpoly)
-    "https://drive.google.com/open?id=1fWs2vr_sJv7djPRxDX3CI_4XsA6BDWsO" # [227] M4k3’s New Car Animations – Novas animações ao dirigir
+    "https://sharemods.com/bbvvho2ynd42/No_Dual_Wield___Segurar_pistola_com_duas_maos.7z.html" # [213] No Dual Wield + Segurar pistola com duas mãos
+    "https://www.mixmods.com.br/2015/01/grafites-originais-em-hd/" # [214] Grafites originais em HD
+    "https://sharemods.com/35z1qznzsx1w/The_Gang_War.7z.html" # [215] The Gang War
+    "https://drive.google.com/open?id=0B04D_5yMCyl9N3h6emNOZHJRLW8" # [218] Extintor Apaga Fogo do Carro
+    "https://sharemods.com/ykr4p8mtjmom/Sniper_Distance_Fix.7z.html" # [219] Sniper Distance Fix
+    "https://www.mixmods.com.br/2021/04/vigilante-special-missao-de-policia-em-qualquer-carro/" # [220] Vigilante Special
+    "https://www.mixmods.com.br/2021/08/weapons-outfit-armas-pelo-corpo/" # [221] Weapons OutFit
+    "https://sharemods.com/2uesa2zbze2m/Proper_Vehicles_Retex_v2.1_512_VERSION.7z.html" # [222] Proper Vehicles Retex
+    "https://sharemods.com/rupfn9c41t3t/Round_Tuning_Wheels_CE.7z.html" # [223] Round Tuning Wheels CE
+    "https://sharemods.com/bw24kx8xr9xa/Thunder_Mod.7z.html" # [224] Thunder Mod
+    "https://drive.google.com/file/d/0B04D_5yMCyl9ZTZSY25DVEVkaGs/view" # [225] Rain Drops on Screen
+    "https://sharemods.com/x5ncmg17msvb/Hard_Rain_Remake.7z.html" # [226] Hard Rain Remake
+    "https://sharemods.com/oh41bi0ir69k/SA_-_Project2dfx.zip.html" # [227] Project2DFX v4.4
+    "https://sharemods.com/z4br8dabaeum/SA_-_Improved_Night_Windows.7z.html" # [228] Improved Night Windows
+    "https://sharemods.com/b3k2k0v5e4pm/Project_Immerse-Yourself.7z.html" # [229] Project Immerse-Yourself
 )
 
 for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
     sleep 0.35
 done
-echo "✔ Lote 14/19 enviado para o navegador com sucesso!"
+echo "✔ Lote 14/17 enviado para o navegador com sucesso!"

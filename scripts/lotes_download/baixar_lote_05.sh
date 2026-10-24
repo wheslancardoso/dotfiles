@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE PENDENTE 05 DE 19 NO BRAVE (Mods 61 a 75) ==="
+echo "=== ABRINDO LOTE PENDENTE 05 DE 17 NO BRAVE (Mods 61 a 75) ==="
 
 URLS=(
     "https://drive.google.com/file/d/1QecekuuyWgw68HU9tg6ENfrCTCVIjm6l/view" # [70] Shader Stochastic no GTA San Andreas (correção de tiling nas texturas)
@@ -23,4 +23,4 @@ for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
     sleep 0.35
 done
-echo "✔ Lote 05/19 enviado para o navegador com sucesso!"
+echo "✔ Lote 05/17 enviado para o navegador com sucesso!"

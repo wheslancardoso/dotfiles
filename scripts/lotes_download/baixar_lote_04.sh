@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE PENDENTE 04 DE 19 NO BRAVE (Mods 46 a 60) ==="
+echo "=== ABRINDO LOTE PENDENTE 04 DE 17 NO BRAVE (Mods 46 a 60) ==="
 
 URLS=(
     "https://sharemods.com/vmhimyh5mm0k/No_Auto_Pickups.7z.html" # [54] [SA] No Auto Pickups (coletar armas manualmente)
@@ -23,4 +23,4 @@ for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
     sleep 0.35
 done
-echo "✔ Lote 04/19 enviado para o navegador com sucesso!"
+echo "✔ Lote 04/17 enviado para o navegador com sucesso!"

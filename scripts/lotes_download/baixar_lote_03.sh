@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE PENDENTE 03 DE 19 NO BRAVE (Mods 31 a 45) ==="
+echo "=== ABRINDO LOTE PENDENTE 03 DE 17 NO BRAVE (Mods 31 a 45) ==="
 
 URLS=(
     "https://sharemods.com/8f2odk9nzebs/Cars_On_Dirt_Roads.7z.html" # [37] [SA/SA:DE/Mobile] Cars On Dirt Roads Mod (veículos em estradas)
@@ -23,4 +23,4 @@ for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
     sleep 0.35
 done
-echo "✔ Lote 03/19 enviado para o navegador com sucesso!"
+echo "✔ Lote 03/17 enviado para o navegador com sucesso!"

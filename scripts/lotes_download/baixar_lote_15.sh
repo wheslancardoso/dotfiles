@@ -1,26 +1,26 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE PENDENTE 15 DE 19 NO BRAVE (Mods 211 a 225) ==="
+echo "=== ABRINDO LOTE PENDENTE 15 DE 17 NO BRAVE (Mods 211 a 225) ==="
 
 URLS=(
-    "https://drive.google.com/open?id=1zgWe0bejROV0cdFQDR6zTr0-E7zK2bKD" # [228] Max Payne Mod
-    "https://drive.google.com/file/d/0B1sAJQAUfOOYNjhwLXFQTWFneG8/view" # [229] Amazing Player: Female v2.0 (skin feminina)
-    "https://www.mixmods.com.br/2017/10/pack-de-skins-da-ak-47-do-csgo/" # [230] Pack de Skins da AK-47 do CS:GO
-    "https://sharemods.com/zr8805cvzg0y/Pose_Mod.7z.html" # [231] Pose Mod (beta)
-    "https://drive.google.com/open?id=0B04D_5yMCyl9bC16eTc2SnBHTmc" # [232] Explosivo TNT (relógio com detonador)
-    "https://www.mixmods.com.br/2017/08/ak74-do-contract-wars/" # [233] AK74 do Contract Wars
-    "https://drive.google.com/file/d/0B1sAJQAUfOOYdXNwNk9sSU1NUW8/view" # [234] Microphone Talk (mexer a boca ao falar no microfone)
-    "https://drive.google.com/file/d/0B1sAJQAUfOOYYXFiS0pkX2dCVjg/view" # [235] Parachute Randomizer (variar para-quedas)
-    "https://www.mixmods.com.br/2017/07/hit-the-entity-fix-bater-na-parede/" # [236] Hit the Entity Fix (Bater na parede)
-    "https://sharemods.com/azzbo9poul6r/Extended_Gang_Wars.7z.html" # [237] Extended Gang Wars
-    "https://sharemods.com/0cw2e8gpne29/Visual_Weapon_Spawner.7z.html" # [238] Visual Weapon Spawner
-    "http://sharemods.com/3hbsuxa6sgrf/Ladders_-_Subir_escadas.7z.html" # [239] Ladders – Subir e descer escadas
-    "https://drive.google.com/open?id=0B04D_5yMCyl9RjIzbmVSOGU0bFk" # [240] Colocar/tirar silenciador da 9mm
-    "https://sharemods.com/bbvvho2ynd42/No_Dual_Wield___Segurar_pistola_com_duas_maos.7z.html" # [241] No Dual Wield + Segurar pistola com duas mãos
-    "https://sharemods.com/jn47en03jynn/Bloodz_and_CripZ_Remake.7z.html" # [242] Bloodz & CripZ (Remake)
+    "https://sharemods.com/82fetghs6l0z/III_VC_SA_-_SaveLoader.7z.html" # [230] SaveLoader v2.7
+    "https://sharemods.com/r880ibdugvnx/SA_SADE_-_Burglary_With_Any_Car.7z.html" # [231] Burglary With Any Car v2.0
+    "https://sharemods.com/udjhqbqcf6co/Trunk_Store_Weapons.7z.html" # [232] Trunk Store Weapons
+    "https://drive.google.com/file/d/0B1sAJQAUfOOYUkJGMU9weEVnRDg/view" # [233] Weapon Inventory
+    "https://sharemods.com/iuerx95tkkup/Enterable_Hidden_Interiors.7z.html" # [234] Enterable Hidden Interiors (EHI)
+    "https://sharemods.com/u7gptzz36fct/Save_screen_after_mission.7z.html" # [235] Autosave Mod
+    "https://www.mixmods.com.br/2020/05/use-all-ladders-subir-em-escadas/" # [236] Use All Ladders (Subir em Escadas)
+    "https://sharemods.com/mjxz5fvpmt4p/HeliFix.7z.html" # [237] HeliFix v1.4
+    "https://drive.google.com/open?id=0B04D_5yMCyl9RWNHdUdTQVZ0T2M" # [238] Recomeçar Missão
+    "https://sharemods.com/duxyrps05sns/Dynamic_Shadow_Color.7z.html" # [240] Dynamic Shadow Color (Sombras com Cores Atmosféricas)
+    "https://sharemods.com/j81zikfmhj4t/Mesh_Smoothed_Pack.7z.html" # [241] High Poly Desert
+    "https://sharemods.com/iwbbggdxsnhy/Improved_Lamps.7z.html" # [242] Improved Lamps v0.8
+    "https://sharemods.com/rb96prexlrg9/More_Radar_Icons.7z.html" # [243] More Radar Icons v2.0
+    "https://sharemods.com/e134w29j6xze/Improved_Surface_Physics.7z.html" # [244] Improved Surface Physics (Superfícies com Física Aprimorada)
+    "https://sharemods.com/e61gwxaw6zz8/Wheel_Detach.7z.html" # [245] Wheel Detach (Soltar e Arrancar Rodas em Colisões)
 )
 
 for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
     sleep 0.35
 done
-echo "✔ Lote 15/19 enviado para o navegador com sucesso!"
+echo "✔ Lote 15/17 enviado para o navegador com sucesso!"

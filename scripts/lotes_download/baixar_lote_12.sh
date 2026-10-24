@@ -1,26 +1,26 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE PENDENTE 12 DE 19 NO BRAVE (Mods 166 a 180) ==="
+echo "=== ABRINDO LOTE PENDENTE 12 DE 17 NO BRAVE (Mods 166 a 180) ==="
 
 URLS=(
-    "https://sharemods.com/kah8arfbnvx0/Panic_Face.7z.html" # [183] Panic Face (expressão facial nos pedestres)
-    "https://sharemods.com/8zyh3jyrt3hs/Revive_Friend_-_Junior_Djjr.7z.html" # [184] Revive Friend (reanimar parceiro)
-    "https://sharemods.com/2sny0oq1g1m6/Sly_Veh_Textures_Unofficial_Build.7z.html" # [185] Sly’s Veh Textures Unofficial Build v1 (vehicle.txd HD)
-    "https://sharemods.com/cuews8z5k6ew/Change_Gear_Anim.7z.html" # [186] Change Gear Anim v3.2 (animação de mudar marcha)
-    "https://sharemods.com/nt2bhj7tspt9/Airsoft_Glock_18C.7z.html" # [187] Mod Airsoft + Glock 18C
-    "https://sharemods.com/sjhzmtv05o0t/Gangs_relationships.7z.html" # [188] Gangs Relationships
-    "https://sharemods.com/zzblq4idkq1p/BeSlim.7z.html" # [189] BeSlim (opções para o CJ musculoso e gordo)
-    "https://sharemods.com/cp2ftd9u0re3/Land_Mines.7z.html" # [190] Land Mines (minas terrestres)
-    "https://sharemods.com/hiy3o47xxd7w/Car_Kick.7z.html" # [191] Car Kick (chutar motorista pela janela do carro)
-    "https://sharemods.com/9fu5fbdw3e5h/Kawasaki_Z1000_A1_1977.7z.html" # [192] Kawasaki Z1000 A1 1977
-    "https://sharemods.com/vj9mky5k373a/Plymouth_Belvedere_Station_Wagon_1965_by_Avant.7z.html" # [193] Plymouth Belvedere Station Wagon 1965 by Avant
-    "https://sharemods.com/1pshm7jmw1tf/Anim_Play.7z.html" # [194] Anim Play v2.0 (tocar animações)
-    "https://sharemods.com/8dy2ncqtysbg/Surrender.7z.html" # [195] Surrender Mod (se render / se entregar)
-    "https://sharemods.com/b8q8e55loi0q/Original_Weapons_Fix___Retex.7z.html" # [196] Original Weapons Fix 2.0 + Retex (corrigir posição das armas)
-    "https://sharemods.com/vf80kq9lsrhq/VW_Gol_G2_1.0_Plus___40_bola__41__by_Den_3D.7z.html" # [197] VW Gol G2 1.0 Plus (bola) by Dean 3D
+    "https://sharemods.com/agzcmqzekvof/Espingarda_boito.7z.html" # [183] Espingarda boito caipira (country bolt rifle) (lowpoly)
+    "http://sharemods.com/cohrl1eh7rnn/1964_Chevrolet_Impala_SS.7z.html" # [184] 1964 Chevrolet Impala SS Lowrider v2.1
+    "http://sharemods.com/2lo0mhpepqff/Beta_Cars_Pack.7z.html" # [185] Beta Cars Pack (carros da versão beta)
+    "http://sharemods.com/kuyzylh9du4i/LQ_Wheels__rodas_tuning_lowpoly_SA_Style_.7z.html" # [186] LQ Wheels (rodas tuning lowpoly / SA Style)
+    "https://sharemods.com/gi2txs6hwidv/Honda_CRX_by_AllCash.7z.html" # [187] Honda CRX by AllCash (tunable – tunável)
+    "http://sharemods.com/00izlnuf1r76/Big_Gangster.7z.html" # [188] Big Gangster Mod v5
+    "http://sharemods.com/48eldouiaq1e/Se_jogar_para_esquivar_de_carros.7z.html" # [189] Se jogar para esquivar de carros
+    "http://sharemods.com/zsw83kwdd2ag/Anima____es_de_Kung_Fu_melhoradas.7z.html" # [190] Animações de Kung Fu melhoradas
+    "http://sharemods.com/vgxjuwx0joou/SASD_Carpack_by_MCHammer.7z.html" # [191] SASD Carpack by MCHammer (pack polícia SA Style)
+    "http://sharemods.com/cchq803ez667/Desert_Eagle_Mark_XIX.7z.html" # [192] EnhFuncs – Desert Eagle Mark XIX
+    "http://sharemods.com/bi6t0xqvr5jj/CJ_reclama_com_carros_2.7z.html" # [193] CJ reclama com carros
+    "http://sharemods.com/2yhtn7ed2utl/GTA_Online_Anims.7z.html" # [194] GTA V Online Original Anims to SA (animações do GTA Online)
+    "http://sharemods.com/y7ny6i33w58q/Parkour_Mod.7z.html" # [195] Parkour Mod v2.0.4 Unofficial Fix
+    "http://sharemods.com/1osrp4cxex04/Infernus_HD_by_Ezekiel.7z.html" # [196] Infernus HD by Ezekiel
+    "http://sharemods.com/81id5unk7jky/Shotgun_Reload.7z.html" # [197] Shotgun Reload (espingarda recarregando)
 )
 
 for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
     sleep 0.35
 done
-echo "✔ Lote 12/19 enviado para o navegador com sucesso!"
+echo "✔ Lote 12/17 enviado para o navegador com sucesso!"

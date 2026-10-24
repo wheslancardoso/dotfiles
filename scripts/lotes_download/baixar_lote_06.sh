@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE PENDENTE 06 DE 19 NO BRAVE (Mods 76 a 90) ==="
+echo "=== ABRINDO LOTE PENDENTE 06 DE 17 NO BRAVE (Mods 76 a 90) ==="
 
 URLS=(
     "https://sharemods.com/q2pnidt84vet/GTA_Healer.7z.html" # [87] GTA Healer (check & backup)
@@ -23,4 +23,4 @@ for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
     sleep 0.35
 done
-echo "✔ Lote 06/19 enviado para o navegador com sucesso!"
+echo "✔ Lote 06/17 enviado para o navegador com sucesso!"

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE PENDENTE 07 DE 19 NO BRAVE (Mods 91 a 105) ==="
+echo "=== ABRINDO LOTE PENDENTE 07 DE 17 NO BRAVE (Mods 91 a 105) ==="
 
 URLS=(
     "https://sharemods.com/21ot2q919vjr/View_Models_Info.7z.html" # [105] View Models Info v1.1 (ver ID de objetos)
@@ -13,14 +13,14 @@ URLS=(
     "https://sharemods.com/m7m47k8pbah5/Added_Weapons_Pack.7z.html" # [113] Added 70 Weapons Pack (70 novas armas adicionadas)
     "https://sharemods.com/v0mqs5d7wick/Save_Tools.7z.html" # [114] Save Tools – Jogo salvo 100% + Save Game Helper + Backup
     "https://sharemods.com/cg6r9vwvtdik/Rikintosh__x27_s_Small_Details_Mod_-_Improved.7z.html" # [115] Rikintosh’s Small Details Mod (carros com texturas HD)
-    "https://sharemods.com/5x07pblbqpxz/Mod_VR.7z.html" # [117] Mod VR (Virtual Reality)
-    "https://sharemods.com/3bet7r9pi53t/SAORS.7z.html" # [118] SAORS v2 (mod rádio online)
-    "https://sharemods.com/dacnu6i4jbps/Acceleratorgen.7z.html" # [119] Acceleratorgen (gerador de MINFO.BIN e CINFO.BIN)
-    "https://sharemods.com/z7cnx7ur9s5n/San_Andreas_Farming_Equipment_DLC.7z.html" # [120] San Andreas Farming Equipment DLC (SAFE DLC) (trator HD)
+    "https://sharemods.com/3bet7r9pi53t/SAORS.7z.html" # [117] SAORS v2 (mod rádio online)
+    "https://sharemods.com/kgi120yjoqgc/Vehicle_Shared_HD_Wheels.7z.html" # [119] Vehicle Shared HD Wheels (carros com rodas HD)
+    "https://sharemods.com/t1oa3uuqyl8p/Beta_Gang_Skins_Added.7z.html" # [120] Beta Gang Skins Added (restaurar gangue beta)
+    "https://sharemods.com/04ywd5k9r0ps/Revamped_Arsenal.7z.html" # [121] Revamped Arsenal (armas originais melhoradas)
 )
 
 for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
     sleep 0.35
 done
-echo "✔ Lote 07/19 enviado para o navegador com sucesso!"
+echo "✔ Lote 07/17 enviado para o navegador com sucesso!"
