@@ -9,7 +9,6 @@ import os
 import re
 import json
 import shutil
-import zipfile
 import subprocess
 import argparse
 from pathlib import Path
@@ -88,45 +87,57 @@ def get_inbox_archives():
     return archives
 
 def parse_catalog():
-    """Lê o MODPACK_DEFINITIVO_GTA_SA.md e extrai os 270 mods catalogados."""
+    """Lê o MODPACK_DEFINITIVO_GTA_SA.md e extrai os mods curados."""
     if not CATALOG_MD.exists():
         print(f"{C.RED}Catálogo não encontrado em {CATALOG_MD}{C.RESET}")
         return []
 
-    text = CATALOG_MD.read_text(encoding="utf-8")
-    parts = re.split(r"(?=^###\s+\[)", text, flags=re.MULTILINE)
+    lines = CATALOG_MD.read_text(encoding="utf-8").split("\n")
     mods = []
+    current_category = "Geral"
     
     idx = 1
-    for p in parts:
-        m = re.match(r"^###\s+\[(.*?)\]\((.*?)\)", p)
+    pattern = r"^\*\s+\*\*\[(.*?)\]\s+(.*?):\*\*\s+(.*)$"
+    
+    for line in lines:
+        line_str = line.strip()
+        if line_str.startswith("### "):
+            current_category = line_str.replace("### ", "").strip()
+            continue
+            
+        m = re.match(pattern, line_str)
         if m:
-            title = m.group(1).strip()
-            page_url = m.group(2).strip()
+            status_tag = m.group(1).strip()
+            name = m.group(2).strip()
+            rest = m.group(3).strip()
             
-            d_match = re.search(r"\*\*Data da Publicação:\*\*\s*`?(.*?)`?$", p, re.MULTILINE)
-            date_str = d_match.group(1).strip() if d_match else ""
-            
-            dl_links = re.findall(r"-\s+\[(.*?)\]\((.*?)\)", p)
+            links = re.findall(r"\[(.*?)\]\((.*?)\)", rest)
+            page_url = ""
             downloads = []
-            for label, url in dl_links:
-                if any(dom in url for dom in ["sharemods", "mediafire", "github.com", "mega.nz", "drive.google", "dropbox", "gtainside"]):
-                    downloads.append({"label": label, "url": url})
             
-            clean_name = re.sub(r"\[.*?\]", "", title).strip()
+            for label, url in links:
+                if "Post MixMods" in label or "Post" in label:
+                    page_url = url
+                elif any(dom in url for dom in ["sharemods", "mediafire", "github.com", "mega.nz", "drive.google", "dropbox"]):
+                    downloads.append({"label": label, "url": url})
+            if not page_url and links:
+                page_url = links[0][1]
+
+            clean_name = re.sub(r"\(.*?\)", "", name).strip()
             keywords = [w.lower() for w in re.split(r"[^a-zA-Z0-9]+", clean_name) if len(w) > 3]
 
             mods.append({
                 "id": idx,
-                "title": title,
+                "title": name,
                 "clean_name": clean_name,
+                "category": current_category,
                 "keywords": keywords,
                 "page_url": page_url,
-                "date": date_str,
                 "downloads": downloads,
-                "raw_block": p
+                "tag": status_tag
             })
             idx += 1
+            
     return mods
 
 def match_mod_status(mod, installed_entries, inbox_archives):
@@ -146,6 +157,10 @@ def match_mod_status(mod, installed_entries, inbox_archives):
         if keywords and len(keywords) >= 2 and all(k in arch_name for k in keywords[:2]):
             return "DOWNLOADED", arch_path
 
+    # Se na tag do markdown estiver explicitamente INSTALADO
+    if "INSTALADO" in mod["tag"]:
+        return "INSTALLED", "Manual/Verified"
+
     return "PENDING", None
 
 def cmd_status(args):
@@ -159,6 +174,7 @@ def cmd_status(args):
     asi_ok = (GAME_DIR / "vorbisFile.dll").exists()
     ml_ok = (GAME_DIR / "modloader.asi").exists()
     cleo_ok = (GAME_DIR / "CLEO.asi").exists()
+    cleo_rdx = (GAME_DIR / "cleo_redux.asi").exists()
     exe_ok = (GAME_DIR / "gta_sa.exe").exists()
     
     print(f"\n{C.BOLD}Componentes Fundamentais:{C.RESET}")
@@ -166,6 +182,7 @@ def cmd_status(args):
     print(f"  - Silent's ASI Loader:     {'🟢 OK' if asi_ok else '🔴 Ausente'}")
     print(f"  - ModLoader v0.3.8+:       {'🟢 OK' if ml_ok else '🔴 Ausente'}")
     print(f"  - CLEO 4 / CLEO+:          {'🟢 OK' if cleo_ok else '🔴 Ausente'}")
+    print(f"  - CLEO Redux x86:          {'🟢 OK' if cleo_rdx else '🔴 Ausente'}")
 
     mods = parse_catalog()
     installed_entries = get_installed_entries()
@@ -184,7 +201,7 @@ def cmd_status(args):
         else:
             pend_count += 1
             
-    print(f"\n{C.BOLD}Estatísticas do Modpack ({len(mods)} mods catalogados):{C.RESET}")
+    print(f"\n{C.BOLD}Estatísticas do Modpack Curado ({len(mods)} mods essenciais selecionados):{C.RESET}")
     print(f"  - 🟢 Instalados no jogo:   {C.GREEN}{C.BOLD}{inst_count}{C.RESET}")
     print(f"  - 🟡 Baixados no Inbox:    {C.YELLOW}{C.BOLD}{down_count}{C.RESET}")
     print(f"  - 🔴 Pendentes de download:{C.RED}{C.BOLD}{pend_count}{C.RESET}")
@@ -195,8 +212,10 @@ def cmd_list(args):
     installed_entries = get_installed_entries()
     inbox_archives = get_inbox_archives()
     
-    print(f"\n{C.BOLD}Catálogo de Mods GTA San Andreas ({len(mods)} total):{C.RESET}")
+    print(f"\n{C.BOLD}Catálogo Curado de Elite ({len(mods)} mods selecionados):{C.RESET}")
+    current_cat = None
     count = 0
+    
     for m in mods:
         st, ref = match_mod_status(m, installed_entries, inbox_archives)
         
@@ -206,15 +225,19 @@ def cmd_list(args):
             continue
         if args.pending and st != "PENDING":
             continue
-        if args.search and args.search.lower() not in m["title"].lower():
+        if args.search and args.search.lower() not in m["title"].lower() and args.search.lower() not in m["category"].lower():
             continue
             
+        if m["category"] != current_cat:
+            current_cat = m["category"]
+            print(f"\n{C.BOLD}{C.BLUE}--- {current_cat} ---{C.RESET}")
+
         badge = f"{C.GREEN}[INSTALADO]{C.RESET}" if st == "INSTALLED" else (f"{C.YELLOW}[BAIXADO]{C.RESET}" if st == "DOWNLOADED" else f"{C.RED}[PENDENTE]{C.RESET}")
-        print(f"{C.DIM}{m['id']:03d}{C.RESET} {badge} {C.BOLD}{m['title']}{C.RESET}")
-        print(f"     MixMods: {C.CYAN}{m['page_url']}{C.RESET}")
-        if m["downloads"]:
-            for dl in m["downloads"]:
-                print(f"     Download: {C.MAGENTA}{dl['label']}{C.RESET} -> {dl['url']}")
+        print(f"{C.DIM}{m['id']:02d}{C.RESET} {badge} {C.BOLD}{m['title']}{C.RESET}")
+        if m["page_url"]:
+            print(f"    Post:     {C.CYAN}{m['page_url']}{C.RESET}")
+        for dl in m["downloads"]:
+            print(f"    Download: {C.MAGENTA}{dl['label']}{C.RESET} -> {dl['url']}")
         count += 1
         
     print(f"\nTotal exibido: {count} mods.")
@@ -237,7 +260,7 @@ def cmd_ingest(args):
             if any(ign in name_lower for ign in IGNORE_PATTERNS):
                 continue
                 
-            is_gta = any(k in name_lower for k in ["sa_", "gta", "cleo", "mod", "fix", "stream", "effect", "retex", "shader", "anim", "weapon", "radar", "urbanize", "person"])
+            is_gta = any(k in name_lower for k in ["sa_", "gta", "cleo", "mod", "fix", "stream", "effect", "retex", "shader", "anim", "weapon", "radar", "urbanize", "person", "traffic", "veh", "ped", "ragdoll", "aiming"])
             if not is_gta and not args.force:
                 continue
 
@@ -284,6 +307,25 @@ def cmd_open(args):
     print(f"URL: {C.CYAN}{target_url}{C.RESET}")
     subprocess.run(["xdg-open", target_url])
 
+def cmd_open_pending(args):
+    """Abre links dos mods prioritários pendentes no navegador."""
+    mods = parse_catalog()
+    installed_entries = get_installed_entries()
+    inbox_archives = get_inbox_archives()
+    
+    pending_mods = []
+    for m in mods:
+        st, _ = match_mod_status(m, installed_entries, inbox_archives)
+        if st == "PENDING":
+            pending_mods.append(m)
+            
+    print(f"\n{C.BOLD}Mods pendentes encontrados: {len(pending_mods)}{C.RESET}")
+    limit = args.limit or 5
+    for i, m in enumerate(pending_mods[:limit]):
+        url = m["downloads"][0]["url"] if m["downloads"] else m["page_url"]
+        print(f"  [{i+1}/{limit}] Abrindo: {C.BOLD}{m['title']}{C.RESET} -> {C.CYAN}{url}{C.RESET}")
+        subprocess.run(["xdg-open", url])
+
 def cmd_play(args):
     """Inicia o jogo."""
     launcher = GAME_DIR / "jogar.sh"
@@ -306,7 +348,7 @@ def main():
     p_list.add_argument("--installed", action="store_true", help="Apenas instalados")
     p_list.add_argument("--downloaded", action="store_true", help="Apenas baixados no inbox")
     p_list.add_argument("--pending", action="store_true", help="Apenas pendentes")
-    p_list.add_argument("--search", "-s", type=str, help="Filtrar por nome")
+    p_list.add_argument("--search", "-s", type=str, help="Filtrar por nome ou categoria")
     
     p_ingest = sub.add_parser("ingest", help="Auto-ingestão e instalação de zips baixados no inbox")
     p_ingest.add_argument("--dir", "-d", type=str, help="Diretório específico")
@@ -315,6 +357,9 @@ def main():
     p_open = sub.add_parser("open", help="Abre página do MixMods ou link de download no navegador")
     p_open.add_argument("query", type=str, help="Nome do mod ou ID")
     p_open.add_argument("--download", "-d", action="store_true", help="Abrir link de download direto")
+
+    p_op = sub.add_parser("open-pending", help="Abre os próximos mods pendentes no navegador para download rápido")
+    p_op.add_argument("--limit", "-l", type=int, default=5, help="Quantidade de links para abrir (padrão: 5)")
     
     p_play = sub.add_parser("play", help="Executar o jogo")
     p_play.add_argument("--gamescope", action="store_true", help="Executar dentro do Gamescope")
@@ -329,6 +374,7 @@ def main():
         "list": cmd_list,
         "ingest": cmd_ingest,
         "open": cmd_open,
+        "open-pending": cmd_open_pending,
         "play": cmd_play
     }
     cmds[args.command](args)
