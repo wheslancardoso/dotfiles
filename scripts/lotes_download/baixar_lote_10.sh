@@ -1,25 +1,25 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE 10 DE 18 NO BRAVE (Mods 136 a 150) ==="
+echo "=== ABRINDO LOTE PENDENTE 10 DE 17 NO BRAVE (Novos Mods 136 a 150) ==="
 URLS=(
-    "https://sharemods.com/e07ksm6zefr3/SA_DirectX_2.7z.html" # [136] SA_DirectX 2.0 Final + Unofficial update (ASI version)
-    "https://sharemods.com/kgi120yjoqgc/Vehicle_Shared_HD_Wheels.7z.html" # [137] Vehicle Shared HD Wheels (carros com rodas HD)
-    "https://sharemods.com/t1oa3uuqyl8p/Beta_Gang_Skins_Added.7z.html" # [138] Beta Gang Skins Added (restaurar gangue beta)
-    "https://sharemods.com/04ywd5k9r0ps/Revamped_Arsenal.7z.html" # [139] Revamped Arsenal (armas originais melhoradas)
-    "https://sharemods.com/69lwlady6yav/NewOpcodes.7z.html" # [140] NewOpcodes.cleo v2.1
-    "https://sharemods.com/sjmd1yxgpf08/SCRLog.zip.html" # [141] [III/VC/SA] SCRLog 2020.3 (descobrir crash em mod CLEO)
-    "https://sharemods.com/acne914kzt4m/MoonLoader_preview_version.7z.html" # [142] MoonLoader
-    "https://sharemods.com/1ssbaxmrs16v/ModLoader_support_for_MoonLoader.7z.html" # [143] ModLoader support for MoonLoader (mods Lua no ModLoader)
-    "https://sharemods.com/d4ad9tj5ip4z/VPJ_by_Ezekiel.7z.html" # [144] VPJ – Vertex Paint Job (novas sombras e iluminação)
-    "https://sharemods.com/i6mfm8lk10zv/Skyscrapers_Reflections.7z.html" # [145] Skyscrapers Reflections (reflexos nos vidros dos prédios)
-    "https://sharemods.com/mzim2ufqseez/Dynamic_FOV.7z.html" # [146] Dynamic FOV v1.1 (campo de visão dinâmico)
-    "https://sharemods.com/dj1g4aw1puhz/SIG_SAUER_P226R.7z.html" # [147] SIG Sauer P226R do Escape from Tarkov
-    "https://sharemods.com/c6bqk7phv6m5/Glowing_Pickups.zip.html" # [148] [SA] Glowing Pickups v1.0.3 (weapon coronas)
-    "https://sharemods.com/ebrx0xurrrq6/Rhino_Animated.7z.html" # [149] Rhino Animated (tanque original animado)
-    "https://sharemods.com/o7x9wiu40e31/Cutscene_Weapons_Fix.7z.html" # [150] Cutscene Weapons Fix (corrigir armas das cutscenes)
+    "https://sharemods.com/shb6ml79ruhj/Stress_Test.7z.html" # [154] Stress Test (forçar jogo a crashar)
+    "https://sharemods.com/ejwih62ioxnz/Gang_Rider_Lua.7z.html" # [155] Gang Rider v2 (carregar mais gangue)
+    "https://sharemods.com/2zhd2ohur8hu/fastman92_processor.7z.html" # [156] fastman92 processor v1.9 + GUI
+    "https://drive.google.com/drive/folders/1gPYZm_H0i-h22r1TjSZCcKY8hiCEqI8t" # [157] GTA SA Comic Edition
+    "https://drive.google.com/file/d/1OjwyxUKqjRCYuv9y49dgHfV0EOnqiBTA/view?usp=sharing" # [158] Faithful Weapons Pack 2.0 (pack de armas fiéis)
+    "https://sharemods.com/t0qrb187b7qr/Banshee_Plus.7z.html" # [159] Banshee Plus+ (SA style)
+    "https://sharemods.com/jm60r1j8pr72/Euryopa.7z.html" # [160] Euryopa (visualizador de mapa para GTA)
+    "https://sharemods.com/ywqqzuky007z/Futo_Trueno_Levin.7z.html" # [161] Futo Trueno + Levin (AE86 SA style)
+    "https://sharemods.com/s8bmfqkshpzo/90s_Atmosphere_Weapons_Pack_Reborn.7z.html" # [162] 90s AWP – 90s Atmosphere Weapons Pack Reborn 4.0
+    "https://sharemods.com/coxoxpb23p35/ENBSeriesAutoToggle.7z.html" # [163] ENB Series Auto Toggle (desativar ENB em interior e menu)
+    "https://sharemods.com/jvzzb61srlpb/Peugeot_206_GTI.7z.html" # [164] Peugeot 206 GTI (tunável)
+    "https://sharemods.com/w955w0xtii2a/Clean_Render_-_Renderhook.7z.html" # [165] Clean Render (RenderHook)
+    "https://sharemods.com/zprw8r1npn0f/Hangout_with_Story_Characters.7z.html" # [166] Hangout with Story Characters (recrutar personagens)
+    "https://sharemods.com/1gegyekjbnht/Beta_Gang_Restore.7z.html" # [167] Beta Gang Restore (restaurar gangue beta)
+    "https://sharemods.com/3mapd6624i7k/LCS_PlayIdles_to_SA.7z.html" # [168] LCS PlayIdles to SA
 )
 
 for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
     sleep 0.3
 done
-echo "Lote aberto no Brave com sucesso!"
+echo "Lote pendente aberto no Brave!"

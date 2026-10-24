@@ -1,25 +1,25 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE 16 DE 18 NO BRAVE (Mods 226 a 240) ==="
+echo "=== ABRINDO LOTE PENDENTE 16 DE 17 NO BRAVE (Novos Mods 226 a 240) ==="
 URLS=(
-    "http://sharemods.com/00izlnuf1r76/Big_Gangster.7z.html" # [226] Big Gangster Mod v5
-    "http://sharemods.com/48eldouiaq1e/Se_jogar_para_esquivar_de_carros.7z.html" # [227] Se jogar para esquivar de carros
-    "http://sharemods.com/4q0zw5rsc74h/Fortnite_Pack.7z.html" # [228] Pack de armas e sons do Fortnite
-    "http://sharemods.com/zsw83kwdd2ag/Anima____es_de_Kung_Fu_melhoradas.7z.html" # [229] Animações de Kung Fu melhoradas
-    "http://sharemods.com/vgxjuwx0joou/SASD_Carpack_by_MCHammer.7z.html" # [230] SASD Carpack by MCHammer (pack polícia SA Style)
-    "http://sharemods.com/cchq803ez667/Desert_Eagle_Mark_XIX.7z.html" # [231] EnhFuncs – Desert Eagle Mark XIX
-    "http://sharemods.com/d1ougyt80b8r/Mount_Akina___Toyota_AE86.7z.html" # [232] Mount Akina + Toyota AE86 Trueno
-    "http://sharemods.com/bi6t0xqvr5jj/CJ_reclama_com_carros_2.7z.html" # [233] CJ reclama com carros
-    "http://sharemods.com/lzxs1w77ffh6/London_Cabbie.7z.html" # [234] London Cabbie
-    "http://sharemods.com/bgd4a3kbdjfw/Ganados__Mod_Resident_Evil_4_.7z.html" # [235] Ganados v2.0 (Mod Resident Evil 4)
-    "http://sharemods.com/2yhtn7ed2utl/GTA_Online_Anims.7z.html" # [236] GTA V Online Original Anims to SA (animações do GTA Online)
-    "http://sharemods.com/y7ny6i33w58q/Parkour_Mod.7z.html" # [237] Parkour Mod v2.0.4 Unofficial Fix
-    "http://sharemods.com/wpmcvchn1nly/Trator_Valtra_685___carreta__SA_Style_.7z.html" # [238] Trator Valtra 685 + carreta (SA Style)
-    "http://sharemods.com/1osrp4cxex04/Infernus_HD_by_Ezekiel.7z.html" # [239] Infernus HD by Ezekiel
-    "https://www.mixmods.com.br/2018/02/pack-de-armas-do-battlegrounds/" # [240] Pack de armas do Battlegrounds
+    "https://drive.google.com/open?id=1Da9MWJ3qROTT62rnRwHM9AD1V7vwHEO9" # [244] Arremessar facas ou katanas
+    "https://drive.google.com/file/d/1Gjx78UjDyXcKxQz37vdK17C9WGwfz5ap/view" # [245] Arma IMBEL IA2 (brasileira) (lowpoly)
+    "https://drive.google.com/open?id=1fWs2vr_sJv7djPRxDX3CI_4XsA6BDWsO" # [246] M4k3’s New Car Animations – Novas animações ao dirigir
+    "https://drive.google.com/open?id=1zgWe0bejROV0cdFQDR6zTr0-E7zK2bKD" # [247] Max Payne Mod
+    "https://drive.google.com/file/d/0B1sAJQAUfOOYNjhwLXFQTWFneG8/view" # [248] Amazing Player: Female v2.0 (skin feminina)
+    "https://www.mixmods.com.br/2017/10/pack-de-skins-da-ak-47-do-csgo/" # [249] Pack de Skins da AK-47 do CS:GO
+    "https://sharemods.com/zr8805cvzg0y/Pose_Mod.7z.html" # [250] Pose Mod (beta)
+    "https://drive.google.com/open?id=0B04D_5yMCyl9bC16eTc2SnBHTmc" # [251] Explosivo TNT (relógio com detonador)
+    "https://www.mixmods.com.br/2017/08/ak74-do-contract-wars/" # [252] AK74 do Contract Wars
+    "https://drive.google.com/file/d/0B1sAJQAUfOOYdXNwNk9sSU1NUW8/view" # [253] Microphone Talk (mexer a boca ao falar no microfone)
+    "https://drive.google.com/file/d/0B1sAJQAUfOOYYXFiS0pkX2dCVjg/view" # [254] Parachute Randomizer (variar para-quedas)
+    "https://www.mixmods.com.br/2017/07/hit-the-entity-fix-bater-na-parede/" # [255] Hit the Entity Fix (Bater na parede)
+    "https://sharemods.com/azzbo9poul6r/Extended_Gang_Wars.7z.html" # [256] Extended Gang Wars
+    "https://sharemods.com/0cw2e8gpne29/Visual_Weapon_Spawner.7z.html" # [257] Visual Weapon Spawner
+    "http://sharemods.com/3hbsuxa6sgrf/Ladders_-_Subir_escadas.7z.html" # [258] Ladders – Subir e descer escadas
 )
 
 for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
     sleep 0.3
 done
-echo "Lote aberto no Brave com sucesso!"
+echo "Lote pendente aberto no Brave!"

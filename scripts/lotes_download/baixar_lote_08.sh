@@ -1,25 +1,25 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE 08 DE 18 NO BRAVE (Mods 106 a 120) ==="
+echo "=== ABRINDO LOTE PENDENTE 08 DE 17 NO BRAVE (Novos Mods 106 a 120) ==="
 URLS=(
-    "https://sharemods.com/6ljnksq0hmrq/FireType.7z.html" # [106] FireType v6.0 (tiro seletivo: auto, semi, burst)
-    "https://drive.google.com/file/d/1KcMiIBNyF7Z-hND1f8G4K3aRUzg6A7se/view?usp=sharing" # [107] Mipmapping
-    "https://sharemods.com/qipof5weizvy/Generate_Free_IDs_List.7z.html" # [108] Generate Free IDs List (mostrar IDs vazios)
-    "https://sharemods.com/v4buqzhgmour/IMBEL_IA2_FN_FAL.7z.html" # [109] IMBEL IA2 & FN FAL (armas brasileiras em HD)
-    "https://sharemods.com/xiqp6ec07z44/Taurus_24_7_PT_58.7z.html" # [110] Pistolas Taurus 24/7 e PT 58 (lowpoly)
-    "https://sharemods.com/zh4lmnw9s3m4/Proper_Weapon_Retex.7z.html" # [111] Proper Weapons Retex v1.3 (armas com texturas HD)
-    "https://sharemods.com/asxvzdjkpa6m/Real_Skybox.7z.html" # [112] Real Skybox v1.3.4 (céu realista)
-    "https://sharemods.com/s0sp511vtuty/SA_-_Widescreen_Fix.7z.html" # [113] Widescreen Fix para GTA SA (corrigir widescreen)
-    "https://sharemods.com/kyvwkd7vtt4i/More_Realistic_Reload_Animation_Mod.7z.html" # [114] More Realistic Reload Weapon Animation Mod (anims de recarregar)
-    "https://sharemods.com/ipzt2b4jipim/Discord_Rich_Presence.7z.html" # [115] GTA SA Discord Rich Presence (mostrar informações no Discord)
-    "https://drive.google.com/file/d/1fAxvXqia40TEKuFvyDw-KGaQZEIBf3Wo/view?usp=sharing" # [116] NeXtGen Remaster Weapons (pack de armas em HD)
-    "https://sharemods.com/21ot2q919vjr/View_Models_Info.7z.html" # [117] View Models Info v1.1 (ver ID de objetos)
-    "https://sharemods.com/j7ee0xxh4rjn/Race_Creator.7z.html" # [118] Race Creator v0.1 (criador de corridas)
-    "https://sharemods.com/izvr4xkn8brr/Skyline_Timecyc.7z.html" # [119] Skyline Timecyc (cores corrigidas)
-    "https://sharemods.com/nd45td9y91fj/Open_Door_Anim.7z.html" # [120] Open Door Anim v1.2.2 (animação abrindo porta)
+    "https://sharemods.com/1i8s8xh9yhsn/Mesa_Plus.7z.html" # [121] Mesa Plus+ (SA style)
+    "https://sharemods.com/j7nwrbkgywll/Improved_Default_Armoury.7z.html" # [122] Improved Default Armoury (armas melhoradas com reflexos)
+    "https://sharemods.com/z8idkvw7pxvs/Improved_Default_Armoury_For_Cutscenes.7z.html" # [123] Improved Default Armoury For Cutscenes (armas remasterizadas)
+    "https://www.mixmods.com.br/2021/03/autoid-v2-2-corrigir-conflito-de-ids-autoadapt/" # [124] AutoID (corrigir conflito de IDs) + AutoAdapt
+    "https://sharemods.com/6o30hb6d20nc/Disable_camera_-_Insert_key.7z.html" # [125] ENB Series v0.430 (.asi) + complex shadows, soft particles
+    "https://sharemods.com/m7m47k8pbah5/Added_Weapons_Pack.7z.html" # [126] Added 70 Weapons Pack (70 novas armas adicionadas)
+    "https://sharemods.com/v0mqs5d7wick/Save_Tools.7z.html" # [127] Save Tools – Jogo salvo 100% + Save Game Helper + Backup
+    "https://sharemods.com/cg6r9vwvtdik/Rikintosh__x27_s_Small_Details_Mod_-_Improved.7z.html" # [128] Rikintosh’s Small Details Mod (carros com texturas HD)
+    "https://sharemods.com/5x07pblbqpxz/Mod_VR.7z.html" # [130] Mod VR (Virtual Reality)
+    "https://sharemods.com/3bet7r9pi53t/SAORS.7z.html" # [131] SAORS v2 (mod rádio online)
+    "https://sharemods.com/dacnu6i4jbps/Acceleratorgen.7z.html" # [132] Acceleratorgen (gerador de MINFO.BIN e CINFO.BIN)
+    "https://sharemods.com/z7cnx7ur9s5n/San_Andreas_Farming_Equipment_DLC.7z.html" # [133] San Andreas Farming Equipment DLC (SAFE DLC) (trator HD)
+    "https://sharemods.com/1swhpdai23zn/Draw_Cols_SA.7z.html" # [135] Draw Cols SA (modo debug de colisores)
+    "https://sharemods.com/e07ksm6zefr3/SA_DirectX_2.7z.html" # [136] SA_DirectX 2.0 Final + Unofficial update (ASI version)
+    "https://sharemods.com/kgi120yjoqgc/Vehicle_Shared_HD_Wheels.7z.html" # [137] Vehicle Shared HD Wheels (carros com rodas HD)
 )
 
 for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
     sleep 0.3
 done
-echo "Lote aberto no Brave com sucesso!"
+echo "Lote pendente aberto no Brave!"

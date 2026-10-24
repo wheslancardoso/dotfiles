@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE 02 DE 18 NO BRAVE (Mods 16 a 30) ==="
+echo "=== ABRINDO LOTE PENDENTE 02 DE 17 NO BRAVE (Novos Mods 16 a 30) ==="
 URLS=(
-    "https://sharemods.com/kmxsdpto6re8/In-Game_Map_Editor.zip.html" # [16] In-Game Map Editor v0.7 (editor de mapa dentro do jogo)
-    "https://www.mixmods.com.br/2024/08/original-radio-extended/" # [17] [SA] Original Radio Extended (1000 músicas)
-    "https://sharemods.com/stxvlyt5j4q4/SA_-_SkyGfx_Extended.zip.html" # [18] [SA] SkyGfx v4.2b + Extended v1.7
-    "https://sharemods.com/3yrdrs7l9v6r/CLEOPlus.zip.html" # [19] [SA] CLEO+ v1.2.0
     "https://www.mixmods.com.br/2023/07/rosa-project-evolved-remaster-texturas-hd/" # [20] [SA] RoSA Evolved v1.5 (remaster texturas HD 2026) PC/Android
     "https://github.com/NVIDIAGameWorks/rtx-remix/releases/latest" # [21] [SA] RTX Remix (download)
     "https://www.mixmods.com.br/2023/05/gta-san-andreas-com-rtx-remix-supera-expectativas/" # [22] GTA San Andreas com RTX Remix supera expectativas
@@ -13,13 +9,17 @@ URLS=(
     "https://sharemods.com/bn17c3snstt1/SA_Snow_Conversion.7z.html" # [25] SA Snow Conversion 2022 (mod pack)
     "https://sharemods.com/gq01h5shttg9/DYOM_8.1.zip.html" # [26] [SA] DYOM – Design Your Own Mission (2022)
     "https://sharemods.com/zf4cw8dt5y0j/SA_-_Tree_House.7z.html" # [27] [SA] Tree House v1.1 (mod casa na árvore)
-    "https://sharemods.com/iq9lg1tafztf/Story_Mode.7z.html" # [28] [SA] Story Mode v2.0 (melhorias pra storyline)
-    "https://sharemods.com/r9991nx53e61/SA_-_Ladders_Mod.zip.html" # [29] [SA] Ladders Mod (subir escadas)
-    "https://www.mixmods.com.br/2022/10/projeto-urbanize-apoie/" # [30] Projeto Urbanize – Apoie!
+    "https://sharemods.com/3b7uuwotoncu/SA_-_Wind_Project.7z.html" # [31] [SA] Wind Project v1.0.2 (mod de vento)
+    "https://sharemods.com/6s9h92i8pfd0/Girlfriend_Parked_Cars_Restore_Fix.zip.html" # [32] [SA] RepairGTA (corrigir problemas automaticamente)
+    "https://sharemods.com/qi1khsdznvmg/Myths_Maker.7z.html" # [33] Myths Maker v2.7 (criar mitos e lendas)
+    "https://sharemods.com/wia802k6ikkm/Myths_Maker_-_Animals_Pack.7z.html" # [34] Myths Maker – Animals Pack (mod de animais)
+    "https://sharemods.com/0zi4kjql48g1/SA_-_Furniture_Mod.zip.html" # [35] [SA] Furniture Mod v1.0 beta (comprar móveis)
+    "https://sharemods.com/a8lp92fm5jz4/Open_Limit_Adjuster.zip.html" # [36] [III|VC|SA] OLA – Open Limit Adjuster v1.7
+    "https://sharemods.com/jvdsgr5n0kf9/SA_-_Cyber_Cafe_Interior.7z.html" # [37] [SA] Cyber Cafe Interior (lan-house)
 )
 
 for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
     sleep 0.3
 done
-echo "Lote aberto no Brave com sucesso!"
+echo "Lote pendente aberto no Brave!"

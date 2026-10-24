@@ -1,25 +1,25 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE 11 DE 18 NO BRAVE (Mods 151 a 165) ==="
+echo "=== ABRINDO LOTE PENDENTE 11 DE 17 NO BRAVE (Novos Mods 151 a 165) ==="
 URLS=(
-    "https://sharemods.com/bdfmly3kxlww/Beta_Weapons.7z.html" # [151] Beta Weapons Pack (armas restauradas da versão beta)
-    "https://sharemods.com/6bqvoaye4s8o/Real_Skybox_-_skyboxes_1024.7z.html" # [152] Real Skybox skyboxes by Crowdigger (novos céus HD)
-    "https://sharemods.com/7ebe6hqzbcc8/Handshake_Mod.7z.html" # [153] Handshake Mod (aperto de mão)
-    "https://sharemods.com/shb6ml79ruhj/Stress_Test.7z.html" # [154] Stress Test (forçar jogo a crashar)
-    "https://sharemods.com/ejwih62ioxnz/Gang_Rider_Lua.7z.html" # [155] Gang Rider v2 (carregar mais gangue)
-    "https://sharemods.com/2zhd2ohur8hu/fastman92_processor.7z.html" # [156] fastman92 processor v1.9 + GUI
-    "https://drive.google.com/drive/folders/1gPYZm_H0i-h22r1TjSZCcKY8hiCEqI8t" # [157] GTA SA Comic Edition
-    "https://drive.google.com/file/d/1OjwyxUKqjRCYuv9y49dgHfV0EOnqiBTA/view?usp=sharing" # [158] Faithful Weapons Pack 2.0 (pack de armas fiéis)
-    "https://sharemods.com/t0qrb187b7qr/Banshee_Plus.7z.html" # [159] Banshee Plus+ (SA style)
-    "https://sharemods.com/jm60r1j8pr72/Euryopa.7z.html" # [160] Euryopa (visualizador de mapa para GTA)
-    "https://sharemods.com/ywqqzuky007z/Futo_Trueno_Levin.7z.html" # [161] Futo Trueno + Levin (AE86 SA style)
-    "https://sharemods.com/s8bmfqkshpzo/90s_Atmosphere_Weapons_Pack_Reborn.7z.html" # [162] 90s AWP – 90s Atmosphere Weapons Pack Reborn 4.0
-    "https://sharemods.com/coxoxpb23p35/ENBSeriesAutoToggle.7z.html" # [163] ENB Series Auto Toggle (desativar ENB em interior e menu)
-    "https://sharemods.com/jvzzb61srlpb/Peugeot_206_GTI.7z.html" # [164] Peugeot 206 GTI (tunável)
-    "https://sharemods.com/w955w0xtii2a/Clean_Render_-_Renderhook.7z.html" # [165] Clean Render (RenderHook)
+    "https://sharemods.com/nti33jp135j3/PCJ600_Remastered_HD.7z.html" # [169] PCJ600 Remastered HD
+    "https://sharemods.com/8kbzd9j6ez1s/Arma_MAC-10.7z.html" # [170] Arma MAC-10 (lowpoly)
+    "https://sharemods.com/wyg3bh7dgbro/Big_Gangster_Mod.7z.html" # [171] Big Gangster Mod (mais gangues)
+    "https://sharemods.com/r17sebrganh9/Deluxo.7z.html" # [172] 86′ Deluxo (SA style)
+    "https://sharemods.com/2hzskb32rm52/Chroma_Key.7z.html" # [173] Chroma Key Mod
+    "https://sharemods.com/nkqrfzf2uxti/Comet_Plus.7z.html" # [174] Comet Plus+ (SA style)
+    "https://www.mixmods.com.br/2020/04/como-copiar-pastas-sem-ocupar-espaco-em-disco-symbolic-link/" # [175] Como copiar pastas sem ocupar espaço em disco (symbolic link)
+    "https://drive.google.com/file/d/18iLZ_IEoAQl-3nZgWa_kFy6q7lsszy0L/view" # [176] 90s Atmosphere Vehicles Pack Reborn 3 (latest official stable version)
+    "https://sharemods.com/y1o3rvh75rzr/ReShade_Auto_Toggle.7z.html" # [177] [III/VC/SA] ReShade Auto Toggle (desativar efeitos no menu)
+    "https://sharemods.com/ov81mu97sllm/PBR_materials_for_RenderHook_by_jujubao.7z.html" # [178] PBR materials for RenderHook by jujubao (materiais para RH)
+    "https://sharemods.com/xmsenlboaezt/Shadows_Settings_Extender.7z.html" # [179] Shadows Settings Extender v2.1.2 (extensor de sombras)
+    "https://sharemods.com/4tj4ygjy8b99/Wayfarer_Plus_.7z.html" # [180] Wayfarer Plus+ (sa style)
+    "https://sharemods.com/9is4rzz7fd7w/Cartoon_Mod_Fixed.7z.html" # [181] Cartoon Mod Fixed (texturas e gráficos cartoon)
+    "https://sharemods.com/dv6ce6yan0dv/Dream_grass_.7z.html" # [182] Dream Grass (grama HD do GTA V)
+    "https://www.mixmods.com.br/2020/03/reshade-tutorial-de-como-usar/" # [183] ReShade + Tutorial de como usar
 )
 
 for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
     sleep 0.3
 done
-echo "Lote aberto no Brave com sucesso!"
+echo "Lote pendente aberto no Brave!"
