@@ -7,6 +7,7 @@ Integração com ModLoader, CLEO, Heroic Games Launcher e Wine Staging/DXVK.
 import sys
 import os
 import re
+import time
 import json
 import shutil
 import subprocess
@@ -21,10 +22,10 @@ WINE_PREFIX = Path("/mnt/dados/Games/pfx_gtasa")
 CATALOG_MD = Path("/home/lan/dotfiles/MODPACK_DEFINITIVO_GTA_SA.md")
 
 INBOX_DIRS = [
-    Path("/mnt/dados/00_Inbox_Triagem"),
-    Path("/mnt/dados/00_Inbox_Triagem/ABDM/Compressed"),
     Path.home() / "downloads",
-    Path.home() / "Downloads"
+    Path.home() / "Downloads",
+    Path("/mnt/dados/00_Inbox_Triagem"),
+    Path("/mnt/dados/00_Inbox_Triagem/ABDM/Compressed")
 ]
 
 HEROIC_CONFIG = Path.home() / ".config" / "heroic"
@@ -157,7 +158,6 @@ def match_mod_status(mod, installed_entries, inbox_archives):
         if keywords and len(keywords) >= 2 and all(k in arch_name for k in keywords[:2]):
             return "DOWNLOADED", arch_path
 
-    # Se na tag do markdown estiver explicitamente INSTALADO
     if "INSTALADO" in mod["tag"]:
         return "INSTALLED", "Manual/Verified"
 
@@ -242,6 +242,37 @@ def cmd_list(args):
         
     print(f"\nTotal exibido: {count} mods.")
 
+def ingest_file(p):
+    """Extrai e instala um arquivo de mod no modloader."""
+    name_lower = p.name.lower()
+    if any(ign in name_lower for ign in IGNORE_PATTERNS):
+        return False
+    if not any(name_lower.endswith(ext) for ext in [".zip", ".7z", ".rar"]):
+        return False
+        
+    mod_target_name = re.sub(r"\.(zip|7z|rar)$", "", p.name, flags=re.I)
+    mod_target_name = re.sub(r"^(SA_-_|SA_|_)", "", mod_target_name)
+    target_dir = MODLOADER_DIR / mod_target_name
+    
+    print(f"\n{C.YELLOW}⚡ Ingerindo mod recém-chegado:{C.RESET} {p.name}")
+    print(f"   Destino: {C.CYAN}modloader/{target_dir.name}{C.RESET}")
+    target_dir.mkdir(parents=True, exist_ok=True)
+    
+    cmd = ["7z", "x", f"-p{MIXMODS_PASSWORD}", f"-o{target_dir}", str(p), "-y"]
+    res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if res.returncode == 0:
+        print(f"   {C.GREEN}✔ Instalado com sucesso no ModLoader!{C.RESET}")
+        return True
+    else:
+        cmd_nopass = ["7z", "x", f"-o{target_dir}", str(p), "-y"]
+        res_np = subprocess.run(cmd_nopass, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if res_np.returncode == 0:
+            print(f"   {C.GREEN}✔ Instalado com sucesso no ModLoader!{C.RESET}")
+            return True
+        else:
+            print(f"   {C.RED}❌ Falha na extração de {p.name}: {res.stderr.decode()[:100]}{C.RESET}")
+            return False
+
 def cmd_ingest(args):
     """Varre arquivos compactados nas pastas de inbox e instala no modloader."""
     inbox_dirs = [Path(args.dir)] if args.dir else INBOX_DIRS
@@ -255,8 +286,6 @@ def cmd_ingest(args):
             if not p.is_file():
                 continue
             name_lower = p.name.lower()
-            if not any(name_lower.endswith(ext) for ext in [".zip", ".7z", ".rar"]):
-                continue
             if any(ign in name_lower for ign in IGNORE_PATTERNS):
                 continue
                 
@@ -264,67 +293,62 @@ def cmd_ingest(args):
             if not is_gta and not args.force:
                 continue
 
-            found_any = True
-            mod_target_name = re.sub(r"\.(zip|7z|rar)$", "", p.name, flags=re.I)
-            mod_target_name = re.sub(r"^(SA_-_|SA_|_)", "", mod_target_name)
-            target_dir = MODLOADER_DIR / mod_target_name
-            
-            print(f"Processando: {C.YELLOW}{p.name}{C.RESET} -> {C.GREEN}{target_dir.name}{C.RESET}")
-            target_dir.mkdir(parents=True, exist_ok=True)
-            
-            cmd = ["7z", "x", f"-p{MIXMODS_PASSWORD}", f"-o{target_dir}", str(p), "-y"]
-            res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            if res.returncode == 0:
-                print(f"  {C.GREEN}✔ Instalado com sucesso em modloader/{target_dir.name}!{C.RESET}")
-            else:
-                cmd_nopass = ["7z", "x", f"-o{target_dir}", str(p), "-y"]
-                res_np = subprocess.run(cmd_nopass, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                if res_np.returncode == 0:
-                    print(f"  {C.GREEN}✔ Instalado com sucesso em modloader/{target_dir.name}!{C.RESET}")
-                else:
-                    print(f"  {C.RED}❌ Falha ao extrair {p.name}: {res.stderr.decode()[:100]}{C.RESET}")
+            if ingest_file(p):
+                found_any = True
 
     if not found_any:
         print(f"{C.DIM}Nenhum arquivo compactado novo encontrado no inbox.{C.RESET}")
 
-def cmd_open(args):
-    """Abre link de mod no navegador padrão."""
-    mods = parse_catalog()
-    query = args.query.lower()
+def cmd_watch(args):
+    """Monitora a pasta de Downloads em tempo real para auto-instalação imediata."""
+    downloads_dir = Path.home() / "downloads"
+    print(f"\n{C.BOLD}{C.CYAN}=== 🛰️ GTA-MODMAN WATCHER ATIVADO ==={C.RESET}")
+    print(f"Monitorando em tempo real: {C.GREEN}{downloads_dir}{C.RESET}")
+    print(f"{C.DIM}Assim que você clicar em 'Download' no navegador, o mod será instalado automaticamente no jogo!{C.RESET}")
+    print(f"{C.DIM}Pressione Ctrl+C para encerrar o monitoramento.{C.RESET}\n")
     
-    matches = []
-    for m in mods:
-        if query in m["title"].lower() or query in str(m["id"]):
-            matches.append(m)
-            
-    if not matches:
-        print(f"{C.RED}Nenhum mod encontrado para o termo: '{args.query}'{C.RESET}")
-        return
-        
-    mod = matches[0]
-    print(f"\n{C.BOLD}Abrindo mod:{C.RESET} {mod['title']}")
-    target_url = mod["downloads"][0]["url"] if (args.download and mod["downloads"]) else mod["page_url"]
-    print(f"URL: {C.CYAN}{target_url}{C.RESET}")
-    subprocess.run(["xdg-open", target_url])
+    known_files = set()
+    if downloads_dir.exists():
+        for p in downloads_dir.iterdir():
+            if p.is_file():
+                known_files.add(p.name)
+                
+    try:
+        while True:
+            time.sleep(2)
+            if not downloads_dir.exists():
+                continue
+            for p in downloads_dir.iterdir():
+                if not p.is_file():
+                    continue
+                # Se for download temporário, ignora
+                if p.name.endswith(".crdownload") or p.name.endswith(".part"):
+                    continue
+                if p.name not in known_files:
+                    known_files.add(p.name)
+                    # Aguarda 1s para o arquivo fechar gravação
+                    time.sleep(1)
+                    ingest_file(p)
+    except KeyboardInterrupt:
+        print(f"\n{C.YELLOW}Watcher finalizado.{C.RESET}")
 
-def cmd_open_pending(args):
-    """Abre links dos mods prioritários pendentes no navegador."""
-    mods = parse_catalog()
-    installed_entries = get_installed_entries()
-    inbox_archives = get_inbox_archives()
+def cmd_open_batch(args):
+    """Abre os 7 principais mods essenciais pendentes de uma só vez no navegador."""
+    essentials = [
+        ("First Person Mod v3.0 Fixed", "https://www.mixmods.com.br/2022/03/first-person-mod-primeira-pessoa/"),
+        ("Urbanize (Ambient NPCs)", "https://sharemods.com/moincval44bp/SA_-_Urbanize_12-25_Final_1.zip.html"),
+        ("Real Traffic Fix v2.2", "https://sharemods.com/jlqyc2ya7lol/SA_-_Real_Traffic_Fix.7z.html"),
+        ("VehFuncs v2.5.5", "https://www.mixmods.com.br/2025/12/sa-vehfuncs/"),
+        ("Ragdoll Bullet Physics", "https://sharemods.com/txlr846ungla/Ragdoll_Bullet_Physics.zip.html"),
+        ("Proper Radar v1.3 (Minimapa HD)", "https://sharemods.com/eenyrp1bklvj/Proper_Radar.7z.html"),
+        ("Story Mode v2.0", "https://sharemods.com/iq9lg1tafztf/Story_Mode.7z.html")
+    ]
     
-    pending_mods = []
-    for m in mods:
-        st, _ = match_mod_status(m, installed_entries, inbox_archives)
-        if st == "PENDING":
-            pending_mods.append(m)
-            
-    print(f"\n{C.BOLD}Mods pendentes encontrados: {len(pending_mods)}{C.RESET}")
-    limit = args.limit or 5
-    for i, m in enumerate(pending_mods[:limit]):
-        url = m["downloads"][0]["url"] if m["downloads"] else m["page_url"]
-        print(f"  [{i+1}/{limit}] Abrindo: {C.BOLD}{m['title']}{C.RESET} -> {C.CYAN}{url}{C.RESET}")
+    print(f"\n{C.BOLD}{C.CYAN}Abrindo os 7 Mods Estelares no Navegador Brave:{C.RESET}")
+    for title, url in essentials:
+        print(f"  - {C.BOLD}{title}{C.RESET} -> {C.CYAN}{url}{C.RESET}")
         subprocess.run(["xdg-open", url])
+    print(f"\n{C.GREEN}✔ Abas abertas! Assim que clicar em baixar, execute 'gta-modman ingest' (ou use 'gta-modman watch') para instalar tudo de uma vez!{C.RESET}")
 
 def cmd_play(args):
     """Inicia o jogo."""
@@ -344,22 +368,18 @@ def main():
     
     sub.add_parser("status", help="Auditoria forense do jogo e status dos mods")
     
-    p_list = sub.add_parser("list", help="Lista catálogo de mods")
+    p_list = sub.add_parser("list", help="Lista catálogo curado de mods")
     p_list.add_argument("--installed", action="store_true", help="Apenas instalados")
     p_list.add_argument("--downloaded", action="store_true", help="Apenas baixados no inbox")
     p_list.add_argument("--pending", action="store_true", help="Apenas pendentes")
     p_list.add_argument("--search", "-s", type=str, help="Filtrar por nome ou categoria")
     
-    p_ingest = sub.add_parser("ingest", help="Auto-ingestão e instalação de zips baixados no inbox")
+    p_ingest = sub.add_parser("ingest", help="Auto-ingestão e instalação de zips baixados")
     p_ingest.add_argument("--dir", "-d", type=str, help="Diretório específico")
     p_ingest.add_argument("--force", "-f", action="store_true", help="Forçar ingestão de todos os arquivos")
     
-    p_open = sub.add_parser("open", help="Abre página do MixMods ou link de download no navegador")
-    p_open.add_argument("query", type=str, help="Nome do mod ou ID")
-    p_open.add_argument("--download", "-d", action="store_true", help="Abrir link de download direto")
-
-    p_op = sub.add_parser("open-pending", help="Abre os próximos mods pendentes no navegador para download rápido")
-    p_op.add_argument("--limit", "-l", type=int, default=5, help="Quantidade de links para abrir (padrão: 5)")
+    sub.add_parser("watch", help="Monitora ~/downloads em tempo real e auto-instala no ModLoader")
+    sub.add_parser("open-batch", help="Abre os 7 principais mods definitivos de uma vez só no navegador")
     
     p_play = sub.add_parser("play", help="Executar o jogo")
     p_play.add_argument("--gamescope", action="store_true", help="Executar dentro do Gamescope")
@@ -373,8 +393,8 @@ def main():
         "status": cmd_status,
         "list": cmd_list,
         "ingest": cmd_ingest,
-        "open": cmd_open,
-        "open-pending": cmd_open_pending,
+        "watch": cmd_watch,
+        "open-batch": cmd_open_batch,
         "play": cmd_play
     }
     cmds[args.command](args)
