@@ -1,26 +1,26 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE PENDENTE 15 DE 17 NO BRAVE (Mods 211 a 225) ==="
+echo "=== ABRINDO LOTE PENDENTE 15 DE 16 NO BRAVE (Mods 211 a 225) ==="
 
 URLS=(
-    "http://sharemods.com/zsw83kwdd2ag/Anima____es_de_Kung_Fu_melhoradas.7z.html" # [229] Animações de Kung Fu melhoradas
-    "http://sharemods.com/vgxjuwx0joou/SASD_Carpack_by_MCHammer.7z.html" # [230] SASD Carpack by MCHammer (pack polícia SA Style)
-    "http://sharemods.com/cchq803ez667/Desert_Eagle_Mark_XIX.7z.html" # [231] EnhFuncs – Desert Eagle Mark XIX
-    "http://sharemods.com/d1ougyt80b8r/Mount_Akina___Toyota_AE86.7z.html" # [232] Mount Akina + Toyota AE86 Trueno
-    "http://sharemods.com/bi6t0xqvr5jj/CJ_reclama_com_carros_2.7z.html" # [233] CJ reclama com carros
-    "http://sharemods.com/lzxs1w77ffh6/London_Cabbie.7z.html" # [234] London Cabbie
-    "http://sharemods.com/bgd4a3kbdjfw/Ganados__Mod_Resident_Evil_4_.7z.html" # [235] Ganados v2.0 (Mod Resident Evil 4)
-    "http://sharemods.com/2yhtn7ed2utl/GTA_Online_Anims.7z.html" # [236] GTA V Online Original Anims to SA (animações do GTA Online)
-    "http://sharemods.com/y7ny6i33w58q/Parkour_Mod.7z.html" # [237] Parkour Mod v2.0.4 Unofficial Fix
-    "http://sharemods.com/wpmcvchn1nly/Trator_Valtra_685___carreta__SA_Style_.7z.html" # [238] Trator Valtra 685 + carreta (SA Style)
-    "http://sharemods.com/1osrp4cxex04/Infernus_HD_by_Ezekiel.7z.html" # [239] Infernus HD by Ezekiel
-    "https://www.mixmods.com.br/2018/02/pack-de-armas-do-battlegrounds/" # [240] Pack de armas do Battlegrounds
-    "http://sharemods.com/81id5unk7jky/Shotgun_Reload.7z.html" # [241] Shotgun Reload (espingarda recarregando)
-    "https://drive.google.com/file/d/1wnWITLTGQAuqLgB14bTWSjSk_CYxR0S2/view" # [242] Bar Drink (mod beber no bar / ficar bêbado)
-    "https://drive.google.com/open?id=1asrLFdaJ702-Cy-Kqw0m6zTfEPK3Iho0" # [243] Animações do GTA VCS/LCS
+    "https://drive.google.com/file/d/0B1sAJQAUfOOYdXNwNk9sSU1NUW8/view" # [229] Microphone Talk (mexer a boca ao falar no microfone)
+    "https://drive.google.com/file/d/0B1sAJQAUfOOYYXFiS0pkX2dCVjg/view" # [230] Parachute Randomizer (variar para-quedas)
+    "https://www.mixmods.com.br/2017/07/hit-the-entity-fix-bater-na-parede/" # [231] Hit the Entity Fix (Bater na parede)
+    "https://sharemods.com/azzbo9poul6r/Extended_Gang_Wars.7z.html" # [232] Extended Gang Wars
+    "https://sharemods.com/0cw2e8gpne29/Visual_Weapon_Spawner.7z.html" # [233] Visual Weapon Spawner
+    "http://sharemods.com/3hbsuxa6sgrf/Ladders_-_Subir_escadas.7z.html" # [234] Ladders – Subir e descer escadas
+    "https://drive.google.com/open?id=0B04D_5yMCyl9RjIzbmVSOGU0bFk" # [235] Colocar/tirar silenciador da 9mm
+    "https://sharemods.com/bbvvho2ynd42/No_Dual_Wield___Segurar_pistola_com_duas_maos.7z.html" # [236] No Dual Wield + Segurar pistola com duas mãos
+    "https://sharemods.com/jn47en03jynn/Bloodz_and_CripZ_Remake.7z.html" # [237] Bloodz & CripZ (Remake)
+    "https://www.mixmods.com.br/2015/01/grafites-originais-em-hd/" # [238] Grafites originais em HD
+    "https://drive.google.com/file/d/0B1sAJQAUfOOYRFZLUVVmc3Rhd2M/view" # [239] Pack Skins Da Nang Boyz HD
+    "https://www.mixmods.com.br/2012/08/pack-de-skins-vagos-hd/" # [240] Pack de Skins Vagos HD
+    "https://drive.google.com/file/d/0B1sAJQAUfOOYTnJOeHBCM3I5WGc/view" # [241] Pack de skins Grove em HD (by AnRi)
+    "https://sharemods.com/35z1qznzsx1w/The_Gang_War.7z.html" # [242] The Gang War
+    "https://sharemods.com/i7fb2i43f55z/Novas_Skins_para_Grove_em_HD.7z.html" # [243] Novas Skins para Grove em HD
 )
 
 for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
     sleep 0.35
 done
-echo "✔ Lote 15/17 enviado para o navegador com sucesso!"
+echo "✔ Lote 15/16 enviado para o navegador com sucesso!"

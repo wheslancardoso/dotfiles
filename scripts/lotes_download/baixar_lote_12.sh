@@ -1,26 +1,26 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE PENDENTE 12 DE 17 NO BRAVE (Mods 166 a 180) ==="
+echo "=== ABRINDO LOTE PENDENTE 12 DE 16 NO BRAVE (Mods 166 a 180) ==="
 
 URLS=(
-    "https://sharemods.com/b2djjhiwysxs/Grip_Animation.7z.html" # [184] Grip Animation (nova animação de segurar arma)
-    "https://sharemods.com/cgdkdrp91z28/Military_Animation.7z.html" # [185] Military Animation v9 (unofficial fix)
-    "https://sharemods.com/vqvsr7ykuobm/ModdedSAA.7z.html" # [186] ModdedSAA (carregar arquivos bloqueados no SAMP)
-    "https://sharemods.com/uhuafeex1b5x/VW_Gol_G1_GTI_2000_Turbo.7z.html" # [187] VW Gol G1 GTI 2000 Turbo
-    "https://sharemods.com/l5fspyxy6ckk/ImVehFt_202.7z.html" # [188] ImVehFt – Improved Vehicle Features
-    "https://sharemods.com/x0i8t4lx8ayo/Snowmobile_SA_style.7z.html" # [189] Snowmobile (SA style)
-    "https://sharemods.com/7isw724uzmf4/Rename_vehicles.7z.html" # [190] Rename vehicles (car names.fxt)
-    "https://sharemods.com/ytebfstop2as/NRG_500_Remastered_by_Ezekiel.7z.html" # [191] NRG-500 Remastered HD by Ezekiel
-    "https://sharemods.com/rqgayynoe9ly/Ford_Focus_ZX3-SVT_2000-2004_Low-High_Trim.7z.html" # [192] Ford Focus ZX3/SVT 2000-2004 by Avant
-    "https://sharemods.com/5xnjtf8aab38/Infernus_HD_Remastered_by_Ezekiel.7z.html" # [193] Infernus HD Remastered by Ezekiel
-    "https://sharemods.com/jwztx8xur9nc/AI_Upscaled_Weapon_Textures_and_Icons.7z.html" # [194] [SA] Improved Original Weapons (mod pack)
-    "https://sharemods.com/s39vzt0qts03/Taurus_M972.7z.html" # [195] Arma Taurus M972/MT12 (brasileira) (lowpoly)
-    "https://sharemods.com/p8e8cq5qdr4k/IndieVehicles.7z.html" # [196] IndieVehicles
-    "https://sharemods.com/3duli5cpn9bb/ImGui.7z.html" # [197] ImGui (interface gráfica para MoonLoader)
-    "https://sharemods.com/iey3goqj7yma/Low_Life_Animation.7z.html" # [198] Low Life Animation v1.2.2 (animação de saúde baixa)
+    "https://sharemods.com/cp2ftd9u0re3/Land_Mines.7z.html" # [184] Land Mines (minas terrestres)
+    "https://www.mixmods.com.br/2019/02/tutorial-adicionar-armas-sem-substituir/" # [185] [Tutorial] Adicionar armas sem substituir
+    "https://sharemods.com/hiy3o47xxd7w/Car_Kick.7z.html" # [186] Car Kick (chutar motorista pela janela do carro)
+    "https://sharemods.com/9fu5fbdw3e5h/Kawasaki_Z1000_A1_1977.7z.html" # [187] Kawasaki Z1000 A1 1977
+    "https://sharemods.com/vj9mky5k373a/Plymouth_Belvedere_Station_Wagon_1965_by_Avant.7z.html" # [188] Plymouth Belvedere Station Wagon 1965 by Avant
+    "https://sharemods.com/1pshm7jmw1tf/Anim_Play.7z.html" # [189] Anim Play v2.0 (tocar animações)
+    "https://sharemods.com/8dy2ncqtysbg/Surrender.7z.html" # [190] Surrender Mod (se render / se entregar)
+    "https://sharemods.com/b8q8e55loi0q/Original_Weapons_Fix___Retex.7z.html" # [191] Original Weapons Fix 2.0 + Retex (corrigir posição das armas)
+    "https://sharemods.com/vf80kq9lsrhq/VW_Gol_G2_1.0_Plus___40_bola__41__by_Den_3D.7z.html" # [192] VW Gol G2 1.0 Plus (bola) by Dean 3D
+    "https://sharemods.com/zxvhj5rtn1jr/Sprinting_With_Two_Handed_Weapons.7z.html" # [193] Correr com armas pesadas (correr com rifle)
+    "https://sharemods.com/ry8wc7z7bnaf/Handbrake_Mod.7z.html" # [194] Handbrake Mod [sound + anim] (freio de mão com som e anim)
+    "https://sharemods.com/agzcmqzekvof/Espingarda_boito.7z.html" # [195] Espingarda boito caipira (country bolt rifle) (lowpoly)
+    "https://drive.google.com/file/d/1VgA-z5reCSf0NQDIMuP_pinkftjWKj1w/view?usp=sharing" # [196] Pack de Armas do Combat Arms
+    "http://sharemods.com/cohrl1eh7rnn/1964_Chevrolet_Impala_SS.7z.html" # [197] 1964 Chevrolet Impala SS Lowrider v2.1
+    "http://sharemods.com/2lo0mhpepqff/Beta_Cars_Pack.7z.html" # [198] Beta Cars Pack (carros da versão beta)
 )
 
 for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
     sleep 0.35
 done
-echo "✔ Lote 12/17 enviado para o navegador com sucesso!"
+echo "✔ Lote 12/16 enviado para o navegador com sucesso!"

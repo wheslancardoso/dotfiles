@@ -1,26 +1,26 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE PENDENTE 04 DE 17 NO BRAVE (Mods 46 a 60) ==="
+echo "=== ABRINDO LOTE PENDENTE 04 DE 16 NO BRAVE (Mods 46 a 60) ==="
 
 URLS=(
-    "https://sharemods.com/2xibsxei9gan/PedSkills.7z.html" # [53] [SA] PedSkills v2.2 (aumentar dificuldade)
-    "https://sharemods.com/dhjea67wrhm1/Real_Linear_Graphics.7z.html" # [54] Real Linear Graphics v2.6 (cores realistas)
-    "https://sharemods.com/w1gml4nqvlo8/Remove_Brass_Knucles.7z.html" # [55] [SA/SADE/Mobile] Remove Brass Knuckles (desativar soco-inglês)
-    "https://sharemods.com/a3tl94dgrzrb/Body_Stats_Fix.7z.html" # [57] [SA] Body Stats Fix in Interiors (corrigir corpo sem mudar)
-    "https://sharemods.com/pknk1m9jkooc/SADE_-_Torch_Mod.7z.html" # [59] [SA/SA:DE] Torch Mod (tocha com luz)
-    "https://sharemods.com/2289owg3jx0m/Death_In_Car.7z.html" # [60] Death In Car (morrer dentro do carro)
-    "https://sharemods.com/1u3i9l2uo4ao/Gang_Hands_Texture_Fix.7z.html" # [61] [SA] Gang Hands Texture Fix (corrigir mãos bugadas)
-    "https://sharemods.com/s4l7mw43heuk/SFDP_Heli_Fix.7z.html" # [62] [SA/SA:DE/Mobile] SFDP Heli Fix (helicóptero da polícia de SF)
-    "https://sharemods.com/q2gr7fu98fml/Proper_Night_Windows.7z.html" # [63] [SA] Proper Night Windows (mais janelas noturnas)
-    "https://sharemods.com/33090codslex/Skate_Mod.7z.html" # [64] [SA/SA:DE] Skateboarding Mod (mod de skate)
-    "https://sharemods.com/vmhimyh5mm0k/No_Auto_Pickups.7z.html" # [65] [SA] No Auto Pickups (coletar armas manualmente)
-    "https://sharemods.com/0ff3q5jkuabp/Missing_Smokes_Fix.7z.html" # [66] [SA] Missing Smokes Fix (fumaça na tubulação das fábricas)
-    "https://sharemods.com/u2fwrrrj6hvn/Manual_Firing.7z.html" # [67] [SA] Manual Firing v2.2.1 (tiros manuais)
-    "https://www.mixmods.com.br/2022/04/sa-map-editor/" # [68] [SA] Map Editor (editar mapa dentro do jogo com mouse)
-    "https://sharemods.com/0l8a752l17ui/Prostitutes_Money_Drop_Fix.7z.html" # [69] [SA] Prostitutes Money Drop Fix (corrigir dinheiro de prostitutas)
+    "https://sharemods.com/s4l7mw43heuk/SFDP_Heli_Fix.7z.html" # [55] [SA/SA:DE/Mobile] SFDP Heli Fix (helicóptero da polícia de SF)
+    "https://sharemods.com/q2gr7fu98fml/Proper_Night_Windows.7z.html" # [56] [SA] Proper Night Windows (mais janelas noturnas)
+    "https://sharemods.com/33090codslex/Skate_Mod.7z.html" # [57] [SA/SA:DE] Skateboarding Mod (mod de skate)
+    "https://sharemods.com/vmhimyh5mm0k/No_Auto_Pickups.7z.html" # [58] [SA] No Auto Pickups (coletar armas manualmente)
+    "https://sharemods.com/0ff3q5jkuabp/Missing_Smokes_Fix.7z.html" # [59] [SA] Missing Smokes Fix (fumaça na tubulação das fábricas)
+    "https://sharemods.com/u2fwrrrj6hvn/Manual_Firing.7z.html" # [60] [SA] Manual Firing v2.2.1 (tiros manuais)
+    "https://sharemods.com/0l8a752l17ui/Prostitutes_Money_Drop_Fix.7z.html" # [61] [SA] Prostitutes Money Drop Fix (corrigir dinheiro de prostitutas)
+    "https://www.mixmods.com.br/2022/04/no-minimap-in-interiors/" # [62] [SA] No Minimap In Interiors (desativar mapa em interiores)
+    "https://sharemods.com/l0oi1e2w49d1/SA_-_NextGen_Remaster_Effects.7z.html" # [63] [SA] NextGen Remaster Effects (efeitos realistas HD)
+    "https://sharemods.com/28iie8htc4jq/Missing_Lampposts_Fix.7z.html" # [65] [SA] Missing Lampposts Fix (mais postes de luz)
+    "https://sharemods.com/2uesa2zbze2m/Proper_Vehicles_Retex_v2.1_512_VERSION.7z.html" # [66] [SA/SA:DE] Proper Vehicles Retex v2.1 (texturas HD para veículos)
+    "https://drive.google.com/file/d/1PUR5J0BexJI2lXtATiu68U86EXkNM7tC/view?usp=sharing" # [67] [SA] GTA V Vehicles to SA by _F_ (carros convertidos do GTA V)
+    "https://sharemods.com/o07xb22y59nf/Project_Web_Anims.7z.html" # [68] [SA] Project Web Anims v7.5 (pack de animações)
+    "https://sharemods.com/iy139fyfuyet/Cheat_Menu_by_Grinch_.zip.html" # [69] Cheat Menu by Grinch_ v3.52
+    "https://sharemods.com/1rj82p2q33cz/Projectile_Shoot.7z.html" # [70] [SA] Projectile Shoot (atirar para explodir)
 )
 
 for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
     sleep 0.35
 done
-echo "✔ Lote 04/17 enviado para o navegador com sucesso!"
+echo "✔ Lote 04/16 enviado para o navegador com sucesso!"

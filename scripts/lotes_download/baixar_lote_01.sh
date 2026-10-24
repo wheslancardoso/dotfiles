@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-echo "=== ABRINDO LOTE PENDENTE 01 DE 17 NO BRAVE (Mods 1 a 15) ==="
+echo "=== ABRINDO LOTE PENDENTE 01 DE 16 NO BRAVE (Mods 1 a 15) ==="
 
 URLS=(
     "https://sharemods.com/79u303jv0csa/Proper_Streaming.zip.html" # [1] [SA] Proper Streaming (corrigir mapa não carregando)
@@ -13,14 +13,14 @@ URLS=(
     "https://www.mixmods.com.br/2025/07/muitos-mods-importantes-foram-atualizados/" # [11] Muitos mods importantes foram atualizados
     "https://sharemods.com/f67rcc920tm9/SA_-_Silent_ASI_Loader.zip.html" # [12] [SA] Silent’s ASI Loader v1.5
     "https://sharemods.com/1ly65k5xchjr/FxsFuncs.7z.html" # [14] FxsFuncs v1.2 (melhorias para efeitos especiais)
-    "https://sharemods.com/kmxsdpto6re8/In-Game_Map_Editor.zip.html" # [16] In-Game Map Editor v0.7 (editor de mapa dentro do jogo)
-    "https://www.mixmods.com.br/2024/08/original-radio-extended/" # [17] [SA] Original Radio Extended (1000 músicas)
-    "https://sharemods.com/stxvlyt5j4q4/SA_-_SkyGfx_Extended.zip.html" # [18] [SA] SkyGfx v4.2b + Extended v1.7
-    "https://sharemods.com/3yrdrs7l9v6r/CLEOPlus.zip.html" # [19] [SA] CLEO+ v1.2.0
+    "https://www.mixmods.com.br/2024/08/original-radio-extended/" # [16] [SA] Original Radio Extended (1000 músicas)
+    "https://sharemods.com/stxvlyt5j4q4/SA_-_SkyGfx_Extended.zip.html" # [17] [SA] SkyGfx v4.2b + Extended v1.7
+    "https://sharemods.com/3yrdrs7l9v6r/CLEOPlus.zip.html" # [18] [SA] CLEO+ v1.2.0
+    "https://www.mixmods.com.br/2023/07/rosa-project-evolved-remaster-texturas-hd/" # [19] [SA] RoSA Evolved v1.5 (remaster texturas HD 2026) PC/Android
 )
 
 for u in "${URLS[@]}"; do
     brave "$u" >/dev/null 2>&1 &
     sleep 0.35
 done
-echo "✔ Lote 01/17 enviado para o navegador com sucesso!"
+echo "✔ Lote 01/16 enviado para o navegador com sucesso!"
