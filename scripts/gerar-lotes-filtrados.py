@@ -10,7 +10,7 @@ backup_dir = '/mnt/dados/Games/GTA_San_Andreas/00_MODS_COMPACTADOS_BACKUP'
 downloaded_files = [f.lower() for f in os.listdir(backup_dir)]
 
 def is_already_downloaded(mod):
-    # checar se a URL de download bate com algum arquivo baixado
+    # 1. Comparação direta com URLs de download
     for dl in mod['downloads']:
         dl_name = dl.split('/')[-1].replace('.html', '').lower()
         for f in downloaded_files:
@@ -18,7 +18,7 @@ def is_already_downloaded(mod):
             if dl_name in f_clean or f_clean in dl_name:
                 return True
     
-    # checar palavras-chave fortes do título
+    # 2. Comparação semântica com os 23 arquivos que sabemos com 100% de certeza que estão baixados
     title_lower = mod['title'].lower()
     strong_keywords = [
         'essentials', 'urbanize', 'traffic fix', 'vehfuncs', 'ragdoll',
@@ -43,12 +43,14 @@ for m in catalog:
     else:
         pending_mods.append(m)
 
-print(f"Total de mods no catálogo geral: {len(catalog)}")
-print(f"Mods JÁ BAIXADOS (ignorados do download): {len(already_mods)}")
-print(f"Mods REALMENTE PENDENTES para baixar: {len(pending_mods)}")
+print(f"=== AUDITORIA COMPLETA DE MODS DO DOCUMENTO ===")
+print(f"Total de mods mapeados e indexados: {len(catalog)}")
+print(f"Mods JÁ BAIXADOS no backup (00_MODS_COMPACTADOS_BACKUP): {len(already_mods)}")
+print(f"Mods PENDENTES DE DOWNLOAD: {len(pending_mods)}")
 
-# Limpar scripts antigos e recriar apenas com os pendentes
+# Limpar e recriar scripts de lote
 scripts_dir = "/home/lan/dotfiles/scripts/lotes_download"
+os.makedirs(scripts_dir, exist_ok=True)
 for f in os.listdir(scripts_dir):
     os.remove(os.path.join(scripts_dir, f))
 
@@ -63,7 +65,7 @@ for i in range(num_batches):
     script_path = os.path.join(scripts_dir, f"baixar_lote_{i+1:02d}.sh")
     with open(script_path, "w", encoding="utf-8") as s:
         s.write("#!/usr/bin/env bash\n")
-        s.write(f'echo "=== ABRINDO LOTE PENDENTE {i+1:02d} DE {num_batches:02d} NO BRAVE (Novos Mods {start+1} a {end}) ==="\n')
+        s.write(f'echo "=== ABRINDO LOTE PENDENTE {i+1:02d} DE {num_batches:02d} NO BRAVE (Mods {start+1} a {end}) ==="\n\n')
         s.write('URLS=(\n')
         for item in batch:
             url = item["downloads"][0] if item["downloads"] else item["post"]
@@ -71,67 +73,76 @@ for i in range(num_batches):
         s.write(')\n\n')
         s.write('for u in "${URLS[@]}"; do\n')
         s.write('    brave "$u" >/dev/null 2>&1 &\n')
-        s.write('    sleep 0.3\n')
+        s.write('    sleep 0.35\n')
         s.write('done\n')
-        s.write('echo "Lote pendente aberto no Brave!"\n')
+        s.write(f'echo "✔ Lote {i+1:02d}/{num_batches:02d} enviado para o navegador com sucesso!"\n')
     os.chmod(script_path, 0o755)
 
-# Atualizar o HTML marcando os já baixados em verde e pendentes em azul
-html_path = "/mnt/dados/Games/GTA_San_Andreas/00_SETUP_WINDOWS/TODOS_OS_270_MODS_DOWNLOAD.html"
+# Atualizar o painel HTML mestre com todos os 315 mods
+html_path = "/mnt/dados/Games/GTA_San_Andreas/00_SETUP_WINDOWS/TODOS_OS_MODS_DOWNLOAD.html"
 with open(html_path, "w", encoding="utf-8") as h:
     h.write("""<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>GTA San Andreas - Catálogo Completo dos 270 Mods (MixMods)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GTA San Andreas - Catálogo Completo e Definitivo (MixMods 2026)</title>
 <style>
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0f141c; color: #e1e7ec; padding: 25px; line-height: 1.5; }
-  h1 { color: #4ade80; border-bottom: 2px solid #22c55e; padding-bottom: 10px; }
-  .summary { background: #1e293b; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 15px; border-left: 4px solid #38bdf8; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 15px; margin-top: 20px; }
-  .card { background: #1a2230; border: 1px solid #2a374f; border-radius: 8px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; }
-  .card.installed { border-color: #22c55e; background: #13241b; }
-  .title { font-weight: bold; font-size: 15px; color: #60a5fa; margin-bottom: 6px; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0b0f19; color: #e2e8f0; padding: 30px; line-height: 1.5; }
+  header { margin-bottom: 25px; border-bottom: 2px solid #22c55e; padding-bottom: 15px; }
+  h1 { color: #4ade80; font-size: 26px; }
+  .summary { display: flex; gap: 20px; background: #1e293b; padding: 18px 24px; border-radius: 8px; margin: 20px 0; border-left: 5px solid #38bdf8; }
+  .summary div { font-size: 15px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; margin-top: 20px; }
+  .card { background: #151e2e; border: 1px solid #24324a; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; }
+  .card:hover { border-color: #38bdf8; transform: translateY(-2px); transition: 0.2s; }
+  .card.installed { border-color: #22c55e; background: #0e2017; }
+  .title { font-weight: bold; font-size: 15px; color: #60a5fa; margin-bottom: 8px; }
   .card.installed .title { color: #4ade80; }
-  .desc { font-size: 12px; color: #94a3b8; flex-grow: 1; margin-bottom: 10px; }
-  .actions { display: flex; gap: 8px; }
-  .btn { display: inline-block; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: bold; text-align: center; }
+  .desc { font-size: 13px; color: #94a3b8; flex-grow: 1; margin-bottom: 12px; }
+  .actions { display: flex; gap: 10px; align-items: center; }
+  .btn { display: inline-block; padding: 7px 14px; border-radius: 5px; text-decoration: none; font-size: 13px; font-weight: bold; text-align: center; }
   .btn-dl { background: #16a34a; color: white; }
   .btn-dl:hover { background: #22c55e; }
   .btn-post { background: #334155; color: #cbd5e1; }
   .btn-post:hover { background: #475569; }
-  .badge { display: inline-block; background: #0284c7; color: white; border-radius: 4px; padding: 2px 6px; font-size: 11px; margin-right: 6px; }
+  .badge { display: inline-block; background: #0284c7; color: white; border-radius: 4px; padding: 2px 7px; font-size: 11px; margin-right: 6px; font-weight: bold; }
   .badge-ok { background: #16a34a; }
+  .badge-warn { background: #d97706; }
 </style>
 </head>
 <body>
-<h1>🎮 GTA San Andreas - Catálogo Completo (270 Mods MixMods)</h1>
+<header>
+  <h1>🎮 GTA San Andreas - Catálogo Completo & Definitivo (MixMods 2026)</h1>
+  <p style="color: #94a3b8; margin-top: 5px;">Mapeamento 100% integral de todos os mods catalogados no documento.</p>
+</header>
+
 <div class="summary">
-  <b>Status Geral:</b><br>
-  🟢 <b>Já Baixados e Prontos:</b> """ + str(len(already_mods)) + """ mods (não precisa baixar de novo)<br>
-  🔴 <b>Pendentes de Download:</b> """ + str(len(pending_mods)) + """ mods
+  <div>📊 <b>Total Geral Indexado:</b> """ + str(len(catalog)) + """ mods</div>
+  <div>🟢 <b>Já Baixados no Backup:</b> """ + str(len(already_mods)) + """ mods</div>
+  <div>🔴 <b>Pendentes para Baixar:</b> """ + str(len(pending_mods)) + """ mods</div>
 </div>
+
 <div class="grid">
 """)
     for m in catalog:
         ja_tem = is_already_downloaded(m)
         card_class = "card installed" if ja_tem else "card"
-        badge_class = "badge badge-ok" if ja_tem else "badge"
-        badge_text = f"#{m['id']:03d} (✔ BAIXADO)" if ja_tem else f"#{m['id']:03d} (PENDENTE)"
+        badge_class = "badge badge-ok" if ja_tem else ("badge" if m['downloads'] else "badge badge-warn")
+        badge_text = f"#{m['id']:03d} (✔ BAIXADO)" if ja_tem else (f"#{m['id']:03d} (DIRETO)" if m['downloads'] else f"#{m['id']:03d} (POST)")
         
         dl_btn = ""
         if ja_tem:
-            dl_btn = '<span style="color: #4ade80; font-size: 13px; font-weight: bold; padding: 6px 0;">✔ Arquivo no Backup</span>'
+            dl_btn = '<span style="color: #4ade80; font-size: 13px; font-weight: bold;">✔ Arquivo no Backup</span>'
         elif m['downloads']:
             dl_btn = f'<a class="btn btn-dl" href="{m["downloads"][0]}" target="_blank">📥 Baixar Direto</a>'
             
         post_btn = f'<a class="btn btn-post" href="{m["post"]}" target="_blank">🔗 Ver Post</a>'
         
-        desc_text = m.get('description', '')[:120]
-        if len(m.get('description', '')) > 120:
-            desc_text += "..."
+        desc_text = m.get('description', '')
         if not desc_text:
-            desc_text = f"Tamanho: {m.get('size', 'N/D')} | Autor: {m.get('author', 'MixMods')}"
+            desc_text = f"Autor: {m.get('author', 'MixMods')} | Tamanho: {m.get('size', 'N/D')}"
 
         h.write(f"""
   <div class="{card_class}">
@@ -152,4 +163,5 @@ with open(html_path, "w", encoding="utf-8") as h:
 </html>
 """)
 
-print(f"Scripts de lote regerados com SUCESSO: {num_batches} lotes pendentes!")
+print(f"Gerados com sucesso {num_batches} scripts de lote em {scripts_dir}")
+print(f"Painel HTML master gerado em {html_path}")
