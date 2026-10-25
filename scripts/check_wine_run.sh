@@ -1,0 +1,2 @@
+which wine
+wine --version
