@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual Mestre de Instalação - Skyrim SE/AE v1.6.1170</title>
+  <style>
+    :root {
+      --bg: #0f141c;
+      --surface: #18202c;
+      --card: #1f2a3a;
+      --primary: #4f8cff;
+      --accent: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --border: #334155;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      margin: 0;
+      padding: 24px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    header {
+      text-align: center;
+      padding: 32px 0 24px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    h1 {
+      color: var(--primary);
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: rgba(79, 140, 255, 0.15);
+      color: var(--primary);
+      border: 1px solid rgba(79, 140, 255, 0.3);
+      margin: 4px;
+    }
+    .badge-success {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--accent);
+      border-color: rgba(34, 197, 94, 0.3);
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    h2 {
+      color: #fff;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 0;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    h3 {
+      color: var(--primary);
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+    pre, code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: #090d14;
+      border-radius: 6px;
+    }
+    code {
+      padding: 2px 6px;
+      color: #38bdf8;
+      font-size: 0.9em;
+    }
+    pre {
+      padding: 16px;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    th {
+      background: #111827;
+      color: var(--primary);
+      font-weight: 600;
+    }
+    tr:nth-child(even) {
+      background: rgba(255,255,255,0.02);
+    }
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-weight: bold;
+      font-size: 0.9rem;
+      margin-right: 8px;
+    }
+    .alert {
+      padding: 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+      border-left: 4px solid;
+    }
+    .alert-info {
+      background: rgba(79, 140, 255, 0.1);
+      border-color: var(--primary);
+    }
+    .alert-success {
+      background: rgba(34, 197, 94, 0.1);
+      border-color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🏛️ Skyrim SE/AE v1.6.1170</h1>
+      <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 12px;">Manual Mestre de Instalação e Restauração Automatizada</p>
+      <div>
+        <span class="badge">Build: 1.6.1170</span>
+        <span class="badge">MO2: v2.5.2 Portable</span>
+        <span class="badge badge-success">170 Mods / 135 Plugins</span>
+        <span class="badge badge-success">0 Crash / Estável</span>
+      </div>
+    </header>
+
+    <div class="card">
+      <h2>📁 1. Organização dos Arquivos no Drive (F:\)</h2>
+      <p>Todos os dados necessários para reinstalar ou subir para o Google Drive estão centralizados no caminho:</p>
+      <pre><code>F:\06_Backups_ISOs_e_Sistemas\06.4_Games_e_Emuladores\
+├── 00_MANUAL_MESTRE_INSTALACAO_SKYRIM_AE.md
+├── 00_MANUAL_MESTRE_INSTALACAO_SKYRIM_AE.html
+├── 01_Saves_e_Backups\Skyrim_Saves\          (Seus saves mais recentes)
+├── 02_Mods_e_Patches\Skyrim_AE\
+│   ├── 00_FERRAMENTAS\                       (SSEEdit 4.1.5f + LOOT 0.29.2)
+│   ├── 00_CONFIGURACOES_E_AUTOMACAO\         (run_setup.bat, perfis, INIs, binários blindados)
+│   ├── 00_PATCHES_POS_EXTRACAO\              (FaceGens do Bijin, Tundra Verde, MCM Helper 1.6.2)
+│   └── [170 arquivos .7z, .zip, .rar]        (Todos os mods originais intactos)
+└── 05_Instaladores\
+    ├── Skyrim_Anniversary_Edition_FitGirl_Repack\
+    └── The Elder Scrolls V Skyrim Special Edition update 1.6.1130 - 1.6.1170\</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>⚡ 2. Passo a Passo Completo do Zero</h2>
+
+      <h3><span class="step-num">1</span> Instalar o Jogo Base e a Atualização</h3>
+      <p>Instale o jogo em <code>C:\Games\Skyrim Special Edition</code> pelo instalador da FitGirl e em seguida aplique o patch de atualização para <strong>1.6.1170</strong>.</p>
+
+      <h3><span class="step-num">2</span> Instalar o Mod Organizer 2</h3>
+      <p>Execute <code>Mod.Organizer-2.5.2.exe</code> e instale em <strong>Modo Portátil (Portable)</strong> em <code>C:\Games\MO2</code>.</p>
+
+      <h3><span class="step-num">3</span> Extrair os Mods para o MO2</h3>
+      <p>Extraia os arquivos compactados para <code>C:\Games\MO2\mods\&lt;Nome_Do_Mod&gt;</code> (ou utilize o script auxiliar do dotfiles <code>install_mods_into_mo2.ps1</code>).</p>
+
+      <h3><span class="step-num">4</span> Executar a Automação Mestre (1 Clique)</h3>
+      <div class="alert alert-success">
+        <strong>Ação Fácil:</strong> Dê dois cliques em <code>run_setup.bat</code> dentro de:<br>
+        <code>F:\06_Backups_ISOs_e_Sistemas\06.4_Games_e_Emuladores\02_Mods_e_Patches\Skyrim_AE\00_CONFIGURACOES_E_AUTOMACAO\</code>
+      </div>
+      <p>O que o script faz sozinho:</p>
+      <ul>
+        <li>Injeta <strong>SKSE 2.2.6</strong> e <strong>Engine Fixes</strong> na raiz do jogo.</li>
+        <li>Substitui pelo executável <strong>SkyrimSE.exe blindado</strong> contra crashes em menus e inicialização.</li>
+        <li>Restaura os perfis, a ordem de plugins e as configurações de grama densa (18000 fade) em <strong>UTF-8 sem BOM</strong>.</li>
+        <li>Aplica as correções de FaceGen dos mods Bijin e ativa a Tundra Verde do Cathedral.</li>
+        <li>Registra as ferramentas (SSEEdit e LOOT) no MO2 e restaura seus saves.</li>
+      </ul>
+
+      <h3><span class="step-num">5</span> Abrir o Jogo</h3>
+      <p>Abra o MO2, selecione <strong>SKSE</strong> no canto superior direito e clique em <strong>Executar</strong>.</p>
+    </div>
+
+    <div class="card">
+      <h2>🛡️ 3. Análise Forense & Cascas de Banana Evitadas</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Problema Histórico</th>
+            <th>Causa Técnica</th>
+            <th>Solução Aplicada</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Crash no New Game (0x22D573)</strong></td>
+            <td>Engine tentava ler contêiner com ponteiro de item nulo.</td>
+            <td>Blindagem de ponteiro nulo no <code>SkyrimSE.exe</code> em 0x22D567.</td>
+          </tr>
+          <tr>
+            <td><strong>Crash no Menu de Magia (P)</strong></td>
+            <td>Visitante de itens encantados batia em item nulo no inventário.</td>
+            <td>Proteção em <code>InventoryChanges::Accept</code> (0x231A70).</td>
+          </tr>
+          <tr>
+            <td><strong>Mulheres Sem Rosto (Gerdur, Irileth)</strong></td>
+            <td>Arquivos FaceGen ficaram presos na subpasta <code>01 Characters</code>.</td>
+            <td>Malhas e texturas movidas para a raiz dos mods Bijin.</td>
+          </tr>
+          <tr>
+            <td><strong>Grama Rala & Horizonte Vazio</strong></td>
+            <td>Alcance travado em 7000 e espaçamento ralo em 60.</td>
+            <td>Alcance expandido para 18000 e densidade em 40 (Tundra Verde ativa).</td>
+          </tr>
+          <tr>
+            <td><strong>Estradas Invisíveis no Mapa</strong></td>
+            <td>A Clear Map sobrepunha o terreno sem desenhar estradas de pedra.</td>
+            <td>Ativado A Quality World Map (Vivid with Stone Roads) no final da carga.</td>
+          </tr>
+          <tr>
+            <td><strong>Avisos de Plugin Not Found no MO2</strong></td>
+            <td>Cabeçalho invisível UTF-8 BOM adicionado por editores externos.</td>
+            <td>Todos os arquivos regravados em UTF-8 puro (No BOM).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>⌨️ 4. Mapa de Atalhos In-Game</h2>
+      <ul>
+        <li><code>P</code>: Menu de Magia (Ordinator + Apocalypse + Odin)</li>
+        <li><code>I</code> / <code>Tab</code>: Menu de Inventário (SkyUI com Skyland Bits and Bobs)</li>
+        <li><code>M</code>: Mapa Mundial 3D com estradas e sem nuvens</li>
+        <li><code>Q</code>: Menu de Favoritos / Wheeler</li>
+        <li><code>V</code>: Esquiva Tática (TK Dodge RE)</li>
+        <li><code>F</code>: Alternar 1ª e 3ª Pessoa (True Directional Movement + SmoothCam)</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>
