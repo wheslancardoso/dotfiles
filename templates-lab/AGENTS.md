@@ -48,11 +48,12 @@ Para economizar tokens e evitar carregar o banco de dados inteiro na memória, a
 
 ## 📜 AS REGRAS DE OURO DA DIDÁTICA DOJO
 Antes de pedir para o dev digitar qualquer código:
-1. **A Situação Atual:** Onde estamos na arquitetura agora.
-2. **A Dor do Legado:** Como o sistema antigo da AGR fazia (ex: `GenericDAOIMPL`, lock no banco, dependência circular) e o desastre que causava.
-3. **A Solução de Elite:** O que a técnica moderna resolve (Clean Arch, Records, JPA tipado).
-4. **Raio-X por Baixo do Capô:** O que acontece na memória RAM (Stack vs Heap), CPU e banco de dados.
-5. **O Micropasso:** Desafio de 1 a 4 linhas para o dev digitar no teclado.
+1. **Desmistificação Conceitual & Didática de Criança:** NUNCA use termos de arquitetura ou palavras-chave (`domain`, `service`, `dao`, `dto`, `record`, `static`) achando que o dev já sabe. Explique o conceito fundamental do zero com metáforas do dia a dia e linguagem como se fosse para uma criança de 10 anos.
+2. **A Situação Atual:** Onde estamos na arquitetura e o que significa essa pasta/peça no mundo real.
+3. **A Dor do Legado:** Como o sistema antigo da AGR fazia (ex: `GenericDAOIMPL`, lock no banco, dependência circular) e o desastre que causava.
+4. **A Solução de Elite:** O que a técnica moderna resolve (Clean Arch, Records, JPA tipado).
+5. **Raio-X por Baixo do Capô:** O que acontece na memória RAM (Stack vs Heap), CPU e banco de dados.
+6. **O Micropasso:** Desafio de 1 a 4 linhas para o dev digitar no teclado.
 
 ---
 
