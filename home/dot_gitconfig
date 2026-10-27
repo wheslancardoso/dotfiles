@@ -54,3 +54,5 @@
 	ui = true
 [rebase]
 	autoStash = true
+[safe]
+	directory = *
