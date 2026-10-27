@@ -41,10 +41,11 @@ AUTO_COMMIT=false
 COMMIT_MSG=""
 DRY_RUN=false
 SCAN_ALL=false
+FORCE=false
 CUSTOM_PATHS=()
 
 # Timeout em segundos para requisições de rede git
-GIT_TIMEOUT=10
+GIT_TIMEOUT=15
 
 # Arquivo de configuração de repositórios conhecidos (opcional para o usuário)
 CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/git-sync"
@@ -65,11 +66,12 @@ ${BOLD}MODOS DE OPERAÇÃO:${NC}
 ${BOLD}OPÇÕES DE COMMIT & MODIFICAÇÃO:${NC}
   ${PEACH}-c, --commit [MSG]${NC}    Faz commit automático (git add -A) das modificações locais antes do push
   ${YELLOW}--stash${NC}               Em repos com alterações não commitadas, faz stash antes de pull e restaura
+  ${RED}-f, --force${NC}             Modo Forçado Inteligente: resolve divergências via rebase/merge, stash automático e push com lease
 
 ${BOLD}OPÇÕES AUXILIARES:${NC}
   ${YELLOW}-n, --dry-run${NC}         Simula as operações sem executar comandos git destrutivos
-  ${YELLOW}-a, --all${NC}             Varre recursivamente toda a pasta home (~/...) ignorando caches
-  ${YELLOW}-t, --timeout <s >${NC}      Tempo limite para conexões com o servidor remoto (padrão: 10s)
+  ${YELLOW}-a, --all${NC}             Varre recursivamente toda a pasta home e /mnt/dados ignorando caches
+  ${YELLOW}-t, --timeout <s >${NC}      Tempo limite para conexões com o servidor remoto (padrão: 15s)
   ${YELLOW}-h, --help${NC}            Exibe esta mensagem de ajuda
 
 ${BOLD}EXEMPLOS:${NC}
@@ -79,6 +81,10 @@ ${BOLD}EXEMPLOS:${NC}
 
   ${MUTED}# Sincronizar todos os repos conhecidos com segurança:${NC}
   git-sync --sync
+
+  ${MUTED}# Sincronização agressiva/inteligente (commita, rebaseia divergências e sobe tudo):${NC}
+  git-sync --sync --force
+  git-sync -S -f -c "sync: atualizacao geral"
 
   ${MUTED}# Commitar todas as modificações locais e subir tudo para o remoto:${NC}
   git-sync --sync --commit "feat: sincronização geral"
@@ -108,6 +114,12 @@ while [[ $# -gt 0 ]]; do
             ;;
         -P|--push)
             MODE="push"
+            shift
+            ;;
+        -f|--force)
+            FORCE=true
+            AUTO_STASH=true
+            [ "$MODE" = "status" ] && MODE="sync"
             shift
             ;;
         -c|--commit)
@@ -159,6 +171,27 @@ done
 get_repositories() {
     local repos=()
 
+    # Função auxiliar para registrar repo
+    add_repo_candidate() {
+        local target="$1"
+        [ ! -e "$target" ] && return
+        local real
+        real=$(realpath "$target" 2>/dev/null || echo "$target")
+        if [ -d "$real/.git" ]; then
+            repos+=("$real")
+        elif [ -d "$real" ]; then
+            while IFS= read -r g; do
+                local rd
+                rd=$(realpath "$(dirname "$g")" 2>/dev/null || dirname "$g")
+                # Ignora caches, dependências pesadas e repos arquivados de consulta estática
+                if [[ "$rd" =~ (AGR_PROJETOS_BASE_COMPLETO|node_modules|\.cache|\.cargo|\.rustup|\.local/share|yay|target|\.venv|\.oh-my-zsh|\.vscode) ]]; then
+                    continue
+                fi
+                repos+=("$rd")
+            done < <(find -L "$target" -maxdepth 3 -name ".git" -type d 2>/dev/null)
+        fi
+    }
+
     # Se o usuário passou caminhos específicos via linha de comando
     if [ ${#CUSTOM_PATHS[@]} -gt 0 ]; then
         for p in "${CUSTOM_PATHS[@]}"; do
@@ -169,7 +202,7 @@ get_repositories() {
             elif [ -d "$abs_p" ]; then
                 while IFS= read -r found; do
                     [ -n "$found" ] && repos+=("$(realpath "$(dirname "$found")")")
-                done < <(find "$abs_p" -maxdepth 4 -name ".git" -type d 2>/dev/null)
+                done < <(find -L "$abs_p" -maxdepth 4 -name ".git" -type d 2>/dev/null)
             else
                 echo -e "${YELLOW}Aviso: Diretório '$p' não encontrado.${NC}" >&2
             fi
@@ -181,15 +214,10 @@ get_repositories() {
     # Se existe arquivo de configuração explícito
     if [ -f "$CONFIG_FILE" ]; then
         while IFS= read -r line || [ -n "$line" ]; do
-            # Ignora comentários e linhas vazias
             [[ "$line" =~ ^[[:space:]]*# ]] && continue
             [[ -z "${line// }" ]] && continue
             local expanded="${line/#\~/$HOME}"
-            local real_exp
-            real_exp=$(realpath "$expanded" 2>/dev/null || echo "$expanded")
-            if [ -d "$real_exp/.git" ]; then
-                repos+=("$real_exp")
-            fi
+            add_repo_candidate "$expanded"
         done < "$CONFIG_FILE"
 
         if [ ${#repos[@]} -gt 0 ]; then
@@ -198,55 +226,44 @@ get_repositories() {
         fi
     fi
 
-    # Modo --all: varredura ampla em $HOME
+    # Modo --all: varredura ampla em $HOME e /mnt/dados
     if [ "$SCAN_ALL" = true ]; then
-        while IFS= read -r found; do
-            local r_dir
-            r_dir=$(realpath "$(dirname "$found")" 2>/dev/null || dirname "$found")
-            # Ignora pastas de cache, yay, build, etc.
-            if [[ "$r_dir" =~ /(node_modules|\.cache|\.cargo|\.rustup|\.local/share|yay|target|\.venv|\.oh-my-zsh|\.vscode) ]]; then
-                continue
-            fi
-            repos+=("$r_dir")
-        done < <(find "$HOME" -maxdepth 4 -name ".git" -type d 2>/dev/null)
+        for scan_root in "$HOME" "/mnt/dados"; do
+            [ ! -d "$scan_root" ] && continue
+            while IFS= read -r found; do
+                local r_dir
+                r_dir=$(realpath "$(dirname "$found")" 2>/dev/null || dirname "$found")
+                if [[ "$r_dir" =~ (AGR_PROJETOS_BASE_COMPLETO|node_modules|\.cache|\.cargo|\.rustup|\.local/share|yay|target|\.venv|\.oh-my-zsh|\.vscode) ]]; then
+                    continue
+                fi
+                repos+=("$r_dir")
+            done < <(find -L "$scan_root" -maxdepth 4 -name ".git" -type d 2>/dev/null)
+        done
         printf '%s\n' "${repos[@]}" | sort -u
         return
     fi
 
-    # Lista prioritária / canônica de projetos do usuário
-    local candidate_dirs=(
-        "$HOME/dotfiles"
+    # Lista prioritária / canônica de projetos e raizes de código
+    local candidate_roots=(
         "$HOME/concurso"
+        "$HOME/dotfiles"
+        "$HOME/rea"
+        "$HOME/english-mastery"
         "$HOME/timeless_life"
-        "$HOME/apex-dl"
-        "$HOME/agr-docs"
-        "$HOME/finance-ia"
-        "$HOME/zapscrap"
-        "$HOME/tecconextension"
-        "$HOME/teatro-abc"
-        "$HOME/organizador-master"
-        "$HOME/dynamic-water-reminder"
-        "$HOME/Brazilian-Real-Estate-Intelligence"
         "$HOME/projects"
         "$HOME/projetos"
-        "$HOME/Projetos"
+        "/mnt/dados/04_Desenvolvimento_e_Codigo/04.1_Projetos_Web_e_Apps"
+        "/mnt/dados/04_Desenvolvimento_e_Codigo/04.2_Extensoes_e_Plugins"
+        "/mnt/dados/04_Desenvolvimento_e_Codigo/04.3_Scripts_e_Automacoes"
+        "/mnt/dados/04_Desenvolvimento_e_Codigo/dotfiles"
+        "/mnt/dados/02_Estudos_e_Concursos/02.5_Ingles_e_Imersao/english-mastery"
     )
 
-    for d in "${candidate_dirs[@]}"; do
-        if [ -d "$d" ]; then
-            local real_d
-            real_d=$(realpath "$d" 2>/dev/null || echo "$d")
-            if [ -d "$real_d/.git" ]; then
-                repos+=("$real_d")
-            elif [ -d "$real_d" ]; then
-                while IFS= read -r found; do
-                    [ -n "$found" ] && repos+=("$(realpath "$(dirname "$found")")")
-                done < <(find "$real_d" -maxdepth 3 -name ".git" -type d 2>/dev/null)
-            fi
-        fi
+    for root in "${candidate_roots[@]}"; do
+        add_repo_candidate "$root"
     done
 
-    # Também inspeciona diretórios de topo em ~
+    # Também inspeciona diretórios de topo em $HOME
     for top in "$HOME"/*; do
         if [ -d "$top" ]; then
             local real_top
@@ -430,26 +447,69 @@ main() {
 
         # AÇÕES DE EXECUÇÃO (se não for apenas status)
         if [ "$MODE" != "status" ]; then
-            # PULL
+            # AUTO-COMMIT (se FORCE=true ou se AUTO_COMMIT=true e há modificações)
+            if [ "$is_dirty" = true ] && { [ "$AUTO_COMMIT" = true ] || [ "$FORCE" = true ]; }; then
+                local this_msg="${COMMIT_MSG:-sync: sincronização automática $(date '+%Y-%m-%d %H:%M')}"
+                if [ "$DRY_RUN" = true ]; then
+                    echo -e "   ${PEACH}↳ [DRY-RUN] Executaria: git add -A && git commit -m \"$this_msg\"${NC}"
+                    ahead=$((ahead + 1))
+                    is_dirty=false
+                else
+                    echo -e "   ${PEACH}↳ Gravando alterações locais: git commit -m \"$this_msg\"...${NC}"
+                    git -C "$repo" add -A
+                    if git -C "$repo" commit -m "$this_msg" --quiet 2>/dev/null; then
+                        echo -e "   ${GREEN}↳ Commit criado com sucesso!${NC}"
+                        is_dirty=false
+                        ahead=$(git -C "$repo" rev-list --count "@{u}..HEAD" 2>/dev/null || echo 1)
+                    else
+                        echo -e "   ${YELLOW}↳ Nenhuma alteração efetiva para commit.${NC}"
+                    fi
+                fi
+            fi
+
+            # PULL / SINCRONIZAÇÃO DE ENTRADA
             if [ "$MODE" = "pull" ] || [ "$MODE" = "sync" ]; then
-                if [ "$behind" -gt 0 ]; then
-                    if [ "$is_dirty" = true ] && [ "$AUTO_STASH" = false ]; then
-                        echo -e "   ${YELLOW}↳ Ignorando pull: Repositório possui modificações locais (use --stash para automatizar).${NC}"
+                if [ "$behind" -gt 0 ] || { [ "$ahead" -gt 0 ] && [ "$behind" -gt 0 ]; }; then
+                    if [ "$is_dirty" = true ] && [ "$AUTO_STASH" = false ] && [ "$FORCE" = false ]; then
+                        echo -e "   ${YELLOW}↳ Ignorando pull: Repositório possui modificações locais (use --stash ou --force).${NC}"
                     else
                         if [ "$DRY_RUN" = true ]; then
-                            echo -e "   ${PEACH}↳ [DRY-RUN] Executaria: git pull --ff-only${NC}"
+                            if [ "$FORCE" = true ]; then
+                                echo -e "   ${PEACH}↳ [DRY-RUN] Executaria: git pull --rebase (com autostash inteligente)${NC}"
+                            else
+                                echo -e "   ${PEACH}↳ [DRY-RUN] Executaria: git pull --ff-only${NC}"
+                            fi
                         else
                             local stash_created=false
-                            if [ "$is_dirty" = true ] && [ "$AUTO_STASH" = true ]; then
+                            if [ "$is_dirty" = true ] && { [ "$AUTO_STASH" = true ] || [ "$FORCE" = true ]; }; then
                                 echo -e "   ${MUTED}↳ Guardando alterações temporárias com git stash...${NC}"
                                 git -C "$repo" stash push -u -m "git-sync-autostash-$(date +%s)" >/dev/null 2>&1 && stash_created=true
                             fi
 
-                            echo -e "   ${BLUE}↳ Puxando ${behind} commit(s)...${NC}"
-                            if git -C "$repo" pull --ff-only --quiet 2>/dev/null; then
-                                echo -e "   ${GREEN}↳ Pull concluído com sucesso via Fast-Forward!${NC}"
+                            local pull_success=false
+                            if [ "$FORCE" = true ]; then
+                                echo -e "   ${BLUE}↳ Sincronizando com rebase inteligente (behind: ${behind}, ahead: ${ahead})...${NC}"
+                                if git -C "$repo" pull --rebase --autostash --quiet 2>/dev/null; then
+                                    pull_success=true
+                                    echo -e "   ${GREEN}↳ Rebase e integração remota concluídos com sucesso!${NC}"
+                                else
+                                    git -C "$repo" rebase --abort >/dev/null 2>&1 || true
+                                    echo -e "   ${YELLOW}↳ Rebase encontrou conflitos; tentando pull com merge padrão...${NC}"
+                                    if git -C "$repo" pull --no-rebase --quiet 2>/dev/null; then
+                                        pull_success=true
+                                        echo -e "   ${GREEN}↳ Merge integrado com sucesso!${NC}"
+                                    else
+                                        echo -e "   ${RED}↳ Falha no pull: Existem conflitos complexos no repositório.${NC}"
+                                    fi
+                                fi
                             else
-                                echo -e "   ${RED}↳ Falha no pull: Não foi possível aplicar fast-forward.${NC}"
+                                echo -e "   ${BLUE}↳ Puxando ${behind} commit(s)...${NC}"
+                                if git -C "$repo" pull --ff-only --quiet 2>/dev/null; then
+                                    pull_success=true
+                                    echo -e "   ${GREEN}↳ Pull concluído com sucesso via Fast-Forward!${NC}"
+                                else
+                                    echo -e "   ${RED}↳ Falha no pull: Não foi possível aplicar fast-forward (divergiu). Use --force para rebase.${NC}"
+                                fi
                             fi
 
                             if [ "$stash_created" = true ]; then
@@ -461,45 +521,40 @@ main() {
                 fi
             fi
 
-            # AUTO-COMMIT (se solicitado via -c / --commit)
-            if [ "$AUTO_COMMIT" = true ] && [ "$is_dirty" = true ]; then
-                if [ "$behind" -gt 0 ]; then
-                    echo -e "   ${YELLOW}↳ Ignorando auto-commit/push: Repositório possui commits remotos pendentes (faça pull primeiro).${NC}"
-                else
-                    local this_msg="${COMMIT_MSG:-sync: atualizações locais $(date '+%Y-%m-%d %H:%M')}"
-                    if [ "$DRY_RUN" = true ]; then
-                        echo -e "   ${PEACH}↳ [DRY-RUN] Executaria: git add -A && git commit -m \"$this_msg\"${NC}"
-                        ahead=$((ahead + 1))
-                    else
-                        echo -e "   ${PEACH}↳ Gravando alterações locais: git commit -m \"$this_msg\"...${NC}"
-                        git -C "$repo" add -A
-                        if git -C "$repo" commit -m "$this_msg" --quiet 2>/dev/null; then
-                            echo -e "   ${GREEN}↳ Commit criado com sucesso!${NC}"
-                            is_dirty=false
-                            ahead=$(git -C "$repo" rev-list --count "@{u}..HEAD" 2>/dev/null || echo 1)
-                        else
-                            echo -e "   ${RED}↳ Nenhuma alteração adicionada para commit.${NC}"
-                        fi
-                    fi
-                fi
-            fi
-
-            # PUSH
+            # PUSH / ENVIO AO REMOTO
             if [ "$MODE" = "push" ] || [ "$MODE" = "sync" ]; then
-                # Recalcula ahead caso um pull ou commit tenha ocorrido
-                [ "$DRY_RUN" = false ] && ahead=$(git -C "$repo" rev-list --count "@{u}..HEAD" 2>/dev/null || echo 0)
+                # Recalcula ahead após commit e pull
+                if [ "$DRY_RUN" = false ]; then
+                    ahead=$(git -C "$repo" rev-list --count "@{u}..HEAD" 2>/dev/null || echo 0)
+                    behind=$(git -C "$repo" rev-list --count "HEAD..@{u}" 2>/dev/null || echo 0)
+                fi
+
                 if [ "$ahead" -gt 0 ]; then
-                    if [ "$behind" -gt 0 ] && [ "$MODE" = "push" ]; then
-                        echo -e "   ${RED}↳ Impossível dar push: Repositório está desatualizado em relação ao remoto (faça pull primeiro).${NC}"
+                    if [ "$behind" -gt 0 ] && [ "$FORCE" = false ]; then
+                        echo -e "   ${RED}↳ Impossível dar push: Repositório possui commits remotos pendentes (faça pull ou use --force).${NC}"
                     else
                         if [ "$DRY_RUN" = true ]; then
-                            echo -e "   ${PEACH}↳ [DRY-RUN] Executaria: git push origin $full_branch${NC}"
+                            if [ "$FORCE" = true ]; then
+                                echo -e "   ${PEACH}↳ [DRY-RUN] Executaria: git push --force-with-lease origin $full_branch${NC}"
+                            else
+                                echo -e "   ${PEACH}↳ [DRY-RUN] Executaria: git push origin $full_branch${NC}"
+                            fi
                         else
                             echo -e "   ${PEACH}↳ Enviando ${ahead} commit(s) para o remoto ($full_branch)...${NC}"
+                            local push_success=false
                             if git -C "$repo" push origin "$full_branch" --quiet 2>/dev/null; then
+                                push_success=true
+                            elif [ "$FORCE" = true ]; then
+                                echo -e "   ${YELLOW}↳ Push normal recusado. Tentando push forçado seguro (--force-with-lease)...${NC}"
+                                if git -C "$repo" push origin "$full_branch" --force-with-lease --quiet 2>/dev/null; then
+                                    push_success=true
+                                fi
+                            fi
+
+                            if [ "$push_success" = true ]; then
                                 echo -e "   ${GREEN}↳ Push efetuado com sucesso!${NC}"
                             else
-                                echo -e "   ${RED}↳ Falha ao enviar commits para o remoto.${NC}"
+                                echo -e "   ${RED}↳ Falha ao enviar commits para o remoto ($full_branch).${NC}"
                             fi
                         fi
                     fi
