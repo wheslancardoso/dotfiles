@@ -9,6 +9,13 @@ import json
 import subprocess
 import shutil
 from collections import defaultdict
+from signal import signal, SIGPIPE, SIG_DFL
+
+# Ignora erro de broken pipe em pipes Unix (ex: hypr-keys list | head)
+try:
+    signal(SIGPIPE, SIG_DFL)
+except Exception:
+    pass
 
 # Cores ANSI para terminal
 BOLD = "\033[1m"
@@ -50,6 +57,20 @@ def parse_mod_str(mod_str: str) -> str:
         mods.append("SHIFT")
     return " + ".join(mods) if mods else "NONE"
 
+KEYCODE_MAP = {
+    10: "1", 11: "2", 12: "3", 13: "4", 14: "5",
+    15: "6", 16: "7", 17: "8", 18: "9", 19: "0"
+}
+
+def resolve_key(b: dict) -> str:
+    key = b.get("key", "").upper()
+    if key:
+        return key
+    kc = b.get("keycode", 0)
+    if kc:
+        return KEYCODE_MAP.get(kc, f"CODE:{kc}")
+    return ""
+
 def get_live_binds():
     try:
         out = subprocess.check_output(["hyprctl", "binds", "-j"], text=True)
@@ -61,11 +82,14 @@ def get_live_binds():
 def build_index(binds):
     combos = defaultdict(list)
     for b in binds:
-        key = b.get("key", "").upper()
-        if not key or b.get("mouse", False):
+        if b.get("mouse", False):
             continue
+        key = resolve_key(b)
+        if not key:
+            continue
+        submap = b.get("submap", "")
         mod = decode_modmask(b.get("modmask", 0))
-        combos[(mod, key)].append(b)
+        combos[(submap, mod, key)].append(b)
     return combos
 
 def cmd_conflicts(combos):
@@ -77,8 +101,9 @@ def cmd_conflicts(combos):
         return
     
     print(f"{YELLOW}⚠️  Encontrados {len(conflicts)} atalhos com duplo/múltiplo mapeamento:{RESET}\n")
-    for (mod, key), blist in sorted(conflicts.items()):
-        print(f"{RED}{BOLD}● {mod} + {key}{RESET} {GRAY}({len(blist)} comandos disputando a mesma tecla){RESET}")
+    for (submap, mod, key), blist in sorted(conflicts.items()):
+        submap_str = f" {GRAY}[submap: {submap}]{RESET}" if submap else ""
+        print(f"{RED}{BOLD}● {mod} + {key}{RESET}{submap_str} {GRAY}({len(blist)} comandos disputando a mesma tecla){RESET}")
         for b in blist:
             desc = b.get("description") or "(sem descrição)"
             arg = b.get("arg") or b.get("dispatcher")
@@ -91,9 +116,15 @@ def cmd_check(combos, query):
         print("Informe uma tecla ou combinação para checar. Ex: hypr-keys check a")
         return
     
-    # Se passou apenas uma única tecla (ex: 'A' ou 'RETURN')
+    # Se passou apenas uma única tecla (ex: 'A' ou 'RETURN' ou '1' ou 'CODE:10')
     if len(tokens) == 1 and tokens[0] not in ["SUPER", "SHIFT", "ALT", "CTRL"]:
         target_key = tokens[0]
+        if target_key.startswith("CODE:"):
+            try:
+                kc = int(target_key.split(":")[1])
+                target_key = KEYCODE_MAP.get(kc, target_key)
+            except ValueError:
+                pass
         print(f"\n{BOLD}🎹 Mapa de Combinações para a Tecla: {CYAN}{target_key}{RESET}")
         print(f"{'─'*60}")
         
@@ -110,7 +141,7 @@ def cmd_check(combos, query):
         ]
         
         for mod in standard_mods:
-            blist = combos.get((mod, target_key), [])
+            blist = combos.get(("", mod, target_key), [])
             combo_str = f"{mod} + {target_key}"
             if len(blist) == 0:
                 print(f"  {GREEN}● [LIVRE]{RESET}    {BOLD}{combo_str:28}{RESET} {GRAY}(disponível para mapear){RESET}")
@@ -126,14 +157,20 @@ def cmd_check(combos, query):
         print()
         return
 
-    # Passou combinação completa (ex: 'SUPER SHIFT A')
+    # Passou combinação completa (ex: 'SUPER SHIFT A' ou 'SUPER 1' ou 'SUPER CODE:10')
     target_key = tokens[-1]
+    if target_key.startswith("CODE:"):
+        try:
+            kc = int(target_key.split(":")[1])
+            target_key = KEYCODE_MAP.get(kc, target_key)
+        except ValueError:
+            pass
     mod_part = " ".join(tokens[:-1])
     target_mod = parse_mod_str(mod_part)
     combo_str = f"{target_mod} + {target_key}"
     
     print(f"\n{BOLD}🔎 Checagem: {CYAN}{combo_str}{RESET}")
-    blist = combos.get((target_mod, target_key), [])
+    blist = combos.get(("", target_mod, target_key), [])
     if not blist:
         print(f"{GREEN}✓ LIVRE!{RESET} O atalho {BOLD}{combo_str}{RESET} não está em uso e pode ser mapeado com segurança.\n")
     elif len(blist) == 1:
@@ -158,8 +195,8 @@ def cmd_free(combos, mod_query):
     alphabet = [chr(c) for c in range(ord('A'), ord('Z')+1)]
     numbers = [str(n) for n in range(0, 10)]
     
-    free_letters = [k for k in alphabet if (target_mod, k) not in combos]
-    free_numbers = [k for k in numbers if (target_mod, k) not in combos]
+    free_letters = [k for k in alphabet if ("", target_mod, k) not in combos]
+    free_numbers = [k for k in numbers if ("", target_mod, k) not in combos]
     
     print(f"{BOLD}Letras Livres ({len(free_letters)}/26):{RESET}")
     print(f"  {GREEN}{'  '.join(free_letters) if free_letters else '(Nenhuma letra livre)'}{RESET}\n")
@@ -167,32 +204,44 @@ def cmd_free(combos, mod_query):
     print(f"  {GREEN}{'  '.join(free_numbers) if free_numbers else '(Nenhum número livre)'}{RESET}\n")
 
 def cmd_list(binds):
-    print(f"\n{BOLD}{'ATALHO':<30} {'DISPATCHER':<15} {'DESCRIÇÃO':<35} {'COMANDO / ARG'}{RESET}")
-    print(f"{'─'*100}")
-    for b in sorted(binds, key=lambda x: (x.get("modmask", 0), x.get("key", ""))):
-        key = b.get("key", "").upper()
-        if not key or b.get("mouse", False):
+    print(f"\n{BOLD}{'ATALHO':<32} {'DISPATCHER':<24} {'DESCRIÇÃO':<35} {'COMANDO / ARG'}{RESET}")
+    print(f"{'─'*110}")
+    def sort_key(b):
+        return (b.get("submap", ""), b.get("modmask", 0), resolve_key(b))
+    for b in sorted(binds, key=sort_key):
+        if b.get("mouse", False):
+            continue
+        key = resolve_key(b)
+        if not key:
             continue
         mod = decode_modmask(b.get("modmask", 0))
-        combo = f"{mod} + {key}"
+        submap = b.get("submap", "")
+        submap_str = f" [{submap}]" if submap else ""
+        combo = f"{mod} + {key}{submap_str}"
         disp = b.get("dispatcher", "")
         desc = b.get("description", "") or "-"
         arg = (b.get("arg", "") or "")[:45]
-        print(f"{combo:<30} {disp:<15} {desc:<35} {GRAY}{arg}{RESET}")
+        print(f"{combo:<32} {disp:<24} {desc:<35} {GRAY}{arg}{RESET}")
     print()
 
 def cmd_rofi(binds):
     import os
     lines = []
-    for b in sorted(binds, key=lambda x: (x.get("modmask", 0), x.get("key", ""))):
-        key = b.get("key", "").upper()
-        if not key or b.get("mouse", False):
+    def sort_key(b):
+        return (b.get("submap", ""), b.get("modmask", 0), resolve_key(b))
+    for b in sorted(binds, key=sort_key):
+        if b.get("mouse", False):
+            continue
+        key = resolve_key(b)
+        if not key:
             continue
         mod = decode_modmask(b.get("modmask", 0))
-        combo = f"{mod} + {key}"
+        submap = b.get("submap", "")
+        submap_str = f" [{submap}]" if submap else ""
+        combo = f"{mod} + {key}{submap_str}"
         desc = b.get("description", "") or "(sem descrição)"
         arg = b.get("arg", "") or b.get("dispatcher", "")
-        lines.append(f"{combo:<26} │ {desc:<32} │ {arg}")
+        lines.append(f"{combo:<28} │ {desc:<32} │ {arg}")
     
     menu_content = "\n".join(lines)
     theme_path = os.path.expanduser("~/.config/rofi/config-keybinds.rasi")
