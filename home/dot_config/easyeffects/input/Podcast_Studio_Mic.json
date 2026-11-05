@@ -30,7 +30,8 @@
           "q": 0.707,
           "slope": "x1",
           "solo": false,
-          "type": "Butterworth"
+          "type": "Butterworth",
+          "mute": false
         },
         "band1": {
           "frequency": 200.0,
@@ -39,7 +40,8 @@
           "q": 1.0,
           "slope": "x1",
           "solo": false,
-          "type": "Bell"
+          "type": "Bell",
+          "mute": false
         },
         "band2": {
           "frequency": 1000.0,
@@ -48,7 +50,8 @@
           "q": 1.0,
           "slope": "x1",
           "solo": false,
-          "type": "Bell"
+          "type": "Bell",
+          "mute": false
         },
         "band3": {
           "frequency": 3500.0,
@@ -57,7 +60,8 @@
           "q": 1.0,
           "slope": "x1",
           "solo": false,
-          "type": "Bell"
+          "type": "Bell",
+          "mute": false
         },
         "band4": {
           "frequency": 8000.0,
@@ -66,7 +70,61 @@
           "q": 0.707,
           "slope": "x1",
           "solo": false,
-          "type": "HighShelf"
+          "type": "HighShelf",
+          "mute": false
+        }
+      },
+      "num-bands": 5,
+      "right": {
+        "band0": {
+          "frequency": 85.0,
+          "gain": 0.0,
+          "mode": "HighPass",
+          "q": 0.707,
+          "slope": "x1",
+          "solo": false,
+          "type": "Butterworth",
+          "mute": false
+        },
+        "band1": {
+          "frequency": 200.0,
+          "gain": -1.5,
+          "mode": "Bell",
+          "q": 1.0,
+          "slope": "x1",
+          "solo": false,
+          "type": "Bell",
+          "mute": false
+        },
+        "band2": {
+          "frequency": 1000.0,
+          "gain": 1.0,
+          "mode": "Bell",
+          "q": 1.0,
+          "slope": "x1",
+          "solo": false,
+          "type": "Bell",
+          "mute": false
+        },
+        "band3": {
+          "frequency": 3500.0,
+          "gain": 2.0,
+          "mode": "Bell",
+          "q": 1.0,
+          "slope": "x1",
+          "solo": false,
+          "type": "Bell",
+          "mute": false
+        },
+        "band4": {
+          "frequency": 8000.0,
+          "gain": 1.5,
+          "mode": "HighShelf",
+          "q": 0.707,
+          "slope": "x1",
+          "solo": false,
+          "type": "HighShelf",
+          "mute": false
         }
       }
     },
