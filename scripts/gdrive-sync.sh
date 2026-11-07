@@ -54,6 +54,7 @@ EXCLUDES=(
     "--exclude=target/**"
     "--exclude=build/**"
     "--exclude=dist/**"
+    "--exclude=AGR_PROJETOS_BASE_COMPLETO/**"
     "--exclude=*.iso"
     "--exclude=*.crdownload"
     "--exclude=*.part"
