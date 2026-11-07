@@ -4,7 +4,7 @@
 > **Ambiente Operacional:** `/home/lan/dotfiles/templates-lab/docs/`  
 > **Público-Alvo:** Engenheiros de Software de Elite (Top 5% Global) & Auditores de Controle Externo de TI (TCE-GO 2026 / Banca FCC)  
 > **Versão da Suíte:** 1.0.0 Canônica — 2026  
-> **Integridade:** Homologado pelo Test Harness `scripts/verify_docs_suite.py`  
+> **Integridade:** Homologado pelo Test Harness `templates-lab/scripts/verify_docs_suite.py`  
 
 ---
 
@@ -138,17 +138,17 @@ O projeto **Teatro-ABC** (Centro Cultural Oscar Niemeyer) atua como o ambiente d
 
 ## 6. GUIA DE EXECUÇÃO E VALIDAÇÃO AUTOMATIZADA DE INTEGRIDADE
 
-A conformidade desta suíte de documentação é auditada de forma contínua através do harness de verificação automatizada `scripts/verify_docs_suite.py`:
+A conformidade desta suíte de documentação é auditada de forma contínua através do harness de verificação automatizada `templates-lab/scripts/verify_docs_suite.py`:
 
 ```bash
 # Executar a suíte completa de auditoria E2E
-python3 scripts/verify_docs_suite.py
+python3 templates-lab/scripts/verify_docs_suite.py
 
 # Executar apenas o Tier 4 (Validação do README e Rastreabilidade)
-python3 scripts/verify_docs_suite.py --tier 4
+python3 templates-lab/scripts/verify_docs_suite.py --tier 4
 
 # Exportar resultados em formato Markdown
-python3 scripts/verify_docs_suite.py --format markdown
+python3 templates-lab/scripts/verify_docs_suite.py --format markdown
 ```
 
 ### Critérios de Aceite Globais (Checklist de Homologação):

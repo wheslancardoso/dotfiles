@@ -19,6 +19,8 @@ node_modules/
 # Ignorar arquivos sensíveis e bancos de dados pessoais
 .env*
 *.env
+nexusmodconta.env
+games/gta-sa/nexusmodconta.env
 !.env.example
 .git-credentials
 *.secret*

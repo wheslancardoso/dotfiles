@@ -3,8 +3,8 @@
 **Status da Infraestrutura de Testes:** ✅ **PRONTA E ATIVA (READY)**  
 **Data/Hora:** 2026-10-25T13:52:00Z  
 **Autor:** Test Writer (E2E Testing Track)  
-**Script Principal:** `/home/lan/dotfiles/scripts/verify_docs_suite.py`  
-**Suíte de Auto-Verificação:** `/home/lan/dotfiles/scripts/test_verify_docs_suite.py`  
+**Script Principal:** `/home/lan/dotfiles/templates-lab/scripts/verify_docs_suite.py`  
+**Suíte de Auto-Verificação:** `/home/lan/dotfiles/templates-lab/scripts/test_verify_docs_suite.py`  
 **Diretório Alvo:** `/home/lan/dotfiles/templates-lab/docs/`
 
 ---
@@ -48,7 +48,7 @@ OVERALL RESULT: SUITE FAILED (ACCEPTANCE CRITERIA UNMET) | Tiers: 0/4 passed | C
 ```
 
 ### Auto-Testes Adversariais do Harness
-Executados via `pytest scripts/test_verify_docs_suite.py`:
+Executados via `pytest templates-lab/scripts/test_verify_docs_suite.py`:
 - `test_tier1_detects_missing_directory`: **PASSED**
 - `test_tier2_detects_forbidden_placeholders_and_short_files`: **PASSED**
 - `test_tier3_detects_missing_pedagogical_parts_and_contrasts`: **PASSED**
@@ -64,15 +64,15 @@ Resultado: **5/5 testes unitários aprovados (100% de cobertura adversarial)**.
 Conforme cada módulo for sendo redigido, o autor ou orquestrador pode rodar validações incrementais:
 
 1. **Ao concluir M1:**
-   `python3 scripts/verify_docs_suite.py --tier 1`
-   `python3 scripts/verify_docs_suite.py --tier 2`
+   `python3 templates-lab/scripts/verify_docs_suite.py --tier 1`
+   `python3 templates-lab/scripts/verify_docs_suite.py --tier 2`
 
 2. **Para validar a didática e contrastes de versão:**
-   `python3 scripts/verify_docs_suite.py --tier 3 -v`
+   `python3 templates-lab/scripts/verify_docs_suite.py --tier 3 -v`
 
 3. **Para validar a rastreabilidade final (M6):**
-   `python3 scripts/verify_docs_suite.py --tier 4`
+   `python3 templates-lab/scripts/verify_docs_suite.py --tier 4`
 
 4. **Para auditoria completa final de aprovação (M7):**
-   `python3 scripts/verify_docs_suite.py`
+   `python3 templates-lab/scripts/verify_docs_suite.py`
    *(Deve retornar código 0 e `SUITE PASSED (ALL CRITERIA MET)`)*.
