@@ -17,15 +17,17 @@ from .utils import (
     log_info,
     log_success,
     log_warning,
+    slugify_filename,
 )
 
 
 class AutoNamer:
-    """Utilitário para padronização e higienização de nomes de arquivos."""
+    """Utilitário para padronização e higienização de nomes de arquivos e diretórios."""
 
     DATE_PREFIX_REGEX = re.compile(r"^(\d{4}[-_]\d{2}[-_]\d{2}|\d{8})[-_]")
+    COPY_PREFIX_REGEX = re.compile(r"^c[oó]pia\s+de\s*", re.IGNORECASE)
     DOWNLOAD_ARTIFACTS_REGEX = re.compile(
-        r"(\s*\(\d+\)|\s*\[\d+\]|\s*-\s*c[oó]pia|\s*-\s*copy|\s*copia|\s*copy)",
+        r"(^c[oó]pia\s+de\s*|\s*\(\d+\)|\s*\[\d+\]|\s*-\s*c[oó]pia\b|\s*-\s*copy\b|\b(?:c[oó]pia|copy)\b)",
         re.IGNORECASE,
     )
 
@@ -49,34 +51,42 @@ class AutoNamer:
             return datetime.now().strftime("%Y-%m-%d")
 
     @classmethod
-    def sanitize_name(cls, filename: str) -> str:
+    def sanitize_directory_name(cls, dir_name: str) -> str:
+        """
+        Higieniza e sanitiza nomes de pastas/diretórios:
+        - Remove artefatos de download (' (1)', ' - Cópia', prefixo 'Cópia de ')
+        - Remove acentos e caracteres proibidos
+        - Normaliza espaços e delimitadores para underscores
+        """
+        name = cls.COPY_PREFIX_REGEX.sub("", dir_name)
+        name = cls.DOWNLOAD_ARTIFACTS_REGEX.sub("", name)
+        return slugify_filename(name, remove_accents=True, lowercase_ext=False, safe_chars=True)
+
+    @classmethod
+    def sanitize_name(cls, filename: str, is_directory: bool = False) -> str:
         """
         Limpa artefatos feios do nome:
-        - Remove ' (1)', ' [2]', '- Copia'
+        - Remove ' (1)', ' [2]', '- Copia', prefixo 'Cópia de '
+        - Remove acentos e caracteres proibidos via slugify_filename
+        - Converte extensão para minúsculas
         - Substitui múltiplos espaços por um único underline/hífen
-        - Remove espaços nas pontas antes da extensão
+        - Preserva datas ISO intactas
         """
+        if is_directory:
+            return cls.sanitize_directory_name(filename)
+
         path = Path(filename)
         stem = path.stem
         suffix = path.suffix
 
-        # Remove artefatos de download (ex: ' (1)', ' - Cópia')
+        # Remove prefixo de cópia ('Cópia de ')
+        stem = cls.COPY_PREFIX_REGEX.sub("", stem)
+
+        # Remove artefatos de download (ex: ' (1)', ' - Cópia', ' - copy')
         stem = cls.DOWNLOAD_ARTIFACTS_REGEX.sub("", stem)
 
-        # Substitui espaços consecutivos por um único underline
-        stem = re.sub(r"\s+", "_", stem.strip())
-
-        # Remove caracteres repetidos indesejados (ex: '___' ou '---')
-        stem = re.sub(r"_+", "_", stem)
-        stem = re.sub(r"-+", "-", stem)
-
-        # Remove trailing/leading underscores ou hyphens no stem
-        stem = stem.strip(" _-")
-
-        if not stem:
-            stem = "arquivo"
-
-        return f"{stem}{suffix}"
+        cleaned_file = f"{stem}{suffix}"
+        return slugify_filename(cleaned_file)
 
     @classmethod
     def generate_new_name(cls, file_path: Path, add_date: bool = True, sanitize: bool = True) -> str:

@@ -53,6 +53,48 @@ def normalize_text(text: str) -> str:
     return "".join(c for c in normalized if not unicodedata.combining(c)).lower().strip()
 
 
+def slugify_filename(
+    name: str,
+    remove_accents: bool = True,
+    lowercase_ext: bool = True,
+    safe_chars: bool = True,
+) -> str:
+    """
+    Higieniza e normaliza nomes de arquivos e pastas para conformidade com filesystems e nuvem:
+    - Normalização Unicode NFKD para remoção de diacríticos/acentos (ç -> c, ã -> a, etc.)
+    - Conversão da extensão para minúsculas (.PDF -> .pdf)
+    - Remoção/substituição de caracteres proibidos (: ? * " < > | ; # $ % & / \\)
+    - Preserva integridade de datas ISO (YYYY-MM-DD) e estrutura do nome
+    """
+    path = Path(name)
+    stem = path.stem
+    ext = path.suffix
+
+    if lowercase_ext and ext:
+        ext = ext.lower()
+
+    if remove_accents:
+        normalized = unicodedata.normalize("NFKD", stem)
+        stem = "".join(c for c in normalized if not unicodedata.combining(c))
+
+    if safe_chars:
+        # Substitui caracteres proibidos/inseguros por espaço para evitar aglutinação de palavras
+        stem = re.sub(r'[\:\?\*\"\<\>\|;\#\$\%\&/\\\\]+', " ", stem)
+        # Substitui espaços por underscores
+        stem = re.sub(r"\s+", "_", stem.strip())
+        # Colapsa múltiplos underscores consecutivos
+        stem = re.sub(r"_+", "_", stem)
+        # Colapsa múltiplos hifens consecutivos sem romper hifens de datas ISO
+        stem = re.sub(r"-+", "-", stem)
+        # Remove underscores e hifens soltos nas extremidades
+        stem = stem.strip(" _-")
+
+    if not stem:
+        stem = "arquivo"
+
+    return f"{stem}{ext}"
+
+
 def get_unique_destination_path(target_path: Path, source_path: Optional[Path] = None) -> Path:
     """
     Garante que não haverá sobrescrita acidental se já existir arquivo com mesmo nome,

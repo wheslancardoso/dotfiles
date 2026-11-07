@@ -286,6 +286,45 @@
       "destino": "04_Desenvolvimento_e_Codigo/04.1_Projetos_Web_e_Apps"
     },
     {
+      "id": "dev_projetos_agr_e_fiscalizacao",
+      "descricao": "Projetos, protótipos e sistemas do Dojo de Fiscalização da AGR (mini-fiscalizacao, agr-vanilla-dojo, etc.)",
+      "prioridade": 90,
+      "padroes_regex": [
+        "^(mini[_-]fiscalizacao|agr[_-]vanilla[_-]dojo|dojo[_-]fiscalizacao)",
+        "agr[_-]vanilla",
+        "mini[_-]fiscal"
+      ],
+      "termos": [
+        "mini-fiscalizacao",
+        "mini_fiscalizacao",
+        "agr-vanilla-dojo",
+        "agr_vanilla_dojo",
+        "dojo-fiscalizacao",
+        "dojo_fiscalizacao"
+      ],
+      "destino": "04_Desenvolvimento_e_Codigo/04.1_Projetos_Web_e_Apps"
+    },
+    {
+      "id": "dev_trilha_dao_backend",
+      "descricao": "Aulas, módulos de código e projetos da Trilha de DAO e Backend (ex: dao-01.mp4, trilha-04-dao)",
+      "prioridade": 80,
+      "padroes_regex": [
+        "^dao[-_]\\d+",
+        "dao[-_]\\d+",
+        "^trilha[-_]04[-_]dao",
+        "trilha[-_]dao"
+      ],
+      "termos": [
+        "trilha-04-dao",
+        "trilha_04_dao",
+        "trilha dao",
+        "modulo dao",
+        "curso dao",
+        "aula dao"
+      ],
+      "destino": "04_Desenvolvimento_e_Codigo/04.1_Projetos_Web_e_Apps"
+    },
+    {
       "id": "cursos_e_certificacoes_senai_e_redes",
       "descricao": "Material de cursos, redes, SENAI e certificações",
       "prioridade": 70,

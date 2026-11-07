@@ -44,12 +44,14 @@ class FileOrganizerEngine:
         root_user: Optional[Path] = None,
         custom_dest_root: Optional[Path] = None,
         history_manager: Optional[HistoryManager] = None,
+        quarantine_dir: Optional[Path] = None,
     ):
         self.config_path = config_path
         with open(config_path, "r", encoding="utf-8") as f:
             self.config = json.load(f)
 
         self.root_user = root_user or Path.home()
+        self.quarantine_dir = quarantine_dir
 
         # Resolução inteligente do diretório raiz da taxonomia
         if custom_dest_root:
@@ -72,6 +74,26 @@ class FileOrganizerEngine:
 
         self.history_manager = history_manager or HistoryManager()
         self.recorded_operations: List[Dict] = []
+
+    @staticmethod
+    def is_zero_byte(path: Path) -> bool:
+        """Verifica se o arquivo existe e possui 0 bytes (download corrompido ou incompleto)."""
+        try:
+            return path.is_file() and path.stat().st_size == 0
+        except OSError:
+            return False
+
+    @staticmethod
+    def _is_junk_metadata(entry: Path) -> bool:
+        """Detecta arquivos de metadados residuais (desktop.ini, .DS_Store, Thumbs.db, :Zone.Identifier, .directory)."""
+        if not entry.is_file():
+            return False
+        name_lower = entry.name.lower()
+        if name_lower in {"desktop.ini", ".ds_store", "thumbs.db", ".directory"}:
+            return True
+        if ":zone.identifier" in name_lower:
+            return True
+        return False
 
     def _load_advanced_rules(self) -> List[Dict]:
         """Carrega regras avançadas V3 (ou converte regras legadas), pré-compila regexes e ordena por prioridade."""
@@ -236,7 +258,13 @@ class FileOrganizerEngine:
             terms = rule.get("termos", [])
             for term in terms:
                 term_normalized = normalize_text(term)
-                if term_normalized in name_normalized:
+                if len(term_normalized) <= 4:
+                    # Para termos curtos (ex: "dio", "dao", "agr"), exige limites de palavra
+                    # Evita falsos positivos em palavras compostas ("audio_gravacao", "estudio", "episodio")
+                    pattern = rf"(?<![a-z0-9]){re.escape(term_normalized)}(?![a-z0-9])"
+                    if re.search(pattern, name_normalized) or re.search(rf"\b{re.escape(term_normalized)}\b", name_normalized):
+                        return self.dest_root / dest_rel
+                elif term_normalized in name_normalized:
                     return self.dest_root / dest_rel
 
         # 2. Deep Content Sniffing em Documentos de Texto / PDF / DOCX
@@ -338,6 +366,19 @@ class FileOrganizerEngine:
         except OSError:
             pass
 
+        # Proteção 0-byte: nunca permite que arquivo vazio de origem sobreponha ou force renomeação de arquivo válido existente no destino
+        if self.is_zero_byte(source_path):
+            existing_target = target_dir / source_path.name
+            try:
+                if existing_target.exists() and existing_target.is_file() and existing_target.stat().st_size > 0:
+                    log_warning(
+                        f"Proteção 0-byte: Arquivo válido existente em {existing_target}. "
+                        f"Origem de 0 bytes ({source_path.name}) rejeitada para proteger destino."
+                    )
+                    return False, "Arquivo de origem vazio (0 bytes) rejeitado para proteger arquivo válido existente no destino"
+            except OSError:
+                pass
+
         # Garante diretório de destino
         target_dir.mkdir(parents=True, exist_ok=True)
         final_dest = get_unique_destination_path(target_dir / source_path.name, source_path=source_path)
@@ -403,6 +444,15 @@ class FileOrganizerEngine:
                 stats["ignorados"] += 1
                 continue
 
+            if self.is_zero_byte(item):
+                log_warning(f"Arquivo corrompido/incompleto de 0 bytes detectado: {item.name}")
+                stats["zero_bytes"] = stats.get("zero_bytes", 0) + 1
+                if self.quarantine_dir:
+                    self.move_item(item, self.quarantine_dir, dry_run=dry_run)
+                else:
+                    stats["ignorados"] += 1
+                continue
+
             stats["total_analisados"] += 1
             destination_dir = self.classify_file(item)
 
@@ -426,6 +476,8 @@ class FileOrganizerEngine:
         """
         Remove diretórios vazios residuais de forma recursiva (bottom-up).
         Protege o diretório raiz e pastas de sistema.
+        Detecta e purga arquivos residuais de lixo/metadados (desktop.ini, .DS_Store, Thumbs.db, etc.)
+        quando a pasta não possui arquivos reais.
         Retorna a contagem de pastas vazias removidas.
         """
         removed_count = 0
@@ -442,8 +494,22 @@ class FileOrganizerEngine:
                 continue
 
             try:
-                # Se não contiver arquivos nem subpastas
                 entries = list(current_path.iterdir())
+                # Se contiver apenas arquivos residuais de lixo/metadados, remove os arquivos de lixo
+                junk_entries = [e for e in entries if self._is_junk_metadata(e)]
+                if entries and len(junk_entries) == len(entries):
+                    if dry_run:
+                        log_dry_run(f"Pasta residual com metadados identificada: {current_path.relative_to(target_dir)}")
+                        entries = []
+                    else:
+                        for junk in junk_entries:
+                            try:
+                                junk.unlink()
+                            except OSError as e:
+                                log_warning(f"Erro ao remover metadado {junk.name}: {e}")
+                        entries = list(current_path.iterdir())
+
+                # Se não contiver arquivos nem subpastas
                 if len(entries) == 0:
                     if dry_run:
                         log_dry_run(f"Pasta vazia identificada: {current_path.relative_to(target_dir)}")

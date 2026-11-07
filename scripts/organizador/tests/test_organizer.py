@@ -23,7 +23,7 @@ from src.history import HistoryManager
 from src.partition_calc import PartitionCalculator
 from src.renamer import AutoNamer
 from src.taxonomy import TaxonomyManager
-from src.utils import get_unique_destination_path, normalize_text
+from src.utils import get_unique_destination_path, normalize_text, slugify_filename
 
 
 class TestOrganizadorMaster(unittest.TestCase):
@@ -329,6 +329,162 @@ class TestOrganizadorMaster(unittest.TestCase):
         dest_tce = self.engine.classify_file(tce_video)
         self.assertIsNotNone(dest_tce)
         self.assertTrue("02.1_TCE-GO" in str(dest_tce))
+
+    def test_slugify_accents_and_special_chars(self):
+        # 1. Remoção de acentos via NFKD
+        name1 = "Relatório de Gestão & Finanças.PDF"
+        slug1 = slugify_filename(name1)
+        self.assertEqual(slug1, "Relatorio_de_Gestao_Financas.pdf")
+
+        # 2. Extensão em minúsculas
+        name2 = "ARQUIVO_TESTE.MP4"
+        slug2 = slugify_filename(name2)
+        self.assertEqual(slug2, "ARQUIVO_TESTE.mp4")
+
+        # 3. Caracteres proibidos/inseguros (: ? * " < > | ; # $ % &)
+        name3 = "documento: com ? asterisco * e <tags> | final #1 $100 50%.docx"
+        slug3 = slugify_filename(name3)
+        for bad_char in [":", "?", "*", "<", ">", "|", ";", "#", "$", "%", "&"]:
+            self.assertNotIn(bad_char, slug3)
+        self.assertTrue(slug3.endswith(".docx"))
+
+        # 4. Preservação de datas ISO
+        name4 = "2026-08-27_relatorio_oficial.pdf"
+        slug4 = slugify_filename(name4)
+        self.assertEqual(slug4, "2026-08-27_relatorio_oficial.pdf")
+
+        # 5. Fallback para 'arquivo' se o nome for apenas caracteres inválidos
+        name5 = "***:::###???.txt"
+        slug5 = slugify_filename(name5)
+        self.assertEqual(slug5, "arquivo.txt")
+
+    def test_autonamer_artifacts_word_boundary(self):
+        # 1. Substantivo fotocopiadora não deve virar fotodora
+        clean_foto = AutoNamer.sanitize_name("fotocopiadora.pdf")
+        self.assertEqual(clean_foto, "fotocopiadora.pdf")
+
+        # 2. Prefixo 'Cópia de ' deve ser removido
+        clean_copia_de = AutoNamer.sanitize_name("Cópia de documento importante.pdf")
+        self.assertEqual(clean_copia_de, "documento_importante.pdf")
+
+        # 3. Sufixo clássico ' - Cópia' ou ' - copy'
+        clean_sufixo = AutoNamer.sanitize_name("relatorio trimestral - cópia (1).pdf")
+        self.assertEqual(clean_sufixo, "relatorio_trimestral.pdf")
+
+        # 4. 'copy' como palavra isolada
+        clean_copy_word = AutoNamer.sanitize_name("documento copy.pdf")
+        self.assertEqual(clean_copy_word, "documento.pdf")
+
+    def test_clean_empty_directories_with_junk_metadata(self):
+        # Cria pasta contendo apenas desktop.ini e Thumbs.db
+        junk_dir = self.test_dir / "pasta_com_lixo_apenas"
+        junk_dir.mkdir(parents=True)
+        (junk_dir / "desktop.ini").write_text("[.ShellClassInfo]\nIconResource=...")
+        (junk_dir / "Thumbs.db").write_text("fake db content")
+        (junk_dir / ".DS_Store").write_text("fake ds store")
+
+        # Cria pasta irmã com arquivo válido
+        valid_dir = self.test_dir / "pasta_com_arquivo_valido"
+        valid_dir.mkdir(parents=True)
+        (valid_dir / "documento.pdf").write_text("conteudo real")
+        (valid_dir / "desktop.ini").write_text("metadado")
+
+        removed = self.engine.clean_empty_directories(self.test_dir)
+        self.assertGreaterEqual(removed, 1)
+        self.assertFalse(junk_dir.exists())
+        self.assertTrue(valid_dir.exists())
+        self.assertTrue((valid_dir / "documento.pdf").exists())
+
+    def test_rule_matching_word_boundary_isolation(self):
+        # Verifica motor com config de produção para garantir que "dio" não casa com audio/estudio/episodio
+        prod_config = PROJECT_ROOT / "config" / "regras.json"
+        engine_prod = FileOrganizerEngine(config_path=prod_config, custom_dest_root=self.dest_root)
+
+        # "dio" NÃO deve capturar arquivos de áudio
+        self.assertNotEqual(
+            engine_prod.classify_file(Path("audio_gravacao.wav")),
+            self.dest_root / "02_Estudos_e_Concursos/02.3_Cursos_e_Certificacoes",
+        )
+        self.assertNotEqual(
+            engine_prod.classify_file(Path("estudio_podcast.mp3")),
+            self.dest_root / "02_Estudos_e_Concursos/02.3_Cursos_e_Certificacoes",
+        )
+        self.assertNotEqual(
+            engine_prod.classify_file(Path("meu_episodio_de_podcast.mp4")),
+            self.dest_root / "02_Estudos_e_Concursos/02.3_Cursos_e_Certificacoes",
+        )
+
+        # "dio" DEVE casar quando for termo isolado
+        dest_dio_curso = engine_prod.classify_file(Path("curso dio web.pdf"))
+        self.assertEqual(dest_dio_curso, self.dest_root / "02_Estudos_e_Concursos/02.3_Cursos_e_Certificacoes")
+
+        dest_dio_bootcamp = engine_prod.classify_file(Path("dio_bootcamp.pdf"))
+        self.assertEqual(dest_dio_bootcamp, self.dest_root / "02_Estudos_e_Concursos/02.3_Cursos_e_Certificacoes")
+
+    def test_autonamer_directory_sanitization(self):
+        # Teste método sanitize_directory_name
+        sanitized_dir1 = AutoNamer.sanitize_directory_name("Minha Pasta de Estudos (1) - cópia")
+        self.assertEqual(sanitized_dir1, "Minha_Pasta_de_Estudos")
+
+        sanitized_dir2 = AutoNamer.sanitize_name("Cópia de Projetos: AGR", is_directory=True)
+        self.assertEqual(sanitized_dir2, "Projetos_AGR")
+
+        sanitized_dir3 = AutoNamer.sanitize_directory_name("Apostilas Senai-20260830T212333Z-1-001")
+        self.assertEqual(sanitized_dir3, "Apostilas_Senai-20260830T212333Z-1-001")
+
+    def test_zero_byte_file_protection(self):
+        # 1. Checagem do método estático is_zero_byte
+        zero_file = self.test_dir / "corrompido.pdf"
+        zero_file.touch()
+        self.assertTrue(FileOrganizerEngine.is_zero_byte(zero_file))
+
+        valid_file = self.test_dir / "valido.pdf"
+        valid_file.write_text("conteudo integro")
+        self.assertFalse(FileOrganizerEngine.is_zero_byte(valid_file))
+
+        # 2. Proteção no move_item: arquivo de 0 bytes não deve substituir arquivo válido existente
+        dest_folder = self.test_dir / "destino_teste"
+        dest_folder.mkdir(parents=True)
+        existing_in_dest = dest_folder / "relatorio.pdf"
+        existing_in_dest.write_text("conteudo original importante")
+
+        incoming_zero = self.test_dir / "relatorio.pdf"
+        incoming_zero.touch()
+
+        success, msg = self.engine.move_item(incoming_zero, dest_folder)
+        self.assertFalse(success)
+        self.assertIn("0 bytes", msg)
+        self.assertEqual(existing_in_dest.read_text(), "conteudo original importante")
+
+        # 3. Proteção no organize_directory com contagem em stats
+        test_downloads = self.test_dir / "Downloads_Zero_Test"
+        test_downloads.mkdir(parents=True)
+        zero_in_dl = test_downloads / "download_interrompido.pdf"
+        zero_in_dl.touch()
+
+        stats = self.engine.organize_directory(test_downloads)
+        self.assertEqual(stats.get("zero_bytes", 0), 1)
+
+    def test_dao_and_agr_canonical_rules(self):
+        prod_config = PROJECT_ROOT / "config" / "regras.json"
+        engine_prod = FileOrganizerEngine(config_path=prod_config, custom_dest_root=self.dest_root)
+
+        # Aulas de DAO
+        dest_dao1 = engine_prod.classify_file(Path("dao-01.mp4"))
+        self.assertEqual(dest_dao1, self.dest_root / "04_Desenvolvimento_e_Codigo/04.1_Projetos_Web_e_Apps")
+
+        dest_dao9 = engine_prod.classify_file(Path("dao-09.mp4"))
+        self.assertEqual(dest_dao9, self.dest_root / "04_Desenvolvimento_e_Codigo/04.1_Projetos_Web_e_Apps")
+
+        dest_trilha = engine_prod.classify_file(Path("trilha-04-dao-projeto.zip"))
+        self.assertEqual(dest_trilha, self.dest_root / "04_Desenvolvimento_e_Codigo/04.1_Projetos_Web_e_Apps")
+
+        # Projetos AGR Dev
+        dest_mini = engine_prod.classify_file(Path("mini-fiscalizacao.zip"))
+        self.assertEqual(dest_mini, self.dest_root / "04_Desenvolvimento_e_Codigo/04.1_Projetos_Web_e_Apps")
+
+        dest_vanilla = engine_prod.classify_file(Path("agr-vanilla-dojo.tar.gz"))
+        self.assertEqual(dest_vanilla, self.dest_root / "04_Desenvolvimento_e_Codigo/04.1_Projetos_Web_e_Apps")
 
 
 if __name__ == "__main__":

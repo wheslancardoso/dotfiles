@@ -2,7 +2,7 @@
 # Script para auto-nomenclatura e datas ISO no Linux
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+PROJECT_ROOT="$SCRIPT_DIR"
 
 echo "===================================================="
 echo "   ORGANIZADOR MASTER — AUTO-NOMENCLATURA (ISO)"

@@ -2,7 +2,7 @@
 # Script para simular a organização completa (Dry-Run) no Linux
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+PROJECT_ROOT="$SCRIPT_DIR"
 
 echo "===================================================="
 echo "   ORGANIZADOR MASTER — MODO SIMULACAO (DRY-RUN)"
