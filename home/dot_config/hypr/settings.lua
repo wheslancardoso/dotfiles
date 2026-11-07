@@ -88,6 +88,8 @@ hl.config({
     render = {
         direct_scanout = 0,
         new_render_scheduling = true,
+        send_content_type = false,
+        cm_auto_hdr = 0,
     },
 
     cursor = {
