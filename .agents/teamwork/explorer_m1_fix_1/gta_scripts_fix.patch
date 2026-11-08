@@ -1,0 +1,365 @@
+--- a/games/gta-sa/scripts/check_final_gta.py
++++ b/games/gta-sa/scripts/check_final_gta.py
+@@ -1,10 +1,17 @@
+-import json, os
++import json
++import os
++from pathlib import Path
+ 
+-with open('/home/lan/dotfiles/scripts/gta_curated_core.json') as f:
++SCRIPT_DIR = Path(__file__).resolve().parent
++
++with open(SCRIPT_DIR / 'gta_curated_core.json', 'r', encoding='utf-8') as f:
+     core = json.load(f)
+ 
+ modloader = '/mnt/dados/Games/GTA_San_Andreas/modloader'
+-installed_folders = [d.lower() for d in os.listdir(modloader) if os.path.isdir(os.path.join(modloader, d))]
++if os.path.exists(modloader):
++    installed_folders = [d.lower() for d in os.listdir(modloader) if os.path.isdir(os.path.join(modloader, d))]
++else:
++    installed_folders = []
+ 
+ print(f"Total de itens no ModLoader: {len(installed_folders)}")
+-print("Avaliando os 93 mods curados...")
++print(f"Avaliando os {len(core)} mods curados...")
+--- a/games/gta-sa/scripts/filtrar-curadoria-elite.py
++++ b/games/gta-sa/scripts/filtrar-curadoria-elite.py
+@@ -9,8 +9,12 @@
+ """
+ 
+ import json
++from pathlib import Path
+ 
+-with open('/home/lan/dotfiles/scripts/gta_catalog_full.json', 'r', encoding='utf-8') as f:
++SCRIPT_DIR = Path(__file__).resolve().parent
++CATALOG_PATH = SCRIPT_DIR / "gta_catalog_full.json"
++
++with open(CATALOG_PATH, 'r', encoding='utf-8') as f:
+     catalog = json.load(f)
+ 
+ # Termos a expurgar estritamente
+@@ -63,6 +67,6 @@
+ for idx, m in enumerate(clean_catalog, 1):
+     m['id'] = idx
+ 
+-with open('/home/lan/dotfiles/scripts/gta_catalog_full.json', 'w', encoding='utf-8') as out:
++with open(CATALOG_PATH, 'w', encoding='utf-8') as out:
+     json.dump(clean_catalog, out, indent=2, ensure_ascii=False)
+ 
+--- a/games/gta-sa/scripts/generate_missing_checklist.py
++++ b/games/gta-sa/scripts/generate_missing_checklist.py
+@@ -1,6 +1,10 @@
+ import json
++from pathlib import Path
+ 
+-with open('/home/lan/dotfiles/scripts/gta_curated_core.json') as f:
++SCRIPT_DIR = Path(__file__).resolve().parent
++ROOT_DIR = SCRIPT_DIR.parent
++
++with open(SCRIPT_DIR / 'gta_curated_core.json', 'r', encoding='utf-8') as f:
+     core = json.load(f)
+ 
+ # IDs confirmados que faltam baixar
+@@ -20,7 +24,7 @@
+     "💾 SISTEMA, SALVAMENTO & ÁUDIO": [9, 33, 40, 62, 72]
+ }
+ 
+-out_md = "/home/lan/dotfiles/CHECKLIST_MODS_FALTANTES.md"
++out_md = ROOT_DIR / "CHECKLIST_MODS_FALTANTES.md"
+ with open(out_md, "w", encoding="utf-8") as out:
+     out.write("# 📋 CHECKLIST OFICIAL DE DOWNLOADS: GTA SAN ANDREAS DEFINITIVO\n\n")
+     out.write(f"Total de Mods no Modpack: **93**\n")
+--- a/games/gta-sa/scripts/generate_missing_list.py
++++ b/games/gta-sa/scripts/generate_missing_list.py
+@@ -1,14 +1,22 @@
+-import json, os
++import json
++import os
++from pathlib import Path
+ 
+-with open('/home/lan/dotfiles/scripts/gta_curated_core.json') as f:
++SCRIPT_DIR = Path(__file__).resolve().parent
++ROOT_DIR = SCRIPT_DIR.parent
++
++with open(SCRIPT_DIR / 'gta_curated_core.json', 'r', encoding='utf-8') as f:
+     core = json.load(f)
+ 
+ game_dir = '/mnt/dados/Games/GTA_San_Andreas'
+ modloader = os.path.join(game_dir, 'modloader')
+-installed_dirs = [d.lower() for d in os.listdir(modloader) if os.path.isdir(os.path.join(modloader, d))]
+-essentials = os.path.join(modloader, '_ESSENTIALS')
+-if os.path.exists(essentials):
+-    installed_dirs.extend([d.lower() for d in os.listdir(essentials) if os.path.isdir(os.path.join(essentials, d))])
++if os.path.exists(modloader):
++    installed_dirs = [d.lower() for d in os.listdir(modloader) if os.path.isdir(os.path.join(modloader, d))]
++    essentials = os.path.join(modloader, '_ESSENTIALS')
++    if os.path.exists(essentials):
++        installed_dirs.extend([d.lower() for d in os.listdir(essentials) if os.path.isdir(os.path.join(essentials, d))])
++else:
++    installed_dirs = []
+ 
+ missing = []
+ for mod in core:
+@@ -25,7 +33,7 @@
+     if not found:
+         missing.append(mod)
+ 
+-output_file = "/home/lan/dotfiles/MODS_FALTANTES_PARA_BAIXAR.md"
++output_file = ROOT_DIR / "MODS_FALTANTES_PARA_BAIXAR.md"
+ with open(output_file, "w", encoding="utf-8") as out:
+     out.write("# 📋 MODS FALTANTES PARA O GTA SAN ANDREAS DEFINITIVO\n\n")
+     out.write(f"Total de mods atualmente no jogo: **{len(core) - len(missing)} / {len(core)}**\n")
+--- a/games/gta-sa/scripts/gerar-lotes-270-fiel.py
++++ b/games/gta-sa/scripts/gerar-lotes-270-fiel.py
+@@ -1,12 +1,19 @@
+ #!/usr/bin/env python3
+ import json
+ import os
++from pathlib import Path
+ 
+-with open('/home/lan/dotfiles/scripts/gta_catalog_full.json', 'r', encoding='utf-8') as f:
++SCRIPT_DIR = Path(__file__).resolve().parent
++ROOT_DIR = SCRIPT_DIR.parent
++
++with open(SCRIPT_DIR / 'gta_catalog_full.json', 'r', encoding='utf-8') as f:
+     catalog = json.load(f)
+ 
+ backup_dir = '/mnt/dados/Games/GTA_San_Andreas/00_MODS_COMPACTADOS_BACKUP'
+-downloaded_files = [f.lower() for f in os.listdir(backup_dir)]
++if os.path.exists(backup_dir):
++    downloaded_files = [f.lower() for f in os.listdir(backup_dir)]
++else:
++    downloaded_files = []
+ 
+ def is_downloaded(mod):
+     for dl in mod['downloads']:
+@@ -46,10 +53,11 @@
+ print(f"Pendentes de Download: {len(pending_mods)}")
+ 
+ # Recriar lotes
+-scripts_dir = "/home/lan/dotfiles/scripts/lotes_download"
++scripts_dir = SCRIPT_DIR / "lotes_download"
+ os.makedirs(scripts_dir, exist_ok=True)
+ for f in os.listdir(scripts_dir):
+-    os.remove(os.path.join(scripts_dir, f))
++    if f.startswith("baixar_lote_") and f.endswith(".sh"):
++        os.remove(os.path.join(scripts_dir, f))
+ 
+ batch_size = 15
+ num_batches = (len(pending_mods) + batch_size - 1) // batch_size
+@@ -76,7 +84,13 @@
+     os.chmod(script_path, 0o755)
+ 
+ # HTML Master
+-html_path = "/mnt/dados/Games/GTA_San_Andreas/00_SETUP_WINDOWS/TODOS_OS_MODS_DOWNLOAD.html"
++html_dir = Path("/mnt/dados/Games/GTA_San_Andreas/00_SETUP_WINDOWS")
++try:
++    html_dir.mkdir(parents=True, exist_ok=True)
++    html_path = html_dir / "TODOS_OS_MODS_DOWNLOAD.html"
++except OSError:
++    html_path = ROOT_DIR / "TODOS_OS_MODS_DOWNLOAD.html"
++
+ with open(html_path, "w", encoding="utf-8") as h:
+     h.write("""<!DOCTYPE html>
+ <html lang="pt-BR">
+--- a/games/gta-sa/scripts/gerar-lotes-curadoria-pura.py
++++ b/games/gta-sa/scripts/gerar-lotes-curadoria-pura.py
+@@ -1,12 +1,19 @@
+ #!/usr/bin/env python3
+ import json
+ import os
++from pathlib import Path
+ 
+-with open('/home/lan/dotfiles/scripts/gta_curated_core.json', 'r', encoding='utf-8') as f:
++SCRIPT_DIR = Path(__file__).resolve().parent
++ROOT_DIR = SCRIPT_DIR.parent
++
++with open(SCRIPT_DIR / 'gta_curated_core.json', 'r', encoding='utf-8') as f:
+     catalog = json.load(f)
+ 
+ backup_dir = '/mnt/dados/Games/GTA_San_Andreas/00_MODS_COMPACTADOS_BACKUP'
+-downloaded_files = [f.lower() for f in os.listdir(backup_dir)]
++if os.path.exists(backup_dir):
++    downloaded_files = [f.lower() for f in os.listdir(backup_dir)]
++else:
++    downloaded_files = []
+ 
+ def is_downloaded(mod):
+     # verificar por url
+@@ -48,10 +55,11 @@
+ print(f"Pendentes de Download: {len(pending_mods)}")
+ 
+ # Recriar lotes
+-scripts_dir = "/home/lan/dotfiles/scripts/lotes_download"
++scripts_dir = SCRIPT_DIR / "lotes_download"
+ os.makedirs(scripts_dir, exist_ok=True)
+ for f in os.listdir(scripts_dir):
+-    os.remove(os.path.join(scripts_dir, f))
++    if f.startswith("baixar_lote_") and f.endswith(".sh"):
++        os.remove(os.path.join(scripts_dir, f))
+ 
+ batch_size = 12
+ num_batches = (len(pending_mods) + batch_size - 1) // batch_size
+@@ -78,7 +86,13 @@
+     os.chmod(script_path, 0o755)
+ 
+ # HTML Master
+-html_path = "/mnt/dados/Games/GTA_San_Andreas/00_SETUP_WINDOWS/MODPACK_CURADORIA_ELITE.html"
++html_dir = Path("/mnt/dados/Games/GTA_San_Andreas/00_SETUP_WINDOWS")
++try:
++    html_dir.mkdir(parents=True, exist_ok=True)
++    html_path = html_dir / "MODPACK_CURADORIA_ELITE.html"
++except OSError:
++    html_path = ROOT_DIR / "MODPACK_CURADORIA_ELITE.html"
++
+ with open(html_path, "w", encoding="utf-8") as h:
+     h.write("""<!DOCTYPE html>
+ <html lang="pt-BR">
+--- a/games/gta-sa/scripts/gerar-lotes-download.py
++++ b/games/gta-sa/scripts/gerar-lotes-download.py
+@@ -1,12 +1,19 @@
+ #!/usr/bin/env python3
+ import json
+ import os
++from pathlib import Path
+ 
+-with open('/home/lan/dotfiles/scripts/gta_catalog_full.json', 'r', encoding='utf-8') as f:
++SCRIPT_DIR = Path(__file__).resolve().parent
++ROOT_DIR = SCRIPT_DIR.parent
++
++with open(SCRIPT_DIR / 'gta_catalog_full.json', 'r', encoding='utf-8') as f:
+     catalog = json.load(f)
+ 
+ backup_dir = '/mnt/dados/Games/GTA_San_Andreas/00_MODS_COMPACTADOS_BACKUP'
+-downloaded = [f.lower() for f in os.listdir(backup_dir)]
++if os.path.exists(backup_dir):
++    downloaded = [f.lower() for f in os.listdir(backup_dir)]
++else:
++    downloaded = []
+ 
+ # Filtrar mods que possuem link de download ou post
+ items_to_download = []
+@@ -23,7 +30,7 @@
+ batch_size = 15
+ num_batches = (len(items_to_download) + batch_size - 1) // batch_size
+ 
+-scripts_dir = "/home/lan/dotfiles/scripts/lotes_download"
++scripts_dir = SCRIPT_DIR / "lotes_download"
+ os.makedirs(scripts_dir, exist_ok=True)
+ 
+ # Gerar scripts individuais
+@@ -48,7 +55,13 @@
+     os.chmod(script_path, 0o755)
+ 
+ # Gerar também uma página HTML indexada com todos os 270 links clicáveis
+-html_path = "/mnt/dados/Games/GTA_San_Andreas/00_SETUP_WINDOWS/TODOS_OS_270_MODS_DOWNLOAD.html"
++html_dir = Path("/mnt/dados/Games/GTA_San_Andreas/00_SETUP_WINDOWS")
++try:
++    html_dir.mkdir(parents=True, exist_ok=True)
++    html_path = html_dir / "TODOS_OS_270_MODS_DOWNLOAD.html"
++except OSError:
++    html_path = ROOT_DIR / "TODOS_OS_270_MODS_DOWNLOAD.html"
++
+ with open(html_path, "w", encoding="utf-8") as h:
+     h.write("""<!DOCTYPE html>
+ <html lang="pt-BR">
+--- a/games/gta-sa/scripts/gerar-lotes-filtrados.py
++++ b/games/gta-sa/scripts/gerar-lotes-filtrados.py
+@@ -2,12 +2,19 @@
+ import json
+ import os
+ import re
++from pathlib import Path
+ 
+-with open('/home/lan/dotfiles/scripts/gta_catalog_full.json', 'r', encoding='utf-8') as f:
++SCRIPT_DIR = Path(__file__).resolve().parent
++ROOT_DIR = SCRIPT_DIR.parent
++
++with open(SCRIPT_DIR / 'gta_catalog_full.json', 'r', encoding='utf-8') as f:
+     catalog = json.load(f)
+ 
+ backup_dir = '/mnt/dados/Games/GTA_San_Andreas/00_MODS_COMPACTADOS_BACKUP'
+-downloaded_files = [f.lower() for f in os.listdir(backup_dir)]
++if os.path.exists(backup_dir):
++    downloaded_files = [f.lower() for f in os.listdir(backup_dir)]
++else:
++    downloaded_files = []
+ 
+ def is_already_downloaded(mod):
+     # 1. Comparação direta com URLs de download
+@@ -49,10 +56,11 @@
+ print(f"Mods PENDENTES DE DOWNLOAD: {len(pending_mods)}")
+ 
+ # Limpar e recriar scripts de lote
+-scripts_dir = "/home/lan/dotfiles/scripts/lotes_download"
++scripts_dir = SCRIPT_DIR / "lotes_download"
+ os.makedirs(scripts_dir, exist_ok=True)
+ for f in os.listdir(scripts_dir):
+-    os.remove(os.path.join(scripts_dir, f))
++    if f.startswith("baixar_lote_") and f.endswith(".sh"):
++        os.remove(os.path.join(scripts_dir, f))
+ 
+ batch_size = 15
+ num_batches = (len(pending_mods) + batch_size - 1) // batch_size
+@@ -79,7 +87,13 @@
+     os.chmod(script_path, 0o755)
+ 
+ # Atualizar o painel HTML mestre com todos os 315 mods
+-html_path = "/mnt/dados/Games/GTA_San_Andreas/00_SETUP_WINDOWS/TODOS_OS_MODS_DOWNLOAD.html"
++html_dir = Path("/mnt/dados/Games/GTA_San_Andreas/00_SETUP_WINDOWS")
++try:
++    html_dir.mkdir(parents=True, exist_ok=True)
++    html_path = html_dir / "TODOS_OS_MODS_DOWNLOAD.html"
++except OSError:
++    html_path = ROOT_DIR / "TODOS_OS_MODS_DOWNLOAD.html"
++
+ with open(html_path, "w", encoding="utf-8") as h:
+     h.write("""<!DOCTYPE html>
+ <html lang="pt-BR">
+--- a/games/gta-sa/scripts/limpar-bizarrices.py
++++ b/games/gta-sa/scripts/limpar-bizarrices.py
+@@ -9,8 +9,12 @@
+ """
+ 
+ import json
++from pathlib import Path
+ 
+-with open('/home/lan/dotfiles/scripts/gta_catalog_full.json', 'r', encoding='utf-8') as f:
++SCRIPT_DIR = Path(__file__).resolve().parent
++CATALOG_PATH = SCRIPT_DIR / "gta_catalog_full.json"
++
++with open(CATALOG_PATH, 'r', encoding='utf-8') as f:
+     catalog = json.load(f)
+ 
+ # Termos que descaracterizam completamente ou são lixo de scraper
+@@ -86,6 +90,5 @@
+ for idx, m in enumerate(clean_catalog, 1):
+     m['id'] = idx
+ 
+-with open('/home/lan/dotfiles/scripts/gta_catalog_full.json', 'w', encoding='utf-8') as out:
++with open(CATALOG_PATH, 'w', encoding='utf-8') as out:
+     json.dump(clean_catalog, out, indent=2, ensure_ascii=False)
+-
+--- a/games/gta-sa/scripts/limpar-dev-tools.py
++++ b/games/gta-sa/scripts/limpar-dev-tools.py
+@@ -1,7 +1,11 @@
+ #!/usr/bin/env python3
+ import json
++from pathlib import Path
+ 
+-with open('/home/lan/dotfiles/scripts/gta_catalog_full.json', 'r', encoding='utf-8') as f:
++SCRIPT_DIR = Path(__file__).resolve().parent
++CATALOG_PATH = SCRIPT_DIR / "gta_catalog_full.json"
++
++with open(CATALOG_PATH, 'r', encoding='utf-8') as f:
+     catalog = json.load(f)
+ 
+ # IDs ou títulos de ferramentas puras de desenvolvimento de mods (não para jogar)
+@@ -31,6 +35,5 @@
+ for idx, m in enumerate(clean_catalog, 1):
+     m['id'] = idx
+ 
+-with open('/home/lan/dotfiles/scripts/gta_catalog_full.json', 'w', encoding='utf-8') as out:
++with open(CATALOG_PATH, 'w', encoding='utf-8') as out:
+     json.dump(clean_catalog, out, indent=2, ensure_ascii=False)
+-

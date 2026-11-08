@@ -1,0 +1,160 @@
+--- a/templates-lab/docs/README.md
++++ b/templates-lab/docs/README.md
+@@ -4,7 +4,7 @@
+ > **Ambiente Operacional:** `/home/lan/dotfiles/templates-lab/docs/`  
+ > **Público-Alvo:** Engenheiros de Software de Elite (Top 5% Global) & Auditores de Controle Externo de TI (TCE-GO 2026 / Banca FCC)  
+ > **Versão da Suíte:** 1.0.0 Canônica — 2026  
+-> **Integridade:** Homologado pelo Test Harness `scripts/verify_docs_suite.py`  
++> **Integridade:** Homologado pelo Test Harness `templates-lab/scripts/verify_docs_suite.py`  
+ 
+ ---
+ 
+@@ -138,17 +138,17 @@
+ 
+ ## 6. GUIA DE EXECUÇÃO E VALIDAÇÃO AUTOMATIZADA DE INTEGRIDADE
+ 
+-A conformidade desta suíte de documentação é auditada de forma contínua através do harness de verificação automatizada `scripts/verify_docs_suite.py`:
++A conformidade desta suíte de documentação é auditada de forma contínua através do harness de verificação automatizada `templates-lab/scripts/verify_docs_suite.py`:
+ 
+ ```bash
+ # Executar a suíte completa de auditoria E2E
+-python3 scripts/verify_docs_suite.py
++python3 templates-lab/scripts/verify_docs_suite.py
+ 
+ # Executar apenas o Tier 4 (Validação do README e Rastreabilidade)
+-python3 scripts/verify_docs_suite.py --tier 4
++python3 templates-lab/scripts/verify_docs_suite.py --tier 4
+ 
+ # Exportar resultados em formato Markdown
+-python3 scripts/verify_docs_suite.py --format markdown
++python3 templates-lab/scripts/verify_docs_suite.py --format markdown
+ ```
+ 
+ ### Critérios de Aceite Globais (Checklist de Homologação):
+--- a/templates-lab/docs/TEST_READY.md
++++ b/templates-lab/docs/TEST_READY.md
+@@ -3,8 +3,8 @@
+ **Status da Infraestrutura de Testes:** ✅ **PRONTA E ATIVA (READY)**  
+ **Data/Hora:** 2026-10-25T13:52:00Z  
+ **Autor:** Test Writer (E2E Testing Track)  
+-**Script Principal:** `/home/lan/dotfiles/scripts/verify_docs_suite.py`  
+-**Suíte de Auto-Verificação:** `/home/lan/dotfiles/scripts/test_verify_docs_suite.py`  
++**Script Principal:** `/home/lan/dotfiles/templates-lab/scripts/verify_docs_suite.py`  
++**Suíte de Auto-Verificação:** `/home/lan/dotfiles/templates-lab/scripts/test_verify_docs_suite.py`  
+ **Diretório Alvo:** `/home/lan/dotfiles/templates-lab/docs/`
+ 
+ ---
+@@ -48,7 +48,7 @@
+ ```
+ 
+ ### Auto-Testes Adversariais do Harness
+-Executados via `pytest scripts/test_verify_docs_suite.py`:
++Executados via `pytest templates-lab/scripts/test_verify_docs_suite.py`:
+ - `test_tier1_detects_missing_directory`: **PASSED**
+ - `test_tier2_detects_forbidden_placeholders_and_short_files`: **PASSED**
+ - `test_tier3_detects_missing_pedagogical_parts_and_contrasts`: **PASSED**
+@@ -64,15 +64,15 @@
+ Conforme cada módulo for sendo redigido, o autor ou orquestrador pode rodar validações incrementais:
+ 
+ 1. **Ao concluir M1:**
+-   `python3 scripts/verify_docs_suite.py --tier 1`
+-   `python3 scripts/verify_docs_suite.py --tier 2`
++   `python3 templates-lab/scripts/verify_docs_suite.py --tier 1`
++   `python3 templates-lab/scripts/verify_docs_suite.py --tier 2`
+ 
+ 2. **Para validar a didática e contrastes de versão:**
+-   `python3 scripts/verify_docs_suite.py --tier 3 -v`
++   `python3 templates-lab/scripts/verify_docs_suite.py --tier 3 -v`
+ 
+ 3. **Para validar a rastreabilidade final (M6):**
+-   `python3 scripts/verify_docs_suite.py --tier 4`
++   `python3 templates-lab/scripts/verify_docs_suite.py --tier 4`
+ 
+ 4. **Para auditoria completa final de aprovação (M7):**
+-   `python3 scripts/verify_docs_suite.py`
++   `python3 templates-lab/scripts/verify_docs_suite.py`
+    *(Deve retornar código 0 e `SUITE PASSED (ALL CRITERIA MET)`)*.
+--- a/templates-lab/docs/TEST_INFRA.md
++++ b/templates-lab/docs/TEST_INFRA.md
+@@ -6,7 +6,7 @@
+ 
+ ## 🎯 Objetivo & Princípios de Engenharia
+ 
+-O harness de verificação automatizada (`scripts/verify_docs_suite.py`) atua como auditor forense e autoritário sobre os 5 módulos pedagógicos canônicos e o arquivo de índice central `README.md`. Ele garante que nenhum material técnico seja aprovado com lacunas, placeholders, desleixo didático ou ausência de vínculos com a arquitetura real de produção da AGR e o projeto greenfield `teatro-abc`.
++O harness de verificação automatizada (`templates-lab/scripts/verify_docs_suite.py`) atua como auditor forense e autoritário sobre os 5 módulos pedagógicos canônicos e o arquivo de índice central `README.md`. Ele garante que nenhum material técnico seja aprovado com lacunas, placeholders, desleixo didático ou ausência de vínculos com a arquitetura real de produção da AGR e o projeto greenfield `teatro-abc`.
+ 
+ ### Diretrizes Centrais
+ 1. **Zero Placeholders:** Erradicação total de `TODO`, `FIXME`, `[TBD]`, `implementar depois` ou reticências (`...`) desleixadas em blocos de código.
+@@ -69,43 +69,43 @@
+ 
+ ### 1. Execução Padrão via CLI (Saída Colorida no Terminal)
+ ```bash
+-python3 scripts/verify_docs_suite.py
++python3 templates-lab/scripts/verify_docs_suite.py
+ ```
+ 
+ ### 2. Execução por Tier Específico
+ ```bash
+ # Executa apenas verificação de existência física (Tier 1)
+-python3 scripts/verify_docs_suite.py --tier 1
++python3 templates-lab/scripts/verify_docs_suite.py --tier 1
+ 
+ # Executa apenas auditoria de placeholders e completude (Tier 2)
+-python3 scripts/verify_docs_suite.py --tier 2
++python3 templates-lab/scripts/verify_docs_suite.py --tier 2
+ 
+ # Executa apenas conformidade didática e contraste de versões (Tier 3)
+-python3 scripts/verify_docs_suite.py --tier 3
++python3 templates-lab/scripts/verify_docs_suite.py --tier 3
+ 
+ # Executa apenas matriz de rastreabilidade (Tier 4)
+-python3 scripts/verify_docs_suite.py --tier 4
++python3 templates-lab/scripts/verify_docs_suite.py --tier 4
+ ```
+ 
+ ### 3. Modos de Saída e Automação
+ ```bash
+ # Formato JSON para integração contínua (CI)
+-python3 scripts/verify_docs_suite.py --format json
++python3 templates-lab/scripts/verify_docs_suite.py --format json
+ 
+ # Formato Markdown para geração de relatórios de auditoria
+-python3 scripts/verify_docs_suite.py --format markdown --output /tmp/docs_audit.md
++python3 templates-lab/scripts/verify_docs_suite.py --format markdown --output /tmp/docs_audit.md
+ 
+ # Modo verboso exibindo todos os checks aprovados individualmente
+-python3 scripts/verify_docs_suite.py -v
++python3 templates-lab/scripts/verify_docs_suite.py -v
+ ```
+ 
+ ### 4. Execução via `pytest`
+ ```bash
+ # Executa os 4 testes de integração E2E
+-pytest scripts/verify_docs_suite.py
++pytest templates-lab/scripts/verify_docs_suite.py
+ 
+ # Executa os 5 testes de integridade adversarial do próprio harness
+-pytest scripts/test_verify_docs_suite.py
++pytest templates-lab/scripts/test_verify_docs_suite.py
+ ```
+ 
+ ---
+--- a/templates-lab/scripts/verify_docs_suite.py
++++ b/templates-lab/scripts/verify_docs_suite.py
+@@ -5,11 +5,11 @@
+ Repository: dotfiles / templates-lab / docs
+ Authoritative Specification: ORIGINAL_REQUEST.md & PROJECT.md
+ Usage:
+-    python3 scripts/verify_docs_suite.py
+-    python3 scripts/verify_docs_suite.py --tier 1
+-    python3 scripts/verify_docs_suite.py --format json
+-    python3 scripts/verify_docs_suite.py --format markdown
+-    pytest scripts/verify_docs_suite.py
++    python3 templates-lab/scripts/verify_docs_suite.py
++    python3 templates-lab/scripts/verify_docs_suite.py --tier 1
++    python3 templates-lab/scripts/verify_docs_suite.py --format json
++    python3 templates-lab/scripts/verify_docs_suite.py --format markdown
++    pytest templates-lab/scripts/verify_docs_suite.py
+ """
+ 
+ from __future__ import annotations

@@ -1,24 +1,36 @@
-This is a single self-contained fix; keep it small and focused. Migrar toda a árvore de configurações do Hyprland para o novo formato `.config/hypr/hyprland.lua`.
+Organizar completamente todas as pastas e os arquivos do projeto, organizar as aulas de DAO baixadas (conversa ID contexto: 0808d8cc-5518-4271-b2c7-ce2c0ecb4ba9), eliminar redundâncias e arquivos desnecessários, aprimorar a ferramenta de organização de diretórios e arquivos e espelhar o resultado no Drive.
 
 Working directory: /home/lan/dotfiles
 Integrity mode: development
 
+Contexto de referência: conversa ID 0808d8cc-5518-4271-b2c7-ce2c0ecb4ba9
+
 ## Requirements
 
-### R1. Migração completa para hyprland.lua
-Migrar toda a árvore de configurações do Hyprland existente no repositório de dotfiles e no ambiente do usuário para o novo formato `.config/hypr/hyprland.lua`, cobrindo de forma equivalente monitores, atalhos de teclado/mouse, regras de janelas, animações e autostart.
+### R1. Organização e Limpeza Geral
+Organizar todas as pastas e arquivos do projeto, eliminando redundâncias e arquivos desnecessários, mantendo a estrutura limpa e no melhor padrão possível. A equipe tem autonomia para decidir a destinação exata e o escopo dos diretórios.
 
-### R2. Preservação e backup das configurações anteriores
-Criar um backup completo e seguro de todos os arquivos de configuração atuais do Hyprland antes de efetuar a migração e modificações.
+### R2. Organização das Aulas de DAO
+Identificar, renomear e organizar as aulas de DAO baixadas para o destino apropriado com base no contexto fornecido (conversa ID 0808d8cc-5518-4271-b2c7-ce2c0ecb4ba9), eliminando cópias duplicadas.
+
+### R3. Aprimoramento da Ferramenta de Organização
+Aprimorar a ferramenta de organização (`scripts/organizador`), melhorando o tratamento de pastas, arquivos, nomes de arquivos e diretórios, garantindo que suas regras e testes continuem consistentes.
+
+### R4. Espelhamento no Google Drive
+Espelhar a estrutura organizada no Google Drive utilizando o mecanismo e rotinas de sincronização do projeto.
 
 ## Acceptance Criteria
 
-### Backup
-- [ ] Cópia de segurança de todas as configurações existentes do Hyprland foi gerada antes das alterações.
+### Organização e Limpeza
+- [ ] Cópias duplicadas e redundâncias de arquivos nas pastas organizadas foram identificadas e removidas.
+- [ ] A árvore de arquivos e diretórios foi reestruturada de forma limpa e consistente.
 
-### Configuração e Sintaxe
-- [ ] O arquivo `.config/hypr/hyprland.lua` foi criado contendo as configurações de monitores, atalhos, regras de janelas, animações e autostart correspondentes às originais.
-- [ ] A nova configuração carrega sem erros de sintaxe ou advertências fatais ao recarregar com `hyprctl reload`.
+### Aulas de DAO
+- [ ] Todas as aulas de DAO baixadas estão renomeadas e alocadas em sua pasta de destino de acordo com o contexto da conversa 0808d8cc-5518-4271-b2c7-ce2c0ecb4ba9.
 
-### Atalhos e Integridade
-- [ ] O comando `hypr-keys conflicts` ou `hypr-keys check` valida a integridade dos atalhos sem colisões não tratadas.
+### Ferramenta de Organização
+- [ ] As melhorias na ferramenta de organização de arquivos e pastas foram implementadas em `scripts/organizador`.
+- [ ] Os testes da ferramenta de organização (`pytest scripts/organizador/tests/`) passam sem erros.
+
+### Espelhamento no Drive
+- [ ] A rotina de espelhamento para o Google Drive foi executada com sucesso.
