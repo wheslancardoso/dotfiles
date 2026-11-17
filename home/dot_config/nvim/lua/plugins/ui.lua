@@ -567,29 +567,21 @@ return {
         end
       end
 
-      local function apply_aurora_hl(is_heaven)
-        local palette = is_heaven
-            and {
-              PowerModeFire1 = "#fff3b0",
-              PowerModeFire2 = "#00f5ff",
-              PowerModeFire3 = "#7aa2f7",
-              PowerModeFire4 = "#c792ea",
-              PowerModeFire5 = "#2d1f47",
-            }
-          or {
-            PowerModeFire1 = "#ff2200",
-            PowerModeFire2 = "#ff6600",
-            PowerModeFire3 = "#ffaa00",
-            PowerModeFire4 = "#ffdd00",
-            PowerModeFire5 = "#884400",
-          }
-        for name, fg in pairs(palette) do
-          vim.api.nvim_set_hl(0, name, { fg = fg, bold = (name == "PowerModeFire1") })
+      local function apply_wall_gradient(fg, bg)
+        if not fg or not bg then
+          return
         end
+        vim.api.nvim_set_hl(0, "PowerModeFire1", { fg = lerp_hex(fg, "#ffffff", 0.55), bold = true })
+        vim.api.nvim_set_hl(0, "PowerModeFire2", { fg = fg })
+        vim.api.nvim_set_hl(0, "PowerModeFire3", { fg = lerp_hex(fg, bg, 0.25) })
+        vim.api.nvim_set_hl(0, "PowerModeFire4", { fg = lerp_hex(fg, bg, 0.50) })
+        vim.api.nvim_set_hl(0, "PowerModeFire5", { fg = lerp_hex(fg, bg, 0.72) })
       end
 
-      local function apply_fx_mode(is_heaven)
-        apply_aurora_hl(is_heaven)
+      local function apply_fx_mode(is_heaven, fg, bg)
+        if fg and bg then
+          apply_wall_gradient(fg, bg)
+        end
         if current_fx_heaven == is_heaven then
           return
         end
@@ -644,7 +636,7 @@ return {
         end
 
         pcall(vim.cmd.colorscheme, t.scheme)
-        apply_fx_mode(is_heaven_now)
+        apply_fx_mode(is_heaven_now, t.fg, t.editor_bg)
         sync_kitty(t.fg, t.editor_bg)
 
         if leveled_up then
@@ -701,6 +693,9 @@ return {
       vim.keymap.set("n", "<leader>uP", function()
         set_preset()
       end, { desc = "Toggle Power Mode Preset (Fire / Heaven)" })
+
+      -- Impede o neovim-power-mode de zerar o combo/fire_wall ao apertar <Esc>
+      pcall(vim.api.nvim_clear_autocmds, { group = "PowerMode", event = "InsertLeave" })
 
       local timer = vim.uv.new_timer()
       local group = vim.api.nvim_create_augroup("PowerModeStreakTheme", { clear = true })
