@@ -461,6 +461,7 @@ return {
             vim.api.nvim_set_hl(0, "FloatBorder", { fg = fg, bg = t.editor_bg })
             vim.api.nvim_set_hl(0, "StatusLine", { fg = fg, bg = t.bg, bold = true })
             vim.api.nvim_set_hl(0, "CursorLineNr", { fg = fg, bg = t.bg, bold = true })
+            vim.api.nvim_set_hl(0, "SnacksIndentScope", { fg = fg })
           end)
         )
       end
@@ -552,18 +553,36 @@ return {
         if not vim.api.nvim_buf_is_valid(buf) or vim.bo[buf].buftype ~= "" then
           return
         end
-        vim.api.nvim_set_hl(0, "PowerModeShockwave", { bg = flash_bg, fg = fg, bold = true })
-        local row = vim.api.nvim_win_get_cursor(0)[1] - 1
-        local ok, mark_id = pcall(vim.api.nvim_buf_set_extmark, buf, shock_ns, row, 0, {
-          line_hl_group = "PowerModeShockwave",
-          priority = 250,
-        })
-        if ok and mark_id then
+        local total_lines = vim.api.nvim_buf_line_count(buf)
+        local center = vim.api.nvim_win_get_cursor(0)[1] - 1
+        local rings = {
+          { offsets = { 0 }, delay = 0, hl = "PowerModeShockwave0", bg = flash_bg },
+          { offsets = { -1, 1 }, delay = 45, hl = "PowerModeShockwave1", bg = lerp_hex(flash_bg, current_bg, 0.4) },
+          { offsets = { -2, 2 }, delay = 90, hl = "PowerModeShockwave2", bg = lerp_hex(flash_bg, current_bg, 0.7) },
+        }
+        for _, ring in ipairs(rings) do
+          vim.api.nvim_set_hl(0, ring.hl, { bg = ring.bg, fg = fg, bold = (ring.delay == 0) })
           vim.defer_fn(function()
-            if vim.api.nvim_buf_is_valid(buf) then
-              pcall(vim.api.nvim_buf_del_extmark, buf, shock_ns, mark_id)
+            if not vim.api.nvim_buf_is_valid(buf) then
+              return
             end
-          end, 240)
+            for _, off in ipairs(ring.offsets) do
+              local r = center + off
+              if r >= 0 and r < total_lines then
+                local ok, mark_id = pcall(vim.api.nvim_buf_set_extmark, buf, shock_ns, r, 0, {
+                  line_hl_group = ring.hl,
+                  priority = 250,
+                })
+                if ok and mark_id then
+                  vim.defer_fn(function()
+                    if vim.api.nvim_buf_is_valid(buf) then
+                      pcall(vim.api.nvim_buf_del_extmark, buf, shock_ns, mark_id)
+                    end
+                  end, 160)
+                end
+              end
+            end
+          end, ring.delay)
         end
       end
 

@@ -123,7 +123,7 @@ Em `lazyvim.json` (version `8`, `install_version: 7`):
 ### Efeitos Visuais & Modo Fogo / Heaven Neon (Guitar Hero + Como Reverter)
 
 - **Kitty (`home/dot_config/kitty/kitty.conf`)**: `allow_remote_control yes`, `cursor_trail 3`, `cursor_trail_decay 0.1 0.5`, `cursor_trail_start_threshold 1`, `cursor_trail_color #ff4000` (rastro GPU em chamas + sincronização ao vivo das cores do Kitty via `kitty @ set-colors` a cada nível de streak).
-- **Shockwave no Level-Up**: ao cruzar cada degrau de streak, dispara `beacon.highlight_cursor()` + flash de 240ms na linha inteira (`PowerModeShockwave`).
+- **Shockwave no Level-Up**: ao cruzar cada degrau de streak, dispara `beacon.highlight_cursor()` + **onda expansiva de energia em 3 anéis** (linha central → `±1` → `±2` a cada `45ms`) junto com a transição animada RGB.
 - **Flash ao sair do Insert (`lua/config/autocmds.lua`)**: ao pressionar `<Esc>` (`InsertLeave`) em buffers normais, pisca `🔥` (no preset `fire`) ou `✨` (no preset `heaven`) no cursor por 220ms via `extmark` (`hl_mode = "replace"`, sem alterar o texto).
 - **Alternar Preset (`<leader>uP` ou `:PowerPreset [fire|heaven]`)**: troca instantaneamente entre o modo **`fire`** (padrão) e **`heaven`** (neon/celestial), atualizando também a cor do `smear-cursor` e o emoji do `InsertLeave`.
 - **Progressão de Tema por Streak (`axsaucedo/neovim-power-mode` em `ui.lua`)**:
