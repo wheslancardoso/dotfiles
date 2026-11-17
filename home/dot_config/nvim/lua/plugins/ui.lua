@@ -355,6 +355,7 @@ return {
               editor_bg = "#290b05",
               flash_bg = "#611909",
               label = "🌋 LEVEL 4: INFERNO (80+)",
+              syntax = { keyword = "#ff5500", func = "#ffaa00", str = "#ffd700", type = "#ff7744" },
             },
             [5] = {
               scheme = "catppuccin-mocha",
@@ -363,6 +364,7 @@ return {
               editor_bg = "#260513",
               flash_bg = "#660a30",
               label = "💀 LEVEL 5: GODLIKE (120+)",
+              syntax = { keyword = "#ff0055", func = "#ff5588", str = "#ffcc00", type = "#ff33aa" },
             },
           },
         },
@@ -400,6 +402,7 @@ return {
               editor_bg = "#210926",
               flash_bg = "#4f1459",
               label = "🌌 LEVEL 4: NEON HEAVEN (80+)",
+              syntax = { keyword = "#ff2cf1", func = "#00f5ff", str = "#a6e3a1", type = "#c792ea" },
             },
             [5] = {
               scheme = "catppuccin-mocha",
@@ -408,6 +411,7 @@ return {
               editor_bg = "#1e1d30",
               flash_bg = "#4c4a6e",
               label = "👑 LEVEL 5: CELESTIAL (120+)",
+              syntax = { keyword = "#fff3b0", func = "#00f5ff", str = "#b4befe", type = "#f5c2e7" },
             },
           },
         },
@@ -655,6 +659,16 @@ return {
         end
 
         pcall(vim.cmd.colorscheme, t.scheme)
+        if t.syntax then
+          vim.api.nvim_set_hl(0, "Keyword", { fg = t.syntax.keyword, bold = true })
+          vim.api.nvim_set_hl(0, "@keyword", { fg = t.syntax.keyword, bold = true })
+          vim.api.nvim_set_hl(0, "Function", { fg = t.syntax.func, bold = true })
+          vim.api.nvim_set_hl(0, "@function", { fg = t.syntax.func, bold = true })
+          vim.api.nvim_set_hl(0, "String", { fg = t.syntax.str })
+          vim.api.nvim_set_hl(0, "@string", { fg = t.syntax.str })
+          vim.api.nvim_set_hl(0, "Type", { fg = t.syntax.type })
+          vim.api.nvim_set_hl(0, "@type", { fg = t.syntax.type })
+        end
         apply_fx_mode(is_heaven_now, t.fg, t.editor_bg)
         sync_kitty(t.fg, t.editor_bg)
 
