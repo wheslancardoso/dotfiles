@@ -178,16 +178,493 @@ return {
     },
   },
 
-  -- ⚡ Smear Cursor: Rastro elástico animado / feixe de luz pelo buffer estilo "Zap"
+  -- 🔥 Smear Cursor (Fogo Moderado): Rastro laranja suave sem travar o terminal e sem cobrir o texto
   {
     "sphamba/smear-cursor.nvim",
     event = "VeryLazy",
     opts = {
-      stiffness = 0.8,
-      trailing_stiffness = 0.6,
-      distance_stop_animating = 0.5,
-      cursor_color = "#89dceb", -- Catppuccin Sky / Cyan Elétrico combinando com o rastro do Kitty
+      cursor_color = "#ff4000",
+      time_interval = 17,
+      particles_enabled = true,
+      particles_over_text = false,
+      particle_max_num = 80,
+      particles_per_second = 150,
+      particles_per_length = 15,
+      particle_max_lifetime = 450,
+      particle_gravity = -50,
+      min_distance_emit_particles = 0,
+      stiffness = 0.7,
+      trailing_stiffness = 0.4,
+      damping = 0.75,
+      never_draw_over_target = true,
+      hide_target_hack = true,
     },
+  },
+
+  -- ✨ Tiny Glimmer: Animações em tons de fogo ao copiar (yank), colar, desfazer, refazer e buscar
+  {
+    "rachartier/tiny-glimmer.nvim",
+    event = "VeryLazy",
+    priority = 10,
+    opts = {
+      disable_warnings = true,
+      overwrite = {
+        auto_map = true,
+        yank = {
+          enabled = true,
+          default_animation = {
+            name = "fade",
+            settings = {
+              from_color = "#ff4000",
+              max_duration = 400,
+              min_duration = 250,
+            },
+          },
+        },
+        paste = {
+          enabled = true,
+          default_animation = {
+            name = "reverse_fade",
+            settings = {
+              from_color = "#ff8800",
+              max_duration = 400,
+              min_duration = 250,
+            },
+          },
+          paste_mapping = "p",
+          Paste_mapping = "P",
+        },
+        undo = {
+          enabled = true,
+          default_animation = {
+            name = "fade",
+            settings = {
+              from_color = "#ff2200",
+              max_duration = 400,
+              min_duration = 300,
+            },
+          },
+          undo_mapping = "u",
+        },
+        redo = {
+          enabled = true,
+          default_animation = {
+            name = "fade",
+            settings = {
+              from_color = "#ffaa00",
+              max_duration = 400,
+              min_duration = 300,
+            },
+          },
+          redo_mapping = "<c-r>",
+        },
+        search = {
+          enabled = true,
+          default_animation = {
+            name = "pulse",
+            settings = {
+              from_color = "#ff5500",
+              max_duration = 500,
+              min_duration = 300,
+            },
+          },
+          next_mapping = "n",
+          prev_mapping = "N",
+        },
+      },
+    },
+  },
+
+  -- 🔥 Power Mode: Combo estilo Guitar Hero + partículas + Fire Wall + Tema dinâmico por streak
+  {
+    "axsaucedo/neovim-power-mode",
+    event = "InsertEnter",
+    opts = {
+      particles = {
+        preset = "rightburst",
+        avoid_cursor = true,
+      },
+      combo = {
+        enabled = true,
+        position = "top-right",
+        timeout = 8000,
+        combo_box_disappear_seconds = 4,
+        thresholds = { 10, 25, 50, 80, 120 },
+      },
+      fire_wall = {
+        enabled = true,
+        bottom_offset = 2,
+        max_rows = 5,
+      },
+      shake = {
+        mode = "none",
+      },
+    },
+    config = function(_, opts)
+      require("power-mode").setup(opts)
+
+      local last_level = 0
+      local streak = 0
+      local thresholds = { 10, 25, 50, 80, 120, 150, 180, 210, 250, 300 }
+      vim.g.power_preset = vim.g.power_preset or "fire"
+      vim.g.power_ascended = false
+
+      local function streak_to_level(s)
+        local max_lvl = (vim.g.power_preset == "fire") and 10 or 5
+        local lvl = 0
+        for i = 1, max_lvl do
+          if s >= thresholds[i] then
+            lvl = i
+          end
+        end
+        return lvl
+      end
+
+      local presets = {
+        fire = {
+          smear_color = "#ff4000",
+          levels = {
+            [1] = {
+              scheme = "tokyonight-night",
+              fg = "#39ff14",
+              bg = "#14261c",
+              editor_bg = "#111a15",
+              flash_bg = "#1e3d28",
+              label = "⚡ LEVEL 1: OVERDRIVE (10+)",
+            },
+            [2] = {
+              scheme = "tokyonight-storm",
+              fg = "#ffd700",
+              bg = "#2b2410",
+              editor_bg = "#1c180e",
+              flash_bg = "#473a15",
+              label = "🌟 LEVEL 2: SUPER SAIYAN (25+)",
+            },
+            [3] = {
+              scheme = "catppuccin-frappe",
+              fg = "#ff8800",
+              bg = "#2e1a0d",
+              editor_bg = "#24130a",
+              flash_bg = "#52280e",
+              label = "🔥 LEVEL 3: ON FIRE (50+)",
+            },
+            [4] = {
+              scheme = "catppuccin-mocha",
+              fg = "#ff4000",
+              bg = "#3d1208",
+              editor_bg = "#290b05",
+              flash_bg = "#611909",
+              label = "🌋 LEVEL 4: INFERNO (80+)",
+            },
+            [5] = {
+              scheme = "catppuccin-mocha",
+              fg = "#ff0055",
+              bg = "#420820",
+              editor_bg = "#260513",
+              flash_bg = "#660a30",
+              label = "💀 LEVEL 5: GODLIKE (120+)",
+            },
+          },
+        },
+        heaven = {
+          smear_color = "#00f5ff",
+          levels = {
+            [1] = {
+              scheme = "tokyonight-night",
+              fg = "#00f5ff",
+              bg = "#0c222e",
+              editor_bg = "#0a1721",
+              flash_bg = "#12384d",
+              label = "💎 LEVEL 1: NEON PULSE (10+)",
+            },
+            [2] = {
+              scheme = "tokyonight-moon",
+              fg = "#7aa2f7",
+              bg = "#141c38",
+              editor_bg = "#0f1429",
+              flash_bg = "#1f2c59",
+              label = "⚡ LEVEL 2: HYPERION (25+)",
+            },
+            [3] = {
+              scheme = "catppuccin-macchiato",
+              fg = "#c792ea",
+              bg = "#241638",
+              editor_bg = "#1a102b",
+              flash_bg = "#3b215c",
+              label = "🔮 LEVEL 3: ULTRAVIOLET (50+)",
+            },
+            [4] = {
+              scheme = "catppuccin-mocha",
+              fg = "#ff2cf1",
+              bg = "#301036",
+              editor_bg = "#210926",
+              flash_bg = "#4f1459",
+              label = "🌌 LEVEL 4: NEON HEAVEN (80+)",
+            },
+            [5] = {
+              scheme = "catppuccin-mocha",
+              fg = "#fff3b0",
+              bg = "#2b2a40",
+              editor_bg = "#1e1d30",
+              flash_bg = "#4c4a6e",
+              label = "👑 LEVEL 5: CELESTIAL (120+)",
+            },
+          },
+        },
+      }
+
+      local function hex_to_rgb(hex)
+        hex = hex:gsub("#", "")
+        return tonumber(hex:sub(1, 2), 16), tonumber(hex:sub(3, 4), 16), tonumber(hex:sub(5, 6), 16)
+      end
+
+      local function lerp_hex(c1, c2, alpha)
+        local r1, g1, b1 = hex_to_rgb(c1)
+        local r2, g2, b2 = hex_to_rgb(c2)
+        local r = math.floor(r1 + (r2 - r1) * alpha + 0.5)
+        local g = math.floor(g1 + (g2 - g1) * alpha + 0.5)
+        local b = math.floor(b1 + (b2 - b1) * alpha + 0.5)
+        return string.format("#%02x%02x%02x", r, g, b)
+      end
+
+      local current_bg = "#1e1e2e"
+      local anim_timer = vim.uv.new_timer()
+      local pulse_timer = vim.uv.new_timer()
+
+      local function stop_pulse()
+        if pulse_timer then
+          pulse_timer:stop()
+        end
+      end
+
+      local function start_celestial_pulse(t)
+        stop_pulse()
+        if not pulse_timer then
+          return
+        end
+        local phase = 0
+        pulse_timer:start(
+          250,
+          60,
+          vim.schedule_wrap(function()
+            local is_max = (vim.g.power_preset == "fire" and last_level >= 10)
+              or (vim.g.power_preset == "heaven" and last_level >= 5)
+            if not is_max then
+              stop_pulse()
+              return
+            end
+            phase = phase + 0.18
+            local alpha = (math.sin(phase) + 1) * 0.5
+            local fg = lerp_hex("#fff3b0", "#00f5ff", alpha)
+            vim.api.nvim_set_hl(0, "NeoTreeWinSeparator", { fg = fg, bg = t.editor_bg })
+            vim.api.nvim_set_hl(0, "WinSeparator", { fg = fg })
+            vim.api.nvim_set_hl(0, "FloatBorder", { fg = fg, bg = t.editor_bg })
+            vim.api.nvim_set_hl(0, "StatusLine", { fg = fg, bg = t.bg, bold = true })
+            vim.api.nvim_set_hl(0, "CursorLineNr", { fg = fg, bg = t.bg, bold = true })
+          end)
+        )
+      end
+
+      local function paint_chrome(bg, fg, line_bg, visual_bg)
+        for _, name in ipairs({
+          "Normal",
+          "NormalNC",
+          "SignColumn",
+          "EndOfBuffer",
+          "NormalFloat",
+          "NeoTreeNormal",
+          "NeoTreeNormalNC",
+          "NeoTreeEndOfBuffer",
+        }) do
+          vim.api.nvim_set_hl(0, name, { bg = bg })
+        end
+        vim.api.nvim_set_hl(0, "NeoTreeWinSeparator", { fg = fg, bg = bg })
+        vim.api.nvim_set_hl(0, "CursorLine", { bg = line_bg })
+        vim.api.nvim_set_hl(0, "LineNr", { fg = fg, bg = bg })
+        vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#ffffff", bg = line_bg, bold = true })
+        vim.api.nvim_set_hl(0, "WinSeparator", { fg = fg })
+        vim.api.nvim_set_hl(0, "FloatBorder", { fg = fg, bg = bg })
+        vim.api.nvim_set_hl(0, "StatusLine", { fg = fg, bg = line_bg, bold = true })
+        vim.api.nvim_set_hl(0, "Visual", { bg = visual_bg })
+        vim.api.nvim_set_hl(0, "SnacksIndentScope", { fg = fg })
+        vim.api.nvim_set_hl(0, "MatchParen", { bg = line_bg, fg = fg, bold = true, underline = true })
+      end
+
+      local function animate_transition(from_bg, peak_bg, to_bg, fg, line_bg, on_done)
+        if anim_timer then
+          anim_timer:stop()
+        end
+        local step = 0
+        local total = 10
+        if anim_timer then
+          anim_timer:start(
+            0,
+            22,
+            vim.schedule_wrap(function()
+              step = step + 1
+              local bg
+              if step <= 3 then
+                bg = lerp_hex(from_bg, peak_bg, step / 3)
+              else
+                bg = lerp_hex(peak_bg, to_bg, (step - 3) / (total - 3))
+              end
+              current_bg = bg
+              paint_chrome(bg, fg, line_bg, peak_bg)
+              if step >= total then
+                anim_timer:stop()
+                if on_done then
+                  on_done()
+                end
+              end
+            end)
+          )
+        end
+      end
+
+      local function apply_level(level)
+        if level == last_level then
+          return
+        end
+        local leveled_up = level > last_level
+        local from_bg = current_bg
+        last_level = level
+
+        if level <= 0 then
+          stop_pulse()
+          vim.g.power_ascended = false
+          pcall(function()
+            local smear_c = (presets[vim.g.power_preset] or presets.fire).smear_color
+            require("smear_cursor").setup({ cursor_color = smear_c })
+          end)
+          animate_transition(from_bg, from_bg, "#1e1e2e", "#cdd6f4", "#313244", function()
+            current_bg = "#1e1e2e"
+            pcall(vim.cmd.colorscheme, "catppuccin-mocha")
+          end)
+          return
+        end
+
+        local preset_name = vim.g.power_preset
+        local t
+        local phase_title = preset_name
+        if preset_name == "fire" and level >= 6 then
+          vim.g.power_ascended = true
+          t = presets.heaven.levels[math.min(level - 5, 5)]
+          phase_title = "fire → heaven"
+          if level == 6 and leveled_up then
+            pcall(function()
+              require("smear_cursor").setup({ cursor_color = presets.heaven.smear_color })
+            end)
+          end
+        else
+          vim.g.power_ascended = false
+          local active = presets[preset_name] or presets.fire
+          t = active.levels[math.min(level, 5)]
+        end
+
+        pcall(vim.cmd.colorscheme, t.scheme)
+
+        if leveled_up then
+          vim.notify(t.label, vim.log.levels.INFO, { title = "Power Mode (" .. phase_title .. ")" })
+          animate_transition(from_bg, t.flash_bg, t.editor_bg, t.fg, t.bg, function()
+            local is_max = (preset_name == "fire" and level >= 10) or (preset_name == "heaven" and level >= 5)
+            if is_max then
+              start_celestial_pulse(t)
+            end
+          end)
+        else
+          current_bg = t.editor_bg
+          paint_chrome(t.editor_bg, t.fg, t.bg, t.flash_bg)
+          local is_max = (preset_name == "fire" and level >= 10) or (preset_name == "heaven" and level >= 5)
+          if is_max then
+            start_celestial_pulse(t)
+          else
+            stop_pulse()
+          end
+        end
+      end
+
+      local function set_preset(name)
+        if not name or name == "" then
+          name = (vim.g.power_preset == "fire") and "heaven" or "fire"
+        end
+        if not presets[name] then
+          vim.notify("Preset inválido: use 'fire' ou 'heaven'", vim.log.levels.WARN)
+          return
+        end
+        vim.g.power_preset = name
+        pcall(function()
+          require("smear_cursor").setup({ cursor_color = presets[name].smear_color })
+        end)
+        if last_level > 0 then
+          local cur = last_level
+          last_level = 0
+          apply_level(cur)
+        end
+        local icon = (name == "heaven") and "✨" or "🔥"
+        vim.notify(icon .. " Power Mode Preset: " .. name:upper(), vim.log.levels.INFO, { title = "Power Mode" })
+      end
+
+      vim.api.nvim_create_user_command("PowerPreset", function(cmd)
+        set_preset(cmd.args)
+      end, {
+        nargs = "?",
+        complete = function()
+          return { "fire", "heaven" }
+        end,
+        desc = "Alterna preset do Power Mode (fire / heaven)",
+      })
+
+      vim.keymap.set("n", "<leader>uP", function()
+        set_preset()
+      end, { desc = "Toggle Power Mode Preset (Fire / Heaven)" })
+
+      local timer = vim.uv.new_timer()
+      local group = vim.api.nvim_create_augroup("PowerModeStreakTheme", { clear = true })
+      local last_activity = 0
+      local theme_timeout_ms = 8000
+
+      local function refresh_timer()
+        last_activity = vim.uv.now()
+        if streak > 0 and timer then
+          timer:stop()
+          timer:start(
+            1000,
+            1000,
+            vim.schedule_wrap(function()
+              if (vim.uv.now() - last_activity) >= theme_timeout_ms then
+                streak = 0
+                apply_level(0)
+                timer:stop()
+              end
+            end)
+          )
+        end
+      end
+
+      vim.api.nvim_create_autocmd("InsertCharPre", {
+        group = group,
+        callback = function()
+          streak = streak + 1
+          local lvl = streak_to_level(streak)
+          vim.schedule(function()
+            if lvl > last_level then
+              apply_level(lvl)
+            end
+            refresh_timer()
+          end)
+        end,
+      })
+
+      -- Mantém o streak e o tema vivos enquanto estiver editando/navegando no Normal mode após apertar <Esc>
+      vim.api.nvim_create_autocmd({ "TextChanged", "CursorMoved" }, {
+        group = group,
+        callback = function()
+          if streak > 0 then
+            last_activity = vim.uv.now()
+          end
+        end,
+      })
+    end,
   },
 
   -- 🌧️ Cellular Automaton: Efeito Físico de Chuva de Código, Gravidade e Game of Life (com Toggle Inteligente)
