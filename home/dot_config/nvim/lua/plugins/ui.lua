@@ -557,37 +557,59 @@ return {
         if not vim.api.nvim_buf_is_valid(buf) or vim.bo[buf].buftype ~= "" then
           return
         end
-        local total_lines = vim.api.nvim_buf_line_count(buf)
+        local top = vim.fn.line("w0") - 1
+        local bot = vim.fn.line("w$") - 1
         local center = vim.api.nvim_win_get_cursor(0)[1] - 1
-        local rings = {
-          { offsets = { 0 }, delay = 0, hl = "PowerModeShockwave0", bg = flash_bg },
-          { offsets = { -1, 1 }, delay = 45, hl = "PowerModeShockwave1", bg = lerp_hex(flash_bg, current_bg, 0.4) },
-          { offsets = { -2, 2 }, delay = 90, hl = "PowerModeShockwave2", bg = lerp_hex(flash_bg, current_bg, 0.7) },
-        }
-        for _, ring in ipairs(rings) do
-          vim.api.nvim_set_hl(0, ring.hl, { bg = ring.bg, fg = fg, bold = (ring.delay == 0) })
-          vim.defer_fn(function()
+        local max_dist = math.max(center - top, bot - center, 1)
+
+        vim.api.nvim_set_hl(0, "PowerModeSweepCore", { bg = flash_bg, fg = "#ffffff", bold = true })
+        vim.api.nvim_set_hl(0, "PowerModeSweepEdge", { bg = lerp_hex(flash_bg, current_bg, 0.55), fg = fg })
+
+        local step = 0
+        local stride = math.max(1, math.ceil(max_dist / 8))
+        local sweep_timer = vim.uv.new_timer()
+        if not sweep_timer then
+          return
+        end
+
+        sweep_timer:start(
+          0,
+          20,
+          vim.schedule_wrap(function()
             if not vim.api.nvim_buf_is_valid(buf) then
+              sweep_timer:stop()
+              sweep_timer:close()
               return
             end
-            for _, off in ipairs(ring.offsets) do
-              local r = center + off
-              if r >= 0 and r < total_lines then
-                local ok, mark_id = pcall(vim.api.nvim_buf_set_extmark, buf, shock_ns, r, 0, {
-                  line_hl_group = ring.hl,
-                  priority = 250,
-                })
-                if ok and mark_id then
-                  vim.defer_fn(function()
-                    if vim.api.nvim_buf_is_valid(buf) then
-                      pcall(vim.api.nvim_buf_del_extmark, buf, shock_ns, mark_id)
+            for i = 0, stride - 1 do
+              local dist = step + i
+              if dist <= max_dist then
+                local targets = (dist == 0) and { center } or { center - dist, center + dist }
+                local hl = (dist <= 2) and "PowerModeSweepCore" or "PowerModeSweepEdge"
+                for _, r in ipairs(targets) do
+                  if r >= top and r <= bot then
+                    local ok, mark_id = pcall(vim.api.nvim_buf_set_extmark, buf, shock_ns, r, 0, {
+                      line_hl_group = hl,
+                      priority = 250,
+                    })
+                    if ok and mark_id then
+                      vim.defer_fn(function()
+                        if vim.api.nvim_buf_is_valid(buf) then
+                          pcall(vim.api.nvim_buf_del_extmark, buf, shock_ns, mark_id)
+                        end
+                      end, 110)
                     end
-                  end, 160)
+                  end
                 end
               end
             end
-          end, ring.delay)
-        end
+            step = step + stride
+            if step > max_dist then
+              sweep_timer:stop()
+              sweep_timer:close()
+            end
+          end)
+        )
       end
 
       local function apply_wall_gradient(fg, bg)
