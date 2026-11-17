@@ -521,6 +521,50 @@ return {
         end
       end
 
+      local pm_particles = require("power-mode.particles")
+      local current_fx_heaven = nil
+
+      local function apply_aurora_hl(is_heaven)
+        local palette = is_heaven
+            and {
+              PowerModeFire1 = "#fff3b0",
+              PowerModeFire2 = "#00f5ff",
+              PowerModeFire3 = "#7aa2f7",
+              PowerModeFire4 = "#c792ea",
+              PowerModeFire5 = "#2d1f47",
+            }
+          or {
+            PowerModeFire1 = "#ff2200",
+            PowerModeFire2 = "#ff6600",
+            PowerModeFire3 = "#ffaa00",
+            PowerModeFire4 = "#ffdd00",
+            PowerModeFire5 = "#884400",
+          }
+        for name, fg in pairs(palette) do
+          vim.api.nvim_set_hl(0, name, { fg = fg, bold = (name == "PowerModeFire1") })
+        end
+      end
+
+      local function apply_fx_mode(is_heaven)
+        apply_aurora_hl(is_heaven)
+        if current_fx_heaven == is_heaven then
+          return
+        end
+        current_fx_heaven = is_heaven
+        pcall(function()
+          require("smear_cursor").setup({
+            cursor_color = is_heaven and "#00f5ff" or "#ff4000",
+            particle_gravity = is_heaven and 5 or -50,
+          })
+        end)
+        pcall(function()
+          local target_mode = is_heaven and "stars" or "rightburst"
+          if pm_particles.get_mode() ~= target_mode then
+            pm_particles.set_mode(target_mode)
+          end
+        end)
+      end
+
       local function apply_level(level)
         if level == last_level then
           return
@@ -532,13 +576,11 @@ return {
         if level <= 0 then
           stop_pulse()
           vim.g.power_ascended = false
-          pcall(function()
-            local smear_c = (presets[vim.g.power_preset] or presets.fire).smear_color
-            require("smear_cursor").setup({ cursor_color = smear_c })
-          end)
+          local is_heaven_preset = (vim.g.power_preset == "heaven")
           animate_transition(from_bg, from_bg, "#1e1e2e", "#cdd6f4", "#313244", function()
             current_bg = "#1e1e2e"
             pcall(vim.cmd.colorscheme, "catppuccin-mocha")
+            apply_fx_mode(is_heaven_preset)
           end)
           return
         end
@@ -546,15 +588,11 @@ return {
         local preset_name = vim.g.power_preset
         local t
         local phase_title = preset_name
+        local is_heaven_now = (preset_name == "heaven") or (preset_name == "fire" and level >= 6)
         if preset_name == "fire" and level >= 6 then
           vim.g.power_ascended = true
           t = presets.heaven.levels[math.min(level - 5, 5)]
           phase_title = "fire → heaven"
-          if level == 6 and leveled_up then
-            pcall(function()
-              require("smear_cursor").setup({ cursor_color = presets.heaven.smear_color })
-            end)
-          end
         else
           vim.g.power_ascended = false
           local active = presets[preset_name] or presets.fire
@@ -562,6 +600,7 @@ return {
         end
 
         pcall(vim.cmd.colorscheme, t.scheme)
+        apply_fx_mode(is_heaven_now)
 
         if leveled_up then
           vim.notify(t.label, vim.log.levels.INFO, { title = "Power Mode (" .. phase_title .. ")" })
@@ -592,9 +631,8 @@ return {
           return
         end
         vim.g.power_preset = name
-        pcall(function()
-          require("smear_cursor").setup({ cursor_color = presets[name].smear_color })
-        end)
+        local is_heaven_now = (name == "heaven") or (name == "fire" and last_level >= 6)
+        apply_fx_mode(is_heaven_now)
         if last_level > 0 then
           local cur = last_level
           last_level = 0

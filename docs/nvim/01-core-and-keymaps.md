@@ -135,7 +135,7 @@ Em `lazyvim.json` (version `8`, `install_version: 7`):
 | **50+ (Nível 3)** | `catppuccin-frappe` — On Fire (`#ff8800`) | `catppuccin-macchiato` — Ultraviolet (`#c792ea`) |
 | **80+ (Nível 4)** | `catppuccin-mocha` — Inferno (`#ff4000` / `#290b05`) | `catppuccin-mocha` — Neon Heaven (`#ff2cf1` / `#210926`) |
 | **120+ (Nível 5)** | `catppuccin-mocha` — Godlike (`#ff0055` / `#260513`) | `catppuccin-mocha` — Celestial (`#fff3b0` / `#1e1d30`) |
-| **150+ → 300+ (Níveis 6–10)** | **Ascensão ao `heaven`**: rotaciona os 5 níveis Neon/Celestial (`150`, `180`, `210`, `250`, `300`) e muda cursor/flash para `#00f5ff` + `✨` | — |
+| **150+ → 300+ (Níveis 6–10)** | **Ascensão ao `heaven`**: rotaciona os 5 níveis Neon/Celestial (`150`, `180`, `210`, `250`, `300`), transforma a `fire_wall` em **Aurora Boreal** (`#fff3b0` → `#00f5ff` → `#7aa2f7` → `#c792ea`), troca partículas para `stars` e muda cursor/flash para `#00f5ff` (`gravity = 5`) + `✨` | — |
 
 - Ao subir de nível (e ao voltar para o `catppuccin-mocha`), o editor executa uma **transição animada RGB de 10 frames (~220ms)** com pico de brilho e assentamento suave de cor, além de notificação (`Power Mode`) e colorização do **Neo-tree**, `LineNr`, `StatusLine` e `Visual`. No nível máximo **Celestial** (`300+` no `fire` ou `120+` no `heaven`), as bordas e a `StatusLine` **pulsam continuamente** entre dourado (`#fff3b0`) e ciano neon (`#00f5ff`).
 
