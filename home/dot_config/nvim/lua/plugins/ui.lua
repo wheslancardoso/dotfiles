@@ -293,8 +293,8 @@ return {
       },
       fire_wall = {
         enabled = true,
-        bottom_offset = 2,
-        max_rows = 5,
+        bottom_offset = 1,
+        max_rows = 2,
       },
       shake = {
         mode = "none",
