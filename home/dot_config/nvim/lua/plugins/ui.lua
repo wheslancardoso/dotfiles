@@ -523,6 +523,49 @@ return {
 
       local pm_particles = require("power-mode.particles")
       local current_fx_heaven = nil
+      local shock_ns = vim.api.nvim_create_namespace("PowerModeShockwave")
+
+      local function sync_kitty(fg, bg)
+        if not vim.env.KITTY_WINDOW_ID or vim.fn.executable("kitty") ~= 1 then
+          return
+        end
+        if not fg then
+          pcall(vim.system, { "kitty", "@", "set-colors", "--reset" })
+          return
+        end
+        pcall(vim.system, {
+          "kitty",
+          "@",
+          "set-colors",
+          "active_border_color=" .. fg,
+          "active_tab_background=" .. fg,
+          "cursor=" .. fg,
+          "background=" .. bg,
+        })
+      end
+
+      local function level_up_shockwave(fg, flash_bg)
+        pcall(function()
+          require("beacon").highlight_cursor()
+        end)
+        local buf = vim.api.nvim_get_current_buf()
+        if not vim.api.nvim_buf_is_valid(buf) or vim.bo[buf].buftype ~= "" then
+          return
+        end
+        vim.api.nvim_set_hl(0, "PowerModeShockwave", { bg = flash_bg, fg = fg, bold = true })
+        local row = vim.api.nvim_win_get_cursor(0)[1] - 1
+        local ok, mark_id = pcall(vim.api.nvim_buf_set_extmark, buf, shock_ns, row, 0, {
+          line_hl_group = "PowerModeShockwave",
+          priority = 250,
+        })
+        if ok and mark_id then
+          vim.defer_fn(function()
+            if vim.api.nvim_buf_is_valid(buf) then
+              pcall(vim.api.nvim_buf_del_extmark, buf, shock_ns, mark_id)
+            end
+          end, 240)
+        end
+      end
 
       local function apply_aurora_hl(is_heaven)
         local palette = is_heaven
@@ -576,6 +619,7 @@ return {
         if level <= 0 then
           stop_pulse()
           vim.g.power_ascended = false
+          sync_kitty(nil, nil)
           local is_heaven_preset = (vim.g.power_preset == "heaven")
           animate_transition(from_bg, from_bg, "#1e1e2e", "#cdd6f4", "#313244", function()
             current_bg = "#1e1e2e"
@@ -601,9 +645,11 @@ return {
 
         pcall(vim.cmd.colorscheme, t.scheme)
         apply_fx_mode(is_heaven_now)
+        sync_kitty(t.fg, t.editor_bg)
 
         if leveled_up then
           vim.notify(t.label, vim.log.levels.INFO, { title = "Power Mode (" .. phase_title .. ")" })
+          level_up_shockwave(t.fg, t.flash_bg)
           animate_transition(from_bg, t.flash_bg, t.editor_bg, t.fg, t.bg, function()
             local is_max = (preset_name == "fire" and level >= 10) or (preset_name == "heaven" and level >= 5)
             if is_max then
