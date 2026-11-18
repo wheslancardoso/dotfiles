@@ -25,6 +25,7 @@ fi
 FORCE_HYPERV="${HYPERV_FORCE:-false}"
 NON_INTERACTIVE="${NON_INTERACTIVE:-false}"
 HYPERV_GPU_P="${HYPERV_GPU_P:-false}"
+HYPERV_RESOLUTION="${HYPERV_RESOLUTION:-1920x1080@60}"
 
 for arg in "$@"; do
     case "$arg" in
@@ -122,14 +123,14 @@ cursor {
     no_hardware_cursors = true
 }
 
-monitor = Virtual-1, preferred, auto, 1
+monitor = Virtual-1, $HYPERV_RESOLUTION, 0x0, 1
 monitor = , preferred, auto, 1
 EOF
         cat > "$env_d_conf" << 'EOF'
 WLR_NO_HARDWARE_CURSORS=1
 EOF
     else
-        cat > "$hyperv_conf" << 'EOF'
+        cat > "$hyperv_conf" << EOF
 # Hyper-V VM overrides (Software rendering / llvmpipe fallback)
 env = WLR_RENDERER_ALLOW_SOFTWARE,1
 env = WLR_NO_HARDWARE_CURSORS,1
@@ -145,7 +146,7 @@ cursor {
     no_hardware_cursors = true
 }
 
-monitor = Virtual-1, preferred, auto, 1
+monitor = Virtual-1, $HYPERV_RESOLUTION, 0x0, 1
 monitor = , preferred, auto, 1
 EOF
         cat > "$env_d_conf" << 'EOF'
