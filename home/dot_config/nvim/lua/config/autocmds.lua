@@ -74,3 +74,12 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     end, 180)
   end,
 })
+
+-- 🎯 Evita que `* {` + <Enter> em CSS/SCSS/LESS insira `*` como continuação de comentário
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("CssUniversalSelectorFix", { clear = true }),
+  pattern = { "css", "scss", "less" },
+  callback = function()
+    vim.opt_local.comments = "s1:/*,ex:*/"
+  end,
+})

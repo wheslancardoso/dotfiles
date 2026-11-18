@@ -303,7 +303,8 @@ return {
   -- 🔥 Power Mode: Combo estilo Guitar Hero + partículas + Fire Wall + Tema dinâmico por streak
   {
     "axsaucedo/neovim-power-mode",
-    event = "InsertEnter",
+    event = "VeryLazy",
+    cmd = { "PowerPreset", "PowerWall" },
     opts = {
       particles = {
         preset = "rightburst",
@@ -312,6 +313,8 @@ return {
       combo = {
         enabled = true,
         position = "top-right",
+        width = 24,
+        height = 7,
         timeout = 8000,
         combo_box_disappear_seconds = 4,
         thresholds = { 10, 25, 50, 80, 120 },
@@ -342,6 +345,9 @@ return {
       },
       shake = {
         mode = "none",
+      },
+      engine = {
+        stop_delay = 8000,
       },
     },
     config = function(_, opts)
@@ -485,7 +491,7 @@ return {
         end
       end
 
-      local function start_celestial_pulse(t)
+      local function start_celestial_pulse(t, is_max)
         stop_pulse()
         if not pulse_timer then
           return
@@ -493,16 +499,27 @@ return {
         local phase = 0
         pulse_timer:start(
           250,
-          60,
+          70,
           vim.schedule_wrap(function()
-            local is_max = (vim.g.power_preset == "fire" and last_level >= 10)
-              or (vim.g.power_preset == "heaven" and last_level >= 5)
-            if not is_max then
+            if last_level <= 0 then
               stop_pulse()
               return
             end
-            phase = phase + 0.18
+            phase = phase + 0.20
             local alpha = (math.sin(phase) + 1) * 0.5
+
+            -- ✨ Brilho radiante contínuo na janelinha do Combo sincronizado com o tema atual
+            local combo_fg = is_max and lerp_hex("#fff3b0", "#00f5ff", alpha)
+              or lerp_hex(t.fg, "#ffffff", alpha * 0.55)
+            local combo_bg = lerp_hex(t.editor_bg, t.bg, alpha * 0.85)
+            for lvl = 0, 4 do
+              vim.api.nvim_set_hl(0, "PowerModeCombo" .. lvl, { fg = combo_fg, bg = combo_bg, bold = true })
+            end
+
+            if not is_max then
+              return
+            end
+
             local fg = lerp_hex("#fff3b0", "#00f5ff", alpha)
             vim.api.nvim_set_hl(0, "NeoTreeWinSeparator", { fg = fg, bg = t.editor_bg })
             vim.api.nvim_set_hl(0, "WinSeparator", { fg = fg })
@@ -510,6 +527,21 @@ return {
             vim.api.nvim_set_hl(0, "StatusLine", { fg = fg, bg = t.bg, bold = true })
             vim.api.nvim_set_hl(0, "CursorLineNr", { fg = fg, bg = t.bg, bold = true })
             vim.api.nvim_set_hl(0, "SnacksIndentScope", { fg = fg })
+
+            -- ✨ Brilho estelar contínuo nas letras e sintaxe durante o nível final Celestial
+            local text_fg = lerp_hex("#cdd6f4", "#ffffff", alpha)
+            local fn_fg = lerp_hex("#00f5ff", "#f5c2e7", alpha)
+            local str_fg = lerp_hex("#b4befe", "#a6f7ff", alpha)
+            local type_fg = lerp_hex("#f5c2e7", "#fff3b0", alpha)
+            vim.api.nvim_set_hl(0, "Normal", { fg = text_fg, bg = t.editor_bg })
+            vim.api.nvim_set_hl(0, "Keyword", { fg = fg, bold = true })
+            vim.api.nvim_set_hl(0, "@keyword", { fg = fg, bold = true })
+            vim.api.nvim_set_hl(0, "Function", { fg = fn_fg, bold = true })
+            vim.api.nvim_set_hl(0, "@function", { fg = fn_fg, bold = true })
+            vim.api.nvim_set_hl(0, "String", { fg = str_fg })
+            vim.api.nvim_set_hl(0, "@string", { fg = str_fg })
+            vim.api.nvim_set_hl(0, "Type", { fg = type_fg })
+            vim.api.nvim_set_hl(0, "@type", { fg = type_fg })
           end)
         )
       end
@@ -526,6 +558,9 @@ return {
           "NeoTreeEndOfBuffer",
         }) do
           vim.api.nvim_set_hl(0, name, { bg = bg })
+        end
+        for lvl = 0, 4 do
+          vim.api.nvim_set_hl(0, "PowerModeCombo" .. lvl, { fg = fg, bg = line_bg, bold = true })
         end
         vim.api.nvim_set_hl(0, "NeoTreeWinSeparator", { fg = fg, bg = bg })
         vim.api.nvim_set_hl(0, "CursorLine", { bg = line_bg })
@@ -571,8 +606,112 @@ return {
       end
 
       local pm_particles = require("power-mode.particles")
+      local pm_config = require("power-mode.config")
+      local pm_fire_wall = require("power-mode.fire_wall")
+      local guitar_hero = require("config.guitar_hero")
       local current_fx_heaven = nil
       local shock_ns = vim.api.nvim_create_namespace("PowerModeShockwave")
+      vim.g.power_wall_mode = vim.g.power_wall_mode or "firewall"
+
+      -- 🎵 Equalizer de Frequência Musical (1 linha rente à statusline)
+      local eq_win, eq_buf, eq_timer = nil, nil, vim.uv.new_timer()
+      local eq_bars = {}
+      local eq_chars = { " ", "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" }
+      local eq_fg = "#ff4000"
+      local eq_bg = "#1e1e2e"
+
+      local function close_eq()
+        if eq_timer then
+          eq_timer:stop()
+        end
+        if eq_win and vim.api.nvim_win_is_valid(eq_win) then
+          pcall(vim.api.nvim_win_close, eq_win, true)
+        end
+        eq_win = nil
+      end
+
+      local function render_eq()
+        if vim.g.power_wall_mode ~= "equalizer" then
+          close_eq()
+          return
+        end
+        local cols = vim.o.columns
+        if #eq_bars ~= cols then
+          eq_bars = {}
+          for i = 1, cols do
+            eq_bars[i] = 0
+          end
+        end
+
+        local active = false
+        local chars = {}
+        for i = 1, cols do
+          local v = eq_bars[i]
+          if v > 0.05 then
+            active = true
+            local idx = math.min(#eq_chars, math.max(1, math.floor(v * (#eq_chars - 1)) + 1))
+            chars[i] = eq_chars[idx]
+            eq_bars[i] = v * 0.85
+          else
+            eq_bars[i] = 0
+            chars[i] = " "
+          end
+        end
+
+        if not active then
+          close_eq()
+          return
+        end
+
+        if not eq_buf or not vim.api.nvim_buf_is_valid(eq_buf) then
+          eq_buf = vim.api.nvim_create_buf(false, true)
+        end
+        vim.api.nvim_buf_set_lines(eq_buf, 0, -1, false, { table.concat(chars) })
+        vim.api.nvim_set_hl(0, "PowerModeEq", { fg = eq_fg, bg = eq_bg })
+
+        if not eq_win or not vim.api.nvim_win_is_valid(eq_win) then
+          eq_win = vim.api.nvim_open_win(eq_buf, false, {
+            relative = "editor",
+            row = math.max(0, vim.o.lines - 3),
+            col = 0,
+            width = cols,
+            height = 1,
+            style = "minimal",
+            focusable = false,
+            zindex = 40,
+          })
+          pcall(vim.api.nvim_win_set_option, eq_win, "winhighlight", "Normal:PowerModeEq")
+          pcall(vim.api.nvim_win_set_option, eq_win, "winblend", 15)
+        end
+      end
+
+      local function pulse_eq(lvl)
+        if vim.g.power_wall_mode ~= "equalizer" then
+          return
+        end
+        local cols = vim.o.columns
+        if #eq_bars ~= cols then
+          for i = 1, cols do
+            eq_bars[i] = 0
+          end
+        end
+        local center = math.random(1, cols)
+        local spread = 4 + math.min(lvl, 10)
+        for off = -spread, spread do
+          local idx = center + off
+          if idx >= 1 and idx <= cols then
+            local falloff = 1 - (math.abs(off) / (spread + 1))
+            local energy = falloff * (0.6 + math.random() * 0.4)
+            if energy > eq_bars[idx] then
+              eq_bars[idx] = energy
+            end
+          end
+        end
+        if eq_timer then
+          eq_timer:stop()
+          eq_timer:start(0, 70, vim.schedule_wrap(render_eq))
+        end
+      end
 
       local function sync_kitty(fg, bg)
         if not vim.env.KITTY_WINDOW_ID or vim.fn.executable("kitty") ~= 1 then
@@ -598,8 +737,22 @@ return {
           require("beacon").highlight_cursor()
         end)
         local buf = vim.api.nvim_get_current_buf()
+        local win = vim.api.nvim_get_current_win()
         if not vim.api.nvim_buf_is_valid(buf) or vim.bo[buf].buftype ~= "" then
           return
+        end
+
+        -- Tremor horizontal suave (~110ms) sem mexer na linha/scroll para não atrapalhar a digitação
+        local orig_fc = vim.wo[win].foldcolumn
+        local jolt_seq = { "1", "0", "1", orig_fc }
+        for idx, val in ipairs(jolt_seq) do
+          vim.defer_fn(function()
+            if vim.api.nvim_win_is_valid(win) then
+              pcall(function()
+                vim.wo[win].foldcolumn = val
+              end)
+            end
+          end, (idx - 1) * 28)
         end
         local top = vim.fn.line("w0") - 1
         local bot = vim.fn.line("w$") - 1
@@ -699,9 +852,14 @@ return {
 
         if level <= 0 then
           stop_pulse()
+          close_eq()
+          guitar_hero.close()
+          eq_fg = "#ff4000"
+          eq_bg = "#1e1e2e"
           vim.g.power_ascended = false
           sync_kitty(nil, nil)
           local is_heaven_preset = (vim.g.power_preset == "heaven")
+          guitar_hero.set_theme(is_heaven_preset, eq_bg, eq_fg)
           animate_transition(from_bg, from_bg, "#1e1e2e", "#cdd6f4", "#313244", function()
             current_bg = "#1e1e2e"
             pcall(vim.cmd.colorscheme, "catppuccin-mocha")
@@ -725,6 +883,9 @@ return {
         end
 
         pcall(vim.cmd.colorscheme, t.scheme)
+        eq_fg = t.fg
+        eq_bg = t.editor_bg
+        guitar_hero.set_theme(is_heaven_now, t.editor_bg, t.fg)
         if t.syntax then
           vim.api.nvim_set_hl(0, "Keyword", { fg = t.syntax.keyword, bold = true })
           vim.api.nvim_set_hl(0, "@keyword", { fg = t.syntax.keyword, bold = true })
@@ -743,19 +904,13 @@ return {
           level_up_shockwave(t.fg, t.flash_bg)
           animate_transition(from_bg, t.flash_bg, t.editor_bg, t.fg, t.bg, function()
             local is_max = (preset_name == "fire" and level >= 10) or (preset_name == "heaven" and level >= 5)
-            if is_max then
-              start_celestial_pulse(t)
-            end
+            start_celestial_pulse(t, is_max)
           end)
         else
           current_bg = t.editor_bg
           paint_chrome(t.editor_bg, t.fg, t.bg, t.flash_bg)
           local is_max = (preset_name == "fire" and level >= 10) or (preset_name == "heaven" and level >= 5)
-          if is_max then
-            start_celestial_pulse(t)
-          else
-            stop_pulse()
-          end
+          start_celestial_pulse(t, is_max)
         end
       end
 
@@ -770,6 +925,7 @@ return {
         vim.g.power_preset = name
         local is_heaven_now = (name == "heaven") or (name == "fire" and last_level >= 6)
         apply_fx_mode(is_heaven_now)
+        guitar_hero.set_theme(is_heaven_now, eq_bg, eq_fg)
         if last_level > 0 then
           local cur = last_level
           last_level = 0
@@ -792,6 +948,65 @@ return {
       vim.keymap.set("n", "<leader>uP", function()
         set_preset()
       end, { desc = "Toggle Power Mode Preset (Fire / Heaven)" })
+
+      local function set_wall_mode(mode)
+        local order = { "firewall", "equalizer", "guitarhero", "off" }
+        if not mode or mode == "" then
+          local cur = vim.g.power_wall_mode
+          for i, m in ipairs(order) do
+            if m == cur then
+              mode = order[(i % #order) + 1]
+              break
+            end
+          end
+          mode = mode or "firewall"
+        end
+        if mode ~= "firewall" and mode ~= "equalizer" and mode ~= "guitarhero" and mode ~= "off" then
+          vim.notify("Modo inválido: use 'firewall', 'equalizer', 'guitarhero' ou 'off'", vim.log.levels.WARN)
+          return
+        end
+        vim.g.power_wall_mode = mode
+        if mode == "firewall" then
+          close_eq()
+          guitar_hero.close()
+          pm_config.get().fire_wall.enabled = true
+          vim.notify("🔥 Rodapé: FIREWALL", vim.log.levels.INFO, { title = "Power Mode" })
+        elseif mode == "equalizer" then
+          guitar_hero.close()
+          pm_config.get().fire_wall.enabled = false
+          pcall(pm_fire_wall.clear)
+          pulse_eq(4)
+          vim.notify("🎵 Rodapé: EQUALIZER", vim.log.levels.INFO, { title = "Power Mode" })
+        elseif mode == "guitarhero" then
+          close_eq()
+          pm_config.get().fire_wall.enabled = false
+          pcall(pm_fire_wall.clear)
+          local is_heaven = (vim.g.power_preset == "heaven") or (vim.g.power_ascended == true)
+          guitar_hero.hit("a", is_heaven, eq_bg, eq_fg)
+          guitar_hero.hit("d", is_heaven, eq_bg, eq_fg)
+          vim.notify("🎸 Rodapé: GUITAR HERO", vim.log.levels.INFO, { title = "Power Mode" })
+        else
+          close_eq()
+          guitar_hero.close()
+          pm_config.get().fire_wall.enabled = false
+          pcall(pm_fire_wall.clear)
+          vim.notify("🚫 Rodapé: OFF", vim.log.levels.INFO, { title = "Power Mode" })
+        end
+      end
+
+      vim.api.nvim_create_user_command("PowerWall", function(cmd)
+        set_wall_mode(cmd.args)
+      end, {
+        nargs = "?",
+        complete = function()
+          return { "firewall", "equalizer", "guitarhero", "off" }
+        end,
+        desc = "Alterna efeito de rodapé (firewall / equalizer / guitarhero / off)",
+      })
+
+      vim.keymap.set("n", "<leader>uF", function()
+        set_wall_mode()
+      end, { desc = "Alternar Rodapé Power Mode (Firewall / Equalizer / Guitar Hero / Off)" })
 
       -- Impede o neovim-power-mode de zerar o combo/fire_wall ao apertar <Esc>
       pcall(vim.api.nvim_clear_autocmds, { group = "PowerMode", event = "InsertLeave" })
@@ -822,9 +1037,15 @@ return {
       vim.api.nvim_create_autocmd("InsertCharPre", {
         group = group,
         callback = function()
+          local char = vim.v.char
           streak = streak + 1
           local lvl = streak_to_level(streak)
           vim.schedule(function()
+            pulse_eq(lvl)
+            if vim.g.power_wall_mode == "guitarhero" then
+              local is_heaven = (vim.g.power_preset == "heaven") or (vim.g.power_ascended == true)
+              guitar_hero.hit(char, is_heaven, eq_bg, eq_fg)
+            end
             if lvl > last_level then
               apply_level(lvl)
             end
