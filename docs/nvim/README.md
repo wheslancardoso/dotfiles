@@ -8,7 +8,7 @@
 
 | Arquivo | Quando Consultar | Conteúdo Principal |
 | :--- | :--- | :--- |
-| [01-core-and-keymaps.md](file:///home/lanwsl/dotfiles/docs/nvim/01-core-and-keymaps.md) | Dúvidas de atalhos gerais, opções do editor, UI, tema ou edição | `init.lua`, `lazy.lua`, `stylua.toml`, `lazyvim.json`, `options.lua`, `keymaps.lua`, `editor.lua` (surround, multi-cursor, blink.cmp, mini.pairs, refactoring, undotree), `ui.lua` (dropbar, which-key, zen-mode, snacks, smear-cursor), `theme.lua` (Catppuccin Mocha) e `treesitter.lua` (parsers + sticky scroll). |
+| [01-core-and-keymaps.md](file:///home/lanwsl/dotfiles/docs/nvim/01-core-and-keymaps.md) | Dúvidas de atalhos gerais, opções do editor, UI, tema ou edição | `init.lua`, `lazy.lua`, `stylua.toml`, `lazyvim.json`, `options.lua`, `keymaps.lua`, `editor.lua` (surround, multi-cursor, blink.cmp, mini.pairs, refactoring, undotree), `ui.lua` (dropbar, which-key, zen-mode, snacks, smear-cursor, mini.animate, tiny-glimmer, neovim-power-mode), `theme.lua` (Catppuccin Mocha) e `treesitter.lua` (parsers + sticky scroll). |
 | [02-languages-and-lsp.md](file:///home/lanwsl/dotfiles/docs/nvim/02-languages-and-lsp.md) | Dúvidas de LSP, Mason, Java/Spring, Python, Rust, Web/Angular/Flutter | `mason.nvim` (`ensure_installed`), `nvim-lspconfig` (`angularls`, `html`, `emmet_language_server`), `nvim-jdtls` (Java 17/21, auto-scaffolding, Maven, JUnit), `venv-selector.nvim`, `crates.nvim`, `nvim-colorizer.lua`, `flutter-tools.nvim` e injeções HTML em JS/TS. |
 | [03-tools-git-db-rest.md](file:///home/lanwsl/dotfiles/docs/nvim/03-tools-git-db-rest.md) | Banco de dados, Git diff/merge/conflitos ou requisições HTTP | `vim-dadbod` + `vim-dadbod-ui` (`fiscalizacao`), `diffview.nvim`, `gitsigns.nvim`, `git-conflict.nvim`, `kulala.nvim` (`.http`/`.rest`) e inventário de `lazy-lock.json` (79 plugins). |
 
@@ -30,6 +30,7 @@
 | Breadcrumbs no topo | Barra automática no topo do buffer | `dropbar.nvim` |
 | Sticky Scroll (classe/função) | Ativo no topo; `[c` pula ao contexto, `<leader>uc` alterna | `nvim-treesitter-context` |
 | Zen Mode (Hiperfoco) | `<leader>z` ou `<leader>uz` | `zen-mode.nvim` |
+| Alternar Preset Power Mode | `<leader>uP` (ou `:PowerPreset [fire\|heaven]`) | `neovim-power-mode` |
 | Histórico local (Timeline) | `<leader>ut` (árvore ramificada persistente) | `undotree` + `undofile` |
 | Buscar `TODO` / `FIXME` | `<leader>st` (Telescope), `<leader>xt` (Trouble), `]t`/`[t` | `todo-comments.nvim` |
 | Code Actions / Quick Fix | `<leader>ca` (em Java) | `nvim-jdtls` |

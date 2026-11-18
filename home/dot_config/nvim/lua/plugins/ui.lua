@@ -201,6 +201,31 @@ return {
     },
   },
 
+  -- 🪟 Mini Animate: Animações suaves de abertura, fechamento e redimensionamento de janelas/splits
+  {
+    "nvim-mini/mini.animate",
+    event = "VeryLazy",
+    opts = function()
+      local animate = require("mini.animate")
+      return {
+        cursor = { enable = false }, -- já tratado pelo smear-cursor.nvim
+        scroll = { enable = false }, -- já tratado pelo snacks.scroll
+        resize = {
+          enable = true,
+          timing = animate.gen_timing.linear({ duration = 120, unit = "total" }),
+        },
+        open = {
+          enable = true,
+          timing = animate.gen_timing.linear({ duration = 120, unit = "total" }),
+        },
+        close = {
+          enable = true,
+          timing = animate.gen_timing.linear({ duration = 120, unit = "total" }),
+        },
+      }
+    end,
+  },
+
   -- ✨ Tiny Glimmer: Animações em tons de fogo ao copiar (yank), colar, desfazer, refazer e buscar
   {
     "rachartier/tiny-glimmer.nvim",
@@ -290,6 +315,25 @@ return {
         timeout = 8000,
         combo_box_disappear_seconds = 4,
         thresholds = { 10, 25, 50, 80, 120 },
+        shake = true,
+        exclamations = {
+          "⚡ OVERDRIVE!",
+          "🔥 HELLFIRE!",
+          "🚀 HYPERDRIVE!",
+          "💎 UNSTOPPABLE!",
+          "✨ ASCENDED!",
+          "👑 GODLIKE!",
+          "🌟 CELESTIAL!",
+        },
+        exclamation_interval = 10,
+        exclamation_duration = 1500,
+        level_colors = {
+          [0] = { "#39ff14", 46 },
+          [1] = { "#ffd700", 220 },
+          [2] = { "#ff8800", 208 },
+          [3] = { "#ff4000", 196 },
+          [4] = { "#ff0055", 197 },
+        },
       },
       fire_wall = {
         enabled = true,
