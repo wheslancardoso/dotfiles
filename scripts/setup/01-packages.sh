@@ -11,12 +11,18 @@ install_pkg_list() {
     local manager="$1"
     shift
     local pkgs=("$@")
+    local aur_flags=(--needed --noconfirm)
+    if [ "$AUR_HELPER" = "yay" ]; then
+        aur_flags+=(--answerdiff None --answerclean None)
+    elif [ "$AUR_HELPER" = "paru" ]; then
+        aur_flags+=(--skipreview)
+    fi
     for pkg in "${pkgs[@]}"; do
         [ -z "$pkg" ] && continue
         if [ "$manager" = "pacman" ]; then
             sudo pacman -S --needed --noconfirm "$pkg" 2>/dev/null || warn "Pacote nativo não encontrado/falhou: $pkg"
         else
-            "$AUR_HELPER" -S --needed --noconfirm "$pkg" 2>/dev/null || warn "Pacote AUR não encontrado/falhou: $pkg"
+            "$AUR_HELPER" -S "${aur_flags[@]}" "$pkg" 2>/dev/null || warn "Pacote AUR não encontrado/falhou: $pkg"
         fi
     done
 }
@@ -51,25 +57,43 @@ if [ "${PROFILE:-full}" = "full" ] && { [ "${IS_WSL:-false}" = false ] || [ "${W
 
     # Em VM Hyper-V, remove pacotes exclusivos de hardware físico / CachyOS / NVIDIA
     HYPERV_SKIP_REGEX='^(cachyos-|linux-cachyos|nvidia|lib32-nvidia|intel-ucode|amd-ucode|tlp|throttled|gpu-screen-recorder|ananicy-rules-cachyos|limine)'
+    # Pacotes exclusivos dos repositórios CachyOS (ausentes no Arch puro)
+    CACHYOS_REPO_ONLY_REGEX='^(ab-download-manager|chwd|octopi|paru|shelly|ventoy-bin|yay)$'
+
+    is_cachyos=false
+    if grep -qi "cachyos" /etc/os-release 2>/dev/null || grep -qi "\[cachyos" /etc/pacman.conf 2>/dev/null; then
+        is_cachyos=true
+    fi
 
     if [ -f "$NATIVE_LIST" ]; then
         info "Instalando pacotes nativos de $NATIVE_LIST..."
-        if [ "${IS_HYPERV:-false}" = true ]; then
-            mapfile -t native_pkgs < <(grep -vE '^\s*(#|$)' "$NATIVE_LIST" | grep -vE "$HYPERV_SKIP_REGEX")
-        else
-            mapfile -t native_pkgs < <(grep -vE '^\s*(#|$)' "$NATIVE_LIST")
-        fi
+        mapfile -t native_pkgs < <(grep -vE '^\s*(#|$)' "$NATIVE_LIST" | {
+            if [ "${IS_HYPERV:-false}" = true ]; then grep -vE "$HYPERV_SKIP_REGEX"; else cat; fi
+        } | {
+            if [ "$is_cachyos" = false ]; then grep -vE "$CACHYOS_REPO_ONLY_REGEX"; else cat; fi
+        })
         sudo pacman -S --needed --noconfirm "${native_pkgs[@]}" 2>/dev/null || install_pkg_list pacman "${native_pkgs[@]}"
+
+        # No Arch puro, wlogout está no AUR e não no repo extra
+        if grep -qx "wlogout" "$NATIVE_LIST" && ! pacman -Si wlogout >/dev/null 2>&1; then
+            "$AUR_HELPER" -S --needed --noconfirm wlogout 2>/dev/null || warn "Pacote AUR wlogout não encontrado/falhou."
+        fi
     fi
 
     if [ -f "$AUR_LIST" ]; then
         info "Instalando pacotes AUR de $AUR_LIST..."
-        if [ "${IS_HYPERV:-false}" = true ]; then
-            mapfile -t aur_pkgs < <(grep -vE '^\s*(#|$)' "$AUR_LIST" | grep -vE "$HYPERV_SKIP_REGEX")
-        else
-            mapfile -t aur_pkgs < <(grep -vE '^\s*(#|$)' "$AUR_LIST")
+        mapfile -t aur_pkgs < <(grep -vE '^\s*(#|$)' "$AUR_LIST" | {
+            if [ "${IS_HYPERV:-false}" = true ]; then grep -vE "$HYPERV_SKIP_REGEX"; else cat; fi
+        } | {
+            if has_cmd yay; then grep -vx "yay-bin"; else cat; fi
+        })
+        aur_flags=(--needed --noconfirm)
+        if [ "$AUR_HELPER" = "yay" ]; then
+            aur_flags+=(--answerdiff None --answerclean None)
+        elif [ "$AUR_HELPER" = "paru" ]; then
+            aur_flags+=(--skipreview)
         fi
-        "$AUR_HELPER" -S --needed --noconfirm "${aur_pkgs[@]}" 2>/dev/null || install_pkg_list aur "${aur_pkgs[@]}"
+        "$AUR_HELPER" -S "${aur_flags[@]}" "${aur_pkgs[@]}" 2>/dev/null || install_pkg_list aur "${aur_pkgs[@]}"
     fi
 
     if [ "${IS_HYPERV:-false}" = true ] && [ "${IS_WSL:-false}" = false ]; then

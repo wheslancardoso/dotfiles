@@ -53,10 +53,19 @@ setup_makepkg_turbo() {
             echo "MAKEFLAGS=\"-j${cores}\"" | sudo tee -a /etc/makepkg.conf >/dev/null
         fi
 
-        if grep -q "^#BUILDDIR=/tmp" /etc/makepkg.conf; then
-            sudo sed -i 's|^#BUILDDIR=/tmp.*|BUILDDIR=/tmp/makepkg|' /etc/makepkg.conf
-        elif ! grep -q "^BUILDDIR=" /etc/makepkg.conf; then
-            echo 'BUILDDIR=/tmp/makepkg' | sudo tee -a /etc/makepkg.conf >/dev/null
+        # Em VMs Hyper-V ou /tmp pequeno (<10GB), evitar BUILDDIR=/tmp/makepkg para não esgotar tmpfs em pacotes AUR grandes
+        local tmp_avail_kb=0
+        tmp_avail_kb=$(df -Pk /tmp 2>/dev/null | awk 'NR==2 {print $4}' || echo 0)
+        if [ "${IS_HYPERV:-false}" = false ] && [ "${tmp_avail_kb:-0}" -ge 10485760 ]; then
+            if grep -q "^#BUILDDIR=/tmp" /etc/makepkg.conf; then
+                sudo sed -i 's|^#BUILDDIR=/tmp.*|BUILDDIR=/tmp/makepkg|' /etc/makepkg.conf
+            elif ! grep -q "^BUILDDIR=" /etc/makepkg.conf; then
+                echo 'BUILDDIR=/tmp/makepkg' | sudo tee -a /etc/makepkg.conf >/dev/null
+            fi
+        else
+            if grep -q "^BUILDDIR=/tmp/makepkg" /etc/makepkg.conf; then
+                sudo sed -i 's|^BUILDDIR=/tmp/makepkg.*|#BUILDDIR=/tmp/makepkg|' /etc/makepkg.conf
+            fi
         fi
 
         sudo sed -i "s/^COMPRESSZST=.*/COMPRESSZST=(zstd -c -z -q --threads=0 -)/" /etc/makepkg.conf 2>/dev/null || true

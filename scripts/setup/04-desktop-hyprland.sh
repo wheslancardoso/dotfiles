@@ -270,7 +270,9 @@ setup_wallust_and_theme() {
         if [ ! -f "$HOME/.config/hypr/wallpaper_effects/.wallpaper_current" ]; then
             cp -f "$wp" "$HOME/.config/hypr/wallpaper_effects/.wallpaper_current"
         fi
-        [ ! -f "$HOME/.cache/current_wallpaper" ] && echo "$wp" > "$HOME/.cache/current_wallpaper"
+        if [ ! -f "$HOME/.cache/current_wallpaper" ]; then
+            echo "$wp" > "$HOME/.cache/current_wallpaper"
+        fi
         if has_cmd wallust; then
             info "Aplicando paleta Wallust com $wp..."
             wallust run -s "$wp" >/dev/null 2>&1 || true
@@ -309,7 +311,9 @@ EOF
 
 verify_hyprland() {
     if has_cmd Hyprland; then
-        ok "Hyprland pronto ($(Hyprland --version | head -n 1))."
+        local hypr_ver
+        hypr_ver=$(Hyprland --version 2>/dev/null | head -n 1 || true)
+        ok "Hyprland pronto (${hypr_ver:-instalado})."
     else
         warn "Hyprland não encontrado no PATH."
     fi

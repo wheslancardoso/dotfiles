@@ -11,10 +11,21 @@ apply_dotfiles() {
 
     info "Aplicando dotfiles via chezmoi (source: $DOTFILES_DIR)..."
     mkdir -p "$HOME/.config/chezmoi"
+    # Verifica se há symlinks quebrados em home/ antes de aplicar
+    local broken_links=()
+    while IFS= read -r -d '' link; do
+        if [ ! -e "$link" ]; then
+            broken_links+=("$link")
+        fi
+    done < <(find "$DOTFILES_DIR/home" -type l -print0 2>/dev/null || true)
+    if [ ${#broken_links[@]} -gt 0 ]; then
+        warn "Symlinks quebrados detectados em home/: ${broken_links[*]}"
+    fi
+
     if [ -f "$DOTFILES_DIR/.chezmoi.toml.tmpl" ]; then
-        chezmoi init --apply --force --source "$DOTFILES_DIR"
+        chezmoi init --apply --force --source "$DOTFILES_DIR" || warn "chezmoi init/apply retornou aviso; verifique symlinks."
     else
-        chezmoi init --apply --force "$DOTFILES_DIR"
+        chezmoi init --apply --force "$DOTFILES_DIR" || warn "chezmoi init/apply retornou aviso; verifique symlinks."
     fi
     ok "Dotfiles aplicados com sucesso."
 }

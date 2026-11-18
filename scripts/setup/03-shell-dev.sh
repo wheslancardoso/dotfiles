@@ -3,6 +3,7 @@
 
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
+export PATH="$HOME/.local/share/mise/shims:$HOME/.local/bin:$PATH"
 
 setup_git() {
     if ! has_cmd git; then

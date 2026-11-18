@@ -91,7 +91,7 @@ setup_antigravity_sync() {
     local antigravity_script="$DOTFILES_DIR/scripts/setup-antigravity.sh"
     if [ -f "$antigravity_script" ]; then
         info "Sincronizando Antigravity (~/.gemini/config: MCPs, rules, skills, plugins)..."
-        bash "$antigravity_script"
+        bash "$antigravity_script" || warn "setup-antigravity.sh retornou aviso."
     else
         warn "Script $antigravity_script não encontrado."
     fi
