@@ -294,7 +294,7 @@ return {
       fire_wall = {
         enabled = true,
         bottom_offset = 1,
-        max_rows = 2,
+        max_rows = 5,
       },
       shake = {
         mode = "none",
@@ -616,11 +616,11 @@ return {
         if not fg or not bg then
           return
         end
-        vim.api.nvim_set_hl(0, "PowerModeFire1", { fg = lerp_hex(fg, "#ffffff", 0.55), bold = true })
-        vim.api.nvim_set_hl(0, "PowerModeFire2", { fg = fg })
-        vim.api.nvim_set_hl(0, "PowerModeFire3", { fg = lerp_hex(fg, bg, 0.25) })
-        vim.api.nvim_set_hl(0, "PowerModeFire4", { fg = lerp_hex(fg, bg, 0.50) })
-        vim.api.nvim_set_hl(0, "PowerModeFire5", { fg = lerp_hex(fg, bg, 0.72) })
+        vim.api.nvim_set_hl(0, "PowerModeFire1", { fg = lerp_hex(fg, "#ffffff", 0.65), bold = true })
+        vim.api.nvim_set_hl(0, "PowerModeFire2", { fg = lerp_hex(fg, "#ffdd66", 0.25) })
+        vim.api.nvim_set_hl(0, "PowerModeFire3", { fg = fg })
+        vim.api.nvim_set_hl(0, "PowerModeFire4", { fg = lerp_hex(fg, bg, 0.45) })
+        vim.api.nvim_set_hl(0, "PowerModeFire5", { fg = lerp_hex(fg, bg, 0.75) })
       end
 
       local function apply_fx_mode(is_heaven, fg, bg)
@@ -797,6 +797,49 @@ return {
             last_activity = vim.uv.now()
           end
         end,
+      })
+
+      -- Auto-scroll acima da zona de perigo do fire_wall (inclusive no EOF, onde scrolloff nativo para de agir)
+      local fw_cfg = opts.fire_wall or {}
+      local fw_danger_zone = (fw_cfg.max_rows or 5) + (fw_cfg.bottom_offset or 1)
+
+      local function keep_cursor_above_fire_wall()
+        if vim.api.nvim_win_get_config(0).relative ~= "" or vim.bo.buftype ~= "" then
+          return
+        end
+        if vim.fn.line("$") <= 1 then
+          return
+        end
+
+        local ok_fw, fw = pcall(require, "power-mode.fire_wall")
+        if not (ok_fw and type(fw.is_idle) == "function" and not fw.is_idle()) then
+          return
+        end
+
+        local ok_combo, combo = pcall(require, "power-mode.combo")
+        if ok_combo and type(combo.get_level) == "function" and combo.get_level() < 2 then
+          return
+        end
+
+        local cur_line = vim.fn.line(".")
+        local pos = vim.fn.screenpos(0, cur_line, vim.fn.col("."))
+        local row = pos and pos.row or 0
+        local limit = vim.o.lines - fw_danger_zone
+        if row > 0 and row >= limit then
+          local delta = row - (limit - 1)
+          if delta > 0 then
+            local view = vim.fn.winsaveview()
+            local new_topline = math.min(view.topline + delta, cur_line)
+            if new_topline > view.topline then
+              vim.fn.winrestview({ topline = new_topline })
+            end
+          end
+        end
+      end
+
+      vim.api.nvim_create_autocmd({ "CursorMovedI", "TextChangedI", "CursorMoved" }, {
+        group = group,
+        callback = keep_cursor_above_fire_wall,
       })
     end,
   },
