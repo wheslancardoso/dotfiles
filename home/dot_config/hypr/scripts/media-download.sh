@@ -1,1 +1,0 @@
-/home/lan/dotfiles/scripts/media-download.sh
