@@ -103,7 +103,16 @@ setup_antigravity_sync() {
 
 integrate_agr_docs() {
     if [ ! -d "$AGR_DOCS_DIR" ]; then
-        warn "Repositório agr-docs não encontrado em $AGR_DOCS_DIR. Pulei o bootstrap do agr-docs."
+        for candidate in "$HOME/projetos_agr/agr-docs" "$HOME/projetos/agr-docs" "$HOME/agr-docs"; do
+            if [ -d "$candidate" ] && [ -f "$candidate/agr.sh" ]; then
+                AGR_DOCS_DIR="$candidate"
+                break
+            fi
+        done
+    fi
+
+    if [ ! -d "$AGR_DOCS_DIR" ]; then
+        warn "Repositório agr-docs não encontrado em $AGR_DOCS_DIR (clone-o em ~/projetos_agr/agr-docs e rode './agr.sh setup'). Pulei o bootstrap do agr-docs."
         return 0
     fi
 

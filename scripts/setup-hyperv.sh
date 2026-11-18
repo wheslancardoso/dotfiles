@@ -76,14 +76,25 @@ else
 fi
 
 if has_systemd; then
-    info "Habilitando daemons Hyper-V (hv_kvp_daemon, hv_vss_daemon, hv_fcopy_daemon)..."
-    for svc in hv_kvp_daemon.service hv_vss_daemon.service hv_fcopy_daemon.service; do
+    info "Habilitando daemons Hyper-V (kvp, vss, fcopy)..."
+    for svc in hv_kvp_daemon.service hv_vss_daemon.service; do
         if systemctl list-unit-files "$svc" >/dev/null 2>&1; then
             sudo systemctl enable --now "$svc" 2>/dev/null || warn "Não foi possível iniciar $svc agora (pode exigir reboot)."
         else
             warn "Unit $svc não encontrada."
         fi
     done
+    local_fcopy_enabled=false
+    for fcopy_svc in hv_fcopy_uio_daemon.service hv_fcopy_daemon.service; do
+        if systemctl list-unit-files "$fcopy_svc" >/dev/null 2>&1; then
+            sudo systemctl enable --now "$fcopy_svc" 2>/dev/null || warn "Não foi possível iniciar $fcopy_svc agora (pode exigir reboot)."
+            local_fcopy_enabled=true
+            break
+        fi
+    done
+    if [ "$local_fcopy_enabled" = false ]; then
+        warn "Nenhuma unit hv_fcopy* encontrada (normal se kernel/hyperv não expõe fcopy)."
+    fi
     ok "Daemons Hyper-V habilitados."
 else
     warn "Systemd não ativo; habilite hv_kvp_daemon, hv_vss_daemon e hv_fcopy_daemon após o boot."

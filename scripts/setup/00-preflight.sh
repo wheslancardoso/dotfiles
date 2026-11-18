@@ -66,6 +66,7 @@ setup_makepkg_turbo() {
             if grep -q "^BUILDDIR=/tmp/makepkg" /etc/makepkg.conf; then
                 sudo sed -i 's|^BUILDDIR=/tmp/makepkg.*|#BUILDDIR=/tmp/makepkg|' /etc/makepkg.conf
             fi
+            [ -d /tmp/makepkg ] && sudo rm -rf /tmp/makepkg 2>/dev/null || true
         fi
 
         sudo sed -i "s/^COMPRESSZST=.*/COMPRESSZST=(zstd -c -z -q --threads=0 -)/" /etc/makepkg.conf 2>/dev/null || true

@@ -76,7 +76,9 @@ if [ "${PROFILE:-full}" = "full" ] && { [ "${IS_WSL:-false}" = false ] || [ "${W
 
         # No Arch puro, wlogout está no AUR e não no repo extra
         if grep -qx "wlogout" "$NATIVE_LIST" && ! pacman -Si wlogout >/dev/null 2>&1; then
-            "$AUR_HELPER" -S --needed --noconfirm wlogout 2>/dev/null || warn "Pacote AUR wlogout não encontrado/falhou."
+            "$AUR_HELPER" -S --needed --noconfirm --answerdiff None --answerclean None wlogout 2>/dev/null || \
+                "$AUR_HELPER" -S --needed --noconfirm --answerdiff None --answerclean None --mflags "--skippgpcheck" wlogout 2>/dev/null || \
+                warn "Pacote AUR wlogout não encontrado/falhou."
         fi
     fi
 

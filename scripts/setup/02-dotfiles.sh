@@ -22,11 +22,15 @@ apply_dotfiles() {
         warn "Symlinks quebrados detectados em home/: ${broken_links[*]}"
     fi
 
+    local chezmoi_tmp="$HOME/.cache/chezmoi-tmp"
+    mkdir -p "$chezmoi_tmp"
+
     if [ -f "$DOTFILES_DIR/.chezmoi.toml.tmpl" ]; then
-        chezmoi init --apply --force --source "$DOTFILES_DIR" || warn "chezmoi init/apply retornou aviso; verifique symlinks."
+        TMPDIR="$chezmoi_tmp" chezmoi init --apply --force --source "$DOTFILES_DIR" || warn "chezmoi init/apply retornou aviso; verifique symlinks."
     else
-        chezmoi init --apply --force "$DOTFILES_DIR" || warn "chezmoi init/apply retornou aviso; verifique symlinks."
+        TMPDIR="$chezmoi_tmp" chezmoi init --apply --force "$DOTFILES_DIR" || warn "chezmoi init/apply retornou aviso; verifique symlinks."
     fi
+    rm -rf "$chezmoi_tmp" 2>/dev/null || true
     ok "Dotfiles aplicados com sucesso."
 }
 
