@@ -1,0 +1,137 @@
+# ==============================================================================
+# Perfil WORK (Enxuto): Arch Linux + Hyprland + Hyper-V + Dev/AGR
+# Mantém 100% da aparência, atalhos, terminal, Neovim, Yazi, Zellij, Waybar,
+# Rofi, SDDM e Spotify (spotify-launcher), sem jogos, emuladores ou bloat.
+# ==============================================================================
+
+# --- Hyprland, Waybar, Rofi, SDDM & Portais ---
+hyprland
+hyprlock
+hypridle
+hyprpicker
+hyprpolkitagent
+hyprsunset
+waybar
+rofi
+rofi-calc
+sddm
+swaync
+swaybg
+awww
+quickshell
+nwg-displays
+nwg-look
+kvantum
+qt5ct
+qt6ct
+qt5-quickcontrols2
+qt6-5compat
+qt6-svg
+qt6-virtualkeyboard
+xdg-desktop-portal-hyprland
+xdg-desktop-portal-gtk
+xdg-utils
+xdg-user-dirs
+
+# --- Clipboard, Screenshots, OCR, Keyring & Rede ---
+cliphist
+copyq
+wl-clipboard
+grim
+slurp
+flameshot
+tesseract
+tesseract-data-eng
+tesseract-data-por
+gnome-keyring
+libsecret
+network-manager-applet
+blueman
+gvfs
+udiskie
+
+# --- Áudio, Mídia & Spotify Oficial ---
+pipewire
+pipewire-alsa
+pipewire-pulse
+wireplumber
+pavucontrol
+pamixer
+playerctl
+brightnessctl
+spotify-launcher
+mpv
+ffmpeg
+ffmpegthumbnailer
+imagemagick
+poppler
+poppler-glib
+7zip
+resvg
+okular
+
+# --- Fontes (Terminal, Waybar, Rofi, Neovim & Documentos) ---
+noto-fonts
+noto-fonts-cjk
+noto-fonts-emoji
+ttf-jetbrains-mono
+ttf-jetbrains-mono-nerd
+ttf-fira-code
+ttf-meslo-nerd
+ttf-nerd-fonts-symbols
+ttf-nerd-fonts-symbols-common
+ttf-liberation
+ttf-dejavu
+ttf-opensans
+
+# --- Terminal, Shell, Editor, File Manager & CLI ---
+kitty
+zsh
+fish
+starship
+atuin
+zellij
+neovim
+yazi
+tmux
+btop
+bat
+eza
+fd
+fzf
+ripgrep
+zoxide
+jq
+lazygit
+git
+git-delta
+github-cli
+curl
+wget
+unzip
+zip
+chezmoi
+python-pip
+python-pipx
+
+# --- Dev, AGR, Banco, Browser E2E & SMB ---
+chromium
+dbeaver
+mariadb
+mariadb-clients
+jdk8-openjdk
+jdk17-openjdk
+maven
+iproute2
+lsof
+openbsd-netcat
+cifs-utils
+smbclient
+docker
+docker-compose
+
+# --- Hyper-V Guest & Renderização Software ---
+hyperv
+mesa
+vulkan-swrast
+xf86-video-fbdev

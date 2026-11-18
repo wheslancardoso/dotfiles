@@ -28,6 +28,8 @@ cd ~/dotfiles
 | Flag | Descrição |
 | :--- | :--- |
 | `--non-interactive`, `-y` | Executa sem prompts interativos (ideal para automação) |
+| `--work` | Perfil enxuto de trabalho/VM (**padrão**: Hyprland + Waybar + Rofi + SDDM + Dev/AGR + Hyper-V, via `packages/pacman-work.txt` e `pacman-work-aur.txt`) |
+| `--full` | Perfil completo do PC pessoal (`packages/pacman-native.txt` e `pacman-aur.txt`) |
 | `--hyperv` | Força modo Hyper-V (padrão neste entrypoint) |
 | `--no-hyperv` | Desativa modo Hyper-V (para hardware físico) |
 | `--with-ad` | Executa `scripts/setup-ad-smb.sh` |
@@ -39,7 +41,7 @@ cd ~/dotfiles
 Também é possível usar o `setup.sh` diretamente:
 
 ```bash
-./setup.sh --full --hyperv --agr --non-interactive
+./setup.sh --work --hyperv --agr --non-interactive
 ```
 
 ---

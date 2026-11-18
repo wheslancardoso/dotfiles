@@ -51,9 +51,14 @@ for dev_pkg in mise uv rustup; do
     fi
 done
 
-if [ "${PROFILE:-full}" = "full" ] && { [ "${IS_WSL:-false}" = false ] || [ "${WITH_DESKTOP:-false}" = true ]; }; then
-    NATIVE_LIST="$DOTFILES_DIR/packages/pacman-native.txt"
-    AUR_LIST="$DOTFILES_DIR/packages/pacman-aur.txt"
+if { [ "${PROFILE:-full}" = "full" ] || [ "${PROFILE:-full}" = "work" ]; } && { [ "${IS_WSL:-false}" = false ] || [ "${WITH_DESKTOP:-false}" = true ]; }; then
+    if [ "${PROFILE:-full}" = "work" ]; then
+        NATIVE_LIST="$DOTFILES_DIR/packages/pacman-work.txt"
+        AUR_LIST="$DOTFILES_DIR/packages/pacman-work-aur.txt"
+    else
+        NATIVE_LIST="$DOTFILES_DIR/packages/pacman-native.txt"
+        AUR_LIST="$DOTFILES_DIR/packages/pacman-aur.txt"
+    fi
 
     # Em VM Hyper-V, remove pacotes exclusivos de hardware físico / CachyOS / NVIDIA / ISOs 6GB / gaming pesado / nested VM
     HYPERV_SKIP_REGEX='^(cachyos-|linux-cachyos|nvidia|lib32-nvidia|intel-ucode|amd-ucode|tlp|throttled|gpu-screen-recorder|ananicy-rules-cachyos|limine|ttf-ms-win1[01]-auto|elyprismlauncher|heroic-games-launcher-bin|hydra-launcher-bin|ludusavi-bin|protonup-qt|realesrgan-ncnn-vulkan-bin|quickemu|quickgui-bin|android-studio|flutter-bin)'

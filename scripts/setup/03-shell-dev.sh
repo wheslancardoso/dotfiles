@@ -90,6 +90,9 @@ setup_docker() {
 }
 
 setup_antigravity_cli() {
+    if { [ "${IS_WSL:-false}" = false ] || [ "${WITH_DESKTOP:-false}" = true ]; } && [ -f "$DOTFILES_DIR/scripts/install-antigravity-tar.sh" ]; then
+        bash "$DOTFILES_DIR/scripts/install-antigravity-tar.sh" || warn "install-antigravity-tar.sh retornou aviso."
+    fi
     if ! has_cmd agy && ! has_cmd antigravity; then
         info "Instalando Antigravity CLI (agy)..."
         curl -fsSL https://antigravity.google/cli/install.sh | bash 2>/dev/null || warn "Falha ao instalar Antigravity CLI."
@@ -102,7 +105,10 @@ setup_antigravity_cli() {
 }
 EOF
     fi
-    ok "Antigravity CLI configurado."
+    if [ -f "$DOTFILES_DIR/scripts/setup-antigravity.sh" ]; then
+        bash "$DOTFILES_DIR/scripts/setup-antigravity.sh" || warn "setup-antigravity.sh retornou aviso."
+    fi
+    ok "Antigravity CLI, IDE e ~/.gemini configurados."
 }
 
 setup_git

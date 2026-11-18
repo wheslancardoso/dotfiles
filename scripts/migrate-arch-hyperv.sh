@@ -10,6 +10,7 @@ export DOTFILES_DIR="${DOTFILES_DIR:-$(dirname "$SCRIPT_DIR")}"
 source "$DOTFILES_DIR/scripts/setup/common.sh"
 
 export NON_INTERACTIVE=false
+PROFILE="work"
 HYPERV_FLAG="--hyperv"
 WITH_AD=false
 WITH_AGR=true
@@ -21,6 +22,15 @@ for arg in "$@"; do
     case "$arg" in
         --non-interactive|-y|--yes)
             NON_INTERACTIVE=true
+            ;;
+        --work)
+            PROFILE="work"
+            ;;
+        --full)
+            PROFILE="full"
+            ;;
+        --profile=*)
+            PROFILE="${arg#*=}"
             ;;
         --hyperv)
             HYPERV_FLAG="--hyperv"
@@ -49,6 +59,9 @@ for arg in "$@"; do
             cat << 'EOF'
 Uso: ./scripts/migrate-arch-hyperv.sh [opções]
   --non-interactive, -y   Executa sem prompts interativos
+  --work                  Perfil enxuto de trabalho/VM (padrão: Hyprland + Dev/AGR + Hyper-V)
+  --full                  Perfil completo do PC pessoal (445 pacotes)
+  --profile=work|full|dev Define o perfil explicitamente
   --hyperv                Ativa otimizações de VM Hyper-V (padrão)
   --no-hyperv             Desativa modo Hyper-V (para hardware físico)
   --with-ad               Executa integração Windows AD/SMB (scripts/setup-ad-smb.sh)
@@ -66,9 +79,9 @@ EOF
     esac
 done
 
-info "Iniciando migração Arch Linux + Hyprland (Hyper-V / AGR)..."
+info "Iniciando migração Arch Linux + Hyprland (PROFILE=$PROFILE | Hyper-V / AGR)..."
 
-SETUP_ARGS=(--full "$HYPERV_FLAG")
+SETUP_ARGS=("--profile=$PROFILE" "$HYPERV_FLAG")
 [ "$NON_INTERACTIVE" = true ] && SETUP_ARGS+=(--non-interactive)
 
 info "Etapa 1/4: Executando orquestrador base ($DOTFILES_DIR/setup.sh)..."

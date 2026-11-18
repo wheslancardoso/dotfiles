@@ -25,6 +25,9 @@ for arg in "$@"; do
         --dev)
             PROFILE="dev"
             ;;
+        --work)
+            PROFILE="work"
+            ;;
         --full)
             PROFILE="full"
             ;;
@@ -48,8 +51,9 @@ for arg in "$@"; do
             cat << 'EOF'
 Uso: ./setup.sh [opções]
   --non-interactive, -y   Executa sem prompts interativos
-  --profile=dev|full      Define o perfil (padrão: full no Arch nativo, dev no Arch WSL)
+  --profile=dev|work|full Define o perfil (padrão: full no Arch nativo, dev no Arch WSL)
   --dev                   Atalho para --profile=dev
+  --work                  Atalho para --profile=work (enxuto: Hyprland + Dev/AGR + Hyper-V)
   --full                  Atalho para --profile=full
   --with-desktop          Habilita pacotes/módulo de desktop mesmo no WSL (WSLg)
   --hyperv                Força modo VM Hyper-V (daemons Hyper-V, llvmpipe, sem NVIDIA)
@@ -116,7 +120,7 @@ bash "$SETUP_MODULES_DIR/01-packages.sh"
 bash "$SETUP_MODULES_DIR/02-dotfiles.sh"
 bash "$SETUP_MODULES_DIR/03-shell-dev.sh"
 
-if [ "$PROFILE" = "full" ] && { [ "$IS_WSL" = false ] || [ "$WITH_DESKTOP" = true ]; }; then
+if { [ "$PROFILE" = "full" ] || [ "$PROFILE" = "work" ]; } && { [ "$IS_WSL" = false ] || [ "$WITH_DESKTOP" = true ]; }; then
     bash "$SETUP_MODULES_DIR/04-desktop-hyprland.sh"
 else
     info "Módulo 04 (desktop/hyprland) pulado no perfil $PROFILE."
