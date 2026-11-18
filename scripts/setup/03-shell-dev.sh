@@ -20,6 +20,12 @@ setup_git() {
         git config --global user.email "wheslancardoso1@gmail.com"
     fi
     ok "Git configurado."
+
+    if [ -f "$DOTFILES_DIR/secrets/github.pat.enc" ] && [ -f "$DOTFILES_DIR/scripts/setup-github-auth.sh" ]; then
+        local gh_auth_args=()
+        [ "${NON_INTERACTIVE:-false}" = true ] && gh_auth_args+=(--non-interactive)
+        bash "$DOTFILES_DIR/scripts/setup-github-auth.sh" "${gh_auth_args[@]}" || warn "setup-github-auth.sh retornou aviso."
+    fi
 }
 
 setup_shell() {
