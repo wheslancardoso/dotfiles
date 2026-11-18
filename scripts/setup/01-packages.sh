@@ -55,8 +55,8 @@ if [ "${PROFILE:-full}" = "full" ] && { [ "${IS_WSL:-false}" = false ] || [ "${W
     NATIVE_LIST="$DOTFILES_DIR/packages/pacman-native.txt"
     AUR_LIST="$DOTFILES_DIR/packages/pacman-aur.txt"
 
-    # Em VM Hyper-V, remove pacotes exclusivos de hardware físico / CachyOS / NVIDIA
-    HYPERV_SKIP_REGEX='^(cachyos-|linux-cachyos|nvidia|lib32-nvidia|intel-ucode|amd-ucode|tlp|throttled|gpu-screen-recorder|ananicy-rules-cachyos|limine)'
+    # Em VM Hyper-V, remove pacotes exclusivos de hardware físico / CachyOS / NVIDIA / ISOs 6GB / gaming pesado / nested VM
+    HYPERV_SKIP_REGEX='^(cachyos-|linux-cachyos|nvidia|lib32-nvidia|intel-ucode|amd-ucode|tlp|throttled|gpu-screen-recorder|ananicy-rules-cachyos|limine|ttf-ms-win1[01]-auto|elyprismlauncher|heroic-games-launcher-bin|hydra-launcher-bin|ludusavi-bin|protonup-qt|realesrgan-ncnn-vulkan-bin|quickemu|quickgui-bin|android-studio|flutter-bin)'
     # Pacotes exclusivos dos repositórios CachyOS (ausentes no Arch puro)
     CACHYOS_REPO_ONLY_REGEX='^(ab-download-manager|chwd|octopi|paru|shelly|ventoy-bin|yay)$'
 
@@ -88,6 +88,8 @@ if [ "${PROFILE:-full}" = "full" ] && { [ "${IS_WSL:-false}" = false ] || [ "${W
             if [ "${IS_HYPERV:-false}" = true ]; then grep -vE "$HYPERV_SKIP_REGEX"; else cat; fi
         } | {
             if has_cmd yay; then grep -vx "yay-bin"; else cat; fi
+        } | {
+            if has_cmd mise; then grep -vx "mise-bin"; else cat; fi
         })
         aur_flags=(--needed --noconfirm)
         if [ "$AUR_HELPER" = "yay" ]; then
@@ -95,12 +97,17 @@ if [ "${PROFILE:-full}" = "full" ] && { [ "${IS_WSL:-false}" = false ] || [ "${W
         elif [ "$AUR_HELPER" = "paru" ]; then
             aur_flags+=(--skipreview)
         fi
-        "$AUR_HELPER" -S "${aur_flags[@]}" "${aur_pkgs[@]}" 2>/dev/null || install_pkg_list aur "${aur_pkgs[@]}"
+        # Evita esgotar tmpfs de /tmp durante compilações LTO/AUR em VMs
+        aur_tmpdir="$HOME/.cache/makepkg-tmp"
+        mkdir -p "$aur_tmpdir"
+        TMPDIR="$aur_tmpdir" "$AUR_HELPER" -S "${aur_flags[@]}" "${aur_pkgs[@]}" 2>/dev/null || \
+            TMPDIR="$aur_tmpdir" install_pkg_list aur "${aur_pkgs[@]}"
+        rm -rf "$aur_tmpdir" 2>/dev/null || true
     fi
 
     if [ "${IS_HYPERV:-false}" = true ] && [ "${IS_WSL:-false}" = false ]; then
-        info "Instalando pacotes de guest Hyper-V (hyperv, mesa, vulkan-swrast)..."
-        sudo pacman -S --needed --noconfirm hyperv mesa vulkan-swrast 2>/dev/null || warn "Algum pacote Hyper-V opcional falhou."
+        info "Instalando pacotes de guest Hyper-V (hyperv, mesa, vulkan-swrast, fontes livres)..."
+        sudo pacman -S --needed --noconfirm hyperv mesa vulkan-swrast ttf-liberation noto-fonts 2>/dev/null || warn "Algum pacote Hyper-V opcional falhou."
     fi
 else
     info "Perfil dev/WSL ativo: pulando pacotes exclusivos de desktop/hardware nativo."
