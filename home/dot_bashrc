@@ -291,3 +291,7 @@ export PATH="$HOME/.local/bin:$PATH"
 # 💾 Libera Ctrl+S no terminal (desativa XON/XOFF flow control para salvar arquivos no Neovim)
 [[ -t 0 ]] && stty -ixon 2>/dev/null
 
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/lanwsl/.local/bin:$PATH"

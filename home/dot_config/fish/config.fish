@@ -224,3 +224,7 @@ alias bonsai-live="cbonsai -l -m 'Cockpit Soberano'"
 # Added by Antigravity CLI installer
 set -gx PATH "/home/lan/.local/bin" $PATH
 
+
+
+# Added by Antigravity CLI installer
+set -gx PATH "/home/lanwsl/.local/bin" $PATH

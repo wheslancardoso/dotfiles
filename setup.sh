@@ -10,6 +10,9 @@ source "$SETUP_MODULES_DIR/common.sh"
 export NON_INTERACTIVE=false
 export PROFILE="full"
 export WITH_DESKTOP=false
+export IS_HYPERV="auto"
+export WITH_AGR=false
+export AGR_CLONE_PORTAIS=false
 
 for arg in "$@"; do
     case "$arg" in
@@ -28,6 +31,19 @@ for arg in "$@"; do
         --with-desktop)
             WITH_DESKTOP=true
             ;;
+        --hyperv)
+            IS_HYPERV=true
+            ;;
+        --no-hyperv)
+            IS_HYPERV=false
+            ;;
+        --agr)
+            WITH_AGR=true
+            ;;
+        --clone-portais)
+            WITH_AGR=true
+            AGR_CLONE_PORTAIS=true
+            ;;
         --help|-h)
             cat << 'EOF'
 Uso: ./setup.sh [opções]
@@ -36,6 +52,10 @@ Uso: ./setup.sh [opções]
   --dev                   Atalho para --profile=dev
   --full                  Atalho para --profile=full
   --with-desktop          Habilita pacotes/módulo de desktop mesmo no WSL (WSLg)
+  --hyperv                Força modo VM Hyper-V (daemons Hyper-V, llvmpipe, sem NVIDIA)
+  --no-hyperv             Desativa detecção automática de Hyper-V
+  --agr                   Executa também o módulo 05 (AGR Dev + Antigravity + agr-docs)
+  --clone-portais         Implica --agr e clona todos os repositórios dos Portais AGR
   --help, -h              Mostra esta ajuda
 EOF
             exit 0
@@ -52,6 +72,20 @@ done
 export IS_WSL=false
 if [ -n "${WSL_DISTRO_NAME:-}" ] || grep -qiE "microsoft|wsl" /proc/version 2>/dev/null; then
     IS_WSL=true
+fi
+
+# Detecção de Hyper-V (quando não forçado por flag)
+if [ "$IS_HYPERV" = "auto" ]; then
+    IS_HYPERV=false
+    if [ "$IS_WSL" = false ]; then
+        if has_cmd systemd-detect-virt && [ "$(systemd-detect-virt 2>/dev/null || true)" = "microsoft" ]; then
+            IS_HYPERV=true
+        elif [ -r /sys/class/dmi/id/sys_vendor ] && grep -qi "Microsoft" /sys/class/dmi/id/sys_vendor 2>/dev/null; then
+            if [ -r /sys/class/dmi/id/product_name ] && grep -qi "Virtual Machine" /sys/class/dmi/id/product_name 2>/dev/null; then
+                IS_HYPERV=true
+            fi
+        fi
+    fi
 fi
 
 # Detecção de distro
@@ -71,7 +105,7 @@ if [ "$IS_WSL" = true ] && [ "$WITH_DESKTOP" = false ] && [ "$PROFILE" = "full" 
     PROFILE="dev"
 fi
 
-info "Ambiente detectado: distro=$DISTRO_ID | IS_WSL=$IS_WSL | PROFILE=$PROFILE | WITH_DESKTOP=$WITH_DESKTOP"
+info "Ambiente detectado: distro=$DISTRO_ID | IS_WSL=$IS_WSL | IS_HYPERV=$IS_HYPERV | PROFILE=$PROFILE | WITH_DESKTOP=$WITH_DESKTOP | WITH_AGR=$WITH_AGR"
 
 # Sudo keep-alive
 sudo -v
@@ -86,6 +120,10 @@ if [ "$PROFILE" = "full" ] && { [ "$IS_WSL" = false ] || [ "$WITH_DESKTOP" = tru
     bash "$SETUP_MODULES_DIR/04-desktop-hyprland.sh"
 else
     info "Módulo 04 (desktop/hyprland) pulado no perfil $PROFILE."
+fi
+
+if [ "$WITH_AGR" = true ] && [ -f "$SETUP_MODULES_DIR/05-agr-antigravity.sh" ]; then
+    bash "$SETUP_MODULES_DIR/05-agr-antigravity.sh"
 fi
 
 ok "Setup completo finalizado com sucesso!"

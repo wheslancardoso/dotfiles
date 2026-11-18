@@ -112,7 +112,7 @@ setup_anti_friction() {
 
     info "Aplicando configurações anti-friction de sistema ($sys_src)..."
 
-    if [ -f "$sys_src/modprobe.d/nvidia-power-management.conf" ]; then
+    if [ "${IS_HYPERV:-false}" = false ] && [ -f "$sys_src/modprobe.d/nvidia-power-management.conf" ]; then
         sudo mkdir -p /etc/modprobe.d
         sudo cp -f "$sys_src/modprobe.d/nvidia-power-management.conf" /etc/modprobe.d/
         if has_systemd; then
@@ -159,7 +159,7 @@ setup_anti_friction() {
         sudo udevadm control --reload-rules 2>/dev/null || true
     fi
 
-    if [ -f "$DOTFILES_DIR/scripts/disable-spurious-acpi-wakeup.sh" ]; then
+    if [ "${IS_HYPERV:-false}" = false ] && [ -f "$DOTFILES_DIR/scripts/disable-spurious-acpi-wakeup.sh" ]; then
         sudo cp -f "$DOTFILES_DIR/scripts/disable-spurious-acpi-wakeup.sh" /usr/local/bin/
         sudo chmod +x /usr/local/bin/disable-spurious-acpi-wakeup.sh
         if [ -f "$sys_src/systemd/system/disable-spurious-acpi-wakeup.service" ] && has_systemd; then
@@ -319,6 +319,9 @@ setup_groups
 setup_services
 setup_keyring
 setup_anti_friction
+if [ "${IS_HYPERV:-false}" = true ] && [ -f "$DOTFILES_DIR/scripts/setup-hyperv.sh" ]; then
+    bash "$DOTFILES_DIR/scripts/setup-hyperv.sh" --force
+fi
 setup_default_apps
 setup_wallust_and_theme
 verify_hyprland
