@@ -339,9 +339,9 @@ return {
         },
       },
       fire_wall = {
-        enabled = true,
+        enabled = false,
         bottom_offset = 1,
-        max_rows = 5,
+        max_rows = 2,
       },
       shake = {
         mode = "none",
@@ -609,6 +609,7 @@ return {
       local pm_config = require("power-mode.config")
       local pm_fire_wall = require("power-mode.fire_wall")
       local guitar_hero = require("config.guitar_hero")
+      local fire_wall_hd = require("config.fire_wall_hd")
       local current_fx_heaven = nil
       local shock_ns = vim.api.nvim_create_namespace("PowerModeShockwave")
       vim.g.power_wall_mode = vim.g.power_wall_mode or "firewall"
@@ -809,21 +810,7 @@ return {
         )
       end
 
-      local function apply_wall_gradient(fg, bg)
-        if not fg or not bg then
-          return
-        end
-        vim.api.nvim_set_hl(0, "PowerModeFire1", { fg = lerp_hex(fg, "#ffffff", 0.65), bold = true })
-        vim.api.nvim_set_hl(0, "PowerModeFire2", { fg = lerp_hex(fg, "#ffdd66", 0.25) })
-        vim.api.nvim_set_hl(0, "PowerModeFire3", { fg = fg })
-        vim.api.nvim_set_hl(0, "PowerModeFire4", { fg = lerp_hex(fg, bg, 0.45) })
-        vim.api.nvim_set_hl(0, "PowerModeFire5", { fg = lerp_hex(fg, bg, 0.75) })
-      end
-
-      local function apply_fx_mode(is_heaven, fg, bg)
-        if fg and bg then
-          apply_wall_gradient(fg, bg)
-        end
+      local function apply_fx_mode(is_heaven)
         if current_fx_heaven == is_heaven then
           return
         end
@@ -853,13 +840,15 @@ return {
         if level <= 0 then
           stop_pulse()
           close_eq()
+          fire_wall_hd.cool_down()
           guitar_hero.close()
           eq_fg = "#ff4000"
           eq_bg = "#1e1e2e"
           vim.g.power_ascended = false
           sync_kitty(nil, nil)
           local is_heaven_preset = (vim.g.power_preset == "heaven")
-          guitar_hero.set_theme(is_heaven_preset, eq_bg, eq_fg)
+          fire_wall_hd.set_theme(is_heaven_preset, eq_bg, eq_fg, 0)
+          guitar_hero.set_theme(is_heaven_preset, eq_bg, eq_fg, 0, 0)
           animate_transition(from_bg, from_bg, "#1e1e2e", "#cdd6f4", "#313244", function()
             current_bg = "#1e1e2e"
             pcall(vim.cmd.colorscheme, "catppuccin-mocha")
@@ -885,7 +874,8 @@ return {
         pcall(vim.cmd.colorscheme, t.scheme)
         eq_fg = t.fg
         eq_bg = t.editor_bg
-        guitar_hero.set_theme(is_heaven_now, t.editor_bg, t.fg)
+        fire_wall_hd.set_theme(is_heaven_now, t.editor_bg, t.fg, level)
+        guitar_hero.set_theme(is_heaven_now, t.editor_bg, t.fg, level, streak)
         if t.syntax then
           vim.api.nvim_set_hl(0, "Keyword", { fg = t.syntax.keyword, bold = true })
           vim.api.nvim_set_hl(0, "@keyword", { fg = t.syntax.keyword, bold = true })
@@ -925,7 +915,8 @@ return {
         vim.g.power_preset = name
         local is_heaven_now = (name == "heaven") or (name == "fire" and last_level >= 6)
         apply_fx_mode(is_heaven_now)
-        guitar_hero.set_theme(is_heaven_now, eq_bg, eq_fg)
+        fire_wall_hd.set_theme(is_heaven_now, eq_bg, eq_fg, last_level)
+        guitar_hero.set_theme(is_heaven_now, eq_bg, eq_fg, last_level, streak)
         if last_level > 0 then
           local cur = last_level
           last_level = 0
@@ -966,26 +957,31 @@ return {
           return
         end
         vim.g.power_wall_mode = mode
+        local is_heaven = (vim.g.power_preset == "heaven") or (vim.g.power_ascended == true)
         if mode == "firewall" then
           close_eq()
           guitar_hero.close()
-          pm_config.get().fire_wall.enabled = true
-          vim.notify("🔥 Rodapé: FIREWALL", vim.log.levels.INFO, { title = "Power Mode" })
+          pm_config.get().fire_wall.enabled = false
+          pcall(pm_fire_wall.clear)
+          fire_wall_hd.ignite(math.max(last_level, 2), streak, is_heaven, eq_bg, eq_fg)
+          vim.notify("🔥 Rodapé: FIREWALL HD", vim.log.levels.INFO, { title = "Power Mode" })
         elseif mode == "equalizer" then
+          fire_wall_hd.close()
           guitar_hero.close()
           pm_config.get().fire_wall.enabled = false
           pcall(pm_fire_wall.clear)
           pulse_eq(4)
           vim.notify("🎵 Rodapé: EQUALIZER", vim.log.levels.INFO, { title = "Power Mode" })
         elseif mode == "guitarhero" then
+          fire_wall_hd.close()
           close_eq()
           pm_config.get().fire_wall.enabled = false
           pcall(pm_fire_wall.clear)
-          local is_heaven = (vim.g.power_preset == "heaven") or (vim.g.power_ascended == true)
-          guitar_hero.hit("a", is_heaven, eq_bg, eq_fg)
-          guitar_hero.hit("d", is_heaven, eq_bg, eq_fg)
+          guitar_hero.hit("q", is_heaven, eq_bg, eq_fg, last_level, streak)
+          guitar_hero.hit("p", is_heaven, eq_bg, eq_fg, last_level, streak)
           vim.notify("🎸 Rodapé: GUITAR HERO", vim.log.levels.INFO, { title = "Power Mode" })
         else
+          fire_wall_hd.close()
           close_eq()
           guitar_hero.close()
           pm_config.get().fire_wall.enabled = false
@@ -1041,10 +1037,12 @@ return {
           streak = streak + 1
           local lvl = streak_to_level(streak)
           vim.schedule(function()
+            local is_heaven = (vim.g.power_preset == "heaven") or (vim.g.power_ascended == true)
             pulse_eq(lvl)
-            if vim.g.power_wall_mode == "guitarhero" then
-              local is_heaven = (vim.g.power_preset == "heaven") or (vim.g.power_ascended == true)
-              guitar_hero.hit(char, is_heaven, eq_bg, eq_fg)
+            if vim.g.power_wall_mode == "firewall" then
+              fire_wall_hd.ignite(lvl, streak, is_heaven, eq_bg, eq_fg)
+            elseif vim.g.power_wall_mode == "guitarhero" then
+              guitar_hero.hit(char, is_heaven, eq_bg, eq_fg, lvl, streak)
             end
             if lvl > last_level then
               apply_level(lvl)
